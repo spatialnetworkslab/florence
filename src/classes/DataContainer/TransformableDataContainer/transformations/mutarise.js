@@ -46,8 +46,9 @@ function ungroup (data) {
   let newData = initNewData(data.$grouped[0].data())
 
   for (let group of data.$grouped) {
+    let groupData = group.data()
     for (let col in newData) {
-      newData[col].push(...group.column(col))
+      newData[col].push(...groupData[col])
     }
   }
 

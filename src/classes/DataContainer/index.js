@@ -1,6 +1,6 @@
 import produce from 'immer'
 
-import methodExposeMixin from './TransformableDataContainer/methodExposeMixin.js'
+import transformMethodExposeMixin from './TransformableDataContainer/methodExposeMixin.js'
 
 import {
   isColumnOriented, isRowOriented, isGeoJSON,
@@ -66,6 +66,7 @@ export default class DataContainer {
   }
 
   row (index) {
+    this._calculateDomainsAndTypesIfNecessary()
     let row = {}
 
     for (let columnName in this._data) {
@@ -77,6 +78,7 @@ export default class DataContainer {
   }
 
   rows () {
+    this._calculateDomainsAndTypesIfNecessary()
     let rows = []
 
     for (let i = 0; i < this._length; i++) {
@@ -91,6 +93,7 @@ export default class DataContainer {
   }
 
   column (columnName) {
+    this._calculateDomainsAndTypesIfNecessary()
     return this._data[columnName]
   }
 
@@ -174,6 +177,6 @@ export default class DataContainer {
   }
 }
 
-methodExposeMixin(DataContainer)
+transformMethodExposeMixin(DataContainer)
 
 const invalidDataError = new Error('Data passed to DataContainer is of unknown format')
