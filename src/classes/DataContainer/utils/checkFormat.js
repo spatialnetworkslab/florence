@@ -51,7 +51,7 @@ export function checkRegularColumnName (columnName) {
 const forbiddenChars = /[.#/$]/
 
 export function checkTransformedDataColumnName (columnName) {
-  if (!['$geometry', '$grouped'].includes(columnName)) {
+  if (!['$index', '$geometry', '$grouped'].includes(columnName)) {
     checkRegularColumnName(columnName)
   }
 }

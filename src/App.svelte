@@ -3,7 +3,7 @@
   import Scatterplot from './examples/Scatterplot.svelte'
 
   let filterT = 0
-  let N = 1000
+  let N = 10000
 
   $: inputMax = N * 1.5
 </script>
@@ -30,7 +30,7 @@
   </div> -->
 
   <div class="graphic-holder">
-    <h1>Regular filter:</h1>
+    <h1>Filter:</h1>
     <Scatterplot {filterT} {N} />
 
     <label for="filterTreshold">

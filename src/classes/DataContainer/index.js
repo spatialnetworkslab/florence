@@ -16,9 +16,12 @@ export default class DataContainer {
 
     this._domainsAndTypesCalculated = false
     this._lazy = true
+
     this._domains = {}
-    this._length = undefined
     this._types = {}
+
+    this._length = undefined
+    this._maxIndex = undefined
 
     if (options) {
       this._applyOptions(options)
@@ -59,14 +62,17 @@ export default class DataContainer {
       row[columnName] = value
     }
 
-    row.$index = index
-
     return row
   }
 
   rows () {
-    let iterator = createIterator(this)
-    return [...iterator]
+    let rows = []
+
+    for (let i = 0; i < this._length; i++) {
+      rows.push(this.row(i))
+    }
+
+    return rows
   }
 
   hasColumn (columnName) {
@@ -124,8 +130,21 @@ export default class DataContainer {
     this._data = data
     this._length = getDataLength(data)
 
+    this._createIndexColumn()
+
     if (this._lazy === false) {
       this._calculateDomainsAndTypes()
+    }
+  }
+
+  _createIndexColumn () {
+    if (!this._data.hasOwnProperty('$index')) {
+      let length = this._length
+
+      let indexColumn = new Array(length).fill(0).map((_, i) => i)
+      this._data.$index = indexColumn
+
+      this._maxIndex = length - 1
     }
   }
 
@@ -144,24 +163,3 @@ export default class DataContainer {
 }
 
 const invalidDataError = new Error('Data passed to DataContainer is of unknown format')
-
-function createIterator (self) {
-  return {
-    [Symbol.iterator]: function () {
-      let index = -1
-
-      return {
-        next: () => {
-          index++
-          return { value: self.row(index), done: index === self._length }
-        }
-      }
-    }
-  }
-}
-
-function validateOptions (options) {
-  if (options.hasOwnProperty('lazy')) {
-    if (options.lazy.constructor !== Boolean) throw new Error(`'lazy' must be Boolean`)
-  }
-}
