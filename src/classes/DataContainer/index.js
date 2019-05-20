@@ -1,5 +1,7 @@
 import produce from 'immer'
 
+import methodExposeMixin from './TransformableDataContainer/methodExposeMixin.js'
+
 import {
   isColumnOriented, isRowOriented, isGeoJSON,
   checkFormatColumnDataframe, checkFormatInternal
@@ -12,8 +14,8 @@ import parseGeoJSON from './utils/parseGeoJSON.js'
 
 import id from '../../utils/id.js'
 
-import TransformableDataContainer from './TransformableDataContainer.js'
-import { Group } from './transformations/groupBy.js'
+import TransformableDataContainer from './TransformableDataContainer'
+import { Group } from './TransformableDataContainer/transformations/groupBy.js'
 
 export default class DataContainer {
   constructor (data, options) {
@@ -102,10 +104,6 @@ export default class DataContainer {
     return this._types[columnName]
   }
 
-  transform () {
-    return new TransformableDataContainer(this._data)
-  }
-
   _applyOptions (options) {
     validateOptions(options)
     if (options.hasOwnProperty('lazy')) {
@@ -175,5 +173,7 @@ export default class DataContainer {
     }
   }
 }
+
+methodExposeMixin(DataContainer)
 
 const invalidDataError = new Error('Data passed to DataContainer is of unknown format')

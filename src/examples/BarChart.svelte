@@ -8,7 +8,7 @@
     fruit: [NaN, 'anchovies', 'banana', 'banana', 'coconut', 'coconut', 'durian', 'durian']
   })
 
-  data = data.transform()
+  data = data
     .dropNA()
     .filter(row => row.fruit !== 'anchovies')
     .groupBy('fruit')

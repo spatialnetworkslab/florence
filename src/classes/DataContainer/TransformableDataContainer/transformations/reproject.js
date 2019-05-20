@@ -1,5 +1,5 @@
 import proj4 from 'proj4'
-import { transformFeatures } from '../../../utils/geojson.js'
+import { transformFeatures } from '../../../../utils/geojson.js'
 
 export default function (data, reprojectInstructions) {
   if (!data.hasOwnProperty('$geometry')) {

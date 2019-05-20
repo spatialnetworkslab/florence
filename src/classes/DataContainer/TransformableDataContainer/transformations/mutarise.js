@@ -1,5 +1,5 @@
 import { initNewData, summariseGroup, checkSummariseInstructions } from './summarise.js'
-import getDataLength from '../utils/getDataLength.js'
+import getDataLength from '../../utils/getDataLength.js'
 
 export default function (data, mutariseInstructions) {
   if (mutariseInstructions.constructor !== Object) {

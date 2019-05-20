@@ -1,4 +1,4 @@
-import { checkRegularColumnName } from '../utils/checkFormat.js'
+import { checkRegularColumnName } from '../../utils/checkFormat.js'
 
 export default function (data, renameInstructions) {
   if (renameInstructions.constructor !== Object) {
