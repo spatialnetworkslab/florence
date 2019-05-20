@@ -19,7 +19,8 @@ export default function (data, summariseInstructions) {
     }
 
     for (let group of data.$grouped) {
-      newData = summariseGroup(group, summariseInstructions, newData)
+      let data = group.data()
+      newData = summariseGroup(data, summariseInstructions, newData)
     }
   } else {
     newData = summariseGroup(data, summariseInstructions, newData)

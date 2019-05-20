@@ -67,6 +67,12 @@ var app = (function () {
 		node.parentNode.removeChild(node);
 	}
 
+	function destroy_each(iterations, detaching) {
+		for (let i = 0; i < iterations.length; i += 1) {
+			if (iterations[i]) iterations[i].d(detaching);
+		}
+	}
+
 	function element(name) {
 		return document.createElement(name);
 	}
@@ -87,18 +93,9 @@ var app = (function () {
 		return text('');
 	}
 
-	function listen(node, event, handler, options) {
-		node.addEventListener(event, handler, options);
-		return () => node.removeEventListener(event, handler, options);
-	}
-
 	function attr(node, attribute, value) {
 		if (value == null) node.removeAttribute(attribute);
 		else node.setAttribute(attribute, value);
-	}
-
-	function to_number(value) {
-		return value === '' ? undefined : +value;
 	}
 
 	function children(element) {
@@ -475,6 +472,20 @@ var app = (function () {
 	var ascendingBisect = bisector(ascending);
 	var bisectRight = ascendingBisect.right;
 
+	function sequence(start, stop, step) {
+	  start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
+
+	  var i = -1,
+	      n = Math.max(0, Math.ceil((stop - start) / step)) | 0,
+	      range = new Array(n);
+
+	  while (++i < n) {
+	    range[i] = start + i * step;
+	  }
+
+	  return range;
+	}
+
 	var e10 = Math.sqrt(50),
 	    e5 = Math.sqrt(10),
 	    e2 = Math.sqrt(2);
@@ -534,6 +545,131 @@ var app = (function () {
 	    default: this.range(range).domain(domain); break;
 	  }
 	  return this;
+	}
+
+	const implicit = Symbol("implicit");
+
+	function ordinal() {
+	  var index = new Map(),
+	      domain = [],
+	      range = [],
+	      unknown = implicit;
+
+	  function scale(d) {
+	    var key = d + "", i = index.get(key);
+	    if (!i) {
+	      if (unknown !== implicit) return unknown;
+	      index.set(key, i = domain.push(d));
+	    }
+	    return range[(i - 1) % range.length];
+	  }
+
+	  scale.domain = function(_) {
+	    if (!arguments.length) return domain.slice();
+	    domain = [], index = new Map();
+	    for (const value of _) {
+	      const key = value + "";
+	      if (index.has(key)) continue;
+	      index.set(key, domain.push(value));
+	    }
+	    return scale;
+	  };
+
+	  scale.range = function(_) {
+	    return arguments.length ? (range = Array.from(_), scale) : range.slice();
+	  };
+
+	  scale.unknown = function(_) {
+	    return arguments.length ? (unknown = _, scale) : unknown;
+	  };
+
+	  scale.copy = function() {
+	    return ordinal(domain, range).unknown(unknown);
+	  };
+
+	  initRange.apply(scale, arguments);
+
+	  return scale;
+	}
+
+	function band() {
+	  var scale = ordinal().unknown(undefined),
+	      domain = scale.domain,
+	      ordinalRange = scale.range,
+	      r0 = 0,
+	      r1 = 1,
+	      step,
+	      bandwidth,
+	      round = false,
+	      paddingInner = 0,
+	      paddingOuter = 0,
+	      align = 0.5;
+
+	  delete scale.unknown;
+
+	  function rescale() {
+	    var n = domain().length,
+	        reverse = r1 < r0,
+	        start = reverse ? r1 : r0,
+	        stop = reverse ? r0 : r1;
+	    step = (stop - start) / Math.max(1, n - paddingInner + paddingOuter * 2);
+	    if (round) step = Math.floor(step);
+	    start += (stop - start - step * (n - paddingInner)) * align;
+	    bandwidth = step * (1 - paddingInner);
+	    if (round) start = Math.round(start), bandwidth = Math.round(bandwidth);
+	    var values = sequence(n).map(function(i) { return start + step * i; });
+	    return ordinalRange(reverse ? values.reverse() : values);
+	  }
+
+	  scale.domain = function(_) {
+	    return arguments.length ? (domain(_), rescale()) : domain();
+	  };
+
+	  scale.range = function(_) {
+	    return arguments.length ? ([r0, r1] = _, r0 = +r0, r1 = +r1, rescale()) : [r0, r1];
+	  };
+
+	  scale.rangeRound = function(_) {
+	    return [r0, r1] = _, r0 = +r0, r1 = +r1, round = true, rescale();
+	  };
+
+	  scale.bandwidth = function() {
+	    return bandwidth;
+	  };
+
+	  scale.step = function() {
+	    return step;
+	  };
+
+	  scale.round = function(_) {
+	    return arguments.length ? (round = !!_, rescale()) : round;
+	  };
+
+	  scale.padding = function(_) {
+	    return arguments.length ? (paddingInner = Math.min(1, paddingOuter = +_), rescale()) : paddingInner;
+	  };
+
+	  scale.paddingInner = function(_) {
+	    return arguments.length ? (paddingInner = Math.min(1, _), rescale()) : paddingInner;
+	  };
+
+	  scale.paddingOuter = function(_) {
+	    return arguments.length ? (paddingOuter = +_, rescale()) : paddingOuter;
+	  };
+
+	  scale.align = function(_) {
+	    return arguments.length ? (align = Math.max(0, Math.min(1, _)), rescale()) : align;
+	  };
+
+	  scale.copy = function() {
+	    return band(domain(), [r0, r1])
+	        .round(round)
+	        .paddingInner(paddingInner)
+	        .paddingOuter(paddingOuter)
+	        .align(align);
+	  };
+
+	  return initRange.apply(rescale(), arguments);
 	}
 
 	function define(constructor, factory, prototype) {
@@ -2743,8 +2879,8 @@ var app = (function () {
 	  checkFormat(data, checkRegularColumnName);
 	}
 
-	function checkFormatTransformableDataContainer (data) {
-	  checkFormat(data._data, checkTransformedDataColumnName);
+	function checkFormatInternal (data) {
+	  checkFormat(data, checkInternalDataColumnName);
 	}
 
 	function checkFormat (data, columnNameChecker) {
@@ -2764,13 +2900,13 @@ var app = (function () {
 
 	function checkRegularColumnName (columnName) {
 	  if (columnName.match(forbiddenChars)) {
-	    throw new Error(`Invalid column name '${columnName}': '.', '#', '/' and '$' are not allowed'`)
+	    throw new Error(`Invalid column name '${columnName}': '$' and '/' are not allowed'`)
 	  }
 	}
 
-	const forbiddenChars = /[.#/$]/;
+	const forbiddenChars = /[/$]/;
 
-	function checkTransformedDataColumnName (columnName) {
+	function checkInternalDataColumnName (columnName) {
 	  if (!['$index', '$geometry', '$grouped'].includes(columnName)) {
 	    checkRegularColumnName(columnName);
 	  }
@@ -5601,6 +5737,13 @@ var app = (function () {
 	  return data
 	}
 
+	let currentId = -1;
+
+	function id () {
+	  currentId++;
+	  return currentId
+	}
+
 	function filter (data, filterFunction) {
 	  let newData = {};
 	  let length = getDataLength(data);
@@ -5956,7 +6099,8 @@ var app = (function () {
 	    }
 
 	    for (let group of data.$grouped) {
-	      newData = summariseGroup(group, summariseInstructions, newData);
+	      let data = group.data();
+	      newData = summariseGroup(data, summariseInstructions, newData);
 	    }
 	  } else {
 	    newData = summariseGroup(data, summariseInstructions, newData);
@@ -6087,7 +6231,7 @@ var app = (function () {
 	  let groupedColumns = getGroupedColumns(data, groupByInstructions);
 	  let groups = groupBy$1(data, groupedColumns);
 
-	  groupedData.$grouped = groups.map(group => group.data);
+	  groupedData.$grouped = groups.map(group => new DataContainer(group));
 	  for (let col of groupedColumns) {
 	    groupedData[col] = [];
 	  }
@@ -7438,7 +7582,6 @@ var app = (function () {
 	    this._types = {};
 
 	    this._length = undefined;
-	    this._maxIndex = undefined;
 
 	    if (options) {
 	      this._applyOptions(options);
@@ -7461,6 +7604,11 @@ var app = (function () {
 
 	    if (data instanceof TransformableDataContainer) {
 	      this._setTransformableDataContainer(data);
+	      return
+	    }
+
+	    if (data instanceof Group) {
+	      this._setGroup(data);
 	      return
 	    }
 
@@ -7539,8 +7687,15 @@ var app = (function () {
 	  }
 
 	  _setTransformableDataContainer (transformableDataContainer) {
-	    checkFormatTransformableDataContainer(transformableDataContainer);
-	    this._storeData(transformableDataContainer._data);
+	    let data = transformableDataContainer._data;
+	    checkFormatInternal(data);
+	    this._storeData(data);
+	  }
+
+	  _setGroup (group) {
+	    let data = group.data;
+	    checkFormatInternal(data);
+	    this._storeData(data);
 	  }
 
 	  _storeData (data) {
@@ -7558,10 +7713,8 @@ var app = (function () {
 	    if (!this._data.hasOwnProperty('$index')) {
 	      let length = this._length;
 
-	      let indexColumn = new Array(length).fill(0).map((_, i) => i);
+	      let indexColumn = new Array(length).fill(0).map(_ => id());
 	      this._data.$index = indexColumn;
-
-	      this._maxIndex = length - 1;
 	    }
 	  }
 
@@ -7990,9 +8143,233 @@ var app = (function () {
 		}
 	}
 
-	var pi$1 = Math.PI;
+	var pi$1 = Math.PI,
+	    tau$1 = 2 * pi$1,
+	    epsilon = 1e-6,
+	    tauEpsilon = tau$1 - epsilon;
+
+	function Path() {
+	  this._x0 = this._y0 = // start of current subpath
+	  this._x1 = this._y1 = null; // end of current subpath
+	  this._ = "";
+	}
+
+	function path$1() {
+	  return new Path;
+	}
+
+	Path.prototype = path$1.prototype = {
+	  constructor: Path,
+	  moveTo: function(x, y) {
+	    this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y);
+	  },
+	  closePath: function() {
+	    if (this._x1 !== null) {
+	      this._x1 = this._x0, this._y1 = this._y0;
+	      this._ += "Z";
+	    }
+	  },
+	  lineTo: function(x, y) {
+	    this._ += "L" + (this._x1 = +x) + "," + (this._y1 = +y);
+	  },
+	  quadraticCurveTo: function(x1, y1, x, y) {
+	    this._ += "Q" + (+x1) + "," + (+y1) + "," + (this._x1 = +x) + "," + (this._y1 = +y);
+	  },
+	  bezierCurveTo: function(x1, y1, x2, y2, x, y) {
+	    this._ += "C" + (+x1) + "," + (+y1) + "," + (+x2) + "," + (+y2) + "," + (this._x1 = +x) + "," + (this._y1 = +y);
+	  },
+	  arcTo: function(x1, y1, x2, y2, r) {
+	    x1 = +x1, y1 = +y1, x2 = +x2, y2 = +y2, r = +r;
+	    var x0 = this._x1,
+	        y0 = this._y1,
+	        x21 = x2 - x1,
+	        y21 = y2 - y1,
+	        x01 = x0 - x1,
+	        y01 = y0 - y1,
+	        l01_2 = x01 * x01 + y01 * y01;
+
+	    // Is the radius negative? Error.
+	    if (r < 0) throw new Error("negative radius: " + r);
+
+	    // Is this path empty? Move to (x1,y1).
+	    if (this._x1 === null) {
+	      this._ += "M" + (this._x1 = x1) + "," + (this._y1 = y1);
+	    }
+
+	    // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
+	    else if (!(l01_2 > epsilon));
+
+	    // Or, are (x0,y0), (x1,y1) and (x2,y2) collinear?
+	    // Equivalently, is (x1,y1) coincident with (x2,y2)?
+	    // Or, is the radius zero? Line to (x1,y1).
+	    else if (!(Math.abs(y01 * x21 - y21 * x01) > epsilon) || !r) {
+	      this._ += "L" + (this._x1 = x1) + "," + (this._y1 = y1);
+	    }
+
+	    // Otherwise, draw an arc!
+	    else {
+	      var x20 = x2 - x0,
+	          y20 = y2 - y0,
+	          l21_2 = x21 * x21 + y21 * y21,
+	          l20_2 = x20 * x20 + y20 * y20,
+	          l21 = Math.sqrt(l21_2),
+	          l01 = Math.sqrt(l01_2),
+	          l = r * Math.tan((pi$1 - Math.acos((l21_2 + l01_2 - l20_2) / (2 * l21 * l01))) / 2),
+	          t01 = l / l01,
+	          t21 = l / l21;
+
+	      // If the start tangent is not coincident with (x0,y0), line to.
+	      if (Math.abs(t01 - 1) > epsilon) {
+	        this._ += "L" + (x1 + t01 * x01) + "," + (y1 + t01 * y01);
+	      }
+
+	      this._ += "A" + r + "," + r + ",0,0," + (+(y01 * x20 > x01 * y20)) + "," + (this._x1 = x1 + t21 * x21) + "," + (this._y1 = y1 + t21 * y21);
+	    }
+	  },
+	  arc: function(x, y, r, a0, a1, ccw) {
+	    x = +x, y = +y, r = +r;
+	    var dx = r * Math.cos(a0),
+	        dy = r * Math.sin(a0),
+	        x0 = x + dx,
+	        y0 = y + dy,
+	        cw = 1 ^ ccw,
+	        da = ccw ? a0 - a1 : a1 - a0;
+
+	    // Is the radius negative? Error.
+	    if (r < 0) throw new Error("negative radius: " + r);
+
+	    // Is this path empty? Move to (x0,y0).
+	    if (this._x1 === null) {
+	      this._ += "M" + x0 + "," + y0;
+	    }
+
+	    // Or, is (x0,y0) not coincident with the previous point? Line to (x0,y0).
+	    else if (Math.abs(this._x1 - x0) > epsilon || Math.abs(this._y1 - y0) > epsilon) {
+	      this._ += "L" + x0 + "," + y0;
+	    }
+
+	    // Is this arc empty? We’re done.
+	    if (!r) return;
+
+	    // Does the angle go the wrong way? Flip the direction.
+	    if (da < 0) da = da % tau$1 + tau$1;
+
+	    // Is this a complete circle? Draw two arcs to complete the circle.
+	    if (da > tauEpsilon) {
+	      this._ += "A" + r + "," + r + ",0,1," + cw + "," + (x - dx) + "," + (y - dy) + "A" + r + "," + r + ",0,1," + cw + "," + (this._x1 = x0) + "," + (this._y1 = y0);
+	    }
+
+	    // Is this arc non-empty? Draw an arc!
+	    else if (da > epsilon) {
+	      this._ += "A" + r + "," + r + ",0," + (+(da >= pi$1)) + "," + cw + "," + (this._x1 = x + r * Math.cos(a1)) + "," + (this._y1 = y + r * Math.sin(a1));
+	    }
+	  },
+	  rect: function(x, y, w, h) {
+	    this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y) + "h" + (+w) + "v" + (+h) + "h" + (-w) + "Z";
+	  },
+	  toString: function() {
+	    return this._;
+	  }
+	};
+
+	function constant$2(x) {
+	  return function constant() {
+	    return x;
+	  };
+	}
 
 	var pi$2 = Math.PI;
+
+	function Linear(context) {
+	  this._context = context;
+	}
+
+	Linear.prototype = {
+	  areaStart: function() {
+	    this._line = 0;
+	  },
+	  areaEnd: function() {
+	    this._line = NaN;
+	  },
+	  lineStart: function() {
+	    this._point = 0;
+	  },
+	  lineEnd: function() {
+	    if (this._line || (this._line !== 0 && this._point === 1)) this._context.closePath();
+	    this._line = 1 - this._line;
+	  },
+	  point: function(x, y) {
+	    x = +x, y = +y;
+	    switch (this._point) {
+	      case 0: this._point = 1; this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y); break;
+	      case 1: this._point = 2; // proceed
+	      default: this._context.lineTo(x, y); break;
+	    }
+	  }
+	};
+
+	function curveLinear(context) {
+	  return new Linear(context);
+	}
+
+	function x(p) {
+	  return p[0];
+	}
+
+	function y(p) {
+	  return p[1];
+	}
+
+	function line() {
+	  var x$1 = x,
+	      y$1 = y,
+	      defined = constant$2(true),
+	      context = null,
+	      curve = curveLinear,
+	      output = null;
+
+	  function line(data) {
+	    var i,
+	        n = data.length,
+	        d,
+	        defined0 = false,
+	        buffer;
+
+	    if (context == null) output = curve(buffer = path$1());
+
+	    for (i = 0; i <= n; ++i) {
+	      if (!(i < n && defined(d = data[i], i, data)) === defined0) {
+	        if (defined0 = !defined0) output.lineStart();
+	        else output.lineEnd();
+	      }
+	      if (defined0) output.point(+x$1(d, i, data), +y$1(d, i, data));
+	    }
+
+	    if (buffer) return output = null, buffer + "" || null;
+	  }
+
+	  line.x = function(_) {
+	    return arguments.length ? (x$1 = typeof _ === "function" ? _ : constant$2(+_), line) : x$1;
+	  };
+
+	  line.y = function(_) {
+	    return arguments.length ? (y$1 = typeof _ === "function" ? _ : constant$2(+_), line) : y$1;
+	  };
+
+	  line.defined = function(_) {
+	    return arguments.length ? (defined = typeof _ === "function" ? _ : constant$2(!!_), line) : defined;
+	  };
+
+	  line.curve = function(_) {
+	    return arguments.length ? (curve = _, context != null && (output = curve(context)), line) : curve;
+	  };
+
+	  line.context = function(_) {
+	    return arguments.length ? (_ == null ? context = output = null : output = curve(context = _), line) : context;
+	  };
+
+	  return line;
+	}
 
 	function sign(x) {
 	  return x < 0 ? -1 : 1;
@@ -8093,11 +8470,128 @@ var app = (function () {
 
 	/* src/components/Marks/Rectangle.svelte generated by Svelte v3.2.2 */
 
+	const file$3 = "src/components/Marks/Rectangle.svelte";
+
+	function create_fragment$3(ctx) {
+		var path_1;
+
+		return {
+			c: function create() {
+				path_1 = svg_element("path");
+				attr(path_1, "d", ctx.path);
+				add_location(path_1, file$3, 23, 0, 353);
+			},
+
+			l: function claim(nodes) {
+				throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, path_1, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.path) {
+					attr(path_1, "d", ctx.path);
+				}
+			},
+
+			i: noop,
+			o: noop,
+
+			d: function destroy(detaching) {
+				if (detaching) {
+					detach(path_1);
+				}
+			}
+		};
+	}
+
+	function generatePoints (x1, x2, y1, y2) {
+	  return [
+	      [x1, y1],
+	      [x1, y2],
+	      [x2, y2],
+	      [x2, y1],
+	      [x1, y1]
+	    ]
+	}
+
+	function instance$3($$self, $$props, $$invalidate) {
+		let { x1, x2, y1, y2 } = $$props;
+
+		$$self.$set = $$props => {
+			if ('x1' in $$props) $$invalidate('x1', x1 = $$props.x1);
+			if ('x2' in $$props) $$invalidate('x2', x2 = $$props.x2);
+			if ('y1' in $$props) $$invalidate('y1', y1 = $$props.y1);
+			if ('y2' in $$props) $$invalidate('y2', y2 = $$props.y2);
+		};
+
+		let points, path;
+
+		$$self.$$.update = ($$dirty = { x1: 1, x2: 1, y1: 1, y2: 1, points: 1 }) => {
+			if ($$dirty.x1 || $$dirty.x2 || $$dirty.y1 || $$dirty.y2) { $$invalidate('points', points = generatePoints(x1, x2, y1, y2)); }
+			if ($$dirty.points) { $$invalidate('path', path = line()(points)); }
+		};
+
+		return { x1, x2, y1, y2, path };
+	}
+
+	class Rectangle extends SvelteComponentDev {
+		constructor(options) {
+			super(options);
+			init(this, options, instance$3, create_fragment$3, safe_not_equal, ["x1", "x2", "y1", "y2"]);
+
+			const { ctx } = this.$$;
+			const props = options.props || {};
+			if (ctx.x1 === undefined && !('x1' in props)) {
+				console.warn("<Rectangle> was created without expected prop 'x1'");
+			}
+			if (ctx.x2 === undefined && !('x2' in props)) {
+				console.warn("<Rectangle> was created without expected prop 'x2'");
+			}
+			if (ctx.y1 === undefined && !('y1' in props)) {
+				console.warn("<Rectangle> was created without expected prop 'y1'");
+			}
+			if (ctx.y2 === undefined && !('y2' in props)) {
+				console.warn("<Rectangle> was created without expected prop 'y2'");
+			}
+		}
+
+		get x1() {
+			throw new Error("<Rectangle>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		set x1(value) {
+			throw new Error("<Rectangle>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		get x2() {
+			throw new Error("<Rectangle>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		set x2(value) {
+			throw new Error("<Rectangle>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		get y1() {
+			throw new Error("<Rectangle>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		set y1(value) {
+			throw new Error("<Rectangle>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		get y2() {
+			throw new Error("<Rectangle>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		set y2(value) {
+			throw new Error("<Rectangle>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+	}
+
 	/* src/examples/BarChart.svelte generated by Svelte v3.2.2 */
-
-	/* src/examples/Scatterplot.svelte generated by Svelte v3.2.2 */
-
-	const file$3 = "src/examples/Scatterplot.svelte";
 
 	function get_each_context(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -8105,8 +8599,297 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (45:3) {#each filteredData.rows() as row (row.$index)}
-	function create_each_block(key_1, ctx) {
+	// (34:4) {#each data.rows() as row}
+	function create_each_block(ctx) {
+		var current;
+
+		var rectangle = new Rectangle({
+			props: {
+			x1: ctx.scaleX(ctx.row.fruit),
+			x2: ctx.scaleX(ctx.row.fruit) + ctx.scaleX.bandwidth(),
+			y1: ctx.scaleY(0),
+			y2: ctx.scaleY(ctx.row.meanQuantity)
+		},
+			$$inline: true
+		});
+
+		return {
+			c: function create() {
+				rectangle.$$.fragment.c();
+			},
+
+			m: function mount(target, anchor) {
+				mount_component(rectangle, target, anchor);
+				current = true;
+			},
+
+			p: function update(changed, ctx) {
+				var rectangle_changes = {};
+				if (changed.scaleX || changed.data) rectangle_changes.x1 = ctx.scaleX(ctx.row.fruit);
+				if (changed.scaleX || changed.data) rectangle_changes.x2 = ctx.scaleX(ctx.row.fruit) + ctx.scaleX.bandwidth();
+				if (changed.scaleY) rectangle_changes.y1 = ctx.scaleY(0);
+				if (changed.scaleY || changed.data) rectangle_changes.y2 = ctx.scaleY(ctx.row.meanQuantity);
+				rectangle.$set(rectangle_changes);
+			},
+
+			i: function intro(local) {
+				if (current) return;
+				rectangle.$$.fragment.i(local);
+
+				current = true;
+			},
+
+			o: function outro(local) {
+				rectangle.$$.fragment.o(local);
+				current = false;
+			},
+
+			d: function destroy(detaching) {
+				rectangle.$destroy(detaching);
+			}
+		};
+	}
+
+	// (26:2) <Section     x1={50} x2={450}     y1={50} y2={450}     scaleX={scaleFruit}    scaleY={scaleMeanQuantity}     let:scaleX let:scaleY   >
+	function create_default_slot_1(ctx) {
+		var each_1_anchor, current;
+
+		var each_value = ctx.data.rows();
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+		}
+
+		function outro_block(i, detaching, local) {
+			if (each_blocks[i]) {
+				if (detaching) {
+					on_outro(() => {
+						each_blocks[i].d(detaching);
+						each_blocks[i] = null;
+					});
+				}
+
+				each_blocks[i].o(local);
+			}
+		}
+
+		return {
+			c: function create() {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				each_1_anchor = empty();
+			},
+
+			m: function mount(target, anchor) {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(target, anchor);
+				}
+
+				insert(target, each_1_anchor, anchor);
+				current = true;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.scaleX || changed.data || changed.scaleY) {
+					each_value = ctx.data.rows();
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						const child_ctx = get_each_context(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+							each_blocks[i].i(1);
+						} else {
+							each_blocks[i] = create_each_block(child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].i(1);
+							each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+						}
+					}
+
+					group_outros();
+					for (; i < each_blocks.length; i += 1) outro_block(i, 1, 1);
+					check_outros();
+				}
+			},
+
+			i: function intro(local) {
+				if (current) return;
+				for (var i = 0; i < each_value.length; i += 1) each_blocks[i].i();
+
+				current = true;
+			},
+
+			o: function outro(local) {
+				each_blocks = each_blocks.filter(Boolean);
+				for (let i = 0; i < each_blocks.length; i += 1) outro_block(i, 0);
+
+				current = false;
+			},
+
+			d: function destroy(detaching) {
+				destroy_each(each_blocks, detaching);
+
+				if (detaching) {
+					detach(each_1_anchor);
+				}
+			}
+		};
+	}
+
+	// (24:0) <Graphic width={500} height={500}>
+	function create_default_slot(ctx) {
+		var current;
+
+		var section = new Section({
+			props: {
+			x1: 50,
+			x2: 450,
+			y1: 50,
+			y2: 450,
+			scaleX: ctx.scaleFruit,
+			scaleY: ctx.scaleMeanQuantity,
+			$$slots: {
+			default: [create_default_slot_1, ({ scaleX, scaleY }) => ({ scaleX, scaleY })]
+		},
+			$$scope: { ctx }
+		},
+			$$inline: true
+		});
+
+		return {
+			c: function create() {
+				section.$$.fragment.c();
+			},
+
+			m: function mount(target, anchor) {
+				mount_component(section, target, anchor);
+				current = true;
+			},
+
+			p: function update(changed, ctx) {
+				var section_changes = {};
+				if (changed.scaleFruit) section_changes.scaleX = ctx.scaleFruit;
+				if (changed.scaleMeanQuantity) section_changes.scaleY = ctx.scaleMeanQuantity;
+				if (changed.$$scope || changed.data) section_changes.$$scope = { changed, ctx };
+				section.$set(section_changes);
+			},
+
+			i: function intro(local) {
+				if (current) return;
+				section.$$.fragment.i(local);
+
+				current = true;
+			},
+
+			o: function outro(local) {
+				section.$$.fragment.o(local);
+				current = false;
+			},
+
+			d: function destroy(detaching) {
+				section.$destroy(detaching);
+			}
+		};
+	}
+
+	function create_fragment$4(ctx) {
+		var current;
+
+		var graphic = new Graphic({
+			props: {
+			width: 500,
+			height: 500,
+			$$slots: { default: [create_default_slot] },
+			$$scope: { ctx }
+		},
+			$$inline: true
+		});
+
+		return {
+			c: function create() {
+				graphic.$$.fragment.c();
+			},
+
+			l: function claim(nodes) {
+				throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			},
+
+			m: function mount(target, anchor) {
+				mount_component(graphic, target, anchor);
+				current = true;
+			},
+
+			p: function update(changed, ctx) {
+				var graphic_changes = {};
+				if (changed.$$scope || changed.data) graphic_changes.$$scope = { changed, ctx };
+				graphic.$set(graphic_changes);
+			},
+
+			i: function intro(local) {
+				if (current) return;
+				graphic.$$.fragment.i(local);
+
+				current = true;
+			},
+
+			o: function outro(local) {
+				graphic.$$.fragment.o(local);
+				current = false;
+			},
+
+			d: function destroy(detaching) {
+				graphic.$destroy(detaching);
+			}
+		};
+	}
+
+	function instance$4($$self, $$props, $$invalidate) {
+		
+	  
+	  let data = new DataContainer({ 
+	    quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
+	    fruit: [NaN, 'anchovies', 'banana', 'banana', 'coconut', 'coconut', 'durian', 'durian']
+	  });
+
+	  $$invalidate('data', data = data.transform()
+	    .dropNA()
+	    .filter(row => row.fruit !== 'anchovies')
+	    .groupBy('fruit')
+	    .summarise({ meanQuantity: { quantity: 'mean' } })
+	    .arrange({ meanQuantity: 'descending' })
+	    .done());
+
+	  const scaleFruit = band().domain(data.domain('fruit'));
+		let meanQuantityDomain = [0, data.domain('meanQuantity')[1]];
+	  const scaleMeanQuantity = linear$1().domain(meanQuantityDomain);
+
+		return { data, scaleFruit, scaleMeanQuantity };
+	}
+
+	class BarChart extends SvelteComponentDev {
+		constructor(options) {
+			super(options);
+			init(this, options, instance$4, create_fragment$4, safe_not_equal, []);
+		}
+	}
+
+	/* src/examples/Scatterplot.svelte generated by Svelte v3.2.2 */
+
+	const file$4 = "src/examples/Scatterplot.svelte";
+
+	function get_each_context$1(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.row = list[i];
+		return child_ctx;
+	}
+
+	// (41:3) {#each data.rows() as row (row.$index)}
+	function create_each_block$1(key_1, ctx) {
 		var first, current;
 
 		var point = new Point({
@@ -8133,8 +8916,8 @@ var app = (function () {
 
 			p: function update(changed, ctx) {
 				var point_changes = {};
-				if (changed.scaleX || changed.filteredData) point_changes.x = ctx.scaleX(ctx.row.a);
-				if (changed.scaleY || changed.filteredData) point_changes.y = ctx.scaleY(ctx.row.b);
+				if (changed.scaleX || changed.data) point_changes.x = ctx.scaleX(ctx.row.a);
+				if (changed.scaleY || changed.data) point_changes.y = ctx.scaleY(ctx.row.b);
 				point.$set(point_changes);
 			},
 
@@ -8160,18 +8943,18 @@ var app = (function () {
 		};
 	}
 
-	// (37:2) <Section    x1={50} x2={450}    y1={50} y2={450}    scaleX={scaleA}    scaleY={scaleB}    let:scaleX let:scaleY   >
-	function create_default_slot_1(ctx) {
+	// (33:2) <Section    x1={50} x2={450}    y1={50} y2={450}    scaleX={scaleA}    scaleY={scaleB}    let:scaleX let:scaleY   >
+	function create_default_slot_1$1(ctx) {
 		var each_blocks = [], each_1_lookup = new Map(), each_1_anchor, current;
 
-		var each_value = ctx.filteredData.rows();
+		var each_value = ctx.data.rows();
 
 		const get_key = ctx => ctx.row.$index;
 
 		for (var i = 0; i < each_value.length; i += 1) {
-			let child_ctx = get_each_context(ctx, each_value, i);
+			let child_ctx = get_each_context$1(ctx, each_value, i);
 			let key = get_key(child_ctx);
-			each_1_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
+			each_1_lookup.set(key, each_blocks[i] = create_each_block$1(key, child_ctx));
 		}
 
 		return {
@@ -8189,10 +8972,10 @@ var app = (function () {
 			},
 
 			p: function update(changed, ctx) {
-				const each_value = ctx.filteredData.rows();
+				const each_value = ctx.data.rows();
 
 				group_outros();
-				each_blocks = update_keyed_each(each_blocks, changed, get_key, 1, ctx, each_value, each_1_lookup, each_1_anchor.parentNode, outro_and_destroy_block, create_each_block, each_1_anchor, get_each_context);
+				each_blocks = update_keyed_each(each_blocks, changed, get_key, 1, ctx, each_value, each_1_lookup, each_1_anchor.parentNode, outro_and_destroy_block, create_each_block$1, each_1_anchor, get_each_context$1);
 				check_outros();
 			},
 
@@ -8219,8 +9002,8 @@ var app = (function () {
 		};
 	}
 
-	// (35:1) <Graphic width={500} height={500}>
-	function create_default_slot(ctx) {
+	// (31:1) <Graphic width={500} height={500}>
+	function create_default_slot$1(ctx) {
 		var current;
 
 		var section = new Section({
@@ -8232,7 +9015,7 @@ var app = (function () {
 			scaleX: ctx.scaleA,
 			scaleY: ctx.scaleB,
 			$$slots: {
-			default: [create_default_slot_1, ({ scaleX, scaleY }) => ({ scaleX, scaleY })]
+			default: [create_default_slot_1$1, ({ scaleX, scaleY }) => ({ scaleX, scaleY })]
 		},
 			$$scope: { ctx }
 		},
@@ -8253,7 +9036,7 @@ var app = (function () {
 				var section_changes = {};
 				if (changed.scaleA) section_changes.scaleX = ctx.scaleA;
 				if (changed.scaleB) section_changes.scaleY = ctx.scaleB;
-				if (changed.$$scope || changed.filteredData) section_changes.$$scope = { changed, ctx };
+				if (changed.$$scope) section_changes.$$scope = { changed, ctx };
 				section.$set(section_changes);
 			},
 
@@ -8275,14 +9058,14 @@ var app = (function () {
 		};
 	}
 
-	function create_fragment$3(ctx) {
+	function create_fragment$5(ctx) {
 		var div, current;
 
 		var graphic = new Graphic({
 			props: {
 			width: 500,
 			height: 500,
-			$$slots: { default: [create_default_slot] },
+			$$slots: { default: [create_default_slot$1] },
 			$$scope: { ctx }
 		},
 			$$inline: true
@@ -8292,7 +9075,7 @@ var app = (function () {
 			c: function create() {
 				div = element("div");
 				graphic.$$.fragment.c();
-				add_location(div, file$3, 31, 0, 761);
+				add_location(div, file$4, 27, 0, 638);
 			},
 
 			l: function claim(nodes) {
@@ -8307,7 +9090,7 @@ var app = (function () {
 
 			p: function update(changed, ctx) {
 				var graphic_changes = {};
-				if (changed.$$scope || changed.filteredData) graphic_changes.$$scope = { changed, ctx };
+				if (changed.$$scope) graphic_changes.$$scope = { changed, ctx };
 				graphic.$set(graphic_changes);
 			},
 
@@ -8345,37 +9128,29 @@ var app = (function () {
 		return data
 	}
 
-	function instance$3($$self, $$props, $$invalidate) {
+	function instance$5($$self, $$props, $$invalidate) {
 		
 
 		let { filterT = 0, N = 100 } = $$props;
 
-		const unfilteredData = new DataContainer(generateData(N, 0.25));
+		const data = new DataContainer(generateData(N, 0.25));
 
-		const scaleA = linear$1().domain(unfilteredData.domain('a'));
-		const scaleB = linear$1().domain(unfilteredData.domain('b'));
+
+		const scaleA = linear$1().domain(data.domain('a'));
+		const scaleB = linear$1().domain(data.domain('b'));
 
 		$$self.$set = $$props => {
 			if ('filterT' in $$props) $$invalidate('filterT', filterT = $$props.filterT);
 			if ('N' in $$props) $$invalidate('N', N = $$props.N);
 		};
 
-		let filteredData;
-
-		$$self.$$.update = ($$dirty = { filterT: 1 }) => {
-			if ($$dirty.filterT) { $$invalidate('filteredData', filteredData = unfilteredData
-					.transform()
-					.filter(row => row.a > filterT)
-					.done()); }
-		};
-
-		return { filterT, N, scaleA, scaleB, filteredData };
+		return { filterT, N, data, scaleA, scaleB };
 	}
 
 	class Scatterplot extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$3, create_fragment$3, safe_not_equal, ["filterT", "N"]);
+			init(this, options, instance$5, create_fragment$5, safe_not_equal, ["filterT", "N"]);
 		}
 
 		get filterT() {
@@ -8397,47 +9172,37 @@ var app = (function () {
 
 	/* src/App.svelte generated by Svelte v3.2.2 */
 
-	const file$4 = "src/App.svelte";
+	const file$5 = "src/App.svelte";
 
-	function create_fragment$4(ctx) {
-		var div1, div0, h1, t1, t2, label, t4, input, current, dispose;
+	function create_fragment$6(ctx) {
+		var div2, div0, h10, t1, t2, div1, h11, t4, current;
 
-		var scatterplot = new Scatterplot({
-			props: { filterT: ctx.filterT, N: N },
-			$$inline: true
-		});
+		var barchart = new BarChart({ $$inline: true });
+
+		var scatterplot = new Scatterplot({ $$inline: true });
 
 		return {
 			c: function create() {
-				div1 = element("div");
+				div2 = element("div");
 				div0 = element("div");
-				h1 = element("h1");
-				h1.textContent = "Filter:";
+				h10 = element("h1");
+				h10.textContent = "Bar chart";
 				t1 = space();
-				scatterplot.$$.fragment.c();
+				barchart.$$.fragment.c();
 				t2 = space();
-				label = element("label");
-				label.textContent = "Treshold";
+				div1 = element("div");
+				h11 = element("h1");
+				h11.textContent = "Scatterplot";
 				t4 = space();
-				input = element("input");
-				add_location(h1, file$4, 32, 4, 545);
-				label.htmlFor = "filterTreshold";
-				add_location(label, file$4, 35, 4, 601);
-				input.id = "filterTreshold";
-				attr(input, "type", "range");
-				input.min = "0";
-				input.max = ctx.inputMax;
-				input.step = "1";
-				add_location(input, file$4, 38, 4, 662);
+				scatterplot.$$.fragment.c();
+				add_location(h10, file$5, 22, 4, 394);
 				div0.className = "graphic-holder svelte-ryv7ci";
-				add_location(div0, file$4, 31, 2, 512);
-				div1.className = "container svelte-ryv7ci";
-				add_location(div1, file$4, 24, 0, 394);
-
-				dispose = [
-					listen(input, "change", ctx.input_change_input_handler),
-					listen(input, "input", ctx.input_change_input_handler)
-				];
+				add_location(div0, file$5, 21, 2, 361);
+				add_location(h11, file$5, 27, 4, 475);
+				div1.className = "graphic-holder svelte-ryv7ci";
+				add_location(div1, file$5, 26, 2, 442);
+				div2.className = "container svelte-ryv7ci";
+				add_location(div2, file$5, 19, 0, 334);
 			},
 
 			l: function claim(nodes) {
@@ -8445,87 +9210,52 @@ var app = (function () {
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div1, anchor);
-				append(div1, div0);
-				append(div0, h1);
+				insert(target, div2, anchor);
+				append(div2, div0);
+				append(div0, h10);
 				append(div0, t1);
-				mount_component(scatterplot, div0, null);
-				append(div0, t2);
-				append(div0, label);
-				append(div0, t4);
-				append(div0, input);
-
-				input.value = ctx.filterT;
-
+				mount_component(barchart, div0, null);
+				append(div2, t2);
+				append(div2, div1);
+				append(div1, h11);
+				append(div1, t4);
+				mount_component(scatterplot, div1, null);
 				current = true;
 			},
 
-			p: function update(changed, ctx) {
-				var scatterplot_changes = {};
-				if (changed.filterT) scatterplot_changes.filterT = ctx.filterT;
-				if (changed.N) scatterplot_changes.N = N;
-				scatterplot.$set(scatterplot_changes);
-
-				if (changed.filterT) input.value = ctx.filterT;
-
-				if (!current || changed.inputMax) {
-					input.max = ctx.inputMax;
-				}
-			},
+			p: noop,
 
 			i: function intro(local) {
 				if (current) return;
+				barchart.$$.fragment.i(local);
+
 				scatterplot.$$.fragment.i(local);
 
 				current = true;
 			},
 
 			o: function outro(local) {
+				barchart.$$.fragment.o(local);
 				scatterplot.$$.fragment.o(local);
 				current = false;
 			},
 
 			d: function destroy(detaching) {
 				if (detaching) {
-					detach(div1);
+					detach(div2);
 				}
 
+				barchart.$destroy();
+
 				scatterplot.$destroy();
-
-				run_all(dispose);
 			}
-		};
-	}
-
-	let N = 10000;
-
-	function instance$4($$self, $$props, $$invalidate) {
-		
-
-	  let filterT = 0;
-
-		function input_change_input_handler() {
-			filterT = to_number(this.value);
-			$$invalidate('filterT', filterT);
-		}
-
-		let inputMax;
-
-		$$self.$$.update = ($$dirty = { N: 1 }) => {
-			if ($$dirty.N) { $$invalidate('inputMax', inputMax = N * 1.5); }
-		};
-
-		return {
-			filterT,
-			inputMax,
-			input_change_input_handler
 		};
 	}
 
 	class App extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$4, create_fragment$4, safe_not_equal, []);
+			init(this, options, null, create_fragment$6, safe_not_equal, []);
 		}
 	}
 

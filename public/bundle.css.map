@@ -5,8 +5,8 @@
     "../src/App.svelte"
   ],
   "sourcesContent": [
-    "<script>\n  import BarChart from './examples/BarChart.svelte'\n  import Scatterplot from './examples/Scatterplot.svelte'\n\n  let filterT = 0\n  let N = 10000\n\n  $: inputMax = N * 1.5\n</script>\n\n<style>\n  .container {\n    display: flex;\n    flex-wrap: wrap;\n    align-items: flex-start;\n    flex-direction: row;\n    max-height: 100vh;\n  }\n\n  .graphic-holder {\n    text-align: center;\n  }\n</style> \n\n<div class=\"container\">\n\n  <!-- <div class=\"graphic-holder\">\n    <h1>Bar chart:</h1>\n    <BarChart />\n  </div> -->\n\n  <div class=\"graphic-holder\">\n    <h1>Filter:</h1>\n    <Scatterplot {filterT} {N} />\n\n    <label for=\"filterTreshold\">\n      Treshold\n    </label>\n    <input id=\"filterTreshold\" type=\"range\" min=\"0\" max={inputMax} step=\"1\" bind:value={filterT} />\n  </div>  \n\n</div>"
+    "<script>\n  import BarChart from './examples/BarChart.svelte'\n  import Scatterplot from './examples/Scatterplot.svelte'\n</script>\n\n<style>\n  .container {\n    display: flex;\n    flex-wrap: wrap;\n    align-items: flex-start;\n    flex-direction: row;\n    max-height: 100vh;\n  }\n\n  .graphic-holder {\n    text-align: center;\n  }\n</style> \n\n<div class=\"container\">\n\n  <div class=\"graphic-holder\">\n    <h1>Bar chart</h1>\n    <BarChart />\n  </div>\n\n  <div class=\"graphic-holder\">\n    <h1>Scatterplot</h1>\n    <Scatterplot />\n  </div>  \n\n</div>"
   ],
   "names": [],
-  "mappings": "AAWE,UAAU,cAAC,CAAC,AACV,OAAO,CAAE,IAAI,CACb,SAAS,CAAE,IAAI,CACf,WAAW,CAAE,UAAU,CACvB,cAAc,CAAE,GAAG,CACnB,UAAU,CAAE,KAAK,AACnB,CAAC,AAED,eAAe,cAAC,CAAC,AACf,UAAU,CAAE,MAAM,AACpB,CAAC"
+  "mappings": "AAME,UAAU,cAAC,CAAC,AACV,OAAO,CAAE,IAAI,CACb,SAAS,CAAE,IAAI,CACf,WAAW,CAAE,UAAU,CACvB,cAAc,CAAE,GAAG,CACnB,UAAU,CAAE,KAAK,AACnB,CAAC,AAED,eAAe,cAAC,CAAC,AACf,UAAU,CAAE,MAAM,AACpB,CAAC"
 }

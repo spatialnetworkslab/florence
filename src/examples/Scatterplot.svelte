@@ -6,7 +6,7 @@
 	export let filterT = 0
 	export let N = 100
 
-	const unfilteredData = new DataContainer(generateData(N, 0.25))
+	const data = new DataContainer(generateData(N, 0.25))
 
 	function generateData (N, error) {
 		const getError = () => -error + (Math.random() * (2 * error)) * N
@@ -20,13 +20,9 @@
 		return data
 	}
 
-	$: filteredData = unfilteredData
-		.transform()
-		.filter(row => row.a > filterT)
-		.done()
 
-	const scaleA = scaleLinear().domain(unfilteredData.domain('a'))
-	const scaleB = scaleLinear().domain(unfilteredData.domain('b'))
+	const scaleA = scaleLinear().domain(data.domain('a'))
+	const scaleB = scaleLinear().domain(data.domain('b'))
 </script>
 
 <div>
@@ -42,7 +38,7 @@
 			let:scaleX let:scaleY
 		>
 
-			{#each filteredData.rows() as row (row.$index)}
+			{#each data.rows() as row (row.$index)}
 
 				<Point x={scaleX(row.a)} y={scaleY(row.b)} />
 

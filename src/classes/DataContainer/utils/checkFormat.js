@@ -23,8 +23,8 @@ export function checkFormatColumnDataframe (data) {
   checkFormat(data, checkRegularColumnName)
 }
 
-export function checkFormatTransformableDataContainer (data) {
-  checkFormat(data._data, checkTransformedDataColumnName)
+export function checkFormatInternal (data) {
+  checkFormat(data, checkInternalDataColumnName)
 }
 
 function checkFormat (data, columnNameChecker) {
@@ -44,13 +44,13 @@ function checkFormat (data, columnNameChecker) {
 
 export function checkRegularColumnName (columnName) {
   if (columnName.match(forbiddenChars)) {
-    throw new Error(`Invalid column name '${columnName}': '.', '#', '/' and '$' are not allowed'`)
+    throw new Error(`Invalid column name '${columnName}': '$' and '/' are not allowed'`)
   }
 }
 
-const forbiddenChars = /[.#/$]/
+const forbiddenChars = /[/$]/
 
-export function checkTransformedDataColumnName (columnName) {
+export function checkInternalDataColumnName (columnName) {
   if (!['$index', '$geometry', '$grouped'].includes(columnName)) {
     checkRegularColumnName(columnName)
   }

@@ -1,6 +1,6 @@
 import {
   isColumnOriented, isRowOriented, isGeoJSON,
-  checkFormatColumnDataframe, checkFormatTransformableDataContainer
+  checkFormatColumnDataframe, checkFormatInternal
 } from './utils/checkFormat.js'
 
 import getDataLength from './utils/getDataLength.js'
@@ -8,7 +8,10 @@ import convertRowToColumnDataframe from './utils/convertRowToColumnDataframe.js'
 import calculateDomainsAndGetTypes from './utils/calculateDomainsAndGetTypes.js'
 import parseGeoJSON from './utils/parseGeoJSON.js'
 
+import id from '../../utils/id.js'
+
 import TransformableDataContainer from './TransformableDataContainer.js'
+import { Group } from './transformations/groupBy.js'
 
 export default class DataContainer {
   constructor (data, options) {
@@ -21,7 +24,6 @@ export default class DataContainer {
     this._types = {}
 
     this._length = undefined
-    this._maxIndex = undefined
 
     if (options) {
       this._applyOptions(options)
@@ -44,6 +46,11 @@ export default class DataContainer {
 
     if (data instanceof TransformableDataContainer) {
       this._setTransformableDataContainer(data)
+      return
+    }
+
+    if (data instanceof Group) {
+      this._setGroup(data)
       return
     }
 
@@ -122,8 +129,15 @@ export default class DataContainer {
   }
 
   _setTransformableDataContainer (transformableDataContainer) {
-    checkFormatTransformableDataContainer(transformableDataContainer)
-    this._storeData(transformableDataContainer._data)
+    let data = transformableDataContainer._data
+    checkFormatInternal(data)
+    this._storeData(data)
+  }
+
+  _setGroup (group) {
+    let data = group.data
+    checkFormatInternal(data)
+    this._storeData(data)
   }
 
   _storeData (data) {
@@ -141,10 +155,8 @@ export default class DataContainer {
     if (!this._data.hasOwnProperty('$index')) {
       let length = this._length
 
-      let indexColumn = new Array(length).fill(0).map((_, i) => i)
+      let indexColumn = new Array(length).fill(0).map(_ => id())
       this._data.$index = indexColumn
-
-      this._maxIndex = length - 1
     }
   }
 
