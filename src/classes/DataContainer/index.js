@@ -1,3 +1,5 @@
+import produce from 'immer'
+
 import {
   isColumnOriented, isRowOriented, isGeoJSON,
   checkFormatColumnDataframe, checkFormatInternal
@@ -153,8 +155,10 @@ export default class DataContainer {
     if (!this._data.hasOwnProperty('$index')) {
       let length = this._length
 
-      let indexColumn = new Uint32Array(length).fill(0).map(_ => id())
-      this._data.$index = indexColumn
+      let indexColumn = new Array(length).fill(0).map(_ => id())
+      this._data = produce(this._data, draft => {
+        draft.$index = indexColumn
+      })
     }
   }
 

@@ -15,6 +15,4 @@ export default function (data, renameInstructions) {
       console.warn(`Rename: column '${oldName}' not found`)
     }
   }
-
-  return data
 }

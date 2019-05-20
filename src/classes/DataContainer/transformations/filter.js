@@ -1,22 +1,18 @@
 import getDataLength from '../utils/getDataLength.js'
 
 export default function (data, filterFunction) {
-  let newData = {}
   let length = getDataLength(data)
 
-  for (let colName in data) {
-    newData[colName] = []
-  }
+  let i = length
 
-  for (let i = 0; i < length; i++) {
+  while (i--) {
     let row = {}
     for (let colName in data) { row[colName] = data[colName][i] }
-    if (filterFunction(row, i)) {
+
+    if (!filterFunction(row, i)) {
       for (let colName in data) {
-        newData[colName].push(row[colName])
+        data[colName].splice(i, 1)
       }
     }
   }
-
-  return newData
 }

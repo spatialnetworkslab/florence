@@ -1,6 +1,5 @@
 import aggregations from './aggregations'
 import checkKeyValuePair from '../utils/checkKeyValuePair.js'
-import cloneData from '../utils/cloneData.js'
 import { checkRegularColumnName } from '../utils/checkFormat.js'
 
 export default function (data, summariseInstructions) {
@@ -13,10 +12,10 @@ export default function (data, summariseInstructions) {
   if (data.hasOwnProperty('$grouped')) {
     checkSummariseInstructions(summariseInstructions, data)
 
-    let dataClone = cloneData(data)
-    delete dataClone.$grouped
-    for (let col in dataClone) {
-      newData[col] = dataClone[col]
+    for (let columnName in data) {
+      if (columnName !== '$grouped') {
+        newData[columnName] = data[columnName]
+      }
     }
 
     for (let group of data.$grouped) {

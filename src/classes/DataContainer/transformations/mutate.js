@@ -26,8 +26,6 @@ export function mutate (data, mutateInstructions) {
       data[key][i] = mutateFunction(row, i, prevRow, nextRow)
     }
   }
-
-  return data
 }
 
 export function transmute (data, mutateObj) {

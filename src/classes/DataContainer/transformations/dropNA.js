@@ -4,7 +4,7 @@ import { isInvalid } from '../../../utils/equals.js'
 export default function (data, dropInstructions) {
   let filterFunc
 
-  if (!dropInstructions) {
+  if (dropInstructions === undefined) {
     // If the instructions are undefined, we will check all columns for invalid values
     filterFunc = row => {
       let keep = true
@@ -38,10 +38,10 @@ export default function (data, dropInstructions) {
       return keep
     }
   } else {
-    throw new Error('dropNA requires a null value, a string or an array of strings')
+    throw new Error('dropNA can only be passed undefined, a String or an Array of Strings')
   }
 
-  return filter(data, filterFunc)
+  filter(data, filterFunc)
 }
 
 function checkIfColumnsExist (data, columns) {
