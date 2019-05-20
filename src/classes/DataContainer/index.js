@@ -83,12 +83,10 @@ export default class DataContainer {
   }
 
   hasColumn (columnName) {
-    this._calculateDomainsAndTypesIfNecessary()
     return this._data.hasOwnProperty(columnName)
   }
 
   column (columnName) {
-    this._calculateDomainsAndTypesIfNecessary()
     return this._data[columnName]
   }
 
@@ -155,7 +153,7 @@ export default class DataContainer {
     if (!this._data.hasOwnProperty('$index')) {
       let length = this._length
 
-      let indexColumn = new Array(length).fill(0).map(_ => id())
+      let indexColumn = new Uint32Array(length).fill(0).map(_ => id())
       this._data.$index = indexColumn
     }
   }

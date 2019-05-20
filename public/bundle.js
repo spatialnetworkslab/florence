@@ -6155,9 +6155,7 @@ var app = (function () {
 	    let instruction = summariseInstructions[newColName];
 	    let name = Object.keys(instruction)[0];
 
-	    if (name === 'grouped') {
-	      throw new Error(`Invalid column name 'grouped'`)
-	    }
+	    checkRegularColumnName(name);
 
 	    if (data.hasOwnProperty(name)) {
 	      throw new Error(`Cannot summarise the column '${name}': used for grouping`)
@@ -6177,9 +6175,10 @@ var app = (function () {
 
 	    for (let group of data.$grouped) {
 	      let summarizedData = initNewData(mutariseInstructions);
-	      summarizedData = summariseGroup(group, mutariseInstructions, summarizedData);
+	      let dataInGroup = group.data();
+	      summarizedData = summariseGroup(dataInGroup, mutariseInstructions, summarizedData);
 
-	      let length = getDataLength(group);
+	      let length = getDataLength(dataInGroup);
 	      newCols = addGroupSummaries(newCols, summarizedData, length);
 	    }
 
@@ -6206,11 +6205,11 @@ var app = (function () {
 	}
 
 	function ungroup (data) {
-	  let newData = initNewData(data.$grouped[0]);
+	  let newData = initNewData(data.$grouped[0].data());
 
 	  for (let group of data.$grouped) {
 	    for (let col in newData) {
-	      newData[col].push(...group[col]);
+	      newData[col].push(...group.column(col));
 	    }
 	  }
 
@@ -7641,12 +7640,10 @@ var app = (function () {
 	  }
 
 	  hasColumn (columnName) {
-	    this._calculateDomainsAndTypesIfNecessary();
 	    return this._data.hasOwnProperty(columnName)
 	  }
 
 	  column (columnName) {
-	    this._calculateDomainsAndTypesIfNecessary();
 	    return this._data[columnName]
 	  }
 
@@ -7713,7 +7710,7 @@ var app = (function () {
 	    if (!this._data.hasOwnProperty('$index')) {
 	      let length = this._length;
 
-	      let indexColumn = new Array(length).fill(0).map(_ => id());
+	      let indexColumn = new Uint32Array(length).fill(0).map(_ => id());
 	      this._data.$index = indexColumn;
 	    }
 	  }
@@ -8599,7 +8596,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (34:4) {#each data.rows() as row}
+	// (49:4) {#each data.rows() as row}
 	function create_each_block(ctx) {
 		var current;
 
@@ -8650,7 +8647,7 @@ var app = (function () {
 		};
 	}
 
-	// (26:2) <Section     x1={50} x2={450}     y1={50} y2={450}     scaleX={scaleFruit}    scaleY={scaleMeanQuantity}     let:scaleX let:scaleY   >
+	// (41:2) <Section     x1={50} x2={450}     y1={50} y2={450}     scaleX={scaleFruit}    scaleY={scaleMeanQuantity}     let:scaleX let:scaleY   >
 	function create_default_slot_1(ctx) {
 		var each_1_anchor, current;
 
@@ -8741,7 +8738,7 @@ var app = (function () {
 		};
 	}
 
-	// (24:0) <Graphic width={500} height={500}>
+	// (39:0) <Graphic width={500} height={500}>
 	function create_default_slot(ctx) {
 		var current;
 
@@ -8867,6 +8864,21 @@ var app = (function () {
 	  const scaleFruit = band().domain(data.domain('fruit'));
 		let meanQuantityDomain = [0, data.domain('meanQuantity')[1]];
 	  const scaleMeanQuantity = linear$1().domain(meanQuantityDomain);
+
+	  let mutariseTest = new DataContainer({ 
+	    quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
+	    fruit: [NaN, 'anchovies', 'banana', 'banana', 'coconut', 'coconut', 'durian', 'durian']
+	  });
+
+	  $$invalidate('mutariseTest', mutariseTest = mutariseTest.transform()
+	    .dropNA()
+	    .filter(row => row.fruit !== 'anchovies')
+	    .groupBy('fruit')
+	    .mutarise({ meanQuantity: { quantity: 'mean' } })
+	    .arrange({ meanQuantity: 'descending' })
+	    .done());
+
+	  console.log(mutariseTest);
 
 		return { data, scaleFruit, scaleMeanQuantity };
 	}

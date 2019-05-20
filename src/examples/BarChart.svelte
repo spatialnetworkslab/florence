@@ -19,6 +19,21 @@
   const scaleFruit = scaleBand().domain(data.domain('fruit'))
 	let meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
   const scaleMeanQuantity = scaleLinear().domain(meanQuantityDomain)
+
+  let mutariseTest = new DataContainer({ 
+    quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
+    fruit: [NaN, 'anchovies', 'banana', 'banana', 'coconut', 'coconut', 'durian', 'durian']
+  })
+
+  mutariseTest = mutariseTest.transform()
+    .dropNA()
+    .filter(row => row.fruit !== 'anchovies')
+    .groupBy('fruit')
+    .mutarise({ meanQuantity: { quantity: 'mean' } })
+    .arrange({ meanQuantity: 'descending' })
+    .done()
+
+  console.log(mutariseTest)
 </script>
 
 <Graphic width={500} height={500}>
