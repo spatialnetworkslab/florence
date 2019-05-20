@@ -1,6 +1,7 @@
 import aggregations from './aggregations'
 import checkKeyValuePair from '../utils/checkKeyValuePair.js'
 import cloneData from '../utils/cloneData.js'
+import { checkRegularColumnName } from '../utils/checkFormat.js'
 
 export default function (data, summariseInstructions) {
   if (summariseInstructions.constructor !== Object) {
@@ -75,9 +76,7 @@ export function checkSummariseInstructions (summariseInstructions, data) {
     let instruction = summariseInstructions[newColName]
     let name = Object.keys(instruction)[0]
 
-    if (name === 'grouped') {
-      throw new Error(`Invalid column name 'grouped'`)
-    }
+    checkRegularColumnName(name)
 
     if (data.hasOwnProperty(name)) {
       throw new Error(`Cannot summarise the column '${name}': used for grouping`)

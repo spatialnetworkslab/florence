@@ -13,9 +13,10 @@ export default function (data, mutariseInstructions) {
 
     for (let group of data.$grouped) {
       let summarizedData = initNewData(mutariseInstructions)
-      summarizedData = summariseGroup(group, mutariseInstructions, summarizedData)
+      let data = group.data()
+      summarizedData = summariseGroup(data, mutariseInstructions, summarizedData)
 
-      let length = getDataLength(group)
+      let length = getDataLength(data)
       newCols = addGroupSummaries(newCols, summarizedData, length)
     }
 
