@@ -3,7 +3,6 @@
 	import DataContainer from '../classes/DataContainer'
 	import { Graphic, Section, Point } from '../components'
 
-	export let filterT = 0
 	export let N = 100
 
 	const data = new DataContainer(generateData(N, 0.25))

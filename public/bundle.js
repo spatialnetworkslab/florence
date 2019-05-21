@@ -4440,8 +4440,9 @@ var app = (function () {
 	  let newData = initNewData(data.$grouped[0].data());
 
 	  for (let group of data.$grouped) {
+	    let groupData = group.data();
 	    for (let col in newData) {
-	      newData[col].push(...group.column(col));
+	      newData[col].push(...groupData[col]);
 	    }
 	  }
 
@@ -5877,7 +5878,7 @@ var app = (function () {
 	  }
 	};
 
-	function methodExposeMixin (targetClass) {
+	function transformMethodExposeMixin (targetClass) {
 	  Object.assign(targetClass.prototype, methods);
 	}
 
@@ -8643,6 +8644,80 @@ var app = (function () {
 	  return data
 	}
 
+	const columnNotFoundError = (columnName, originalPath) => {
+	  return new Error(`Could not find column '${columnName}' while traversing column path '${originalPath}'`)
+	};
+	const invalidColumnPathError = columnPath => new Error(`Invalid column path: '${columnPath}`);
+
+	function columnPathIsValid (columnPath, dataContainer) {
+	  try {
+	    checkColumnPath(columnPath, dataContainer);
+	    return true
+	  } catch (e) {
+	    return false
+	  }
+	}
+
+	function checkColumnPath (columnPath, dataContainer) {
+	  let columnPathArray = columnPath.split('/');
+	  parseColumnPath(columnPathArray, dataContainer, columnPath);
+	}
+
+	function parseColumnPath (columnPathArray, dataContainer, originalPath) {
+	  let data = dataContainer.data();
+	  let ownColumnName = columnPathArray[0];
+	  ensureDataHasColumn(data, ownColumnName, originalPath);
+
+	  if (columnPathArray.length > 1) {
+	    ensureColumnIsGrouped(ownColumnName, originalPath);
+
+	    let nestedColumnPathArray = removeFirstElement(columnPathArray);
+	    let groupedColumn = data.$grouped;
+
+	    parseColumnPath(nestedColumnPathArray, groupedColumn[0], originalPath);
+	  }
+	}
+
+	function ensureDataHasColumn (data, columnName, originalPath) {
+	  if (!data.hasOwnProperty(columnName)) throw columnNotFoundError(columnName, originalPath)
+	}
+
+	function ensureColumnIsGrouped (columnName, originalPath) {
+	  if (columnName !== '$grouped') throw invalidColumnPathError(originalPath)
+	}
+
+	function removeFirstElement (array) {
+	  return array.splice(1, array.length - 1)
+	}
+
+	function getColumn (columnPath, dataContainer) {
+	  let columnPathArray = columnPath.split('/');
+	  return traverseColumnPath(columnPathArray, dataContainer)
+	}
+
+	function traverseColumnPath (columnPathArray, dataContainer) {
+	  let newColumn = [];
+	  let ownColumnName = columnPathArray[0];
+	  let data = dataContainer.data();
+
+	  if (columnPathArray.length === 1) {
+	    newColumn = data[ownColumnName];
+	  }
+
+	  if (columnPathArray.length > 1) {
+	    let groupedColumn = data[ownColumnName];
+	    let nestedColumnPathArray = removeFirstElement(columnPathArray);
+
+	    groupedColumn.forEach(groupedContainer => {
+	      newColumn.push(
+	        traverseColumnPath(nestedColumnPathArray, groupedContainer)
+	      );
+	    });
+	  }
+
+	  return newColumn
+	}
+
 	let currentId = -1;
 
 	function id () {
@@ -8699,32 +8774,26 @@ var app = (function () {
 	  }
 
 	  row (index) {
-	    let row = {};
-
-	    for (let columnName in this._data) {
-	      let value = this._data[columnName][index];
-	      row[columnName] = value;
-	    }
-
-	    return row
+	    return this._row(index)
 	  }
 
 	  rows () {
 	    let rows = [];
 
 	    for (let i = 0; i < this._length; i++) {
-	      rows.push(this.row(i));
+	      rows.push(this._row(i));
 	    }
 
 	    return rows
 	  }
 
-	  hasColumn (columnName) {
-	    return this._data.hasOwnProperty(columnName)
+	  hasColumn (columnPath) {
+	    return columnPathIsValid(columnPath, this)
 	  }
 
-	  column (columnName) {
-	    return this._data[columnName]
+	  column (columnPath) {
+	    checkColumnPath(columnPath, this);
+	    return getColumn(columnPath, this)
 	  }
 
 	  domain (columnName) {
@@ -8805,9 +8874,20 @@ var app = (function () {
 	      this._domainsAndTypesCalculated = true;
 	    }
 	  }
+
+	  _row (index) {
+	    let row = {};
+
+	    for (let columnName in this._data) {
+	      let value = this._data[columnName][index];
+	      row[columnName] = value;
+	    }
+
+	    return row
+	  }
 	}
 
-	methodExposeMixin(DataContainer);
+	transformMethodExposeMixin(DataContainer);
 
 	const invalidDataError = new Error('Data passed to DataContainer is of unknown format');
 
@@ -9676,7 +9756,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (34:4) {#each data.rows() as row}
+	// (48:4) {#each data.rows() as row}
 	function create_each_block(ctx) {
 		var current;
 
@@ -9727,7 +9807,7 @@ var app = (function () {
 		};
 	}
 
-	// (26:2) <Section     x1={50} x2={450}     y1={50} y2={450}     scaleX={scaleFruit}    scaleY={scaleMeanQuantity}     let:scaleX let:scaleY   >
+	// (40:2) <Section     x1={50} x2={450}     y1={50} y2={450}     scaleX={scaleFruit}    scaleY={scaleMeanQuantity}     let:scaleX let:scaleY   >
 	function create_default_slot_1(ctx) {
 		var each_1_anchor, current;
 
@@ -9818,7 +9898,7 @@ var app = (function () {
 		};
 	}
 
-	// (24:0) <Graphic width={500} height={500}>
+	// (38:0) <Graphic width={500} height={500}>
 	function create_default_slot(ctx) {
 		var current;
 
@@ -9945,6 +10025,20 @@ var app = (function () {
 		let meanQuantityDomain = [0, data.domain('meanQuantity')[1]];
 	  const scaleMeanQuantity = linear$1().domain(meanQuantityDomain);
 
+	   let testData = new DataContainer({ 
+	    quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
+	    fruit: [NaN, 'anchovies', 'banana', 'banana', 'coconut', 'coconut', 'durian', 'durian']
+	  });
+
+	  $$invalidate('testData', testData = testData
+	    .dropNA()
+	    .filter(row => row.fruit !== 'anchovies')
+	    .groupBy('fruit')
+	    .done());
+
+	  console.log(testData.data());
+	  console.log(testData.column('$grouped/quantity'));
+
 		return { data, scaleFruit, scaleMeanQuantity };
 	}
 
@@ -9965,7 +10059,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (41:3) {#each data.rows() as row (row.$index)}
+	// (40:3) {#each data.rows() as row (row.$index)}
 	function create_each_block$1(key_1, ctx) {
 		var first, current;
 
@@ -10020,7 +10114,7 @@ var app = (function () {
 		};
 	}
 
-	// (33:2) <Section    x1={50} x2={450}    y1={50} y2={450}    scaleX={scaleA}    scaleY={scaleB}    let:scaleX let:scaleY   >
+	// (32:2) <Section    x1={50} x2={450}    y1={50} y2={450}    scaleX={scaleA}    scaleY={scaleB}    let:scaleX let:scaleY   >
 	function create_default_slot_1$1(ctx) {
 		var each_blocks = [], each_1_lookup = new Map(), each_1_anchor, current;
 
@@ -10079,7 +10173,7 @@ var app = (function () {
 		};
 	}
 
-	// (31:1) <Graphic width={500} height={500}>
+	// (30:1) <Graphic width={500} height={500}>
 	function create_default_slot$1(ctx) {
 		var current;
 
@@ -10152,7 +10246,7 @@ var app = (function () {
 			c: function create() {
 				div = element("div");
 				graphic.$$.fragment.c();
-				add_location(div, file$4, 27, 0, 638);
+				add_location(div, file$4, 26, 0, 614);
 			},
 
 			l: function claim(nodes) {
@@ -10208,7 +10302,7 @@ var app = (function () {
 	function instance$5($$self, $$props, $$invalidate) {
 		
 
-		let { filterT = 0, N = 100 } = $$props;
+		let { N = 100 } = $$props;
 
 		const data = new DataContainer(generateData(N, 0.25));
 
@@ -10217,25 +10311,16 @@ var app = (function () {
 		const scaleB = linear$1().domain(data.domain('b'));
 
 		$$self.$set = $$props => {
-			if ('filterT' in $$props) $$invalidate('filterT', filterT = $$props.filterT);
 			if ('N' in $$props) $$invalidate('N', N = $$props.N);
 		};
 
-		return { filterT, N, data, scaleA, scaleB };
+		return { N, data, scaleA, scaleB };
 	}
 
 	class Scatterplot extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$5, create_fragment$5, safe_not_equal, ["filterT", "N"]);
-		}
-
-		get filterT() {
-			throw new Error("<Scatterplot>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-		}
-
-		set filterT(value) {
-			throw new Error("<Scatterplot>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+			init(this, options, instance$5, create_fragment$5, safe_not_equal, ["N"]);
 		}
 
 		get N() {

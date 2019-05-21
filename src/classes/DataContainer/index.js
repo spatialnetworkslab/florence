@@ -11,6 +11,7 @@ import getDataLength from './utils/getDataLength.js'
 import convertRowToColumnDataframe from './utils/convertRowToColumnDataframe.js'
 import calculateDomainsAndGetTypes from './utils/calculateDomainsAndGetTypes.js'
 import parseGeoJSON from './utils/parseGeoJSON.js'
+import { checkColumnPath, columnPathIsValid, getColumn } from './utils/parseColumnPath.js'
 
 import id from '../../utils/id.js'
 
@@ -66,35 +67,26 @@ export default class DataContainer {
   }
 
   row (index) {
-    this._calculateDomainsAndTypesIfNecessary()
-    let row = {}
-
-    for (let columnName in this._data) {
-      let value = this._data[columnName][index]
-      row[columnName] = value
-    }
-
-    return row
+    return this._row(index)
   }
 
   rows () {
-    this._calculateDomainsAndTypesIfNecessary()
     let rows = []
 
     for (let i = 0; i < this._length; i++) {
-      rows.push(this.row(i))
+      rows.push(this._row(i))
     }
 
     return rows
   }
 
-  hasColumn (columnName) {
-    return this._data.hasOwnProperty(columnName)
+  hasColumn (columnPath) {
+    return columnPathIsValid(columnPath, this)
   }
 
-  column (columnName) {
-    this._calculateDomainsAndTypesIfNecessary()
-    return this._data[columnName]
+  column (columnPath) {
+    checkColumnPath(columnPath, this)
+    return getColumn(columnPath, this)
   }
 
   domain (columnName) {
@@ -174,6 +166,17 @@ export default class DataContainer {
       this._calculateDomainsAndTypes()
       this._domainsAndTypesCalculated = true
     }
+  }
+
+  _row (index) {
+    let row = {}
+
+    for (let columnName in this._data) {
+      let value = this._data[columnName][index]
+      row[columnName] = value
+    }
+
+    return row
   }
 }
 
