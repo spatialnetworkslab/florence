@@ -31,8 +31,8 @@
     .groupBy('fruit')
     .done()
 
-  console.log(testData.data())
   console.log(testData.column('$grouped/quantity'))
+  console.log(testData.mapColumn('$grouped/quantity', x => x * 2))
 </script>
 
 <Graphic width={500} height={500}>

@@ -11,7 +11,7 @@ import getDataLength from './utils/getDataLength.js'
 import convertRowToColumnDataframe from './utils/convertRowToColumnDataframe.js'
 import calculateDomainsAndGetTypes from './utils/calculateDomainsAndGetTypes.js'
 import parseGeoJSON from './utils/parseGeoJSON.js'
-import { checkColumnPath, columnPathIsValid, getColumn } from './utils/parseColumnPath.js'
+import { checkColumnPath, columnPathIsValid, getColumn, mapColumn } from './utils/parseColumnPath.js'
 
 import id from '../../utils/id.js'
 
@@ -87,6 +87,11 @@ export default class DataContainer {
   column (columnPath) {
     checkColumnPath(columnPath, this)
     return getColumn(columnPath, this)
+  }
+
+  mapColumn (columnPath, mapFunction) {
+    checkColumnPath(columnPath, this)
+    return mapColumn(columnPath, this, mapFunction)
   }
 
   domain (columnName) {
@@ -183,3 +188,9 @@ export default class DataContainer {
 transformMethodExposeMixin(DataContainer)
 
 const invalidDataError = new Error('Data passed to DataContainer is of unknown format')
+
+function validateOptions (options) {
+  if (options.hasOwnProperty('lazy')) {
+    if (options.lazy.constructor !== Boolean) throw new Error(`'lazy' must be Boolean`)
+  }
+}

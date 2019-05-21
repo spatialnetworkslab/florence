@@ -71,3 +71,18 @@ function traverseColumnPath (columnPathArray, dataContainer) {
 
   return newColumn
 }
+
+export function mapColumn (columnPath, dataContainer, mapFunction) {
+  let column = getColumn(columnPath, dataContainer)
+  let levels = columnPath.split('/').length
+  return mapRecursive(levels, column, mapFunction)
+}
+
+function mapRecursive (levels, column, mapFunction) {
+  if (levels === 1) {
+    return column.map(mapFunction)
+  } else {
+    levels--
+    return column.map(nestedColumn => mapRecursive(levels, nestedColumn, mapFunction))
+  }
+}
