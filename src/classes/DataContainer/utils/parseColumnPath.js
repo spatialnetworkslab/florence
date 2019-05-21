@@ -1,8 +1,3 @@
-const columnNotFoundError = (columnName, originalPath) => {
-  return new Error(`Could not find column '${columnName}' while traversing column path '${originalPath}'`)
-}
-const invalidColumnPathError = columnPath => new Error(`Invalid column path: '${columnPath}`)
-
 export function columnPathIsValid (columnPath, dataContainer) {
   try {
     checkColumnPath(columnPath, dataContainer)
@@ -15,6 +10,23 @@ export function columnPathIsValid (columnPath, dataContainer) {
 export function checkColumnPath (columnPath, dataContainer) {
   let columnPathArray = columnPath.split('/')
   parseColumnPath(columnPathArray, dataContainer, columnPath)
+}
+
+export function checkIfColumnExists (columnName, dataContainer) {
+  if (!dataContainer.data().hasOwnProperty(columnName)) {
+    throw new Error(`Invalid column name: '${columnName}'`)
+  }
+}
+
+export function getColumn (columnPath, dataContainer) {
+  let columnPathArray = columnPath.split('/')
+  return traverseColumnPath(columnPathArray, dataContainer)
+}
+
+export function mapColumn (columnPath, dataContainer, mapFunction) {
+  let column = getColumn(columnPath, dataContainer)
+  let levels = columnPath.split('/').length
+  return mapRecursive(levels, column, mapFunction)
 }
 
 function parseColumnPath (columnPathArray, dataContainer, originalPath) {
@@ -44,11 +56,6 @@ function removeFirstElement (array) {
   return array.splice(1, array.length - 1)
 }
 
-export function getColumn (columnPath, dataContainer) {
-  let columnPathArray = columnPath.split('/')
-  return traverseColumnPath(columnPathArray, dataContainer)
-}
-
 function traverseColumnPath (columnPathArray, dataContainer) {
   let newColumn = []
   let ownColumnName = columnPathArray[0]
@@ -72,12 +79,6 @@ function traverseColumnPath (columnPathArray, dataContainer) {
   return newColumn
 }
 
-export function mapColumn (columnPath, dataContainer, mapFunction) {
-  let column = getColumn(columnPath, dataContainer)
-  let levels = columnPath.split('/').length
-  return mapRecursive(levels, column, mapFunction)
-}
-
 function mapRecursive (levels, column, mapFunction) {
   if (levels === 1) {
     return column.map(mapFunction)
@@ -86,3 +87,8 @@ function mapRecursive (levels, column, mapFunction) {
     return column.map(nestedColumn => mapRecursive(levels, nestedColumn, mapFunction))
   }
 }
+
+const columnNotFoundError = (columnName, originalPath) => {
+  return new Error(`Could not find column '${columnName}' while traversing column path '${originalPath}'`)
+}
+const invalidColumnPathError = columnPath => new Error(`Invalid column path: '${columnPath}`)

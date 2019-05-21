@@ -1,38 +1,27 @@
-import produce from 'immer'
+import dataLoadingMixin from './dataLoadingMixin.js'
+import domainsAndTypesMixin from './domainsAndTypesMixin.js'
+import transformMixin from './TransformableDataContainer/transformMixin.js'
 
-import transformMethodExposeMixin from './TransformableDataContainer/methodExposeMixin.js'
-
-import {
-  isColumnOriented, isRowOriented, isGeoJSON,
-  checkFormatColumnDataframe, checkFormatInternal
-} from './utils/checkFormat.js'
-
-import getDataLength from './utils/getDataLength.js'
-import convertRowToColumnDataframe from './utils/convertRowToColumnDataframe.js'
-import calculateDomainsAndGetTypes from './utils/calculateDomainsAndGetTypes.js'
-import parseGeoJSON from './utils/parseGeoJSON.js'
-import { checkColumnPath, columnPathIsValid, getColumn, mapColumn } from './utils/parseColumnPath.js'
-
-import id from '../../utils/id.js'
+import { isColumnOriented, isRowOriented, isGeoJSON } from './utils/checkFormat.js'
 
 import TransformableDataContainer from './TransformableDataContainer'
 import { Group } from './TransformableDataContainer/transformations/groupBy.js'
 
+import {
+  checkColumnPath, columnPathIsValid, checkIfColumnExists,
+  getColumn, mapColumn
+} from './utils/parseColumnPath.js'
+
 export default class DataContainer {
-  constructor (data, options) {
+  constructor (data) {
     this._data = {}
+    this._length = undefined
+    this._indexToRowNumber = {}
 
     this._domainsAndTypesCalculated = false
-    this._lazy = true
 
     this._domains = {}
     this._types = {}
-
-    this._length = undefined
-
-    if (options) {
-      this._applyOptions(options)
-    }
 
     if (isColumnOriented(data)) {
       this._setColumnDataframe(data)
@@ -67,7 +56,8 @@ export default class DataContainer {
   }
 
   row (index) {
-    return this._row(index)
+    let rowNumber = this._indexToRowNumber[index]
+    return this._row(rowNumber)
   }
 
   rows () {
@@ -94,90 +84,22 @@ export default class DataContainer {
     return mapColumn(columnPath, this, mapFunction)
   }
 
-  domain (columnName) {
-    this._calculateDomainsAndTypesIfNecessary()
-    return this._domains[columnName]
-  }
+  updateRow (index, row) {
+    let rowNumber = this._indexToRowNumber[index]
 
-  type (columnName) {
-    this._calculateDomainsAndTypesIfNecessary()
-    return this._types[columnName]
-  }
+    for (let key in row) {
+      checkIfColumnExists(key, this)
 
-  _applyOptions (options) {
-    validateOptions(options)
-    if (options.hasOwnProperty('lazy')) {
-      this._lazy = options.lazy
+      let value = row[key]
+      this._data[key][rowNumber] = value
     }
   }
 
-  _setColumnDataframe (data) {
-    checkFormatColumnDataframe(data)
-    this._storeData(data)
-  }
-
-  _setRowDataframe (rowData) {
-    let columnData = convertRowToColumnDataframe(rowData)
-    this._setColumnDataframe(columnData)
-  }
-
-  _setGeoJSON (geojsonData) {
-    let data = parseGeoJSON(geojsonData)
-    this._storeData(data)
-  }
-
-  _setTransformableDataContainer (transformableDataContainer) {
-    let data = transformableDataContainer._data
-    checkFormatInternal(data)
-    this._storeData(data)
-  }
-
-  _setGroup (group) {
-    let data = group.data
-    checkFormatInternal(data)
-    this._storeData(data)
-  }
-
-  _storeData (data) {
-    this._data = data
-    this._length = getDataLength(data)
-
-    this._createIndexColumn()
-
-    if (this._lazy === false) {
-      this._calculateDomainsAndTypes()
-    }
-  }
-
-  _createIndexColumn () {
-    if (!this._data.hasOwnProperty('$index')) {
-      let length = this._length
-
-      let indexColumn = new Array(length).fill(0).map(_ => id())
-      this._data = produce(this._data, draft => {
-        draft.$index = indexColumn
-      })
-    }
-  }
-
-  _calculateDomainsAndTypes () {
-    let { domains, types } = calculateDomainsAndGetTypes(this._data)
-    this._domains = domains
-    this._types = types
-  }
-
-  _calculateDomainsAndTypesIfNecessary () {
-    if (this._lazy === true && this._domainsAndTypesCalculated === false) {
-      this._calculateDomainsAndTypes()
-      this._domainsAndTypesCalculated = true
-    }
-  }
-
-  _row (index) {
+  _row (rowNumber) {
     let row = {}
 
     for (let columnName in this._data) {
-      let value = this._data[columnName][index]
+      let value = this._data[columnName][rowNumber]
       row[columnName] = value
     }
 
@@ -185,12 +107,8 @@ export default class DataContainer {
   }
 }
 
-transformMethodExposeMixin(DataContainer)
+dataLoadingMixin(DataContainer)
+domainsAndTypesMixin(DataContainer)
+transformMixin(DataContainer)
 
 const invalidDataError = new Error('Data passed to DataContainer is of unknown format')
-
-function validateOptions (options) {
-  if (options.hasOwnProperty('lazy')) {
-    if (options.lazy.constructor !== Boolean) throw new Error(`'lazy' must be Boolean`)
-  }
-}

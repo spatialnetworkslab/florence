@@ -7,12 +7,12 @@ function proxyTransformationCall (data, transformation, options) {
 }
 
 const methods = {
-  arrange (sortInstructions) { 
-    return proxyTransformationCall(this._data, 'arrange', sortInstructions) 
+  arrange (sortInstructions) {
+    return proxyTransformationCall(this._data, 'arrange', sortInstructions)
   },
 
   bin (binInstructions) {
-    return proxyTransformationCall(this._data, 'bin', binInstructions) 
+    return proxyTransformationCall(this._data, 'bin', binInstructions)
   },
 
   dropNA (dropInstructions) {

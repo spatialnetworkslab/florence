@@ -19,20 +19,6 @@
   const scaleFruit = scaleBand().domain(data.domain('fruit'))
 	let meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
   const scaleMeanQuantity = scaleLinear().domain(meanQuantityDomain)
-
-   let testData = new DataContainer({ 
-    quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
-    fruit: [NaN, 'anchovies', 'banana', 'banana', 'coconut', 'coconut', 'durian', 'durian']
-  })
-
-  testData = testData
-    .dropNA()
-    .filter(row => row.fruit !== 'anchovies')
-    .groupBy('fruit')
-    .done()
-
-  console.log(testData.column('$grouped/quantity'))
-  console.log(testData.mapColumn('$grouped/quantity', x => x * 2))
 </script>
 
 <Graphic width={500} height={500}>
