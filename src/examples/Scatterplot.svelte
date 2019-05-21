@@ -12,21 +12,18 @@
 
 		let data = { a: [], b: [] }
 		for (let i = 0; i < N; i++) {
-			data.a.push(i + getError(i))
-			data.b.push(i + getError(i))
+			data.a.push(i + getError())
+			data.b.push(i + getError())
 		}
 
 		return data
 	}
-
 
 	const scaleA = scaleLinear().domain(data.domain('a'))
 	const scaleB = scaleLinear().domain(data.domain('b'))
 </script>
 
 <div>
-
-	<!-- Scatterplot: verbose -->
 	<Graphic width={500} height={500}>
 		
 		<Section
@@ -39,7 +36,10 @@
 
 			{#each data.rows() as row (row.$index)}
 
-				<Point x={scaleX(row.a)} y={scaleY(row.b)} />
+				<Point 
+					x={scaleX(row.a)} 
+					y={scaleY(row.b)} 
+				/>
 
 			{/each}
 		

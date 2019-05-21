@@ -90,6 +90,11 @@ export default class DataContainer {
     for (let key in row) {
       checkIfColumnExists(key, this)
 
+      if (key === '$index') {
+        console.warn(`Cannot update '$index' of row`)
+        continue
+      }
+
       let value = row[key]
       this._data[key][rowNumber] = value
     }

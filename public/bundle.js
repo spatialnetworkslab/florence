@@ -3941,6 +3941,7 @@ var app = (function () {
 	 */
 
 	var finishDraft = immer.finishDraft.bind(immer);
+	//# sourceMappingURL=immer.module.js.map
 
 	function isColumnOriented (data) {
 	  if (data.constructor === Object) {
@@ -8905,6 +8906,11 @@ var app = (function () {
 	    for (let key in row) {
 	      checkIfColumnExists(key, this);
 
+	      if (key === '$index') {
+	        console.warn(`Cannot update '$index' of row`);
+	        continue
+	      }
+
 	      let value = row[key];
 	      this._data[key][rowNumber] = value;
 	    }
@@ -10082,7 +10088,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (40:3) {#each data.rows() as row (row.$index)}
+	// (37:3) {#each data.rows() as row (row.$index)}
 	function create_each_block$1(key_1, ctx) {
 		var first, current;
 
@@ -10137,7 +10143,7 @@ var app = (function () {
 		};
 	}
 
-	// (32:2) <Section    x1={50} x2={450}    y1={50} y2={450}    scaleX={scaleA}    scaleY={scaleB}    let:scaleX let:scaleY   >
+	// (29:2) <Section    x1={50} x2={450}    y1={50} y2={450}    scaleX={scaleA}    scaleY={scaleB}    let:scaleX let:scaleY   >
 	function create_default_slot_1$1(ctx) {
 		var each_blocks = [], each_1_lookup = new Map(), each_1_anchor, current;
 
@@ -10196,7 +10202,7 @@ var app = (function () {
 		};
 	}
 
-	// (30:1) <Graphic width={500} height={500}>
+	// (27:1) <Graphic width={500} height={500}>
 	function create_default_slot$1(ctx) {
 		var current;
 
@@ -10269,7 +10275,7 @@ var app = (function () {
 			c: function create() {
 				div = element("div");
 				graphic.$$.fragment.c();
-				add_location(div, file$4, 26, 0, 614);
+				add_location(div, file$4, 25, 0, 611);
 			},
 
 			l: function claim(nodes) {
@@ -10315,8 +10321,8 @@ var app = (function () {
 
 		let data = { a: [], b: [] };
 		for (let i = 0; i < N; i++) {
-			data.a.push(i + getError(i));
-			data.b.push(i + getError(i));
+			data.a.push(i + getError());
+			data.b.push(i + getError());
 		}
 
 		return data
@@ -10328,7 +10334,6 @@ var app = (function () {
 		let { N = 100 } = $$props;
 
 		const data = new DataContainer(generateData(N, 0.25));
-
 
 		const scaleA = linear$1().domain(data.domain('a'));
 		const scaleB = linear$1().domain(data.domain('b'));
