@@ -3941,7 +3941,6 @@ var app = (function () {
 	 */
 
 	var finishDraft = immer.finishDraft.bind(immer);
-	//# sourceMappingURL=immer.module.js.map
 
 	function isColumnOriented (data) {
 	  if (data.constructor === Object) {
@@ -6776,13 +6775,17 @@ var app = (function () {
 	  if (nValidValues === 1) {
 	    domain = createDomainForSingleValue(type, firstValidValue);
 
-	    console.warn(`Column '${columnName}' contains only 1 valid value: ${firstValidValue}.`);
-	    console.warn(`Using domain ${JSON.stringify(domain)}`);
+	    if (type !== 'categorical') {
+	      console.warn(`Column '${columnName}' contains only 1 valid value: ${firstValidValue}.`);
+	      console.warn(`Using domain ${JSON.stringify(domain)}`);
+	    }
 	  } else if (nUniqueValues === 1) {
 	    domain = createDomainForSingleValue(type, firstValidValue);
 
-	    console.warn(`Column '${columnName}' contains only 1 unique value: ${firstValidValue}.`);
-	    console.warn(`Using domain ${JSON.stringify(domain)}`);
+	    if (type !== 'categorical') {
+	      console.warn(`Column '${columnName}' contains only 1 unique value: ${firstValidValue}.`);
+	      console.warn(`Using domain ${JSON.stringify(domain)}`);
+	    }
 	  }
 
 	  return domain
