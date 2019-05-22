@@ -2,7 +2,10 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
     "@turf/meta": "^6.0.2",
+    "babel-jest": "^24.8.0",
     "d3-geo": "^1.11.3",
     "d3-scale": "^3.0.0",
     "d3-shape": "^1.3.5",
@@ -31,5 +34,15 @@
     "env": [
       "jest"
     ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ],
+    "verbose": true,
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+    }
   }
 }
