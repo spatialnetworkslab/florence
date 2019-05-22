@@ -36,6 +36,10 @@ export function notSameProperties () {
   return obj
 }
 
+export function validGeometries () {
+  return dummyFeatures.map(feature => feature.geometry)
+}
+
 function addType (obj) {
   obj['type'] = 'FeatureCollection'
   return obj

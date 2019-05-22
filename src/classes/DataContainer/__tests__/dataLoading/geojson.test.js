@@ -1,6 +1,6 @@
 import DataContainer from '../../index.js'
 import {
-  valid, missingType, missingFeatures, emptyFeatures, notSameProperties
+  valid, missingType, missingFeatures, emptyFeatures, notSameProperties, validGeometries
 } from './__data__/makeGeoJSON.js/'
 
 describe('loading geojson data', () => {
@@ -22,5 +22,14 @@ describe('loading geojson data', () => {
 
   test('every feature must have same properties', () => {
     expect(() => new DataContainer(notSameProperties())).toThrow()
+  })
+
+  test('geojson geometry ends up in $geometry column', () => {
+    const validGeoData = valid()
+    const dataContainer = new DataContainer(validGeoData)
+    const expectedGeometries = validGeometries()
+
+    expect(dataContainer.hasColumn('$geometry')).toBe(true)
+    expect(dataContainer.column('$geometry')).toEqual(expectedGeometries)
   })
 })
