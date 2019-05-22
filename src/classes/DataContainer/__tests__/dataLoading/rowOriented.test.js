@@ -36,7 +36,7 @@ describe('loading row-oriented data', () => {
 
   test('row-oriented data cannot be empty', () => {
     const emptyData = []
-    
+
     expect(() => new DataContainer(emptyData)).toThrow()
   })
 })
