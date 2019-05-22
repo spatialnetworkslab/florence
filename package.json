@@ -36,13 +36,10 @@
     ]
   },
   "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json"
-    ],
     "verbose": true,
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
-    }
+    },
+    "testPathIgnorePatterns": ["/__data__/"]
   }
 }

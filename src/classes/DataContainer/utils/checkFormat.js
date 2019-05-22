@@ -16,7 +16,10 @@ export function isRowOriented (data) {
 }
 
 export function isGeoJSON (data) {
-  return data.hasOwnProperty('data') && data.type === 'FeatureCollection'
+  let hasCorrectType = data.type === 'FeatureCollection'
+  let hasCorrectFeatures = data.features && data.features.length > 0
+
+  return hasCorrectType && hasCorrectFeatures
 }
 
 export function checkFormatColumnDataframe (data) {
