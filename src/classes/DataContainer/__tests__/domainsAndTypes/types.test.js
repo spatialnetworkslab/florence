@@ -49,4 +49,13 @@ describe('determining column types', () => {
   // geometry
 
   // nested
+  test('a column of other DataContainers is of type nested', () => {
+
+  })
+
+  test('a column of nested data may not contain missing data', () => {
+
+  })
+
+  test('only the $grouped column may contain DataContainers, and only DataContainers')
 })
