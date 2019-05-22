@@ -2,35 +2,45 @@ import DataContainer from '../../index.js'
 
 describe('determining column types', () => {
   // quantitative
-  test('a column of Numbers is of type quantitative', () => {
+  test('a column of Numbers (including missing data) is of type quantitative', () => {
     const data = {
-      quantity: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      a: [1, 2, NaN, 4, 5, 6, undefined, 8, null],
+      b: [1, 2, 3, 4, 5, 6, 7, 8, 9]
     }
 
     const dataContainer = new DataContainer(data)
-    expect(dataContainer.type('quantity')).toBe('quantitative')
+    expect(dataContainer.type('a')).toBe('quantitative')
+    expect(dataContainer.type('b')).toBe('quantitative')
   })
 
-  test('a column of Numbers and invalid data is of type quantitative', () => {
-    const data = {
-      quantity: [1, 2, NaN, 4, 5, 6, undefined, 8, null]
-    }
+  test('quantitative data cannot be mixed with other data types', () => {
 
-    const dataContainer = new DataContainer(data)
-    expect(dataContainer.type('quantity')).toBe('quantitative')
   })
 
   // categorical
-  test('a column of Strings is of type categorical', () => {
+  test('a column of Strings (including missing data) is of type categorical', () => {
     const data = {
-      fruits: ['apple', 'banana', 'coconut', 'durian']
+      a: ['apple', 'banana', 'coconut', 'durian', 'elderberry'],
+      b: ['apple', null, undefined, 'durian', NaN]
     }
 
     const dataContainer = new DataContainer(data)
-    expect(dataContainer.type('fruits')).toBe('categorical')
+    expect(dataContainer.type('a')).toBe('categorical')
+    expect(dataContainer.type('b')).toBe('categorical')
+  })
+
+  test('categorical data cannot be mixed with other data types', () => {
+    
   })
 
   // temporal
+  test('a column of Dates (including missing data) is of type temporal', () => {
+
+  })
+
+  test('temporal data cannot be mixed with other data types', () => {
+
+  })
 
   // interval:quantitative
 
