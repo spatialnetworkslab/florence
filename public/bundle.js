@@ -3941,7 +3941,6 @@ var app = (function () {
 	 */
 
 	var finishDraft = immer.finishDraft.bind(immer);
-	//# sourceMappingURL=immer.module.js.map
 
 	function isColumnOriented (data) {
 	  if (data.constructor === Object) {
@@ -4095,7 +4094,7 @@ var app = (function () {
 	  },
 
 	  _storeData (data) {
-	    this._data = data;
+	    this._data = produce(data, () => {});
 	    this._length = getDataLength(data);
 
 	    this._createIndexColumn();
