@@ -10,12 +10,8 @@ export default function (value, throwError = true) {
       if (value.hasOwnProperty('type') && value.hasOwnProperty('coordinates')) {
         return 'geometry'
       } else {
-        if (Object.values(value).every(val => val.constructor === Array)) {
-          return 'nested'
-        } else {
-          throwIf(throwError)
-          break
-        }
+        throwIf(throwError)
+        break
       }
     case Array:
       if (value.length === 2 && value[0].constructor === value[1].constructor) {

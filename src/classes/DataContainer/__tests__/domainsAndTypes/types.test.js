@@ -34,13 +34,13 @@ describe('determining column types', () => {
   })
 
   // temporal
-  test('a column of Dates (including missing data) is of type temporal', () => {
+  // test('a column of Dates (including missing data) is of type temporal', () => {
 
-  })
+  // })
 
-  test('temporal data cannot be mixed with other data types', () => {
+  // test('temporal data cannot be mixed with other data types', () => {
 
-  })
+  // })
 
   // interval:quantitative
 
