@@ -1,4 +1,4 @@
-import TransformableDataContainer from './index.js'
+import TransformableDataContainer from './TransformableDataContainer'
 
 function proxyTransformationCall (data, transformation, options) {
   let transformableDataContainer = new TransformableDataContainer(data)

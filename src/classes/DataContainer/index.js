@@ -1,6 +1,6 @@
 import dataLoadingMixin from './dataLoadingMixin.js'
 import domainsAndTypesMixin from './domainsAndTypesMixin.js'
-import transformMixin from './TransformableDataContainer/transformMixin.js'
+import transformMixin from './transformMixin.js/index.js'
 
 import { isColumnOriented, isRowOriented, isGeoJSON } from './utils/checkFormat.js'
 
