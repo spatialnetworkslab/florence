@@ -28,6 +28,8 @@
     "test": "jest"
   },
   "standard": {
-    "env": [ "jest" ]
+    "env": [
+      "jest"
+    ]
   }
 }
