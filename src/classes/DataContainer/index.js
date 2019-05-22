@@ -7,6 +7,8 @@ import { isColumnOriented, isRowOriented, isGeoJSON } from './utils/checkFormat.
 import TransformableDataContainer from './TransformableDataContainer'
 import { Group } from './TransformableDataContainer/transformations/groupBy.js'
 
+import { warn } from '../../utils/logging.js'
+
 import {
   checkColumnPath, columnPathIsValid, checkIfColumnExists,
   getColumn, mapColumn
@@ -91,7 +93,7 @@ export default class DataContainer {
       checkIfColumnExists(key, this)
 
       if (key === '$index') {
-        console.warn(`Cannot update '$index' of row`)
+        warn(`Cannot update '$index' of row`)
         continue
       }
 

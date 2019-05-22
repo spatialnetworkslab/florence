@@ -1,6 +1,8 @@
 import getDataLength from '../../utils/getDataLength.js'
 import Geostats from '../../utils/geoStats.js'
 
+import { warn } from '../../../../utils/logging.js'
+
 export default function (data, binInstructions) {
   let intervalBounds = getIntervalBounds(data, binInstructions)
   let ranges = pairRange(intervalBounds)
@@ -21,17 +23,17 @@ export function getIntervalBounds (data, binInstructions) {
 
   let method = binInstructions.method
   if (!method) {
-    console.warn('No binning method specified, defaulting to EqualInterval')
+    warn('No binning method specified, defaulting to EqualInterval')
     method = 'EqualInterval'
   }
   if (method.constructor !== String) {
-    console.warn('Binning method not recognized, defaulting to EqualInterval')
+    warn('Binning method not recognized, defaulting to EqualInterval')
     method = 'EqualInterval'
   }
 
   let numClasses = binInstructions.numClasses
   if (!numClasses) {
-    console.warn('numClasses not specified, defaulting to 5')
+    warn('numClasses not specified, defaulting to 5')
     numClasses = 5
   }
 
@@ -49,7 +51,7 @@ export function getIntervalBounds (data, binInstructions) {
 
     let domain = variableDomain(variableData)
     if (!binSize) {
-      console.warn(`binSize not specified for IntervalSize binning, defaulting to ${(domain[1] - domain[0])}`)
+      warn(`binSize not specified for IntervalSize binning, defaulting to ${(domain[1] - domain[0])}`)
       binSize = domain[1] - domain[0]
     }
     let binCount = Math.floor((domain[1] - domain[0]) / binSize)

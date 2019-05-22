@@ -1,6 +1,7 @@
 import getDataType from './getDataType.js'
 import { calculateBbox } from '../../../utils/geojson.js'
 import { isInvalid } from '../../../utils/equals.js'
+import { warn } from '../../../utils/logging.js'
 
 export default function (data) {
   let domains = {}
@@ -61,8 +62,10 @@ function createDummyDomainAndType (columnName) {
   let domain = [0, 1]
   let type = 'quantitative'
 
-  console.warn(`Column '${columnName}' contains no valid values.`)
-  console.warn('Using domain [0, 1] as placeholder.')
+  warn(
+    `Column '${columnName}' contains no valid values.\n` +
+    `Using domain [0, 1] as placeholder.`
+  )
 
   return { domain, type }
 }
@@ -101,15 +104,19 @@ function calculateDomainForIrregularColumn (nValidValues, nUniqueValues, type, f
     domain = createDomainForSingleValue(type, firstValidValue)
 
     if (type !== 'categorical') {
-      console.warn(`Column '${columnName}' contains only 1 valid value: ${firstValidValue}.`)
-      console.warn(`Using domain ${JSON.stringify(domain)}`)
+      warn(
+        `Column '${columnName}' contains only 1 valid value: ${firstValidValue}.\n` +
+        `Using domain ${JSON.stringify(domain)}`
+      )
     }
   } else if (nUniqueValues === 1) {
     domain = createDomainForSingleValue(type, firstValidValue)
 
     if (type !== 'categorical') {
-      console.warn(`Column '${columnName}' contains only 1 unique value: ${firstValidValue}.`)
-      console.warn(`Using domain ${JSON.stringify(domain)}`)
+      warn(
+        `Column '${columnName}' contains only 1 unique value: ${firstValidValue}.\n` +
+        `Using domain ${JSON.stringify(domain)}`
+      )
     }
   }
 

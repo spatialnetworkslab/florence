@@ -1,4 +1,5 @@
 import { checkRegularColumnName } from '../../utils/checkFormat.js'
+import { warn } from '../../../../utils/logging.js'
 
 export default function (data, renameInstructions) {
   if (renameInstructions.constructor !== Object) {
@@ -12,7 +13,7 @@ export default function (data, renameInstructions) {
       data[newName] = data[oldName]
       delete data[oldName]
     } else {
-      console.warn(`Rename: column '${oldName}' not found`)
+      warn(`Rename: column '${oldName}' not found`)
     }
   }
 }
