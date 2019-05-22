@@ -1,6 +1,6 @@
 import dataLoadingMixin from './dataLoadingMixin.js'
 import domainsAndTypesMixin from './domainsAndTypesMixin.js'
-import transformMixin from './transformMixin.js/index.js'
+import transformationsMixin from './transformationsMixin.js'
 
 import { isColumnOriented, isRowOriented, isGeoJSON } from './utils/checkFormat.js'
 
@@ -116,6 +116,6 @@ export default class DataContainer {
 
 dataLoadingMixin(DataContainer)
 domainsAndTypesMixin(DataContainer)
-transformMixin(DataContainer)
+transformationsMixin(DataContainer)
 
 const invalidDataError = new Error('Data passed to DataContainer is of unknown format')
