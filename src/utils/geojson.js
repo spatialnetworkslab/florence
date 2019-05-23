@@ -19,11 +19,13 @@ export function transformFeature (feature, transformation) {
 export function calculateBbox (features) {
   let bbox = [[Infinity, Infinity], [-Infinity, -Infinity]]
 
-  features.forEach(feature => {
+  for (let i = 0; i < features.length; i++) {
+    let feature = features[i]
+
     if (!isInvalid(feature)) {
       bbox = updateBBox(bbox, feature)
     }
-  })
+  }
 
   let bboxObj = {
     x: [bbox[0][0], bbox[1][0]],
