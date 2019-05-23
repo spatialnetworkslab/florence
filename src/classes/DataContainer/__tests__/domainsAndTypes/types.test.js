@@ -84,15 +84,15 @@ describe('determining column types', () => {
   })
 
   // nested
-  // test('a column of other DataContainers is of type nested', () => {
+  test('a column of other DataContainers is of type nested', () => {
+    const data = {
+      category: ['a', 'a', 'b', 'b', 'c', 'c'],
+      amount: [10, 15, 7, 2, 19, 13]
+    }
 
-  // })
+    const dataContainer = new DataContainer(data)
+    const groupedDataContainer = dataContainer.groupBy('category').done()
 
-  // test('a column of nested data may not contain missing data', () => {
-
-  // })
-
-  // test('nested data cannot be passed to the DataContainer directly', () => {
-
-  // })
+    expect(groupedDataContainer.type('$grouped')).toBe('nested')
+  })
 })
