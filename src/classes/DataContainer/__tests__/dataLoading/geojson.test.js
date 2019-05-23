@@ -1,7 +1,7 @@
 import DataContainer from '../../index.js'
 import {
   valid, missingType, missingFeatures, emptyFeatures, notSameProperties, validGeometries
-} from './__data__/makeGeoJSON.js/'
+} from '../__data__/makeGeoJSON.js/'
 
 describe('loading geojson data', () => {
   test('allowed geojson throws no error', () => {

@@ -1,3 +1,5 @@
+import DataContainer from '../index.js'
+
 export default function (value, throwError = true) {
   switch (value) {
     case value.constructor === Number:
@@ -10,6 +12,8 @@ export default function (value, throwError = true) {
       return 'interval'
     case isGeometry(value):
       return 'geometry'
+    case value.constructor === DataContainer:
+      return 'nested'
     default:
       throwIf(throwError)
       break
