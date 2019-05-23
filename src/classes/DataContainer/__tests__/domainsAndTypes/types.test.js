@@ -28,8 +28,8 @@ describe('determining column types', () => {
     }
 
     const dataContainer = new DataContainer(data)
-    expect(dataContainer.type('a')).toBe('categorical')
-    expect(dataContainer.type('b')).toBe('categorical')
+    expect(dataContainer.type('fruit1')).toBe('categorical')
+    expect(dataContainer.type('fruit2')).toBe('categorical')
   })
 
   test('categorical data cannot be mixed with other data types', () => {
