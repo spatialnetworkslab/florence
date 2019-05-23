@@ -159,12 +159,8 @@ function initDomain (type) {
       domain = [maxUnixTime, minUnixTime]
       break
     }
-    case 'interval:quantitative': {
+    case 'interval': {
       domain = [Infinity, -Infinity]
-      break
-    }
-    case 'interval:temporal': {
-      domain = [maxUnixTime, minUnixTime]
       break
     }
   }
@@ -189,10 +185,9 @@ function updateDomain (domain, value, type) {
     if (domain[1].getTime() <= epoch) { domain[1] = value }
   }
 
-  if (type.startsWith('interval')) {
-    let intervalType = type.split(':')[1]
-    domain = updateDomain(domain, value[0], intervalType)
-    domain = updateDomain(domain, value[1], intervalType)
+  if (type === 'interval') {
+    domain = updateDomain(domain, value[0], 'quantitative')
+    domain = updateDomain(domain, value[1], 'quantitative')
   }
 
   return domain
@@ -213,7 +208,7 @@ function createDomainForSingleValue (type, value) {
     domain = [getDay(value, -1), getDay(value, 1)]
   }
 
-  if (type.startsWith('interval')) {
+  if (type === 'interval') {
     domain = value
   }
 

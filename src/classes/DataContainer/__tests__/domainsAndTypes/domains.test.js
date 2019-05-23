@@ -10,9 +10,7 @@ describe('calculating domains', () => {
 
   // temporal
 
-  // interval:quantitative
-
-  // interval:temporal
+  // interval
 
   // geometry
 

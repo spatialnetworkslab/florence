@@ -1,36 +1,27 @@
 export default function (value, throwError = true) {
-  switch (value.constructor) {
-    case Number:
+  switch (value) {
+    case value.constructor === Number:
       return 'quantitative'
-    case String:
+    case value.contructor === String:
       return 'categorical'
-    case Date:
+    case value.constructor === Date:
       return 'temporal'
-    case Object:
-      if (value.hasOwnProperty('type') && value.hasOwnProperty('coordinates')) {
-        return 'geometry'
-      } else {
-        throwIf(throwError)
-        break
-      }
-    case Array:
-      if (value.length === 2 && value[0].constructor === value[1].constructor) {
-        if (value[0].constructor === Number) {
-          return 'interval:quantitative'
-        } else if (value[0].constructor === Date) {
-          return 'interval:temporal'
-        } else {
-          throwIf(throwError)
-          break
-        }
-      } else {
-        throwIf(throwError)
-        break
-      }
+    case isInterval(value):
+      return 'interval'
+    case isGeometry(value):
+      return 'geometry'
     default:
       throwIf(throwError)
       break
   }
+}
+
+function isGeometry (value) {
+  return value === Object && value.hasOwnProperty('type') && value.hasOwnProperty('coordinates')
+}
+
+function isInterval (value) {
+  return value === Array && value.length === 2 && value.every(entry => entry.constructor === Number)
 }
 
 function throwIf (throwError) {

@@ -42,9 +42,7 @@ describe('determining column types', () => {
 
   // })
 
-  // interval:quantitative
-
-  // interval:temporal
+  // interval
 
   // geometry
 
