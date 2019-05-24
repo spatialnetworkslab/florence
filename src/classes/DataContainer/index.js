@@ -81,7 +81,7 @@ export default class DataContainer {
     return getColumn(columnPath, this)
   }
 
-  mapColumn (columnPath, mapFunction) {
+  map (columnPath, mapFunction) {
     checkColumnPath(columnPath, this)
     return mapColumn(columnPath, this, mapFunction)
   }
