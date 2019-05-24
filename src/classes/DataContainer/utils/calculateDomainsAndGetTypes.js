@@ -209,12 +209,13 @@ function createDomainForSingleValue (type, value) {
   }
 
   if (type === 'interval') {
-    domain = value
+    domain = value.sort((a, b) => a > b)
   }
 
   return domain
 }
 
 function getDay (date, days) {
-  return new Date(new Date().setDate(date.getDate() + days))
+  let dateCopy = new Date(date.getTime())
+  return new Date(dateCopy.setDate(dateCopy.getDate() + days))
 }
