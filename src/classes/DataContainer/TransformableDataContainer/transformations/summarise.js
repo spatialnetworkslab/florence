@@ -59,12 +59,6 @@ export function summariseGroup (data, summariseInstructions, newData) {
         throw new Error(`Invalid aggregation instruction: ${aggregation}. Must be String or Function`)
       }
     }
-
-    // If the instruction is a Function, it will be passed the entire group,
-    // and is expected to return a completely new dataframe.
-    if (instruction.constructor === Function) {
-      newData[newColName].push(instruction(data))
-    }
   }
 
   return newData

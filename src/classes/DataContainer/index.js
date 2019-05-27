@@ -26,12 +26,12 @@ export default class DataContainer {
     this._types = {}
 
     if (isColumnOriented(data)) {
-      this._setColumnDataframe(data)
+      this._setColumnData(data)
       return
     }
 
     if (isRowOriented(data)) {
-      this._setRowDataframe(data)
+      this._setRowData(data)
       return
     }
 

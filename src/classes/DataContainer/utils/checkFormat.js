@@ -22,7 +22,7 @@ export function isGeoJSON (data) {
   return hasCorrectType && hasCorrectFeatures
 }
 
-export function checkFormatColumnDataframe (data) {
+export function checkFormatColumnData (data) {
   checkFormat(data, checkRegularColumnName)
 }
 

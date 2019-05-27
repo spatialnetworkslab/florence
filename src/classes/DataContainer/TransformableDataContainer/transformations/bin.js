@@ -1,3 +1,4 @@
+import DataContainer from '../../index.js'
 import getDataLength from '../../utils/getDataLength.js'
 import Geostats from '../../utils/geoStats.js'
 
@@ -122,7 +123,7 @@ function pairRange (ranges) {
 function bin (data, variable, ranges) {
   let newData = { bins: ranges }
 
-  // Create an empty array to store new dataFrames divided by range
+  // Create an empty array to store new DataContainers divided by range
   let bins = Array(ranges.length)
 
   for (let b = 0; b < bins.length; b++) {
@@ -155,11 +156,12 @@ function bin (data, variable, ranges) {
       newRow[col].push(data[col][ix])
     }
 
-    // Update the bins column with new dataFrame
-    bins[binIndex] = newRow
+    // Update the bins column with new DataContainer
+    let dataContainer = new DataContainer(newRow)
+    bins[binIndex] = dataContainer
   }
 
-  // Add new dataFrame column to newData
+  // Add new grouped column to newData
   newData.$grouped = bins
   return newData
 }

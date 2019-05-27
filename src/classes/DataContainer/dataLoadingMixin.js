@@ -1,22 +1,22 @@
 import produce from 'immer'
 
-import { checkFormatColumnDataframe, checkFormatInternal } from './utils/checkFormat.js'
+import { checkFormatColumnData, checkFormatInternal } from './utils/checkFormat.js'
 
 import getDataLength from './utils/getDataLength.js'
-import convertRowToColumnDataframe from './utils/convertRowToColumnDataframe.js'
+import convertRowToColumnData from './utils/convertRowToColumnData.js'
 import parseGeoJSON from './utils/parseGeoJSON.js'
 
 import id from '../../utils/id.js'
 
 const methods = {
-  _setColumnDataframe (data) {
-    checkFormatColumnDataframe(data)
+  _setColumnData (data) {
+    checkFormatColumnData(data)
     this._storeData(data)
   },
 
-  _setRowDataframe (rowData) {
-    let columnData = convertRowToColumnDataframe(rowData)
-    this._setColumnDataframe(columnData)
+  _setRowData (rowData) {
+    let columnData = convertRowToColumnData(rowData)
+    this._setColumnData(columnData)
   },
 
   _setGeoJSON (geojsonData) {
