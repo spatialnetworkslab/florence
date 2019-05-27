@@ -48,4 +48,22 @@ describe('loading column-oriented data', () => {
 
     expect(() => new DataContainer(data)).toThrow()
   })
+
+  test('column names cannot contain \'$\'', () => {
+    const data = {
+      $fruit: ['apple', 'banana', 'coconut'],
+      quantity: [1, 2, 3]
+    }
+
+    expect(() => new DataContainer(data)).toThrow()
+  })
+
+  test('column names cannot contain \'/\'', () => {
+    const data = {
+      day: [new Date(2019, 4, 19), new Date(2019, 4, 20), new Date(2019, 4, 21)],
+      'daily/sales': [10, 20, 15]
+    }
+
+    expect(() => new DataContainer(data)).toThrow()
+  })
 })

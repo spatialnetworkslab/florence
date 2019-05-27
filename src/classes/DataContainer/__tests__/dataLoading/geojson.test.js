@@ -1,6 +1,8 @@
 import DataContainer from '../../index.js'
 import {
-  valid, missingType, missingFeatures, emptyFeatures, notSameProperties, validGeometries
+  valid, missingType, missingFeatures, emptyFeatures, 
+  notSameProperties, validGeometries,
+  propertiesWith$, propertiesWithSlash
 } from '../__data__/makeGeoJSON.js/'
 
 describe('loading geojson data', () => {
@@ -31,5 +33,13 @@ describe('loading geojson data', () => {
 
     expect(dataContainer.hasColumn('$geometry')).toBe(true)
     expect(dataContainer.column('$geometry')).toEqual(expectedGeometries)
+  })
+
+  test('feature property names cannot contain \'$\'', () => {
+    expect(() => new DataContainer(propertiesWith$())).toThrow()
+  })
+
+  test('feature property names cannot contiain \'/\'', () => {
+    expect(() => new DataContainer(propertiesWithSlash())).toThrow()
   })
 })

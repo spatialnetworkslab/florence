@@ -40,6 +40,22 @@ export function validGeometries () {
   return dummyFeatures.map(feature => feature.geometry)
 }
 
+export function propertiesWith$ () {
+  return dummyFeatures.map(feature => ({
+    type: feature.type,
+    geometry: feature.geometry,
+    properties: { $column: 'value' }
+  }))
+}
+
+export function propertiesWithSlash () {
+  return dummyFeatures.map(feature => ({
+    type: feature.type,
+    geometry: feature.geometry,
+    properties: { 'col/umn': 'value' }
+  }))
+}
+
 function addType (obj) {
   obj['type'] = 'FeatureCollection'
   return obj

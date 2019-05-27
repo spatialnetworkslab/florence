@@ -52,4 +52,24 @@ describe('loading row-oriented data', () => {
 
     expect(() => new DataContainer(data)).toThrow()
   })
+
+  test('column names cannot contain \'$\'', () => {
+    const data = [
+      { $fruit: 'apple', quantity: 1 },
+      { $fruit: 'banana', quantity: 2 },
+      { $fruit: 'coconut', quantity: 3 }
+    ] 
+
+    expect(() => new DataContainer(data)).toThrow()
+  })
+
+  test('column names cannot contain \'/\'', () => {
+    const data = [
+      { day: new Date(2019, 4, 19), 'daily/sales': 10 },
+      { day: new Date(2019, 4, 20), 'daily/sales': 20 },
+      { day: new Date(2019, 4, 21), 'daily/sales': 15 }
+    ]
+
+    expect(() => new DataContainer(data)).toThrow()
+  })
 })
