@@ -1,5 +1,44 @@
 import DataContainer from '../../index.js'
 
-describe('row-oriented data is converted to column-oriented data', () => {
-  // Not sure how to test this
+describe('loading row-oriented data', () => {
+  test('valid row-oriented data throws no error', () => {
+    const validData = [
+      { fruit: 'apple', quantity: 1 },
+      { fruit: 'banana', quantity: 2 },
+      { fruit: 'coconut', quantity: 3 }
+    ]
+
+    expect(() => new DataContainer(validData)).not.toThrow()
+  })
+
+  test('row-oriented data with unequal column lengths throws an error', () => {
+    const unequalColumnData = [
+      { city: 'Amsterdam', population: 700000 },
+      { city: 'Rotterdam', population: 600000 },
+      { city: 'Den Haag', population: 500000 },
+      { population: 400000 }
+    ]
+
+    expect(() => new DataContainer(unequalColumnData)).toThrow()
+  })
+
+  test('columns are loaded correctly', () => {
+    const data = [
+      { day: new Date(2019, 4, 19), sales: 10 },
+      { day: new Date(2019, 4, 20), sales: NaN },
+      { day: null, sales: 20 },
+      { day: new Date(2019, 4, 21), sales: 15 }
+    ]
+
+    let dataContainer = new DataContainer(data)
+
+    expect(dataContainer.column('day')).toEqual([new Date(2019, 4, 19), new Date(2019, 4, 20), null, new Date(2019, 4, 21)])
+    expect(dataContainer.column('sales')).toEqual([10, NaN, 20, 15])
+  })
+
+  // test('row-oriented data can be empty', () => {
+  //   const emptyData = []
+
+  //   expect(() => new DataContainer(emptyData)).not.toThrow()
+  // })
 })
