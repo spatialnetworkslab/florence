@@ -23,7 +23,7 @@ function calculateColumnDomainAndGetType (column, columnName) {
   let { firstValidValue, nValidValues } = findFirstValidValue(column)
 
   if (nValidValues === 0) {
-    return createDummyDomainAndType(columnName)
+    throw new Error(`Column '${column}' contains only missing values. This is not allowed.`)
   }
 
   if (nValidValues > 0) {
@@ -56,18 +56,6 @@ export function findFirstValidValue (column) {
   }
 
   return { firstValidValue, nValidValues }
-}
-
-function createDummyDomainAndType (columnName) {
-  let domain = [0, 1]
-  let type = 'quantitative'
-
-  warn(
-    `Column '${columnName}' contains no valid values.\n` +
-    `Using domain [0, 1] as placeholder.`
-  )
-
-  return { domain, type }
 }
 
 function calculateColumnDomain (column, columnName, nValidValues, firstValidValue, type) {

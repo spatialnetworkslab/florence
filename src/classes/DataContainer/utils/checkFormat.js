@@ -39,6 +39,10 @@ function checkFormat (data, columnNameChecker) {
 
     dataLength = dataLength || column.length
 
+    if (dataLength === 0) {
+      throw new Error('Invalid data: columns cannot be empty')
+    }
+
     if (dataLength !== column.length) {
       throw new Error('Invalid data: columns must be of same length')
     }
