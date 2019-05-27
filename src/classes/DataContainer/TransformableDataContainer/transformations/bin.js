@@ -122,8 +122,6 @@ function pairRange (ranges) {
 function bin (data, variable, ranges) {
   let newData = { bins: ranges }
 
-  let ix = 0
-
   // Create an empty array to store new dataFrames divided by range
   let bins = Array(ranges.length)
 
@@ -139,7 +137,7 @@ function bin (data, variable, ranges) {
   let length = getDataLength(data)
 
   // Loop through data
-  while (ix < length) {
+  for (let ix = 0; ix < length; ix++) {
     let instance = data[variable][ix]
 
     // Find index of bin in which the instance belongs
@@ -159,8 +157,6 @@ function bin (data, variable, ranges) {
 
     // Update the bins column with new dataFrame
     bins[binIndex] = newRow
-
-    ix++
   }
 
   // Add new dataFrame column to newData

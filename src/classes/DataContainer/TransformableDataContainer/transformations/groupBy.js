@@ -56,11 +56,9 @@ function getGroupedValues (data, i, columns) {
 function groupBy (data, groupedColumns) {
   let groups = {}
 
-  let i = 0
-
   let length = getDataLength(data)
 
-  while (i < length) {
+  for (let i = 0; i < length; i++) {
     // Ge grouped values
     let groupedValues = getGroupedValues(data, i, groupedColumns)
 
@@ -72,7 +70,6 @@ function groupBy (data, groupedColumns) {
 
     // Add row to group
     groups[groupID].addRow(data, i)
-    i++
   }
 
   // Convert groups object to array
