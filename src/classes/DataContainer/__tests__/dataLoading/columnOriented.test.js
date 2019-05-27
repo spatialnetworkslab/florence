@@ -31,12 +31,21 @@ describe('loading column-oriented data', () => {
     expect(dataContainer.column('sales')).toEqual([10, NaN, 20, 15])
   })
 
-  test('column-oriented data can be empty', () => {
+  test('column-oriented data cannot be empty', () => {
     const emptyData = {
       item: [],
       quantity: []
     }
 
-    expect(() => new DataContainer(emptyData)).not.toThrow()
+    expect(() => new DataContainer(emptyData)).toThrow()
+  })
+
+  test('columns with only missing values throw an error', () => {
+    const data = {
+      a: [1, 2, 3, 4],
+      b: [NaN, null, undefined, NaN]
+    }
+
+    expect(() => new DataContainer(data)).toThrow()
   })
 })

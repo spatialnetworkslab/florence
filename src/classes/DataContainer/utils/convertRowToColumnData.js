@@ -1,4 +1,5 @@
 export default function (data) {
+  checkIfDataIsEmpty(data)
   let columnData = initColumnData(data)
 
   for (let row of data) {
@@ -20,4 +21,10 @@ function initColumnData (data) {
   }
 
   return columnData
+}
+
+function checkIfDataIsEmpty (data) {
+  if (data.length === 0) {
+    throw new Error('Received empty Array while trying to load row-oriented data. This is not allowed.')
+  }
 }
