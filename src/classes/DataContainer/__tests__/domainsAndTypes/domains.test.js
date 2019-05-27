@@ -20,7 +20,7 @@ describe('calculating domains', () => {
   test('only one non-missing value v in a quantitative column: domain = [v-1, v+1]', () => {
     const data = { a: [undefined, NaN, 15, null] }
     const dataContainer = new DataContainer(data)
-    
+
     expect(dataContainer.domain('a')).toEqual([14, 16])
   })
 

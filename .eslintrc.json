@@ -1,0 +1,12 @@
+{
+    "extends": "standard",
+    "plugins": [
+        "svelte3"
+    ],
+    "env": {
+        "jest": true
+    },
+    "parserOptions": {
+    "ecmaVersion": 2017
+    }
+}

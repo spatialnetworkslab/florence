@@ -46,20 +46,20 @@ describe('determining column types', () => {
     }
 
     const dataContainer = new DataContainer(data)
-    
+
     expect(dataContainer.type('startDate')).toBe('temporal')
     expect(dataContainer.type('endDate')).toBe('temporal')
   })
 
   test('temporal data cannot be mixed with other data types', () => {
     const data = { date: [new Date(2018, 4, 20), new Date(2018, 4, 21), 11] }
-    
+
     expect(() => new DataContainer(data)).toThrow()
   })
 
   // interval
   test('a column of Arrays of length 2 with Numbers (including missing data) is of type interval', () => {
-    const data = { 
+    const data = {
       bins: [[0, 5], [5, 10], [10, 17], [17, 20]],
       missingBins: [[0, 5], null, [10, 17], NaN]
     }
