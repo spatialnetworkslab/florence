@@ -31,14 +31,13 @@
 			y1={50} y2={450}
 			scaleX={scaleA}
 			scaleY={scaleB}
-			let:scaleX let:scaleY
 		>
 
 			{#each data.rows() as row (row.$index)}
 
 				<Point 
-					x={scaleX(row.a)} 
-					y={scaleY(row.b)} 
+					x={row.a} 
+					y={row.b} 
 				/>
 
 			{/each}

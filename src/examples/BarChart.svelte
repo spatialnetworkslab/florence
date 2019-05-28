@@ -24,20 +24,19 @@
 <Graphic width={500} height={500}>
 
   <Section
-    x1={50} x2={450}
-    y1={50} y2={450}
+    x={50} w={400}
+    y={50} h={400}
     scaleX={scaleFruit} 
 		scaleY={scaleMeanQuantity}
-    let:scaleX let:scaleY
   >
   
     {#each data.rows() as row}
 
       <Rectangle
-        x1={scaleX(row.fruit)}
-        x2={scaleX(row.fruit) + scaleX.bandwidth()}
-        y1={scaleY(0)}
-        y2={scaleY(row.meanQuantity)}
+        x={row.fruit}
+        w={({ scaleX }) => scaleX.bandwidth()}
+        y={0}
+        h={row.meanQuantity}
       />
 
     {/each}
