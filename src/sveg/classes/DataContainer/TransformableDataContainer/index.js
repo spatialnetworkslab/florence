@@ -1,4 +1,5 @@
-import DataContainer from '../index.js'
+
+import DataContainer from '../index.js.js'
 import transformations from './transformations'
 
 export default class TransformableDataContainer {

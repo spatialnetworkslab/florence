@@ -1,18 +1,19 @@
-import dataLoadingMixin from './dataLoadingMixin.js'
-import domainsAndTypesMixin from './domainsAndTypesMixin.js'
-import transformationsMixin from './transformationsMixin.js'
 
-import { isColumnOriented, isRowOriented, isGeoJSON } from './utils/checkFormat.js'
+import dataLoadingMixin from './dataLoadingMixin.js.js'
+import domainsAndTypesMixin from './domainsAndTypesMixin.js.js'
+import transformationsMixin from './transformationsMixin.js.js'
+
+import { isColumnOriented, isRowOriented, isGeoJSON } from './utils/checkFormat.js.js'
 
 import TransformableDataContainer from './TransformableDataContainer'
-import { Group } from './TransformableDataContainer/transformations/groupBy.js'
+import { Group } from './TransformableDataContainer/transformations/groupBy.js.js'
 
-import { warn } from '../../utils/logging.js'
+import { warn } from '../../../utils/logging.js'
 
 import {
   checkColumnPath, columnPathIsValid, checkIfColumnExists,
   getColumn, mapColumn
-} from './utils/parseColumnPath.js'
+} from './utils/parseColumnPath.js.js'
 
 export default class DataContainer {
   constructor (data) {

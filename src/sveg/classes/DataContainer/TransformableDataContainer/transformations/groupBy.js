@@ -1,5 +1,6 @@
-import getDataLength from '../../utils/getDataLength.js'
-import DataContainer from '../../index.js'
+
+import getDataLength from '../../utils/getDataLength.js.js'
+import DataContainer from '../../index.js.js'
 
 export default function (data, groupByInstructions) {
   let groupedData = {}

@@ -1,4 +1,5 @@
-import getDataLength from '../../utils/getDataLength.js'
+
+import getDataLength from '../../utils/getDataLength.js.js'
 
 export default function (data, filterFunction) {
   let length = getDataLength(data)

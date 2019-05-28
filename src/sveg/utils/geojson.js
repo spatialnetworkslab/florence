@@ -1,6 +1,6 @@
 import { coordEach } from '@turf/meta'
 import { geoPath } from 'd3-geo'
-import { isInvalid } from './equals.js'
+import { isInvalid } from './equals.js.js'
 
 export function transformFeatures (features, transformation) {
   return features.map(feature => transformFeature(feature, transformation))

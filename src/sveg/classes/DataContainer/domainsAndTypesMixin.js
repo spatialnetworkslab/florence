@@ -1,5 +1,5 @@
-import calculateDomainsAndGetTypes from './utils/calculateDomainsAndGetTypes.js'
-import { checkIfColumnExists } from './utils/parseColumnPath.js'
+import calculateDomainsAndGetTypes from './utils/calculateDomainsAndGetTypes.js.js'
+import { checkIfColumnExists } from './utils/parseColumnPath.js.js'
 
 const methods = {
   domain (columnName) {

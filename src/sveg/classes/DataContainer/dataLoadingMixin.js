@@ -1,12 +1,13 @@
+
 import produce from 'immer'
 
-import { checkFormatColumnData, checkFormatInternal } from './utils/checkFormat.js'
+import { checkFormatColumnData, checkFormatInternal } from './utils/checkFormat.js.js'
 
-import getDataLength from './utils/getDataLength.js'
-import convertRowToColumnData from './utils/convertRowToColumnData.js'
-import parseGeoJSON from './utils/parseGeoJSON.js'
+import getDataLength from './utils/getDataLength.js.js'
+import convertRowToColumnData from './utils/convertRowToColumnData.js.js'
+import parseGeoJSON from './utils/parseGeoJSON.js.js'
 
-import id from '../../utils/id.js'
+import id from '../../../utils/id.js'
 
 const methods = {
   _setColumnData (data) {

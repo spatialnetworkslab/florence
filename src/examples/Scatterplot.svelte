@@ -1,7 +1,6 @@
 <script>
 	import { scaleLinear } from 'd3-scale'
-	import DataContainer from '../classes/DataContainer'
-	import { Graphic, Section, Point } from '../components'
+	import { Graphic, Section, Point, DataContainer } from '../sveg'
 
 	export let N = 100
 

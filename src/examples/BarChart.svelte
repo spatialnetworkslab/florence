@@ -1,7 +1,6 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import DataContainer from '../classes/DataContainer'
-  import { Graphic, Section, Rectangle } from '../components'
+  import { Graphic, Section, Rectangle, DataContainer } from '../sveg'
   
   let data = new DataContainer({ 
     quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
