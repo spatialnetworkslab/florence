@@ -1,5 +1,6 @@
 <script>
-  import { getContext, setContext } from 'svelte'
+  import { getContext, setContext, onDestroy } from 'svelte'
+  import { writable } from 'svelte/store'
   import { coordinateContextKey } from '../../contextKeys.js'
   import CoordinateContext from '../../../classes/CoordinateContext'
   import { generatePixelCoordinates } from '../../../rendering/rectangle'
@@ -12,7 +13,11 @@
   export let scaleX = undefined
   export let scaleY = undefined
 
-  const parentCoordinateContext = getContext(coordinateContextKey)
+  let parentCoordinateContext
+
+  const unsubscribe = getContext(coordinateContextKey).subscribe(coordinateContext => {
+    parentCoordinateContext = coordinateContext
+  })
 
   const coordinates = { x, w, y, h }
   const pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
@@ -20,9 +25,17 @@
   const rangeX = [pixelCoordinates.x, pixelCoordinates.x + pixelCoordinates.w]
   const rangeY = [pixelCoordinates.y, pixelCoordinates.y + pixelCoordinates.h]
 
-  const coordinateContext = new CoordinateContext({ rangeX, rangeY, scaleX, scaleY })
+  const coordinateContext = writable(new CoordinateContext({ rangeX, rangeY, scaleX, scaleY }))
   
   setContext(coordinateContextKey, coordinateContext)
+
+  $: {
+    if (parentCoordinateContext) {
+      coordinateContext.set(new CoordinateContext({ rangeX, rangeY, scaleX, scaleY }))
+    }
+  }
+
+  onDestroy(unsubscribe)
 </script>
 
 <g>

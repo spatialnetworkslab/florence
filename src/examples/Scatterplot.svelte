@@ -19,11 +19,20 @@
 	}
 
 	const scaleA = scaleLinear().domain(data.domain('a'))
-	const scaleB = scaleLinear().domain(data.domain('b'))
+  const scaleB = scaleLinear().domain(data.domain('b'))
+  
+  let width = 500
+  let height = 500
 </script>
 
 <div>
-	<Graphic width={500} height={500}>
+  <label for="height-slider">Height:</label>
+  <input type="range" min="0" max="1000" bind:value={height} name="height-slider" />
+</div>
+
+<div>
+
+	<Graphic {width} {height}>
 		
 		<Section
 			x={50} w={400}
