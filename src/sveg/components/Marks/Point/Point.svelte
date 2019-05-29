@@ -1,5 +1,6 @@
 <script>
   import { getContext } from 'svelte'
+  import { coordinateContextKey } from '../../contextKeys.js'
   import { generatePixelCoordinates } from '../../../rendering/point'
 
   export let x
@@ -8,10 +9,10 @@
   export let radius = 3
   export let fill = 'black'
 
-  $: parentCoordinateContext = getContext(coordinateContextKey)
+  const parentCoordinateContext = getContext(coordinateContextKey)
 
-  $: coordinates = { x, y }
-  $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
+  const coordinates = { x, y }
+  const pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
 </script>
 
 <circle cx={pixelCoordinates.x} cy={pixelCoordinates.y} r={radius} {fill} />

@@ -1,18 +1,18 @@
 
 import produce from 'immer'
 
-import filter from './filter.js.js'
-import select from './select.js.js'
-import arrange from './arrange.js.js'
-import rename from './rename.js.js'
-import { mutate, transmute } from './mutate.js.js'
-import summarise from './summarise.js.js'
-import mutarise from './mutarise.js.js'
-import groupBy from './groupBy.js.js'
-import bin from './bin.js.js'
-import dropNA from './dropNA.js.js'
+import filter from './filter.js'
+import select from './select.js'
+import arrange from './arrange.js'
+import rename from './rename.js'
+import { mutate, transmute } from './mutate.js'
+import summarise from './summarise.js'
+import mutarise from './mutarise.js'
+import groupBy from './groupBy.js'
+import bin from './bin.js'
+import dropNA from './dropNA.js'
 // import reproject from './reproject.js'
-import transform from './transform.js.js'
+import transform from './transform.js'
 
 const transformations = {
   filter: produce(filter),

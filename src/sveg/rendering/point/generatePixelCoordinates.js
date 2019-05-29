@@ -1,4 +1,4 @@
-import { isInvalid } from '../../utils/equals.js'
+// import { isInvalid } from '../../utils/equals.js'
 
 export default function (coordinates, coordinateContext) {
   const { scaleX, scaleY } = coordinateContext.scales()
@@ -7,5 +7,4 @@ export default function (coordinates, coordinateContext) {
   const y = scaleY(coordinates.y)
 
   return { x, y }
-  }
 }

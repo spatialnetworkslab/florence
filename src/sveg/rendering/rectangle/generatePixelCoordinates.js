@@ -30,7 +30,7 @@ function validateTypes (coordinates) {
     let coordinate = coordinates[coordinateName]
 
     if (coordinate !== undefined) {
-      if (!coordinate) throw invalidCoordinateValueError(coordinate, coordinateName)
+      if (isInvalid(coordinate)) throw invalidCoordinateValueError(coordinate, coordinateName)
   
       if (![Number, String, Date, Function].includes(coordinate.constructor)) {
         throw invalidCoordinateValueError(coordinate, coordinateName)

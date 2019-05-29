@@ -9,11 +9,11 @@
   export let y = undefined
   export let h = undefined
 
-  $: parentCoordinateContext = getContext(coordinateContextKey)
+  const parentCoordinateContext = getContext(coordinateContextKey)
 
-  $: coordinates = { x, w, y, h }
-  $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
-  $: path = generatePath(points)
+  const coordinates = { x, w, y, h }
+  const pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
+  const path = generatePath(pixelCoordinates)
 </script>
 
 <path d={path} />

@@ -1,7 +1,7 @@
-import getDataType from './getDataType.js.js'
-import { calculateBbox } from '../../../../utils/geojson.js'
-import { isInvalid } from '../../../../utils/equals.js'
-import { warn } from '../../../../utils/logging.js'
+import getDataType from './getDataType.js'
+import { calculateBbox } from '../../../utils/geojson.js'
+import { isInvalid } from '../../../utils/equals.js'
+import { warn } from '../../../utils/logging.js'
 
 export default function (data) {
   let domains = {}

@@ -1,5 +1,4 @@
-
-import DataContainer from '../index.js.js'
+import DataContainer from '../index.js'
 
 export default function (value, throwError = true) {
   if (value.constructor === Number) return 'quantitative'

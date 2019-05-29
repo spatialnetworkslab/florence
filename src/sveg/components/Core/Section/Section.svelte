@@ -2,7 +2,7 @@
   import { getContext, setContext } from 'svelte'
   import { coordinateContextKey } from '../../contextKeys.js'
   import CoordinateContext from '../../../classes/CoordinateContext'
-  import { generatePixelCoordinates } from './generatePixelCoordinates.js'
+  import { generatePixelCoordinates } from '../../../rendering/rectangle'
 
   export let x = undefined
   export let w = undefined
@@ -12,15 +12,15 @@
   export let scaleX = undefined
   export let scaleY = undefined
 
-  $: parentCoordinateContext = getContext(coordinateContextKey)
+  const parentCoordinateContext = getContext(coordinateContextKey)
 
-  $: coordinates = { x, w, y, h }
-  $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
+  const coordinates = { x, w, y, h }
+  const pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
 
-  $: rangeX = [pixelCoordinates.x, pixelCoordinates.x + pixelCoordinates.w]
-  $: rangeY = [pixelCoordinates.y, pixelCoordinates.y + pixelCoordinates.h]
+  const rangeX = [pixelCoordinates.x, pixelCoordinates.x + pixelCoordinates.w]
+  const rangeY = [pixelCoordinates.y, pixelCoordinates.y + pixelCoordinates.h]
 
-  $: coordinateContext = new CoordinateContext({ rangeX, rangeY, scaleX, scaleY })
+  const coordinateContext = new CoordinateContext({ rangeX, rangeY, scaleX, scaleY })
   
   setContext(coordinateContextKey, coordinateContext)
 </script>

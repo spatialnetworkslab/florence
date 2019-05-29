@@ -26,8 +26,8 @@
 	<Graphic width={500} height={500}>
 		
 		<Section
-			x1={50} x2={450}
-			y1={50} y2={450}
+			x={50} w={400}
+			y={50} h={400}
 			scaleX={scaleA}
 			scaleY={scaleB}
 		>

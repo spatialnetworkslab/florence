@@ -1,7 +1,7 @@
 
 import aggregations from './aggregations'
-import checkKeyValuePair from '../../utils/checkKeyValuePair.js.js'
-import { checkRegularColumnName } from '../../utils/checkFormat.js.js'
+import checkKeyValuePair from '../../utils/checkKeyValuePair.js'
+import { checkRegularColumnName } from '../../utils/checkFormat.js'
 
 export default function (data, summariseInstructions) {
   if (summariseInstructions.constructor !== Object) {

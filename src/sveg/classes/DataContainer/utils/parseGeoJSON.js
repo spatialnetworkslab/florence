@@ -1,4 +1,4 @@
-import { checkFormatColumnData } from './checkFormat.js.js'
+import { checkFormatColumnData } from './checkFormat.js'
 
 export default function (geojsonData) {
   let geometryData = []
