@@ -1,4 +1,4 @@
-import { isInvalid } from '../../../utils/equals.js'
+import { isInvalid } from '../../utils/equals.js'
 
 export default function (coordinates, coordinateContext) {
   throwErrorIfInvalidCombination(coordinates)

@@ -9,7 +9,7 @@
   $: rangeX = [0, width]
   $: rangeY = [0, height]
 
-  const coordinateContext = new CoordinateContext({ rangeX, rangeY })
+  $: coordinateContext = new CoordinateContext({ rangeX, rangeY })
 
   setContext(coordinateContextKey, coordinateContext)
 </script>
