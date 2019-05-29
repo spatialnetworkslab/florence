@@ -10,14 +10,18 @@
   export let fill = 'black'
 
   let parentCoordinateContext
+
   const unsubscribe = getContext(coordinateContextKey).subscribe(coordinateContext => {
     parentCoordinateContext = coordinateContext
   })
 
-  const coordinates = { x, y }
-  const pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
+  $: coordinates = { x, y }
+  $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
+
+  $: cx = pixelCoordinates.x
+  $: cy = pixelCoordinates.y
 
   onDestroy(unsubscribe)
 </script>
 
-<circle cx={pixelCoordinates.x} cy={pixelCoordinates.y} r={radius} {fill} />
+<circle {cx} {cy} r={radius} {fill} />

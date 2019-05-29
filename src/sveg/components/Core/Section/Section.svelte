@@ -19,20 +19,18 @@
     parentCoordinateContext = coordinateContext
   })
 
-  const coordinates = { x, w, y, h }
-  const pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
+  $: coordinates = { x, w, y, h }
+  $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
 
-  const rangeX = [pixelCoordinates.x, pixelCoordinates.x + pixelCoordinates.w]
-  const rangeY = [pixelCoordinates.y, pixelCoordinates.y + pixelCoordinates.h]
+  $: rangeX = [pixelCoordinates.x, pixelCoordinates.x + pixelCoordinates.w]
+  $: rangeY = [pixelCoordinates.y, pixelCoordinates.y + pixelCoordinates.h]
 
-  const coordinateContext = writable(new CoordinateContext({ rangeX, rangeY, scaleX, scaleY }))
+  const coordinateContext = writable()
   
   setContext(coordinateContextKey, coordinateContext)
 
   $: {
-    if (parentCoordinateContext) {
-      coordinateContext.set(new CoordinateContext({ rangeX, rangeY, scaleX, scaleY }))
-    }
+    coordinateContext.set(new CoordinateContext({ rangeX, rangeY, scaleX, scaleY }))
   }
 
   onDestroy(unsubscribe)

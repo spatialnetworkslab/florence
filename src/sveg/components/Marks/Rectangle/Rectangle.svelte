@@ -14,9 +14,9 @@
     parentCoordinateContext = coordinateContext
   })
 
-  const coordinates = { x, w, y, h }
-  const pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
-  const path = generatePath(pixelCoordinates)
+  $: coordinates = { x, w, y, h }
+  $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
+  $: path = generatePath(pixelCoordinates)
 
   onDestroy(unsubscribe)
 </script>

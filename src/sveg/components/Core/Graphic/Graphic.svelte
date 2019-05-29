@@ -10,7 +10,7 @@
   $: rangeX = [0, width]
   $: rangeY = [0, height]
 
-  const coordinateContext = writable(new CoordinateContext({ rangeX, rangeY }))
+  const coordinateContext = writable()
 
   setContext(coordinateContextKey, coordinateContext)
 

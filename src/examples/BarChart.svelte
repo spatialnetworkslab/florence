@@ -19,20 +19,19 @@
 	let meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
   const scaleMeanQuantity = scaleLinear().domain(meanQuantityDomain)
 
-  let width = 500
-  let height = 500
+  let sectionHeight = 400
 </script>
 
 <div>
   <label for="height-slider">Height:</label>
-  <input type="range" min="0" max="1000" bind:value={height} name="height-slider" />
+  <input type="range" min="0" max="400" bind:value={sectionHeight} name="height-slider" />
 </div>
 
-<Graphic {width} {height}>
+<Graphic width={500} height={500}>
 
   <Section
     x={50} w={400}
-    y={50} h={400}
+    y={50} h={sectionHeight}
     scaleX={scaleFruit} 
 		scaleY={scaleMeanQuantity}
   >
