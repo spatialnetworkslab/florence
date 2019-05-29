@@ -26,7 +26,7 @@
 
 <div>
   <label for="height-slider">Height:</label>
-  <input type="range" min="0" max="400" bind:value={height} name="height-slider" />
+  <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
 </div>
 
 <div>
@@ -38,8 +38,8 @@
   >
 		
 		<Section
-			x={50} w={400}
-			y={50} h={400}
+			x1={50} x2={450}
+			y1={50} y2={450}
 			scaleX={scaleA}
 			scaleY={scaleB}
 		>

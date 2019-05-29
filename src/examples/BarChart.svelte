@@ -34,8 +34,8 @@
 >
 
   <Section
-    x={50} w={400}
-    y={50} h={400}
+    x1={50} x2={450}
+    y1={50} y2={450}
     scaleX={scaleFruit} 
 		scaleY={scaleMeanQuantity}
   >
@@ -43,10 +43,10 @@
     {#each data.rows() as row}
 
       <Rectangle
-        x={row.fruit}
-        w={({ scaleX }) => scaleX.bandwidth()}
-        y={0}
-        h={row.meanQuantity}
+        x1={row.fruit}
+        x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
+        y1={0}
+        y2={row.meanQuantity}
       />
 
     {/each}

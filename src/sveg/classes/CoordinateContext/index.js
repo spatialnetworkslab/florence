@@ -9,20 +9,20 @@ export default class CoordinateContext {
     this._handleScales(scaleX, scaleY)
   }
 
-  x () {
+  x1 () {
     return this._rangeX[0]
   }
 
-  w () {
-    return this._rangeX[1] - this._rangeX[0]
+  x2 () {
+    return this._rangeX[1]
   }
 
-  y () {
+  y1 () {
     return this._rangeY[0]
   }
 
-  h () {
-    return this._rangeY[1] - this._rangeY[0]
+  y2 () {
+    return this._rangeY[1]
   }
 
   scales () {

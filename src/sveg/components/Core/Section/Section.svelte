@@ -5,10 +5,10 @@
   import CoordinateContext from '../../../classes/CoordinateContext'
   import { generatePixelCoordinates } from '../../../rendering/rectangle'
 
-  export let x = undefined
-  export let w = undefined
-  export let y = undefined
-  export let h = undefined
+  export let x1 = undefined
+  export let x2 = undefined
+  export let y1 = undefined
+  export let y2 = undefined
 
   export let scaleX = undefined
   export let scaleY = undefined
@@ -19,11 +19,11 @@
     parentCoordinateContext = coordinateContext
   })
 
-  $: coordinates = { x, w, y, h }
+  $: coordinates = { x1, x2, y1, y2 }
   $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
 
-  $: rangeX = [pixelCoordinates.x, pixelCoordinates.x + pixelCoordinates.w]
-  $: rangeY = [pixelCoordinates.y, pixelCoordinates.y + pixelCoordinates.h]
+  $: rangeX = [pixelCoordinates.x1, pixelCoordinates.x2]
+  $: rangeY = [pixelCoordinates.y1, pixelCoordinates.y2]
 
   const coordinateContext = writable()
   

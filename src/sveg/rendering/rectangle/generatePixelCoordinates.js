@@ -9,13 +9,13 @@ export default function (coordinates, coordinateContext) {
 
 const s = JSON.stringify
 
-function throwErrorIfInvalidCombination ({ x, w, y, h }) {
-  if (onlyOne(x, w)) {
-    throw new Error(`Invalid combination of 'x' and 'w': ${s(x)}, ${s(w)}. Either provide both or none.`)
+function throwErrorIfInvalidCombination ({ x1, x2, y1, y2 }) {
+  if (onlyOne(x1, x2)) {
+    throw new Error(`Invalid combination of 'x1' and 'x2': ${s(x1)}, ${s(x2)}. Either provide both or none.`)
   }
 
-  if (onlyOne(y, h)) {
-    throw new Error(`Invalid combination of 'y' and 'h': ${s(y)}, ${s(h)}. Either provide both or none.`)
+  if (onlyOne(y1, y2)) {
+    throw new Error(`Invalid combination of 'y1' and 'y2': ${s(y1)}, ${s(y2)}. Either provide both or none.`)
   }
 }
 
@@ -39,23 +39,23 @@ function validateTypes (coordinates) {
   }
 }
 
-function generatePixelCoordinates ({ x, w, y, h }, coordinateContext) {
+function generatePixelCoordinates ({ x1, x2, y1, y2 }, coordinateContext) {
   const pixelCoordinates = {}
 
-  if (wereSpecified(x, w)) {
-    pixelCoordinates.x = generateCoordinate(x, 'x', coordinateContext)
-    pixelCoordinates.w = generateCoordinate(w, 'w', coordinateContext)
+  if (wereSpecified(x1, x2)) {
+    pixelCoordinates.x1 = generateCoordinate(x1, 'x1', coordinateContext)
+    pixelCoordinates.x2 = generateCoordinate(x2, 'x2', coordinateContext)
   } else {
-    pixelCoordinates.x = coordinateContext.x()
-    pixelCoordinates.w = coordinateContext.w()
+    pixelCoordinates.x1 = coordinateContext.x1()
+    pixelCoordinates.x2 = coordinateContext.x2()
   }
 
-  if (wereSpecified(y, h)) {
-    pixelCoordinates.y = generateCoordinate(y, 'y', coordinateContext)
-    pixelCoordinates.h = generateCoordinate(h, 'h', coordinateContext)
+  if (wereSpecified(y1, y2)) {
+    pixelCoordinates.y1 = generateCoordinate(y1, 'y1', coordinateContext)
+    pixelCoordinates.y2 = generateCoordinate(y2, 'y2', coordinateContext)
   } else {
-    pixelCoordinates.y = coordinateContext.y()
-    pixelCoordinates.h = coordinateContext.h()
+    pixelCoordinates.y1 = coordinateContext.y1()
+    pixelCoordinates.y2 = coordinateContext.y2()
   }
 
   return pixelCoordinates
@@ -71,7 +71,7 @@ function generateCoordinate (coordinate, coordinateName, coordinateContext) {
   if (coordinate.constructor === Function) {
     return coordinate(scales)
   } else {
-    const scale = ['x', 'w'].includes(coordinateName) ? scales.scaleX : scales.scaleY
+    const scale = ['x1', 'x2'].includes(coordinateName) ? scales.scaleX : scales.scaleY
     const generatedCoordinate = scale(coordinate)
     throwErrorIfInvalidValue(coordinate, generatedCoordinate, coordinateName)
 
@@ -80,6 +80,6 @@ function generateCoordinate (coordinate, coordinateName, coordinateContext) {
 }
 
 function throwErrorIfInvalidValue (input, output, coordinateName) {
-  const parentScale = ['x', 'w'].includes(coordinateName) ? 'scaleX' : 'scaleY'
+  const parentScale = ['x1', 'x2'].includes(coordinateName) ? 'scaleX' : 'scaleY'
   if (isInvalid(output)) throw new Error(`Scale '${parentScale}' received '${s(input)}' and returned '${s(output)}`)
 }
