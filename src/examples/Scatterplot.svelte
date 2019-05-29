@@ -21,21 +21,25 @@
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scaleLinear().domain(data.domain('b'))
   
-  let sectionHeight = 400
+  let height = 500
 </script>
 
 <div>
   <label for="height-slider">Height:</label>
-  <input type="range" min="0" max="400" bind:value={sectionHeight} name="height-slider" />
+  <input type="range" min="0" max="400" bind:value={height} name="height-slider" />
 </div>
 
 <div>
 
-	<Graphic width={500} height={500}>
+	<Graphic 
+    width={500} {height}
+    scaleX={scaleLinear().domain([0, 500])}
+    scaleY={scaleLinear().domain([0, 500])}
+  >
 		
 		<Section
 			x={50} w={400}
-			y={50} h={sectionHeight}
+			y={50} h={400}
 			scaleX={scaleA}
 			scaleY={scaleB}
 		>

@@ -7,6 +7,9 @@
   export let width
   export let height
 
+  export let scaleX = undefined
+  export let scaleY = undefined
+
   $: rangeX = [0, width]
   $: rangeY = [0, height]
 
@@ -15,7 +18,7 @@
   setContext(coordinateContextKey, coordinateContext)
 
   $: {
-    coordinateContext.set(new CoordinateContext({ rangeX, rangeY }))
+    coordinateContext.set(new CoordinateContext({ rangeX, rangeY, scaleX, scaleY }))
   }
 </script>
 
