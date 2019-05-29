@@ -1,24 +1,21 @@
 import { isInvalid } from '../../../utils/equals.js'
 
-export default function (x, w, y, h, coordinateContext) {
-  throwErrorIfInvalidCombination(x, w, y, h)
-  validateType(x, 'x')
-  validateType(w, 'w')
-  validateType(y, 'y')
-  validateType(h, 'h')
+export default function (coordinates, coordinateContext) {
+  throwErrorIfInvalidCombination(coordinates)
+  validateTypes(coordinates)
 
-  return generatePixelCoordinates(x, w, y, h, coordinateContext)
+  return generatePixelCoordinates(coordinates, coordinateContext)
 }
 
 const s = JSON.stringify
 
-function throwErrorIfInvalidCombination (x, w, y, h) {
+function throwErrorIfInvalidCombination ({ x, w, y, h }) {
   if (onlyOne(x, w)) {
-    throw new Error(`Invalid combination of 'x' and 'w': ${s(x), s(w)}. Either provide both or none.`)
+    throw new Error(`Invalid combination of 'x' and 'w': ${s(x)}, ${s(w)}. Either provide both or none.`)
   }
 
   if (onlyOne(y, h)) {
-    throw new Error(`Invalid combination of 'y' and 'h': ${s(y), s(h)}. Either provide both or none.`)
+    throw new Error(`Invalid combination of 'y' and 'h': ${s(y)}, ${s(h)}. Either provide both or none.`)
   }
 }
 
@@ -28,17 +25,21 @@ function onlyOne (a, b) {
 
 const invalidCoordinateValueError = (value, name) => new Error(`Invalid coordinate value for '${name}': ${s(value)}`)
 
-function validateType (coordinate, coordinateName) {
-  if (coordinate !== undefined) {
-    if (!coordinate) throw invalidCoordinateValueError(coordinate, coordinateName)
+function validateTypes (coordinates) {
+  for (let coordinateName in coordinates) {
+    let coordinate = coordinates[coordinateName]
 
-    if (![Number, String, Date, Function].includes(coordinate.constructor)) {
-      throw invalidCoordinateValueError(coordinate, coordinateName)
+    if (coordinate !== undefined) {
+      if (!coordinate) throw invalidCoordinateValueError(coordinate, coordinateName)
+  
+      if (![Number, String, Date, Function].includes(coordinate.constructor)) {
+        throw invalidCoordinateValueError(coordinate, coordinateName)
+      }
     }
   }
 }
 
-function generatePixelCoordinates (x, w, y, h, coordinateContext) {
+function generatePixelCoordinates ({ x, w, y, h }, coordinateContext) {
   const pixelCoordinates = {}
 
   if (wereSpecified(x, w)) {

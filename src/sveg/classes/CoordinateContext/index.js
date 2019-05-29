@@ -9,17 +9,36 @@ export default class CoordinateContext {
     this._handleScales(scaleX, scaleY)
   }
 
+  x () {
+    return this._rangeX[0]
+  }
+
+  w () {
+    return this._rangeX[1] - this._rangeX[0]
+  }
+
+  y () {
+    return this._rangeY[0]
+  }
+
+  h () {
+    return this._rangeY[1] - this._rangeY[0]
+  }
+
+  scales () {
+    let scaleX = this._scaleX
+    let scaleY = this._scaleY
+    return { scaleX, scaleY }
+  }
+
   _handleRanges (rangeX, rangeY) {
-    validateRange(rangeX)
     this._rangeX = rangeX
-    
-    validateRange(rangeY)
     this._rangeY = rangeY
   }
 
   _handleScales (scaleX, scaleY) {
     if (scaleX) {
-      // TODO
+      this._scaleX = scaleX.copy().range(this._rangeX)
     }
 
     if (!scaleX) {
@@ -27,15 +46,11 @@ export default class CoordinateContext {
     }
 
     if (scaleY) {
-      // TODO
+      this._scaleY = scaleY.copy().range(this._rangeY)
     }
 
     if (!scaleY) {
       this._scaleY = y => y
     }
   }
-}
-
-function validateRange (range) {
-  // TODO
 }

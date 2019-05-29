@@ -13,19 +13,15 @@
   export let scaleY = undefined
 
   $: parentCoordinateContext = getContext(coordinateContextKey)
-  $: pixelCoordinates = generatePixelCoordinates(x, w, y, h, parentCoordinateContext)
+
+  $: coordinates = { x, w, y, h }
+  $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
 
   $: rangeX = [pixelCoordinates.x, pixelCoordinates.x + pixelCoordinates.w]
   $: rangeY = [pixelCoordinates.y, pixelCoordinates.y + pixelCoordinates.h]
 
-  // $: scales = parseScales(scaleX, scaleY, rangeX, rangeY)
-   
-  // function parseScales (scaleX, scaleY, rangeX, rangeY) {
-  //   return {
-  //     x: scaleX ? scaleX.copy().range(rangeX) : undefined,
-  //     y: scaleY ? scaleY.copy().range(rangeY) : undefined
-  //   }
-  // }
+  const coordinateContext = new CoordinateContext({ rangeX, rangeY, scaleX, scaleY })
+  setContext(coordinateContextKey, coordinateContext)
 </script>
 
 <g>
