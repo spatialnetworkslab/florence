@@ -1,9 +1,9 @@
 <script>
   import { getContext, setContext, onDestroy } from 'svelte'
   import { writable } from 'svelte/store'
-  import { coordinateContextKey } from '../../contextKeys.js'
-  import CoordinateContext from '../../../classes/CoordinateContext'
-  import { generatePixelCoordinates } from '../../../rendering/rectangle'
+  import { coordinateContextKey } from '../contextKeys.js'
+  import CoordinateContext from '../../classes/CoordinateContext'
+  import { generatePixelCoordinates } from '../../rendering/rectangle'
 
   export let x1 = undefined
   export let x2 = undefined

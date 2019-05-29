@@ -1,8 +1,8 @@
 <script>
   import  { setContext } from 'svelte'
   import { writable } from 'svelte/store'
-  import { coordinateContextKey } from '../../contextKeys.js'
-  import CoordinateContext from '../../../classes/CoordinateContext'
+  import { coordinateContextKey } from '../contextKeys.js'
+  import CoordinateContext from '../../classes/CoordinateContext'
 
   export let width
   export let height
