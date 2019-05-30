@@ -48,7 +48,7 @@
 
 				<Point 
 					x={row.a} 
-					y={row.b} 
+					y={row.b}
 				/>
 
 			{/each}
