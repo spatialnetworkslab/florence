@@ -23,7 +23,7 @@ function calculateCenter (rangeX, rangeY) {
   const x = (rangeX[0] + rangeX[1]) / 2
   const y = (rangeY[0] + rangeY[1]) / 2
 
-  return { x, y }
+  return [x, y]
 }
 
 function polarToCartesian (theta, radius) {

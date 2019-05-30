@@ -21,7 +21,7 @@
   })
 
   $: coordinates = { x1, x2, y1, y2 }
-  $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
+  $: pixelCoordinates = generatePixelCoordinates(coordinates, coordinateContext)
 
   $: rangeX = [pixelCoordinates.x1, pixelCoordinates.x2]
   $: rangeY = [pixelCoordinates.y1, pixelCoordinates.y2]

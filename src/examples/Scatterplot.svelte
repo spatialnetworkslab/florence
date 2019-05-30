@@ -1,6 +1,6 @@
 <script>
 	import { scaleLinear } from 'd3-scale'
-	import { Graphic, Section, Point, DataContainer } from '../sveg'
+	import { Graphic, Section, CoordinateTransformation, Point, Rectangle, DataContainer } from '../sveg'
 
 	export let N = 100
 
@@ -44,14 +44,22 @@
 			scaleY={scaleB}
 		>
 
-			{#each data.rows() as row (row.$index)}
+      <Rectangle />
+      <Point x={() => 250} y={() => 250} fill="white" radius={10} />
 
-				<Point 
-					x={row.a} 
-					y={row.b}
-				/>
+			<CoordinateTransformation transformation="polar">
+      
+        {#each data.rows() as row (row.$index)}
 
-			{/each}
+				  <Point 
+					  x={row.a}
+					  y={row.b}
+            fill="green"
+				  />
+
+			  {/each}
+
+      </CoordinateTransformation>
 		
 		</Section>
 

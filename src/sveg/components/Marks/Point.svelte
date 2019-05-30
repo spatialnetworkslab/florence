@@ -3,28 +3,45 @@
   import { coordinateContextKey, transformationContextKey } from '../contextKeys.js'
   import { generatePixelCoordinates } from '../../rendering/point'
 
+  // Props
   export let x
   export let y
   export let radius = 3
   export let fill = 'black'
 
+  // Contexts
   let coordinateContext
+  let transformationContext
 
   const unsubscribeCoordinateContext = getContext(coordinateContextKey)
     .subscribe(ctx => {
     coordinateContext = ctx
   })
 
-  $: coordinates = { x, y }
+  let unsubscribeTransformationContext
+
+  if (getContext(transformationContextKey)) {
+    unsubscribeTransformationContext = getContext(transformationContextKey)
+      .subscribe(ctx => {
+        transformationContext = ctx
+    })
+  }
+
+  // Pixel coordinates
   $: pixelCoordinates = generatePixelCoordinates(
-    coordinates, 
-    coordinateContext
+    { x, y }, 
+    coordinateContext,
+    transformationContext
   )
 
-  $: cx = pixelCoordinates.x
-  $: cy = pixelCoordinates.y
+  // SVG specific
+  $: cx = pixelCoordinates[0]
+  $: cy = pixelCoordinates[1]
 
-  onDestroy(unsubscribeCoordinateContext)
+  onDestroy(() => {
+    unsubscribeCoordinateContext()
+    unsubscribeTransformationContext()
+  })
 </script>
 
 <circle {cx} {cy} r={radius} {fill} />
