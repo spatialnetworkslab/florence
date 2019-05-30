@@ -36,6 +36,7 @@
     scaleX={scaleLinear().domain([0, 500])}
     scaleY={scaleLinear().domain([0, 500])}
   >
+    <Point x={250} y={250} fill="black" radius={10} />
 		
 		<Section
 			x1={50} x2={450}
@@ -43,9 +44,6 @@
 			scaleX={scaleA}
 			scaleY={scaleB}
 		>
-
-      <Rectangle />
-      <Point x={() => 250} y={() => 250} fill="white" radius={10} />
 
 			<CoordinateTransformation transformation="polar">
       
