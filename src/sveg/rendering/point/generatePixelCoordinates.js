@@ -1,4 +1,5 @@
 // import { isInvalid } from '../../utils/equals.js'
+import { interpolationNecessary } from '../utils/interpolate.js'
 
 export default function ({ x, y }, coordinateContext, transformationContext) {
   const scales = coordinateContext.scales()
@@ -9,7 +10,7 @@ export default function ({ x, y }, coordinateContext, transformationContext) {
 
   let pixelCoords
 
-  if (transformationContext) {
+  if (interpolationNecessary(transformationContext)) {
     pixelCoords = transformationContext.transform([scaledX, scaledY])
   } else {
     pixelCoords = [scaledX, scaledY]

@@ -22,6 +22,7 @@
   const scaleB = scaleLinear().domain(data.domain('b'))
   
   let height = 500
+  let transformation = 'cartesian'
 </script>
 
 <div>
@@ -36,7 +37,7 @@
     scaleX={scaleLinear().domain([0, 500])}
     scaleY={scaleLinear().domain([0, 500])}
   >
-    <Point x={250} y={250} fill="black" radius={10} />
+    <Point x={250} y={250} fill="red" radius={10} />
 		
 		<Section
 			x1={50} x2={450}
@@ -45,14 +46,14 @@
 			scaleY={scaleB}
 		>
 
-			<CoordinateTransformation transformation="polar">
+			<CoordinateTransformation {transformation}>
       
         {#each data.rows() as row (row.$index)}
 
 				  <Point 
 					  x={row.a}
 					  y={row.b}
-            fill="green"
+            fill="black"
 				  />
 
 			  {/each}
@@ -63,4 +64,12 @@
 
 	</Graphic>
 
+</div>
+
+<div>
+  <label for="coordinate-select">Coordinates:</label>
+  <select name="coordinate-select" bind:value={transformation}>
+    <option value="cartesian">Cartesian</option>
+    <option value="polar">Polar</option>
+  </select>
 </div>
