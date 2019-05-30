@@ -1,27 +1,30 @@
 <script>
   import { getContext, onDestroy } from 'svelte'
-  import { coordinateContextKey } from '../contextKeys.js'
+  import { coordinateContextKey, transformationContextKey } from '../contextKeys.js'
   import { generatePixelCoordinates } from '../../rendering/point'
 
   export let x
   export let y
-
   export let radius = 3
   export let fill = 'black'
 
-  let parentCoordinateContext
+  let coordinateContext
 
-  const unsubscribe = getContext(coordinateContextKey).subscribe(coordinateContext => {
-    parentCoordinateContext = coordinateContext
+  const unsubscribeCoordinateContext = getContext(coordinateContextKey)
+    .subscribe(ctx => {
+    coordinateContext = ctx
   })
 
   $: coordinates = { x, y }
-  $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
+  $: pixelCoordinates = generatePixelCoordinates(
+    coordinates, 
+    coordinateContext
+  )
 
   $: cx = pixelCoordinates.x
   $: cy = pixelCoordinates.y
 
-  onDestroy(unsubscribe)
+  onDestroy(unsubscribeCoordinateContext)
 </script>
 
 <circle {cx} {cy} r={radius} {fill} />

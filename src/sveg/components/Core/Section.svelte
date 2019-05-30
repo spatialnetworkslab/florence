@@ -13,10 +13,11 @@
   export let scaleX = undefined
   export let scaleY = undefined
 
-  let parentCoordinateContext
+  let coordinateContext
 
-  const unsubscribe = getContext(coordinateContextKey).subscribe(coordinateContext => {
-    parentCoordinateContext = coordinateContext
+  const unsubscribeCoordinateContext = getContext(coordinateContextKey)
+    .subscribe(ctx => {
+    coordinateContext = ctx
   })
 
   $: coordinates = { x1, x2, y1, y2 }
@@ -25,15 +26,15 @@
   $: rangeX = [pixelCoordinates.x1, pixelCoordinates.x2]
   $: rangeY = [pixelCoordinates.y1, pixelCoordinates.y2]
 
-  const coordinateContext = writable()
+  const newCoordinateContext = writable()
   
-  setContext(coordinateContextKey, coordinateContext)
+  setContext(coordinateContextKey, newCoordinateContext)
 
   $: {
-    coordinateContext.set(new CoordinateContext({ rangeX, rangeY, scaleX, scaleY }))
+    newCoordinateContext.set(new CoordinateContext({ rangeX, rangeY, scaleX, scaleY }))
   }
 
-  onDestroy(unsubscribe)
+  onDestroy(unsubscribeCoordinateContext)
 </script>
 
 <g>

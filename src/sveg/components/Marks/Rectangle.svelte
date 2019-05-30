@@ -1,24 +1,28 @@
 <script>
   import { getContext, onDestroy } from 'svelte'
-  import { coordinateContextKey } from '../contextKeys.js'
+  import { coordinateContextKey, transformationContextKey } from '../contextKeys.js'
   import { generatePixelCoordinates, generatePath } from '../../rendering/rectangle'
-
 
   export let x1 = undefined
   export let x2 = undefined
   export let y1 = undefined
   export let y2 = undefined
 
-  let parentCoordinateContext
-  const unsubscribe = getContext(coordinateContextKey).subscribe(coordinateContext => {
-    parentCoordinateContext = coordinateContext
+  let coordinateContext
+
+  const unsubscribeCoordinateContext = getContext(coordinateContextKey)
+    .subscribe(ctx => {
+    coordinateContext = ctx
   })
 
   $: coordinates = { x1, x2, y1, y2 }
-  $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
+  $: pixelCoordinates = generatePixelCoordinates(
+    coordinates, 
+    coordinateContext
+  )
   $: path = generatePath(pixelCoordinates)
 
-  onDestroy(unsubscribe)
+  onDestroy(unsubscribeCoordinateContext)
 </script>
 
 <path d={path} />

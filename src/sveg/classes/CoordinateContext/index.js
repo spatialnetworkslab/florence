@@ -9,6 +9,14 @@ export default class CoordinateContext {
     this._handleScales(scaleX, scaleY)
   }
 
+  rangeX () {
+    return this._rangeX
+  }
+
+  rangeY () {
+    return this._rangeY
+  }
+
   x1 () {
     return this._rangeX[0]
   }
