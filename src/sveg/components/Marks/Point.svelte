@@ -1,5 +1,7 @@
 <script>
   import { getContext, onDestroy } from 'svelte'
+  import { tweened } from 'svelte/motion'
+  import { cubicOut } from 'svelte/easing'
   import { coordinateContextKey, transformationContextKey } from '../contextKeys.js'
   import { generateCoordinates } from '../../rendering/point'
 
@@ -29,22 +31,34 @@
   }
 
   // Pixel coordinates
-  $: coordinates = generateCoordinates(
+  let coordinates = generateCoordinates(
     { x, y }, 
     coordinateContext,
     transformationContext
   )
 
-  // Transition logic
-  if (transition) {
-    if (!transition.constructor === Number) throw new Error('Transition must be number')
-
-
-  }
-
   // SVG specific
-  $: cx = coordinates[0]
-  $: cy = coordinates[1]
+  const cx = tweened(coordinates[0], {
+    duration: transition * 1000,
+    easing: cubicOut
+  })
+  const cy = tweened(coordinates[1], {
+    duration: transition * 1000,
+    easing: cubicOut
+  })
+
+  $: {
+    if (transition) {
+      let coordinates = generateCoordinates(
+        { x, y }, 
+        coordinateContext,
+        transformationContext
+      )
+
+      cx.set(coordinates[0])
+      cy.set(coordinates[1])
+    }
+  }
 
   // Cleanup
   onDestroy(() => {
@@ -53,4 +67,4 @@
   })
 </script>
 
-<circle {cx} {cy} r={radius} {fill} />
+<circle cx={$cx} cy={$cy} r={radius} {fill} />
