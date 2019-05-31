@@ -1,13 +1,14 @@
 <script>
   import { getContext, onDestroy } from 'svelte'
   import { coordinateContextKey, transformationContextKey } from '../contextKeys.js'
-  import { generatePixelCoordinates } from '../../rendering/point'
+  import { generateCoordinates } from '../../rendering/point'
 
   // Props
   export let x
   export let y
   export let radius = 3
   export let fill = 'black'
+  export let transition = undefined
 
   // Contexts
   let coordinateContext
@@ -28,16 +29,24 @@
   }
 
   // Pixel coordinates
-  $: pixelCoordinates = generatePixelCoordinates(
+  $: coordinates = generateCoordinates(
     { x, y }, 
     coordinateContext,
     transformationContext
   )
 
-  // SVG specific
-  $: cx = pixelCoordinates[0]
-  $: cy = pixelCoordinates[1]
+  // Transition logic
+  if (transition) {
+    if (!transition.constructor === Number) throw new Error('Transition must be number')
 
+
+  }
+
+  // SVG specific
+  $: cx = coordinates[0]
+  $: cy = coordinates[1]
+
+  // Cleanup
   onDestroy(() => {
     unsubscribeCoordinateContext()
     unsubscribeTransformationContext()

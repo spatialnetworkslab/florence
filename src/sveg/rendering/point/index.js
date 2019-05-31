@@ -1,3 +1,3 @@
-import generatePixelCoordinates from './generatePixelCoordinates.js'
+import generateCoordinates from './generateCoordinates.js'
 
-export { generatePixelCoordinates }
+export { generateCoordinates }

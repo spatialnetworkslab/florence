@@ -66,13 +66,6 @@
 
      {/each}
 
-      <!-- <Rectangle 
-        x1={'banana'}
-        x2={({ scaleX }) => scaleX('banana') + scaleX.bandwidth()}
-        y1={0}
-        y2={7.5}
-      /> -->
-
     </CoordinateTransformation>
 
   </Section>
