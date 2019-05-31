@@ -31,6 +31,14 @@
 </div>
 
 <div>
+  <label for="coordinate-select">Coordinates:</label>
+  <select name="coordinate-select" bind:value={transformation}>
+    <option value="cartesian">Cartesian</option>
+    <option value="polar">Polar</option>
+  </select>
+</div>
+
+<div>
 
 	<Graphic 
     width={500} {height}
@@ -64,12 +72,4 @@
 
 	</Graphic>
 
-</div>
-
-<div>
-  <label for="coordinate-select">Coordinates:</label>
-  <select name="coordinate-select" bind:value={transformation}>
-    <option value="cartesian">Cartesian</option>
-    <option value="polar">Polar</option>
-  </select>
 </div>

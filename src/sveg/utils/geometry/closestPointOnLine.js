@@ -1,9 +1,9 @@
 import pointDistance from './pointDistance.js'
 
-export function pointIntersectsLineSegment (point, lineSegment, treshold) {
+export function pointIntersectsLineSegment (point, lineSegment, lineWidth) {
   let distance = distanceClosestPointOnLineSegment(point, lineSegment)
 
-  return distance < (treshold / 2)
+  return distance < lineWidth
 }
 
 export function distanceClosestPointOnLineSegment (point, lineSegment) {

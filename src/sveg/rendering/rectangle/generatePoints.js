@@ -1,10 +1,15 @@
 import { isInvalid } from '../../utils/equals.js'
+import resample from '../utils/resample.js'
 
-export default function (coordinates, coordinateContext) {
+export default function (coordinates, coordinateContext, transformationContext) {
   throwErrorIfInvalidCombination(coordinates)
   validateTypes(coordinates)
 
-  return generatePixelCoordinates(coordinates, coordinateContext)
+  let pixelCoordinates = generatePixelCoordinates(coordinates, coordinateContext)
+  let points = generatePoints(pixelCoordinates)
+  points = resample(points, transformationContext)
+
+  return points
 }
 
 const s = JSON.stringify
@@ -39,7 +44,7 @@ function validateTypes (coordinates) {
   }
 }
 
-function generatePixelCoordinates ({ x1, x2, y1, y2 }, coordinateContext) {
+export function generatePixelCoordinates ({ x1, x2, y1, y2 }, coordinateContext) {
   const pixelCoordinates = {}
 
   if (wereSpecified(x1, x2)) {
@@ -82,4 +87,14 @@ function generateCoordinate (coordinate, coordinateName, coordinateContext) {
 function throwErrorIfInvalidValue (input, output, coordinateName) {
   const parentScale = ['x1', 'x2'].includes(coordinateName) ? 'scaleX' : 'scaleY'
   if (isInvalid(output)) throw new Error(`Scale '${parentScale}' received '${s(input)}' and returned '${s(output)}`)
+}
+
+function generatePoints ({ x1, x2, y1, y2 }) {
+  return [
+    [x1, y1],
+    [x1, y2],
+    [x2, y2],
+    [x2, y1],
+    [x1, y1]
+  ]
 }

@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, Rectangle, DataContainer } from '../sveg'
+  import { Graphic, Section, CoordinateTransformation, Rectangle, DataContainer } from '../sveg'
   
   let data = new DataContainer({ 
     quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
@@ -20,11 +20,20 @@
   const scaleMeanQuantity = scaleLinear().domain(meanQuantityDomain)
 
   let height = 500
+  let transformation = 'cartesian'
 </script>
 
 <div>
   <label for="height-slider">Height:</label>
   <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
+</div>
+
+<div>
+  <label for="coordinate-select">Coordinates:</label>
+  <select name="coordinate-select" bind:value={transformation}>
+    <option value="cartesian">Cartesian</option>
+    <option value="polar">Polar</option>
+  </select>
 </div>
 
 <Graphic 
@@ -40,16 +49,20 @@
 		scaleY={scaleMeanQuantity}
   >
   
-    {#each data.rows() as row}
+    <CoordinateTransformation {transformation}>
+    
+      {#each data.rows() as row}
 
-      <Rectangle
-        x1={row.fruit}
-        x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
-        y1={0}
-        y2={row.meanQuantity}
-      />
+        <Rectangle
+         x1={row.fruit}
+         x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
+         y1={0}
+         y2={row.meanQuantity}
+        />
 
-    {/each}
+     {/each}
+
+    </CoordinateTransformation>
 
   </Section>
 

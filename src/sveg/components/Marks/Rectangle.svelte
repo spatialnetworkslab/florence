@@ -1,7 +1,7 @@
 <script>
   import { getContext, onDestroy } from 'svelte'
   import { coordinateContextKey, transformationContextKey } from '../contextKeys.js'
-  import { generatePixelCoordinates, generatePath } from '../../rendering/rectangle'
+  import { generatePoints, generatePath } from '../../rendering/rectangle'
 
   // Props
   export let x1 = undefined
@@ -11,23 +11,36 @@
 
   // Contexts
   let coordinateContext
-  let transformationContext // TODO
+  let transformationContext
 
   const unsubscribeCoordinateContext = getContext(coordinateContextKey)
     .subscribe(ctx => {
     coordinateContext = ctx
   })
 
-  $: coordinates = { x1, x2, y1, y2 }
-  $: pixelCoordinates = generatePixelCoordinates(
-    coordinates, 
-    coordinateContext
+  let unsubscribeTransformationContext
+
+  if (getContext(transformationContextKey)) {
+    unsubscribeTransformationContext = getContext(transformationContextKey)
+      .subscribe(ctx => {
+        transformationContext = ctx
+    })
+  }
+
+  // Pixel coordinates
+  $: points = generatePoints(
+    { x1, x2, y1, y2 }, 
+    coordinateContext,
+    transformationContext
   )
 
   // SVG specific
-  $: path = generatePath(pixelCoordinates)
+  $: path = generatePath(points)
 
-  onDestroy(unsubscribeCoordinateContext)
+  onDestroy(() => {
+    unsubscribeCoordinateContext()
+    unsubscribeTransformationContext()
+  })
 </script>
 
 <path d={path} />
