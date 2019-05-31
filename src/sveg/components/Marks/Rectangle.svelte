@@ -9,6 +9,7 @@
   export let y1 = undefined
   export let y2 = undefined
   export let fill = 'black'
+  export let transition = undefined
 
   // Contexts
   let coordinateContext
@@ -29,14 +30,14 @@
   }
 
   // Pixel coordinates
-  $: points = generatePoints(
+  let points = generatePoints(
     { x1, x2, y1, y2 }, 
     coordinateContext,
     transformationContext
   )
 
   // SVG specific
-  $: path = generatePath(points)
+  let path = generatePath(points)
 
   onDestroy(() => {
     unsubscribeCoordinateContext()

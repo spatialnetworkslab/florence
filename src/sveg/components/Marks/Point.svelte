@@ -39,11 +39,11 @@
 
   // SVG specific
   const cx = tweened(coordinates[0], {
-    duration: transition * 1000,
+    duration: 1000,
     easing: cubicOut
   })
   const cy = tweened(coordinates[1], {
-    duration: transition * 1000,
+    duration: 1000,
     easing: cubicOut
   })
 
