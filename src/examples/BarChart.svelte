@@ -48,12 +48,10 @@
     scaleX={scaleFruit} 
 		scaleY={scaleMeanQuantity}
   >
-  
-    <Rectangle fill="green" />
 
     <CoordinateTransformation {transformation}>
 
-      <Rectangle fill="red" />
+      <Rectangle fill="red" transition={true} />
     
       {#each data.rows() as row}
 
@@ -62,6 +60,7 @@
          x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
          y1={0}
          y2={row.meanQuantity}
+         transition={true}
         />
 
      {/each}

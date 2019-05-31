@@ -1,5 +1,11 @@
 <script>
   import { getContext, onDestroy } from 'svelte'
+  import { tweened } from 'svelte/motion'
+  import { cubicOut } from 'svelte/easing'
+  import _interpolatePath from 'd3-interpolate-path'
+
+  const { interpolatePath } = _interpolatePath
+
   import { coordinateContextKey, transformationContextKey } from '../contextKeys.js'
   import { generatePoints, generatePath } from '../../rendering/rectangle'
 
@@ -37,7 +43,23 @@
   )
 
   // SVG specific
-  let path = generatePath(points)
+  let path = tweened(generatePath(points), {
+    duration: 1000,
+    easing: cubicOut,
+    interpolate: interpolatePath
+  })
+
+  $: {
+    if (transition) {
+      let points = generatePoints(
+        { x1, x2, y1, y2 }, 
+        coordinateContext,
+        transformationContext
+      )
+
+      path.set(generatePath(points))
+    }
+  }
 
   onDestroy(() => {
     unsubscribeCoordinateContext()
@@ -45,4 +67,4 @@
   })
 </script>
 
-<path d={path} {fill} />
+<path d={$path} {fill} />

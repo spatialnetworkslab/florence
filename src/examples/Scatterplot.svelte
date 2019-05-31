@@ -62,6 +62,7 @@
 					  x={row.a}
 					  y={row.b}
             fill="black"
+            transition={true}
 				  />
 
 			  {/each}
