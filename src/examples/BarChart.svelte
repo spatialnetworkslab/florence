@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, CoordinateTransformation, Rectangle, DataContainer } from '../sveg'
+  import { Graphic, Section, CoordinateTransformation, Point, Rectangle, DataContainer } from '../sveg'
   
   let data = new DataContainer({ 
     quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
@@ -49,7 +49,11 @@
 		scaleY={scaleMeanQuantity}
   >
   
+    <Rectangle fill="green" />
+
     <CoordinateTransformation {transformation}>
+
+      <Rectangle fill="red" />
     
       {#each data.rows() as row}
 
@@ -61,6 +65,13 @@
         />
 
      {/each}
+
+      <!-- <Rectangle 
+        x1={'banana'}
+        x2={({ scaleX }) => scaleX('banana') + scaleX.bandwidth()}
+        y1={0}
+        y2={7.5}
+      /> -->
 
     </CoordinateTransformation>
 

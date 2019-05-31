@@ -3,7 +3,7 @@ import pointDistance from './pointDistance.js'
 export function pointIntersectsLineSegment (point, lineSegment, lineWidth) {
   let distance = distanceClosestPointOnLineSegment(point, lineSegment)
 
-  return distance < lineWidth
+  return distance < (lineWidth / 2)
 }
 
 export function distanceClosestPointOnLineSegment (point, lineSegment) {

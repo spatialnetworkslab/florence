@@ -8,6 +8,7 @@
   export let x2 = undefined
   export let y1 = undefined
   export let y2 = undefined
+  export let fill = 'black'
 
   // Contexts
   let coordinateContext
@@ -43,4 +44,4 @@
   })
 </script>
 
-<path d={path} />
+<path d={path} {fill} />

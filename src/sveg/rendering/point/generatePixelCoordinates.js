@@ -1,4 +1,5 @@
 import { resamplingNecessary } from '../utils/resample.js'
+import { roundPoint } from '../../utils/round.js'
 
 export default function ({ x, y }, coordinateContext, transformationContext) {
   const scales = coordinateContext.scales()
@@ -15,10 +16,5 @@ export default function ({ x, y }, coordinateContext, transformationContext) {
     pixelCoords = [scaledX, scaledY]
   }
 
-  return pixelCoords.map(c => round(c, 2))
-}
-
-function round (value, decimals) {
-  const multiplier = 10 ** decimals
-  return Math.floor(value * multiplier) / multiplier
+  return roundPoint(pixelCoords)
 }

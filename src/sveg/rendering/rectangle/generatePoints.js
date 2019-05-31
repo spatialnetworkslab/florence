@@ -1,5 +1,6 @@
 import { isInvalid } from '../../utils/equals.js'
 import resample from '../utils/resample.js'
+import { roundPointArray } from '../../utils/round.js'
 
 export default function (coordinates, coordinateContext, transformationContext) {
   throwErrorIfInvalidCombination(coordinates)
@@ -9,7 +10,7 @@ export default function (coordinates, coordinateContext, transformationContext) 
   let points = generatePoints(pixelCoordinates)
   points = resample(points, transformationContext)
 
-  return points
+  return roundPointArray(points)
 }
 
 const s = JSON.stringify

@@ -7,14 +7,19 @@ export default function (points, transformationContext, visibilityTreshold = 1) 
     let transform = transformationContext.transform.bind(transformationContext)
     let resampledPoints = []
 
+    let from
+    let to
+
     for (let i = 0; i < points.length - 1; i++) {
       let j = i + 1
 
-      let from = points[i]
-      let to = points[j]
+      from = points[i]
+      to = points[j]
 
       resamplePoints(from, to, transform, visibilityTreshold, resampledPoints)
     }
+
+    resampledPoints.push(transform(to))
 
     return resampledPoints
   }
@@ -27,15 +32,13 @@ export function resamplingNecessary (transformationContext) {
 }
 
 function resamplePoints (from, to, transform, treshold, resampledPoints) {
-  let transformedFrom = transform(from)
-  let transformedTo = transform(to)
-
-  if (resamplingBetweenPointsNecessary(transformedFrom, transformedTo, transform, treshold)) {
+  if (resamplingBetweenPointsNecessary(from, to, transform, treshold)) {
     let midPoint = interpolatePoints(from, to, 1)[0]
 
     resamplePoints(from, midPoint, transform, treshold, resampledPoints)
     resamplePoints(midPoint, to, transform, treshold, resampledPoints)
   } else {
+    let transformedFrom = transform(from)
     resampledPoints.push(transformedFrom)
   }
 }
@@ -53,15 +56,15 @@ function interpolatePoints (from, to, numberOfPoints) {
 }
 
 function resamplingBetweenPointsNecessary (from, to, transform, treshold) {
-  // We will sample two points between 'from' and' to' and put them all in an Array.
+  // We will sample two points between 'from' and' to' and put all 4 points in an Array.
   let pointsInBetween = interpolatePoints(from, to, 2)
   let pointsPlusPointsInBetween = [from, ...pointsInBetween, to]
   let transformedPoints = pointsPlusPointsInBetween.map(transform)
 
-  // If the transformed points are really close together, we can skip the interpolation
+  // If the transformed points are really close together, we can skip the resampling
   if (pointsCloseTogether(transformedPoints, treshold)) return false
 
-  // If all the points are on the same line, we will also skip the interpolation
+  // If all the points are on the same line, we will also skip the resampling
   if (pointsOnOneLine(transformedPoints, treshold)) return false
 
   return true

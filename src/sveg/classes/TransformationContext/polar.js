@@ -2,14 +2,14 @@ import { scaleLinear } from 'd3-scale'
 
 export function createPolarTransformation (rangeX, rangeY) {
   const toTheta = scaleLinear().domain(rangeX).range([0, 2 * Math.PI])
-  const newRange = [rangeY[0] - rangeY[1], rangeY[1]]
+  const toRadius = scaleLinear().domain(rangeY).range([0, 1])
 
-  const fitX = scaleLinear().domain(newRange).range(rangeX)
-  const fitY = scaleLinear().domain(newRange).range(rangeY)
+  const fitX = scaleLinear().domain([-1, 1]).range(rangeX)
+  const fitY = scaleLinear().domain([-1, 1]).range(rangeY)
 
   return function transform ([x, y]) {
     const theta = toTheta(x)
-    const radius = y
+    const radius = toRadius(y)
     const coords = polarToCartesian(theta, radius)
 
     return [fitX(coords[0]), fitY(coords[1])]
