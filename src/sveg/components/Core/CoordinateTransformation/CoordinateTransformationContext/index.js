@@ -39,15 +39,8 @@ class CoordinateTransformationContext {
 const key = {}
 
 export function subscribe () {
-  let coordinateTransformationContext
-  let unsubscribeCoordinateTransformationContext = getContext(key)
-    .subscribe(ctx => {
-      coordinateTransformationContext = ctx
-    })
-
-  onDestroy(unsubscribeCoordinateTransformationContext)
-
-  return coordinateTransformationContext
+  // silly hack for when there is no CoordinateTransformation context
+  return getContext(key) ? getContext(key) : writable()
 }
 
 export function init () {

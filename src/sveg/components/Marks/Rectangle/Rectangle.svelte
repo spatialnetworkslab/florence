@@ -4,9 +4,9 @@
   import d3interpolatePath from 'd3-interpolate-path'
   const interpolatePath = d3interpolatePath.interpolatePath
 
-  import * as SectionContext from '../Core/Section/SectionContext'
-  import * as CoordinateTransformationContext from '../Core/CoordinateTransformation/CoordinateTransformationContext'
-  import generatePoints from '/generatePoints.js'
+  import * as SectionContext from '../../Core/Section/SectionContext'
+  import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
+  import generatePoints from './generatePoints.js'
   import generatePath from './generatePath.js'
 
   // Props
@@ -24,8 +24,8 @@
   // Pixel coordinates
   let points = generatePoints(
     { x1, x2, y1, y2 }, 
-    coordinateContext,
-    transformationContext
+    $sectionContext,
+    $coordinateTransformationContext
   )
 
   // SVG specific
@@ -39,8 +39,8 @@
     if (transition) {
       let points = generatePoints(
         { x1, x2, y1, y2 }, 
-        coordinateContext,
-        transformationContext
+        $sectionContext,
+        $coordinateTransformationContext
       )
 
       path.set(generatePath(points))

@@ -69,15 +69,7 @@ class SectionContext {
 const key = {}
 
 export function subscribe () {
-  let sectionContext
-  let unsubscribeSectionContext = getContext(key)
-    .subscribe(ctx => {
-      sectionContext = ctx
-    })
-
-  onDestroy(unsubscribeSectionContext)
-
-  return sectionContext
+  return getContext(key)
 }
 
 export function init () {

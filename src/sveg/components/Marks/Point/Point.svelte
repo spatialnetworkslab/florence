@@ -1,9 +1,9 @@
 <script>
   import { tweened } from 'svelte/motion'
   import { cubicOut } from 'svelte/easing'
-  import * as SectionContext from '../Core/Section/SectionContext'
-  import * as CoordinateTransformationContext from '../Core/CoordinateTransformation/CoordinateTransformationContext'
-  import { generateCoordinates } from './generateCoordinates.js'
+  import * as SectionContext from '../../Core/Section/SectionContext'
+  import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
+  import generateCoordinates from './generateCoordinates.js'
 
   // Props
   export let x
@@ -19,8 +19,8 @@
   // Pixel coordinates
   let coordinates = generateCoordinates(
     { x, y }, 
-    sectionContext,
-    coordinateTransformationContext
+    $sectionContext,
+    $coordinateTransformationContext
   )
 
   // SVG specific
@@ -37,8 +37,8 @@
     if (transition) {
       let coordinates = generateCoordinates(
         { x, y }, 
-        sectionContext,
-        coordinateTransformationContext
+        $sectionContext,
+        $coordinateTransformationContext
       )
 
       cx.set(coordinates[0])

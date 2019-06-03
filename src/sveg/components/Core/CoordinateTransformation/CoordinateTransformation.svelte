@@ -10,8 +10,8 @@
   const coordinateTransformationContext = CoordinateTransformationContext.init()
 
   $: {
-    let rangeX = sectionContext.rangeX()
-    let rangeY = sectionContext.rangeY()
+    let rangeX = $sectionContext.rangeX()
+    let rangeY = $sectionContext.rangeY()
     CoordinateTransformationContext.update(coordinateTransformationContext, { rangeX, rangeY, transformation })
   }
 </script>
