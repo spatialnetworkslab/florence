@@ -3,7 +3,7 @@
   import { tweened } from 'svelte/motion'
   import { cubicOut } from 'svelte/easing'
   import { coordinateContextKey, transformationContextKey } from '../contextKeys.js'
-  import { generateCoordinates } from '../../rendering/point'
+  import { generateCoordinates } from './generateCoordinates.js'
 
   // Props
   export let x

@@ -1,6 +1,6 @@
-import { isInvalid } from '../../utils/equals.js'
+import { isInvalid } from '../../../utils/equals.js'
 import resample from '../utils/resample.js'
-import { roundPointArray } from '../../utils/round.js'
+import { roundPointArray } from '../../../utils/round.js'
 
 export default function (coordinates, coordinateContext, transformationContext) {
   throwErrorIfInvalidCombination(coordinates)
@@ -37,7 +37,7 @@ function validateTypes (coordinates) {
 
     if (coordinate !== undefined) {
       if (isInvalid(coordinate)) throw invalidCoordinateValueError(coordinate, coordinateName)
-  
+
       if (![Number, String, Date, Function].includes(coordinate.constructor)) {
         throw invalidCoordinateValueError(coordinate, coordinateName)
       }

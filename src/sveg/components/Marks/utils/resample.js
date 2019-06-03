@@ -1,6 +1,6 @@
 import { interpolateArray } from 'd3-interpolate'
-import pointDistance from '../../utils/geometry/pointDistance.js'
-import { pointIntersectsLineSegment } from '../../utils/geometry/closestPointOnLine.js'
+import pointDistance from '../../../utils/geometry/pointDistance.js'
+import { pointIntersectsLineSegment } from '../../../utils/geometry/closestPointOnLine.js'
 
 export default function (points, transformationContext, visibilityTreshold = 1) {
   if (resamplingNecessary(transformationContext)) {

@@ -1,5 +1,5 @@
 import { resamplingNecessary } from '../utils/resample.js'
-import { roundPoint } from '../../utils/round.js'
+import { roundPoint } from '../../../utils/round.js'
 
 export default function ({ x, y }, coordinateContext, transformationContext) {
   const scales = coordinateContext.scales()
