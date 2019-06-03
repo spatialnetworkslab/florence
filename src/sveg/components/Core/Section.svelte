@@ -3,13 +3,12 @@
   import { writable } from 'svelte/store'
   import { coordinateContextKey } from '../contextKeys.js'
   import CoordinateContext from '../../classes/CoordinateContext'
-  import { generatePixelCoordinates } from '../../rendering/rectangle'
+  import { generatePixelCoordinates } from '../Marks/Rectangle/generatePoints.js'
 
   export let x1 = undefined
   export let x2 = undefined
   export let y1 = undefined
   export let y2 = undefined
-
   export let scaleX = undefined
   export let scaleY = undefined
 
