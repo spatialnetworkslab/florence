@@ -1,8 +1,8 @@
 <script>
-  import { getContext, onDestroy } from 'svelte'
   import { tweened } from 'svelte/motion'
   import { cubicOut } from 'svelte/easing'
-  import { coordinateContextKey, transformationContextKey } from '../contextKeys.js'
+  import * as SectionContext from '../Core/Section/SectionContext'
+  import * as CoordinateTransformationContext from '../Core/CoordinateTransformation/CoordinateTransformationContext'
   import { generateCoordinates } from './generateCoordinates.js'
 
   // Props
@@ -13,28 +13,14 @@
   export let transition = undefined
 
   // Contexts
-  let coordinateContext
-  let transformationContext
-
-  const unsubscribeCoordinateContext = getContext(coordinateContextKey)
-    .subscribe(ctx => {
-    coordinateContext = ctx
-  })
-
-  let unsubscribeTransformationContext
-
-  if (getContext(transformationContextKey)) {
-    unsubscribeTransformationContext = getContext(transformationContextKey)
-      .subscribe(ctx => {
-        transformationContext = ctx
-    })
-  }
+  const sectionContext = SectionContext.subscribe()
+  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
 
   // Pixel coordinates
   let coordinates = generateCoordinates(
     { x, y }, 
-    coordinateContext,
-    transformationContext
+    sectionContext,
+    coordinateTransformationContext
   )
 
   // SVG specific
@@ -51,20 +37,14 @@
     if (transition) {
       let coordinates = generateCoordinates(
         { x, y }, 
-        coordinateContext,
-        transformationContext
+        sectionContext,
+        coordinateTransformationContext
       )
 
       cx.set(coordinates[0])
       cy.set(coordinates[1])
     }
   }
-
-  // Cleanup
-  onDestroy(() => {
-    unsubscribeCoordinateContext()
-    unsubscribeTransformationContext()
-  })
 </script>
 
 <circle cx={$cx} cy={$cy} r={radius} {fill} />

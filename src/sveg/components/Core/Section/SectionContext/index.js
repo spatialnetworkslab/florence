@@ -1,4 +1,7 @@
-export default class CoordinateContext {
+import { getContext, setContext, onDestroy } from 'svelte'
+import { writable } from 'svelte/store'
+
+class SectionContext {
   constructor ({ rangeX, rangeY, scaleX, scaleY }) {
     this._rangeX = undefined
     this._rangeY = undefined
@@ -61,4 +64,29 @@ export default class CoordinateContext {
       this._scaleY = y => y
     }
   }
+}
+
+const key = {}
+
+export function subscribe () {
+  let sectionContext
+  let unsubscribeSectionContext = getContext(key)
+    .subscribe(ctx => {
+      sectionContext = ctx
+    })
+
+  onDestroy(unsubscribeSectionContext)
+
+  return sectionContext
+}
+
+export function init () {
+  let sectionContext = writable()
+  setContext(key, sectionContext)
+
+  return sectionContext
+}
+
+export function update (sectionContext, options) {
+  sectionContext.set(new SectionContext(options))
 }

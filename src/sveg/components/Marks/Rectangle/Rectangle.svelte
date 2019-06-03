@@ -1,13 +1,13 @@
 <script>
-  import { getContext, onDestroy } from 'svelte'
   import { tweened } from 'svelte/motion'
   import { cubicOut } from 'svelte/easing'
-  import _interpolatePath from 'd3-interpolate-path'
+  import d3interpolatePath from 'd3-interpolate-path'
+  const interpolatePath = d3interpolatePath.interpolatePath
 
-  const { interpolatePath } = _interpolatePath
-
-  import { coordinateContextKey, transformationContextKey } from '../contextKeys.js'
-  import { generatePoints, generatePath } from '../../rendering/rectangle'
+  import * as SectionContext from '../Core/Section/SectionContext'
+  import * as CoordinateTransformationContext from '../Core/CoordinateTransformation/CoordinateTransformationContext'
+  import generatePoints from '/generatePoints.js'
+  import generatePath from './generatePath.js'
 
   // Props
   export let x1 = undefined
@@ -18,22 +18,8 @@
   export let transition = undefined
 
   // Contexts
-  let coordinateContext
-  let transformationContext
-
-  const unsubscribeCoordinateContext = getContext(coordinateContextKey)
-    .subscribe(ctx => {
-    coordinateContext = ctx
-  })
-
-  let unsubscribeTransformationContext
-
-  if (getContext(transformationContextKey)) {
-    unsubscribeTransformationContext = getContext(transformationContextKey)
-      .subscribe(ctx => {
-        transformationContext = ctx
-    })
-  }
+  const sectionContext = SectionContext.subscribe()
+  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
 
   // Pixel coordinates
   let points = generatePoints(
@@ -60,11 +46,6 @@
       path.set(generatePath(points))
     }
   }
-
-  onDestroy(() => {
-    unsubscribeCoordinateContext()
-    unsubscribeTransformationContext()
-  })
 </script>
 
 <path d={$path} {fill} />
