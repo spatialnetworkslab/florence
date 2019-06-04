@@ -1,4 +1,4 @@
-export function point (points, transformFunc) {
+export function point (point, transformFunc) {
   return transformFunc(point)
 }
 

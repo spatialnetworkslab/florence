@@ -23,6 +23,7 @@
   
   let height = 500
   let transformation = 'identity'
+  let duration = 2000
 </script>
 
 <div>
@@ -36,6 +37,11 @@
     <option value="identity">Identity</option>
     <option value="polar">Polar</option>
   </select>
+</div>
+
+<div>
+  <label for="duration">Transition time</label>
+  <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
 </div>
 
 <div>
@@ -61,8 +67,9 @@
 				  <Point 
 					  x={row.a}
 					  y={row.b}
-            fill="black"
-            transition={true}
+            fill={transformation === 'identity' ? 'black' : 'blue' }
+            radius={transformation === 'identity' ? 3 : Math.random() * 10}
+            transition={duration}
 				  />
 
 			  {/each}
