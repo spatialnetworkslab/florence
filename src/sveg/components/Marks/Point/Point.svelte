@@ -33,8 +33,6 @@
     radius,
     fill
   }
-
-
 </script>
 
 {#if $graphicContext.output() === 'svg'}

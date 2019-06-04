@@ -5,7 +5,7 @@
   
   import { scaleCoordinates, createCornerPoints } from './scaleCoordinates.js'
   import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
-  import generatePath from './generatePath.js'
+  import generatePath from '../utils/generatePath.js'
 
   // Props
   export let x1 = undefined
