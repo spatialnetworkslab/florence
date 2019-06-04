@@ -1,4 +1,4 @@
-export function getCells ( specs, ranges ) {
+export function getRowCells ( specs, ranges ) {
 	let cells
 
 	if (specs.constructor === String) {
@@ -15,17 +15,37 @@ export function getCells ( specs, ranges ) {
 
 	if (numCells > 1) {
 		for (let i = 0; i < numCells; i++) {
-        let rangeX = [i * stepX, (i + 1) * stepX]
+			cellSpecs.push({x1: i * stepX + ranges.x1,
+      								x2: (i + 1) * stepX + ranges.x1,
+      								y1: ranges.y1,
+      								y2: ranges.y2})
+      }
+	}
 
-        console.log({x1: i * stepX,
-        								x2: (i + 1) * stepX,
-        								y1: ranges.y1,
-        								y2: ranges.y2})
+	return cellSpecs
+}
 
-        cellSpecs.push({x1: i * stepX,
-        								x2: (i + 1) * stepX,
-        								y1: ranges.y1,
-        								y2: ranges.y2})
+export function getColCells ( specs, ranges ) {
+	let cells
+
+	if (specs.constructor === String) {
+		// include string parsing logic here
+	} else if (specs.constructor === Array) {
+		cells = specs
+	}
+
+	let numCells = cells.length
+
+	let stepY = (ranges.y2 - ranges.y1)/numCells
+
+	let cellSpecs = []
+
+	if (numCells > 1) {
+		for (let i = 0; i < numCells; i++) {
+			cellSpecs.push({y1: i * stepY  + ranges.y1,
+      								y2: (i + 1) * stepY  + ranges.y1,
+      								x1: ranges.x1,
+      								x2: ranges.x2})
       }
 	}
 
