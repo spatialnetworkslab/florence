@@ -22,7 +22,7 @@
   const scaleB = scaleLinear().domain(data.domain('b'))
   
   let height = 500
-  let transformation = 'cartesian'
+  let transformation = 'identity'
 </script>
 
 <div>
@@ -33,7 +33,7 @@
 <div>
   <label for="coordinate-select">Coordinates:</label>
   <select name="coordinate-select" bind:value={transformation}>
-    <option value="cartesian">Cartesian</option>
+    <option value="identity">Identity</option>
     <option value="polar">Polar</option>
   </select>
 </div>

@@ -13,7 +13,7 @@ class CoordinateTransformationContext {
       this._type = transformation
 
       switch (transformation) {
-        case 'cartesian':
+        case 'identity':
           this._transformation = c => c
           break
 

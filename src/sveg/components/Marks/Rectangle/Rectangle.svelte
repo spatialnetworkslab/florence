@@ -4,8 +4,7 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   
   import { scaleCoordinates, createCornerPoints } from './scaleCoordinates.js'
-  import { transformPoints, determineInterpolation } from './transformPoints.js'
-  import resample from '../utils/resample.js'
+  import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
   import generatePath from './generatePath.js'
 
   // Props
@@ -15,7 +14,7 @@
   export let y2 = undefined
   export let fill = 'black'
   export let transition = undefined
-  export let interpolate = undefined
+  export let interpolate = true
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -25,14 +24,14 @@
   // Convert coordinates
   $: scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
   $: cornerPoints = createCornerPoints(scaledCoordinates)
-  $: transformedPoints = resample(
-    scaledCoordinates, 
+  $: transformedPoints = applyCoordinateTransformation(
+    cornerPoints, 
     $coordinateTransformationContext,
-    determineInterpolation(interpolate)
+    interpolate
   )
 
   // Aesthetics
-  // TODO fix this shit
+  // TODO: fix this shit
   $: aesthetics = {
     points: transformedPoints,
     fill

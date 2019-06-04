@@ -4,7 +4,7 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   
   import scaleCoordinates from './scaleCoordinates.js'
-  import transformCoordinates from './transformCoordinates.js'
+  import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
 
   // Props
   export let x
@@ -20,13 +20,16 @@
 
   // Convert coordinates
   $: scaledCoordinates = scaleCoordinates({ x, y }, $sectionContext)
-  $: transformedCoordinates = transformCoordinates(scaledCoordinates, $coordinateTransformationContext)
+  $: transformedCoordinates = applyCoordinateTransformation(
+    [scaledCoordinates.x, scaledCoordinates.y], 
+    $coordinateTransformationContext
+  )
 
   // Aesthetics
-  // TODO: make this shit reactive
+  // TODO: fix this shit
   $: aesthetics = {
-    x: transformedCoordinates.x,
-    y: transformedCoordinates.y,
+    x: transformedCoordinates[0],
+    y: transformedCoordinates[1],
     radius,
     fill
   }
@@ -37,8 +40,8 @@
 {#if $graphicContext.output() === 'svg'}
 
   <circle 
-    cx={aesthetics.cx} 
-    cy={aesthetics.cy} 
+    cx={aesthetics.x} 
+    cy={aesthetics.y} 
     r={aesthetics.radius} 
     fill={aesthetics.fill} 
   />
