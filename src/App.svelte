@@ -1,6 +1,7 @@
 <script>
   import BarChart from './examples/BarChart.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
+  import GridLayout from './examples/GridLayout.svelte'
 </script>
 
 <style>
@@ -27,6 +28,11 @@
   <div class="graphic-holder">
     <h1>Scatterplot</h1>
     <Scatterplot />
+  </div> 
+
+  <div class="graphic-holder">
+    <h1>Grid</h1>
+    <GridLayout />
   </div>  
 
 </div>
