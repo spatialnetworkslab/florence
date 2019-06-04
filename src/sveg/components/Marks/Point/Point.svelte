@@ -7,8 +7,7 @@
   
   import scaleCoordinates from './scaleCoordinates.js'
   import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
-
-  import { createTransitionableAesthetic, createOptions } from './transitions.js'
+  import { createTransitionableAesthetic, createOptions } from '../utils/transitions.js'
 
   // Props
   export let x
