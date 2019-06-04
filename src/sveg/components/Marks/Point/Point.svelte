@@ -1,5 +1,5 @@
 <script>
-  import * as GraphicContext from '../../Graphic/GraphicContext'
+  import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   

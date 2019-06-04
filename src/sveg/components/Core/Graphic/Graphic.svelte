@@ -1,5 +1,5 @@
 <script>
-  import * as GraphicContext from '../Graphic/GraphicContext'
+  import * as GraphicContext from './GraphicContext'
   import * as SectionContext from '../Section/SectionContext'
 
   export let width
