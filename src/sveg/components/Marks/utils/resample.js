@@ -2,26 +2,33 @@ import { interpolateArray } from 'd3-interpolate'
 import pointDistance from '../../../utils/geometry/pointDistance.js'
 import { pointIntersectsLineSegment } from '../../../utils/geometry/closestPointOnLine.js'
 
-export default function (points, transformationContext, visibilityTreshold = 1) {
+export default function (points, transformationContext, interpolate, visibilityTreshold = 1) {
   if (resamplingNecessary(transformationContext)) {
     let transform = transformationContext.transform.bind(transformationContext)
-    let resampledPoints = []
 
-    let from
-    let to
+    if (interpolate) {
+      let resampledPoints = []
 
-    for (let i = 0; i < points.length - 1; i++) {
-      let j = i + 1
+      let from
+      let to
 
-      from = points[i]
-      to = points[j]
+      for (let i = 0; i < points.length - 1; i++) {
+        let j = i + 1
 
-      resamplePoints(from, to, transform, visibilityTreshold, resampledPoints)
+        from = points[i]
+        to = points[j]
+
+        resamplePoints(from, to, transform, visibilityTreshold, resampledPoints)
+      }
+
+      resampledPoints.push(transform(to))
+
+      return resampledPoints
     }
 
-    resampledPoints.push(transform(to))
-
-    return resampledPoints
+    if (!interpolate) {
+      return points.map(transform)
+    }
   }
 
   return points

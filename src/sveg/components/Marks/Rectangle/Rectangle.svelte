@@ -1,12 +1,11 @@
 <script>
-  import { tweened } from 'svelte/motion'
-  import { cubicOut } from 'svelte/easing'
-  import d3interpolatePath from 'd3-interpolate-path'
-  const interpolatePath = d3interpolatePath.interpolatePath
-
+  import * as GraphicContext from '../../Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
-  import generatePoints from './generatePoints.js'
+  
+  import { scaleCoordinates, createCornerPoints } from './scaleCoordinates.js'
+  import { transformPoints, determineInterpolation } from './transformPoints.js'
+  import resample from '../utils/resample.js'
   import generatePath from './generatePath.js'
 
   // Props
@@ -16,36 +15,35 @@
   export let y2 = undefined
   export let fill = 'black'
   export let transition = undefined
+  export let interpolate = undefined
 
   // Contexts
+  const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
 
-  // Pixel coordinates
-  let points = generatePoints(
-    { x1, x2, y1, y2 }, 
-    $sectionContext,
-    $coordinateTransformationContext
+  // Convert coordinates
+  $: scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+  $: cornerPoints = createCornerPoints(scaledCoordinates)
+  $: transformedPoints = resample(
+    scaledCoordinates, 
+    $coordinateTransformationContext,
+    determineInterpolation(interpolate)
   )
 
-  // SVG specific
-  let path = tweened(generatePath(points), {
-    duration: 1000,
-    easing: cubicOut,
-    interpolate: interpolatePath
-  })
-
-  $: {
-    if (transition) {
-      let points = generatePoints(
-        { x1, x2, y1, y2 }, 
-        $sectionContext,
-        $coordinateTransformationContext
-      )
-
-      path.set(generatePath(points))
-    }
+  // Aesthetics
+  // TODO fix this shit
+  $: aesthetics = {
+    points: transformedPoints,
+    fill
   }
 </script>
 
-<path d={$path} {fill} />
+{#if $graphicContext.output() === 'svg'}
+
+  <path 
+    d={generatePath(aesthetics.points)} 
+    fill={aesthetics.fill} 
+  />
+
+{/if}

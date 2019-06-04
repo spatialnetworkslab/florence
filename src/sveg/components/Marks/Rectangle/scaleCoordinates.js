@@ -1,16 +1,40 @@
 import { isInvalid } from '../../../utils/equals.js'
-import resample from '../utils/resample.js'
-import { roundPointArray } from '../../../utils/round.js'
 
-export default function (coordinates, coordinateContext, transformationContext) {
+export function scaleCoordinates (coordinates, sectionContext) {
   throwErrorIfInvalidCombination(coordinates)
   validateTypes(coordinates)
 
-  let pixelCoordinates = generatePixelCoordinates(coordinates, coordinateContext)
-  let points = generatePoints(pixelCoordinates)
-  points = resample(points, transformationContext)
+  const { x1, x2, y1, y2 } = coordinates
 
-  return roundPointArray(points)
+  const scaledCoordinates = {}
+
+  if (wereSpecified(x1, x2)) {
+    scaledCoordinates.x1 = scaleCoordinate(x1, 'x1', sectionContext)
+    scaledCoordinates.x2 = scaleCoordinate(x2, 'x2', sectionContext)
+  } else {
+    scaledCoordinates.x1 = sectionContext.x1()
+    scaledCoordinates.x2 = sectionContext.x2()
+  }
+
+  if (wereSpecified(y1, y2)) {
+    scaledCoordinates.y1 = scaleCoordinate(y1, 'y1', sectionContext)
+    scaledCoordinates.y2 = scaleCoordinate(y2, 'y2', sectionContext)
+  } else {
+    scaledCoordinates.y1 = sectionContext.y1()
+    scaledCoordinates.y2 = sectionContext.y2()
+  }
+
+  return scaledCoordinates
+}
+
+export function createCornerPoints ({ x1, x2, y1, y2 }) {
+  return [
+    [x1, y1],
+    [x1, y2],
+    [x2, y2],
+    [x2, y1],
+    [x1, y1]
+  ]
 }
 
 const s = JSON.stringify
@@ -45,34 +69,12 @@ function validateTypes (coordinates) {
   }
 }
 
-export function generatePixelCoordinates ({ x1, x2, y1, y2 }, coordinateContext) {
-  const pixelCoordinates = {}
-
-  if (wereSpecified(x1, x2)) {
-    pixelCoordinates.x1 = generateCoordinate(x1, 'x1', coordinateContext)
-    pixelCoordinates.x2 = generateCoordinate(x2, 'x2', coordinateContext)
-  } else {
-    pixelCoordinates.x1 = coordinateContext.x1()
-    pixelCoordinates.x2 = coordinateContext.x2()
-  }
-
-  if (wereSpecified(y1, y2)) {
-    pixelCoordinates.y1 = generateCoordinate(y1, 'y1', coordinateContext)
-    pixelCoordinates.y2 = generateCoordinate(y2, 'y2', coordinateContext)
-  } else {
-    pixelCoordinates.y1 = coordinateContext.y1()
-    pixelCoordinates.y2 = coordinateContext.y2()
-  }
-
-  return pixelCoordinates
-}
-
 function wereSpecified (a, b) {
   return a !== undefined && b !== undefined
 }
 
-function generateCoordinate (coordinate, coordinateName, coordinateContext) {
-  const scales = coordinateContext.scales()
+function scaleCoordinate (coordinate, coordinateName, sectionContext) {
+  const scales = sectionContext.scales()
 
   if (coordinate.constructor === Function) {
     return coordinate(scales)
@@ -88,14 +90,4 @@ function generateCoordinate (coordinate, coordinateName, coordinateContext) {
 function throwErrorIfInvalidValue (input, output, coordinateName) {
   const parentScale = ['x1', 'x2'].includes(coordinateName) ? 'scaleX' : 'scaleY'
   if (isInvalid(output)) throw new Error(`Scale '${parentScale}' received '${s(input)}' and returned '${s(output)}`)
-}
-
-function generatePoints ({ x1, x2, y1, y2 }) {
-  return [
-    [x1, y1],
-    [x1, y2],
-    [x2, y2],
-    [x2, y1],
-    [x1, y1]
-  ]
 }

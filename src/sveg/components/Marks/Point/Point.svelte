@@ -1,9 +1,10 @@
 <script>
-  import { tweened } from 'svelte/motion'
-  import { cubicOut } from 'svelte/easing'
+  import * as GraphicContext from '../../Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
-  import generateCoordinates from './generateCoordinates.js'
+  
+  import scaleCoordinates from './scaleCoordinates.js'
+  import transformCoordinates from './transformCoordinates.js'
 
   // Props
   export let x
@@ -13,38 +14,33 @@
   export let transition = undefined
 
   // Contexts
+  const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
 
-  // Pixel coordinates
-  let coordinates = generateCoordinates(
-    { x, y }, 
-    $sectionContext,
-    $coordinateTransformationContext
-  )
+  // Convert coordinates
+  $: scaledCoordinates = scaleCoordinates({ x, y }, $sectionContext)
+  $: transformedCoordinates = transformCoordinates(scaledCoordinates, $coordinateTransformationContext)
 
-  // SVG specific
-  const cx = tweened(coordinates[0], {
-    duration: 1000,
-    easing: cubicOut
-  })
-  const cy = tweened(coordinates[1], {
-    duration: 1000,
-    easing: cubicOut
-  })
-
-  $: {
-    if (transition) {
-      let coordinates = generateCoordinates(
-        { x, y }, 
-        $sectionContext,
-        $coordinateTransformationContext
-      )
-
-      cx.set(coordinates[0])
-      cy.set(coordinates[1])
-    }
+  // Aesthetics
+  // TODO: make this shit reactive
+  $: aesthetics = {
+    x: transformedCoordinates.x,
+    y: transformedCoordinates.y,
+    radius,
+    fill
   }
+
+
 </script>
 
-<circle cx={$cx} cy={$cy} r={radius} {fill} />
+{#if $graphicContext.output() === 'svg'}
+
+  <circle 
+    cx={aesthetics.cx} 
+    cy={aesthetics.cy} 
+    r={aesthetics.radius} 
+    fill={aesthetics.fill} 
+  />
+
+{/if}

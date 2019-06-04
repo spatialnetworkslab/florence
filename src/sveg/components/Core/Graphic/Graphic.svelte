@@ -1,12 +1,19 @@
 <script>
+  import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from '../Section/SectionContext'
 
   export let width
   export let height
   export let scaleX = undefined
   export let scaleY = undefined
+  export let renderer = undefined
 
+  const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
+
+  $: {
+    GraphicContext.update(graphicContext, renderer)
+  }
 
   $: {
     let rangeX = [0, width]

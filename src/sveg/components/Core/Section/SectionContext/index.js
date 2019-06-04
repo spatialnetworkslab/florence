@@ -1,4 +1,4 @@
-import { getContext, setContext, onDestroy } from 'svelte'
+import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
 
 class SectionContext {
