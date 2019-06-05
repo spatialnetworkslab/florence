@@ -1,7 +1,6 @@
 <script>
 	import { scaleLinear } from 'd3-scale'
-	import DataContainer from '../classes/DataContainer'
-	import { Graphic, Section, Point } from '../components'
+	import { Graphic, Section, Point, DataContainer } from '../sveg'
 
 	export let N = 100
 
@@ -20,25 +19,36 @@
 	}
 
 	const scaleA = scaleLinear().domain(data.domain('a'))
-	const scaleB = scaleLinear().domain(data.domain('b'))
+  const scaleB = scaleLinear().domain(data.domain('b'))
+  
+  let height = 500
 </script>
 
 <div>
-	<Graphic width={500} height={500}>
+  <label for="height-slider">Height:</label>
+  <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
+</div>
+
+<div>
+
+	<Graphic 
+    width={500} {height}
+    scaleX={scaleLinear().domain([0, 500])}
+    scaleY={scaleLinear().domain([0, 500])}
+  >
 		
 		<Section
 			x1={50} x2={450}
 			y1={50} y2={450}
 			scaleX={scaleA}
 			scaleY={scaleB}
-			let:scaleX let:scaleY
 		>
 
 			{#each data.rows() as row (row.$index)}
 
 				<Point 
-					x={scaleX(row.a)} 
-					y={scaleY(row.b)} 
+					x={row.a} 
+					y={row.b} 
 				/>
 
 			{/each}
