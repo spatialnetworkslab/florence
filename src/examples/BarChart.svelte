@@ -21,6 +21,7 @@
 
   let height = 500
   let transformation = 'identity'
+  let duration = 2000
 </script>
 
 <div>
@@ -34,6 +35,11 @@
     <option value="identity">Identity</option>
     <option value="polar">Polar</option>
   </select>
+</div>
+
+<div>
+  <label for="duration">Transition time</label>
+  <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
 </div>
 
 <Graphic 
@@ -50,8 +56,6 @@
   >
 
     <CoordinateTransformation {transformation}>
-
-      <Rectangle fill="red" transition={2000} />
     
       {#each data.rows() as row}
 
@@ -60,7 +64,8 @@
           x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
           y1={0}
           y2={row.meanQuantity}
-          transition={2000}
+          fill={transformation === 'identity' ? 'green' : 'blue'}
+          transition={duration}
         />
 
      {/each}
