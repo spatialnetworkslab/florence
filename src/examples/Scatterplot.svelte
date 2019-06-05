@@ -69,7 +69,7 @@
 					  y={row.b}
             fill={transformation === 'identity' ? 'black' : 'blue' }
             radius={transformation === 'identity' ? 3 : Math.random() * 10}
-            transition={duration}
+            transition={2000}
 				  />
 
 			  {/each}
