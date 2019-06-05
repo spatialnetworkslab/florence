@@ -1,6 +1,7 @@
 import getDataType from './getDataType.js'
 import { calculateBbox } from '../../../utils/geojson.js'
 import { isInvalid } from '../../../utils/equals.js'
+import { warn } from '../../../utils/logging.js'
 
 export default function (data) {
   let domains = {}
@@ -22,7 +23,7 @@ function calculateColumnDomainAndGetType (column, columnName) {
   let { firstValidValue, nValidValues } = findFirstValidValue(column)
 
   if (nValidValues === 0) {
-    return createDummyDomainAndType(columnName)
+    throw new Error(`Column '${column}' contains only missing values. This is not allowed.`)
   }
 
   if (nValidValues > 0) {
@@ -55,16 +56,6 @@ export function findFirstValidValue (column) {
   }
 
   return { firstValidValue, nValidValues }
-}
-
-function createDummyDomainAndType (columnName) {
-  let domain = [0, 1]
-  let type = 'quantitative'
-
-  console.warn(`Column '${columnName}' contains no valid values.`)
-  console.warn('Using domain [0, 1] as placeholder.')
-
-  return { domain, type }
 }
 
 function calculateColumnDomain (column, columnName, nValidValues, firstValidValue, type) {
@@ -100,13 +91,21 @@ function calculateDomainForIrregularColumn (nValidValues, nUniqueValues, type, f
   if (nValidValues === 1) {
     domain = createDomainForSingleValue(type, firstValidValue)
 
-    console.warn(`Column '${columnName}' contains only 1 valid value: ${firstValidValue}.`)
-    console.warn(`Using domain ${JSON.stringify(domain)}`)
+    if (type !== 'categorical') {
+      warn(
+        `Column '${columnName}' contains only 1 valid value: ${firstValidValue}.\n` +
+        `Using domain ${JSON.stringify(domain)}`
+      )
+    }
   } else if (nUniqueValues === 1) {
     domain = createDomainForSingleValue(type, firstValidValue)
 
-    console.warn(`Column '${columnName}' contains only 1 unique value: ${firstValidValue}.`)
-    console.warn(`Using domain ${JSON.stringify(domain)}`)
+    if (type !== 'categorical') {
+      warn(
+        `Column '${columnName}' contains only 1 unique value: ${firstValidValue}.\n` +
+        `Using domain ${JSON.stringify(domain)}`
+      )
+    }
   }
 
   return domain
@@ -148,12 +147,8 @@ function initDomain (type) {
       domain = [maxUnixTime, minUnixTime]
       break
     }
-    case 'interval:quantitative': {
+    case 'interval': {
       domain = [Infinity, -Infinity]
-      break
-    }
-    case 'interval:temporal': {
-      domain = [maxUnixTime, minUnixTime]
       break
     }
   }
@@ -178,10 +173,9 @@ function updateDomain (domain, value, type) {
     if (domain[1].getTime() <= epoch) { domain[1] = value }
   }
 
-  if (type.startsWith('interval')) {
-    let intervalType = type.split(':')[1]
-    domain = updateDomain(domain, value[0], intervalType)
-    domain = updateDomain(domain, value[1], intervalType)
+  if (type === 'interval') {
+    domain = updateDomain(domain, value[0], 'quantitative')
+    domain = updateDomain(domain, value[1], 'quantitative')
   }
 
   return domain
@@ -202,13 +196,14 @@ function createDomainForSingleValue (type, value) {
     domain = [getDay(value, -1), getDay(value, 1)]
   }
 
-  if (type.startsWith('interval')) {
-    domain = value
+  if (type === 'interval') {
+    domain = value.sort((a, b) => a > b)
   }
 
   return domain
 }
 
 function getDay (date, days) {
-  return new Date(new Date().setDate(date.getDate() + days))
+  let dateCopy = new Date(date.getTime())
+  return new Date(dateCopy.setDate(dateCopy.getDate() + days))
 }

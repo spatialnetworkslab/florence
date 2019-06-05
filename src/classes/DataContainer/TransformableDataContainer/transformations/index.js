@@ -1,3 +1,5 @@
+import produce from 'immer'
+
 import filter from './filter.js'
 import select from './select.js'
 import arrange from './arrange.js'
@@ -10,21 +12,21 @@ import bin from './bin.js'
 import dropNA from './dropNA.js'
 // import reproject from './reproject.js'
 import transform from './transform.js'
-// import scale from './scale.js'
 
-export default {
-  filter,
-  select,
-  arrange,
-  rename,
-  mutate,
-  transmute,
+const transformations = {
+  filter: produce(filter),
+  select: produce(select),
+  arrange: produce(arrange),
+  rename: produce(rename),
+  mutate: produce(mutate),
+  transmute: produce(transmute),
   summarise,
   mutarise,
   groupBy,
   bin,
-  dropNA,
+  dropNA: produce(dropNA),
   // reproject,
   transform
-  // scale
 }
+
+export default transformations

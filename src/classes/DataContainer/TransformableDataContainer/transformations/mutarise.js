@@ -1,5 +1,5 @@
 import { initNewData, summariseGroup, checkSummariseInstructions } from './summarise.js'
-import getDataLength from '../utils/getDataLength.js'
+import getDataLength from '../../utils/getDataLength.js'
 
 export default function (data, mutariseInstructions) {
   if (mutariseInstructions.constructor !== Object) {
@@ -13,9 +13,10 @@ export default function (data, mutariseInstructions) {
 
     for (let group of data.$grouped) {
       let summarizedData = initNewData(mutariseInstructions)
-      summarizedData = summariseGroup(group, mutariseInstructions, summarizedData)
+      let dataInGroup = group.data()
+      summarizedData = summariseGroup(dataInGroup, mutariseInstructions, summarizedData)
 
-      let length = getDataLength(group)
+      let length = getDataLength(dataInGroup)
       newCols = addGroupSummaries(newCols, summarizedData, length)
     }
 
@@ -42,11 +43,12 @@ function addGroupSummaries (newCols, summarizedData, length) {
 }
 
 function ungroup (data) {
-  let newData = initNewData(data.$grouped[0])
+  let newData = initNewData(data.$grouped[0].data())
 
   for (let group of data.$grouped) {
+    let groupData = group.data()
     for (let col in newData) {
-      newData[col].push(...group[col])
+      newData[col].push(...groupData[col])
     }
   }
 

@@ -1,14 +1,15 @@
 import proj4 from 'proj4'
-import { transformFeatures } from '../../../utils/geojson.js'
+import { transformFeatures } from '../../../../utils/geojson.js'
+import { warn } from '../../../../utils/logging.js'
 
 export default function (data, reprojectInstructions) {
   if (!data.hasOwnProperty('$geometry')) {
-    console.warn('No geometry column found. Skipping reproject-transformation.')
+    warn('No geometry column found. Skipping reproject-transformation.')
     return data
   }
 
   if (!reprojectInstructions.hasOwnProperty('to')) {
-    console.warn(`reproject: missing required option 'to'`)
+    warn(`reproject: missing required option 'to'`)
     return data
   }
 

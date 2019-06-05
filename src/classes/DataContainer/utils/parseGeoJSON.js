@@ -1,4 +1,4 @@
-import { checkFormatColumnDataframe } from './checkFormat.js'
+import { checkFormatColumnData } from './checkFormat.js'
 
 export default function (geojsonData) {
   let geometryData = []
@@ -13,15 +13,16 @@ export default function (geojsonData) {
     }
   }
 
-  features.forEach(({ geometry, properties }) => {
+  for (let i = 0; i < features.length; i++) {
+    let { geometry, properties } = features[i]
     geometryData.push(geometry)
 
-    for (let columnName in properties) { 
-      data[columnName].push(properties[columnName]) 
+    for (let columnName in properties) {
+      data[columnName].push(properties[columnName])
     }
-  })
+  }
 
-  checkFormatColumnDataframe(data)
+  checkFormatColumnData(data)
 
   data.$geometry = geometryData
 

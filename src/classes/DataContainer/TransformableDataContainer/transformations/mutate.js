@@ -1,4 +1,4 @@
-import getDataLength from '../utils/getDataLength.js'
+import getDataLength from '../../utils/getDataLength.js'
 
 export function mutate (data, mutateInstructions) {
   let length = getDataLength(data)
@@ -26,8 +26,6 @@ export function mutate (data, mutateInstructions) {
       data[key][i] = mutateFunction(row, i, prevRow, nextRow)
     }
   }
-
-  return data
 }
 
 export function transmute (data, mutateObj) {

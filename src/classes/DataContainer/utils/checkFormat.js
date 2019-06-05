@@ -16,15 +16,18 @@ export function isRowOriented (data) {
 }
 
 export function isGeoJSON (data) {
-  return data.hasOwnProperty('data') && data.type === 'FeatureCollection'
+  let hasCorrectType = data.type === 'FeatureCollection'
+  let hasCorrectFeatures = data.features && data.features.length > 0
+
+  return hasCorrectType && hasCorrectFeatures
 }
 
-export function checkFormatColumnDataframe (data) {
+export function checkFormatColumnData (data) {
   checkFormat(data, checkRegularColumnName)
 }
 
-export function checkFormatTransformableDataContainer (data) {
-  checkFormat(data._data, checkTransformedDataColumnName)
+export function checkFormatInternal (data) {
+  checkFormat(data, checkInternalDataColumnName)
 }
 
 function checkFormat (data, columnNameChecker) {
@@ -36,6 +39,10 @@ function checkFormat (data, columnNameChecker) {
 
     dataLength = dataLength || column.length
 
+    if (dataLength === 0) {
+      throw new Error('Invalid data: columns cannot be empty')
+    }
+
     if (dataLength !== column.length) {
       throw new Error('Invalid data: columns must be of same length')
     }
@@ -44,14 +51,14 @@ function checkFormat (data, columnNameChecker) {
 
 export function checkRegularColumnName (columnName) {
   if (columnName.match(forbiddenChars)) {
-    throw new Error(`Invalid column name '${columnName}': '.', '#', '/' and '$' are not allowed'`)
+    throw new Error(`Invalid column name '${columnName}': '$' and '/' are not allowed'`)
   }
 }
 
-const forbiddenChars = /[.#/$]/
+const forbiddenChars = /[/$]/
 
-export function checkTransformedDataColumnName (columnName) {
-  if (!['$geometry', '$grouped'].includes(columnName)) {
+export function checkInternalDataColumnName (columnName) {
+  if (!['$index', '$geometry', '$grouped'].includes(columnName)) {
     checkRegularColumnName(columnName)
   }
 }

@@ -1,36 +1,37 @@
+import dataLoadingMixin from './dataLoadingMixin.js'
+import domainsAndTypesMixin from './domainsAndTypesMixin.js'
+import transformationsMixin from './transformationsMixin.js'
+
+import { isColumnOriented, isRowOriented, isGeoJSON } from './utils/checkFormat.js'
+
+import TransformableDataContainer from './TransformableDataContainer'
+import { Group } from './TransformableDataContainer/transformations/groupBy.js'
+
+import { warn } from '../../utils/logging.js'
+
 import {
-  isColumnOriented, isRowOriented, isGeoJSON,
-  checkFormatColumnDataframe, checkFormatTransformableDataContainer
-} from './utils/checkFormat.js'
-
-import getDataLength from './utils/getDataLength.js'
-import convertRowToColumnDataframe from './utils/convertRowToColumnDataframe.js'
-import calculateDomainsAndGetTypes from './utils/calculateDomainsAndGetTypes.js'
-import parseGeoJSON from './utils/parseGeoJSON.js'
-
-import TransformableDataContainer from './TransformableDataContainer.js'
+  checkColumnPath, columnPathIsValid, checkIfColumnExists,
+  getColumn, mapColumn
+} from './utils/parseColumnPath.js'
 
 export default class DataContainer {
-  constructor (data, options) {
+  constructor (data) {
     this._data = {}
+    this._length = undefined
+    this._indexToRowNumber = {}
 
     this._domainsAndTypesCalculated = false
-    this._lazy = true
+
     this._domains = {}
-    this._length = undefined
     this._types = {}
 
-    if (options) {
-      this._applyOptions(options)
-    }
-
     if (isColumnOriented(data)) {
-      this._setColumnDataframe(data)
+      this._setColumnData(data)
       return
     }
 
     if (isRowOriented(data)) {
-      this._setRowDataframe(data)
+      this._setRowData(data)
       return
     }
 
@@ -44,6 +45,11 @@ export default class DataContainer {
       return
     }
 
+    if (data instanceof Group) {
+      this._setGroup(data)
+      return
+    }
+
     throw invalidDataError
   }
 
@@ -52,116 +58,64 @@ export default class DataContainer {
   }
 
   row (index) {
-    let row = {}
-
-    for (let columnName in this._data) {
-      let value = this._data[columnName][index]
-      row[columnName] = value
-    }
-
-    row.$index = index
-
-    return row
+    let rowNumber = this._indexToRowNumber[index]
+    return this._row(rowNumber)
   }
 
   rows () {
-    let iterator = createIterator(this)
-    return [...iterator]
+    let rows = []
+
+    for (let i = 0; i < this._length; i++) {
+      rows.push(this._row(i))
+    }
+
+    return rows
   }
 
-  hasColumn (columnName) {
-    this._calculateDomainsAndTypesIfNecessary()
-    return this._data.hasOwnProperty(columnName)
+  hasColumn (columnPath) {
+    return columnPathIsValid(columnPath, this)
   }
 
-  column (columnName) {
-    this._calculateDomainsAndTypesIfNecessary()
-    return this._data[columnName]
+  column (columnPath) {
+    checkColumnPath(columnPath, this)
+    return getColumn(columnPath, this)
   }
 
-  domain (columnName) {
-    this._calculateDomainsAndTypesIfNecessary()
-    return this._domains[columnName]
+  map (columnPath, mapFunction) {
+    checkColumnPath(columnPath, this)
+    return mapColumn(columnPath, this, mapFunction)
   }
 
-  type (columnName) {
-    this._calculateDomainsAndTypesIfNecessary()
-    return this._types[columnName]
-  }
+  updateRow (index, row) {
+    let rowNumber = this._indexToRowNumber[index]
 
-  transform () {
-    return new TransformableDataContainer(this._data)
-  }
+    for (let key in row) {
+      checkIfColumnExists(key, this)
 
-  _applyOptions (options) {
-    validateOptions(options)
-    if (options.hasOwnProperty('lazy')) {
-      this._lazy = options.lazy
+      if (key === '$index') {
+        warn(`Cannot update '$index' of row`)
+        continue
+      }
+
+      let value = row[key]
+      this._data[key][rowNumber] = value
     }
   }
 
-  _setColumnDataframe (data) {
-    checkFormatColumnDataframe(data)
-    this._storeData(data)
-  }
+  _row (rowNumber) {
+    let row = {}
 
-  _setRowDataframe (rowData) {
-    let columnData = convertRowToColumnDataframe(rowData)
-    this._setColumnDataframe(columnData)
-  }
-
-  _setGeoJSON (geojsonData) {
-    let data = parseGeoJSON(geojsonData)
-    this._storeData(data)
-  }
-
-  _setTransformableDataContainer (transformableDataContainer) {
-    checkFormatTransformableDataContainer(transformableDataContainer)
-    this._storeData(transformableDataContainer._data)
-  }
-
-  _storeData (data) {
-    this._data = data
-    this._length = getDataLength(data)
-
-    if (this._lazy === false) {
-      this._calculateDomainsAndTypes()
+    for (let columnName in this._data) {
+      let value = this._data[columnName][rowNumber]
+      row[columnName] = value
     }
-  }
 
-  _calculateDomainsAndTypes () {
-    let { domains, types } = calculateDomainsAndGetTypes(this._data)
-    this._domains = domains
-    this._types = types
-  }
-
-  _calculateDomainsAndTypesIfNecessary () {
-    if (this._lazy === true && this._domainsAndTypesCalculated === false) {
-      this._calculateDomainsAndTypes()
-      this._domainsAndTypesCalculated = true
-    }
+    return row
   }
 }
+
+dataLoadingMixin(DataContainer)
+domainsAndTypesMixin(DataContainer)
+transformationsMixin(DataContainer)
 
 const invalidDataError = new Error('Data passed to DataContainer is of unknown format')
-
-function createIterator (self) {
-  return {
-    [Symbol.iterator]: function () {
-      let index = -1
-
-      return {
-        next: () => {
-          index++
-          return { value: self.row(index), done: index === self._length }
-        }
-      }
-    }
-  }
-}
-
-function validateOptions (options) {
-  if (options.hasOwnProperty('lazy')) {
-    if (options.lazy.constructor !== Boolean) throw new Error(`'lazy' must be Boolean`)
-  }
-}

@@ -1,5 +1,8 @@
-import getDataLength from '../utils/getDataLength.js'
-import Geostats from '../utils/geoStats.js'
+import DataContainer from '../../index.js'
+import getDataLength from '../../utils/getDataLength.js'
+import Geostats from '../../utils/geoStats.js'
+
+import { warn } from '../../../../utils/logging.js'
 
 export default function (data, binInstructions) {
   let intervalBounds = getIntervalBounds(data, binInstructions)
@@ -21,17 +24,17 @@ export function getIntervalBounds (data, binInstructions) {
 
   let method = binInstructions.method
   if (!method) {
-    console.warn('No binning method specified, defaulting to EqualInterval')
+    warn('No binning method specified, defaulting to EqualInterval')
     method = 'EqualInterval'
   }
   if (method.constructor !== String) {
-    console.warn('Binning method not recognized, defaulting to EqualInterval')
+    warn('Binning method not recognized, defaulting to EqualInterval')
     method = 'EqualInterval'
   }
 
   let numClasses = binInstructions.numClasses
   if (!numClasses) {
-    console.warn('numClasses not specified, defaulting to 5')
+    warn('numClasses not specified, defaulting to 5')
     numClasses = 5
   }
 
@@ -49,7 +52,7 @@ export function getIntervalBounds (data, binInstructions) {
 
     let domain = variableDomain(variableData)
     if (!binSize) {
-      console.warn(`binSize not specified for IntervalSize binning, defaulting to ${(domain[1] - domain[0])}`)
+      warn(`binSize not specified for IntervalSize binning, defaulting to ${(domain[1] - domain[0])}`)
       binSize = domain[1] - domain[0]
     }
     let binCount = Math.floor((domain[1] - domain[0]) / binSize)
@@ -120,9 +123,7 @@ function pairRange (ranges) {
 function bin (data, variable, ranges) {
   let newData = { bins: ranges }
 
-  let ix = 0
-
-  // Create an empty array to store new dataFrames divided by range
+  // Create an empty array to store new DataContainers divided by range
   let bins = Array(ranges.length)
 
   for (let b = 0; b < bins.length; b++) {
@@ -137,7 +138,7 @@ function bin (data, variable, ranges) {
   let length = getDataLength(data)
 
   // Loop through data
-  while (ix < length) {
+  for (let ix = 0; ix < length; ix++) {
     let instance = data[variable][ix]
 
     // Find index of bin in which the instance belongs
@@ -155,13 +156,12 @@ function bin (data, variable, ranges) {
       newRow[col].push(data[col][ix])
     }
 
-    // Update the bins column with new dataFrame
-    bins[binIndex] = newRow
-
-    ix++
+    // Update the bins column with new DataContainer
+    let dataContainer = new DataContainer(newRow)
+    bins[binIndex] = dataContainer
   }
 
-  // Add new dataFrame column to newData
+  // Add new grouped column to newData
   newData.$grouped = bins
   return newData
 }

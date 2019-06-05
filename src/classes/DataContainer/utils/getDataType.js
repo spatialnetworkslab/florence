@@ -1,40 +1,22 @@
+import DataContainer from '../index.js'
+
 export default function (value, throwError = true) {
-  switch (value.constructor) {
-    case Number:
-      return 'quantitative'
-    case String:
-      return 'categorical'
-    case Date:
-      return 'temporal'
-    case Object:
-      if (value.hasOwnProperty('type') && value.hasOwnProperty('coordinates')) {
-        return 'geometry'
-      } else {
-        if (Object.values(value).every(val => val.constructor === Array)) {
-          return 'nested'
-        } else {
-          throwIf(throwError)
-          break
-        }
-      }
-    case Array:
-      if (value.length === 2 && value[0].constructor === value[1].constructor) {
-        if (value[0].constructor === Number) {
-          return 'interval:quantitative'
-        } else if (value[0].constructor === Date) {
-          return 'interval:temporal'
-        } else {
-          throwIf(throwError)
-          break
-        }
-      } else {
-        throwIf(throwError)
-        break
-      }
-    default:
-      throwIf(throwError)
-      break
-  }
+  if (value.constructor === Number) return 'quantitative'
+  if (value.constructor === String) return 'categorical'
+  if (value.constructor === Date) return 'temporal'
+  if (isInterval(value)) return 'interval'
+  if (isGeometry(value)) return 'geometry'
+  if (value.constructor === DataContainer) return 'nested'
+
+  throwIf(throwError)
+}
+
+function isGeometry (value) {
+  return value.constructor === Object && value.hasOwnProperty('type') && value.hasOwnProperty('coordinates')
+}
+
+function isInterval (value) {
+  return value.constructor === Array && value.length === 2 && value.every(entry => entry.constructor === Number)
 }
 
 function throwIf (throwError) {
