@@ -1,6 +1,7 @@
 import { tweened } from 'svelte/motion'
 import { cubicOut } from 'svelte/easing'
 import { interpolateRgb } from 'd3-interpolate'
+import transitionPoints from './geometryTransitions/transitionPoints.js'
 
 export function createTransitionableAesthetic (aestheticName, aestheticValue, transition) {
   return tweened(aestheticValue, createOptions(aestheticName, transition))
@@ -33,9 +34,14 @@ function dummyInterpolator (start, end) {
 }
 
 function createOptionsFromDuration (aestheticName, duration) {
-  if (aestheticName === 'fill') {
-    return { duration, easing: cubicOut, interpolate: interpolateRgb }
-  } else {
-    return { duration, easing: cubicOut }
+  switch (aestheticName) {
+    case 'fill':
+      return { duration, easing: cubicOut, interpolate: interpolateRgb }
+
+    case 'points':
+      return { duration, easing: cubicOut, interpolate: transitionPoints }
+
+    default:
+      return { duration, easing: cubicOut }
   }
 }

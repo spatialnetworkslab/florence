@@ -51,16 +51,16 @@
 
     <CoordinateTransformation {transformation}>
 
-      <Rectangle fill="red" transition={true} />
+      <Rectangle fill="red" transition={2000} />
     
       {#each data.rows() as row}
 
         <Rectangle
-         x1={row.fruit}
-         x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
-         y1={0}
-         y2={row.meanQuantity}
-         transition={true}
+          x1={row.fruit}
+          x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
+          y1={0}
+          y2={row.meanQuantity}
+          transition={2000}
         />
 
      {/each}
