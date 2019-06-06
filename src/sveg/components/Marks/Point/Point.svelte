@@ -6,7 +6,7 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   
   import { generateCoordinates } from './generateCoordinates.js'
-  import { createTransitionableAesthetic, transitionsEqual } from '../utils/transitions'
+  import { createTransitionable, transitionsEqual } from '../utils/transitions'
 
   let initPhase = true
   const initDone = () => !initPhase
@@ -26,22 +26,22 @@
   // Convert coordinates
   let coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
 
-  // Aesthetics
-  let aes_x = createTransitionableAesthetic('x', coordinates[0], transition)
-  let aes_y = createTransitionableAesthetic('y', coordinates[1], transition)
-  let aes_radius = createTransitionableAesthetic('radius', radius, transition)
-  let aes_fill = createTransitionableAesthetic('fill', fill, transition)
+  // Create transitionables
+  let tr_x = createTransitionable('x', coordinates[0], transition)
+  let tr_y = createTransitionable('y', coordinates[1], transition)
+  let tr_radius = createTransitionable('radius', radius, transition)
+  let tr_fill = createTransitionable('fill', fill, transition)
 
   $: {
     if (initDone()) {
       let coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
-      aes_x.set(coordinates[0])
-      aes_y.set(coordinates[1])
+      tr_x.set(coordinates[0])
+      tr_y.set(coordinates[1])
     }
   }
 
-  $: { if (initDone()) aes_radius.set(radius) }
-  $: { if (initDone()) aes_fill.set(fill) }
+  $: { if (initDone()) tr_radius.set(radius) }
+  $: { if (initDone()) tr_fill.set(fill) }
 
   let previousTransition
 
@@ -49,10 +49,10 @@
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
-      aes_x = createTransitionableAesthetic('x', $aes_x, transition)
-      aes_y = createTransitionableAesthetic('y', $aes_y, transition)
-      aes_radius = createTransitionableAesthetic('radius', $aes_radius, transition)
-      aes_fill = createTransitionableAesthetic('fill', $aes_fill, transition)
+      tr_x = createTransitionable('x', $tr_x, transition)
+      tr_y = createTransitionable('y', $tr_y, transition)
+      tr_radius = createTransitionable('radius', $tr_radius, transition)
+      tr_fill = createTransitionable('fill', $tr_fill, transition)
     }
   })
 
@@ -64,10 +64,10 @@
 {#if $graphicContext.output() === 'svg'}
 
   <circle 
-    cx={$aes_x} 
-    cy={$aes_y} 
-    r={$aes_radius} 
-    fill={$aes_fill} 
+    cx={$tr_x} 
+    cy={$tr_y} 
+    r={$tr_radius} 
+    fill={$tr_fill} 
   />
 
 {/if}

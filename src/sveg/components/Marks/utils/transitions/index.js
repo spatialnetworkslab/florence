@@ -4,7 +4,7 @@ import { cubicOut } from 'svelte/easing'
 import { interpolateRgb } from 'd3-interpolate'
 import transitionPoints from './geometryTransitions/transitionPoints.js'
 
-export function createTransitionableAesthetic (aestheticName, aestheticValue, transitionOptions) {
+export function createTransitionable (aestheticName, aestheticValue, transitionOptions) {
   if (transitionOptions === undefined) {
     return writable(aestheticValue)
   }

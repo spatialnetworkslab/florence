@@ -7,7 +7,7 @@
   
   import { generateCoordinates } from './generateCoordinates.js'
   import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
-  import { createTransitionableAesthetic, transitionsEqual } from '../utils/transitions'
+  import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
 
   let initPhase = true
@@ -36,10 +36,10 @@
     interpolate
   )
 
-  // Aesthetics
-  let aes_coordinates = createTransitionableAesthetic('coordinates', coordinates, transition)
-  let aes_fill = createTransitionableAesthetic('fill', fill, transition)
-  let aes_opacity = createTransitionableAesthetic('opacity', opacity, transition)
+  // Create transitionables
+  let tr_coordinates = createTransitionable('coordinates', coordinates, transition)
+  let tr_fill = createTransitionable('fill', fill, transition)
+  let tr_opacity = createTransitionable('opacity', opacity, transition)
 
   $: {
     if (initDone()) {
@@ -50,12 +50,12 @@
         interpolate
       )
 
-      aes_coordinates.set(coordinates)
+      tr_coordinates.set(coordinates)
     }
   }
 
-  $: { if (initDone()) aes_fill.set(fill) }
-  $: { if (initDone()) aes_opacity.set(opacity) }
+  $: { if (initDone()) tr_fill.set(fill) }
+  $: { if (initDone()) tr_opacity.set(opacity) }
 
   let previousTransition
 
@@ -63,9 +63,9 @@
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
-      aes_coordinates = createTransitionableAesthetic('coordinates', $aes_coordinates, transition)
-      aes_fill = createTransitionableAesthetic('fill', $aes_fill, transition)
-      aes_opacity = createTransitionableAesthetic('opacity', $aes_opacity, transition)
+      tr_coordinates = createTransitionable('coordinates', $tr_coordinates, transition)
+      tr_fill = createTransitionable('fill', $tr_fill, transition)
+      tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
     }
   })
 
@@ -77,9 +77,9 @@
 {#if $graphicContext.output() === 'svg'}
 
   <path 
-    d={generatePath($aes_coordinates)} 
-    fill={$aes_fill}
-    style={`opacity: ${$aes_opacity}`}
+    d={generatePath($tr_coordinates)} 
+    fill={$tr_fill}
+    style={`opacity: ${$tr_opacity}`}
   />
 
 {/if}
