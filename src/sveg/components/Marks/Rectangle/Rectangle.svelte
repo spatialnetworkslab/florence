@@ -1,5 +1,5 @@
 <script>
-  import { beforeUpdate } from 'svelte'
+  import { beforeUpdate, afterUpdate } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -9,6 +9,9 @@
   import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
   import { createTransitionableAesthetic, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
+
+  let initPhase = true
+  const initDone = () => !initPhase
 
   // Props
   export let x1 = undefined
@@ -37,17 +40,19 @@
   let aes_fill = createTransitionableAesthetic('fill', fill, transition)
 
   $: {
-    let coordinates = generateCoordinates(
-      { x1, x2, y1, y2 },
-      $sectionContext,
-      $coordinateTransformationContext,
-      interpolate
-    )
+    if (initDone()) {
+      let coordinates = generateCoordinates(
+        { x1, x2, y1, y2 },
+        $sectionContext,
+        $coordinateTransformationContext,
+        interpolate
+      )
 
-    aes_coordinates.set(coordinates)
+      aes_coordinates.set(coordinates)
+    }
   }
 
-  $: { aes_fill.set(fill) }
+  $: { if (initDone()) aes_fill.set(fill) }
 
   let previousTransition
 
@@ -58,6 +63,10 @@
       aes_coordinates = createTransitionableAesthetic('coordinates', $aes_coordinates, transition)
       aes_fill = createTransitionableAesthetic('fill', $aes_fill, transition)
     }
+  })
+
+  afterUpdate(() => {
+    initPhase = false
   })
 </script>
 
