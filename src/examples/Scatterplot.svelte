@@ -70,13 +70,14 @@
           x={data.column('a')}
           y={data.column('b')}
           fill={transformation === 'identity' ? 'black' : 'blue' }
-          radius={transformation === 'identity' ? 3 : Math.random() * 10}
+          radius={3}
           transition={{
             x: duration,
             y: {
               duration: duration * 2,
               easing: quintOut
-            }
+            },
+            fill: duration
           }}
         />
 

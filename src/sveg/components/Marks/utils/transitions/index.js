@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
 import { tweened } from 'svelte/motion'
 import { cubicOut } from 'svelte/easing'
-import { interpolateRgb } from 'd3-interpolate'
+import { interpolate } from 'd3-interpolate'
 import transitionPoints from './geometryTransitions/transitionPoints.js'
 
 export function createTransitionable (aestheticName, aestheticValue, transitionOptions) {
@@ -25,7 +25,8 @@ export function createTransitionable (aestheticName, aestheticValue, transitionO
     }
 
     if (aestheticTransition && aestheticTransition.constructor === Object) {
-      return tweened(aestheticValue, aestheticTransition)
+      let options = createOptionsFromOptions(aestheticName, aestheticTransition)
+      return tweened(aestheticValue, options)
     }
   }
 
@@ -35,7 +36,7 @@ export function createTransitionable (aestheticName, aestheticValue, transitionO
 function createOptionsFromDuration (aestheticName, duration) {
   switch (aestheticName) {
     case 'fill':
-      return { duration, easing: cubicOut, interpolate: interpolateRgb }
+      return { duration, easing: cubicOut, interpolate }
 
     case 'coordinates':
       // 'coordinates' is an Array of points: [[a, b], [c, d], ...]
@@ -83,4 +84,18 @@ function aestheticTransitionObjectsEqual (a, b) {
 
 function numberOfKeys (obj) {
   return Object.keys(obj).length
+}
+
+function createOptionsFromOptions (aestheticName, transitionOptions) {
+  switch (aestheticName) {
+    case 'fill':
+      return Object.assign({ interpolate }, transitionOptions)
+
+    case 'coordinates':
+      // 'coordinates' is an Array of points: [[a, b], [c, d], ...]
+      return Object.assign({ interpolate: transitionPoints }, transitionOptions)
+
+    default:
+      return transitionOptions
+  }
 }
