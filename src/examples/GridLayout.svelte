@@ -2,7 +2,7 @@
 	import { scaleLinear, scaleBand } from 'd3-scale'
 	import { Graphic, Section, Point, DataContainer, Grid } from '../sveg'
 
-	let rows = false
+	let cols = 2
 
 	function generateData (N) {
   	let newData = { a: [], b: [], fruit: [] }
@@ -27,15 +27,13 @@
 
   const groupedData = data.groupBy('fruit').done()
 
-  // for (let i of groupedData.rows()) {
-  // 	console.log(i.$grouped._data)
-  // }
+  $: rows = Math.ceil(4/cols)
 </script>
 
-<label>
-	<input type=checkbox bind:checked={rows}>
-	Toggle Orientation
-</label>
+<div>
+  <label for="cols-slider">Columns:</label>
+  <input type="range" min="1" max="4" bind:value={cols} name="cols-slider" />
+</div>
 
 <div>
 
@@ -43,11 +41,12 @@
 		width={500} height={500}
 	>
 
-		{#if rows}
 		<Grid
 			x1={50} x2={450}
 			y1={50} y2={450}
-			gridTemplateColumns={groupedData.column('fruit')}
+			gridTemplateColumns={cols}
+			gridTemplateRows={rows}
+			gridTemplateAreas={['blue', 'orange', 'red', 'green']}
 			let:generatedCells
 		>
 
@@ -74,39 +73,6 @@
 			{/each}
 		
 		</Grid>
-
-		{:else}
-		<Grid
-			x1={50} x2={450}
-			y1={50} y2={450}
-			gridTemplateRows={groupedData.column('fruit')}
-			let:generatedCells
-		>
-
-			{#each groupedData.rows() as facet}
-
-				<Section
-					{...generatedCells[facet.fruit]}
-					scaleX={scaleA}
-					scaleY={scaleB}
-				>
-
-					{#each facet.$grouped.rows() as row}
-
-						<Point 
-							x={row.a}
-							y={row.b} 
-							fill={row.fruit}
-						/>
-
-					{/each}
-		
-				</Section>
-
-			{/each}
-		
-		</Grid>
-		{/if}
 
 	</Graphic>
 

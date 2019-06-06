@@ -1,53 +1,101 @@
-export function getRowCells ( specs, ranges ) {
-	let cells
+export function getAllCells ( templateRows, templateCols, coords ) {
+	let getRows = getRowCells( templateRows, coords )
+
+	let allCells = []
+
+	for (let i of getRows) {
+		let rowCols = getColCells( templateCols, i )
+
+		allCells = allCells.concat(rowCols)
+	}
+
+	return allCells	
+}
+
+export function getColCells ( specs, ranges ) {
+	let start = ranges.x1
+	let cells = []
 
 	if (specs.constructor === String) {
-		// include string parsing logic here
+
+		let individualSpecs = specs.split(' ')
+		for (let i of individualSpecs) {
+			if (i.endsWith('px')) {
+				cells.push(parseInt(i.slice(0, -2)))
+			}
+		}
+
 	} else if (specs.constructor === Array) {
-		cells = specs
+
+		let stepX = (ranges.x2 - ranges.x1)/specs.length
+		for (let j of specs) {
+			cells.push(stepX)
+		}
+
+	} else if (specs.constructor === Number) {
+
+		let stepX = (ranges.x2 - ranges.x1)/specs
+		for (let k = 0; k < specs; k++) {
+			cells.push(stepX)
+		}
+
 	}
 
 	let numCells = cells.length
 
-	let stepX = (ranges.x2 - ranges.x1)/numCells
-
 	let cellSpecs = []
 
-	if (numCells > 1) {
-		for (let i = 0; i < numCells; i++) {
-			cellSpecs.push({x1: i * stepX + ranges.x1,
-      								x2: (i + 1) * stepX + ranges.x1,
-      								y1: ranges.y1,
-      								y2: ranges.y2})
-      }
-	}
+	for (let i = 0; i < numCells; i++) {
+		cellSpecs.push({x1: start,
+    								x2: start + cells[i],
+    								y1: ranges.y1,
+    								y2: ranges.y2})
+		start = start + cells[i]
+   }
 
 	return cellSpecs
 }
 
-export function getColCells ( specs, ranges ) {
-	let cells
+export function getRowCells ( specs, ranges ) {
+	let start = ranges.y1
+	let cells = []
 
 	if (specs.constructor === String) {
-		// include string parsing logic here
+
+		let individualSpecs = specs.split(' ')
+		for (let i of individualSpecs) {
+			if (i.endsWith('px')) {
+				cells.push(parseInt(i.slice(0, -2)))
+			}
+		}
+
 	} else if (specs.constructor === Array) {
-		cells = specs
+
+		let stepY = (ranges.y2 - ranges.y1)/specs.length
+		for (let j of specs) {
+			cells.push(stepY)
+		}
+
+	} else if (specs.constructor === Number) {
+
+		let stepY = (ranges.y2 - ranges.y1)/specs
+		for (let k = 0; k < specs; k++) {
+			cells.push(stepY)
+		}
+
 	}
 
 	let numCells = cells.length
 
-	let stepY = (ranges.y2 - ranges.y1)/numCells
-
 	let cellSpecs = []
 
-	if (numCells > 1) {
-		for (let i = 0; i < numCells; i++) {
-			cellSpecs.push({y1: i * stepY  + ranges.y1,
-      								y2: (i + 1) * stepY  + ranges.y1,
-      								x1: ranges.x1,
-      								x2: ranges.x2})
-      }
-	}
+	for (let i = 0; i < numCells; i++) {
+		cellSpecs.push({y1: start,
+    								y2: start + cells[i],
+    								x1: ranges.x1,
+    								x2: ranges.x2})
+		start = start + cells[i]
+  }
 
 	return cellSpecs
 }

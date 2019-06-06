@@ -4,7 +4,7 @@
   import { coordinateContextKey } from '../contextKeys.js'
   import CoordinateContext from '../../classes/CoordinateContext'
   import { generatePixelCoordinates } from '../../rendering/rectangle'
-  import { getRowCells, getColCells, getNames, mergeNameSpecs } from './utils/gridUtils.js'
+  import { getAllCells, getNames, mergeNameSpecs } from './utils/gridUtils.js'
 
   export let x1 = undefined
   export let x2 = undefined
@@ -14,8 +14,8 @@
   export let scaleX = undefined
   export let scaleY = undefined
 
-  export let gridTemplateRows = undefined
-  export let gridTemplateColumns = undefined
+  export let gridTemplateRows = 1
+  export let gridTemplateColumns = 1
 
   export let gridRowGap = 0
   export let gridColumnGap = 0
@@ -34,13 +34,9 @@
   let allCells
   let allNames
 
-  $: if (gridTemplateColumns) {
-      allCells = getColCells(gridTemplateColumns, pixelCoordinates)
-      allNames = getNames(gridTemplateColumns)
-    } else {
-      allCells = getRowCells(gridTemplateRows, pixelCoordinates)
-      allNames = getNames(gridTemplateRows)
-    }
+  $: allCells = getAllCells(gridTemplateRows, gridTemplateColumns, pixelCoordinates)
+
+  $: allNames = getNames(gridTemplateAreas, allCells)
 
   $: allSpecs = mergeNameSpecs(allNames, allCells)
 
