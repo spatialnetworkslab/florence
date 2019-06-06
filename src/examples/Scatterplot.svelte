@@ -65,24 +65,6 @@
 		>
 
 			<CoordinateTransformation {transformation}>
-      
-        <!-- {#each data.rows() as row (row.$index)}
-
-				  <Point 
-					  x={row.a}
-					  y={row.b}
-            fill={transformation === 'identity' ? 'black' : 'blue' }
-            radius={transformation === 'identity' ? 3 : Math.random() * 10}
-            transition={{
-              x: duration,
-              y: {
-                duration: duration * 2,
-                easing: quintOut
-              }
-            }}
-				  />
-
-			  {/each} -->
 
         <PointLayer
           x={data.column('a')}
@@ -90,11 +72,11 @@
           fill={transformation === 'identity' ? 'black' : 'blue' }
           radius={transformation === 'identity' ? 3 : Math.random() * 10}
           transition={{
-              x: duration,
-              y: {
-                duration: duration * 2,
-                easing: quintOut
-              }
+            x: duration,
+            y: {
+              duration: duration * 2,
+              easing: quintOut
+            }
           }}
         />
 
