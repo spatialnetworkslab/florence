@@ -6,7 +6,7 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   
   import { generateCoordinates } from './generateCoordinates.js'
-  import { createTransitionableAesthetic } from '../utils/transitions'
+  import { createTransitionableAesthetic, transitionsEqual } from '../utils/transitions'
 
   // Props
   export let x
@@ -30,7 +30,7 @@
   let aes_fill = createTransitionableAesthetic('fill', fill, transition)
 
   $: {
-    coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
+    let coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
     aes_x.set(coordinates[0])
     aes_y.set(coordinates[1])
   }
@@ -41,7 +41,7 @@
   let previousTransition
 
   beforeUpdate(() => {
-    if (JSON.stringify(previousTransition) !== JSON.stringify(transition)) {
+    if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
       aes_x = createTransitionableAesthetic('x', $aes_x, transition)

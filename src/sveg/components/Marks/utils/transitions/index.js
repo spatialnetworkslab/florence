@@ -1,4 +1,4 @@
-import { writable, get } from 'svelte/store'
+import { writable } from 'svelte/store'
 import { tweened } from 'svelte/motion'
 import { cubicOut } from 'svelte/easing'
 import { interpolateRgb } from 'd3-interpolate'
@@ -18,13 +18,15 @@ export function createTransitionableAesthetic (aestheticName, aestheticValue, tr
     if (!transitionOptions.hasOwnProperty(aestheticName)) return writable(aestheticValue)
 
     let aestheticTransition = transitionOptions[aestheticName]
-    
-    if (aestheticTransition.constructor === Number) {
-      let options = createOptionsFromDuration(aestheticName, transitionOptions)
+
+    if (aestheticTransition && aestheticTransition.constructor === Number) {
+      let options = createOptionsFromDuration(aestheticName, aestheticTransition)
       return tweened(aestheticValue, options)
     }
 
-    if (aestheticTransition.constructor === Object) return tweened(aestheticValue, aestheticTransition)
+    if (aestheticTransition && aestheticTransition.constructor === Object) {
+      return tweened(aestheticValue, aestheticTransition)
+    }
   }
 
   throw new Error(`Invalid transition for ${aestheticName}`)
@@ -41,4 +43,43 @@ function createOptionsFromDuration (aestheticName, duration) {
     default:
       return { duration, easing: cubicOut }
   }
+}
+
+export function transitionsEqual (a, b) {
+  if (a === undefined || b === undefined) return a === b
+
+  if (a.constructor !== Object) return a === b
+
+  return transitionObjectsEqual(a, b)
+}
+
+function transitionObjectsEqual (a, b) {
+  if (b.constructor !== Object) return false
+
+  if (numberOfKeys(a) !== numberOfKeys(b)) return false
+
+  for (let aesthetic in a) {
+    let aestheticA = a[aesthetic]
+    let aestheticB = b[aesthetic]
+    if (aestheticA.constructor !== Object) return aestheticA === aestheticB
+    if (!aestheticTransitionObjectsEqual(aestheticA, aestheticB)) return false
+  }
+
+  return true
+}
+
+function aestheticTransitionObjectsEqual (a, b) {
+  if (b.constructor !== Object) return false
+
+  if (numberOfKeys(a) !== numberOfKeys(b)) return false
+
+  for (let key in a) {
+    if (a[key] !== b[key]) return false
+  }
+
+  return true
+}
+
+function numberOfKeys (obj) {
+  return Object.keys(obj).length
 }

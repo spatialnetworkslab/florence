@@ -7,7 +7,7 @@
   
   import { generatePoints } from './generatePoints.js'
   import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
-  import { createTransitionableAesthetic } from '../utils/transitions'
+  import { createTransitionableAesthetic, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
 
   // Props
@@ -52,7 +52,7 @@
   let previousTransition
 
   beforeUpdate(() => {
-    if (JSON.stringify(previousTransition) !== JSON.stringify(transition)) {
+    if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
       aes_points = createTransitionableAesthetic('points', $aes_points, transition)

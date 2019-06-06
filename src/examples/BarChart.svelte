@@ -65,7 +65,7 @@
           y1={0}
           y2={row.meanQuantity}
           fill={transformation === 'identity' ? 'green' : 'blue'}
-          transition={duration}
+          transition={2000}
         />
 
      {/each}

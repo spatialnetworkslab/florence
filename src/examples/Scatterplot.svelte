@@ -1,5 +1,5 @@
 <script>
-  import { cubicOut } from 'svelte/easing'
+  import { quintOut } from 'svelte/easing'
 
 	import { scaleLinear } from 'd3-scale'
 	import { Graphic, Section, CoordinateTransformation, Point, Rectangle, DataContainer } from '../sveg'
@@ -71,7 +71,15 @@
 					  y={row.b}
             fill={transformation === 'identity' ? 'black' : 'blue' }
             radius={transformation === 'identity' ? 3 : Math.random() * 10}
-            transition={duration}
+            transition={{
+              x: duration,
+              y: {
+                duration: duration * 2,
+                easing: quintOut
+              },
+              fill: duration / 2,
+              radius: duration
+            }}
 				  />
 
 			  {/each}
