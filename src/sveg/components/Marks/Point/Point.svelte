@@ -6,7 +6,7 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   
   import { generateCoordinates } from './generateCoordinates.js'
-  import { createTransitionableAesthetic, createOptions } from '../utils/transitions'
+  import { createTransitionableAesthetic } from '../utils/transitions'
 
   // Props
   export let x
@@ -30,22 +30,25 @@
   let aes_fill = createTransitionableAesthetic('fill', fill, transition)
 
   $: {
-    let coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
-
+    coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
     aes_x.set(coordinates[0])
     aes_y.set(coordinates[1])
   }
 
-  $: {
-    aes_radius.set(radius)
-    aes_fill.set(fill)
-  }
+  $: { aes_radius.set(radius) }
+  $: { aes_fill.set(fill) }
+
+  let previousTransition
 
   beforeUpdate(() => {
-    aes_x.update(_ => _, createOptions('x', transition))
-    aes_y.update(_ => _, createOptions('y', transition))
-    aes_radius.update(_ => _, createOptions('radius', transition))
-    aes_fill.update(_ => _, createOptions('fill', transition))
+    if (JSON.stringify(previousTransition) !== JSON.stringify(transition)) {
+      previousTransition = transition
+
+      aes_x = createTransitionableAesthetic('x', $aes_x, transition)
+      aes_y = createTransitionableAesthetic('y', $aes_y, transition)
+      aes_radius = createTransitionableAesthetic('radius', $aes_radius, transition)
+      aes_fill = createTransitionableAesthetic('fill', $aes_fill, transition)
+    }
   })
 </script>
 

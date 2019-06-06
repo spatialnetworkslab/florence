@@ -1,36 +1,33 @@
+import { writable, get } from 'svelte/store'
 import { tweened } from 'svelte/motion'
 import { cubicOut } from 'svelte/easing'
 import { interpolateRgb } from 'd3-interpolate'
 import transitionPoints from './geometryTransitions/transitionPoints.js'
 
-export function createTransitionableAesthetic (aestheticName, aestheticValue, transition) {
-  return tweened(aestheticValue, createOptions(aestheticName, transition))
-}
-
-export function createOptions (aestheticName, transition) {
-  if (transition === undefined) {
-    return createDummyOptions()
+export function createTransitionableAesthetic (aestheticName, aestheticValue, transitionOptions) {
+  if (transitionOptions === undefined) {
+    return writable(aestheticValue)
   }
 
-  if (transition.constructor === Number) {
-    return createOptionsFromDuration(aestheticName, transition)
+  if (transitionOptions.constructor === Number) {
+    let options = createOptionsFromDuration(aestheticName, transitionOptions)
+    return tweened(aestheticValue, options)
   }
 
-  if (transition.constructor === Object) {
-    if (!transition.hasOwnProperty(aestheticName)) return createDummyOptions()
+  if (transitionOptions.constructor === Object) {
+    if (!transitionOptions.hasOwnProperty(aestheticName)) return writable(aestheticValue)
 
-    return transition[aestheticName]
+    let aestheticTransition = transitionOptions[aestheticName]
+    
+    if (aestheticTransition.constructor === Number) {
+      let options = createOptionsFromDuration(aestheticName, transitionOptions)
+      return tweened(aestheticValue, options)
+    }
+
+    if (aestheticTransition.constructor === Object) return tweened(aestheticValue, aestheticTransition)
   }
 
   throw new Error(`Invalid transition for ${aestheticName}`)
-}
-
-function createDummyOptions () {
-  return { duration: 0, interpolate: dummyInterpolator }
-}
-
-function dummyInterpolator (start, end) {
-  return _ => end
 }
 
 function createOptionsFromDuration (aestheticName, duration) {

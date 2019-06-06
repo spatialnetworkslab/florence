@@ -1,4 +1,6 @@
 <script>
+  import { cubicOut } from 'svelte/easing'
+
 	import { scaleLinear } from 'd3-scale'
 	import { Graphic, Section, CoordinateTransformation, Point, Rectangle, DataContainer } from '../sveg'
 
@@ -69,7 +71,7 @@
 					  y={row.b}
             fill={transformation === 'identity' ? 'black' : 'blue' }
             radius={transformation === 'identity' ? 3 : Math.random() * 10}
-            transition={2000}
+            transition={duration}
 				  />
 
 			  {/each}

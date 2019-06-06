@@ -7,7 +7,7 @@
   
   import { generatePoints } from './generatePoints.js'
   import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
-  import { createTransitionableAesthetic, createOptions } from '../utils/transitions'
+  import { createTransitionableAesthetic } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
 
   // Props
@@ -47,13 +47,17 @@
     aes_points.set(points)
   }
 
-  $: {
-    aes_fill.set(fill)
-  }
+  $: { aes_fill.set(fill) }
+
+  let previousTransition
 
   beforeUpdate(() => {
-    aes_points.update(_ => _, createOptions('points', transition))
-    aes_fill.update(_ => _, createOptions('fill', transition))
+    if (JSON.stringify(previousTransition) !== JSON.stringify(transition)) {
+      previousTransition = transition
+
+      aes_points = createTransitionableAesthetic('points', $aes_points, transition)
+      aes_fill = createTransitionableAesthetic('fill', $aes_fill, transition)
+    }
   })
 </script>
 
