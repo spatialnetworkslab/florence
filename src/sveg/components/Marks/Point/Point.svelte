@@ -5,8 +5,7 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   
-  import scaleCoordinates from './scaleCoordinates.js'
-  import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
+  import { generateCoordinates } from './generateCoordinates.js'
   import { createTransitionableAesthetic, createOptions } from '../utils/transitions'
 
   // Props
@@ -22,25 +21,19 @@
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
 
   // Convert coordinates
-  let scaledCoordinates = scaleCoordinates({ x, y }, $sectionContext)
-  let transformedCoordinates = applyCoordinateTransformation(
-    [scaledCoordinates.x, scaledCoordinates.y], $coordinateTransformationContext
-  )
+  let coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
 
   // Aesthetics
-  let aes_x = createTransitionableAesthetic('x', transformedCoordinates[0], transition)
-  let aes_y = createTransitionableAesthetic('y', transformedCoordinates[1], transition)
+  let aes_x = createTransitionableAesthetic('x', coordinates[0], transition)
+  let aes_y = createTransitionableAesthetic('y', coordinates[1], transition)
   let aes_radius = createTransitionableAesthetic('radius', radius, transition)
   let aes_fill = createTransitionableAesthetic('fill', fill, transition)
 
   $: {
-    let scaledCoordinates = scaleCoordinates({ x, y }, $sectionContext)
-    let transformedCoordinates = applyCoordinateTransformation(
-      [scaledCoordinates.x, scaledCoordinates.y], $coordinateTransformationContext
-    )
+    let coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
 
-    aes_x.set(transformedCoordinates[0])
-    aes_y.set(transformedCoordinates[1])
+    aes_x.set(coordinates[0])
+    aes_y.set(coordinates[1])
   }
 
   $: {

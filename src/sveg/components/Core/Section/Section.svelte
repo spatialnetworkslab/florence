@@ -1,6 +1,6 @@
 <script>
   import * as SectionContext from './SectionContext'
-  import { scaleCoordinates } from '../../Marks/Rectangle/scaleCoordinates.js'
+  import { scaleCoordinates } from '../../Marks/Rectangle/generatePoints.js'
 
   export let x1 = undefined
   export let x2 = undefined

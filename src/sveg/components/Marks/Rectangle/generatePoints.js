@@ -1,4 +1,17 @@
 import { isInvalid } from '../../../utils/equals.js'
+import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
+
+export function generatePoints (coordinates, sectionContext, coordinateTransformationContext, interpolate) {
+  let scaledCoordinates = scaleCoordinates(coordinates, sectionContext)
+  let cornerPoints = createCornerPoints(scaledCoordinates)
+  let transformedPoints = applyCoordinateTransformation(
+    cornerPoints,
+    coordinateTransformationContext,
+    interpolate
+  )
+
+  return transformedPoints
+}
 
 export function scaleCoordinates (coordinates, sectionContext) {
   throwErrorIfInvalidCombination(coordinates)
