@@ -6,7 +6,6 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   
   import { generateCoordinates } from './generateCoordinates.js'
-  import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
 

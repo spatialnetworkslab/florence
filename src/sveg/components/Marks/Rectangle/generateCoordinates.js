@@ -1,6 +1,20 @@
 import { isInvalid } from '../../../utils/equals.js'
 import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
 
+export function generateCoordinatesLayer (
+  coordinates, sectionContext, coordinateTransformationContext, interpolate, length
+) {
+  let coordinatesArray = []
+
+  for (let i = 0; i < length; i++) {
+    coordinatesArray.push(
+      generateCoordinates(coordinates[i], sectionContext, coordinateTransformationContext, interpolate)
+    )
+  }
+
+  return coordinatesArray
+}
+
 export function generateCoordinates (coordinates, sectionContext, coordinateTransformationContext, interpolate) {
   let scaledCoordinates = scaleCoordinates(coordinates, sectionContext)
   let cornerPoints = createCornerPoints(scaledCoordinates)
