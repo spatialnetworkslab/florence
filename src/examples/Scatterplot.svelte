@@ -76,9 +76,7 @@
               y: {
                 duration: duration * 2,
                 easing: quintOut
-              },
-              fill: duration / 2,
-              radius: duration
+              }
             }}
 				  />
 

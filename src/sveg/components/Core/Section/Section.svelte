@@ -18,6 +18,8 @@
     let rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
     let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
 
+    console.log(rangeX, rangeY)
+
     SectionContext.update(newSectionContext, { rangeX, rangeY, scaleX, scaleY })
   }
 </script>

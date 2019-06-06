@@ -19,6 +19,7 @@
   export let y1 = undefined
   export let y2 = undefined
   export let fill = 'black'
+  export let opacity = 1
   export let transition = undefined
   export let interpolate = true
 
@@ -38,6 +39,7 @@
   // Aesthetics
   let aes_coordinates = createTransitionableAesthetic('coordinates', coordinates, transition)
   let aes_fill = createTransitionableAesthetic('fill', fill, transition)
+  let aes_opacity = createTransitionableAesthetic('opacity', opacity, transition)
 
   $: {
     if (initDone()) {
@@ -53,6 +55,7 @@
   }
 
   $: { if (initDone()) aes_fill.set(fill) }
+  $: { if (initDone()) aes_opacity.set(opacity) }
 
   let previousTransition
 
@@ -62,6 +65,7 @@
 
       aes_coordinates = createTransitionableAesthetic('coordinates', $aes_coordinates, transition)
       aes_fill = createTransitionableAesthetic('fill', $aes_fill, transition)
+      aes_opacity = createTransitionableAesthetic('opacity', $aes_opacity, transition)
     }
   })
 
@@ -74,7 +78,8 @@
 
   <path 
     d={generatePath($aes_coordinates)} 
-    fill={$aes_fill} 
+    fill={$aes_fill}
+    style={`opacity: ${$aes_opacity}`}
   />
 
 {/if}
