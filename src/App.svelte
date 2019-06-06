@@ -30,9 +30,9 @@
     <Scatterplot />
   </div>
 
-  <div class="graphic-holder">
+  <!-- <div class="graphic-holder">
     <h1>Polar sections</h1>
     <PolarSections />
-  </div>  
+  </div>   -->
 
 </div>

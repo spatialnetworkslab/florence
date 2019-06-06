@@ -5,6 +5,8 @@ import CoordinateTransformation from './components/Core/CoordinateTransformation
 import Point from './components/Marks/Point/Point.svelte'
 import Rectangle from './components/Marks/Rectangle/Rectangle.svelte'
 
+import PointLayer from './components/Marks/Point/PointLayer.svelte'
+
 import DataContainer from './classes/DataContainer'
 
 export {
@@ -14,6 +16,8 @@ export {
 
   Point,
   Rectangle,
+
+  PointLayer,
 
   DataContainer
 }

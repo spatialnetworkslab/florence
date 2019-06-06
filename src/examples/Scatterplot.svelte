@@ -2,7 +2,9 @@
   import { quintOut } from 'svelte/easing'
 
 	import { scaleLinear } from 'd3-scale'
-	import { Graphic, Section, CoordinateTransformation, Point, Rectangle, DataContainer } from '../sveg'
+	import { 
+    Graphic, Section, CoordinateTransformation, Point, PointLayer, Rectangle, DataContainer 
+  } from '../sveg'
 
 	export let N = 100
 
@@ -64,7 +66,7 @@
 
 			<CoordinateTransformation {transformation}>
       
-        {#each data.rows() as row (row.$index)}
+        <!-- {#each data.rows() as row (row.$index)}
 
 				  <Point 
 					  x={row.a}
@@ -80,7 +82,14 @@
             }}
 				  />
 
-			  {/each}
+			  {/each} -->
+
+        <PointLayer
+          x={data.column('a')}
+          y={data.column('b')}
+          fill={transformation === 'identity' ? 'black' : 'blue' }
+          radius={transformation === 'identity' ? 3 : Math.random() * 10}
+        />
 
       </CoordinateTransformation>
 		
