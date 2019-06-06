@@ -5,7 +5,7 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   
-  import { generatePoints } from './generatePoints.js'
+  import { generateCoordinates } from './generateCoordinates.js'
   import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
   import { createTransitionableAesthetic, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
@@ -25,7 +25,7 @@
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
 
   // Convert coordinates
-  let points = generatePoints(
+  let coordinates = generateCoordinates(
     { x1, x2, y1, y2 },
     $sectionContext,
     $coordinateTransformationContext,
@@ -33,18 +33,18 @@
   )
 
   // Aesthetics
-  let aes_points = createTransitionableAesthetic('points', points, transition)
+  let aes_coordinates = createTransitionableAesthetic('coordinates', coordinates, transition)
   let aes_fill = createTransitionableAesthetic('fill', fill, transition)
 
   $: {
-    let points = generatePoints(
+    let coordinates = generateCoordinates(
       { x1, x2, y1, y2 },
       $sectionContext,
       $coordinateTransformationContext,
       interpolate
     )
 
-    aes_points.set(points)
+    aes_coordinates.set(coordinates)
   }
 
   $: { aes_fill.set(fill) }
@@ -55,7 +55,7 @@
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
-      aes_points = createTransitionableAesthetic('points', $aes_points, transition)
+      aes_coordinates = createTransitionableAesthetic('coordinates', $aes_coordinates, transition)
       aes_fill = createTransitionableAesthetic('fill', $aes_fill, transition)
     }
   })
@@ -64,7 +64,7 @@
 {#if $graphicContext.output() === 'svg'}
 
   <path 
-    d={generatePath($aes_points)} 
+    d={generatePath($aes_coordinates)} 
     fill={$aes_fill} 
   />
 

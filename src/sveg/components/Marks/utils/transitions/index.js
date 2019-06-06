@@ -37,7 +37,8 @@ function createOptionsFromDuration (aestheticName, duration) {
     case 'fill':
       return { duration, easing: cubicOut, interpolate: interpolateRgb }
 
-    case 'points':
+    case 'coordinates':
+      // 'coordinates' is an Array of points: [[a, b], [c, d], ...]
       return { duration, easing: cubicOut, interpolate: transitionPoints }
 
     default:

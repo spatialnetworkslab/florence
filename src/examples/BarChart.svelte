@@ -65,7 +65,10 @@
           y1={0}
           y2={row.meanQuantity}
           fill={transformation === 'identity' ? 'green' : 'blue'}
-          transition={2000}
+          transition={{
+            coordinates: 1500,
+            fill: 2000
+          }}
         />
 
      {/each}
