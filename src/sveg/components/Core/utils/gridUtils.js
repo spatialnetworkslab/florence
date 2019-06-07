@@ -1,15 +1,21 @@
 export function getAllCells ( templateRows, templateCols, coords ) {
 	let getRows = getRowCells( templateRows, coords )
 
+	let colSizes = []
+	let rowSizes = []
+
 	let allCells = []
 
 	for (let i of getRows) {
 		let rowCols = getColCells( templateCols, i )
 
 		allCells = allCells.concat(rowCols)
+
+		rowSizes.push(i)
+		colSizes = rowCols
 	}
 
-	return allCells	
+	return [allCells, rowSizes, colSizes]
 }
 
 export function getColCells ( specs, ranges ) {
@@ -205,7 +211,7 @@ function validateGridSpec ( a, direction ) {
 	}
 
 	if (a.constructor === Number && a === 0) {
-		console.warn(`Please specify at least one cell in ${direction}.`)
+		console.warn(`Please specify at least one cell in ${direction}. Automatically adding 1 cell to ${direction}.`)
 		return 1
 	} else if (a.constructor === Number && (a % 1) !== 0) {
 		console.warn(`Please specify ${direction} with integers only. Using rounded value ${Math.ceil(a)}.`)

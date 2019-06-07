@@ -18,13 +18,9 @@
   }
 
   let data = new DataContainer(generateData(50))
-
-  const scaleFruit = scaleBand().domain(data.domain('fruit'))
-  const scaleA = scaleLinear().domain(data.domain('a'))
-  const scaleB = scaleLinear().domain(data.domain('b'))
-
   const groupedData = data.groupBy('fruit').done()
 
+  // Grid layout specs
   let height = 420
 
   let cols = '50px 2fr 1fr'
@@ -32,6 +28,8 @@
 
   let layout
 
+  // Change grid layout on resize
+  // Modify this for fun :)
   $: if (height > 280) {
 
   	rows = 3
@@ -51,6 +49,11 @@
   	layout = ['blue', 'red', 'green']
   	
   }
+
+  // Input validation for grids is so robust
+  // you could technically do the following
+  // but passing floats is not encouraged:
+  // $: rows = height/140
 </script>
 
 <div>
@@ -75,6 +78,8 @@
 			let:generatedCells
 		>
 
+      <!-- No actual data is used here, only the groups.
+           This can be changed later. -->
 			{#each groupedData.rows() as facet}
 
 				<Rectangle

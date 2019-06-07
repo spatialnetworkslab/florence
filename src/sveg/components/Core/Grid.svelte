@@ -5,6 +5,7 @@
   import CoordinateContext from '../../classes/CoordinateContext'
   import { generatePixelCoordinates } from '../../rendering/rectangle'
   import { getAllCells, getNames, mergeNameSpecs } from './utils/gridUtils.js'
+  import { printGrid } from './utils/viewGrid.js'
 
   // Position of grid cells
   export let x1 = undefined
@@ -23,6 +24,10 @@
   export let gridColumnGap = 0
   export let gridTemplateAreas = undefined
 
+  // Option to console log grid layout
+  // This is an expensive operation
+  export let viewGridTemplate = false
+
   let parentCoordinateContext
 
   const unsubscribe = getContext(coordinateContextKey).subscribe(coordinateContext => {
@@ -35,7 +40,11 @@
   let allCells
   let allNames
 
-  $: allCells = getAllCells(gridTemplateRows, gridTemplateColumns, pixelCoordinates)
+  $: [allCells, rowSizes, colSizes] = getAllCells(gridTemplateRows, gridTemplateColumns, pixelCoordinates)
+
+  $: if (viewGridTemplate) {
+    printGrid( rowSizes, colSizes )
+  }
 
   $: allNames = getNames(gridTemplateAreas, allCells)
 
