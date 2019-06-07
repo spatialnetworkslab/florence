@@ -4,13 +4,13 @@ import { cubicOut } from 'svelte/easing'
 import { interpolate } from 'd3-interpolate'
 import transitionPoints from './geometryTransitions/transitionPoints.js'
 
-export function createTransitionable (aestheticName, aestheticValue, transitionOptions) {
+export function createTransitionable (aestheticName, aestheticValue, transitionOptions, { layer }) {
   if (transitionOptions === undefined) {
     return writable(aestheticValue)
   }
 
   if (transitionOptions.constructor === Number) {
-    let options = createOptionsFromDuration(aestheticName, transitionOptions)
+    let options = createOptionsFromDuration(aestheticName, transitionOptions, layer)
     return tweened(aestheticValue, options)
   }
 
@@ -20,12 +20,12 @@ export function createTransitionable (aestheticName, aestheticValue, transitionO
     let aestheticTransition = transitionOptions[aestheticName]
 
     if (aestheticTransition && aestheticTransition.constructor === Number) {
-      let options = createOptionsFromDuration(aestheticName, aestheticTransition)
+      let options = createOptionsFromDuration(aestheticName, aestheticTransition, layer)
       return tweened(aestheticValue, options)
     }
 
     if (aestheticTransition && aestheticTransition.constructor === Object) {
-      let options = createOptionsFromOptions(aestheticName, aestheticTransition)
+      let options = createOptionsFromOptions(aestheticName, aestheticTransition, layer)
       return tweened(aestheticValue, options)
     }
   }
@@ -33,7 +33,7 @@ export function createTransitionable (aestheticName, aestheticValue, transitionO
   throw new Error(`Invalid transition for ${aestheticName}`)
 }
 
-function createOptionsFromDuration (aestheticName, duration) {
+function createOptionsFromDuration (aestheticName, duration, layer) {
   switch (aestheticName) {
     case 'fill':
       return { duration, easing: cubicOut, interpolate }
@@ -86,7 +86,7 @@ function numberOfKeys (obj) {
   return Object.keys(obj).length
 }
 
-function createOptionsFromOptions (aestheticName, transitionOptions) {
+function createOptionsFromOptions (aestheticName, transitionOptions, layer) {
   switch (aestheticName) {
     case 'fill':
       return Object.assign({ interpolate }, transitionOptions)

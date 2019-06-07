@@ -73,13 +73,13 @@
 
      {/each} -->
 
-     <RectangleLayer 
+      <RectangleLayer 
         x1={data.column('fruit')}
         x2={({ scaleX }) => data.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
         y1={0}
         y2={data.column('meanQuantity')}
         fill={transformation === 'identity' ? 'green' : 'blue'}
-     />
+      />
 
     </CoordinateTransformation>
 
