@@ -8,13 +8,12 @@
   export let x2 = undefined
   export let y1 = undefined
   export let y2 = undefined
+  export let fill = 'black'
 
   let parentCoordinateContext
   const unsubscribe = getContext(coordinateContextKey).subscribe(coordinateContext => {
     parentCoordinateContext = coordinateContext
   })
-
-  $: console.log(parentCoordinateContext)
 
   $: coordinates = { x1, x2, y1, y2 }
   $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
@@ -23,4 +22,4 @@
   onDestroy(unsubscribe)
 </script>
 
-<path d={path} />
+<path d={path} {fill} />

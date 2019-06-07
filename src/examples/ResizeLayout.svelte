@@ -25,44 +25,50 @@
 
   const groupedData = data.groupBy('fruit').done()
 
-  let height = 450
+  let height = 420
 
   let cols = 3
   let rows
 
   let layout
 
-  $: if (height > 300) {
+  $: if (height > 280) {
+
   	rows = 3
-  	layout = ['blue', undefined, undefined,
-								undefined, 'red', undefined,
-								undefined, undefined, 'green']
-  } else if (height < 300 && height > 150) {
+  	layout = ['blue',     'blue', undefined,
+							 undefined, 'red',  undefined,
+							 undefined, 'red',  'green']
+
+  } else if (height <= 280 && height > 140) {
+
   	rows = 2
-  	layout = ['blue', undefined, undefined,
-								undefined, 'red', 'green']
+  	layout = ['blue',     'blue', undefined,
+							 undefined, 'red',  'green']
+
   } else {
+
   	rows = 1
   	layout = ['blue', 'red', 'green']
+  	
   }
 </script>
 
 <div>
   <label for="height-slider">Height:</label>
-  <input type="range" min="0" max="450" bind:value={height} name="height-slider" />
+  <input type="range" min="0" max="420" bind:value={height} name="height-slider" />
 </div>
 
 <div style="padding-top: 50px">
 
 	<Graphic 
-		width={450} {height}
-		scaleX={scaleLinear().domain([0, 450])}
-    scaleY={scaleLinear().domain([0, 450])}
+		width={420} {height}
+		scaleX={scaleLinear().domain([0, 420])}
+    scaleY={scaleLinear().domain([0, height])}
 	>
 
 		<Grid
-			x1={0} x2={450}
-			y1={0} y2={450}
+			x1={0} x2={420}
+			y1={0} y2={height}
 			gridTemplateColumns={cols}
 			gridTemplateRows={rows}
 			gridTemplateAreas={layout}
@@ -71,7 +77,9 @@
 
 			{#each groupedData.rows() as facet}
 
-				<Rectangle {...generatedCells[facet.fruit]} />
+				<Rectangle
+					{...generatedCells[facet.fruit]}
+					fill={facet.fruit} />
 
 			{/each}
 		

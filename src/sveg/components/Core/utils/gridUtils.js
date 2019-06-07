@@ -18,7 +18,7 @@ export function getColCells ( specs, ranges ) {
 
 	if (specs.constructor === String) {
 
-		let individualSpecs = specs.split(' ')
+		let individualSpecs = specs.split(/\s/)
 		for (let i of individualSpecs) {
 			if (i.endsWith('px')) {
 				cells.push(parseInt(i.slice(0, -2)))
@@ -62,7 +62,7 @@ export function getRowCells ( specs, ranges ) {
 
 	if (specs.constructor === String) {
 
-		let individualSpecs = specs.split(' ')
+		let individualSpecs = specs.split(/\s/)
 		for (let i of individualSpecs) {
 			if (i.endsWith('px')) {
 				cells.push(parseInt(i.slice(0, -2)))
@@ -104,7 +104,8 @@ export function getNames ( names ) {
 	let cellNames
 
 	if (names.constructor === String) {
-		// include string parsing logic here
+		let rowNames = names.split('\n')
+		let cellsInRow = rowNames.split(/\s/)
 	} else if (names.constructor === Array) {
 		cellNames = names
 	}
@@ -136,10 +137,12 @@ export function mergeNameSpecs ( cellNames, cellSpecs ) {
 	for (let j = 0; j < specsLength; j++) {
 		let cellName = cellNames[j]
 
-		if (!(cellName in allSpecs)) {
+		if (cellName === undefined) {
+			allSpecs[j] = cellSpecs[j]
+		} else if (!(cellName in allSpecs)) {
 			allSpecs[cellName] = cellSpecs[j]
 		} else {
-			allSpecs[cellName] = cellMerge(cellSpecs[j], allSpecs[cellName])
+			allSpecs[cellName] = cellMerge(allSpecs[cellName], cellSpecs[j])
 		}
 	}
 
@@ -147,11 +150,8 @@ export function mergeNameSpecs ( cellNames, cellSpecs ) {
 }
 
 function cellMerge ( cell1, cell2 ) {
-	if (cell1.x2 !== cell2.x1) {
-		console.warn('Repeated cell names may not be adjacent to one another, this may cause errors in your chart.')
-	}
-
-	if (cell1.y2 !== cell2.y1) {
+	if (cell1.x2 !== cell2.x1 && cell1.y2 !== cell2.y1) {
+		console.log(cell1, cell2)
 		console.warn('Repeated cell names may not be adjacent to one another, this may cause errors in your chart.')
 	}
 
