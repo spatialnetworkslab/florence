@@ -5,9 +5,8 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   
-  import { generateCoordinatesLayer } from './generateCoordinates.js'
+  import { generateCoordinatesLayer } from './generateCoordinatesLayer.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
-  import { getNPoints } from './layerUtils.js'
   import { generatePropArray } from '../utils/generatePropArray.js'
 
   let initPhase = true
@@ -25,14 +24,16 @@
   const sectionContext = SectionContext.subscribe()
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
 
-  let length = getNPoints(x, y)
+  // Generate coordinate arrays
+  let { xArray, yArray, length } = generateCoordinatesLayer(
+    { x, y }, 
+    $sectionContext, 
+    $coordinateTransformationContext
+  )
+
+  // 'length' hack (access without triggering reactivity)
   const getLength = () => length
   const setLength = input => length = input
-
-  // Convert coordinate arrays
-  let { xArray, yArray } = generateCoordinatesLayer(
-    { x, y }, $sectionContext, $coordinateTransformationContext, length
-  )
 
   // Generate other prop arrays
   let radiusArray = generatePropArray(radius, length)
@@ -46,11 +47,14 @@
   
   $: {
     if (initDone()) {
-      setLength(getNPoints(x, y))
-
-      let { xArray, yArray } = generateCoordinatesLayer(
-        { x, y }, $sectionContext, $coordinateTransformationContext, getLength()
+      let { xArray, yArray, length } = generateCoordinatesLayer(
+        { x, y }, 
+        $sectionContext, 
+        $coordinateTransformationContext
       )
+
+      setLength(length)
+
       tr_xArray.set(xArray)
       tr_yArray.set(yArray)
     }
@@ -79,7 +83,7 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#each xArray as _, i}
+  {#each $tr_xArray as _, i}
 
     <circle 
       cx={$tr_xArray[i]} 

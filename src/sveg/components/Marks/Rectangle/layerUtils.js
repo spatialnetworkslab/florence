@@ -1,20 +1,18 @@
-export function getNPoints (coordinates) {
-  ensureValidFormat(coordinates)
-
-  return coordinates.x1.length
-}
-
-function ensureValidFormat (coordinates) {
+export function getNRectangles (coordinates) {
   let length
 
   for (let key in coordinates) {
     let coordinateValue = coordinates[key]
-    if (coordinateValue.constructor !== Array) throw invalidFormatError
+    if (!coordinateValue) throw invalidFormatError
 
-    length = length || coordinateValue.length
+    if (coordinateValue.constructor === Array) {
+      length = length || coordinateValue.length
 
-    if (length !== coordinateValue.length) throw invalidFormatError
+      if (length !== coordinateValue.length) throw invalidFormatError
+    }
   }
+
+  return length || 1
 }
 
 const invalidFormatError = new Error('RectangleLayer: invalid coordinate specification')

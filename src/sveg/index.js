@@ -6,6 +6,7 @@ import Point from './components/Marks/Point/Point.svelte'
 import Rectangle from './components/Marks/Rectangle/Rectangle.svelte'
 
 import PointLayer from './components/Marks/Point/PointLayer.svelte'
+import RectangleLayer from './components/Marks/Rectangle/RectangleLayer.svelte'
 
 import DataContainer from './classes/DataContainer'
 
@@ -18,6 +19,7 @@ export {
   Rectangle,
 
   PointLayer,
+  RectangleLayer,
 
   DataContainer
 }
