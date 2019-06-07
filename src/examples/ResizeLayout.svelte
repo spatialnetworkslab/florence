@@ -27,7 +27,7 @@
 
   let height = 420
 
-  let cols = 3
+  let cols = '50px 2fr 1fr'
   let rows
 
   let layout

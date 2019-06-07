@@ -6,20 +6,21 @@
   import { generatePixelCoordinates } from '../../rendering/rectangle'
   import { getAllCells, getNames, mergeNameSpecs } from './utils/gridUtils.js'
 
+  // Position of grid cells
   export let x1 = undefined
   export let x2 = undefined
   export let y1 = undefined
   export let y2 = undefined
 
+  // Scales
   export let scaleX = undefined
   export let scaleY = undefined
 
+  // Grid specs
   export let gridTemplateRows = 1
   export let gridTemplateColumns = 1
-
   export let gridRowGap = 0
   export let gridColumnGap = 0
-
   export let gridTemplateAreas = undefined
 
   let parentCoordinateContext
