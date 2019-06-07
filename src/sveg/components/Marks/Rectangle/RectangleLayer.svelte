@@ -5,8 +5,7 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   
-  import { getNRectangles } from './layerUtils.js'
-  import { generateCoordinatesLayer } from './generateCoordinates.js'
+  import { generateCoordinatesLayer } from './generateCoordinatesLayer.js'
   import { generatePropArray } from '../utils/generatePropArray.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
@@ -29,18 +28,17 @@
   const sectionContext = SectionContext.subscribe()
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
 
-  let length = getNRectangles({ x1, x2, y1, y2 })
-  const getLength = () => length
-  const setLength = input => length = input
-
   // Convert coordinate array
-  let coordinateArray = generateCoordinatesLayer(
+  let { coordinateArray, length } = generateCoordinatesLayer(
     { x1, x2, y1, y2 },
     $sectionContext,
     $coordinateTransformationContext,
-    interpolate,
-    length
+    interpolate
   )
+
+  // 'length' hack (access without triggering reactivity)
+  const getLength = () => length
+  const setLength = input => length = input
 
   // Generate other prop arrays
   let fillArray = generatePropArray(fill, length)
@@ -53,15 +51,14 @@
 
   $: {
     if (initDone()) {
-      setLength(getNRectangles({ x1, x2, y1, y2 }))
-
-      let coordinateArray = generateCoordinatesLayer(
+      let { coordinateArray, length } = generateCoordinatesLayer(
         { x1, x2, y1, y2 },
         $sectionContext,
         $coordinateTransformationContext,
-        interpolate,
-        getLength()
+        interpolate
       )
+
+      setLength(length)
 
       tr_coordinateArray.set(coordinateArray)
     }
@@ -89,7 +86,7 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#each coordinateArray as coordinates, i}
+  {#each $tr_coordinateArray as coordinates, i}
 
     <path 
       d={generatePath(coordinates)} 

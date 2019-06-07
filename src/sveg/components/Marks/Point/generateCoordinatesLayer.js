@@ -9,7 +9,7 @@ export function generateCoordinatesLayer ({ x, y }, sectionContext, coordinateTr
 }
 
 function scaleCoordinatesLayer (x, y, sectionContext) {
-  if (!x || !y) throw new Error(`PointLayer: 'x' and 'y' are required`)
+  if (x === undefined || y === undefined) throw new Error(`PointLayer: 'x' and 'y' are required`)
 
   const scales = sectionContext.scales()
 

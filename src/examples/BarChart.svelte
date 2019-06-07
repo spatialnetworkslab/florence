@@ -78,10 +78,7 @@
         x2={({ scaleX }) => data.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
         y1={0}
         y2={data.column('meanQuantity')}
-        transition={{
-          coordinates: 1500,
-          fill: 2000
-        }}
+        fill={transformation === 'identity' ? 'green' : 'blue'}
      />
 
     </CoordinateTransformation>

@@ -1,20 +1,6 @@
 import { isInvalid } from '../../../utils/equals.js'
 import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
 
-export function generateCoordinatesLayer (
-  coordinates, sectionContext, coordinateTransformationContext, interpolate, length
-) {
-  let coordinatesArray = []
-
-  for (let i = 0; i < length; i++) {
-    coordinatesArray.push(
-      generateCoordinates(coordinates[i], sectionContext, coordinateTransformationContext, interpolate)
-    )
-  }
-
-  return coordinatesArray
-}
-
 export function generateCoordinates (coordinates, sectionContext, coordinateTransformationContext, interpolate) {
   let scaledCoordinates = scaleCoordinates(coordinates, sectionContext)
   let cornerPoints = createCornerPoints(scaledCoordinates)
@@ -66,7 +52,7 @@ export function createCornerPoints ({ x1, x2, y1, y2 }) {
 
 const s = JSON.stringify
 
-function throwErrorIfInvalidCombination ({ x1, x2, y1, y2 }) {
+export function throwErrorIfInvalidCombination ({ x1, x2, y1, y2 }) {
   if (onlyOne(x1, x2)) {
     throw new Error(`Invalid combination of 'x1' and 'x2': ${s(x1)}, ${s(x2)}. Either provide both or none.`)
   }
