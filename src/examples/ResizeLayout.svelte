@@ -23,13 +23,13 @@
   // Grid layout specs
   let height = 420
 
+  // Col definition uses both px and fr
   let cols = '50px 2fr 1fr'
   $: rows = Math.ceil(height/140)
 
   let layout
 
   // Change grid layout on depending on size + number of rows
-  // Modify this for fun :)
   $: if (rows === 3) {
   	layout = ['blue',     'blue', undefined,
 							 undefined, 'red',  undefined,

@@ -30,7 +30,7 @@
 
   // Option to console log rows in cols in grid
   // This is a less expensive alternative
-  export let viewGridShape = true
+  export let viewGridShape = false
 
   let parentCoordinateContext
 
@@ -44,15 +44,15 @@
   let allCells
   let allNames
 
+  // Get cells
   $: [allCells, rowSizes, colSizes, numRows, numCols] = getAllCells(gridTemplateRows, gridTemplateColumns, gridRowGap, gridColumnGap, pixelCoordinates)
 
+  // Console log grid specification as necessary
   $: if (viewGridTemplate) { printGrid( rowSizes, colSizes ) }
-
   $: if (viewGridShape) { console.log('rows:', numRows, ' columns:', numCols) }
 
-  $: allNames = getNames(gridTemplateAreas, allCells)
-
-  $: allSpecs = mergeNameSpecs(allNames, allCells, numRows, numCols)
+  // Get named cells
+  $: allSpecs = mergeNameSpecs(gridTemplateAreas, allCells, numCols)
 
 </script>
 

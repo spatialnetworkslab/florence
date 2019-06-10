@@ -1,7 +1,10 @@
+// Gets all cells in grid in format { areaName: {x1, x2, y1, y2}, ... }
+// given the template specs and definition
 export function getAllCells ( templateRows, templateCols, rowGap, colGap, coords ) {
 	let numCols
 	let numRows
 
+	// Divide svg into rows first
 	let getRows = getRowCells( templateRows, rowGap, coords )
 	numRows = getRows.length
 
@@ -10,6 +13,9 @@ export function getAllCells ( templateRows, templateCols, rowGap, colGap, coords
 
 	let allCells = []
 
+	// Divide each row into columns
+	// Practically speaking, it doesn't make a difference
+	// which comes first
 	for (let i of getRows) {
 		let rowCols = getColCells( templateCols, colGap, i )
 
@@ -24,6 +30,7 @@ export function getAllCells ( templateRows, templateCols, rowGap, colGap, coords
 	return [allCells, rowSizes, colSizes, numRows, numCols]
 }
 
+// Divides each row into columns
 export function getColCells ( specs, colGap, ranges ) {
 	let start = ranges.x1
 	let cells = []
@@ -75,6 +82,9 @@ export function getColCells ( specs, colGap, ranges ) {
 	return cellSpecs
 }
 
+// Divides each column into rows
+// Logic should probably be refactored since this function
+// is similar to getColCells
 export function getRowCells ( specs, rowGap, ranges ) {
 	let start = ranges.y1
 	let cells = []
@@ -125,55 +135,8 @@ export function getRowCells ( specs, rowGap, ranges ) {
 	return cellSpecs
 }
 
-export function getNames ( names ) {
-	let cellNames
-
-	if (names.constructor === String) {
-		let rowNames = names.split('\n')
-		let cellsInRow = rowNames.split(/\s/)
-	} else if (names.constructor === Array) {
-		cellNames = names
-	}
-
-	return cellNames
-}
-
-export function mergeNameSpecs ( cellNames, cellSpecs, numRows, numCols ) {
-	let namesLength = cellNames.length
-	let specsLength = cellSpecs.length
-
-	if (namesLength < specsLength) {
-		console.warn('Cell names do not match up with number of cells specified, this may cause errors in your chart.')
-		
-		for (let i = 0; i < specsLength; i++) {
-			if (namesLength[i]) {
-				continue
-			} else {
-				cellNames.push(i)
-			}
-		}
-	} else if (namesLength > specsLength) {
-		console.warn('Cell names do not match up with number of cells specified, this may cause errors in your chart.')
-	}
-
-	let allSpecs = {}
-
-	// Some logic for merging cells
-	for (let j = 0; j < specsLength; j++) {
-		let cellName = cellNames[j]
-
-		if (cellName === undefined) {
-			allSpecs[j] = cellSpecs[j]
-		} else if (!(cellName in allSpecs)) {
-			allSpecs[cellName] = cellSpecs[j]
-		} else {
-			allSpecs[cellName] = cellMerge(allSpecs[cellName], cellSpecs[j], numRows, numCols, j)
-		}
-	}
-
-	return allSpecs
-}
-
+// If 'fr' definition is used, get the size of 1fr
+// Allows for mixed definitions, e.g. 150px 1fr 2fr
 function getFrameStep ( specs, range ) {
 	let frameCount = 0
 
@@ -195,21 +158,69 @@ function getFrameStep ( specs, range ) {
 	return range/frameCount
 }
 
-function cellMerge ( cell1, cell2, numRows, numCols, cellIndex ) {
-	if (cell1.x2 !== cell2.x1 && cell1.y2 !== cell2.y1) {
-		console.warn('Repeated cell names may not be adjacent to one another, this may cause errors in your chart.')
+// Adjacent cells with the same name are merged into a single area
+export function mergeNameSpecs ( cellNames, cellSpecs, numCols ) {
+	let namesLength = cellNames.length
+	let specsLength = cellSpecs.length
+
+	if (namesLength < specsLength) {
+		console.warn('Cell names do not match up with number of cells specified, this may cause errors in your chart.')
+		
+		// Nameless cells are given their index as names
+		for (let i = 0; i < specsLength; i++) {
+			if (namesLength[i]) { continue }
+			else { cellNames.push(i) }
+		}
+	} else if (namesLength > specsLength) {
+		console.warn('Cell names do not match up with number of cells specified, this may cause errors in your chart.')
 	}
 
+	let allSpecs = {}
+	let cellStartEnd = {}
+
+	// Some logic for merging cells
+	for (let j = 0; j < specsLength; j++) {
+		let cellName = cellNames[j]
+
+		if (cellName === undefined) {
+			allSpecs[j] = cellSpecs[j]
+		} else if (!(cellName in allSpecs)) {
+			allSpecs[cellName] = cellSpecs[j]
+			cellStartEnd[cellName] = { startRow: Math.floor(j / numCols), startCol: j % numCols , endRow: Math.floor(j / numCols), endCol: j % numCols }
+		} else {
+			allSpecs[cellName] = cellMerge(cellName, allSpecs[cellName], cellSpecs[j])
+
+			let newRow = Math.floor(j / numCols)
+			let newCol = j % numCols
+
+			let currentRow = cellStartEnd[cellName].endRow
+			let currentCol = cellStartEnd[cellName].endCol
+
+			cellStartEnd[cellName].endRow = newRow > currentRow ? newRow : currentRow
+			cellStartEnd[cellName].endCol = newCol > currentCol ? newCol : currentCol
+		}
+	}
+
+	// Check that grid areas are rectangular
+	validateCellSpaces(cellStartEnd, cellNames, numCols)
+
+	return allSpecs
+}
+
+// This function is intentionally quite dumb so that incorrect specs
+// do not crash the graph but cause visibly incorrect rendering
+function cellMerge ( cellName, cell1, cell2 ) {
 	let newSpecs = {}
 
-	newSpecs.x1 = cell1.x1
-	newSpecs.x2 = cell2.x2
-	newSpecs.y1 = cell1.y1
-	newSpecs.y2 = cell2.y2
+	newSpecs.x1 = cell1.x1 < cell2.x1 ? cell1.x1 : cell2.x1
+	newSpecs.x2 = cell1.x2 > cell2.x2 ? cell1.x2 : cell2.x2
+	newSpecs.y1 = cell1.y1 < cell2.y1 ? cell1.y1 : cell2.y1
+	newSpecs.y2 = cell1.y2 > cell2.y2 ? cell1.y2 : cell2.y2
 
 	return newSpecs
 }
 
+// Checks that gridTemplateRows and gridTemplateAreas are defined
 function validateGridSpec ( a, direction ) {
 	if (a.constructor === String && a === '') {
 		console.warn(`Please specify at least one cell in ${direction}. Automatically adding 1 cell to ${direction}.`)
@@ -235,4 +246,27 @@ function validateGridSpec ( a, direction ) {
 	}
 
 	return a
+}
+
+// Checks that grid areas are rectangular
+// This function is quite inefficient, can be optimized at a later date
+// Only console warnings are issued, the graph is still rendered (but incorrectly)
+function validateCellSpaces( spaces, indvCells, numCols ) {
+	for (let areaName in spaces) {
+		let area = spaces[areaName]
+
+		let startRow = area.startRow
+		let startCol = area.startCol
+		let endRow = area.endRow
+		let endCol = area.endCol
+
+		for (let r = startRow; r <= endRow; r++) {
+			for (let c = startCol; c <= endCol; c++) {
+				let index = r * numCols + c
+				if (indvCells[index] !== areaName) {
+					console.warn(`Area ${areaName} may not be rectangular in prop gridTemplateAreas, this can cause errors in your chart.`)
+				}
+			}
+		} 
+	}
 }
