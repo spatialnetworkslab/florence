@@ -24,36 +24,22 @@
   let height = 420
 
   let cols = '50px 2fr 1fr'
-  let rows
+  $: rows = Math.ceil(height/140)
 
   let layout
 
-  // Change grid layout on resize
+  // Change grid layout on depending on size + number of rows
   // Modify this for fun :)
-  $: if (height > 280) {
-
-  	rows = 3
+  $: if (rows === 3) {
   	layout = ['blue',     'blue', undefined,
 							 undefined, 'red',  undefined,
 							 undefined, 'red',  'green']
-
-  } else if (height <= 280 && height > 140) {
-
-  	rows = 2
+  } else if (rows === 2) {
   	layout = ['blue',     'blue', undefined,
 							 undefined, 'red',  'green']
-
   } else {
-
-  	rows = 1
   	layout = ['blue', 'red', 'green']
-  	
   }
-
-  // Input validation for grids is so robust
-  // you could technically do the following
-  // but passing floats is not encouraged:
-  // $: rows = height/140
 </script>
 
 <div>
@@ -75,6 +61,8 @@
 			gridTemplateColumns={cols}
 			gridTemplateRows={rows}
 			gridTemplateAreas={layout}
+      gridRowGap={10}
+      gridColumnGap={10}
 			let:generatedCells
 		>
 

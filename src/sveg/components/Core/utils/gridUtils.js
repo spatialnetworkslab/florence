@@ -1,5 +1,9 @@
-export function getAllCells ( templateRows, templateCols, coords ) {
-	let getRows = getRowCells( templateRows, coords )
+export function getAllCells ( templateRows, templateCols, rowGap, colGap, coords ) {
+	let numCols
+	let numRows
+
+	let getRows = getRowCells( templateRows, rowGap, coords )
+	numRows = getRows.length
 
 	let colSizes = []
 	let rowSizes = []
@@ -7,18 +11,20 @@ export function getAllCells ( templateRows, templateCols, coords ) {
 	let allCells = []
 
 	for (let i of getRows) {
-		let rowCols = getColCells( templateCols, i )
+		let rowCols = getColCells( templateCols, colGap, i )
 
 		allCells = allCells.concat(rowCols)
 
 		rowSizes.push(i)
 		colSizes = rowCols
+
+		numCols = rowCols.length
 	}
 
-	return [allCells, rowSizes, colSizes]
+	return [allCells, rowSizes, colSizes, numRows, numCols]
 }
 
-export function getColCells ( specs, ranges ) {
+export function getColCells ( specs, colGap, ranges ) {
 	let start = ranges.x1
 	let cells = []
 
@@ -60,16 +66,16 @@ export function getColCells ( specs, ranges ) {
 
 	for (let i = 0; i < numCells; i++) {
 		cellSpecs.push({x1: start,
-    								x2: start + cells[i],
+    								x2: start + cells[i] - colGap / 2,
     								y1: ranges.y1,
     								y2: ranges.y2})
-		start = start + cells[i]
+		start = start + cells[i] + colGap / 2
    }
 
 	return cellSpecs
 }
 
-export function getRowCells ( specs, ranges ) {
+export function getRowCells ( specs, rowGap, ranges ) {
 	let start = ranges.y1
 	let cells = []
 
@@ -110,10 +116,10 @@ export function getRowCells ( specs, ranges ) {
 
 	for (let i = 0; i < numCells; i++) {
 		cellSpecs.push({y1: start,
-    								y2: start + cells[i],
+    								y2: start + cells[i] - rowGap / 2,
     								x1: ranges.x1,
     								x2: ranges.x2})
-		start = start + cells[i]
+		start = start + cells[i] + rowGap / 2
   }
 
 	return cellSpecs
@@ -132,7 +138,7 @@ export function getNames ( names ) {
 	return cellNames
 }
 
-export function mergeNameSpecs ( cellNames, cellSpecs ) {
+export function mergeNameSpecs ( cellNames, cellSpecs, numRows, numCols ) {
 	let namesLength = cellNames.length
 	let specsLength = cellSpecs.length
 
@@ -161,7 +167,7 @@ export function mergeNameSpecs ( cellNames, cellSpecs ) {
 		} else if (!(cellName in allSpecs)) {
 			allSpecs[cellName] = cellSpecs[j]
 		} else {
-			allSpecs[cellName] = cellMerge(allSpecs[cellName], cellSpecs[j])
+			allSpecs[cellName] = cellMerge(allSpecs[cellName], cellSpecs[j], numRows, numCols, j)
 		}
 	}
 
@@ -189,7 +195,7 @@ function getFrameStep ( specs, range ) {
 	return range/frameCount
 }
 
-function cellMerge ( cell1, cell2 ) {
+function cellMerge ( cell1, cell2, numRows, numCols, cellIndex ) {
 	if (cell1.x2 !== cell2.x1 && cell1.y2 !== cell2.y1) {
 		console.warn('Repeated cell names may not be adjacent to one another, this may cause errors in your chart.')
 	}
