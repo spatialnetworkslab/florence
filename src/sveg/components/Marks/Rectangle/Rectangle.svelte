@@ -36,7 +36,7 @@
   )
 
   // Create transitionables
-  let tr_coordinates = createTransitionable('coordinates', coordinates, transition)
+  let tr_coordinates = createTransitionable('coordinates', coordinates, transition, 'LineString')
   let tr_fill = createTransitionable('fill', fill, transition)
   let tr_opacity = createTransitionable('opacity', opacity, transition)
 
@@ -62,7 +62,7 @@
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
-      tr_coordinates = createTransitionable('coordinates', $tr_coordinates, transition)
+      tr_coordinates = createTransitionable('coordinates', $tr_coordinates, transition, 'LineString')
       tr_fill = createTransitionable('fill', $tr_fill, transition)
       tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
     }

@@ -45,7 +45,7 @@
   let opacityArray = generatePropArray(opacity, length)
 
   // Create transitionables
-  let tr_coordinateArray = createTransitionable('coordinates', coordinateArray, transition, { layer: true })
+  let tr_coordinateArray = createTransitionable('coordinates', coordinateArray, transition, 'LineString:Layer')
   let tr_fillArray = createTransitionable('fill', fillArray, transition)
   let tr_opacityArray = createTransitionable('opacity', opacityArray, transition)
 
@@ -73,7 +73,7 @@
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
-      tr_coordinateArray = createTransitionable('coordinates', $tr_coordinateArray, transition)
+      tr_coordinateArray = createTransitionable('coordinates', $tr_coordinateArray, transition, 'LineString:Layer')
       tr_fillArray = createTransitionable('fill', $tr_fillArray, transition)
       tr_opacityArray = createTransitionable('opacity', $tr_opacityArray, transition)
     }

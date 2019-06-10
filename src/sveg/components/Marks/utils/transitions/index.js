@@ -2,15 +2,15 @@ import { writable } from 'svelte/store'
 import { tweened } from 'svelte/motion'
 import { cubicOut } from 'svelte/easing'
 import { interpolate } from 'd3-interpolate'
-import transitionPoints from './geometryTransitions/transitionPoints.js'
+import transitionGeometry from './geometry'
 
-export function createTransitionable (aestheticName, aestheticValue, transitionOptions, { layer }) {
+export function createTransitionable (aestheticName, aestheticValue, transitionOptions, geometryType) {
   if (transitionOptions === undefined) {
     return writable(aestheticValue)
   }
 
   if (transitionOptions.constructor === Number) {
-    let options = createOptionsFromDuration(aestheticName, transitionOptions, layer)
+    let options = createOptionsFromDuration(aestheticName, transitionOptions, geometryType)
     return tweened(aestheticValue, options)
   }
 
@@ -20,12 +20,12 @@ export function createTransitionable (aestheticName, aestheticValue, transitionO
     let aestheticTransition = transitionOptions[aestheticName]
 
     if (aestheticTransition && aestheticTransition.constructor === Number) {
-      let options = createOptionsFromDuration(aestheticName, aestheticTransition, layer)
+      let options = createOptionsFromDuration(aestheticName, aestheticTransition, geometryType)
       return tweened(aestheticValue, options)
     }
 
     if (aestheticTransition && aestheticTransition.constructor === Object) {
-      let options = createOptionsFromOptions(aestheticName, aestheticTransition, layer)
+      let options = createOptionsFromOptions(aestheticName, aestheticTransition, geometryType)
       return tweened(aestheticValue, options)
     }
   }
@@ -33,14 +33,16 @@ export function createTransitionable (aestheticName, aestheticValue, transitionO
   throw new Error(`Invalid transition for ${aestheticName}`)
 }
 
-function createOptionsFromDuration (aestheticName, duration, layer) {
+function createOptionsFromDuration (aestheticName, duration, geometryType) {
   switch (aestheticName) {
     case 'fill':
       return { duration, easing: cubicOut, interpolate }
 
     case 'coordinates':
-      // 'coordinates' is an Array of points: [[a, b], [c, d], ...]
-      return { duration, easing: cubicOut, interpolate: transitionPoints }
+      return { duration, easing: cubicOut, interpolate: transitionGeometry[geometryType] }
+
+    case 'geometry':
+      return { duration, easing: cubicOut, interpolate: transitionGeometry[geometryType] }
 
     default:
       return { duration, easing: cubicOut }
@@ -86,14 +88,16 @@ function numberOfKeys (obj) {
   return Object.keys(obj).length
 }
 
-function createOptionsFromOptions (aestheticName, transitionOptions, layer) {
+function createOptionsFromOptions (aestheticName, transitionOptions, geometryType) {
   switch (aestheticName) {
     case 'fill':
       return Object.assign({ interpolate }, transitionOptions)
 
     case 'coordinates':
-      // 'coordinates' is an Array of points: [[a, b], [c, d], ...]
-      return Object.assign({ interpolate: transitionPoints }, transitionOptions)
+      return Object.assign({ interpolate: transitionGeometry[geometryType] }, transitionOptions)
+
+    case 'geometry':
+      return Object.assign({ interpolate: transitionGeometry[geometryType] }, transitionOptions)
 
     default:
       return transitionOptions

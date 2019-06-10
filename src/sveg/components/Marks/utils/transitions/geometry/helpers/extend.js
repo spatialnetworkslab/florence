@@ -1,6 +1,3 @@
-// Based on d3-interpolate-path:
-// https://github.com/pbeshai/d3-interpolate-path
-import { interpolate } from 'd3-interpolate'
 import splitCurve from './splitCurve.js'
 
 function arrayOfLength (length, value) {
@@ -58,7 +55,7 @@ function splitSegment (commandStart, commandEnd, segmentCount) {
  *   end command object and returns true if the segment should be excluded from splitting.
  * @return {Object[]} The extended commandsToExtend array
  */
-function extend (commandsToExtend, referenceCommands, excludeSegment) {
+export function extend (commandsToExtend, referenceCommands, excludeSegment) {
   // compute insertion points:
   // number of segments in the path to extend
   const numSegmentsToExtend = commandsToExtend.length - 1
@@ -142,85 +139,4 @@ function extend (commandsToExtend, referenceCommands, excludeSegment) {
   extended.unshift(commandsToExtend[0])
 
   return extended
-}
-
-/**
- * Interpolate from A to B by extending A and B during interpolation to have
- * the same number of points. This allows for a smooth transition when they
- * have a different number of points.
- *
- * Ignores the `Z` character in paths unless both A and B end with it.
- *
- * @param {String} a The `d` attribute for a path
- * @param {String} b The `d` attribute for a path
- * @param {Function} excludeSegment a function that takes a start command object and
- *   end command object and returns true if the segment should be excluded from splitting.
- * @returns {Function} Interpolation function that maps t ([0, 1]) to a path `d` string.
- */
-export default function transitionPoints (a, b, excludeSegment) {
-  // Points [a, b] to commands { type: 'M', x: a, y: b }
-  let aCommands = pointsToCommands(a)
-  let bCommands = pointsToCommands(b)
-
-  // extend to match equal size
-  const numPointsToExtend = Math.abs(b.length - a.length)
-
-  if (numPointsToExtend !== 0) {
-    // B has more points than A, so add points to A before interpolating
-    if (bCommands.length > aCommands.length) {
-      aCommands = extend(aCommands, bCommands, excludeSegment)
-
-      // else if A has more points than B, add more points to B
-    } else if (bCommands.length < aCommands.length) {
-      bCommands = extend(bCommands, aCommands, excludeSegment)
-    }
-  }
-
-  // convert back to points
-  let aProcessed = commandsToPoints(aCommands)
-  let bProcessed = commandsToPoints(bCommands)
-
-  // use d3's interpolator to now interpolate between two processed point arrays.
-  const interpolator = interpolate(aProcessed, bProcessed)
-
-  return function transitionPoints (t) {
-    // at 1 return the final value without the extensions used during interpolation
-    if (t === 1) {
-      return b == null ? [] : b
-    }
-
-    return interpolator(t)
-  }
-}
-
-function pointsToCommands (points) {
-  let commands = []
-
-  let type = 'M'
-  let x = points[0][0]
-  let y = points[0][1]
-
-  commands.push({ type, x, y })
-
-  for (let i = 1; i < points.length; i++) {
-    type = 'L'
-    x = points[i][0]
-    y = points[i][1]
-
-    commands.push({ type, x, y })
-  }
-
-  return commands
-}
-
-function commandsToPoints (commands) {
-  let points = []
-
-  for (let i = 0; i < commands.length; i++) {
-    let command = commands[i]
-
-    points.push([command.x, command.y])
-  }
-
-  return points
 }
