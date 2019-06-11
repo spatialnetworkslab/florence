@@ -1,5 +1,6 @@
 import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
+import getIndexArray from '../utils/getIndexArray.js'
 
 export function generateCoordinatesLayer ({ x, y }, sectionContext, coordinateTransformationContext, indexProp) {
   let { scaledX, scaledY, length } = scaleCoordinatesLayer(x, y, sectionContext)
@@ -57,17 +58,6 @@ function scaleCoordinate (c, scale, needsScaling, isPrimitive, length) {
 
   if (needsScaling) return array.map(scale)
   if (!needsScaling) return array
-}
-
-function getIndexArray (indexProp, length) {
-  if (indexProp) {
-    if (indexProp.constructor !== Array) throw new Error('index must be Array')
-    if (indexProp.length !== length) throw new Error('index must be of same length as coordinates')
-
-    return indexProp
-  } else {
-    return new Array(length).fill(0).map((_, i) => i)
-  }
 }
 
 function transformCoordinatesLayer (scaledX, scaledY, coordinateTransformationContext, indexArray) {

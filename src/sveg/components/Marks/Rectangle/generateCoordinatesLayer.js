@@ -1,19 +1,25 @@
 import { createCornerPoints, throwErrorIfInvalidCombination } from './generateCoordinates.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
+import getIndexArray from '../utils/getIndexArray.js'
 
 export function generateCoordinatesLayer (
-  coordinates, sectionContext, coordinateTransformationContext, interpolate
+  coordinates, sectionContext, coordinateTransformationContext, interpolate, indexProp
 ) {
   let { scaledCoordinates, length } = scaleCoordinates(coordinates, sectionContext)
+
+  let indexArray = getIndexArray(indexProp, length)
+
   let cornerPointsLayer = createCornerPointsLayer(scaledCoordinates, length)
+  
   let transformedCoordinates = transformCoordinatesLayer(
     cornerPointsLayer,
     coordinateTransformationContext,
-    interpolate
+    interpolate,
+    indexArray
   )
 
-  return { coordinateArray: transformedCoordinates, length }
+  return { coordinateObject: transformedCoordinates, indexArray }
 }
 
 function scaleCoordinates (coordinates, sectionContext) {
@@ -149,15 +155,19 @@ function createCornerPointsLayer (scaledCoordinates, length) {
   return cornerPointsLayer
 }
 
-function transformCoordinatesLayer (cornerPointsLayer, coordinateTransformationContext, interpolate) {
-  let transformedCoordinatesLayer = []
+function transformCoordinatesLayer (cornerPointsLayer, coordinateTransformationContext, interpolate, indexArray) {
+  let transformedCoordinatesLayer = {}
 
   for (let i = 0; i < cornerPointsLayer.length; i++) {
     let cornerPoints = cornerPointsLayer[i]
 
-    transformedCoordinatesLayer.push(
-      applyCoordinateTransformation(cornerPoints, coordinateTransformationContext, interpolate)
+    let transformedCoordinates = applyCoordinateTransformation(
+      cornerPoints, coordinateTransformationContext, interpolate
     )
+
+    let index = indexArray[i]
+
+    transformCoordinatesLayer[index] = transformedCoordinates
   }
 
   return transformedCoordinatesLayer

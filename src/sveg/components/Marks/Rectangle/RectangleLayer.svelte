@@ -30,43 +30,40 @@
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
 
   // Convert coordinate array
-  let { coordinateArray, length } = generateCoordinatesLayer(
+  let { coordinateObject, indexArray } = generateCoordinatesLayer(
     { x1, x2, y1, y2 },
     $sectionContext,
     $coordinateTransformationContext,
-    interpolate
+    interpolate,
+    index
   )
 
-  // 'length' hack (access without triggering reactivity)
-  const getLength = () => length
-  const setLength = input => length = input
-
   // Generate other prop arrays
-  let fillArray = generatePropArray(fill, length)
-  let opacityArray = generatePropArray(opacity, length)
+  let fillObject = generatePropObject(fill, indexArray)
+  let opacityObject = generatePropObject(opacity, indexArray)
 
   // Create transitionables
-  let tr_coordinateArray = createTransitionable('coordinates', coordinateArray, transition, 'LineString:Layer')
-  let tr_fillArray = createTransitionable('fill', fillArray, transition)
-  let tr_opacityArray = createTransitionable('opacity', opacityArray, transition)
+  let tr_coordinateObject = createTransitionableLayer('coordinates', coordinateObject, transition, 'LineString')
+  let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
+  let tr_opacityObject = createTransitionableLayer('opacity', opacityObject, transition)
 
   $: {
     if (initDone()) {
-      let { coordinateArray, length } = generateCoordinatesLayer(
+      let c = generateCoordinatesLayer(
         { x1, x2, y1, y2 },
         $sectionContext,
         $coordinateTransformationContext,
-        interpolate
+        interpolate,
+        index
       )
 
-      setLength(length)
-
-      tr_coordinateArray.set(coordinateArray)
+      indexArray = c.indexArray
+      tr_coordinateObject.set(c.coordinateObject)
     }
   }
 
-  $: { if (initDone()) tr_fillArray.set(generatePropArray(fill, getLength())) }
-  $: { if (initDone()) tr_opacityArray.set(generatePropArray(opacity, getLength())) }
+  $: { if (initDone()) tr_fillObject.set(generatePropObject(fill, indexArray)) }
+  $: { if (initDone()) tr_opacityObject.set(generatePropArray(opacity, indexArray)) }
 
   let previousTransition
 
@@ -74,9 +71,9 @@
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
-      tr_coordinateArray = createTransitionable('coordinates', $tr_coordinateArray, transition, 'LineString:Layer')
-      tr_fillArray = createTransitionable('fill', $tr_fillArray, transition)
-      tr_opacityArray = createTransitionable('opacity', $tr_opacityArray, transition)
+      tr_coordinateObject = createTransitionableLayer('coordinates', $tr_coordinateObject, transition, 'LineString')
+      tr_fillObject = createTransitionableLayer('fill', $tr_fillObject, transition)
+      tr_opacityObject = createTransitionableLayer('opacity', $tr_opacityObject, transition)
     }
   })
 
@@ -87,12 +84,12 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#each $tr_coordinateArray as coordinates, i}
+  {#each indexArray as index (index)}
 
     <path 
-      d={generatePath(coordinates)} 
-      fill={$tr_fillArray[i]}
-      style={`opacity: ${$tr_opacityArray[i]}`}
+      d={generatePath($tr_coordinateObject[index])} 
+      fill={$tr_fillObject[index]}
+      style={`opacity: ${$tr_opacityObject[index]}`}
     />
 
   {/each}
