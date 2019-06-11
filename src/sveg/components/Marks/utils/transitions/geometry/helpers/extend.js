@@ -55,7 +55,7 @@ function splitSegment (commandStart, commandEnd, segmentCount) {
  *   end command object and returns true if the segment should be excluded from splitting.
  * @return {Object[]} The extended commandsToExtend array
  */
-export function extend (commandsToExtend, referenceCommands, excludeSegment) {
+export default function (commandsToExtend, referenceCommands, excludeSegment) {
   // compute insertion points:
   // number of segments in the path to extend
   const numSegmentsToExtend = commandsToExtend.length - 1
