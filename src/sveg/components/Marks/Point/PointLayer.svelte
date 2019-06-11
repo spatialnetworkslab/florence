@@ -19,6 +19,7 @@
   export let fill = 'black'
   export let transition = undefined
   export let index = undefined
+  export let spatialIndex = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -37,12 +38,17 @@
   let radiusObject = generatePropObject(radius, indexArray)
   let fillObject = generatePropObject(fill, indexArray)
 
+  // Do spatial indexing if necessary
+  if (spatialIndex) {
+    spatialIndex.addLayer({ x: xObject, y: yObject, radius: radiusObject }, indexArray)
+  }
+
   // Create transitionables
   let tr_xObject = createTransitionableLayer('x', xObject, transition)
   let tr_yObject = createTransitionableLayer('y', yObject, transition)
   let tr_radiusObject = createTransitionableLayer('radius', radiusObject, transition)
   let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
-  
+
   $: {
     if (initDone()) {
       let c = generateCoordinatesLayer(

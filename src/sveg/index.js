@@ -9,6 +9,7 @@ import PointLayer from './components/Marks/Point/PointLayer.svelte'
 import RectangleLayer from './components/Marks/Rectangle/RectangleLayer.svelte'
 
 import DataContainer from './classes/DataContainer'
+import SpatialIndex from './classes/SpatialIndex'
 
 export {
   Graphic,
@@ -21,5 +22,6 @@ export {
   PointLayer,
   RectangleLayer,
 
-  DataContainer
+  DataContainer,
+  SpatialIndex
 }

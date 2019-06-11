@@ -3,7 +3,9 @@
 
 	import { scaleLinear } from 'd3-scale'
 	import { 
-    Graphic, Section, CoordinateTransformation, PointLayer, DataContainer 
+    Graphic, Section, CoordinateTransformation, 
+    PointLayer, 
+    DataContainer, SpatialIndex 
   } from '../sveg'
 
 	export let N = 100
@@ -34,6 +36,12 @@
   let height = 500
   let transformation = 'identity'
   let duration = 2000
+
+  const pointIndex = new SpatialIndex('Point')
+
+  function testSpatialIndex () {
+    console.log(pointIndex.hitCoordinates({  }))
+  }
 </script>
 
 <div>
@@ -56,6 +64,10 @@
 
 <div>
   <button on:click={() => treshold = 40}>Filter: x > 40</button>
+</div>
+
+<div>
+  <button on:click={testSpatialIndex}>Spatial index test</button>
 </div>
 
 <div>
@@ -89,6 +101,7 @@
             fill: duration
           }}
           index={filteredData.column('$index')}
+          spatialIndex={pointIndex}
         />
 
       </CoordinateTransformation>
