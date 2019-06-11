@@ -6,8 +6,8 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   
   import { generateCoordinatesLayer } from './generateCoordinatesLayer.js'
-  import { createTransitionable, transitionsEqual } from '../utils/transitions'
-  import { generatePropArray } from '../utils/generatePropArray.js'
+  import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
+  import { generatePropObject } from '../utils/generatePropObject.js'
 
   let initPhase = true
   const initDone = () => !initPhase
@@ -18,32 +18,30 @@
   export let radius = 3
   export let fill = 'black'
   export let transition = undefined
+  export let index
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
 
-  // Generate coordinate arrays
-  let { xArray, yArray, length } = generateCoordinatesLayer(
+  // Generate coordinate objects
+  let { xObject, yObject } = generateCoordinatesLayer(
     { x, y }, 
     $sectionContext, 
-    $coordinateTransformationContext
+    $coordinateTransformationContext,
+    index
   )
 
-  // 'length' hack (access without triggering reactivity)
-  const getLength = () => length
-  const setLength = input => length = input
-
-  // Generate other prop arrays
-  let radiusArray = generatePropArray(radius, length)
-  let fillArray = generatePropArray(fill, length)
+  // Generate other prop objects
+  let radiusObject = generatePropObject(radius, index)
+  let fillObject = generatePropObject(fill, index)
 
   // Create transitionables
-  let tr_xArray = createTransitionable('x', xArray, transition)
-  let tr_yArray = createTransitionable('y', yArray, transition)
-  let tr_radiusArray = createTransitionable('radius', radiusArray, transition)
-  let tr_fillArray = createTransitionable('fill', fillArray, transition)
+  let tr_xObject = createTransitionableLayer('x', xObject, transition)
+  let tr_yObject = createTransitionable('y', yObject, transition)
+  let tr_radiusObject = createTransitionable('radius', radiusObject, transition)
+  let tr_fillObject = createTransitionable('fill', fillObject, transition)
   
   $: {
     if (initDone()) {
