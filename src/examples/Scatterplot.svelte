@@ -3,7 +3,7 @@
 
 	import { scaleLinear } from 'd3-scale'
 	import { 
-    Graphic, Section, CoordinateTransformation, Point, PointLayer, Rectangle, DataContainer 
+    Graphic, Section, CoordinateTransformation, PointLayer, DataContainer 
   } from '../sveg'
 
 	export let N = 100
@@ -65,7 +65,6 @@
     scaleX={scaleLinear().domain([0, 500])}
     scaleY={scaleLinear().domain([0, 500])}
   >
-    <Point x={250} y={250} fill="red" radius={10} />
 		
 		<Section
 			x1={50} x2={450}
