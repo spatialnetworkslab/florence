@@ -1,5 +1,5 @@
 <script>
-  // import BarChart from './examples/BarChart.svelte'
+  import BarChart from './examples/BarChart.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
   import PolarSections from './examples/PolarSections.svelte'
 </script>
@@ -20,10 +20,10 @@
 
 <div class="container">
 
-  <!-- <div class="graphic-holder">
+  <div class="graphic-holder">
     <h1>Bar chart</h1>
     <BarChart />
-  </div> -->
+  </div>
 
   <div class="graphic-holder">
     <h1>Scatterplot</h1>

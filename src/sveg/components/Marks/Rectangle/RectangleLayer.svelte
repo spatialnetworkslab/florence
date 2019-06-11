@@ -63,7 +63,7 @@
   }
 
   $: { if (initDone()) tr_fillObject.set(generatePropObject(fill, indexArray)) }
-  $: { if (initDone()) tr_opacityObject.set(generatePropArray(opacity, indexArray)) }
+  $: { if (initDone()) tr_opacityObject.set(generatePropObject(opacity, indexArray)) }
 
   let previousTransition
 

@@ -167,7 +167,7 @@ function transformCoordinatesLayer (cornerPointsLayer, coordinateTransformationC
 
     let index = indexArray[i]
 
-    transformCoordinatesLayer[index] = transformedCoordinates
+    transformedCoordinatesLayer[index] = transformedCoordinates
   }
 
   return transformedCoordinatesLayer

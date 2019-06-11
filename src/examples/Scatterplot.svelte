@@ -20,7 +20,13 @@
 		}
 
 		return data
-	}
+  }
+  
+  let treshold = 0
+
+  $: filteredData = data
+    .filter(row => row.a > treshold)
+    .done()
 
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scaleLinear().domain(data.domain('b'))
@@ -49,6 +55,10 @@
 </div>
 
 <div>
+  <button on:click={() => treshold = 40}>Filter: x > 40</button>
+</div>
+
+<div>
 
 	<Graphic 
     width={500} {height}
@@ -67,8 +77,8 @@
 			<CoordinateTransformation {transformation}>
 
         <PointLayer
-          x={data.column('a')}
-          y={data.column('b')}
+          x={filteredData.column('a')}
+          y={filteredData.column('b')}
           fill={transformation === 'identity' ? 'black' : 'blue' }
           radius={3}
           transition={{
@@ -79,6 +89,7 @@
             },
             fill: duration
           }}
+          index={filteredData.column('$index')}
         />
 
       </CoordinateTransformation>

@@ -15,6 +15,13 @@
     .arrange({ meanQuantity: 'descending' })
     .done()
 
+  
+  let notAllowedfruit = ''
+
+  $: filteredData = data
+    .filter(row => row.fruit !== notAllowedfruit)
+    .done() 
+
   const scaleFruit = scaleBand().domain(data.domain('fruit')).padding(0.2)
 	let meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
   const scaleMeanQuantity = scaleLinear().domain(meanQuantityDomain)
@@ -42,6 +49,10 @@
   <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
 </div>
 
+<div>
+  <button on:click={() => notAllowedfruit = 'durian'}>Filter: fruit !== durian</button>
+</div>
+
 <Graphic 
   width={500} {height}
   scaleX={scaleLinear().domain([0, 500])}
@@ -57,28 +68,17 @@
 
     <CoordinateTransformation {transformation}>
     
-      <!-- {#each data.rows() as row}
-
-        <Rectangle
-          x1={row.fruit}
-          x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
-          y1={0}
-          y2={row.meanQuantity}
-          fill={transformation === 'identity' ? 'green' : 'blue'}
-          transition={{
-            coordinates: 1500,
-            fill: 2000
-          }}
-        />
-
-     {/each} -->
-
       <RectangleLayer 
-        x1={data.column('fruit')}
-        x2={({ scaleX }) => data.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
+        x1={filteredData.column('fruit')}
+        x2={({ scaleX }) => filteredData.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
         y1={0}
-        y2={data.column('meanQuantity')}
+        y2={filteredData.column('meanQuantity')}
         fill={transformation === 'identity' ? 'green' : 'blue'}
+        transition={{
+          coordinates: 1500,
+          fill: 2000
+        }}
+        index={filteredData.column('$index')}
       />
 
     </CoordinateTransformation>
