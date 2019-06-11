@@ -18,7 +18,7 @@
   export let radius = 3
   export let fill = 'black'
   export let transition = undefined
-  export let index
+  export let index = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()

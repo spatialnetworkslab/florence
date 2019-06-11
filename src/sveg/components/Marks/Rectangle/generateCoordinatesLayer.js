@@ -1,5 +1,5 @@
 import { createCornerPoints, throwErrorIfInvalidCombination } from './generateCoordinates.js'
-import { generatePropArray } from '../utils/generatePropArray.js'
+import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
 
 export function generateCoordinatesLayer (
@@ -121,7 +121,7 @@ function _scaleCoordinates (
     let array
     let scale = coordinateName.startsWith('x') ? scales.scaleX : scales.scaleY
 
-    if (coordinatesThatArePrimitive[coordinateName]) array = generatePropArray(coordinateValue, length)
+    if (coordinatesThatArePrimitive[coordinateName]) array = generateArrayOfLength(coordinateValue, length)
     if (!coordinatesThatArePrimitive[coordinateName]) array = coordinateValue
 
     scaledCoordinates[coordinateName] = coordinatesThatNeedScaling[coordinateName]

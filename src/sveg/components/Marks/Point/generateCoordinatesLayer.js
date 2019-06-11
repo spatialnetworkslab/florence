@@ -1,5 +1,5 @@
 import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
-import { generatePropArray } from '../utils/generatePropArray.js'
+import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 
 export function generateCoordinatesLayer ({ x, y }, sectionContext, coordinateTransformationContext, indexProp) {
   let { scaledX, scaledY, length } = scaleCoordinatesLayer(x, y, sectionContext)
@@ -52,7 +52,7 @@ function getNPoints (x, y) {
 function scaleCoordinate (c, scale, needsScaling, isPrimitive, length) {
   let array
 
-  if (isPrimitive) array = generatePropArray(c, length)
+  if (isPrimitive) array = generateArrayOfLength(c, length)
   if (!isPrimitive) array = c
 
   if (needsScaling) return array.map(scale)

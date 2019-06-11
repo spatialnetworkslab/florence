@@ -6,8 +6,8 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   
   import { generateCoordinatesLayer } from './generateCoordinatesLayer.js'
-  import { generatePropArray } from '../utils/generatePropArray.js'
-  import { createTransitionable, transitionsEqual } from '../utils/transitions'
+  import { generatePropObject } from '../utils/generatePropObject.js'
+  import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
 
   let initPhase = true
@@ -22,6 +22,7 @@
   export let opacity = 1
   export let transition = undefined
   export let interpolate = true
+  export let index = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
