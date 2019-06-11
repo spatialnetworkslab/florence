@@ -2,19 +2,25 @@ import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
 
 class GraphicContext {
-  constructor (passedRendererOptions) {
-    if (!passedRendererOptions) {
+  constructor ({ renderer, rootNode }) {
+    if (!renderer) {
       this._rendererOptions = { output: 'svg' }
     }
 
-    if (passedRendererOptions) {
-      validateRendererOptions(passedRendererOptions)
-      this._rendererOptions = passedRendererOptions
+    if (renderer) {
+      validateRendererOptions(renderer)
+      this._rendererOptions = renderer
     }
+
+    this._rootNode = rootNode
   }
 
   output () {
     return this._rendererOptions.output
+  }
+
+  rootNode () {
+    return this._rootNode
   }
 }
 

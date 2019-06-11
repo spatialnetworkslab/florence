@@ -11,8 +11,14 @@
   const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
 
+  let rootNode
+
+  function getRootNode (svgNode) {
+    rootNode = svgNode
+  }
+
   $: {
-    GraphicContext.update(graphicContext, renderer)
+    GraphicContext.update(graphicContext, { renderer, rootNode })
   }
 
   $: {
@@ -22,6 +28,10 @@
   }
 </script>
 
-<svg {width} {height}>
+<svg 
+  {width} 
+  {height}
+  use:getRootNode
+>
   <slot />
 </svg>

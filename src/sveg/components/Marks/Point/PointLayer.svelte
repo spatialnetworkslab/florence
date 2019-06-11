@@ -1,5 +1,5 @@
 <script>
-  import { beforeUpdate, afterUpdate } from 'svelte'
+  import { beforeUpdate, onMount, afterUpdate } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -20,6 +20,7 @@
   export let transition = undefined
   export let index = undefined
   export let spatialIndex = undefined
+  export let onClick = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -38,11 +39,6 @@
   let radiusObject = generatePropObject(radius, indexArray)
   let fillObject = generatePropObject(fill, indexArray)
 
-  // Do spatial indexing if necessary
-  if (spatialIndex) {
-    spatialIndex.addLayer({ x: xObject, y: yObject, radius: radiusObject }, indexArray)
-  }
-
   // Create transitionables
   let tr_xObject = createTransitionableLayer('x', xObject, transition)
   let tr_yObject = createTransitionableLayer('y', yObject, transition)
@@ -57,8 +53,8 @@
         $coordinateTransformationContext,
         index
       )
-
       indexArray = c.indexArray
+
       tr_xObject.set(c.xObject)
       tr_yObject.set(c.yObject)
     }
@@ -77,6 +73,15 @@
       tr_yObject = createTransitionableLayer('y', $tr_yObject, transition)
       tr_radiusObject = createTransitionableLayer('radius', $tr_radiusObject, transition)
       tr_fillObject = createTransitionableLayer('fill', $tr_fillObject, transition)
+    }
+  })
+
+  onMount(() => {
+    if (spatialIndex) {
+      spatialIndex.setRootNode($graphicContext.rootNode())
+      spatialIndex.addLayer({ x: xObject, y: yObject, radius: radiusObject }, indexArray)
+
+      if (onClick) spatialIndex.listenForClicks(onClick)
     }
   })
 

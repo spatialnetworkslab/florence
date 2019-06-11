@@ -39,8 +39,8 @@
 
   const pointIndex = new SpatialIndex('Point')
 
-  function testSpatialIndex () {
-    console.log(pointIndex.hitCoordinates({  }))
+  function log (index, event) {
+    console.log(event)
   }
 </script>
 
@@ -64,10 +64,6 @@
 
 <div>
   <button on:click={() => treshold = 40}>Filter: x > 40</button>
-</div>
-
-<div>
-  <button on:click={testSpatialIndex}>Spatial index test</button>
 </div>
 
 <div>
@@ -102,6 +98,7 @@
           }}
           index={filteredData.column('$index')}
           spatialIndex={pointIndex}
+          onClick={log}
         />
 
       </CoordinateTransformation>
