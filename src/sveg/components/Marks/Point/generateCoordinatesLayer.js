@@ -1,11 +1,14 @@
 import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
 import { generatePropArray } from '../utils/generatePropArray.js'
 
-export function generateCoordinatesLayer ({ x, y }, sectionContext, coordinateTransformationContext) {
+export function generateCoordinatesLayer ({ x, y }, sectionContext, coordinateTransformationContext, indexProp) {
   let { scaledX, scaledY, length } = scaleCoordinatesLayer(x, y, sectionContext)
-  let { transformedX, transformedY } = transformCoordinatesLayer(scaledX, scaledY, coordinateTransformationContext)
 
-  return { xArray: transformedX, yArray: transformedY, length }
+  let indexArray = getIndexArray(indexProp, length)
+
+  let { xObject, yObject } = transformCoordinatesLayer(scaledX, scaledY, coordinateTransformationContext, indexArray)
+
+  return { xObject, yObject, indexArray }
 }
 
 function scaleCoordinatesLayer (x, y, sectionContext) {
@@ -56,18 +59,31 @@ function scaleCoordinate (c, scale, needsScaling, isPrimitive, length) {
   if (!needsScaling) return array
 }
 
-function transformCoordinatesLayer (scaledX, scaledY, coordinateTransformationContext) {
-  let transformedX = []
-  let transformedY = []
+function getIndexArray (indexProp, length) {
+  if (indexProp) {
+    if (indexProp.constructor !== Array) throw new Error('index must be Array')
+    if (indexProp.length !== length) throw new Error('index must be of same length as coordinates')
+
+    return indexProp
+  } else {
+    return new Array(length).fill(0).map((_, i) => i)
+  }
+}
+
+function transformCoordinatesLayer (scaledX, scaledY, coordinateTransformationContext, indexArray) {
+  let xObject = {}
+  let yObject = {}
 
   for (let i = 0; i < scaledX.length; i++) {
     let transformedPoint = applyCoordinateTransformation(
       [scaledX[i], scaledY[i]], coordinateTransformationContext
     )
 
-    transformedX.push(transformedPoint[0])
-    transformedY.push(transformedPoint[1])
+    let index = indexArray[i]
+
+    xObject[index] = transformedPoint[0]
+    yObject[index] = transformedPoint[1]
   }
 
-  return { transformedX, transformedY }
+  return { xObject, yObject }
 }

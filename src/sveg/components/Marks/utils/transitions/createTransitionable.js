@@ -2,7 +2,7 @@ import { writable } from 'svelte/store'
 import { tweened } from 'svelte/motion'
 import { cubicOut } from 'svelte/easing'
 import { interpolate } from 'd3-interpolate'
-import transitionGeometry from './geometry'
+import { transitionGeometry } from './geometry'
 
 export function createTransitionable (aestheticName, aestheticValue, transitionOptions, geometryType) {
   if (transitionOptions === undefined) {

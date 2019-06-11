@@ -25,8 +25,8 @@
   const sectionContext = SectionContext.subscribe()
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
 
-  // Generate coordinate objects
-  let { xObject, yObject } = generateCoordinatesLayer(
+  // Generate coordinate objects and index array
+  let { xObject, yObject, indexArray } = generateCoordinatesLayer(
     { x, y }, 
     $sectionContext, 
     $coordinateTransformationContext,
@@ -34,32 +34,32 @@
   )
 
   // Generate other prop objects
-  let radiusObject = generatePropObject(radius, index)
-  let fillObject = generatePropObject(fill, index)
+  let radiusObject = generatePropObject(radius, indexArray)
+  let fillObject = generatePropObject(fill, indexArray)
 
   // Create transitionables
   let tr_xObject = createTransitionableLayer('x', xObject, transition)
-  let tr_yObject = createTransitionable('y', yObject, transition)
-  let tr_radiusObject = createTransitionable('radius', radiusObject, transition)
-  let tr_fillObject = createTransitionable('fill', fillObject, transition)
+  let tr_yObject = createTransitionableLayer('y', yObject, transition)
+  let tr_radiusObject = createTransitionableLayer('radius', radiusObject, transition)
+  let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
   
   $: {
     if (initDone()) {
-      let { xArray, yArray, length } = generateCoordinatesLayer(
+      let c = generateCoordinatesLayer(
         { x, y }, 
         $sectionContext, 
-        $coordinateTransformationContext
+        $coordinateTransformationContext,
+        index
       )
 
-      setLength(length)
-
-      tr_xArray.set(xArray)
-      tr_yArray.set(yArray)
+      indexArray = c.indexArray
+      tr_xObject.set(c.xObject)
+      tr_yObject.set(c.yObject)
     }
   }
 
-  $: { if (initDone()) tr_radiusArray.set(generatePropArray(radius, getLength())) }
-  $: { if (initDone()) tr_fillArray.set(generatePropArray(fill, getLength())) }
+  $: { if (initDone()) tr_radiusObject.set(generatePropObject(radius, indexArray)) }
+  $: { if (initDone()) tr_fillObject.set(generatePropObject(fill, indexArray)) }
 
   let previousTransition
 
@@ -67,10 +67,10 @@
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
-      tr_xArray = createTransitionable('x', $tr_xArray, transition)
-      tr_yArray = createTransitionable('y', $tr_yArray, transition)
-      tr_radiusArray = createTransitionable('radius', $tr_radiusArray, transition)
-      tr_fillArray = createTransitionable('fill', $tr_fillArray, transition)
+      tr_xObject = createTransitionableLayer('x', $tr_xObject, transition)
+      tr_yObject = createTransitionableLayer('y', $tr_yObject, transition)
+      tr_radiusObject = createTransitionableLayer('radius', $tr_radiusObject, transition)
+      tr_fillObject = createTransitionableLayer('fill', $tr_fillObject, transition)
     }
   })
 
@@ -81,13 +81,13 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#each $tr_xArray as _, i}
+  {#each indexArray as index (index)}
 
-    <circle 
-      cx={$tr_xArray[i]} 
-      cy={$tr_yArray[i]} 
-      r={$tr_radiusArray[i]} 
-      fill={$tr_fillArray[i]} 
+    <circle
+      cx={$tr_xObject[index]}
+      cy={$tr_yObject[index]}
+      r={$tr_radiusObject[index]}
+      fill={$tr_fillObject[index]}
     />
 
   {/each}
