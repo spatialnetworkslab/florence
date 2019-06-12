@@ -2,6 +2,8 @@
   import * as GraphicContext from './GraphicContext'
   import * as SectionContext from '../Section/SectionContext'
 
+  import EventManager from './GraphicContext/EventManager.js'
+
   export let width
   export let height
   export let scaleX = undefined
@@ -11,14 +13,14 @@
   const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
 
-  let rootNode
+  let eventManager
 
-  function getRootNode (svgNode) {
-    rootNode = svgNode
+  function getEventManager (svgNode) {
+    eventManager = new EventManager(svgNode)
   }
 
   $: {
-    GraphicContext.update(graphicContext, { renderer, rootNode })
+    GraphicContext.update(graphicContext, { renderer, eventManager })
   }
 
   $: {
@@ -31,7 +33,7 @@
 <svg 
   {width} 
   {height}
-  use:getRootNode
+  use:getEventManager
 >
   <slot />
 </svg>

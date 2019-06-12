@@ -47,6 +47,8 @@
 
   $: {
     if (initDone()) {
+      if (spatialIndex) spatialIndex.reset()
+
       let c = generateCoordinatesLayer(
         { x, y }, 
         $sectionContext, 
@@ -54,6 +56,13 @@
         index
       )
       indexArray = c.indexArray
+
+      if (spatialIndex) {
+        spatialIndex.setRootNode($graphicContext.rootNode())
+        spatialIndex.addLayer({ x: c.xObject, y: c.yObject, radius: $tr_radiusObject }, indexArray)
+
+        if (onClick) spatialIndex.listenForClicks(onClick)
+      }
 
       tr_xObject.set(c.xObject)
       tr_yObject.set(c.yObject)
