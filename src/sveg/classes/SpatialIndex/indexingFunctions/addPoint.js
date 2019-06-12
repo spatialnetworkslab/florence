@@ -1,6 +1,8 @@
 export function addPoint (point, $index) {
   let item = calculateBBox(point)
+  
   item.$index = $index
+  item.geometry = point
 
   return item
 }
@@ -13,7 +15,9 @@ export function addPointLayer (layer, indexArray) {
 
     let point = getPoint(layer, $index)
     let item = calculateBBox(point)
+    
     item.$index = $index
+    item.geometry = point
 
     items.push(item)
   }

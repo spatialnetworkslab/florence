@@ -1,5 +1,6 @@
 import RBush from 'rbush'
 import { markIndexing, layerIndexing } from './indexingFunctions'
+import collisionTests from './collisionTests'
 
 export default class SpatialIndex {
   constructor (markType) {
@@ -34,9 +35,8 @@ export default class SpatialIndex {
 
   hitCoordinates (coordinates, radius) {
     let searchArea = searchAreaFromCoordinates(coordinates, radius)
-
-    let results = this._rbush.search(searchArea)
-    return results.map(result => result.$index)
+    let indexQueryResults = this._rbush.search(searchArea)
+    return this._getHits(coordinates, indexQueryResults)
   }
 
   listenForClicks (callback) {
@@ -61,6 +61,21 @@ export default class SpatialIndex {
     this._svgPoint.y = event.clientY
 
     return this._svgPoint.matrixTransform(this._rootNode.getScreenCTM().inverse())
+  }
+
+  _getHits (coordinates, indexQueryResults) {
+    let hits = []
+    let collisionTest = collisionTests[this._markType]
+    
+    for (let i = 0; i < indexQueryResults.length; i++) {
+      let indexQueryResult = indexQueryResults[i]
+
+      if (collisionTest(coordinates, indexQueryResult.geometry)) {
+        hits.push(indexQueryResult.$index)
+      }
+    }
+
+    return hits
   }
 }
 
