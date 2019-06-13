@@ -1,6 +1,6 @@
 <script>
   import * as SectionContext from '../Section/SectionContext'
-  import * as CoordinateTransformationContext from './CoordinateTransformationContext'
+  import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
 
   import { scaleCoordinates } from '../../Marks/Rectangle/generateCoordinates.js'
   import { getAllCells, getNames, mergeNameSpecs } from './gridUtils.js'
@@ -23,13 +23,13 @@
   CoordinateTransformationContext.ensureNotParent()
   const sectionContext = SectionContext.subscribe()
 
-  $: scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, sectionContext)
+  $: scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
 
   let allCells
   let allNames
 
   // Get cells
-  $: [allCells, rowSizes, colSizes, numRows, numCols] = getAllCells(rows, columns, rowGap, columnGap, pixelCoordinates)
+  $: [allCells, rowSizes, colSizes, numRows, numCols] = getAllCells(rows, columns, rowGap, columnGap, scaledCoordinates)
 
   // Console log grid specification as necessary
   $: if (viewGridTemplate) { printGrid( rowSizes, colSizes ) }

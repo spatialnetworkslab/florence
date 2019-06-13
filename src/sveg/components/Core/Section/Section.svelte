@@ -1,6 +1,6 @@
 <script>
   import * as SectionContext from './SectionContext'
-  import * as CoordinateTransformationContext from './CoordinateTransformationContext'
+  import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
   import { scaleCoordinates } from '../../Marks/Rectangle/generateCoordinates.js'
 
   // Props
