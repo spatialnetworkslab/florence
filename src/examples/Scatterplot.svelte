@@ -19,9 +19,9 @@
 	}
 
 	const scaleA = scaleLinear().domain(data.domain('a'))
-    const scaleB = scaleLinear().domain(data.domain('b'))
+  const scaleB = scaleLinear().domain(data.domain('b'))
   
-    let height = 500
+  let height = 500
 </script>
 
 <div>
