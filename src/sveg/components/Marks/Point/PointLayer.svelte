@@ -6,7 +6,7 @@
 </script>
 
 <script>
-  import { beforeUpdate, afterUpdate } from 'svelte'
+  import { beforeUpdate, afterUpdate, onMount } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -16,7 +16,7 @@
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import { generatePropObject } from '../utils/generatePropObject.js'
 
-  let id = getId()
+  let layerId = getId()
 
   let initPhase = true
   const initDone = () => !initPhase
@@ -29,6 +29,7 @@
   export let transition = undefined
   export let index = undefined
   export let onClick = undefined
+  export let onHover = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -87,6 +88,28 @@
   afterUpdate(() => {
     initPhase = false
   })
+
+  // Interactivity
+  $: isInteractive = onClick !== undefined || onHover !== undefined
+
+  $: {
+    if (isInteractive) {
+      let interactionManager = $sectionContext.interactionManager()
+
+      if (interactionManager._eventManager) {
+        let layerData = { 
+          geometries: { x: xObject, y: yObject, radius: radiusObject },
+          indexArray,
+          layerId
+        }
+
+        interactionManager.loadLayer('Point', layerData)
+
+        if (onClick) interactionManager.addInteraction('click', layerId, onClick)
+        if (onHover) interactionManager.addInteraction('hover', layerId, onHover) 
+      }
+    }
+  }
 </script>
 
 {#if $graphicContext.output() === 'svg'}

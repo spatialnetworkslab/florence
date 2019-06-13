@@ -1,23 +1,26 @@
-export function addPoint (point, $index) {
-  let item = calculateBBox(point)
-  
+export function addPoint (pointGeometry, $index) {
+  let item = calculateBBox(pointGeometry)
+
   item.$index = $index
-  item.geometry = point
+  item.geometry = pointGeometry
+  item.markType = 'Point'
 
   return item
 }
 
-export function addPointLayer (layer, indexArray) {
+export function addPointLayer ({ geometries, indexArray, layerId }) {
   let items = []
 
   for (let i = 0; i < indexArray.length; i++) {
     let $index = indexArray[i]
 
-    let point = getPoint(layer, $index)
-    let item = calculateBBox(point)
-    
+    let pointGeometry = getPoint(geometries, $index)
+    let item = calculateBBox(pointGeometry)
+
     item.$index = $index
-    item.geometry = point
+    item.geometry = pointGeometry
+    item.markType = 'Point'
+    item.layerId = layerId
 
     items.push(item)
   }
@@ -25,12 +28,12 @@ export function addPointLayer (layer, indexArray) {
   return items
 }
 
-function calculateBBox (point) {
+function calculateBBox (pointGeometry) {
   return {
-    minX: point.x - point.radius,
-    maxX: point.x + point.radius,
-    minY: point.y - point.radius,
-    maxY: point.y + point.radius
+    minX: pointGeometry.x - pointGeometry.radius,
+    maxX: pointGeometry.x + pointGeometry.radius,
+    minY: pointGeometry.y - pointGeometry.radius,
+    maxY: pointGeometry.y + pointGeometry.radius
   }
 }
 

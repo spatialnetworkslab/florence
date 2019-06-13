@@ -1,4 +1,6 @@
 import SpatialIndex from './SpatialIndex.js'
+import ClickManager from './ClickManager.js'
+import HoverManager from './HoverManager.js'
 
 export default class InteractionManager {
   constructor () {
@@ -8,10 +10,8 @@ export default class InteractionManager {
     this._eventManager = undefined
     this._sectionContext = undefined
 
-    this._layers = {}
-
-    this._clickTracker = new InteractionTracker(this, 'click')
-    this._hoverTracker = new InteractionTracker(this, 'hover')
+    this._clickManager = new ClickManager(this)
+    this._hoverManager = new HoverManager(this)
   }
 
   // Initialization
@@ -28,32 +28,26 @@ export default class InteractionManager {
   }
 
   // Layer loading and removing
-  loadLayer (layerId, layerType, layerData) {
-    this._spatialIndex.loadLayer(layerId, layerType, layerData)
-    this._layers[layerId] = true
+  loadLayer (layerType, layerData) {
+    this._spatialIndex.loadLayer(layerType, layerData)
   }
 
   layerIsLoaded (layerId) {
-    return this._layers[layerId] !== undefined
+    return this._spatialIndex.layerIsLoaded(layerId)
   }
 
   removeLayer (layerId) {
     this._spatialIndex.removeLayer(layerId)
-    delete this._layers[layerId]
   }
 
   // Add/remove interactions
-  addInteraction () {
-    
+  addInteraction (interactionName, layerId, callback) {
+    if (interactionName === 'click') this._clickManager.addInteraction(layerId, callback)
+    if (interactionName === 'hover') this._hoverManager.addInteraction(layerId, callback)
   }
 
-  removeInteraction () {
-
-  }
-}
-
-class InteractionTracker {
-  constructor (intera) {
-
+  removeInteraction (interactionName, layerId) {
+    if (interactionName === 'click') this._clickManager.removeInteraction(layerId)
+    if (interactionName === 'hover') this._hoverManager.removeInteraction(layerId)
   }
 }

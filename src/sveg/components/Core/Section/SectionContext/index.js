@@ -15,7 +15,9 @@ class SectionContext {
 
     this._interactionManager = undefined
 
-    this._handleInteractionManager(interactionManager)
+    if (interactionManager) {
+      this._handleInteractionManager(interactionManager)
+    }
   }
 
   rangeX () {
@@ -46,6 +48,10 @@ class SectionContext {
     let scaleX = this._scaleX
     let scaleY = this._scaleY
     return { scaleX, scaleY }
+  }
+
+  interactionManager () {
+    return this._interactionManager
   }
 
   _handleRanges (rangeX, rangeY) {

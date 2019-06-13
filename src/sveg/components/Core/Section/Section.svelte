@@ -30,12 +30,15 @@
 
   const interactionManager = new InteractionManager()
   interactionManager.setId(sectionId)
-  interactionManager.linkEventManager($graphicContext.eventManager())
 
   $: {
     let scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
     let rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
     let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
+
+    interactionManager.linkEventManager($graphicContext.eventManager())
+
+    console.log($graphicContext.eventManager())
 
     SectionContext.update(
       newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY, interactionManager }

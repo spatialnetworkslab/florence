@@ -36,6 +36,8 @@
   let height = 500
   let transformation = 'identity'
   let duration = 2000
+
+  const log = console.log
 </script>
 
 <div>
@@ -91,6 +93,7 @@
             fill: duration
           }}
           index={filteredData.column('$index')}
+          onClick={log}
         />
 
       </CoordinateTransformation>

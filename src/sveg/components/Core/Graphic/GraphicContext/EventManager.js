@@ -9,14 +9,14 @@ export default class EventManager {
     this._mouseupTracker = new EventTracker(this, 'mouseup')
   }
 
-  addEventListener (eventName, listenerId, callback) {
+  addEventListener (eventName, interactionManagerId, callback) {
     let tracker = this[getTrackerName(eventName)]
-    tracker.addEventListener(listenerId, callback)
+    tracker.addEventListener(interactionManagerId, callback)
   }
 
-  removeEventListener (eventName, listenerId) {
+  removeEventListener (eventName, interactionManagerId) {
     let tracker = this[getTrackerName(eventName)]
-    tracker.removeEventListener(listenerId)
+    tracker.removeEventListener(interactionManagerId)
   }
 
   _getMouseCoordinates (mouseEvent) {
@@ -36,22 +36,22 @@ class EventTracker {
     this._callbacks = {}
   }
 
-  addEventListener (listenerId, callback) {
-    if (this._numberOfLayersTracked === 0) {
+  addEventListener (interactionManagerId, callback) {
+    if (this._numberOfListeners === 0) {
       let handler = this._handleEvent.bind(this)
 
       this._eventManager._domNode.addEventListener(this._eventName, handler)
     }
 
-    this._numberOfLayersTracked++
-    this._callbacks[listenerId] = callback
+    this._numberOfListeners++
+    this._callbacks[interactionManagerId] = callback
   }
 
-  removeEventListener (listenerId) {
-    this._numberOfLayersTracked--
-    delete this._callbacks[listenerId]
+  removeEventListener (interactionManagerId) {
+    this._numberOfListeners--
+    delete this._callbacks[interactionManagerId]
 
-    if (this._numberOfLayersTracked === 0) {
+    if (this._numberOfListeners === 0) {
       let handler = this._handleEvent.bind(this)
 
       this._eventManager._domNode.removeEventListener(this._eventName, handler)
