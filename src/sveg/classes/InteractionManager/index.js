@@ -9,4 +9,16 @@ export default class InteractionManager {
   linkEventManager (eventManager) {
     this._eventManager = eventManager
   }
+
+  loadLayer (layer) {
+    this._spatialIndex.loadLayer(layer)
+  }
+
+  onClick (layerId, callback) {
+    this._eventManager.addListener()
+  }
+
+  onHover () {
+
+  }
 }

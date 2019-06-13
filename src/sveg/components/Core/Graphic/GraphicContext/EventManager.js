@@ -9,14 +9,14 @@ export default class EventManager {
     this._mouseupTracker = new Tracker(this, 'mouseup')
   }
 
-  addListener (eventName, listenerName, callback) {
+  addListener (eventName, listenerId, callback) {
     let tracker = this[getTrackerName(eventName)]
-    tracker.addListener(listenerName, callback)
+    tracker.addListener(listenerId, callback)
   }
 
-  removeListener (eventName, listenerName) {
+  removeListener (eventName, listenerId) {
     let tracker = this[getTrackerName(eventName)]
-    tracker.removeListener(listenerName)
+    tracker.removeListener(listenerId)
   }
 
   _getMouseCoordinates (mouseEvent) {
@@ -36,7 +36,7 @@ class Tracker {
     this._callbacks = {}
   }
 
-  addListener (listenerName, callback) {
+  addListener (listenerId, callback) {
     if (this._numberOfLayersTracked === 0) {
       let handler = this._handleEvent.bind(this)
 
@@ -44,12 +44,12 @@ class Tracker {
     }
 
     this._numberOfLayersTracked++
-    this._callbacks[listenerName] = callback
+    this._callbacks[listenerId] = callback
   }
 
-  removeListener (listenerName) {
+  removeListener (listenerId) {
     this._numberOfLayersTracked--
-    delete this._callbacks[listenerName]
+    delete this._callbacks[listenerId]
 
     if (this._numberOfLayersTracked === 0) {
       let handler = this._handleEvent.bind(this)
@@ -61,8 +61,8 @@ class Tracker {
   _handleEvent (mouseEvent) {
     let coordinates = this._eventManager._getMouseCoordinates(mouseEvent)
 
-    for (let listenerName in this._callbacks) {
-      this._callbacks[listenerName](coordinates, mouseEvent)
+    for (let listenerId in this._callbacks) {
+      this._callbacks[listenerId](coordinates, mouseEvent)
     }
   }
 }
