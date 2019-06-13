@@ -5,7 +5,7 @@
 	import { 
     Graphic, Section, CoordinateTransformation, 
     PointLayer, 
-    DataContainer, SpatialIndex 
+    DataContainer 
   } from '../sveg'
 
 	export let N = 100
@@ -36,12 +36,6 @@
   let height = 500
   let transformation = 'identity'
   let duration = 2000
-
-  const pointIndex = new SpatialIndex('Point')
-
-  function log (index, event) {
-    console.log(event)
-  }
 </script>
 
 <div>
@@ -97,8 +91,6 @@
             fill: duration
           }}
           index={filteredData.column('$index')}
-          spatialIndex={pointIndex}
-          onClick={log}
         />
 
       </CoordinateTransformation>
