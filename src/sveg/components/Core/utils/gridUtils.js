@@ -1,3 +1,5 @@
+import { warn } from '../../../utils/logging.js'
+
 // Gets all cells in grid in format { areaName: {x1, x2, y1, y2}, ... }
 // given the template specs and definition
 export function getAllCells (templateRows, templateCols, rowGap, colGap, coords) {
@@ -146,7 +148,7 @@ function getFrameStep (specs, range) {
     } else if (i.endsWith('fr')) {
       frameCount = frameCount + value
     } else {
-      console.warn(`Grid cell size should be specified in -px or -fr. Ignoring input ${i}`)
+      warn(`Grid cell size should be specified in -px or -fr. Ignoring input ${i}`)
     }
   }
 
@@ -161,7 +163,7 @@ export function mergeNameSpecs (cellNames, cellSpecs, numCols) {
   let specsLength = cellSpecs.length
 
   if (namesLength < specsLength) {
-    console.warn('Cell names do not match up with number of cells specified, this may cause errors in your chart.')
+    warn('Cell names do not match up with number of cells specified, this may cause errors in your chart.')
 
     // Nameless cells are given their index as names
     for (let i = 0; i < specsLength; i++) {
@@ -169,7 +171,7 @@ export function mergeNameSpecs (cellNames, cellSpecs, numCols) {
       else { cellNames.push(i) }
     }
   } else if (namesLength > specsLength) {
-    console.warn('Cell names do not match up with number of cells specified, this may cause errors in your chart.')
+    warn('Cell names do not match up with number of cells specified, this may cause errors in your chart.')
   }
 
   let allSpecs = {}
@@ -220,25 +222,25 @@ function cellMerge (cellName, cell1, cell2) {
 // Checks that gridTemplateRows and gridTemplateAreas are defined
 function validateGridSpec (a, direction) {
   if (a.constructor === String && a === '') {
-    console.warn(`Please specify at least one cell in ${direction}. Automatically adding 1 cell to ${direction}.`)
+    warn(`Please specify at least one cell in ${direction}. Automatically adding 1 cell to ${direction}.`)
     return '1fr'
   }
 
   if (a.constructor === Number && a === 0) {
-    console.warn(`Please specify at least one cell in ${direction}. Automatically adding 1 cell to ${direction}.`)
+    warn(`Please specify at least one cell in ${direction}. Automatically adding 1 cell to ${direction}.`)
     return 1
   } else if (a.constructor === Number && (a % 1) !== 0) {
-    console.warn(`Please specify ${direction} with integers only. Using rounded value ${Math.ceil(a)}.`)
+    warn(`Please specify ${direction} with integers only. Using rounded value ${Math.ceil(a)}.`)
     return Math.ceil(a)
   }
 
   if (a.constructor === Array && a.length === 0) {
-    console.warn(`Please specify at least one cell in ${direction}. Automatically adding 1 cell to ${direction}.`)
+    warn(`Please specify at least one cell in ${direction}. Automatically adding 1 cell to ${direction}.`)
     return [0]
   }
 
   if ([Array, Number, String].indexOf(a.constructor) === -1) {
-    console.warn(`Please specify ${direction} with Number, String or Array. Assuming 1 cell specified.`)
+    warn(`Please specify ${direction} with Number, String or Array. Assuming 1 cell specified.`)
     return 1
   }
 
@@ -261,7 +263,7 @@ function validateCellSpaces (spaces, indvCells, numCols) {
       for (let c = startCol; c <= endCol; c++) {
         let index = r * numCols + c
         if (indvCells[index] !== areaName) {
-          console.warn(`Area ${areaName} may not be rectangular in prop gridTemplateAreas, this can cause errors in your chart.`)
+          warn(`Area ${areaName} may not be rectangular in prop gridTemplateAreas, this can cause errors in your chart.`)
         }
       }
     }
