@@ -1,10 +1,10 @@
 <script>
   import * as SectionContext from '../Section/SectionContext'
-  import *  as CoordinateTransformationContext from './CoordinateTransformationContext'
+  import * as CoordinateTransformationContext from './CoordinateTransformationContext'
 
   export let transformation
 
-  CoordinateTransformationContext.ensureNotNested()
+  CoordinateTransformationContext.ensureNotParent()
 
   const sectionContext = SectionContext.subscribe()
   const coordinateTransformationContext = CoordinateTransformationContext.init()

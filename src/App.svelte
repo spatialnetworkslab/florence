@@ -1,7 +1,6 @@
 <script>
   import BarChart from './examples/BarChart.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
-  // import PolarSections from './examples/PolarSections.svelte'
   import GridLayout from './examples/GridLayout.svelte'
   import ResizeLayout from './examples/ResizeLayout.svelte'
 </script>
@@ -31,11 +30,6 @@
     <h1>Scatterplot</h1>
     <Scatterplot />
   </div>
-
-  <!-- <div class="graphic-holder">
-    <h1>Polar sections</h1>
-    <PolarSections />
-  </div>  --> 
 
   <div class="graphic-holder">
     <h1>Grid</h1>

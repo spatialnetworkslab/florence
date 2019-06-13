@@ -1,45 +1,29 @@
 <script>
-  import { getContext, setContext, onDestroy } from 'svelte'
-  import { writable } from 'svelte/store'
-  import { coordinateContextKey } from '../contextKeys.js'
-  import CoordinateContext from '../../classes/CoordinateContext'
-  import { generatePixelCoordinates } from '../../rendering/rectangle'
-  import { getAllCells, getNames, mergeNameSpecs } from './utils/gridUtils.js'
-  import { printGrid } from './utils/viewGrid.js'
+  import * as SectionContext from '../Section/SectionContext'
+  import * as CoordinateTransformationContext from './CoordinateTransformationContext'
 
-  // Position of grid cells
+  import { scaleCoordinates } from '../../Marks/Rectangle/generateCoordinates.js'
+  import { getAllCells, getNames, mergeNameSpecs } from './gridUtils.js'
+  import { printGrid } from './viewGrid.js'
+
+  // Props
   export let x1 = undefined
   export let x2 = undefined
   export let y1 = undefined
   export let y2 = undefined
-
-  // Scales
-  export let scaleX = undefined
-  export let scaleY = undefined
-
-  // Grid specs
   export let rows = 1
   export let columns = 1
   export let rowGap = 0
   export let columnGap = 0
   export let areaNames = undefined
+  export let viewGridTemplate = false // Option to console log grid layout
+  export let viewGridShape = false // Option to console log rows in cols in grid
 
-  // Option to console log grid layout
-  // This is an expensive operation
-  export let viewGridTemplate = false
+  // Contexts
+  CoordinateTransformationContext.ensureNotParent()
+  const sectionContext = SectionContext.subscribe()
 
-  // Option to console log rows in cols in grid
-  // This is a less expensive alternative
-  export let viewGridShape = false
-
-  let parentCoordinateContext
-
-  const unsubscribe = getContext(coordinateContextKey).subscribe(coordinateContext => {
-    parentCoordinateContext = coordinateContext
-  })
-
-  $: coordinates = { x1, x2, y1, y2 }
-  $: pixelCoordinates = generatePixelCoordinates(coordinates, parentCoordinateContext)
+  $: scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, sectionContext)
 
   let allCells
   let allNames
@@ -57,5 +41,5 @@
 </script>
 
 <g>
-  <slot generatedCells={ allSpecs } />
+  <slot generatedCells={allSpecs} />
 </g>

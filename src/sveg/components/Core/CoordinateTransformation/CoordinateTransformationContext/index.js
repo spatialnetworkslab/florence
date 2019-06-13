@@ -54,8 +54,8 @@ export function update (coordinateTransformationContext, options) {
   coordinateTransformationContext.set(new CoordinateTransformationContext(options))
 }
 
-export function ensureNotNested () {
+export function ensureNotParent () {
   if (getContext(key)) {
-    throw new Error('Cannot nest CoordinateTransformation components')
+    throw new Error('CoordinateTransformation components cannot contain anything other than Marks or Layers')
   }
 }

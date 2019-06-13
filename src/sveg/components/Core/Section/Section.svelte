@@ -1,7 +1,9 @@
 <script>
   import * as SectionContext from './SectionContext'
+  import * as CoordinateTransformationContext from './CoordinateTransformationContext'
   import { scaleCoordinates } from '../../Marks/Rectangle/generateCoordinates.js'
 
+  // Props
   export let x1 = undefined
   export let x2 = undefined
   export let y1 = undefined
@@ -9,8 +11,9 @@
   export let scaleX = undefined
   export let scaleY = undefined
 
+  // Contexts
+  CoordinateTransformationContext.ensureNotParent()
   const sectionContext = SectionContext.subscribe()
-
   const newSectionContext = SectionContext.init()
 
   $: {
@@ -22,6 +25,6 @@
   }
 </script>
 
-<g>
+<g class="section">
   <slot />
 </g>
