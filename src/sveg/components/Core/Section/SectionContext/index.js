@@ -2,7 +2,9 @@ import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
 
 class SectionContext {
-  constructor ({ rangeX, rangeY, scaleX, scaleY }) {
+  constructor ({ sectionId, rangeX, rangeY, scaleX, scaleY, interactionManager }) {
+    this._sectionId = sectionId
+
     this._rangeX = undefined
     this._rangeY = undefined
     this._scaleX = undefined
@@ -10,6 +12,10 @@ class SectionContext {
 
     this._handleRanges(rangeX, rangeY)
     this._handleScales(scaleX, scaleY)
+
+    this._interactionManager = undefined
+
+    this._handleInteractionManager(interactionManager)
   }
 
   rangeX () {
@@ -63,6 +69,11 @@ class SectionContext {
     if (!scaleY) {
       this._scaleY = y => y
     }
+  }
+
+  _handleInteractionManager (interactionManager) {
+    this._interactionManager = interactionManager
+    this._interactionManager.setSectionContext(this)
   }
 }
 

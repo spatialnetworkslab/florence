@@ -3,20 +3,20 @@ export default class EventManager {
     this._domNode = domNode
     this._svgPoint = this._domNode.createSVGPoint()
 
-    this._clickTracker = new Tracker(this, 'click')
-    this._mousemoveTracker = new Tracker(this, 'mousemove')
-    this._mousedownTracker = new Tracker(this, 'mousedown')
-    this._mouseupTracker = new Tracker(this, 'mouseup')
+    this._clickTracker = new EventTracker(this, 'click')
+    this._mousemoveTracker = new EventTracker(this, 'mousemove')
+    this._mousedownTracker = new EventTracker(this, 'mousedown')
+    this._mouseupTracker = new EventTracker(this, 'mouseup')
   }
 
-  addListener (eventName, listenerId, callback) {
+  addEventListener (eventName, listenerId, callback) {
     let tracker = this[getTrackerName(eventName)]
-    tracker.addListener(listenerId, callback)
+    tracker.addEventListener(listenerId, callback)
   }
 
-  removeListener (eventName, listenerId) {
+  removeEventListener (eventName, listenerId) {
     let tracker = this[getTrackerName(eventName)]
-    tracker.removeListener(listenerId)
+    tracker.removeEventListener(listenerId)
   }
 
   _getMouseCoordinates (mouseEvent) {
@@ -27,7 +27,7 @@ export default class EventManager {
   }
 }
 
-class Tracker {
+class EventTracker {
   constructor (eventManager, eventName) {
     this._eventManager = eventManager
     this._eventName = eventName
@@ -36,7 +36,7 @@ class Tracker {
     this._callbacks = {}
   }
 
-  addListener (listenerId, callback) {
+  addEventListener (listenerId, callback) {
     if (this._numberOfLayersTracked === 0) {
       let handler = this._handleEvent.bind(this)
 
@@ -47,7 +47,7 @@ class Tracker {
     this._callbacks[listenerId] = callback
   }
 
-  removeListener (listenerId) {
+  removeEventListener (listenerId) {
     this._numberOfLayersTracked--
     delete this._callbacks[listenerId]
 

@@ -1,7 +1,18 @@
+<script context="module">
+  let idCounter = -1
+  function getId () {
+    return 'sc' + idCounter++
+  }
+</script>
+
 <script>
+  import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from './SectionContext'
   import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
+  import InteractionManager from './SectionContext/InteractionManager'
   import { scaleCoordinates } from '../../Marks/Rectangle/generateCoordinates.js'
+
+  let sectionId = getId()
 
   // Props
   export let x1 = undefined
@@ -12,16 +23,23 @@
   export let scaleY = undefined
 
   // Contexts
-  CoordinateTransformationContext.ensureNotParent()
+  const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
   const newSectionContext = SectionContext.init()
+  CoordinateTransformationContext.ensureNotParent()
+
+  const interactionManager = new InteractionManager()
+  interactionManager.setId(sectionId)
+  interactionManager.linkEventManager($graphicContext.eventManager())
 
   $: {
     let scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
     let rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
     let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
 
-    SectionContext.update(newSectionContext, { rangeX, rangeY, scaleX, scaleY })
+    SectionContext.update(
+      newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY, interactionManager }
+    )
   }
 </script>
 

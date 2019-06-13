@@ -3,8 +3,7 @@ import RBush from 'rbush'
 import collisionTests from './collisionTests'
 
 export default class SpatialIndex {
-  constructor (markType) {
-    this._markType = markType
+  constructor () {
     this._rbush = new RBush()
   }
 

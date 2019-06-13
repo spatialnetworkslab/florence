@@ -1,3 +1,10 @@
+<script context="module">
+  let idCounter = -1
+  function getId () {
+    return 'pt' + idCounter++
+  }
+</script>
+
 <script>
   import { beforeUpdate, afterUpdate } from 'svelte'
 
@@ -7,6 +14,8 @@
   
   import { generateCoordinates } from './generateCoordinates.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
+
+  let id = getId()
 
   let initPhase = true
   const initDone = () => !initPhase

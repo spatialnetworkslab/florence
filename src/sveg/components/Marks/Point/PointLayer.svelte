@@ -1,5 +1,12 @@
+<script context="module">
+  let idCounter = -1
+  function getId () {
+    return 'ptl_' + idCounter++
+  }
+</script>
+
 <script>
-  import { beforeUpdate, onMount, afterUpdate } from 'svelte'
+  import { beforeUpdate, afterUpdate } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -8,6 +15,8 @@
   import { generateCoordinatesLayer } from './generateCoordinatesLayer.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import { generatePropObject } from '../utils/generatePropObject.js'
+
+  let id = getId()
 
   let initPhase = true
   const initDone = () => !initPhase
@@ -19,7 +28,6 @@
   export let fill = 'black'
   export let transition = undefined
   export let index = undefined
-  export let spatialIndex = undefined
   export let onClick = undefined
 
   // Contexts
@@ -47,8 +55,6 @@
 
   $: {
     if (initDone()) {
-      if (spatialIndex) spatialIndex.reset()
-
       let c = generateCoordinatesLayer(
         { x, y }, 
         $sectionContext, 
@@ -56,13 +62,6 @@
         index
       )
       indexArray = c.indexArray
-
-      if (spatialIndex) {
-        spatialIndex.setRootNode($graphicContext.rootNode())
-        spatialIndex.addLayer({ x: c.xObject, y: c.yObject, radius: $tr_radiusObject }, indexArray)
-
-        if (onClick) spatialIndex.listenForClicks(onClick)
-      }
 
       tr_xObject.set(c.xObject)
       tr_yObject.set(c.yObject)
@@ -82,15 +81,6 @@
       tr_yObject = createTransitionableLayer('y', $tr_yObject, transition)
       tr_radiusObject = createTransitionableLayer('radius', $tr_radiusObject, transition)
       tr_fillObject = createTransitionableLayer('fill', $tr_fillObject, transition)
-    }
-  })
-
-  onMount(() => {
-    if (spatialIndex) {
-      spatialIndex.setRootNode($graphicContext.rootNode())
-      spatialIndex.addLayer({ x: xObject, y: yObject, radius: radiusObject }, indexArray)
-
-      if (onClick) spatialIndex.listenForClicks(onClick)
     }
   })
 
