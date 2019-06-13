@@ -18,11 +18,11 @@
   export let scaleY = undefined
 
   // Grid specs
-  export let gridTemplateRows = 1
-  export let gridTemplateColumns = 1
-  export let gridRowGap = 0
-  export let gridColumnGap = 0
-  export let gridTemplateAreas = undefined
+  export let rows = 1
+  export let columns = 1
+  export let rowGap = 0
+  export let columnGap = 0
+  export let areaNames = undefined
 
   // Option to console log grid layout
   // This is an expensive operation
@@ -45,14 +45,14 @@
   let allNames
 
   // Get cells
-  $: [allCells, rowSizes, colSizes, numRows, numCols] = getAllCells(gridTemplateRows, gridTemplateColumns, gridRowGap, gridColumnGap, pixelCoordinates)
+  $: [allCells, rowSizes, colSizes, numRows, numCols] = getAllCells(rows, columns, rowGap, columnGap, pixelCoordinates)
 
   // Console log grid specification as necessary
   $: if (viewGridTemplate) { printGrid( rowSizes, colSizes ) }
   $: if (viewGridShape) { console.log('rows:', numRows, ' columns:', numCols) }
 
   // Get named cells
-  $: allSpecs = mergeNameSpecs(gridTemplateAreas, allCells, numCols)
+  $: allSpecs = mergeNameSpecs(areaNames, allCells, numCols)
 
 </script>
 

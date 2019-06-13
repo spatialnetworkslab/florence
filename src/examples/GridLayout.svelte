@@ -44,9 +44,9 @@
 		<Grid
 			x1={50} x2={450}
 			y1={50} y2={450}
-			gridTemplateColumns={cols}
-			gridTemplateRows={rows}
-			gridTemplateAreas={['blue', 'orange', 'red', 'green']}
+			columns={cols}
+			rows={rows}
+			areaNames={['blue', 'orange', 'red', 'green']}
 			let:generatedCells
 		>
 

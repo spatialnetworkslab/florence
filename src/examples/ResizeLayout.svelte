@@ -44,7 +44,7 @@
 
 <div>
   <label for="height-slider">Height:</label>
-  <input type="range" min="0" max="420" bind:value={height} name="height-slider" />
+  <input type="range" min="1" max="420" bind:value={height} name="height-slider" />
 </div>
 
 <div style="padding-top: 50px">
@@ -58,11 +58,11 @@
 		<Grid
 			x1={0} x2={420}
 			y1={0} y2={height}
-			gridTemplateColumns={cols}
-			gridTemplateRows={rows}
-			gridTemplateAreas={layout}
-      gridRowGap={10}
-      gridColumnGap={10}
+			columns={cols}
+			rows={rows}
+			areaNames={layout}
+      rowGap={10}
+      columnGap={10}
 			let:generatedCells
 		>
 
