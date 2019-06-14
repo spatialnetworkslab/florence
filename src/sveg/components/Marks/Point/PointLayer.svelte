@@ -6,7 +6,7 @@
 </script>
 
 <script>
-  import { beforeUpdate, afterUpdate, onMount } from 'svelte'
+  import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -108,18 +108,26 @@
     updateInteractionManagerIfNecessary()
   })
 
+  onDestroy(() => {
+    removeLayerFromSpatialIndexIfNecessary()
+  })
+
   // Helpers
   function updateInteractionManagerIfNecessary () {
-    if ($interactionManagerContext.layerIsLoaded(layerId)) {
-      $interactionManagerContext.removeAllInteractions(layerId)
-      $interactionManagerContext.removeLayer(layerId)
-    }
+    removeLayerFromSpatialIndexIfNecessary()
 
     if (isInteractive) {
       $interactionManagerContext.loadLayer('Point', createLayerData())
 
       if (onClick) $interactionManagerContext.addInteraction('click', layerId, onClick)
       if (onHover) $interactionManagerContext.addInteraction('hover', layerId, onHover)
+    }
+  }
+
+  function removeLayerFromSpatialIndexIfNecessary () {
+    if ($interactionManagerContext.layerIsLoaded(layerId)) {
+      $interactionManagerContext.removeAllInteractions(layerId)
+      $interactionManagerContext.removeLayer(layerId)
     }
   }
 
