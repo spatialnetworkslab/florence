@@ -23,7 +23,7 @@ export default class EventManager {
     this._svgPoint.x = mouseEvent.clientX
     this._svgPoint.y = mouseEvent.clientY
 
-    return this._svgPoint.matrixTransform(this._rootNode.getScreenCTM().inverse())
+    return this._svgPoint.matrixTransform(this._domNode.getScreenCTM().inverse())
   }
 }
 
