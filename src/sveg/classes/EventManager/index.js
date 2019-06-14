@@ -1,3 +1,5 @@
+let handler
+
 export default class EventManager {
   constructor (domNode) {
     this._domNode = domNode
@@ -38,8 +40,7 @@ class EventTracker {
 
   addEventListener (interactionManagerId, callback) {
     if (this._numberOfListeners === 0) {
-      let handler = this._handleEvent.bind(this)
-
+      handler = this._handleEvent.bind(this)
       this._eventManager._domNode.addEventListener(this._eventName, handler)
     }
 
@@ -52,8 +53,6 @@ class EventTracker {
     delete this._callbacks[interactionManagerId]
 
     if (this._numberOfListeners === 0) {
-      let handler = this._handleEvent.bind(this)
-
       this._eventManager._domNode.removeEventListener(this._eventName, handler)
     }
   }

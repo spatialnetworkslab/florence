@@ -64,10 +64,15 @@
         $coordinateTransformationContext,
         index
       )
+      
       indexArray = c.indexArray
+      xObject = c.xObject
+      yObject = c.yObject
 
       tr_xObject.set(c.xObject)
       tr_yObject.set(c.yObject)
+
+      updateInteractionManagerIfNecessary()
     }
   }
 
@@ -95,17 +100,31 @@
   $: isInteractive = onClick !== undefined || onHover !== undefined
 
   onMount(() => {
+    updateInteractionManagerIfNecessary()
+  })
+
+  // Helpers
+  function updateInteractionManagerIfNecessary () {
+    if ($interactionManagerContext.layerIsLoaded(layerId)) {
+      $interactionManagerContext.removeAllInteractions(layerId)
+      $interactionManagerContext.removeLayer(layerId)
+    }
+
     if (isInteractive) {
-      $interactionManagerContext.loadLayer('Point', {
-        geometries: { x: xObject, y: yObject, radius: radiusObject },
-        layerId,
-        indexArray
-      })
+      $interactionManagerContext.loadLayer('Point', createLayerData())
 
       if (onClick) $interactionManagerContext.addInteraction('click', layerId, onClick)
       if (onHover) $interactionManagerContext.addInteraction('hover', layerId, onHover)
     }
-  })
+  }
+
+  function createLayerData () {
+    return {
+      geometries: { x: xObject, y: yObject, radius: radiusObject },
+      layerId,
+      indexArray
+    }
+  }
 </script>
 
 {#if $graphicContext.output() === 'svg'}

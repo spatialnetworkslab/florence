@@ -41,8 +41,8 @@ export default class InteractionManager {
     if (interactionName === 'hover') this._hoverManager.addInteraction(layerId, callback)
   }
 
-  removeInteraction (interactionName, layerId) {
-    if (interactionName === 'click') this._clickManager.removeInteraction(layerId)
-    if (interactionName === 'hover') this._hoverManager.removeInteraction(layerId)
+  removeAllInteractions (layerId) {
+    this._clickManager.removeInteraction(layerId)
+    // this._hoverManager.removeInteraction(layerId)
   }
 }

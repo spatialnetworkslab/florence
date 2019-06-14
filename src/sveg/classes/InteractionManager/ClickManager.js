@@ -6,27 +6,31 @@ export default class ClickManager {
   }
 
   addInteraction (layerId, callback) {
-    if (this._numberOfInteractions === 0) {
-      let handler = this._handleClick.bind(this)
-      let interactionManager = this._interactionManager
-      let eventManager = interactionManager._eventManager
-
-      eventManager.addEventListener('click', interactionManager._id, handler)
+    if (!this._layerCallbacks.hasOwnProperty(layerId)) {
+      if (this._numberOfInteractions === 0) {
+        let handler = this._handleClick.bind(this)
+        let interactionManager = this._interactionManager
+        let eventManager = interactionManager._eventManager
+  
+        eventManager.addEventListener('click', interactionManager._id, handler)
+      }
+  
+      this._numberOfInteractions++
+      this._layerCallbacks[layerId] = callback
     }
-
-    this._numberOfInteractions++
-    this._layerCallbacks[layerId] = callback
   }
 
   removeInteraction (layerId) {
-    this._numberOfInteractions--
-    delete this._layerCallbacks[layerId]
+    if (this._layerCallbacks.hasOwnProperty(layerId)) {
+      this._numberOfInteractions--
+      delete this._layerCallbacks[layerId]
 
-    if (this._numberOfInteractions === 0) {
-      let interactionManager = this._interactionManager
-      let eventManager = interactionManager._eventManager
+      if (this._numberOfInteractions === 0) {
+        let interactionManager = this._interactionManager
+        let eventManager = interactionManager._eventManager
 
-      eventManager.removeEventListener('click', interactionManager._id)
+        eventManager.removeEventListener('click', interactionManager._id)
+      }
     }
   }
 
