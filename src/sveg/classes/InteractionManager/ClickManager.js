@@ -5,15 +5,10 @@ export default class ClickManager {
     this._layerCallbacks = {}
   }
 
+  // Add/remove layer interactions
   addLayerInteraction (layerId, callback) {
     if (!this._layerCallbacks.hasOwnProperty(layerId)) {
-      if (this._numberOfInteractions === 0) {
-        let handler = this._handleClick.bind(this)
-        let interactionManager = this._interactionManager
-        let eventManager = interactionManager._eventManager
-
-        eventManager.addEventListener('click', interactionManager._id, handler)
-      }
+      this._addEventListenerIfNecessary()
 
       this._numberOfInteractions++
       this._layerCallbacks[layerId] = callback
@@ -25,12 +20,37 @@ export default class ClickManager {
       this._numberOfInteractions--
       delete this._layerCallbacks[layerId]
 
-      if (this._numberOfInteractions === 0) {
-        let interactionManager = this._interactionManager
-        let eventManager = interactionManager._eventManager
+      this._removeEventListenerIfNecessary()
+    }
+  }
 
-        eventManager.removeEventListener('click', interactionManager._id)
-      }
+  // Add/remove mark interactions
+  addMarkInteraction () {
+    this._addEventListenerIfNecessary()
+    this._numberOfInteractions++
+  }
+
+  removeMarkInteraction () {
+    this._removeEventListenerIfNecessary()
+    this._numberOfInteractions--
+  }
+
+  _addEventListenerIfNecessary () {
+    if (this._numberOfInteractions === 0) {
+      let handler = this._handleClick.bind(this)
+      let interactionManager = this._interactionManager
+      let eventManager = interactionManager._eventManager
+
+      eventManager.addEventListener('click', interactionManager._id, handler)
+    }
+  }
+
+  _removeEventListenerIfNecessary () {
+    if (this._numberOfInteractions === 0) {
+      let interactionManager = this._interactionManager
+      let eventManager = interactionManager._eventManager
+
+      eventManager.removeEventListener('click', interactionManager._id)
     }
   }
 
@@ -57,4 +77,4 @@ export default class ClickManager {
 }
 
 const isInLayer = hit => hit.hasOwnProperty('layerId')
-const isMark = hit => hit.hasOwnProperty('callback')
+const isMark = hit => hit.hasOwnProperty('callbacks')

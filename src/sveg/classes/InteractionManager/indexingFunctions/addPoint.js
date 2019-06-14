@@ -3,10 +3,9 @@ export function addPoint (markData) {
 
   let item = calculateBBox(pointGeometry)
 
-  item.$index = markData.$index
   item.geometry = pointGeometry
   item.markType = 'Point'
-  item.callback = markData.callback
+  item.callbacks = markData.callbacks
 
   return item
 }

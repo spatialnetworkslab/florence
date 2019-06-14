@@ -2,7 +2,7 @@
 	import { scaleLinear } from 'd3-scale'
 	import { 
     Graphic, Section, CoordinateTransformation, 
-    PointLayer, 
+    PointLayer, Point,
     DataContainer 
   } from '../sveg'
 
@@ -36,6 +36,8 @@
   let duration = 2000
 
   const log = console.log
+
+  let clicked = false
 </script>
 
 <div>
@@ -85,6 +87,15 @@
           index={filteredData.column('$index')}
           transition={duration}
           onClick={log}
+        />
+
+        <Point
+          x={50}
+          y={50}
+          fill={clicked ? 'blue' : 'red'}
+          radius={clicked ? 50 : 10}
+          transition={duration}
+          onClick={() => clicked = !clicked}
         />
 
       </CoordinateTransformation>

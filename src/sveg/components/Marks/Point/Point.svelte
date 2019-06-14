@@ -48,7 +48,7 @@
   // Handle coordinate/geometry prop transitions
   $: {
     if (initDone()) {
-      let coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
+      coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
       tr_x.set(coordinates[0])
       tr_y.set(coordinates[1])
       tr_radius.set(radius)
@@ -96,16 +96,16 @@
     if (isInteractive) {
       $interactionManagerContext.loadMark('Point', createMarkData())
 
-      if (onClick) $interactionManagerContext.addInteraction('click', layerId, onClick)
-      if (onHover) $interactionManagerContext.addInteraction('hover', layerId, onHover)
+      if (onClick) $interactionManagerContext.addMarkInteraction('click')
+      if (onHover) $interactionManagerContext.addMarkInteraction('hover')
     }
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
-    // if ($interactionManagerContext.layerIsLoaded(layerId)) {
-    //   $interactionManagerContext.removeAllInteractions(layerId)
-    //   $interactionManagerContext.removeLayer(layerId)
-    // }
+    if ($interactionManagerContext.markIsLoaded(markId)) {
+      $interactionManagerContext.removeAllMarkInteractions()
+      $interactionManagerContext.removeMark(markId)
+    }
   }
 
   function createMarkData () {

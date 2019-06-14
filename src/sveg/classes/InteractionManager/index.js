@@ -56,15 +56,17 @@ export default class InteractionManager {
 
   removeAllLayerInteractions (layerId) {
     this._clickManager.removeLayerInteraction(layerId)
-    // this._hoverManager.removeInteraction(layerId)
+    // this._hoverManager.removeLayerInteraction(layerId)
   }
 
   // Add/remove mark interactions
-  addMarkInteraction (interactionName, markId) {
-    // TODO
+  addMarkInteraction (interactionName) {
+    if (interactionName === 'click') this._clickManager.addMarkInteraction()
+    if (interactionName === 'hover') this._hoverManager.addMarkInteraction()
   }
 
-  removeAllMarkInteractions (markId) {
-    // TODO
+  removeAllMarkInteractions () {
+    this._clickManager.removeMarkInteraction()
+    // this._hoverManager.removeMarkInteraction()
   }
 }
