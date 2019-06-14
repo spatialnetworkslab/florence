@@ -11,6 +11,7 @@
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
+  import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   
   import { generateCoordinatesLayer } from './generateCoordinatesLayer.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
@@ -35,6 +36,7 @@
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
+  const interactionManagerContext = InteractionManagerContext.subscribe()
 
   // Generate coordinate objects and index array
   let { xObject, yObject, indexArray } = generateCoordinatesLayer(
@@ -92,24 +94,18 @@
   // Interactivity
   $: isInteractive = onClick !== undefined || onHover !== undefined
 
-  $: {
+  onMount(() => {
     if (isInteractive) {
-      let interactionManager = $sectionContext.interactionManager()
+      $interactionManagerContext.loadLayer('Point', {
+        geometries: { x: xObject, y: yObject, radius: radiusObject },
+        layerId,
+        indexArray
+      })
 
-      if (interactionManager._eventManager) {
-        let layerData = { 
-          geometries: { x: xObject, y: yObject, radius: radiusObject },
-          indexArray,
-          layerId
-        }
-
-        interactionManager.loadLayer('Point', layerData)
-
-        if (onClick) interactionManager.addInteraction('click', layerId, onClick)
-        if (onHover) interactionManager.addInteraction('hover', layerId, onHover) 
-      }
+      if (onClick) $interactionManagerContext.addInteraction('click', layerId, onClick)
+      if (onHover) $interactionManagerContext.addInteraction('hover', layerId, onHover)
     }
-  }
+  })
 </script>
 
 {#if $graphicContext.output() === 'svg'}

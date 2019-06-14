@@ -2,7 +2,7 @@ import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
 
 class GraphicContext {
-  constructor ({ renderer, eventManager }) {
+  constructor ({ renderer }) {
     if (!renderer) {
       this._rendererOptions = { output: 'svg' }
     }
@@ -11,16 +11,10 @@ class GraphicContext {
       validateRendererOptions(renderer)
       this._rendererOptions = renderer
     }
-
-    this._eventManager = eventManager
   }
 
   output () {
     return this._rendererOptions.output
-  }
-
-  eventManager () {
-    return this._eventManager
   }
 }
 

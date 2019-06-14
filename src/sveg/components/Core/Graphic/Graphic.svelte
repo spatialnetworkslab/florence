@@ -1,8 +1,11 @@
 <script>
+  import { onMount } from 'svelte'
+
   import * as GraphicContext from './GraphicContext'
   import * as SectionContext from '../Section/SectionContext'
+  import * as EventManagerContext from './EventManagerContext'
 
-  import EventManager from './GraphicContext/EventManager.js'
+  import EventManager from '../../../classes/EventManager'
 
   export let width
   export let height
@@ -12,15 +15,10 @@
 
   const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
-
-  let eventManager
-
-  function getEventManager (svgNode) {
-    eventManager = new EventManager(svgNode)
-  }
+  const eventManagerContext = EventManagerContext.init()
 
   $: {
-    GraphicContext.update(graphicContext, { renderer, eventManager })
+    GraphicContext.update(graphicContext, { renderer })
   }
 
   $: {
@@ -28,12 +26,19 @@
     let rangeY = [0, height]
     SectionContext.update(sectionContext, { rangeX, rangeY, scaleX, scaleY })
   }
+
+  let rootNode
+
+  onMount(() => {
+    let eventManager = new EventManager(rootNode)
+    EventManagerContext.update(eventManagerContext, eventManager)
+  })
 </script>
 
 <svg 
   {width} 
   {height}
-  use:getEventManager
+  bind:this={rootNode}
 >
   <slot />
 </svg>

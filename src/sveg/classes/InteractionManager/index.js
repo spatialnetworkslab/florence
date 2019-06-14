@@ -8,7 +8,6 @@ export default class InteractionManager {
 
     this._id = undefined
     this._eventManager = undefined
-    this._sectionContext = undefined
 
     this._clickManager = new ClickManager(this)
     this._hoverManager = new HoverManager(this)
@@ -21,10 +20,6 @@ export default class InteractionManager {
 
   linkEventManager (eventManager) {
     this._eventManager = eventManager
-  }
-
-  setSectionContext (sectionContext) {
-    this._sectionContext = sectionContext
   }
 
   // Layer loading and removing
