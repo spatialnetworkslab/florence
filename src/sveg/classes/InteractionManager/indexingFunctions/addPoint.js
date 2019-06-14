@@ -1,9 +1,12 @@
-export function addPoint (pointGeometry, $index) {
+export function addPoint (markData) {
+  let pointGeometry = markData.geometry
+
   let item = calculateBBox(pointGeometry)
 
-  item.$index = $index
+  item.$index = markData.$index
   item.geometry = pointGeometry
   item.markType = 'Point'
+  item.callback = markData.callback
 
   return item
 }

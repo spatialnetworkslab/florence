@@ -6,16 +6,17 @@
 </script>
 
 <script>
-  import { beforeUpdate, afterUpdate } from 'svelte'
+  import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
+  import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   
   import { generateCoordinates } from './generateCoordinates.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
 
-  let id = getId()
+  let markId = getId()
 
   let initPhase = true
   const initDone = () => !initPhase
@@ -26,11 +27,14 @@
   export let radius = 3
   export let fill = 'black'
   export let transition = undefined
+  export let onClick = undefined
+  export let onHover = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
+  const interactionManagerContext = InteractionManagerContext.subscribe()
 
   // Convert coordinates
   let coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
@@ -41,19 +45,24 @@
   let tr_radius = createTransitionable('radius', radius, transition)
   let tr_fill = createTransitionable('fill', fill, transition)
 
+  // Handle coordinate/geometry prop transitions
   $: {
     if (initDone()) {
       let coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
       tr_x.set(coordinates[0])
       tr_y.set(coordinates[1])
+      tr_radius.set(radius)
+
+      updateInteractionManagerIfNecessary()
     }
   }
 
-  $: { if (initDone()) tr_radius.set(radius) }
+  // Handle other prop transitions
   $: { if (initDone()) tr_fill.set(fill) }
 
   let previousTransition
 
+  // Update transition parameters
   beforeUpdate(() => {
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
@@ -68,6 +77,44 @@
   afterUpdate(() => {
     initPhase = false
   })
+
+  // Interactivity
+  $: isInteractive = onClick !== undefined || onHover !== undefined
+
+  onMount(() => {
+    updateInteractionManagerIfNecessary()
+  })
+
+  onDestroy(() => {
+    removeMarkFromSpatialIndexIfNecessary()
+  })
+
+  // Helpers
+  function updateInteractionManagerIfNecessary () {
+    removeMarkFromSpatialIndexIfNecessary()
+
+    if (isInteractive) {
+      $interactionManagerContext.loadMark('Point', createMarkData())
+
+      if (onClick) $interactionManagerContext.addInteraction('click', layerId, onClick)
+      if (onHover) $interactionManagerContext.addInteraction('hover', layerId, onHover)
+    }
+  }
+
+  function removeMarkFromSpatialIndexIfNecessary () {
+    // if ($interactionManagerContext.layerIsLoaded(layerId)) {
+    //   $interactionManagerContext.removeAllInteractions(layerId)
+    //   $interactionManagerContext.removeLayer(layerId)
+    // }
+  }
+
+  function createMarkData () {
+    return {
+      geometry: { x: coordinates[0], y: coordinates[1], radius },
+      markId,
+      callbacks: [onClick, onHover]
+    }
+  }
 </script>
 
 {#if $graphicContext.output() === 'svg'}

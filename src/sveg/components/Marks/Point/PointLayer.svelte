@@ -119,14 +119,14 @@
     if (isInteractive) {
       $interactionManagerContext.loadLayer('Point', createLayerData())
 
-      if (onClick) $interactionManagerContext.addInteraction('click', layerId, onClick)
-      if (onHover) $interactionManagerContext.addInteraction('hover', layerId, onHover)
+      if (onClick) $interactionManagerContext.addLayerInteraction('click', layerId, onClick)
+      if (onHover) $interactionManagerContext.addLayerInteraction('hover', layerId, onHover)
     }
   }
 
   function removeLayerFromSpatialIndexIfNecessary () {
     if ($interactionManagerContext.layerIsLoaded(layerId)) {
-      $interactionManagerContext.removeAllInteractions(layerId)
+      $interactionManagerContext.removeAllLayerInteractions(layerId)
       $interactionManagerContext.removeLayer(layerId)
     }
   }

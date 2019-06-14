@@ -35,14 +35,36 @@ export default class InteractionManager {
     this._spatialIndex.removeLayer(layerId)
   }
 
-  // Add/remove interactions
-  addInteraction (interactionName, layerId, callback) {
-    if (interactionName === 'click') this._clickManager.addInteraction(layerId, callback)
-    if (interactionName === 'hover') this._hoverManager.addInteraction(layerId, callback)
+  // Mark loading and removing
+  loadMark (markType, markData) {
+    this._spatialIndex.loadMark(markType, markData)
   }
 
-  removeAllInteractions (layerId) {
-    this._clickManager.removeInteraction(layerId)
+  markIsLoaded (markId) {
+    return this._spatialIndex.markIsLoaded(markId)
+  }
+
+  removeMark (markId) {
+    this._spatialIndex.removeMark(markId)
+  }
+
+  // Add/remove layer interactions
+  addLayerInteraction (interactionName, layerId, callback) {
+    if (interactionName === 'click') this._clickManager.addLayerInteraction(layerId, callback)
+    if (interactionName === 'hover') this._hoverManager.addLayerInteraction(layerId, callback)
+  }
+
+  removeAllLayerInteractions (layerId) {
+    this._clickManager.removeLayerInteraction(layerId)
     // this._hoverManager.removeInteraction(layerId)
+  }
+
+  // Add/remove mark interactions
+  addMarkInteraction (interactionName, markId) {
+    // TODO
+  }
+
+  removeAllMarkInteractions (markId) {
+    // TODO
   }
 }

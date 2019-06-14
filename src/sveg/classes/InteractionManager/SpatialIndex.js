@@ -1,13 +1,15 @@
 import RBush from 'rbush'
-import { layerIndexing } from './indexingFunctions'
+import { markIndexing, layerIndexing } from './indexingFunctions'
 import collisionTests from './collisionTests'
 
 export default class SpatialIndex {
   constructor () {
     this._rbush = new RBush()
     this._layers = {}
+    this._marks = {}
   }
 
+  // Layer loading and removing
   loadLayer (layerType, layerData) {
     let indexingFunction = layerIndexing[layerType]
     let indexableData = indexingFunction(layerData)
@@ -19,7 +21,7 @@ export default class SpatialIndex {
   }
 
   layerIsLoaded (layerId) {
-    return this._layers[layerId] !== undefined
+    return this._layers.hasOwnProperty(layerId)
   }
 
   removeLayer (layerId) {
@@ -33,6 +35,28 @@ export default class SpatialIndex {
     delete this._layers[layerId]
   }
 
+  // Mark loading and removing
+  loadMark (markType, markData) {
+    let indexingFunction = markIndexing[markType]
+    let indexableItem = indexingFunction(markData)
+
+    let markId = markData.markId
+    this._marks[markId] = indexableItem
+
+    this._rbush.insert(this._marks[markId])
+  }
+
+  markIsLoaded (markId) {
+    return this._marks.hasOwnProperty(markId)
+  }
+
+  removeMark (markId) {
+    let mark = this._marks[markId]
+    this._rbush.remove(mark)
+    delete this._marks[markId]
+  }
+
+  // Query functions
   queryMouseCoordinates (mouseCoordinates, radius) {
     let searchArea = searchAreaFromCoordinates(mouseCoordinates, radius)
     let indexQueryResults = this._rbush.search(searchArea)

@@ -5,22 +5,22 @@ export default class ClickManager {
     this._layerCallbacks = {}
   }
 
-  addInteraction (layerId, callback) {
+  addLayerInteraction (layerId, callback) {
     if (!this._layerCallbacks.hasOwnProperty(layerId)) {
       if (this._numberOfInteractions === 0) {
         let handler = this._handleClick.bind(this)
         let interactionManager = this._interactionManager
         let eventManager = interactionManager._eventManager
-  
+
         eventManager.addEventListener('click', interactionManager._id, handler)
       }
-  
+
       this._numberOfInteractions++
       this._layerCallbacks[layerId] = callback
     }
   }
 
-  removeInteraction (layerId) {
+  removeLayerInteraction (layerId) {
     if (this._layerCallbacks.hasOwnProperty(layerId)) {
       this._numberOfInteractions--
       delete this._layerCallbacks[layerId]
@@ -48,7 +48,9 @@ export default class ClickManager {
       }
 
       if (isMark(hit)) {
-        hit.callback(hit.$index)
+        for (let j = 0; j < hit.callbacks.length; j++) {
+          if (hit.callbacks[j]) hit.callbacks[j]()
+        }
       }
     }
   }
