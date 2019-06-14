@@ -1,6 +1,4 @@
 <script>
-  import { quintOut } from 'svelte/easing'
-
 	import { scaleLinear } from 'd3-scale'
 	import { 
     Graphic, Section, CoordinateTransformation, 
@@ -82,17 +80,10 @@
         <PointLayer
           x={filteredData.column('a')}
           y={filteredData.column('b')}
-          fill={transformation === 'identity' ? 'black' : 'blue' }
-          radius={3}
-          transition={{
-            x: duration,
-            y: {
-              duration: duration * 2,
-              easing: quintOut
-            },
-            fill: duration
-          }}
+          fill={transformation === 'identity' ? 'black' : 'blue'}
+          radius={transformation === 'identity' ? 3 : 6}
           index={filteredData.column('$index')}
+          transition={duration}
           onClick={log}
         />
 

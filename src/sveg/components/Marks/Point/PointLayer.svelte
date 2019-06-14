@@ -56,6 +56,7 @@
   let tr_radiusObject = createTransitionableLayer('radius', radiusObject, transition)
   let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
 
+  // Handle coordinate transitions
   $: {
     if (initDone()) {
       let c = generateCoordinatesLayer(
@@ -76,11 +77,20 @@
     }
   }
 
-  $: { if (initDone()) tr_radiusObject.set(generatePropObject(radius, indexArray)) }
+  // Handle other transitions
+  $: { 
+    if (initDone()) {
+      radiusObject = generatePropObject(radius, indexArray)
+      tr_radiusObject.set(generatePropObject(radius, indexArray))
+
+      updateInteractionManagerIfNecessary()
+    } 
+  }
   $: { if (initDone()) tr_fillObject.set(generatePropObject(fill, indexArray)) }
 
   let previousTransition
 
+  // Update transition parameters
   beforeUpdate(() => {
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
