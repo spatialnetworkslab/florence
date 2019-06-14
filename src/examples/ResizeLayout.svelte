@@ -63,7 +63,7 @@
 			areaNames={layout}
       rowGap={10}
       columnGap={10}
-			let:generatedCells
+			let:cells
 		>
 
       <!-- No actual data is used here, only the groups.
@@ -71,8 +71,9 @@
 			{#each groupedData.rows() as facet}
 
 				<Rectangle
-					{...generatedCells[facet.fruit]}
-					fill={facet.fruit} />
+					{...cells[facet.fruit]}
+					fill={facet.fruit} 
+        />
 
 			{/each}
 		

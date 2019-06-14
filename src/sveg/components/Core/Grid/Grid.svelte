@@ -41,5 +41,5 @@
 </script>
 
 <g>
-  <slot generatedCells={allSpecs} />
+  <slot cells={allSpecs} />
 </g>
