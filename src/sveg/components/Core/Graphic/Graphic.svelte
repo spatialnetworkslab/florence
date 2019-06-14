@@ -4,8 +4,10 @@
   import * as GraphicContext from './GraphicContext'
   import * as SectionContext from '../Section/SectionContext'
   import * as EventManagerContext from './EventManagerContext'
+  import * as InteractionManagerContext from '../Section/InteractionManagerContext'
 
   import EventManager from '../../../classes/EventManager'
+  import InteractionManager from '../../../classes/InteractionManager'
 
   export let width
   export let height
@@ -16,6 +18,7 @@
   const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
   const eventManagerContext = EventManagerContext.init()
+  const interactionManagerContext = InteractionManagerContext.init()
 
   $: {
     GraphicContext.update(graphicContext, { renderer })
@@ -32,6 +35,12 @@
   onMount(() => {
     let eventManager = new EventManager(rootNode)
     EventManagerContext.update(eventManagerContext, eventManager)
+
+    let interactionManager = new InteractionManager()
+    interactionManager.setId('graphic')
+    interactionManager.linkEventManager(eventManager)
+
+    InteractionManagerContext.update(interactionManagerContext, interactionManager)
   })
 </script>
 
