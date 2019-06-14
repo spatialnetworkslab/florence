@@ -1,6 +1,6 @@
 import SpatialIndex from './SpatialIndex.js'
-import ClickManager from './ClickManager.js'
-import HoverManager from './HoverManager.js'
+import ClickHandler from './InteractionHandlers/ClickHandler.js'
+import HoverHandler from './InteractionHandlers/HoverHandler.js'
 
 export default class InteractionManager {
   constructor () {
@@ -9,8 +9,8 @@ export default class InteractionManager {
     this._id = undefined
     this._eventManager = undefined
 
-    this._clickManager = new ClickManager(this)
-    this._hoverManager = new HoverManager(this)
+    this._clickHandler = new ClickHandler(this)
+    this._hoverHandler = new HoverHandler(this)
   }
 
   // Initialization
@@ -50,23 +50,23 @@ export default class InteractionManager {
 
   // Add/remove layer interactions
   addLayerInteraction (interactionName, layerId, callback) {
-    if (interactionName === 'click') this._clickManager.addLayerInteraction(layerId, callback)
-    if (interactionName === 'hover') this._hoverManager.addLayerInteraction(layerId, callback)
+    if (interactionName === 'click') this._clickHandler.addLayerInteraction(layerId, callback)
+    if (interactionName === 'hover') this._hoverHandler.addLayerInteraction(layerId, callback)
   }
 
   removeAllLayerInteractions (layerId) {
-    this._clickManager.removeLayerInteraction(layerId)
-    // this._hoverManager.removeLayerInteraction(layerId)
+    this._clickHandler.removeLayerInteraction(layerId)
+    this._hoverHandler.removeLayerInteraction(layerId)
   }
 
   // Add/remove mark interactions
   addMarkInteraction (interactionName) {
-    if (interactionName === 'click') this._clickManager.addMarkInteraction()
-    if (interactionName === 'hover') this._hoverManager.addMarkInteraction()
+    if (interactionName === 'click') this._clickHandler.addMarkInteraction()
+    if (interactionName === 'hover') this._hoverHandler.addMarkInteraction()
   }
 
   removeAllMarkInteractions () {
-    this._clickManager.removeMarkInteraction()
-    // this._hoverManager.removeMarkInteraction()
+    this._clickHandler.removeMarkInteraction()
+    this._hoverHandler.removeMarkInteraction()
   }
 }
