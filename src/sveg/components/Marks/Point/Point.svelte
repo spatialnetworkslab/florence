@@ -28,7 +28,7 @@
   export let fill = 'black'
   export let transition = undefined
   export let onClick = undefined
-  export let onHover = undefined
+  export let onMouseover = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -79,7 +79,7 @@
   })
 
   // Interactivity
-  $: isInteractive = onClick !== undefined || onHover !== undefined
+  $: isInteractive = onClick !== undefined || onMouseover !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -97,7 +97,7 @@
       $interactionManagerContext.loadMark('Point', createMarkData())
 
       if (onClick) $interactionManagerContext.addMarkInteraction('click', markId)
-      if (onHover) $interactionManagerContext.addMarkInteraction('hover', markId)
+      if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId)
     }
   }
 
@@ -112,7 +112,7 @@
     return {
       geometry: { x: coordinates[0], y: coordinates[1], radius },
       markId,
-      callbacks: [onClick, onHover]
+      callbacks: [onClick, onMouseover]
     }
   }
 </script>

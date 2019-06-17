@@ -1,5 +1,5 @@
 import ClickHandler from './InteractionHandlers/ClickHandler.js'
-import HoverHandler from './InteractionHandlers/HoverHandler.js'
+import MouseoverHandler from './InteractionHandlers/MouseoverHandler.js'
 import { markIndexing, layerIndexing } from './indexingFunctions'
 
 export default class InteractionManager {
@@ -11,7 +11,7 @@ export default class InteractionManager {
     this._eventManager = undefined
 
     this._clickHandler = new ClickHandler(this)
-    this._hoverHandler = new HoverHandler(this)
+    this._mouseoverHandler = new MouseoverHandler(this)
   }
 
   // Initialization
@@ -60,22 +60,22 @@ export default class InteractionManager {
   // Add/remove layer interactions
   addLayerInteraction (interactionName, layerId, callback) {
     if (interactionName === 'click') this._clickHandler.addLayerInteraction(layerId, callback)
-    if (interactionName === 'hover') this._hoverHandler.addLayerInteraction(layerId, callback)
+    if (interactionName === 'mouseover') this._mouseoverHandler.addLayerInteraction(layerId, callback)
   }
 
   removeAllLayerInteractions (layerId) {
     this._clickHandler.removeLayerInteraction(layerId)
-    this._hoverHandler.removeLayerInteraction(layerId)
+    this._mouseoverHandler.removeLayerInteraction(layerId)
   }
 
   // Add/remove mark interactions
   addMarkInteraction (interactionName, markId) {
     if (interactionName === 'click') this._clickHandler.addMarkInteraction(markId)
-    if (interactionName === 'hover') this._hoverHandler.addMarkInteraction(markId)
+    if (interactionName === 'mouseover') this._mouseoverHandler.addMarkInteraction(markId)
   }
 
   removeAllMarkInteractions (markId) {
     this._clickHandler.removeMarkInteraction(markId)
-    this._hoverHandler.removeMarkInteraction(markId)
+    this._mouseoverHandler.removeMarkInteraction(markId)
   }
 }

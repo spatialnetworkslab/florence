@@ -86,7 +86,7 @@
           radius={transformation === 'identity' ? 3 : 6}
           index={filteredData.column('$index')}
           transition={duration}
-          onHover={log}
+          onMouseover={log}
         />
 
         <Point
@@ -96,7 +96,7 @@
           radius={clicked ? 50 : 10}
           transition={duration}
           onClick={() => clicked = !clicked}
-          onHover={log}
+          onMouseover={log}
         />
 
       </CoordinateTransformation>

@@ -30,7 +30,7 @@
   export let transition = undefined
   export let index = undefined
   export let onClick = undefined
-  export let onHover = undefined
+  export let onMouseover = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -102,7 +102,7 @@
   })
 
   // Interactivity
-  $: isInteractive = onClick !== undefined || onHover !== undefined
+  $: isInteractive = onClick !== undefined || onMouseover !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -120,7 +120,7 @@
       $interactionManagerContext.loadLayer('Point', createLayerData())
 
       if (onClick) $interactionManagerContext.addLayerInteraction('click', layerId, onClick)
-      if (onHover) $interactionManagerContext.addLayerInteraction('hover', layerId, onHover)
+      if (onMouseover) $interactionManagerContext.addLayerInteraction('mouseover', layerId, onMouseover)
     }
   }
 

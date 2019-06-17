@@ -1,10 +1,11 @@
 import InteractionHandler from './InteractionHandler.js'
 
-export default class HoverHandler extends InteractionHandler {
+export default class MouseoverHandler extends InteractionHandler {
   constructor (interactionManager) {
     super(interactionManager)
 
-    this._currentHovering = {}
+    this._previousMouseoverIds = {}
+    this._currentMouseoverIds = {}
   }
 
   _addEventListenerIfNecessary () {
@@ -28,76 +29,54 @@ export default class HoverHandler extends InteractionHandler {
 
   _handleEvent (coordinates, mouseEvent) {
     let spatialIndex = this._spatialIndex
-
     let hits = spatialIndex.queryMouseCoordinates(coordinates)
-
-    let currentHits = this._handleNewHits(hits, mouseEvent)
-    this._cleanUpPreviousHits(currentHits)
+    this._handleHits(hits)
+    this._cleanupPreviousHits()
   }
 
-  _handleNewHits (hits, mouseEvent) {
-    let currentHits = {}
-
+  _handleHits (hits) {
     for (let i = 0; i < hits.length; i++) {
       let hit = hits[i]
-      let id = this._getUniversalId(hit)
+      let hitId = this._getHitId(hit)
 
-      if (!this._alreadyHovering(id)) {
+      if (!this._mouseAlreadyOver(hitId)) {
+        this._storeMouseOver(hitId)
+
         if (this._isInLayer(hit)) {
-          this._layerCallbacks[hit.layerId](hit.$index, mouseEvent)
+          this._layerCallbacks[hit.layerId](hit.$index)
         }
   
         if (this._isMark(hit)) {
           for (let j = 0; j < hit.callbacks.length; j++) {
-            if (hit.callbacks[j]) hit.callbacks[j](mouseEvent)
+            if (hit.callbacks[j]) hit.callbacks[j]()
           }
         }
-
-        this._startHovering(id, hit)
-      }
-
-      currentHits[id] = true
-    }
-
-    return currentHits
-  }
-
-  _cleanUpPreviousHits (currentHits) {
-    for (let id in this._currentHovering) {
-      if (!currentHits.hasOwnProperty(id)) {
-        this._stopHovering(id)
       }
     }
   }
 
-  _alreadyHovering (id) {
-    return this._currentHovering.hasOwnProperty(id)
-  }
-
-  _startHovering (id, hit) {
-    this._currentHovering[id] = hit
-  }
-
-  _stopHovering (id) {
-    let previousHit = this._currentHovering[id]
-
-    if (this._isInLayer(previousHit)) {
-      this._layerCallbacks[previousHit.layerId](undefined)
-    }
-
-    if (this._isMark(previousHit)) {
-      for (let j = 0; j < previousHit.callbacks.length; j++) {
-        if (previousHit.callbacks[j]) previousHit.callbacks[j](undefined)
+  _cleanupPreviousHits () {
+    for (let hitId in this._previousMouseoverIds) {
+      if (!this._currentMouseoverIds.hasOwnProperty(hitId)) {
+        delete this._previousMouseoverIds[hitId]
       }
     }
-    delete this._currentHovering[id]
   }
 
-  _getUniversalId (hit) {
+  _getHitId (hit) {
     let id
     if (this._isInLayer(hit)) id = hit.layerId + '-' + hit.$index
     if (this._isMark(hit)) id = hit.markId
-
+    
     return id
+  }
+
+  _mouseAlreadyOver (hitId) {
+    return this._previousMouseoverIds.hasOwnProperty(hitId)
+  }
+
+  _storeMouseOver (hitId) {
+    this._previousMouseoverIds[hitId] = true
+    this._currentMouseoverIds[hitId] = true
   }
 }
