@@ -1,5 +1,9 @@
+import SpatialIndex from '../SpatialIndex.js'
+
 export default class InteractionHandler {
   constructor (interactionManager) {
+    this._spatialIndex = new SpatialIndex(interactionManager)
+
     this._interactionManager = interactionManager
     this._numberOfInteractions = 0
     this._layerCallbacks = {}
@@ -12,6 +16,8 @@ export default class InteractionHandler {
 
       this._numberOfInteractions++
       this._layerCallbacks[layerId] = callback
+
+      this._spatialIndex.loadLayer(layerId)
     }
   }
 
@@ -21,18 +27,24 @@ export default class InteractionHandler {
       delete this._layerCallbacks[layerId]
 
       this._removeEventListenerIfNecessary()
+
+      this._spatialIndex.removeLayer(layerId)
     }
   }
 
   // Add/remove mark interactions
-  addMarkInteraction () {
+  addMarkInteraction (markId) {
     this._addEventListenerIfNecessary()
     this._numberOfInteractions++
+
+    this._spatialIndex.loadMark(markId)
   }
 
-  removeMarkInteraction () {
+  removeMarkInteraction (markId) {
     this._removeEventListenerIfNecessary()
     this._numberOfInteractions--
+
+    this._spatialIndex.removeMark(markId)
   }
 
   _isInLayer (hit) {

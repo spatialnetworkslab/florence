@@ -1,10 +1,11 @@
-import SpatialIndex from './SpatialIndex.js'
 import ClickHandler from './InteractionHandlers/ClickHandler.js'
 import HoverHandler from './InteractionHandlers/HoverHandler.js'
+import { markIndexing, layerIndexing } from './indexingFunctions'
 
 export default class InteractionManager {
   constructor () {
-    this._spatialIndex = new SpatialIndex()
+    this._layers = {}
+    this._marks = {}
 
     this._id = undefined
     this._eventManager = undefined
@@ -24,28 +25,36 @@ export default class InteractionManager {
 
   // Layer loading and removing
   loadLayer (layerType, layerData) {
-    this._spatialIndex.loadLayer(layerType, layerData)
+    let indexingFunction = layerIndexing[layerType]
+    let indexableData = indexingFunction(layerData)
+
+    let layerId = layerData.layerId
+    this._layers[layerId] = indexableData
   }
 
   layerIsLoaded (layerId) {
-    return this._spatialIndex.layerIsLoaded(layerId)
+    return this._layers.hasOwnProperty(layerId)
   }
 
   removeLayer (layerId) {
-    this._spatialIndex.removeLayer(layerId)
+    delete this._layers[layerId]
   }
 
   // Mark loading and removing
   loadMark (markType, markData) {
-    this._spatialIndex.loadMark(markType, markData)
+    let indexingFunction = markIndexing[markType]
+    let indexableItem = indexingFunction(markData)
+
+    let markId = markData.markId
+    this._marks[markId] = indexableItem
   }
 
   markIsLoaded (markId) {
-    return this._spatialIndex.markIsLoaded(markId)
+    return this._marks.hasOwnProperty(markId)
   }
 
   removeMark (markId) {
-    this._spatialIndex.removeMark(markId)
+    delete this._marks[markId]
   }
 
   // Add/remove layer interactions

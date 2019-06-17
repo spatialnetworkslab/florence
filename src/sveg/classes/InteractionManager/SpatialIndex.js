@@ -1,31 +1,20 @@
 import RBush from 'rbush'
-import { markIndexing, layerIndexing } from './indexingFunctions'
 import collisionTests from './collisionTests'
 
 export default class SpatialIndex {
-  constructor () {
+  constructor (interactionHandler) {
     this._rbush = new RBush()
-    this._layers = {}
-    this._marks = {}
+    this._interactionHandler = interactionHandler
   }
 
   // Layer loading and removing
-  loadLayer (layerType, layerData) {
-    let indexingFunction = layerIndexing[layerType]
-    let indexableData = indexingFunction(layerData)
-
-    let layerId = layerData.layerId
-    this._layers[layerId] = indexableData
-
-    this._rbush.load(this._layers[layerId])
-  }
-
-  layerIsLoaded (layerId) {
-    return this._layers.hasOwnProperty(layerId)
+  loadLayer (layerId) {
+    let indexableData = this._interactionHandler._layers[layerId]
+    this._rbush.load(indexableData)
   }
 
   removeLayer (layerId) {
-    let layer = this._layers[layerId]
+    let layer = this._interactionHandler._layers[layerId]
 
     for (let i = 0; i < layer.length; i++) {
       let item = layer[i]
@@ -36,24 +25,14 @@ export default class SpatialIndex {
   }
 
   // Mark loading and removing
-  loadMark (markType, markData) {
-    let indexingFunction = markIndexing[markType]
-    let indexableItem = indexingFunction(markData)
-
-    let markId = markData.markId
-    this._marks[markId] = indexableItem
-
-    this._rbush.insert(this._marks[markId])
-  }
-
-  markIsLoaded (markId) {
-    return this._marks.hasOwnProperty(markId)
+  loadMark (markId) {
+    let indexableItem = this._interactionHandler._marks[markId]
+    this._rbush.insert(indexableItem)
   }
 
   removeMark (markId) {
-    let mark = this._marks[markId]
-    this._rbush.remove(mark)
-    delete this._marks[markId]
+    let indexableItem = this._interactionHandler._marks[markId]
+    this._rbush.remove(indexableItem)
   }
 
   // Query functions
