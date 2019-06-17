@@ -1,17 +1,16 @@
-export function addPoint (markData) {
+export function indexPoint (markData) {
   let pointGeometry = markData.geometry
 
   let item = calculateBBox(pointGeometry)
 
   item.geometry = pointGeometry
   item.markType = 'Point'
-  item.callbacks = markData.callbacks
   item.markId = markData.markId
 
   return item
 }
 
-export function addPointLayer ({ geometries, indexArray, layerId }) {
+export function indexPointLayer ({ geometries, indexArray, layerId }) {
   let items = []
 
   for (let i = 0; i < indexArray.length; i++) {
