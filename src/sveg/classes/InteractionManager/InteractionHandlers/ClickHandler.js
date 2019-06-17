@@ -35,9 +35,7 @@ export default class ClickHandler extends InteractionHandler {
       }
 
       if (this._isMark(hit)) {
-        for (let j = 0; j < hit.callbacks.length; j++) {
-          if (hit.callbacks[j]) hit.callbacks[j]()
-        }
+        this._markCallbacks[hit.markId]()
       }
     }
   }

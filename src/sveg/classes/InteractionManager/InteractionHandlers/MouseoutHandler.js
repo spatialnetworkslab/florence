@@ -44,7 +44,7 @@ export default class MouseoutHandler extends InteractionHandler {
       let hitId = this._getHitId(hit)
 
       if (!this._mouseAlreadyOver(hitId)) {
-        this._storeMouseOver(hitId, hit)
+        this._previousHits[hitId] = hit
       }
 
       this._currentMouseoverIds[hitId] = true
@@ -61,9 +61,7 @@ export default class MouseoutHandler extends InteractionHandler {
         }
 
         if (this._isMark(hit)) {
-          for (let j = 0; j < hit.callbacks.length; j++) {
-            if (hit.callbacks[j]) hit.callbacks[j]()
-          }
+          this._markCallbacks[hit.markId]()
         }
 
         delete this._previousHits[hitId]
@@ -81,9 +79,5 @@ export default class MouseoutHandler extends InteractionHandler {
 
   _mouseAlreadyOver (hitId) {
     return this._previousHits.hasOwnProperty(hitId)
-  }
-
-  _storeMouseOver (hitId, hit) {
-    this._previousHits[hitId] = hit
   }
 }

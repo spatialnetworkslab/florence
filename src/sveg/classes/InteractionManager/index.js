@@ -73,10 +73,10 @@ export default class InteractionManager {
   }
 
   // Add/remove mark interactions
-  addMarkInteraction (interactionName, markId) {
-    if (interactionName === 'click') this._clickHandler.addMarkInteraction(markId)
-    if (interactionName === 'mouseover') this._mouseoverHandler.addMarkInteraction(markId)
-    if (interactionName === 'mouseout') this._mouseoutHandler.addMarkInteraction(markId)
+  addMarkInteraction (interactionName, markId, callback) {
+    if (interactionName === 'click') this._clickHandler.addMarkInteraction(markId, callback)
+    if (interactionName === 'mouseover') this._mouseoverHandler.addMarkInteraction(markId, callback)
+    if (interactionName === 'mouseout') this._mouseoutHandler.addMarkInteraction(markId, callback)
   }
 
   removeAllMarkInteractions (markId) {

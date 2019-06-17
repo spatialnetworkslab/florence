@@ -97,9 +97,9 @@
     if (isInteractive) {
       $interactionManagerContext.loadMark('Point', createMarkData())
 
-      if (onClick) $interactionManagerContext.addMarkInteraction('click', markId)
-      if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId)
-      if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId)
+      if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
+      if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
+      if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
     }
   }
 
@@ -113,8 +113,7 @@
   function createMarkData () {
     return {
       geometry: { x: coordinates[0], y: coordinates[1], radius },
-      markId,
-      callbacks: [onClick, onMouseover]
+      markId
     }
   }
 </script>

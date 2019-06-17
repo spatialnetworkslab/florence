@@ -6,14 +6,15 @@ export default class InteractionHandler {
 
     this._interactionManager = interactionManager
     this._numberOfInteractions = 0
+
     this._layerCallbacks = {}
+    this._markCallbacks = {}
   }
 
   // Add/remove layer interactions
   addLayerInteraction (layerId, callback) {
     if (!this._layerCallbacks.hasOwnProperty(layerId)) {
       this._addEventListenerIfNecessary()
-
       this._numberOfInteractions++
       this._layerCallbacks[layerId] = callback
 
@@ -25,7 +26,6 @@ export default class InteractionHandler {
     if (this._layerCallbacks.hasOwnProperty(layerId)) {
       this._numberOfInteractions--
       delete this._layerCallbacks[layerId]
-
       this._removeEventListenerIfNecessary()
 
       this._spatialIndex.removeLayer(layerId)
@@ -33,15 +33,17 @@ export default class InteractionHandler {
   }
 
   // Add/remove mark interactions
-  addMarkInteraction (markId) {
+  addMarkInteraction (markId, callback) {
     this._addEventListenerIfNecessary()
     this._numberOfInteractions++
+    this._markCallbacks[markId] = callback
 
     this._spatialIndex.loadMark(markId)
   }
 
   removeMarkInteraction (markId) {
     this._removeEventListenerIfNecessary()
+    delete this._markCallbacks[markId]
     this._numberOfInteractions--
 
     this._spatialIndex.removeMark(markId)
@@ -52,6 +54,6 @@ export default class InteractionHandler {
   }
 
   _isMark (hit) {
-    return hit.hasOwnProperty('callbacks')
+    return hit.hasOwnProperty('markId')
   }
 }

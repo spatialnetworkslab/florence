@@ -30,6 +30,8 @@ export default class MouseoverHandler extends InteractionHandler {
   }
 
   _handleEvent (coordinates, mouseEvent) {
+    this._currentMouseoverIds = {}
+
     let spatialIndex = this._spatialIndex
     let hits = spatialIndex.queryMouseCoordinates(coordinates)
     this._handleHits(hits)
@@ -42,18 +44,18 @@ export default class MouseoverHandler extends InteractionHandler {
       let hitId = this._getHitId(hit)
 
       if (!this._mouseAlreadyOver(hitId)) {
-        this._storeMouseOver(hitId)
+        this._previousMouseoverIds[hitId] = true
 
         if (this._isInLayer(hit)) {
           this._layerCallbacks[hit.layerId](hit.$index)
         }
   
         if (this._isMark(hit)) {
-          for (let j = 0; j < hit.callbacks.length; j++) {
-            if (hit.callbacks[j]) hit.callbacks[j]()
-          }
+          this._markCallbacks[hit.markId]()
         }
       }
+
+      this._currentMouseoverIds[hitId] = true
     }
   }
 
@@ -75,10 +77,5 @@ export default class MouseoverHandler extends InteractionHandler {
 
   _mouseAlreadyOver (hitId) {
     return this._previousMouseoverIds.hasOwnProperty(hitId)
-  }
-
-  _storeMouseOver (hitId) {
-    this._previousMouseoverIds[hitId] = true
-    this._currentMouseoverIds[hitId] = true
   }
 }

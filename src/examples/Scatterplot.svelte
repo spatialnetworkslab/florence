@@ -97,7 +97,7 @@
           radius={clicked ? 50 : 10}
           transition={duration}
           onClick={() => clicked = !clicked}
-          onMouseover={log}
+          onMouseover={() => log('BOOM')}
         />
 
       </CoordinateTransformation>
