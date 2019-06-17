@@ -1,5 +1,5 @@
 <script context="module">
-  let idCounter = -1
+  let idCounter = 0
   function getId () {
     return 'sc' + idCounter++
   }

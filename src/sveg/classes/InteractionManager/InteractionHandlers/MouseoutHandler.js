@@ -73,7 +73,7 @@ export default class MouseoutHandler extends InteractionHandler {
     let id
     if (this._isInLayer(hit)) id = hit.layerId + '-' + hit.$index
     if (this._isMark(hit)) id = hit.markId
-    
+
     return id
   }
 

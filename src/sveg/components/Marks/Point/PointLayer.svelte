@@ -1,7 +1,7 @@
 <script context="module">
-  let idCounter = -1
+  let idCounter = 0
   function getId () {
-    return 'ptl_' + idCounter++
+    return 'ptl' + idCounter++
   }
 </script>
 
