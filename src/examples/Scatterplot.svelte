@@ -96,8 +96,9 @@
           fill={clicked ? 'blue' : 'red'}
           radius={clicked ? 50 : 10}
           transition={duration}
-          onClick={() => clicked = !clicked}
-          onMouseover={() => log('BOOM')}
+          onClick={() => log('BOOM')}
+          onMouseover={() => clicked = true}
+          onMouseout={() => clicked = false}
         />
 
       </CoordinateTransformation>
