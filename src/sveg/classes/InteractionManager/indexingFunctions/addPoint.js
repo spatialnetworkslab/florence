@@ -6,6 +6,7 @@ export function addPoint (markData) {
   item.geometry = pointGeometry
   item.markType = 'Point'
   item.callbacks = markData.callbacks
+  item.markId = markData.markId
 
   return item
 }
