@@ -66,7 +66,7 @@ function transformCoordinatesLayer (scaledX, scaledY, coordinateTransformationCo
 
   for (let i = 0; i < scaledX.length; i++) {
     let transformedPoint = applyCoordinateTransformation(
-      [scaledX[i], scaledY[i]], coordinateTransformationContext
+      [scaledX[i], scaledY[i]], 'Point', coordinateTransformationContext
     )
 
     let index = indexArray[i]

@@ -2,7 +2,7 @@ import { interpolateArray } from 'd3-interpolate'
 import pointDistance from '../../../../utils/geometry/pointDistance.js'
 import { pointIntersectsLineSegment } from '../../../../utils/geometry/closestPointOnLine.js'
 
-export function pointArray (points, transformFunc, visibilityTreshold) {
+export function LineString (points, transformFunc, visibilityTreshold) {
   let interpolatedPoints = []
 
   let from

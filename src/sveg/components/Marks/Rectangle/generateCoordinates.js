@@ -6,6 +6,7 @@ export function generateCoordinates (coordinates, sectionContext, coordinateTran
   let cornerPoints = createCornerPoints(scaledCoordinates)
   let transformedPoints = applyCoordinateTransformation(
     cornerPoints,
+    'LineString',
     coordinateTransformationContext,
     interpolate
   )

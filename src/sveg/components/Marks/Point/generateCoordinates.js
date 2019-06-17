@@ -4,7 +4,7 @@ export function generateCoordinates ({ x, y }, sectionContext, coordinateTransfo
   let scaledCoordinates = scaleCoordinates({ x, y }, sectionContext)
 
   let transformedCoordinates = applyCoordinateTransformation(
-    [scaledCoordinates.x, scaledCoordinates.y], coordinateTransformationContext
+    [scaledCoordinates.x, scaledCoordinates.y], 'Point', coordinateTransformationContext
   )
 
   return transformedCoordinates

@@ -162,7 +162,7 @@ function transformCoordinatesLayer (cornerPointsLayer, coordinateTransformationC
     let cornerPoints = cornerPointsLayer[i]
 
     let transformedCoordinates = applyCoordinateTransformation(
-      cornerPoints, coordinateTransformationContext, interpolate
+      cornerPoints, 'LineString', coordinateTransformationContext, interpolate
     )
 
     let index = indexArray[i]
