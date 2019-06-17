@@ -31,7 +31,7 @@
     <Scatterplot />
   </div>
 
-  <!-- <div class="graphic-holder">
+  <div class="graphic-holder">
     <h1>Grid</h1>
     <GridLayout />
   </div>
@@ -39,6 +39,6 @@
   <div class="graphic-holder" style="padding-left: 50px">
     <h1>Responsive</h1>
     <ResizeLayout />
-  </div>   -->
+  </div>  
 
 </div>
