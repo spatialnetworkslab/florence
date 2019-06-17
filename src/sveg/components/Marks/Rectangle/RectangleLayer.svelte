@@ -103,6 +103,8 @@
   })
 
   // Interactivity
+  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
+
   onMount(() => {
     updateInteractionManagerIfNecessary()
   })
