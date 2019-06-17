@@ -6,8 +6,9 @@ export default class ClickHandler extends InteractionHandler {
       let handler = this._handleEvent.bind(this)
       let interactionManager = this._interactionManager
       let eventManager = interactionManager._eventManager
+      let listenerId = interactionManager._id + '-click'
 
-      eventManager.addEventListener('click', interactionManager._id, handler)
+      eventManager.addEventListener('click', listenerId, handler)
     }
   }
 
@@ -15,8 +16,9 @@ export default class ClickHandler extends InteractionHandler {
     if (this._numberOfInteractions === 0) {
       let interactionManager = this._interactionManager
       let eventManager = interactionManager._eventManager
+      let listenerId = interactionManager._id + '-click'
 
-      eventManager.removeEventListener('click', interactionManager._id)
+      eventManager.removeEventListener('click', listenerId)
     }
   }
 

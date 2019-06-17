@@ -29,6 +29,7 @@
   export let transition = undefined
   export let onClick = undefined
   export let onMouseover = undefined
+  export let onMouseout = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -79,7 +80,7 @@
   })
 
   // Interactivity
-  $: isInteractive = onClick !== undefined || onMouseover !== undefined
+  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -98,6 +99,7 @@
 
       if (onClick) $interactionManagerContext.addMarkInteraction('click', markId)
       if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId)
+      if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId)
     }
   }
 

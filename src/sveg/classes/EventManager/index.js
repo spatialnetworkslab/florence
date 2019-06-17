@@ -11,14 +11,14 @@ export default class EventManager {
     this._mouseupTracker = new EventTracker(this, 'mouseup')
   }
 
-  addEventListener (eventName, interactionManagerId, callback) {
+  addEventListener (eventName, listenerId, callback) {
     let tracker = this[getTrackerName(eventName)]
-    tracker.addEventListener(interactionManagerId, callback)
+    tracker.addEventListener(listenerId, callback)
   }
 
-  removeEventListener (eventName, interactionManagerId) {
+  removeEventListener (eventName, listenerId) {
     let tracker = this[getTrackerName(eventName)]
-    tracker.removeEventListener(interactionManagerId)
+    tracker.removeEventListener(listenerId)
   }
 
   _getMouseCoordinates (mouseEvent) {
@@ -38,19 +38,19 @@ class EventTracker {
     this._callbacks = {}
   }
 
-  addEventListener (interactionManagerId, callback) {
+  addEventListener (listenerId, callback) {
     if (this._numberOfListeners === 0) {
       handler = this._handleEvent.bind(this)
       this._eventManager._domNode.addEventListener(this._eventName, handler)
     }
 
     this._numberOfListeners++
-    this._callbacks[interactionManagerId] = callback
+    this._callbacks[listenerId] = callback
   }
 
-  removeEventListener (interactionManagerId) {
+  removeEventListener (listenerId) {
     this._numberOfListeners--
-    delete this._callbacks[interactionManagerId]
+    delete this._callbacks[listenerId]
 
     if (this._numberOfListeners === 0) {
       this._eventManager._domNode.removeEventListener(this._eventName, handler)

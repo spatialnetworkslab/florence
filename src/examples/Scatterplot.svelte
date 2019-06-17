@@ -86,7 +86,8 @@
           radius={transformation === 'identity' ? 3 : 6}
           index={filteredData.column('$index')}
           transition={duration}
-          onMouseover={log}
+          onMouseover={ix => log('in: ' + ix)}
+          onMouseout={ix => log('out: ' + ix)}
         />
 
         <Point
