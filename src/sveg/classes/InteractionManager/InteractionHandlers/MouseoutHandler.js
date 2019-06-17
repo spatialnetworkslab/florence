@@ -35,7 +35,7 @@ export default class MouseoutHandler extends InteractionHandler {
     let spatialIndex = this._spatialIndex
     let hits = spatialIndex.queryMouseCoordinates(coordinates)
     this._storeHits(hits)
-    this._fireForMouseOutHits()
+    this._fireForMouseOutHits(mouseEvent)
   }
 
   _storeHits (hits) {
@@ -51,17 +51,17 @@ export default class MouseoutHandler extends InteractionHandler {
     }
   }
 
-  _fireForMouseOutHits () {
+  _fireForMouseOutHits (mouseEvent) {
     for (let hitId in this._previousHits) {
       if (!this._currentMouseoverIds.hasOwnProperty(hitId)) {
         let hit = this._previousHits[hitId]
 
         if (this._isInLayer(hit)) {
-          this._layerCallbacks[hit.layerId](hit.$index)
+          this._layerCallbacks[hit.layerId](hit.$index, mouseEvent)
         }
 
         if (this._isMark(hit)) {
-          this._markCallbacks[hit.markId]()
+          this._markCallbacks[hit.markId](mouseEvent)
         }
 
         delete this._previousHits[hitId]

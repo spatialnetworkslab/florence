@@ -37,7 +37,7 @@
 
   const log = console.log
 
-  let clicked = false
+  let big = false
 </script>
 
 <div>
@@ -93,12 +93,12 @@
         <Point
           x={50}
           y={50}
-          fill={clicked ? 'blue' : 'red'}
-          radius={clicked ? 50 : 10}
+          fill={big ? 'blue' : 'red'}
+          radius={big ? 50 : 10}
           transition={duration}
           onClick={() => log('BOOM')}
-          onMouseover={() => clicked = true}
-          onMouseout={() => clicked = false}
+          onMouseover={() => big = true}
+          onMouseout={() => big = false}
         />
 
       </CoordinateTransformation>

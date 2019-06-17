@@ -31,11 +31,11 @@ export default class ClickHandler extends InteractionHandler {
       let hit = hits[i]
 
       if (this._isInLayer(hit)) {
-        this._layerCallbacks[hit.layerId](hit.$index)
+        this._layerCallbacks[hit.layerId](hit.$index, mouseEvent)
       }
 
       if (this._isMark(hit)) {
-        this._markCallbacks[hit.markId]()
+        this._markCallbacks[hit.markId](mouseEvent)
       }
     }
   }
