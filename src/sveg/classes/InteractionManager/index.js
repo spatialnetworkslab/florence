@@ -69,13 +69,13 @@ export default class InteractionManager {
   }
 
   // Add/remove mark interactions
-  addMarkInteraction (interactionName) {
-    if (interactionName === 'click') this._clickHandler.addMarkInteraction()
-    if (interactionName === 'hover') this._hoverHandler.addMarkInteraction()
+  addMarkInteraction (interactionName, markId) {
+    if (interactionName === 'click') this._clickHandler.addMarkInteraction(markId)
+    if (interactionName === 'hover') this._hoverHandler.addMarkInteraction(markId)
   }
 
-  removeAllMarkInteractions () {
-    this._clickHandler.removeMarkInteraction()
-    this._hoverHandler.removeMarkInteraction()
+  removeAllMarkInteractions (markId) {
+    this._clickHandler.removeMarkInteraction(markId)
+    this._hoverHandler.removeMarkInteraction(markId)
   }
 }

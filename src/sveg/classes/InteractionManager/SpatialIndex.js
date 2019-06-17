@@ -20,8 +20,6 @@ export default class SpatialIndex {
       let item = layer[i]
       this._rbush.remove(item)
     }
-
-    delete this._layers[layerId]
   }
 
   // Mark loading and removing

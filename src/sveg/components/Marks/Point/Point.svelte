@@ -96,14 +96,14 @@
     if (isInteractive) {
       $interactionManagerContext.loadMark('Point', createMarkData())
 
-      if (onClick) $interactionManagerContext.addMarkInteraction('click')
-      if (onHover) $interactionManagerContext.addMarkInteraction('hover')
+      if (onClick) $interactionManagerContext.addMarkInteraction('click', markId)
+      if (onHover) $interactionManagerContext.addMarkInteraction('hover', markId)
     }
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
     if ($interactionManagerContext.markIsLoaded(markId)) {
-      $interactionManagerContext.removeAllMarkInteractions()
+      $interactionManagerContext.removeAllMarkInteractions(markId)
       $interactionManagerContext.removeMark(markId)
     }
   }

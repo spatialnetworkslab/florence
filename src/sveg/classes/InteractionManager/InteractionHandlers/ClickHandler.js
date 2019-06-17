@@ -21,8 +21,7 @@ export default class ClickHandler extends InteractionHandler {
   }
 
   _handleEvent (coordinates, mouseEvent) {
-    let interactionManager = this._interactionManager
-    let spatialIndex = interactionManager._spatialIndex
+    let spatialIndex = this._spatialIndex
 
     let hits = spatialIndex.queryMouseCoordinates(coordinates)
 
