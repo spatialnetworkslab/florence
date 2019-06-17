@@ -38,6 +38,14 @@
   const log = console.log
 
   let big = false
+
+  let hoverPoints = {}
+  $: hoverPointKeys = Object.keys(hoverPoints)
+
+  function handleMouseout (ix) {
+    delete hoverPoints[ix]
+    hoverPoints = hoverPoints
+  }
 </script>
 
 <div>
@@ -86,8 +94,8 @@
           radius={transformation === 'identity' ? 3 : 6}
           index={filteredData.column('$index')}
           transition={duration}
-          onMouseover={ix => log('in: ' + ix)}
-          onMouseout={ix => log('out: ' + ix)}
+          onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
+          onMouseout={handleMouseout}
         />
 
         <Point
@@ -100,6 +108,17 @@
           onMouseover={() => big = true}
           onMouseout={() => big = false}
         />
+
+        {#each hoverPointKeys as key (key)}
+
+          <Point
+            x={hoverPoints[key].a}
+            y={hoverPoints[key].b}
+            radius={10}
+            fill={'green'}
+          />
+
+        {/each}
 
       </CoordinateTransformation>
 		
