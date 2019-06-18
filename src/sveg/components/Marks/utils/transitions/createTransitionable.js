@@ -4,6 +4,19 @@ import { cubicOut } from 'svelte/easing'
 import { interpolate } from 'd3-interpolate'
 import { transitionGeometry } from './geometry'
 
+/**
+ * Returns either a Svelte store, or a Svelte 'tweened' store,
+ * depending on whether the user specified transition options.
+ * The way the tweened store is set up depends on the type of aesthetic,
+ * and which options the user has chosen.
+ *
+ * @param {String} aestheticName The name of the aesthetic a store is created for.
+ * @param {*} aestheticValue The initial value of the store.
+ * @param {Number|Object} transitionOptions A number indicating the transtion duration, or an Object
+ * with aesthetic names as keys, and Numbers OR Objects as values.
+ * @param {String} [geometryType] For geometry aesthetics: the type of geometry.
+ * @returns {writable|tweened}
+ */
 export function createTransitionable (aestheticName, aestheticValue, transitionOptions, geometryType) {
   if (transitionOptions === undefined) {
     return writable(aestheticValue)
