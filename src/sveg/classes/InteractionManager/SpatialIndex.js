@@ -47,7 +47,7 @@ export default class SpatialIndex {
       let indexQueryResult = indexQueryResults[i]
       let collisionTest = collisionTests[indexQueryResult.markType]
 
-      if (collisionTest(coordinates, indexQueryResult.geometry)) {
+      if (collisionTest(coordinates, indexQueryResult.attributes)) {
         hits.push(indexQueryResult)
       }
     }

@@ -1,26 +1,26 @@
 export function indexPoint (markData) {
-  let pointGeometry = markData.geometry
+  let pointAttributes = markData.attributes
 
-  let item = calculateBBox(pointGeometry)
+  let item = calculateBBox(pointAttributes)
 
-  item.geometry = pointGeometry
+  item.attributes = pointAttributes
   item.markType = 'Point'
   item.markId = markData.markId
 
   return item
 }
 
-export function indexPointLayer ({ geometries, indexArray, layerId }) {
+export function indexPointLayer ({ layerAttributes, indexArray, layerId }) {
   let items = []
 
   for (let i = 0; i < indexArray.length; i++) {
     let $index = indexArray[i]
 
-    let pointGeometry = getPoint(geometries, $index)
-    let item = calculateBBox(pointGeometry)
+    let pointAttributes = getPointAttributes(layerAttributes, $index)
+    let item = calculateBBox(pointAttributes)
 
     item.$index = $index
-    item.geometry = pointGeometry
+    item.attributes = pointAttributes
     item.markType = 'Point'
     item.layerId = layerId
 
@@ -30,19 +30,21 @@ export function indexPointLayer ({ geometries, indexArray, layerId }) {
   return items
 }
 
-function calculateBBox (pointGeometry) {
+function calculateBBox (pointAttributes) {
+  let x = pointAttributes.screenGeometry.coordinates[0]
+  let y = pointAttributes.screenGeometry.coordinates[1]
+
   return {
-    minX: pointGeometry.x - pointGeometry.radius,
-    maxX: pointGeometry.x + pointGeometry.radius,
-    minY: pointGeometry.y - pointGeometry.radius,
-    maxY: pointGeometry.y + pointGeometry.radius
+    minX: x - pointAttributes.radius,
+    maxX: x + pointAttributes.radius,
+    minY: y - pointAttributes.radius,
+    maxY: y + pointAttributes.radius
   }
 }
 
-function getPoint (layer, $index) {
+function getPointAttributes (layerAttributes, $index) {
   return {
-    x: layer.x[$index],
-    y: layer.y[$index],
-    radius: layer.radius[$index]
+    screenGeometry: layerAttributes.screenGeometryObject[$index],
+    radius: layerAttributes.radiusObject[$index]
   }
 }

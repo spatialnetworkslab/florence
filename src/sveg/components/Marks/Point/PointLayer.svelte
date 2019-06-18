@@ -13,7 +13,7 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   
-  import { generateCoordinatesLayer } from './generateCoordinatesLayer.js'
+  import generateScreenGeometryObject from './generateScreenGeometryObject.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import { generatePropObject } from '../utils/generatePropObject.js'
 
@@ -23,8 +23,9 @@
   const initDone = () => !initPhase
 
   // Props
-  export let x
-  export let y
+  export let x = undefined
+  export let y = undefined
+  export let geometry = undefined
   export let radius = 3
   export let fill = 'black'
   export let transition = undefined
@@ -39,10 +40,10 @@
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.subscribe()
 
-  // Generate coordinate objects and index array
-  let { xObject, yObject, indexArray } = generateCoordinatesLayer(
-    { x, y }, 
-    $sectionContext, 
+  // Generate screenGeometryObject and index array
+  let { screenGeometryObject, indexArray } = generateScreenGeometryObject(
+    { x, y, geometry }, 
+    $sectionContext,
     $coordinateTransformationContext,
     index
   )
@@ -52,47 +53,43 @@
   let fillObject = generatePropObject(fill, indexArray)
 
   // Create transitionables
-  let tr_xObject = createTransitionableLayer('x', xObject, transition)
-  let tr_yObject = createTransitionableLayer('y', yObject, transition)
+  let tr_screenGeometryObject = createTransitionableLayer('geometry', screenGeometryObject, transition)
   let tr_radiusObject = createTransitionableLayer('radius', radiusObject, transition)
   let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
 
-  // Handle coordinate/geometry prop transitions
+  // Handle screenGeometryObject transitions
   $: {
     if (initDone()) {
-      let c = generateCoordinatesLayer(
-        { x, y }, 
-        $sectionContext, 
+      let _ = generateScreenGeometryObject(
+        { x, y, geometry }, 
+        $sectionContext,
         $coordinateTransformationContext,
         index
       )
       
-      indexArray = c.indexArray
-      xObject = c.xObject
-      yObject = c.yObject
+      indexArray = _.indexArray
+      screenGeometryObject = _.screenGeometryObject
 
       radiusObject = generatePropObject(radius, indexArray)
-      tr_radiusObject.set(radiusObject)
 
-      tr_xObject.set(c.xObject)
-      tr_yObject.set(c.yObject)
+      tr_screenGeometryObject.set(screenGeometryObject)
+      tr_radiusObject.set(radiusObject)
 
       updateInteractionManagerIfNecessary()
     }
   }
 
-  // Handle other prop transitions
+  // Handle other transitions
   $: { if (initDone()) tr_fillObject.set(generatePropObject(fill, indexArray)) }
 
   let previousTransition
 
-  // Update transition parameters
+  // Update transitionables
   beforeUpdate(() => {
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
-      tr_xObject = createTransitionableLayer('x', $tr_xObject, transition)
-      tr_yObject = createTransitionableLayer('y', $tr_yObject, transition)
+      tr_screenGeometryObject = createTransitionableLayer('geometry', $tr_screenGeometryObject, transition)
       tr_radiusObject = createTransitionableLayer('radius', $tr_radiusObject, transition)
       tr_fillObject = createTransitionableLayer('fill', $tr_fillObject, transition)
     }
@@ -135,7 +132,7 @@
 
   function createLayerData () {
     return {
-      geometries: { x: xObject, y: yObject, radius: radiusObject },
+      layerAttributes: { screenGeometryObject, radiusObject },
       layerId,
       indexArray
     }
@@ -144,13 +141,13 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#each indexArray as index (index)}
+  {#each indexArray as $index ($index)}
 
     <circle
-      cx={$tr_xObject[index]}
-      cy={$tr_yObject[index]}
-      r={$tr_radiusObject[index]}
-      fill={$tr_fillObject[index]}
+      cx={$tr_screenGeometryObject[$index].coordinates[0]}
+      cy={$tr_screenGeometryObject[$index].coordinates[1]}
+      r={$tr_radiusObject[$index]}
+      fill={$tr_fillObject[$index]}
     />
 
   {/each}
