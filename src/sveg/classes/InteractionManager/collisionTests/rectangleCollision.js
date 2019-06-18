@@ -1,6 +1,6 @@
-import pointInPolygon from '../../../utils/geometry/pointInPolygon.js'
+import pointInGeometry from '../../../utils/geometry/pointInGeometry.js'
 
-export default function rectangleCollision (coordinates, geometry) {
+export default function rectangleCollision (coordinates, rectangeAttributes) {
   let point = [coordinates.x, coordinates.y]
-  return pointInPolygon(point, geometry)
+  return pointInGeometry(point, rectangeAttributes.screenGeometry)
 }

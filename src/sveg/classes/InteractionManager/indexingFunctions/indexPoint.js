@@ -1,7 +1,7 @@
 export function indexPoint (markData) {
   let pointAttributes = markData.attributes
 
-  let item = calculateBBox(pointAttributes)
+  let item = calculateBBoxPoint(pointAttributes)
 
   item.attributes = pointAttributes
   item.markType = 'Point'
@@ -17,7 +17,7 @@ export function indexPointLayer ({ layerAttributes, indexArray, layerId }) {
     let $index = indexArray[i]
 
     let pointAttributes = getPointAttributes(layerAttributes, $index)
-    let item = calculateBBox(pointAttributes)
+    let item = calculateBBoxPoint(pointAttributes)
 
     item.$index = $index
     item.attributes = pointAttributes
@@ -30,7 +30,7 @@ export function indexPointLayer ({ layerAttributes, indexArray, layerId }) {
   return items
 }
 
-function calculateBBox (pointAttributes) {
+function calculateBBoxPoint (pointAttributes) {
   let x = pointAttributes.screenGeometry.coordinates[0]
   let y = pointAttributes.screenGeometry.coordinates[1]
 

@@ -13,9 +13,9 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   
-  import { generateCoordinatesLayer } from './generateCoordinatesLayer.js'
-  import { generatePropObject } from '../utils/generatePropObject.js'
+  import generateScreenGeometryObject from './generateScreenGeometryObject.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
+  import { generatePropObject } from '../utils/generatePropObject.js'
   import generatePath from '../utils/generatePath.js'
 
   let layerId = getId()
@@ -43,8 +43,8 @@
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.subscribe()
 
-  // Generate coordinate object and index array
-  let { coordinateObject, indexArray } = generateCoordinatesLayer(
+  // Generate screenGeometryObject and index array
+  let { screenGeometryObject, indexArray } = generateScreenGeometryObject(
     { x1, x2, y1, y2 },
     $sectionContext,
     $coordinateTransformationContext,
@@ -56,15 +56,15 @@
   let fillObject = generatePropObject(fill, indexArray)
   let opacityObject = generatePropObject(opacity, indexArray)
 
-  // Create transitionables
-  let tr_coordinateObject = createTransitionableLayer('coordinates', coordinateObject, transition, 'LineString')
+  // Initiate transitionables
+  let tr_screenGeometryObject = createTransitionableLayer('geometry', screenGeometryObject, transition)
   let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
   let tr_opacityObject = createTransitionableLayer('opacity', opacityObject, transition)
 
   // Handle coordinate/geometry prop transitions
   $: {
     if (initDone()) {
-      let c = generateCoordinatesLayer(
+      let _ = generateScreenGeometryObject(
         { x1, x2, y1, y2 },
         $sectionContext,
         $coordinateTransformationContext,
@@ -72,10 +72,10 @@
         index
       )
 
-      coordinateObject = c.coordinateObject
-      indexArray = c.indexArray
+      indexArray = _.indexArray
+      screenGeometryObject = _.screenGeometryObject
 
-      tr_coordinateObject.set(c.coordinateObject)
+      tr_screenGeometryObject.set(screenGeometryObject)
 
       updateInteractionManagerIfNecessary()
     }
@@ -92,7 +92,7 @@
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
-      tr_coordinateObject = createTransitionableLayer('coordinates', $tr_coordinateObject, transition, 'LineString')
+      tr_screenGeometryObject = createTransitionableLayer('geometry', $tr_screenGeometryObject, transition)
       tr_fillObject = createTransitionableLayer('fill', $tr_fillObject, transition)
       tr_opacityObject = createTransitionableLayer('opacity', $tr_opacityObject, transition)
     }
@@ -135,7 +135,7 @@
 
   function createLayerData () {
     return {
-      geometries: coordinateObject,
+      layerAttributes: { screenGeometryObject },
       layerId,
       indexArray
     }
@@ -144,12 +144,12 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#each indexArray as index (index)}
+  {#each indexArray as $index ($index)}
 
     <path 
-      d={generatePath($tr_coordinateObject[index])} 
-      fill={$tr_fillObject[index]}
-      style={`opacity: ${$tr_opacityObject[index]}`}
+      d={generatePath($tr_screenGeometryObject[$index].coordinates)} 
+      fill={$tr_fillObject[$index]}
+      style={`opacity: ${$tr_opacityObject[$index]}`}
     />
 
   {/each}

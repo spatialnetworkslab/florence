@@ -1,28 +1,28 @@
 import calculateBBox from '../../../utils/geometry/calculateBBox.js'
 
 export function indexRectangle (markData) {
-  let rectangleGeometry = markData.geometry
+  let rectangleAttributes = markData.attributes
 
-  let item = calculateBBox('LineString', rectangleGeometry)
+  let item = calculateBBox(rectangleAttributes.screenGeometry)
 
-  item.geometry = rectangleGeometry
+  item.attributes = rectangleAttributes
   item.markType = 'Rectangle'
   item.markId = markData.markId
 
   return item
 }
 
-export function indexRectangleLayer ({ geometries, indexArray, layerId }) {
+export function indexRectangleLayer ({ layerAttributes, indexArray, layerId }) {
   let items = []
 
   for (let i = 0; i < indexArray.length; i++) {
     let $index = indexArray[i]
 
-    let rectangleGeometry = geometries[$index]
-    let item = calculateBBox('LineString', rectangleGeometry)
+    let rectangleAttributes = getRectangleAttributes(layerAttributes, $index)
+    let item = calculateBBox(rectangleAttributes.screenGeometry)
 
     item.$index = $index
-    item.geometry = rectangleGeometry
+    item.attributes = rectangleAttributes
     item.markType = 'Rectangle'
     item.layerId = layerId
 
@@ -30,4 +30,8 @@ export function indexRectangleLayer ({ geometries, indexArray, layerId }) {
   }
 
   return items
+}
+
+function getRectangleAttributes (layerAttributes, $index) {
+  return { screenGeometry: layerAttributes.screenGeometryObject[$index] }
 }

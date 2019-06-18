@@ -13,7 +13,7 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   
-  import { generateCoordinates } from './generateCoordinates.js'
+  import generateScreenGeometry from './generateScreenGeometry.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
 
@@ -41,47 +41,47 @@
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.subscribe()
 
-  // Convert coordinates
-  let coordinates = generateCoordinates(
+  // Create screenGeometry
+  let screenGeometry = generateScreenGeometry(
     { x1, x2, y1, y2 },
     $sectionContext,
     $coordinateTransformationContext,
     interpolate
   )
 
-  // Create transitionables
-  let tr_coordinates = createTransitionable('coordinates', coordinates, transition, 'LineString')
+  // Initiate transitionables
+  let tr_screenGeometry = createTransitionable('geometry', screenGeometry, transition)
   let tr_fill = createTransitionable('fill', fill, transition)
   let tr_opacity = createTransitionable('opacity', opacity, transition)
 
-  // Handle coordinate/geometry prop transitions
+  // Handle screenGeometry transitions
   $: {
     if (initDone()) {
-      coordinates = generateCoordinates(
+      screenGeometry = generateScreenGeometry(
         { x1, x2, y1, y2 },
         $sectionContext,
         $coordinateTransformationContext,
         interpolate
       )
 
-      tr_coordinates.set(coordinates)
+      tr_screenGeometry.set(screenGeometry)
 
       updateInteractionManagerIfNecessary()
     }
   }
 
-  // Handle other prop transitions
+  // Handle other transitions
   $: { if (initDone()) tr_fill.set(fill) }
   $: { if (initDone()) tr_opacity.set(opacity) }
 
   let previousTransition
 
-  // Update transition parameters
+  // Update transitionables
   beforeUpdate(() => {
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
-      tr_coordinates = createTransitionable('coordinates', $tr_coordinates, transition, 'LineString')
+      tr_screenGeometry = createTransitionable('geometry', $tr_screenGeometry, transition)
       tr_fill = createTransitionable('fill', $tr_fill, transition)
       tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
     }
@@ -124,7 +124,7 @@
 
   function createMarkData () {
     return {
-      geometry: coordinates,
+      attributes: { screenGeometry },
       markId
     }
   }
@@ -133,7 +133,7 @@
 {#if $graphicContext.output() === 'svg'}
 
   <path 
-    d={generatePath($tr_coordinates)} 
+    d={generatePath($tr_screenGeometry.coordinates)} 
     fill={$tr_fill}
     style={`opacity: ${$tr_opacity}`}
   />

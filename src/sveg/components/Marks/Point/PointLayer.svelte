@@ -52,7 +52,7 @@
   let radiusObject = generatePropObject(radius, indexArray)
   let fillObject = generatePropObject(fill, indexArray)
 
-  // Create transitionables
+  // Initiate transitionables
   let tr_screenGeometryObject = createTransitionableLayer('geometry', screenGeometryObject, transition)
   let tr_radiusObject = createTransitionableLayer('radius', radiusObject, transition)
   let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)

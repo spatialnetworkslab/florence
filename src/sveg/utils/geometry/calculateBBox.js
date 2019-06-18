@@ -1,17 +1,18 @@
-export default function (geometryType, geometry) {
-  switch (geometryType) {
+export default function (geometry) {
+  switch (geometry.type) {
     case 'LineString':
-      return calculateBBoxLineString(geometry)
+      return calculateBBoxLineString(geometry.coordinates)
   }
 }
 
-function calculateBBoxLineString (geometry) {
+function calculateBBoxLineString (coordinates) {
   let minX = Infinity
   let minY = Infinity
   let maxX = -Infinity
   let maxY = -Infinity
-  for (let i = 0; i < geometry.length; i++) {
-    let position = geometry[i]
+
+  for (let i = 0; i < coordinates.length; i++) {
+    let position = coordinates[i]
 
     if (position[0] < minX) { minX = position[0] }
     if (position[1] < minY) { minY = position[1] }
