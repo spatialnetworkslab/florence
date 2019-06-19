@@ -1,4 +1,3 @@
-
 import { checkRegularColumnName } from '../../utils/checkFormat.js'
 import { warn } from '../../../../utils/logging.js'
 

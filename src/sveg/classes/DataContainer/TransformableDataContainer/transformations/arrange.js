@@ -1,4 +1,3 @@
-
 import getDataType from '../../utils/getDataType.js'
 
 export default function (data, sortInstructions) {
