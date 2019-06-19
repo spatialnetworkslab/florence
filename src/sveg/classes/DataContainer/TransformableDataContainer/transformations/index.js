@@ -11,7 +11,7 @@ import mutarise from './mutarise.js'
 import groupBy from './groupBy.js'
 import bin from './bin.js'
 import dropNA from './dropNA.js'
-// import reproject from './reproject.js'
+import reproject from './reproject.js'
 import transform from './transform.js'
 
 const transformations = {
@@ -26,7 +26,7 @@ const transformations = {
   groupBy,
   bin,
   dropNA: produce(dropNA),
-  // reproject,
+  reproject,
   transform
 }
 
