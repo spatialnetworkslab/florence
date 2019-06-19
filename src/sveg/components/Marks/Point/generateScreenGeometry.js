@@ -1,21 +1,21 @@
 import transformGeometry from '../utils/transformGeometry'
 
-export default function ({ x, y }, sectionContext, coordinateTransformationContext) {
-  let scaledCoordinates = scaleCoordinates({ x, y }, sectionContext)
+export default function (geometryProps, sectionContext, coordinateTransformationContext) {
+  let scaledGeometry = createScaledGeometry(geometryProps, sectionContext)
+  let screenGeometry = transformGeometry(scaledGeometry, coordinateTransformationContext)
 
-  let transformedCoordinates = transformGeometry(
-    [scaledCoordinates.x, scaledCoordinates.y], 'Point', coordinateTransformationContext
-  )
-
-  return transformedCoordinates
+  return screenGeometry
 }
 
-export function scaleCoordinates ({ x, y }, sectionContext) {
+export function createScaledGeometry ({ x, y }, sectionContext) {
   const scales = sectionContext.scales()
   const { scaleX, scaleY } = scales
 
   const scaledX = x.constructor === Function ? x(scales) : scaleX(x)
   const scaledY = y.constructor === Function ? y(scales) : scaleY(y)
 
-  return { x: scaledX, y: scaledY }
+  return {
+    type: 'Point',
+    coordinates: [scaledX, scaledY]
+  }
 }
