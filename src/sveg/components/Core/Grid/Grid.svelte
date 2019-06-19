@@ -3,7 +3,7 @@
   import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
 
   import { scaleCoordinates } from '../../Marks/Rectangle/generateCoordinates.js'
-  import { getAllCells, getNames, mergeNameSpecs } from './gridUtils.js'
+  import { getAllCells, mergeNameSpecs } from './gridUtils.js'
   import { printGrid } from './viewGrid.js'
 
   // Props

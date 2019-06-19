@@ -1,4 +1,3 @@
-
 import { initNewData, summariseGroup, checkSummariseInstructions } from './summarise.js'
 import getDataLength from '../../utils/getDataLength.js'
 

@@ -1,4 +1,3 @@
-
 import DataContainer from '../../index.js'
 import getDataLength from '../../utils/getDataLength.js'
 import Geostats from '../../utils/geoStats.js'

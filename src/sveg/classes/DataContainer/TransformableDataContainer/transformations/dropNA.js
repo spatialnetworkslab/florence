@@ -1,4 +1,3 @@
-
 import filter from './filter.js'
 import { isInvalid } from '../../../../utils/equals.js'
 
