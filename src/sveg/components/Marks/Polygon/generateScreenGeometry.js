@@ -1,4 +1,4 @@
-import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
+import transformGeometry from '../utils/transformGeometry'
 
 export function generateCoordinates (
   coordinateProps, sectionContext, coordinateTransformationContext, interpolate
@@ -7,7 +7,7 @@ export function generateCoordinates (
 
   let geometry = makeGeometry(coordinateProps)
   let scaledGeometry = scaleGeometry(geometry, sectionContext)
-  let transformedGeometry = applyCoordinateTransformation(
+  let transformedGeometry = transformGeometry(
     scaledGeometry,
     coordinateTransformationContext,
     interpolate

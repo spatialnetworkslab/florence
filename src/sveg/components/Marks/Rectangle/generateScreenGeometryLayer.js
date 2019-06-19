@@ -1,6 +1,6 @@
 import { createCornerPoints, throwErrorIfInvalidCombination } from './generateCoordinates.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
-import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
+import transformGeometry from '../utils/transformGeometry'
 import getIndexArray from '../utils/getIndexArray.js'
 
 export function generateCoordinatesLayer (
@@ -161,7 +161,7 @@ function transformCoordinatesLayer (cornerPointsLayer, coordinateTransformationC
   for (let i = 0; i < cornerPointsLayer.length; i++) {
     let cornerPoints = cornerPointsLayer[i]
 
-    let transformedCoordinates = applyCoordinateTransformation(
+    let transformedCoordinates = transformGeometry(
       cornerPoints, 'LineString', coordinateTransformationContext, interpolate
     )
 

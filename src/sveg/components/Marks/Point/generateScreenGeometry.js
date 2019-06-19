@@ -1,9 +1,9 @@
-import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
+import transformGeometry from '../utils/transformGeometry'
 
 export default function ({ x, y }, sectionContext, coordinateTransformationContext) {
   let scaledCoordinates = scaleCoordinates({ x, y }, sectionContext)
 
-  let transformedCoordinates = applyCoordinateTransformation(
+  let transformedCoordinates = transformGeometry(
     [scaledCoordinates.x, scaledCoordinates.y], 'Point', coordinateTransformationContext
   )
 

@@ -1,4 +1,4 @@
-import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
+import transformGeometry from '../utils/transformGeometry'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
 
@@ -65,7 +65,7 @@ function transformCoordinatesLayer (scaledX, scaledY, coordinateTransformationCo
   let yObject = {}
 
   for (let i = 0; i < scaledX.length; i++) {
-    let transformedPoint = applyCoordinateTransformation(
+    let transformedPoint = transformGeometry(
       [scaledX[i], scaledY[i]], 'Point', coordinateTransformationContext
     )
 
