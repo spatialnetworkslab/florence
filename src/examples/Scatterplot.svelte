@@ -1,6 +1,10 @@
 <script>
 	import { scaleLinear } from 'd3-scale'
-	import { Graphic, Section, Point, DataContainer } from '../sveg'
+	import { 
+    Graphic, Section, CoordinateTransformation, 
+    PointLayer, Point,
+    DataContainer 
+  } from '../sveg'
 
 	export let N = 100
 
@@ -16,17 +20,54 @@
 		}
 
 		return data
-	}
+  }
+  
+  let treshold = 0
+
+  $: filteredData = data
+    .filter(row => row.a > treshold)
+    .done()
 
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scaleLinear().domain(data.domain('b'))
   
   let height = 500
+  let transformation = 'identity'
+  let duration = 2000
+
+  const log = console.log
+
+  let big = false
+
+  let hoverPoints = {}
+  $: hoverPointKeys = Object.keys(hoverPoints)
+
+  function handleMouseout (ix) {
+    delete hoverPoints[ix]
+    hoverPoints = hoverPoints
+  }
 </script>
 
 <div>
   <label for="height-slider">Height:</label>
   <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
+</div>
+
+<div>
+  <label for="coordinate-select">Coordinates:</label>
+  <select name="coordinate-select" bind:value={transformation}>
+    <option value="identity">Identity</option>
+    <option value="polar">Polar</option>
+  </select>
+</div>
+
+<div>
+  <label for="duration">Transition time</label>
+  <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
+</div>
+
+<div>
+  <button on:click={() => treshold = 40}>Filter: x > 40</button>
 </div>
 
 <div>
@@ -44,14 +85,42 @@
 			scaleY={scaleB}
 		>
 
-			{#each data.rows() as row (row.$index)}
+			<CoordinateTransformation {transformation}>
 
-				<Point 
-					x={row.a} 
-					y={row.b} 
-				/>
+        <PointLayer
+          x={filteredData.column('a')}
+          y={filteredData.column('b')}
+          fill={transformation === 'identity' ? 'black' : 'blue'}
+          radius={transformation === 'identity' ? 3 : 6}
+          index={filteredData.column('$index')}
+          transition={duration}
+          onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
+          onMouseout={handleMouseout}
+        />
 
-			{/each}
+        <Point
+          x={50}
+          y={50}
+          fill={big ? 'blue' : 'red'}
+          radius={big ? 50 : 10}
+          transition={duration}
+          onClick={() => log('BOOM')}
+          onMouseover={() => big = true}
+          onMouseout={() => big = false}
+        />
+
+        {#each hoverPointKeys as key (key)}
+
+          <Point
+            x={hoverPoints[key].a}
+            y={hoverPoints[key].b}
+            radius={10}
+            fill={'green'}
+          />
+
+        {/each}
+
+      </CoordinateTransformation>
 		
 		</Section>
 

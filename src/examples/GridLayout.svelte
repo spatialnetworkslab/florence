@@ -47,13 +47,13 @@
 			columns={cols}
 			rows={rows}
 			areaNames={['blue', 'orange', 'red', 'green']}
-			let:generatedCells
+			let:cells
 		>
 
 			{#each groupedData.rows() as facet}
 
 				<Section
-					{...generatedCells[facet.fruit]}
+					{...cells[facet.fruit]}
 					scaleX={scaleA}
 					scaleY={scaleB}
 				>

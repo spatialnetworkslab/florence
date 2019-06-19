@@ -29,7 +29,7 @@
   <div class="graphic-holder">
     <h1>Scatterplot</h1>
     <Scatterplot />
-  </div> 
+  </div>
 
   <div class="graphic-holder">
     <h1>Grid</h1>
