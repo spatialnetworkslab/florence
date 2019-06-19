@@ -1,13 +1,20 @@
-export function Point (point, transformFunc) {
-  return transformFunc(point)
+export function Point (geometry, transformFunc) {
+  return {
+    type: 'Point',
+    coordinates: transformFunc(geometry.coordinates)
+  }
 }
 
 export function LineString (geometry, transformFunc, visibilityTreshold) {
-  let transformedGeometry = []
+  let points = geometry.coordinates
+  let transformedPoints = []
 
-  for (let i = 0; i < geometry.length; i++) {
-    transformedGeometry.push(transformFunc(geometry[i]))
+  for (let i = 0; i < points.length; i++) {
+    transformedPoints.push(transformFunc(points[i]))
   }
 
-  return transformedGeometry
+  return {
+    type: 'LineString',
+    coordinates: transformedPoints
+  }
 }

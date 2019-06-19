@@ -2,7 +2,8 @@ import { interpolateArray } from 'd3-interpolate'
 import pointDistance from '../../../../utils/geometry/pointDistance.js'
 import { pointIntersectsLineSegment } from '../../../../utils/geometry/closestPointOnLine.js'
 
-export function LineString (points, transformFunc, visibilityTreshold) {
+export function LineString (geometry, transformFunc, visibilityTreshold) {
+  let points = geometry.coordinates
   let interpolatedPoints = []
 
   let from
@@ -19,7 +20,10 @@ export function LineString (points, transformFunc, visibilityTreshold) {
 
   interpolatedPoints.push(transformFunc(to))
 
-  return interpolatedPoints
+  return {
+    type: 'LineString',
+    coordinates: interpolatedPoints
+  }
 }
 
 function interpolatePointPair (from, to, transformFunc, treshold, resampledPoints) {
@@ -52,10 +56,10 @@ function interpolationBetweenPointsNecessary (from, to, transformFunc, treshold)
   let pointsPlusPointsInBetween = [from, ...pointsInBetween, to]
   let transformedPoints = pointsPlusPointsInBetween.map(transformFunc)
 
-  // If the transformed points are really close together, we can skip the resampling
+  // If the transformed points are really close together, we can skip the interpolation
   if (pointsCloseTogether(transformedPoints, treshold)) return false
 
-  // If all the points are on the same line, we will also skip the resampling
+  // If all the points are on the same line, we will also skip the interpolation
   if (pointsOnOneLine(transformedPoints, treshold)) return false
 
   return true
