@@ -7,7 +7,7 @@ import { ensureValidCombination, createPointGeometry } from './generateScreenGeo
 export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {
   ensureValidCombination(geometryProps)
 
-  let length = getLength(geometryProps)
+  let length = getLength(geometryProps, sectionContext)
   let indexArray = getIndexArray(indexProp, length)
 
   let geometryObject = getGeometryObject(geometryProps, indexArray)
@@ -18,21 +18,42 @@ export default function (geometryProps, sectionContext, coordinateTransformation
   return { screenGeometryObject, indexArray }
 }
 
-function getLength (geometryProps) {
+function getLength (geometryProps, sectionContext) {
   if (geometryProps.geometry) {
+    if (geometryProps.geometry.constructor !== Array) throw new Error(`PointLayer: geometry must be an array`)
     return geometryProps.geometry.length
   }
 
   if (geometryProps.x) {
-    ensureAtLeastOneArray(geometryProps.x, geometryProps.y)
-    return geometryProps.x.constructor === Array ? geometryProps.x.length : geometryProps.y.length
+    return getLengthXY(geometryProps.x, geometryProps.y, sectionContext)
   }
 }
 
-function ensureAtLeastOneArray (x, y) {
-  if (x.constructor !== Array && y.constructor !== Array) {
-    throw new Error(`PointLayer: at least 'x' or 'y' must evaluate to an Array`)
+function getLengthXY (x, y, sectionContext) {
+  if (!isArrayOrFunction(x) && !isArrayOrFunction(y)) throw notArrayError
+
+  if (x.constructor === Array) return x.length
+  if (y.constructor === Array) return y.length
+  
+  let scales = sectionContext.scales()
+
+  if (x.constructor === Function) {
+    let screenCoordinate = x(scales)
+    if (screenCoordinate.constructor === Array) return screenCoordinate.length
   }
+
+  if (y.constructor === Function) {
+    let screenCoordinate = y(scales)
+    if (screenCoordinate.constructor === Array) return screenCoordinate.length
+  }
+
+  throw notArrayError
+}
+
+const notArrayError = new Error(`PointLayer: at least 'x' or 'y' must evaluate to an Array`)
+
+function isArrayOrFunction (value) {
+  return value.constructor === Array || value.constructor !== Function
 }
 
 function getGeometryObject (geometryProps, indexArray) {
