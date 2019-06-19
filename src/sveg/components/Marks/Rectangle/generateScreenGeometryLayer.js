@@ -11,7 +11,7 @@ export function generateCoordinatesLayer (
   let indexArray = getIndexArray(indexProp, length)
 
   let cornerPointsLayer = createCornerPointsLayer(scaledCoordinates, length)
-  
+
   let transformedCoordinates = transformCoordinatesLayer(
     cornerPointsLayer,
     coordinateTransformationContext,

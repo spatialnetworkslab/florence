@@ -1,33 +1,59 @@
-import { scaleGeometry } from '../utils/scaleGeometry'
-import { transformGeometry } from '../utils/transformGeometry'
 import { isInvalid } from '../../../utils/equals.js'
+import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
 
-export default function (geometryProps, sectionContext, coordinateTransformationContext) {
-  ensureValidCombination(geometryProps)
-  validateTypes(geometryProps)
+export function generateCoordinates (coordinates, sectionContext, coordinateTransformationContext, interpolate) {
+  let scaledCoordinates = scaleCoordinates(coordinates, sectionContext)
+  let cornerPoints = createCornerPoints(scaledCoordinates)
+  let transformedPoints = applyCoordinateTransformation(
+    cornerPoints,
+    'LineString',
+    coordinateTransformationContext,
+    interpolate
+  )
 
-  let geometry = getGeometry(geometryProps)
-  let scaledGeometry = scaleGeometry(geometry, sectionContext)
-  let screenGeometry = transformGeometry(scaledGeometry, coordinateTransformationContext)
-
-  return screenGeometry
+  return transformedPoints
 }
 
-export function getGeometry ({ x1, x2, y1, y2 }) {
-  return {
-    type: 'LineString',
-    coordinates: [
-      [x1, y1],
-      [x1, y2],
-      [x2, y2],
-      [x2, y1],
-      [x1, y1]
-    ]
+export function scaleCoordinates (coordinates, sectionContext) {
+  throwErrorIfInvalidCombination(coordinates)
+  validateTypes(coordinates)
+
+  const { x1, x2, y1, y2 } = coordinates
+
+  const scaledCoordinates = {}
+
+  if (wereSpecified(x1, x2)) {
+    scaledCoordinates.x1 = scaleCoordinate(x1, 'x1', sectionContext)
+    scaledCoordinates.x2 = scaleCoordinate(x2, 'x2', sectionContext)
+  } else {
+    scaledCoordinates.x1 = sectionContext.x1()
+    scaledCoordinates.x2 = sectionContext.x2()
   }
+
+  if (wereSpecified(y1, y2)) {
+    scaledCoordinates.y1 = scaleCoordinate(y1, 'y1', sectionContext)
+    scaledCoordinates.y2 = scaleCoordinate(y2, 'y2', sectionContext)
+  } else {
+    scaledCoordinates.y1 = sectionContext.y1()
+    scaledCoordinates.y2 = sectionContext.y2()
+  }
+
+  return scaledCoordinates
 }
+
+export function createCornerPoints ({ x1, x2, y1, y2 }) {
+  return [
+    [x1, y1],
+    [x1, y2],
+    [x2, y2],
+    [x2, y1],
+    [x1, y1]
+  ]
+}
+
 const s = JSON.stringify
 
-export function ensureValidCombination ({ x1, x2, y1, y2 }) {
+export function throwErrorIfInvalidCombination ({ x1, x2, y1, y2 }) {
   if (onlyOne(x1, x2)) {
     throw new Error(`Invalid combination of 'x1' and 'x2': ${s(x1)}, ${s(x2)}. Either provide both or none.`)
   }
@@ -41,18 +67,41 @@ function onlyOne (a, b) {
   return a === undefined ? b !== undefined : b === undefined
 }
 
-const invalidPropValueError = (value, name) => new Error(`Invalid coordinate value for '${name}': ${s(value)}`)
+const invalidCoordinateValueError = (value, name) => new Error(`Invalid coordinate value for '${name}': ${s(value)}`)
 
-function validateTypes (geometryProps) {
-  for (let propName in geometryProps) {
-    let geometryProp = geometryProps[propName]
+function validateTypes (coordinates) {
+  for (let coordinateName in coordinates) {
+    let coordinate = coordinates[coordinateName]
 
-    if (geometryProp !== undefined) {
-      if (isInvalid(geometryProp)) throw invalidPropValueError(geometryProp, propName)
+    if (coordinate !== undefined) {
+      if (isInvalid(coordinate)) throw invalidCoordinateValueError(coordinate, coordinateName)
 
-      if (![Number, String, Date, Function].includes(geometryProp.constructor)) {
-        throw invalidPropValueError(geometryProp, propName)
+      if (![Number, String, Date, Function].includes(coordinate.constructor)) {
+        throw invalidCoordinateValueError(coordinate, coordinateName)
       }
     }
   }
+}
+
+function wereSpecified (a, b) {
+  return a !== undefined && b !== undefined
+}
+
+function scaleCoordinate (coordinate, coordinateName, sectionContext) {
+  const scales = sectionContext.scales()
+
+  if (coordinate.constructor === Function) {
+    return coordinate(scales)
+  } else {
+    const scale = ['x1', 'x2'].includes(coordinateName) ? scales.scaleX : scales.scaleY
+    const generatedCoordinate = scale(coordinate)
+    throwErrorIfInvalidValue(coordinate, generatedCoordinate, coordinateName)
+
+    return generatedCoordinate
+  }
+}
+
+function throwErrorIfInvalidValue (input, output, coordinateName) {
+  const parentScale = ['x1', 'x2'].includes(coordinateName) ? 'scaleX' : 'scaleY'
+  if (isInvalid(output)) throw new Error(`Scale '${parentScale}' received '${s(input)}' and returned '${s(output)}`)
 }

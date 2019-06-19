@@ -1,43 +1,21 @@
-import geometryValidator from '../utils/geometryValidator.js'
-import { scaleGeometry } from '../utils/scaleGeometry'
-import { transformGeometry } from '../utils/transformGeometry'
+import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
 
-export default function (geometryProps, sectionContext, coordinateTransformationContext) {
-  let geometry = getGeometry(geometryProps)
-  let scaledGeometry = scaleGeometry(geometry, sectionContext)
-  let screenGeometry = transformGeometry(scaledGeometry, coordinateTransformationContext)
+export default function ({ x, y }, sectionContext, coordinateTransformationContext) {
+  let scaledCoordinates = scaleCoordinates({ x, y }, sectionContext)
 
-  return screenGeometry
+  let transformedCoordinates = applyCoordinateTransformation(
+    [scaledCoordinates.x, scaledCoordinates.y], 'Point', coordinateTransformationContext
+  )
+
+  return transformedCoordinates
 }
 
-function getGeometry (geometryProps) {
-  ensureValidCombination(geometryProps)
+export function scaleCoordinates ({ x, y }, sectionContext) {
+  const scales = sectionContext.scales()
+  const { scaleX, scaleY } = scales
 
-  if (geometryProps.geometry) {
-    validateGeometry(geometryProps.geometry)
-    return geometryProps.geometry
-  }
+  const scaledX = x.constructor === Function ? x(scales) : scaleX(x)
+  const scaledY = y.constructor === Function ? y(scales) : scaleY(y)
 
-  if (geometryProps.x) {
-    return createPointGeometry(geometryProps.x, geometryProps.y)
-  }
+  return { x: scaledX, y: scaledY }
 }
-
-export function createPointGeometry (x, y) {
-  return {
-    type: 'Point',
-    coordinates: [x, y]
-  }
-}
-
-const validateGeometry = geometryValidator(['Point'])
-
-export function ensureValidCombination (geometryProps) {
-  if (geometryProps.geometry) {
-    if (geometryProps.x || geometryProps.y) throw invalidCombinationError
-  } else {
-    if (!geometryProps.x && geometryProps.y) throw invalidCombinationError
-  }
-}
-
-const invalidCombinationError = new Error(`Point: invalid combination of props 'x', 'y' and 'geometry'`)

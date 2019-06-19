@@ -1,87 +1,79 @@
-import geometryValidator from '../utils/geometryValidator.js'
-import { scaleGeometryObject } from '../utils/scaleGeometry'
-import { transformGeometryObject } from '../utils/transformGeometry'
+import applyCoordinateTransformation from '../utils/applyCoordinateTransformation'
+import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
-import { ensureValidCombination, createPointGeometry } from './generateScreenGeometry.js'
 
-export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {
-  ensureValidCombination(geometryProps)
+export default function ({ x, y }, sectionContext, coordinateTransformationContext, indexProp) {
+  let { scaledX, scaledY, length } = scaleCoordinatesLayer(x, y, sectionContext)
 
-  let length = getLength(geometryProps, sectionContext)
   let indexArray = getIndexArray(indexProp, length)
 
-  let geometryObject = getGeometryObject(geometryProps, indexArray)
+  let { xObject, yObject } = transformCoordinatesLayer(scaledX, scaledY, coordinateTransformationContext, indexArray)
 
-  let scaledGeometryObject = scaleGeometryObject(geometryObject, sectionContext)
-  let screenGeometryObject = transformGeometryObject(scaledGeometryObject, coordinateTransformationContext)
-
-  return { screenGeometryObject, indexArray }
+  return { xObject, yObject, indexArray }
 }
 
-function getLength (geometryProps, sectionContext) {
-  if (geometryProps.geometry) {
-    if (geometryProps.geometry.constructor !== Array) throw new Error(`PointLayer: geometry must be an array`)
-    return geometryProps.geometry.length
-  }
+function scaleCoordinatesLayer (x, y, sectionContext) {
+  if (x === undefined || y === undefined) throw new Error(`PointLayer: 'x' and 'y' are required`)
 
-  if (geometryProps.x) {
-    return getLengthXY(geometryProps.x, geometryProps.y, sectionContext)
-  }
+  const scales = sectionContext.scales()
+
+  let xNeedsScaling = x.constructor !== Function
+  let yNeedsScaling = y.constructor !== Function
+
+  let xValue = x.constructor === Function ? x(scales) : x
+  let yValue = y.constructor === Function ? y(scales) : y
+
+  let length = getNPoints(xValue, yValue)
+
+  let xIsPrimitive = xValue.constructor !== Array
+  let yIsPrimitive = yValue.constructor !== Array
+
+  let scaledX = scaleCoordinate(xValue, scales.scaleX, xNeedsScaling, xIsPrimitive, length)
+  let scaledY = scaleCoordinate(yValue, scales.scaleY, yNeedsScaling, yIsPrimitive, length)
+
+  return { scaledX, scaledY, length }
 }
 
-function getLengthXY (x, y, sectionContext) {
-  if (!isArrayOrFunction(x) && !isArrayOrFunction(y)) throw notArrayError
-
-  if (x.constructor === Array) return x.length
-  if (y.constructor === Array) return y.length
-  
-  let scales = sectionContext.scales()
-
-  if (x.constructor === Function) {
-    let screenCoordinate = x(scales)
-    if (screenCoordinate.constructor === Array) return screenCoordinate.length
+function getNPoints (x, y) {
+  if (x.constructor !== Array && y.constructor !== Array) {
+    throw new Error(`PointLayer: at least 'x' or 'y' must evaluate to an Array`)
   }
 
-  if (y.constructor === Function) {
-    let screenCoordinate = y(scales)
-    if (screenCoordinate.constructor === Array) return screenCoordinate.length
-  }
+  let length = x.constructor === Array ? x.length : y.length
 
-  throw notArrayError
-}
-
-const notArrayError = new Error(`PointLayer: at least 'x' or 'y' must evaluate to an Array`)
-
-function isArrayOrFunction (value) {
-  return value.constructor === Array || value.constructor !== Function
-}
-
-function getGeometryObject (geometryProps, indexArray) {
-  let geometryObject = {}
-
-  if (geometryProps.geometry) {
-    let geometryArray = geometryProps.geometry
-
-    for (let i = 0; i < indexArray.length; i++) {
-      let geometry = geometryArray[i]
-      validateGeometry(geometry)
-
-      let $index = indexArray[i]
-      geometryObject[$index] = geometry
+  if (x.constructor === Array && y.constructor === Array) {
+    if (x.length !== length || y.length !== length) {
+      throw new Error(`PointLayer: 'x' and 'y' have different lengths`)
     }
   }
 
-  if (geometryProps.x) {
-    for (let i = 0; i < indexArray.length; i++) {
-      let $index = indexArray[i]
-      let x = geometryProps.x.constructor === Array ? geometryProps.x[i] : geometryProps.x
-      let y = geometryProps.y.constructor === Array ? geometryProps.y[i] : geometryProps.y
-
-      geometryObject[$index] = createPointGeometry(x, y)
-    }
-  }
-
-  return geometryObject
+  return length
 }
 
-const validateGeometry = geometryValidator(['Point'])
+function scaleCoordinate (c, scale, needsScaling, isPrimitive, length) {
+  let array
+
+  if (isPrimitive) array = generateArrayOfLength(c, length)
+  if (!isPrimitive) array = c
+
+  if (needsScaling) return array.map(scale)
+  if (!needsScaling) return array
+}
+
+function transformCoordinatesLayer (scaledX, scaledY, coordinateTransformationContext, indexArray) {
+  let xObject = {}
+  let yObject = {}
+
+  for (let i = 0; i < scaledX.length; i++) {
+    let transformedPoint = applyCoordinateTransformation(
+      [scaledX[i], scaledY[i]], 'Point', coordinateTransformationContext
+    )
+
+    let index = indexArray[i]
+
+    xObject[index] = transformedPoint[0]
+    yObject[index] = transformedPoint[1]
+  }
+
+  return { xObject, yObject }
+}
