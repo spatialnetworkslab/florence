@@ -1,9 +1,10 @@
-import calculateBBox from '../../../utils/geometry/calculateBBox.js'
+import { calculateBBoxGeometry } from '../../../utils/geometry/calculateBBox.js'
 
 export function indexRectangle (markData) {
   let rectangleAttributes = markData.attributes
 
-  let item = calculateBBox(rectangleAttributes.screenGeometry)
+  let bbox = calculateBBoxGeometry(rectangleAttributes.screenGeometry)
+  let item = initItem(bbox)
 
   item.attributes = rectangleAttributes
   item.markType = 'Rectangle'
@@ -19,7 +20,8 @@ export function indexRectangleLayer ({ layerAttributes, indexArray, layerId }) {
     let $index = indexArray[i]
 
     let rectangleAttributes = getRectangleAttributes(layerAttributes, $index)
-    let item = calculateBBox(rectangleAttributes.screenGeometry)
+    let bbox = calculateBBoxGeometry(rectangleAttributes.screenGeometry)
+    let item = initItem(bbox)
 
     item.$index = $index
     item.attributes = rectangleAttributes
@@ -34,4 +36,13 @@ export function indexRectangleLayer ({ layerAttributes, indexArray, layerId }) {
 
 function getRectangleAttributes (layerAttributes, $index) {
   return { screenGeometry: layerAttributes.screenGeometryObject[$index] }
+}
+
+function initItem (bbox) {
+  return {
+    minX: bbox.x[0],
+    maxX: bbox.x[1],
+    minY: bbox.y[0],
+    maxY: bbox.y[1]
+  }
 }

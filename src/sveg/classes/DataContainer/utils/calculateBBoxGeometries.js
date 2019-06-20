@@ -1,14 +1,14 @@
 import { geoPath } from 'd3-geo'
 import { isInvalid } from './equals.js'
 
-export function calculateBBoxGeometries (geometries) {
+export default function (features) {
   let bbox = [[Infinity, Infinity], [-Infinity, -Infinity]]
 
-  for (let i = 0; i < geometries.length; i++) {
-    let geometry = geometries[i]
+  for (let i = 0; i < features.length; i++) {
+    let feature = features[i]
 
-    if (!isInvalid(geometry)) {
-      bbox = updateBBox(bbox, geometry)
+    if (!isInvalid(feature)) {
+      bbox = updateBBox(bbox, feature)
     }
   }
 
@@ -31,15 +31,4 @@ function updateBBox (bbox, geometry) {
   bbox[1][1] = bbox[1][1] > newBBox[1][1] ? bbox[1][1] : newBBox[1][1]
 
   return bbox
-}
-
-export function calculateBBoxGeometry (geometry) {
-  let bbox = path.bounds(geometry)
-
-  let bboxObj = {
-    x: [bbox[0][0], bbox[1][0]],
-    y: [bbox[0][1], bbox[1][1]]
-  }
-
-  return bboxObj
 }

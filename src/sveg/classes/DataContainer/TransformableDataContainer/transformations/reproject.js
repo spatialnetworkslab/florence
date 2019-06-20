@@ -1,5 +1,5 @@
 import proj4 from 'proj4'
-import { transformFeatures } from '../../../../utils/geojson.js'
+import { transformGeometries } from '../../../../utils/geojson.js'
 import { warn } from '../../../../utils/logging.js'
 
 export default function (data, reprojectInstructions) {
@@ -20,8 +20,8 @@ export default function (data, reprojectInstructions) {
 
   let transformation = proj4(from, reprojectInstructions.to).forward
 
-  let transformedFeatures = transformFeatures(data.$geometry, transformation)
-  data.$geometry = transformedFeatures
+  let transformedGeometries = transformGeometries(data.$geometry, transformation)
+  data.$geometry = transformedGeometries
 
   return data
 }

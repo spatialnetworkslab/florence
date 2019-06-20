@@ -1,5 +1,5 @@
 import getDataType from './getDataType.js'
-import { calculateBbox } from '../../../utils/geojson.js'
+import { calculateBBoxGeometries } from '../../../utils/geometry/calculateBBox.js'
 import { isInvalid } from '../../../utils/equals.js'
 import { warn } from '../../../utils/logging.js'
 
@@ -31,7 +31,7 @@ function calculateColumnDomainAndGetType (column, columnName) {
     let domain
 
     if (columnName === '$geometry') {
-      domain = calculateBbox(column)
+      domain = calculateBBoxGeometries(column)
     }
 
     if (columnName !== '$geometry') {

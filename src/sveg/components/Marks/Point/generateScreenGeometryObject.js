@@ -1,20 +1,33 @@
 import transformGeometry from '../utils/transformGeometry'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
+import { ensureValidCombination } from './generateScreenGeometry.js'
 
-export default function ({ x, y }, sectionContext, coordinateTransformationContext, indexProp) {
-  let { scaledX, scaledY, length } = scaleCoordinatesLayer(x, y, sectionContext)
+export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {
+  let { scaledGeometryObject, length } = createScaledGeometryObject(geometryProps, sectionContext)
 
   let indexArray = getIndexArray(indexProp, length)
 
-  let screenGeometryObject = transformCoordinatesLayer(scaledX, scaledY, coordinateTransformationContext, indexArray)
+  let screenGeometryObject = transformCoordinatesLayer(scaledGeometryObject, coordinateTransformationContext, indexArray)
 
   return { screenGeometryObject, indexArray }
 }
 
-function scaleCoordinatesLayer (x, y, sectionContext) {
-  if (x === undefined || y === undefined) throw new Error(`PointLayer: 'x' and 'y' are required`)
+function createScaledGeometryObject (geometryProps, sectionContext) {
+  ensureValidCombination(geometryProps)
 
+  if (geometryProps.geometry) {
+    return scaleGeometryProp(geometryProps.geometry, sectionContext)
+  }
+
+  if (!geometryProps.geometry) {
+    return createScaledGeometryObjectFromCoordinates(
+      geometryProps.x, geometryProps.y, sectionContext
+    )
+  }
+}
+
+function createScaledGeometryObjectFromCoordinates (x, y, sectionContext) {
   const scales = sectionContext.scales()
 
   let xNeedsScaling = x.constructor !== Function
@@ -61,19 +74,18 @@ function scaleCoordinate (c, scale, needsScaling, isPrimitive, length) {
 }
 
 function transformCoordinatesLayer (scaledX, scaledY, coordinateTransformationContext, indexArray) {
-  let xObject = {}
-  let yObject = {}
+  let screenGeometryObject = {}
 
   for (let i = 0; i < scaledX.length; i++) {
-    let transformedPoint = transformGeometry(
-      [scaledX[i], scaledY[i]], 'Point', coordinateTransformationContext
+    let screenGeometry = transformGeometry(
+      { type: 'Point', coordinates: [scaledX[i], scaledY[i]] },
+      coordinateTransformationContext
     )
 
     let index = indexArray[i]
 
-    xObject[index] = transformedPoint[0]
-    yObject[index] = transformedPoint[1]
+    screenGeometryObject[index] = screenGeometry
   }
 
-  return { xObject, yObject }
+  return screenGeometryObject
 }
