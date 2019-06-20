@@ -1,13 +1,12 @@
-import { transformGeometry } from 'geometryUtils'
+import { createScreenGeometry } from '../utils/createScreenGeometry.js'
 import { isInvalid } from 'equals.js'
 
-export function generateCoordinates (coordinates, sectionContext, coordinateTransformationContext, interpolate) {
-  let scaledCoordinates = scaleCoordinates(coordinates, sectionContext)
-  let cornerPoints = createCornerPoints(scaledCoordinates)
+export default function (coordinateProps, sectionContext, coordinateTransformationContext, interpolate) {
+  let scaledCoordinates = scaleCoordinates(coordinateProps, sectionContext)
+  let scaledGeometry = createScaledGeometry(scaledCoordinates)
 
-  let transformedPoints = transformGeometry(
-    cornerPoints,
-    'LineString',
+  let transformedPoints = createScreenGeometry(
+    scaledGeometry,
     coordinateTransformationContext,
     interpolate
   )
@@ -15,11 +14,11 @@ export function generateCoordinates (coordinates, sectionContext, coordinateTran
   return transformedPoints
 }
 
-export function scaleCoordinates (coordinates, sectionContext) {
-  throwErrorIfInvalidCombination(coordinates)
-  validateTypes(coordinates)
+export function scaleCoordinates (coordinateProps, sectionContext) {
+  ensureValidCombination(coordinateProps)
+  validateTypes(coordinateProps)
 
-  const { x1, x2, y1, y2 } = coordinates
+  const { x1, x2, y1, y2 } = coordinateProps
 
   const scaledCoordinates = {}
 
@@ -42,25 +41,15 @@ export function scaleCoordinates (coordinates, sectionContext) {
   return scaledCoordinates
 }
 
-export function createCornerPoints ({ x1, x2, y1, y2 }) {
-  return [
-    [x1, y1],
-    [x1, y2],
-    [x2, y2],
-    [x2, y1],
-    [x1, y1]
-  ]
-}
-
 const s = JSON.stringify
 
-export function throwErrorIfInvalidCombination ({ x1, x2, y1, y2 }) {
-  if (onlyOne(x1, x2)) {
-    throw new Error(`Invalid combination of 'x1' and 'x2': ${s(x1)}, ${s(x2)}. Either provide both or none.`)
+export function ensureValidCombination (c) {
+  if (onlyOne(c.x1, c.x2)) {
+    throw new Error(`Invalid combination of 'x1' and 'x2': ${s(c.x1)}, ${s(c.x2)}. Either provide both or none.`)
   }
 
-  if (onlyOne(y1, y2)) {
-    throw new Error(`Invalid combination of 'y1' and 'y2': ${s(y1)}, ${s(y2)}. Either provide both or none.`)
+  if (onlyOne(c.y1, c.y2)) {
+    throw new Error(`Invalid combination of 'y1' and 'y2': ${s(c.y1)}, ${s(c.y2)}. Either provide both or none.`)
   }
 }
 
@@ -95,14 +84,27 @@ function scaleCoordinate (coordinate, coordinateName, sectionContext) {
     return coordinate(scales)
   } else {
     const scale = ['x1', 'x2'].includes(coordinateName) ? scales.scaleX : scales.scaleY
-    const generatedCoordinate = scale(coordinate)
-    throwErrorIfInvalidValue(coordinate, generatedCoordinate, coordinateName)
+    const scaledCoordinate = scale(coordinate)
+    throwErrorIfInvalidScaledCoordinate(coordinate, scaledCoordinate, coordinateName)
 
-    return generatedCoordinate
+    return scaledCoordinate
   }
 }
 
-function throwErrorIfInvalidValue (input, output, coordinateName) {
+function throwErrorIfInvalidScaledCoordinate (input, output, coordinateName) {
   const parentScale = ['x1', 'x2'].includes(coordinateName) ? 'scaleX' : 'scaleY'
   if (isInvalid(output)) throw new Error(`Scale '${parentScale}' received '${s(input)}' and returned '${s(output)}`)
+}
+
+export function createScaledGeometry (c) {
+  return {
+    type: 'LineString',
+    coordinates: [
+      [c.x1, c.y1],
+      [c.x1, c.y2],
+      [c.x2, c.y2],
+      [c.x2, c.y1],
+      [c.x1, c.y1]
+    ]
+  }
 }
