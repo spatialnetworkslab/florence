@@ -7,7 +7,7 @@ import getDataLength from './utils/getDataLength.js'
 import convertRowToColumnData from './utils/convertRowToColumnData.js'
 import parseGeoJSON from './utils/parseGeoJSON.js'
 
-import id from '../../utils/id.js'
+import id from 'id.js'
 
 const methods = {
   _setColumnData (data) {

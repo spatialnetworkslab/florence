@@ -1,6 +1,6 @@
 
+import { isInvalid } from 'equals.js'
 import filter from './filter.js'
-import { isInvalid } from '../../../../utils/equals.js'
 
 export default function (data, dropInstructions) {
   let filterFunc

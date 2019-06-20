@@ -1,4 +1,4 @@
-import { calculateBBoxGeometry } from '../../../utils/geometry/calculateBBox.js'
+import { calculateBBoxGeometry } from 'geometryUtils'
 
 export function indexRectangle (markData) {
   let rectangleAttributes = markData.attributes

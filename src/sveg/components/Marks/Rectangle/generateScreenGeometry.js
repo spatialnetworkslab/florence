@@ -1,9 +1,10 @@
-import { isInvalid } from '../../../utils/equals.js'
-import transformGeometry from '../utils/transformGeometry'
+import { transformGeometry } from 'geometryUtils'
+import { isInvalid } from 'equals.js'
 
 export function generateCoordinates (coordinates, sectionContext, coordinateTransformationContext, interpolate) {
   let scaledCoordinates = scaleCoordinates(coordinates, sectionContext)
   let cornerPoints = createCornerPoints(scaledCoordinates)
+
   let transformedPoints = transformGeometry(
     cornerPoints,
     'LineString',

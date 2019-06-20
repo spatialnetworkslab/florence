@@ -8,7 +8,7 @@ import { isColumnOriented, isRowOriented, isGeoJSON } from './utils/checkFormat.
 import TransformableDataContainer from './TransformableDataContainer'
 import { Group } from './TransformableDataContainer/transformations/groupBy.js'
 
-import { warn } from '../../utils/logging.js'
+import { warn } from 'logging.js'
 
 import {
   checkColumnPath, columnPathIsValid, checkIfColumnExists,

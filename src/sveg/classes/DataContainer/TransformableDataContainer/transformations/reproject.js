@@ -1,6 +1,6 @@
 import proj4 from 'proj4'
-import { transformGeometries } from '../../../../utils/geojson.js'
-import { warn } from '../../../../utils/logging.js'
+import { transformGeometries } from 'geometryUtils'
+import { warn } from 'logging.js'
 
 export default function (data, reprojectInstructions) {
   if (!data.hasOwnProperty('$geometry')) {

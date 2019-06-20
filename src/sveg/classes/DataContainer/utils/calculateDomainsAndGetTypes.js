@@ -1,7 +1,7 @@
+import { calculateBBoxGeometries } from 'geometryUtils'
 import getDataType from './getDataType.js'
-import { calculateBBoxGeometries } from '../../../utils/geometry/calculateBBox.js'
-import { isInvalid } from '../../../utils/equals.js'
-import { warn } from '../../../utils/logging.js'
+import { isInvalid } from 'equals.js'
+import { warn } from 'logging.js'
 
 export default function (data) {
   let domains = {}

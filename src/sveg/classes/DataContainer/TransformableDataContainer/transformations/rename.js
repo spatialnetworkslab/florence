@@ -1,6 +1,6 @@
 
 import { checkRegularColumnName } from '../../utils/checkFormat.js'
-import { warn } from '../../../../utils/logging.js'
+import { warn } from 'logging.js'
 
 export default function (data, renameInstructions) {
   if (renameInstructions.constructor !== Object) {
