@@ -7,9 +7,9 @@ export default function ({ x, y }, sectionContext, coordinateTransformationConte
 
   let indexArray = getIndexArray(indexProp, length)
 
-  let { xObject, yObject } = transformCoordinatesLayer(scaledX, scaledY, coordinateTransformationContext, indexArray)
+  let screenGeometryObject = transformCoordinatesLayer(scaledX, scaledY, coordinateTransformationContext, indexArray)
 
-  return { xObject, yObject, indexArray }
+  return { screenGeometryObject, indexArray }
 }
 
 function scaleCoordinatesLayer (x, y, sectionContext) {
