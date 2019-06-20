@@ -1,33 +1,25 @@
-import { createCornerPoints, throwErrorIfInvalidCombination } from './generateCoordinates.js'
+import { createScreenGeometryObject } from '../utils/createScreenGeometry.js'
+import { createScaledGeometry, ensureValidCombination } from './generateScreenGeometry.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
-import transformGeometry from '../utils/transformGeometry'
 import getIndexArray from '../utils/getIndexArray.js'
 
 export function generateCoordinatesLayer (
-  coordinates, sectionContext, coordinateTransformationContext, interpolate, indexProp
+  coordinateProps, sectionContext, coordinateTransformationContext, interpolate, indexProp
 ) {
-  let { scaledCoordinates, length } = scaleCoordinates(coordinates, sectionContext)
-
+  let { scaledCoordinates, length } = scaleCoordinates(coordinateProps, sectionContext)
   let indexArray = getIndexArray(indexProp, length)
+  let scaledGeometryArray = createScaledGeometryArray(scaledCoordinates, length)
+  let screenGeometryObject = createScreenGeometryObject(scaledGeometryArray, coordinateTransformationContext, indexArray, interpolate)
 
-  let cornerPointsLayer = createCornerPointsLayer(scaledCoordinates, length)
-
-  let transformedCoordinates = transformCoordinatesLayer(
-    cornerPointsLayer,
-    coordinateTransformationContext,
-    interpolate,
-    indexArray
-  )
-
-  return { coordinateObject: transformedCoordinates, indexArray }
+  return { screenGeometryObject, indexArray }
 }
 
-function scaleCoordinates (coordinates, sectionContext) {
-  throwErrorIfInvalidCombination(coordinates)
+function scaleCoordinates (coordinateProps, sectionContext) {
+  ensureValidCombination(coordinateProps)
 
-  let coordinatesThatNeedScaling = whichCoordinatesNeedScaling(coordinates)
+  let coordinatesThatNeedScaling = whichCoordinatesNeedScaling(coordinateProps)
 
-  let nonMissingCoordinates = getMissingCoordinatesFromContext(coordinates, sectionContext)
+  let nonMissingCoordinates = getMissingCoordinatesFromContext(coordinateProps, sectionContext)
   let coordinateValues = getCoordinateValues(nonMissingCoordinates, sectionContext)
 
   let length = getNRectangles(coordinateValues)
@@ -138,12 +130,12 @@ function _scaleCoordinates (
   return scaledCoordinates
 }
 
-function createCornerPointsLayer (scaledCoordinates, length) {
-  let cornerPointsLayer = []
+function createScaledGeometryArray (scaledCoordinates, length) {
+  let scaledGeometryArray = []
 
   for (let i = 0; i < length; i++) {
-    cornerPointsLayer.push(
-      createCornerPoints({
+    scaledGeometryArray.push(
+      createScaledGeometry({
         x1: scaledCoordinates.x1[i],
         x2: scaledCoordinates.x2[i],
         y1: scaledCoordinates.y1[i],
@@ -152,23 +144,5 @@ function createCornerPointsLayer (scaledCoordinates, length) {
     )
   }
 
-  return cornerPointsLayer
-}
-
-function transformCoordinatesLayer (cornerPointsLayer, coordinateTransformationContext, interpolate, indexArray) {
-  let transformedCoordinatesLayer = {}
-
-  for (let i = 0; i < cornerPointsLayer.length; i++) {
-    let cornerPoints = cornerPointsLayer[i]
-
-    let transformedCoordinates = transformGeometry(
-      cornerPoints, 'LineString', coordinateTransformationContext, interpolate
-    )
-
-    let index = indexArray[i]
-
-    transformedCoordinatesLayer[index] = transformedCoordinates
-  }
-
-  return transformedCoordinatesLayer
+  return scaledGeometryArray
 }

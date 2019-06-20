@@ -6,9 +6,7 @@ import { ensureValidCombination } from './generateScreenGeometry.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {
   let { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
-
   let indexArray = getIndexArray(indexProp, length)
-
   let screenGeometryObject = createScreenGeometryObject(scaledGeometryArray, coordinateTransformationContext, indexArray)
 
   return { screenGeometryObject, indexArray }
