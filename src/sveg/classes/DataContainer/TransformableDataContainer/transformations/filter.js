@@ -1,4 +1,3 @@
-
 import getDataLength from '../../utils/getDataLength.js'
 
 export default function (data, filterFunction) {

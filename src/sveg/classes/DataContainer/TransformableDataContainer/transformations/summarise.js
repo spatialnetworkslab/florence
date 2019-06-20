@@ -1,4 +1,3 @@
-
 import aggregations from './aggregations'
 import checkKeyValuePair from '../../utils/checkKeyValuePair.js'
 import { checkRegularColumnName } from '../../utils/checkFormat.js'
