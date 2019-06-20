@@ -1,8 +1,9 @@
-import transformGeometry from '../utils/transformGeometry'
+import { createScreenGeometry } from '../utils/createScreenGeometry.js'
+import { scaleGeometry } from 'geometryUtils'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext) {
   let scaledGeometry = createScaledGeometry(geometryProps, sectionContext)
-  let screenGeometry = transformGeometry(scaledGeometry, coordinateTransformationContext)
+  let screenGeometry = createScreenGeometry(scaledGeometry, coordinateTransformationContext)
 
   return screenGeometry
 }
@@ -11,12 +12,17 @@ function createScaledGeometry (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps)
 
   if (geometryProps.geometry) {
-    return geometryProps.geometry
+    return scaleGeometryProp(geometryProps.geometry, sectionContext)
   }
 
   if (!geometryProps.geometry) {
     return createScaledGeometryFromCoordinates(geometryProps.x, geometryProps.y, sectionContext)
   }
+}
+
+function scaleGeometryProp (geometry, sectionContext) {
+  let { scaleX, scaleY } = sectionContext.scales()
+  return scaleGeometry(geometry, scaleX, scaleY)
 }
 
 export function ensureValidCombination (geometryProps) {

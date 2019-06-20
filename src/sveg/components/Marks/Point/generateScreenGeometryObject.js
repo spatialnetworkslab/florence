@@ -1,19 +1,20 @@
-import transformGeometry from '../utils/transformGeometry'
+import { createScreenGeometryObject } from '../utils/createScreenGeometry.js'
+import { scaleGeometries } from 'geometryUtils'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
 import { ensureValidCombination } from './generateScreenGeometry.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {
-  let { scaledGeometryObject, length } = createScaledGeometryObject(geometryProps, sectionContext)
+  let { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
 
   let indexArray = getIndexArray(indexProp, length)
 
-  let screenGeometryObject = transformCoordinatesLayer(scaledGeometryObject, coordinateTransformationContext, indexArray)
+  let screenGeometryObject = createScreenGeometryObject(scaledGeometryArray, coordinateTransformationContext, indexArray)
 
   return { screenGeometryObject, indexArray }
 }
 
-function createScaledGeometryObject (geometryProps, sectionContext) {
+function createScaledGeometryArray (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps)
 
   if (geometryProps.geometry) {
@@ -21,13 +22,21 @@ function createScaledGeometryObject (geometryProps, sectionContext) {
   }
 
   if (!geometryProps.geometry) {
-    return createScaledGeometryObjectFromCoordinates(
+    return createScaledGeometryArrayFromCoordinates(
       geometryProps.x, geometryProps.y, sectionContext
     )
   }
 }
 
-function createScaledGeometryObjectFromCoordinates (x, y, sectionContext) {
+function scaleGeometryProp (geometry, sectionContext) {
+  let { scaleX, scaleY } = sectionContext.scales()
+  let scaledGeometryArray = scaleGeometries(geometry, scaleX, scaleY)
+  let length = scaledGeometryArray.length
+
+  return { scaledGeometryArray, length }
+}
+
+function createScaledGeometryArrayFromCoordinates (x, y, sectionContext) {
   const scales = sectionContext.scales()
 
   let xNeedsScaling = x.constructor !== Function
@@ -44,7 +53,9 @@ function createScaledGeometryObjectFromCoordinates (x, y, sectionContext) {
   let scaledX = scaleCoordinate(xValue, scales.scaleX, xNeedsScaling, xIsPrimitive, length)
   let scaledY = scaleCoordinate(yValue, scales.scaleY, yNeedsScaling, yIsPrimitive, length)
 
-  return { scaledX, scaledY, length }
+  let scaledGeometryArray = createGeometryArrayFromScaledCoordinates(scaledX, scaledY, length)
+
+  return { scaledGeometryArray, length }
 }
 
 function getNPoints (x, y) {
@@ -73,19 +84,15 @@ function scaleCoordinate (c, scale, needsScaling, isPrimitive, length) {
   if (!needsScaling) return array
 }
 
-function transformCoordinatesLayer (scaledX, scaledY, coordinateTransformationContext, indexArray) {
-  let screenGeometryObject = {}
+function createGeometryArrayFromScaledCoordinates (scaledX, scaledY, length) {
+  let geometryArray = []
 
-  for (let i = 0; i < scaledX.length; i++) {
-    let screenGeometry = transformGeometry(
-      { type: 'Point', coordinates: [scaledX[i], scaledY[i]] },
-      coordinateTransformationContext
-    )
-
-    let index = indexArray[i]
-
-    screenGeometryObject[index] = screenGeometry
+  for (let i = 0; i < length; i++) {
+    geometryArray.push({
+      type: 'Point',
+      coordinates: [scaledX[i], scaledY[i]]
+    })
   }
 
-  return screenGeometryObject
+  return geometryArray
 }
