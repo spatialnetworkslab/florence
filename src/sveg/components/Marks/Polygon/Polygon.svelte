@@ -13,7 +13,8 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
 
-  import { generateCoordinates } from './generateCoordinates.js'
+  import generateScreenGeometry from './generateScreenGeometry.js'
+  import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
 
   let markId = getId()
@@ -39,11 +40,101 @@
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.subscribe()
 
-  // Convert coordinates
-  let coordinates = generateCoordinates(
+  // Create screenGeometry
+  let screenGeometry = generateScreenGeometry(
     { x, y, geometry },
     $sectionContext,
     $coordinateTransformationContext,
     interpolate
   )
+
+  // Initiate transitionables
+  let tr_screenGeometry = createTransitionable('geometry', screenGeometry, transition)
+  let tr_fill = createTransitionable('fill', fill, transition)
+  let tr_opacity = createTransitionable('opacity', opacity, transition)
+
+  // Handle screenGeometry transitions
+  $: {
+    if (initDone()) {
+      screenGeometry = generateScreenGeometry(
+        { x, y, geometry },
+        $sectionContext,
+        $coordinateTransformationContext,
+        interpolate
+      )
+
+      tr_screenGeometry.set(screenGeometry)
+
+      updateInteractionManagerIfNecessary()
+    }
+  }
+
+  // Handle other transitions
+  $: { if (initDone()) tr_fill.set(fill) }
+  $: { if (initDone()) tr_opacity.set(opacity) }
+
+  let previousTransition
+
+  // Update transitionables
+  beforeUpdate(() => {
+    if (!transitionsEqual(previousTransition, transition)) {
+      previousTransition = transition
+
+      tr_screenGeometry = createTransitionable('geometry', $tr_screenGeometry, transition)
+      tr_fill = createTransitionable('fill', $tr_fill, transition)
+      tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
+    }
+  })
+
+  afterUpdate(() => {
+    initPhase = false
+  })
+
+  // Interactivity
+  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
+
+  onMount(() => {
+    updateInteractionManagerIfNecessary()
+  })
+
+  onDestroy(() => {
+    removeLayerFromSpatialIndexIfNecessary()
+  })
+
+  // Helpers
+  function updateInteractionManagerIfNecessary () {
+    removeLayerFromSpatialIndexIfNecessary()
+
+    if (isInteractive) {
+      $interactionManagerContext.loadMark('Polygon', createMarkData())
+
+      if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
+      if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
+      if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
+    }
+  }
+
+  function removeLayerFromSpatialIndexIfNecessary () {
+    if ($interactionManagerContext.markIsLoaded(markId)) {
+      $interactionManagerContext.removeAllMarkInteractions(markId)
+      $interactionManagerContext.removeMark(markId)
+    }
+  }
+
+  function createMarkData () {
+    return {
+      attributes: { screenGeometry },
+      markId
+    }
+  }
 </script>
+
+{#if $graphicContext.output() === 'svg'}
+
+  <path 
+    d={generatePath($tr_screenGeometry.coordinates)} 
+    fill={$tr_fill}
+    style={`opacity: ${$tr_opacity}`}
+  />
+
+{/if}

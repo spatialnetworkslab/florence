@@ -27,8 +27,7 @@ function createScaledGeometryArray (geometryProps, sectionContext) {
 }
 
 function scaleGeometryProp (geometry, sectionContext) {
-  let { scaleX, scaleY } = sectionContext.scales()
-  let scaledGeometryArray = scaleGeometries(geometry, scaleX, scaleY)
+  let scaledGeometryArray = scaleGeometries(geometry, sectionContext.scales())
   let length = scaledGeometryArray.length
 
   return { scaledGeometryArray, length }

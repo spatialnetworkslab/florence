@@ -21,8 +21,7 @@ function createScaledGeometry (geometryProps, sectionContext) {
 }
 
 function scaleGeometryProp (geometry, sectionContext) {
-  let { scaleX, scaleY } = sectionContext.scales()
-  return scaleGeometry(geometry, scaleX, scaleY)
+  return scaleGeometry(geometry, sectionContext.scales())
 }
 
 export function ensureValidCombination (geometryProps) {
