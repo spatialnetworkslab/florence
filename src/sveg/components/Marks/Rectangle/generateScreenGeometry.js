@@ -98,13 +98,15 @@ function throwErrorIfInvalidScaledCoordinate (input, output, coordinateName) {
 
 export function createScaledGeometry (c) {
   return {
-    type: 'LineString',
+    type: 'Polygon',
     coordinates: [
-      [c.x1, c.y1],
-      [c.x1, c.y2],
-      [c.x2, c.y2],
-      [c.x2, c.y1],
-      [c.x1, c.y1]
+      [
+        [c.x1, c.y1],
+        [c.x1, c.y2],
+        [c.x2, c.y2],
+        [c.x2, c.y1],
+        [c.x1, c.y1]
+      ]
     ]
   }
 }

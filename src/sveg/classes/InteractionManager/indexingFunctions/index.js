@@ -1,12 +1,15 @@
 import { indexPoint, indexPointLayer } from './indexPoint.js'
 import { indexRectangle, indexRectangleLayer } from './indexRectangle.js'
+import { indexPolygon, indexPolygonLayer } from './indexPolygon.js'
 
 export const markIndexing = {
   'Point': indexPoint,
-  'Rectangle': indexRectangle
+  'Rectangle': indexRectangle,
+  'Polygon': indexPolygon
 }
 
 export const layerIndexing = {
   'Point': indexPointLayer,
-  'Rectangle': indexRectangleLayer
+  'Rectangle': indexRectangleLayer,
+  'Polygon': indexPolygonLayer
 }
