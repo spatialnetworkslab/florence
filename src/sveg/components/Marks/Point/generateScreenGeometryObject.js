@@ -3,6 +3,7 @@ import { scaleGeometries } from 'geometryUtils'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
 import { ensureValidCombination } from './generateScreenGeometry.js'
+import { isDefined, isUndefined } from 'equals.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {
   let { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
@@ -15,11 +16,11 @@ export default function (geometryProps, sectionContext, coordinateTransformation
 function createScaledGeometryArray (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps)
 
-  if (geometryProps.geometry) {
+  if (isDefined(geometryProps.geometry)) {
     return scaleGeometryProp(geometryProps.geometry, sectionContext)
   }
 
-  if (!geometryProps.geometry) {
+  if (isUndefined(geometryProps.geometry)) {
     return createScaledGeometryArrayFromCoordinates(
       geometryProps.x, geometryProps.y, sectionContext
     )

@@ -1,5 +1,5 @@
 import { createScreenGeometry } from '../utils/createScreenGeometry.js'
-import { isInvalid } from 'equals.js'
+import { isInvalid, isUndefined, isDefined } from 'equals.js'
 
 export default function (coordinateProps, sectionContext, coordinateTransformationContext, interpolate) {
   let scaledCoordinates = scaleCoordinates(coordinateProps, sectionContext)
@@ -45,25 +45,25 @@ const s = JSON.stringify
 
 export function ensureValidCombination (c) {
   if (onlyOne(c.x1, c.x2)) {
-    throw new Error(`Invalid combination of 'x1' and 'x2': ${s(c.x1)}, ${s(c.x2)}. Either provide both or none.`)
+    throw new Error(`Rectangle: invalid combination of 'x1' and 'x2': ${s(c.x1)}, ${s(c.x2)}. Either provide both or none.`)
   }
 
   if (onlyOne(c.y1, c.y2)) {
-    throw new Error(`Invalid combination of 'y1' and 'y2': ${s(c.y1)}, ${s(c.y2)}. Either provide both or none.`)
+    throw new Error(`Rectangle: invalid combination of 'y1' and 'y2': ${s(c.y1)}, ${s(c.y2)}. Either provide both or none.`)
   }
 }
 
 function onlyOne (a, b) {
-  return a === undefined ? b !== undefined : b === undefined
+  return isUndefined(a) ? isDefined(b) : isUndefined(b)
 }
 
-const invalidCoordinateValueError = (value, name) => new Error(`Invalid coordinate value for '${name}': ${s(value)}`)
+const invalidCoordinateValueError = (value, name) => new Error(`Rectangle: invalid coordinate value for '${name}': ${s(value)}`)
 
 function validateTypes (coordinates) {
   for (let coordinateName in coordinates) {
     let coordinate = coordinates[coordinateName]
 
-    if (coordinate !== undefined) {
+    if (isDefined(coordinate)) {
       if (isInvalid(coordinate)) throw invalidCoordinateValueError(coordinate, coordinateName)
 
       if (![Number, String, Date, Function].includes(coordinate.constructor)) {
@@ -74,7 +74,7 @@ function validateTypes (coordinates) {
 }
 
 function wereSpecified (a, b) {
-  return a !== undefined && b !== undefined
+  return isDefined(a) && isDefined(b)
 }
 
 function scaleCoordinate (coordinate, coordinateName, sectionContext) {

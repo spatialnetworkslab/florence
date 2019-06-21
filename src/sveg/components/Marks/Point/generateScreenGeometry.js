@@ -1,5 +1,6 @@
 import { createScreenGeometry } from '../utils/createScreenGeometry.js'
 import { scaleGeometry } from 'geometryUtils'
+import { isDefined, isUndefined } from 'equals.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext) {
   let scaledGeometry = createScaledGeometry(geometryProps, sectionContext)
@@ -11,11 +12,11 @@ export default function (geometryProps, sectionContext, coordinateTransformation
 function createScaledGeometry (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps)
 
-  if (geometryProps.geometry) {
+  if (isDefined(geometryProps.geometry)) {
     return scaleGeometryProp(geometryProps.geometry, sectionContext)
   }
 
-  if (!geometryProps.geometry) {
+  if (isUndefined(geometryProps.geometry)) {
     return createScaledGeometryFromCoordinates(geometryProps.x, geometryProps.y, sectionContext)
   }
 }
@@ -25,14 +26,14 @@ function scaleGeometryProp (geometry, sectionContext) {
 }
 
 export function ensureValidCombination (geometryProps) {
-  if (geometryProps.geometry) {
-    if (geometryProps.x || geometryProps.y) throw invalidCombinationError
+  if (isDefined(geometryProps.geometry)) {
+    if (isDefined(geometryProps.x) || isDefined(geometryProps.y)) throw invalidCombinationError
   } else {
-    if (!(geometryProps.x && geometryProps.y)) throw invalidCombinationError
+    if (!(isDefined(geometryProps.x) && isDefined(geometryProps.y))) throw invalidCombinationError
   }
 }
 
-const invalidCombinationError = new Error(`Invalid combination of props 'x', 'y' and 'geometry'`)
+const invalidCombinationError = new Error(`Point: invalid combination of props 'x', 'y' and 'geometry'`)
 
 function createScaledGeometryFromCoordinates (x, y, sectionContext) {
   const scales = sectionContext.scales()

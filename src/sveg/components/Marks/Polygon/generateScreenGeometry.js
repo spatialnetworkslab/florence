@@ -1,6 +1,7 @@
 import { createScreenGeometry } from '../utils/createScreenGeometry.js'
 import { scaleGeometry } from 'geometryUtils'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
+import { isDefined, isUndefined } from 'equals.js'
 
 export default function (
   geometryProps, sectionContext, coordinateTransformationContext, interpolate
@@ -14,20 +15,20 @@ export default function (
 function createScaledGeometry (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps)
 
-  if (geometryProps.geometry) {
+  if (isDefined(geometryProps.geometry)) {
     return scaleGeometry(geometryProps.geometry, sectionContext.scales())
   }
 
-  if (!geometryProps.geometry) {
+  if (isUndefined(geometryProps.geometry)) {
     return createScaledGeometryFromCoordinateProps(geometryProps.x, geometryProps.y, sectionContext)
   }
 }
 
 function ensureValidCombination (coordinateProps) {
-  if (coordinateProps.geometry) {
-    if (coordinateProps.x || coordinateProps.y) throw invalidCombinationError
+  if (isDefined(coordinateProps.geometry)) {
+    if (isDefined(coordinateProps.x) || isDefined(coordinateProps.y)) throw invalidCombinationError
   } else {
-    if (!(coordinateProps.x && coordinateProps.y)) throw invalidCombinationError
+    if (!(isDefined(coordinateProps.x) && isDefined(coordinateProps.y))) throw invalidCombinationError
   }
 }
 

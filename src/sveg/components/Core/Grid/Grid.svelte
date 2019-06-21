@@ -2,7 +2,7 @@
   import * as SectionContext from '../Section/SectionContext'
   import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
 
-  import { scaleCoordinates } from '../../Marks/Rectangle/generateCoordinates.js'
+  import { scaleCoordinates } from '../../Marks/Rectangle/generateScreenGeometry.js'
   import { getAllCells, getNames, mergeNameSpecs } from './gridUtils.js'
   import { printGrid } from './viewGrid.js'
 

@@ -3,7 +3,7 @@ import { createScaledGeometry, ensureValidCombination } from './generateScreenGe
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
 
-export function generateCoordinatesLayer (
+export default function (
   coordinateProps, sectionContext, coordinateTransformationContext, interpolate, indexProp
 ) {
   let { scaledCoordinates, length } = scaleCoordinates(coordinateProps, sectionContext)
