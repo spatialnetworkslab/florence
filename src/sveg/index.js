@@ -5,6 +5,7 @@ import Grid from './components/Core/Grid/Grid.svelte'
 
 import Point from './components/Marks/Point/Point.svelte'
 import Rectangle from './components/Marks/Rectangle/Rectangle.svelte'
+import Polygon from './components/Marks/Polygon/Polygon.svelte'
 
 import PointLayer from './components/Marks/Point/PointLayer.svelte'
 import RectangleLayer from './components/Marks/Rectangle/RectangleLayer.svelte'
@@ -19,6 +20,7 @@ export {
 
   Point,
   Rectangle,
+  Polygon,
 
   PointLayer,
   RectangleLayer,

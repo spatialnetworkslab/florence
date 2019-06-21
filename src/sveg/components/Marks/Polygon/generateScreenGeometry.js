@@ -1,6 +1,5 @@
 import { createScreenGeometry } from '../utils/createScreenGeometry.js'
 import { scaleGeometry } from 'geometryUtils'
-import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import { isDefined, isUndefined } from 'equals.js'
 
 export default function (
@@ -37,10 +36,9 @@ const invalidCombinationError = new Error(`Polygon: Invalid combination of 'x', 
 function createScaledGeometryFromCoordinateProps (x, y, sectionContext) {
   let coordinates = []
   let scales = sectionContext.scales()
-  let length = getLength(x, y, scales)
 
-  let scaledX = getValueX(x, scales, length)
-  let scaledY = getValueY(y, scales, length)
+  let scaledX = getValueX(x, scales)
+  let scaledY = getValueY(y, scales)
 
   ensureSameLength(scaledX, scaledY)
 
@@ -66,47 +64,23 @@ function makeValueGetter (scaleName) {
   }
 }
 
-function handleFunctionProp (coordinateProp, scales, length) {
-  let value = coordinateProp(scales)
-  if (value.constructor === Array) {
-    return value
-  } else {
-    return generateArrayOfLength(value, length)
-  }
-}
-
-function handleOtherProp (coordinateProp, scale, length) {
-  if (coordinateProp.constructor === Array) {
-    return coordinateProp.map(scale)
-  } else {
-    return generateArrayOfLength(coordinateProp, length)
-  }
-}
-
 const getValueX = makeValueGetter('scaleX')
 const getValueY = makeValueGetter('scaleY')
 
-function getLength (x, y, scales) {
-  if (x.constructor === Array || y.constructor === Array) {
-    return x.constructor === Array ? x.length : y.length
-  }
-
-  if (x.constructor === Function || y.constructor === Function) {
-    if (x.constructor === Function) {
-      let xValue = x(scales)
-      if (xValue.constructor === Array) return xValue.length
-    }
-
-    if (y.constructor === Function) {
-      let yValue = y(scales)
-      if (yValue.constructor === Array) return yValue.length
-    }
-  }
+function handleFunctionProp (coordinateProp, scales) {
+  let value = coordinateProp(scales)
+  if (value.constructor === Array) return value
 
   throw noArrayError
 }
 
-const noArrayError = new Error(`Polygon: at least 'x' or 'y' must evaluate to an Array`)
+function handleOtherProp (coordinateProp, scale, length) {
+  if (coordinateProp.constructor === Array) return coordinateProp.map(scale)
+
+  throw noArrayError
+}
+
+const noArrayError = new Error(`Polygon: 'x' and 'y' must evaluate to an Array`)
 
 function ensureSameLength (x, y) {
   if (x.length !== y.length) throw invalidLengthError
