@@ -4,6 +4,7 @@ import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
 import { ensureValidCombination } from './generateScreenGeometry.js'
 import { isDefined, isUndefined } from 'equals.js'
+import getNMarks from '../utils/getNMarks.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {
   let { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
@@ -35,7 +36,7 @@ function scaleGeometryProp (geometry, sectionContext) {
 }
 
 function createScaledGeometryArrayFromCoordinates (x, y, sectionContext) {
-  const scales = sectionContext.scales()
+  let scales = sectionContext.scales()
 
   let xNeedsScaling = x.constructor !== Function
   let yNeedsScaling = y.constructor !== Function
@@ -56,21 +57,7 @@ function createScaledGeometryArrayFromCoordinates (x, y, sectionContext) {
   return { scaledGeometryArray, length }
 }
 
-function getNPoints (x, y) {
-  if (x.constructor !== Array && y.constructor !== Array) {
-    throw new Error(`PointLayer: at least 'x' or 'y' must evaluate to an Array`)
-  }
-
-  let length = x.constructor === Array ? x.length : y.length
-
-  if (x.constructor === Array && y.constructor === Array) {
-    if (x.length !== length || y.length !== length) {
-      throw new Error(`PointLayer: 'x' and 'y' have different lengths`)
-    }
-  }
-
-  return length
-}
+const getNPoints = getNMarks('PointLayer')
 
 function scaleCoordinate (c, scale, needsScaling, isPrimitive, length) {
   let array

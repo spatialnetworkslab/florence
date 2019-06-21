@@ -9,7 +9,9 @@ export default function (
   let { scaledCoordinates, length } = scaleCoordinates(coordinateProps, sectionContext)
   let indexArray = getIndexArray(indexProp, length)
   let scaledGeometryArray = createScaledGeometryArray(scaledCoordinates, length)
-  let screenGeometryObject = createScreenGeometryObject(scaledGeometryArray, coordinateTransformationContext, indexArray, interpolate)
+  let screenGeometryObject = createScreenGeometryObject(
+    scaledGeometryArray, coordinateTransformationContext, indexArray, interpolate
+  )
 
   return { screenGeometryObject, indexArray }
 }

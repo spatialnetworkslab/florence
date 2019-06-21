@@ -10,8 +10,6 @@
   let y = getRandomValueArray(10, 10)
 
   let isHovering = false
-
-  function hover (h) { isHovering = h }
 </script>
 
 <Graphic width={500} height={500}>
@@ -25,8 +23,8 @@
 
     <Polygon
       {x} {y}
-      onMouseover={() => hover(true)}
-      onMouseout={() => hover(false)}
+      onMouseover={() => isHovering = true}
+      onMouseout={() => isHovering = false}
       fill={isHovering ? 'blue' : 'yellow'}
     />
   

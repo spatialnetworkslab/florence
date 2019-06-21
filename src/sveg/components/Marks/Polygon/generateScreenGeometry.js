@@ -13,46 +13,32 @@ export default function (
 
 function createScaledGeometry (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps)
+  let scales = sectionContext.scales()
 
   if (isDefined(geometryProps.geometry)) {
-    return scaleGeometry(geometryProps.geometry, sectionContext.scales())
+    return scaleGeometry(geometryProps.geometry, scales)
   }
 
   if (isUndefined(geometryProps.geometry)) {
-    return createScaledGeometryFromCoordinateProps(geometryProps.x, geometryProps.y, sectionContext)
+    return createScaledGeometryFromCoordinateProps(geometryProps.x, geometryProps.y, scales)
   }
 }
 
-function ensureValidCombination (coordinateProps) {
-  if (isDefined(coordinateProps.geometry)) {
-    if (isDefined(coordinateProps.x) || isDefined(coordinateProps.y)) throw invalidCombinationError
+export function ensureValidCombination (geometryProps) {
+  if (isDefined(geometryProps.geometry)) {
+    if (isDefined(geometryProps.x) || isDefined(geometryProps.y)) throw invalidCombinationError
   } else {
-    if (!(isDefined(coordinateProps.x) && isDefined(coordinateProps.y))) throw invalidCombinationError
+    if (!(isDefined(geometryProps.x) && isDefined(geometryProps.y))) throw invalidCombinationError
   }
 }
 
 const invalidCombinationError = new Error(`Polygon: Invalid combination of 'x', 'y', and 'geometry' props`)
 
-function createScaledGeometryFromCoordinateProps (x, y, sectionContext) {
-  let outerRing = []
-  let scales = sectionContext.scales()
-
+function createScaledGeometryFromCoordinateProps (x, y, scales) {
   let scaledX = getValueX(x, scales)
   let scaledY = getValueY(y, scales)
 
-  ensureCorrectLength(scaledX, scaledY)
-
-  for (let i = 0; i < scaledX.length; i++) {
-    outerRing.push([scaledX[i], scaledY[i]])
-  }
-
-  // Close the polygon
-  outerRing.push([scaledX[0], scaledY[0]])
-
-  return {
-    type: 'Polygon',
-    coordinates: [outerRing]
-  }
+  return createGeometryFromScaledProps(scaledX, scaledY)
 }
 
 function makeValueGetter (scaleName) {
@@ -84,6 +70,24 @@ function handleOtherProp (coordinateProp, scale, length) {
 }
 
 const noArrayError = new Error(`Polygon: 'x' and 'y' must evaluate to an Array`)
+
+export function createGeometryFromScaledProps (x, y) {
+  ensureCorrectLength(x, y)
+
+  let outerRing = []
+
+  for (let i = 0; i < x.length; i++) {
+    outerRing.push([x[i], y[i]])
+  }
+
+  // Close the polygon
+  outerRing.push([x[0], y[0]])
+
+  return {
+    type: 'Polygon',
+    coordinates: [outerRing]
+  }
+}
 
 function ensureCorrectLength (x, y) {
   if (x.length !== y.length) throw notSameLengthError
