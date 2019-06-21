@@ -1,8 +1,8 @@
 import { writable } from 'svelte/store'
 import { tweened } from 'svelte/motion'
 import { cubicOut } from 'svelte/easing'
-import { interpolateLayer } from './interpolateLayer.js'
-import { transitionGeometryLayer } from './geometry'
+import { interpolate } from 'd3-interpolate'
+import { transitionGeometries } from 'geometryUtils'
 
 /**
  * Like createTransitionable, returns either a Svelte store, or a Svelte 'tweened' store,
@@ -47,7 +47,7 @@ export function createTransitionableLayer (aestheticName, aestheticValue, transi
 function createOptionsFromDuration (aestheticName, duration) {
   switch (aestheticName) {
     case 'geometry':
-      return { duration, easing: cubicOut, interpolate: transitionGeometryLayer }
+      return { duration, easing: cubicOut, interpolate: transitionGeometries }
 
     default:
       return { duration, easing: cubicOut, interpolate: interpolateLayer }
@@ -57,9 +57,21 @@ function createOptionsFromDuration (aestheticName, duration) {
 function createOptionsFromOptions (aestheticName, transitionOptions) {
   switch (aestheticName) {
     case 'geometry':
-      return Object.assign({ interpolate: transitionGeometryLayer }, transitionOptions)
+      return Object.assign({ interpolate: transitionGeometries }, transitionOptions)
 
     default:
       return Object.assign({ interpolate: interpolateLayer }, transitionOptions)
   }
+}
+
+function interpolateLayer (a, b) {
+  let aWithoutObsoleteIndices = {}
+
+  for (let index in a) {
+    if (b.hasOwnProperty(index)) {
+      aWithoutObsoleteIndices[index] = a[index]
+    }
+  }
+
+  return interpolate(aWithoutObsoleteIndices, b)
 }
