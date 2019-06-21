@@ -4,6 +4,8 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import globals from 'rollup-plugin-node-globals';
+import json from 'rollup-plugin-json';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -33,6 +35,17 @@ export default {
 		// https://github.com/rollup/rollup-plugin-commonjs
 		resolve(),
 		commonjs(),
+
+		// proj4 imports package.json so we need a json loader
+		// this is supposedly fixed (https://github.com/proj4js/proj4js/issues/214#issuecomment-274966431)
+		// but apparently not (at least with rollup)
+		json({
+			include: 'node_modules/proj4/**',
+			compact: true
+		}),
+
+    // Allows you to use 'process'
+    globals(),
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production

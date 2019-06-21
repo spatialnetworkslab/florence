@@ -1,4 +1,3 @@
-
 import getDataLength from '../../utils/getDataLength.js'
 import DataContainer from '../../index.js'
 

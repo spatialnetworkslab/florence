@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, Rectangle, DataContainer } from '../sveg'
+  import { Graphic, Section, CoordinateTransformation, RectangleLayer, DataContainer } from '../sveg'
   
   let data = new DataContainer({ 
     quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
@@ -15,16 +15,44 @@
     .arrange({ meanQuantity: 'descending' })
     .done()
 
-  const scaleFruit = scaleBand().domain(data.domain('fruit'))
+  
+  let notAllowedfruit = ''
+
+  $: filteredData = data
+    .filter(row => row.fruit !== notAllowedfruit)
+    .done() 
+
+  const scaleFruit = scaleBand().domain(data.domain('fruit')).padding(0.2)
 	let meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
   const scaleMeanQuantity = scaleLinear().domain(meanQuantityDomain)
 
   let height = 500
+  let transformation = 'identity'
+  let duration = 2000
+
+  const log = console.log
 </script>
 
 <div>
   <label for="height-slider">Height:</label>
   <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
+</div>
+
+<div>
+  <label for="coordinate-select">Coordinates:</label>
+  <select name="coordinate-select" bind:value={transformation}>
+    <option value="identity">Identity</option>
+    <option value="polar">Polar</option>
+  </select>
+</div>
+
+<div>
+  <label for="duration">Transition time</label>
+  <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
+</div>
+
+<div>
+  <button on:click={() => notAllowedfruit = 'durian'}>Filter: fruit !== durian</button>
 </div>
 
 <Graphic 
@@ -39,17 +67,24 @@
     scaleX={scaleFruit} 
 		scaleY={scaleMeanQuantity}
   >
-  
-    {#each data.rows() as row}
 
-      <Rectangle
-        x1={row.fruit}
-        x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
+    <CoordinateTransformation {transformation}>
+    
+      <RectangleLayer 
+        x1={filteredData.column('fruit')}
+        x2={({ scaleX }) => filteredData.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
         y1={0}
-        y2={row.meanQuantity}
+        y2={filteredData.column('meanQuantity')}
+        fill={transformation === 'identity' ? 'green' : 'blue'}
+        transition={{
+          coordinates: 1500,
+          fill: 2000
+        }}
+        index={filteredData.column('$index')}
+        onClick={ix => log(ix)}
       />
 
-    {/each}
+    </CoordinateTransformation>
 
   </Section>
 

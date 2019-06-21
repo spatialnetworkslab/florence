@@ -47,9 +47,9 @@ const methods = {
     return proxyTransformationCall(this._data, 'rename', renameInstructions)
   },
 
-  // reproject (reprojectInstructions) {
-  //   return proxyTransformationCall(this._data, 'reproject', reprojectInstructions)
-  // },
+  reproject (reprojectInstructions) {
+    return proxyTransformationCall(this._data, 'reproject', reprojectInstructions)
+  },
 
   select (selection) {
     return proxyTransformationCall(this._data, 'select', selection)

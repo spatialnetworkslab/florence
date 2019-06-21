@@ -1,4 +1,3 @@
-
 import dataLoadingMixin from './dataLoadingMixin.js'
 import domainsAndTypesMixin from './domainsAndTypesMixin.js'
 import transformationsMixin from './transformationsMixin.js'
