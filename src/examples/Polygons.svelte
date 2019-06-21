@@ -10,7 +10,17 @@
   let y = getRandomValueArray(10, 10)
 
   let isHovering = false
+
+  let transformation = 'identity'
 </script>
+
+<div>
+  <label for="coordinate-select">Coordinates:</label>
+  <select name="coordinate-select" bind:value={transformation}>
+    <option value="identity">Identity</option>
+    <option value="polar">Polar</option>
+  </select>
+</div>
 
 <Graphic width={500} height={500}>
 
@@ -21,12 +31,16 @@
     scaleY={scaleLinear().domain([0, 10])}
   >
 
-    <Polygon
-      {x} {y}
-      onMouseover={() => isHovering = true}
-      onMouseout={() => isHovering = false}
-      fill={isHovering ? 'blue' : 'yellow'}
-    />
+    <CoordinateTransformation {transformation}>
+
+      <Polygon
+        {x} {y}
+        onMouseover={() => isHovering = true}
+        onMouseout={() => isHovering = false}
+        fill={isHovering ? 'blue' : 'yellow'}
+      />
+    
+    </CoordinateTransformation>
   
   </Section>
 

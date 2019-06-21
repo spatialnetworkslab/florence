@@ -29,7 +29,7 @@
   export let fill = 'black'
   export let opacity = 1
   export let transition = undefined
-  export let interpolate = true
+  export let interpolate = false
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
