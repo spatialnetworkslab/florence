@@ -34,7 +34,7 @@ function ensureValidCombination (coordinateProps) {
 const invalidCombinationError = new Error(`Polygon: Invalid combination of 'x', 'y', and 'geometry' props`)
 
 function createScaledGeometryFromCoordinateProps (x, y, sectionContext) {
-  let coordinates = []
+  let outerRing = []
   let scales = sectionContext.scales()
 
   let scaledX = getValueX(x, scales)
@@ -43,12 +43,15 @@ function createScaledGeometryFromCoordinateProps (x, y, sectionContext) {
   ensureSameLength(scaledX, scaledY)
 
   for (let i = 0; i < scaledX.length; i++) {
-    coordinates.push([scaledX[i], scaledY[i]])
+    outerRing.push([scaledX[i], scaledY[i]])
   }
+
+  // Close the polygon
+  outerRing.push([scaledX[0], scaledY[0]])
 
   return {
     type: 'Polygon',
-    coordinates
+    coordinates: [outerRing]
   }
 }
 

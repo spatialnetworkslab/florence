@@ -147,7 +147,7 @@
   {#each indexArray as $index ($index)}
 
     <path 
-      d={generatePath($tr_screenGeometryObject[$index].coordinates)} 
+      d={generatePath($tr_screenGeometryObject[$index])} 
       fill={$tr_fillObject[$index]}
       style={`opacity: ${$tr_opacityObject[$index]}`}
     />

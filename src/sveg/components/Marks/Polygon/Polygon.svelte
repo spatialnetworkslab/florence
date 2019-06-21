@@ -132,7 +132,7 @@
 {#if $graphicContext.output() === 'svg'}
 
   <path 
-    d={generatePath($tr_screenGeometry.coordinates)} 
+    d={generatePath($tr_screenGeometry)} 
     fill={$tr_fill}
     style={`opacity: ${$tr_opacity}`}
   />

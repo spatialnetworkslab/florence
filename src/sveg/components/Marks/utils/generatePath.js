@@ -1,7 +1,7 @@
-import { line } from 'd3-shape'
+import { geoPath } from 'd3-geo'
 
-const pathGenerator = line()
+const geoPathGenerator = geoPath()
 
-export default function (points) {
-  return pathGenerator(points)
+export default function (geometry) {
+  return geoPathGenerator(geometry)
 }
