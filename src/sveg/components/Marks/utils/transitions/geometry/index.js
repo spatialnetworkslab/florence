@@ -1,9 +1,7 @@
-import { transitionLineString, transitionLineStringLayer } from './transitionLineString.js'
-
-export const transitionGeometry = {
-  'LineString': transitionLineString
+export function transitionGeometry (fromGeometry, toGeometry) {
+  
 }
 
-export const transitionGeometryLayer = {
-  'LineString': transitionLineStringLayer
+export function transitionGeometryLayer (fromLayer, toLayer) {
+  // TODO
 }
