@@ -2,12 +2,12 @@
   import { scaleLinear } from 'd3-scale'
   import { Graphic, Section, CoordinateTransformation, Polygon, DataContainer } from '../sveg'
 
-  function getRandomValueArray () {
-    return new Array(10).fill(0).map(() => Math.random() * 10)
+  function getRandomValueArray (N, range) {
+    return new Array(N).fill(0).map(() => Math.random() * range)
   }
 
-  let x = getRandomValueArray()
-  let y = getRandomValueArray()
+  let x = getRandomValueArray(10, 10)
+  let y = getRandomValueArray(10, 10)
 </script>
 
 <Graphic width={500} height={500}>

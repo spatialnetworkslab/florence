@@ -40,7 +40,7 @@ function createScaledGeometryFromCoordinateProps (x, y, sectionContext) {
   let scaledX = getValueX(x, scales)
   let scaledY = getValueY(y, scales)
 
-  ensureSameLength(scaledX, scaledY)
+  ensureCorrectLength(scaledX, scaledY)
 
   for (let i = 0; i < scaledX.length; i++) {
     outerRing.push([scaledX[i], scaledY[i]])
@@ -85,8 +85,10 @@ function handleOtherProp (coordinateProp, scale, length) {
 
 const noArrayError = new Error(`Polygon: 'x' and 'y' must evaluate to an Array`)
 
-function ensureSameLength (x, y) {
-  if (x.length !== y.length) throw invalidLengthError
+function ensureCorrectLength (x, y) {
+  if (x.length !== y.length) throw notSameLengthError
+  if (x.length < 3) throw notEnoughPointsError
 }
 
-const invalidLengthError = new Error(`Polygon: 'x' and 'y' must have same length`)
+const notSameLengthError = new Error(`Polygon: 'x' and 'y' must have same length`)
+const notEnoughPointsError = new Error('Polygon: must consist of at least 3 points')
