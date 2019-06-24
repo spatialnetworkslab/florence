@@ -6,12 +6,25 @@
     return new Array(N).fill(0).map(() => Math.random() * range)
   }
 
-  let x = getRandomValueArray(10, 10)
-  let y = getRandomValueArray(10, 10)
+  let geometries = {
+    a: {
+      type: 'Polygon',
+      coordinates: [
+        [[0, 0], [5, 0], [7, 3], [7, 10], [9, 2]]
+      ]
+    },
+    b: {
+      type: 'Polygon',
+      coordinates: [
+        [[0, 2],  [4, 3], [5, 8], [7, 5], [10, 10], [9, 0], [0, 0]]
+      ]
+    }
+  }
 
   let isHovering = false
 
   let transformation = 'identity'
+  let chosenGeometry = 'a'
 </script>
 
 <div>
@@ -19,6 +32,14 @@
   <select name="coordinate-select" bind:value={transformation}>
     <option value="identity">Identity</option>
     <option value="polar">Polar</option>
+  </select>
+</div>
+
+<div>
+  <label for="geometry-select">Geometry:</label>
+  <select name="geometry-select" bind:value={chosenGeometry}>
+    <option value="a">A</option>
+    <option value="b">B</option>
   </select>
 </div>
 
@@ -34,7 +55,7 @@
     <CoordinateTransformation {transformation}>
 
       <Polygon
-        {x} {y}
+        geometry={geometries[chosenGeometry]}
         onMouseover={() => isHovering = true}
         onMouseout={() => isHovering = false}
         fill={isHovering ? 'blue' : 'yellow'}
