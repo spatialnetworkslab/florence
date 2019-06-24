@@ -77,7 +77,7 @@
         y2={filteredData.column('meanQuantity')}
         fill={transformation === 'identity' ? 'green' : 'blue'}
         transition={{
-          coordinates: 1500,
+          geometry: 1500,
           fill: 2000
         }}
         index={filteredData.column('$index')}
