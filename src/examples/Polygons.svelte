@@ -10,13 +10,15 @@
     a: {
       type: 'Polygon',
       coordinates: [
-        [[0, 0], [10, 0], [5, 10], [0, 0]]
+        [[0, 0], [5, 10], [10, 0], [0, 0]],
+        [[2, 2], [8, 2], [5, 8], [2, 2]]
       ]
     },
     b: {
       type: 'Polygon',
       coordinates: [
-        [[0, 0],  [10, 0], [10, 10], [0, 10], [0, 0]]
+        [[0, 0],  [0, 10], [10, 10], [10, 0], [0, 0]],
+        [[3, 3], [7, 3], [7, 7], [3, 7], [3, 3]]
       ]
     }
   }
@@ -56,6 +58,7 @@
 
       <Polygon
         geometry={geometries[chosenGeometry]}
+        interpolate
         onMouseover={() => isHovering = true}
         onMouseout={() => isHovering = false}
         fill={isHovering ? 'blue' : 'yellow'}
