@@ -8,6 +8,8 @@ export default function (
   let scaledGeometry = createScaledGeometry(geometryProps, sectionContext)
   let screenGeometry = createScreenGeometry(scaledGeometry, coordinateTransformationContext, interpolate)
 
+  console.log(screenGeometry)
+
   return screenGeometry
 }
 

@@ -10,13 +10,13 @@
     a: {
       type: 'Polygon',
       coordinates: [
-        [[0, 0], [5, 0], [7, 3], [7, 10], [9, 2]]
+        [[0, 0], [10, 0], [5, 10], [0, 0]]
       ]
     },
     b: {
       type: 'Polygon',
       coordinates: [
-        [[0, 2],  [4, 3], [5, 8], [7, 5], [10, 10], [9, 0], [0, 0]]
+        [[0, 0],  [10, 0], [10, 10], [0, 10], [0, 0]]
       ]
     }
   }
@@ -59,6 +59,7 @@
         onMouseover={() => isHovering = true}
         onMouseout={() => isHovering = false}
         fill={isHovering ? 'blue' : 'yellow'}
+        transition={2000}
       />
     
     </CoordinateTransformation>
