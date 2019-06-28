@@ -7,8 +7,30 @@ export default class InteractionHandler {
     this._interactionManager = interactionManager
     this._numberOfInteractions = 0
 
+    this._sectionCallbacks = {}
     this._layerCallbacks = {}
     this._markCallbacks = {}
+  }
+
+  // Add/remove layer interactions
+  addSectionInteraction (sectionId, callback) {
+    console.log('!!!')
+    if (!this._sectionCallbacks.hasOwnProperty(sectionId)) {
+      this._addEventListenerIfNecessary()
+      this._numberOfInteractions++
+      this._sectionCallbacks[sectionId] = callback
+      // this._spatialIndex.loadLayer(sectionId)
+    }
+  }
+
+  removeSectionInteraction (sectionId) {
+    if (this._sectionCallbacks.hasOwnProperty(sectionId)) {
+      this._numberOfInteractions--
+      delete this._sectionCallbacks[sectionId]
+      this._removeEventListenerIfNecessary()
+
+      // this._spatialIndex.removeLayer(sectionId)
+    }
   }
 
   // Add/remove layer interactions
@@ -17,7 +39,6 @@ export default class InteractionHandler {
       this._addEventListenerIfNecessary()
       this._numberOfInteractions++
       this._layerCallbacks[layerId] = callback
-
       this._spatialIndex.loadLayer(layerId)
     }
   }
@@ -47,6 +68,13 @@ export default class InteractionHandler {
     this._numberOfInteractions--
 
     this._spatialIndex.removeMark(markId)
+  }
+
+  _isInSection (hit, geometry) {
+    if (hit.x <= geometry.maxX && hit.x >= geometry.minX && hit.y <= geometry.maxY && hit.y >= geometry.minY) {
+      return true
+    }
+    return false
   }
 
   _isInLayer (hit) {

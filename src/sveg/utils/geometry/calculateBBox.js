@@ -21,11 +21,12 @@ function calculateBBoxLineString (geometry) {
   return { minX, minY, maxX, maxY }
 }
 
-// function updateBBox (o, n) {
-//   return {
-//     minX: o.minX < n.minX ? o.minX : n.minX,
-//     minY: o.minY < n.minY ? o.minY : n.minY,
-//     maxX: o.maxX > n.maxX ? o.maxX : n.maxX,
-//     maxY: o.maxY > n.maxY ? o.maxY : n.maxY
-//   }
-// }
+// need this for zoom and pan
+function updateBBox (o, n) {
+  return {
+    minX: o.minX < n.minX ? o.minX : n.minX,
+    minY: o.minY < n.minY ? o.minY : n.minY,
+    maxX: o.maxX > n.maxX ? o.maxX : n.maxX,
+    maxY: o.maxY > n.maxY ? o.maxY : n.maxY
+  }
+}

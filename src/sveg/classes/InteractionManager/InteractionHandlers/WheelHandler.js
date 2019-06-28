@@ -1,13 +1,14 @@
 import InteractionHandler from './InteractionHandler.js'
 
-export default class ClickHandler extends InteractionHandler {
+export default class WheelHandler extends InteractionHandler {
   _addEventListenerIfNecessary () {
+    console.log(this._numberOfInteractions)
     if (this._numberOfInteractions === 0) {
       let handler = this._handleEvent.bind(this)
       let interactionManager = this._interactionManager
       let eventManager = interactionManager._eventManager
-      let listenerId = interactionManager._id + '-click'
-      eventManager.addEventListener('click', listenerId, handler)
+      let listenerId = interactionManager._id + '-wheel'
+      eventManager.addEventListener('wheel', listenerId, handler)
     }
   }
 
@@ -15,9 +16,9 @@ export default class ClickHandler extends InteractionHandler {
     if (this._numberOfInteractions === 0) {
       let interactionManager = this._interactionManager
       let eventManager = interactionManager._eventManager
-      let listenerId = interactionManager._id + '-click'
+      let listenerId = interactionManager._id + '-wheel'
 
-      eventManager.removeEventListener('click', listenerId)
+      eventManager.removeEventListener('wheel', listenerId)
     }
   }
 
@@ -26,11 +27,11 @@ export default class ClickHandler extends InteractionHandler {
     let sections = this._interactionManager._sections
     
     let hits = spatialIndex.queryMouseCoordinates(coordinates)
-
+    console.log(this._isInSection(coordinates, sections['sc0']))
     //how to remove click event signalling
     if (Object.keys(sections).length > 0) {
       for (let s in sections) {
-        if (this._isInSection(coordinates, sections[s]) && this._sectionCallbacks[sections[s].sectionId]) {
+        if (this._isInSection(coordinates, sections[s])) {
           this._sectionCallbacks[sections[s].sectionId](s.sectionId, mouseEvent)
         }
       }

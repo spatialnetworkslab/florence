@@ -6,7 +6,7 @@
     DataContainer 
   } from '../sveg'
 
-	export let N = 100
+	export let N = 500
 
 	const data = new DataContainer(generateData(N, 0.25))
 
@@ -34,6 +34,7 @@
   let height = 500
   let transformation = 'identity'
   let duration = 2000
+  $: color = 'black'
 
   const log = console.log
 
@@ -46,12 +47,17 @@
     delete hoverPoints[ix]
     hoverPoints = hoverPoints
   }
+
+  function handleCheck () {
+    //color = 'red';
+    console.log("Hello! I am an alert box!");
+  }
 </script>
 
-<div>
+<!-- <div>
   <label for="height-slider">Height:</label>
   <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
-</div>
+</div> -->
 
 <div>
   <label for="coordinate-select">Coordinates:</label>
@@ -61,14 +67,14 @@
   </select>
 </div>
 
-<div>
+<!-- <div>
   <label for="duration">Transition time</label>
   <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
-</div>
+</div> -->
 
-<div>
+<!-- <div>
   <button on:click={() => treshold = 40}>Filter: x > 40</button>
-</div>
+</div> -->
 
 <div>
 
@@ -77,12 +83,13 @@
     scaleX={scaleLinear().domain([0, 500])}
     scaleY={scaleLinear().domain([0, 500])}
   >
-		
+    <!-- onClick={() => log('1234')}-->
 		<Section
 			x1={50} x2={450}
 			y1={50} y2={450}
 			scaleX={scaleA}
 			scaleY={scaleB}
+      onWheel={() => log('abcde')}
 		>
 
 			<CoordinateTransformation {transformation}>
@@ -90,12 +97,13 @@
         <PointLayer
           x={filteredData.column('a')}
           y={filteredData.column('b')}
-          fill={transformation === 'identity' ? 'black' : 'blue'}
+          fill={transformation === 'identity' ? color : 'blue'}
           radius={transformation === 'identity' ? 3 : 6}
           index={filteredData.column('$index')}
           transition={duration}
           onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
           onMouseout={handleMouseout}
+          onClick={() => log('BOOM')}
         />
 
         <Point
@@ -104,7 +112,6 @@
           fill={big ? 'blue' : 'red'}
           radius={big ? 50 : 10}
           transition={duration}
-          onClick={() => log('BOOM')}
           onMouseover={() => big = true}
           onMouseout={() => big = false}
         />
@@ -127,3 +134,6 @@
 	</Graphic>
 
 </div>
+
+<style>
+</style>

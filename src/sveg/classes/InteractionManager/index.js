@@ -1,10 +1,11 @@
 import ClickHandler from './InteractionHandlers/ClickHandler.js'
 import MouseoverHandler from './InteractionHandlers/MouseoverHandler.js'
 import MouseoutHandler from './InteractionHandlers/MouseoutHandler.js'
-import { markIndexing, layerIndexing } from './indexingFunctions'
+import { markIndexing, layerIndexing, sectionIndexing } from './indexingFunctions'
 
 export default class InteractionManager {
   constructor () {
+    this._sections = {}
     this._layers = {}
     this._marks = {}
 
@@ -17,12 +18,29 @@ export default class InteractionManager {
   }
 
   // Initialization
-  setId (sectionId) {
-    this._id = sectionId
+  setId (id) {
+    this._id = id
   }
 
   linkEventManager (eventManager) {
     this._eventManager = eventManager
+  }
+
+  // Section loading and removing
+  loadSection (sectionType, sectionData) {
+    let indexingFunction = sectionIndexing[sectionType]
+    let indexableData = indexingFunction(sectionData)
+    
+    let sectionId = sectionData.sectionId
+    this._sections[sectionId] = indexableData
+  }
+
+  sectionIsLoaded (sectionId) {
+    return this._sections.hasOwnProperty(sectionId)
+  }
+
+  removeSection (sectionId) {
+    delete this._sections[sectionId]
   }
 
   // Layer loading and removing
@@ -57,6 +75,21 @@ export default class InteractionManager {
 
   removeMark (markId) {
     delete this._marks[markId]
+  }
+
+  // Add/remove section interactions
+  addSectionInteraction (interactionName, sectionId, callback) {
+    if (interactionName === 'click') this._clickHandler.addSectionInteraction(sectionId, callback)
+    if (interactionName === 'mouseover') this._mouseoverHandler.addSectionInteraction(sectionId, callback)
+    if (interactionName === 'mouseout') this._mouseoutHandler.addSectionInteraction(sectionId, callback)
+    if (interactionName === 'wheel') this._wheelHandler.addSectionInteraction(sectionId, callback)
+  }
+
+  removeAllSectionInteractions (sectionId) {
+    this._clickHandler.removeSectionInteraction(sectionId)
+    this._mouseoverHandler.removeSectionInteraction(sectionId)
+    this._mouseoutHandler.removeSectionInteraction(sectionId)
+    this._wheelHandler.removeSectionInteraction(sectionId)
   }
 
   // Add/remove layer interactions
