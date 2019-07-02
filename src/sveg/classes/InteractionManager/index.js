@@ -1,6 +1,7 @@
 import ClickHandler from './InteractionHandlers/ClickHandler.js'
 import MouseoverHandler from './InteractionHandlers/MouseoverHandler.js'
 import MouseoutHandler from './InteractionHandlers/MouseoutHandler.js'
+import WheelHandler from './InteractionHandlers/WheelHandler.js'
 import { markIndexing, layerIndexing, sectionIndexing } from './indexingFunctions'
 
 export default class InteractionManager {
@@ -15,6 +16,7 @@ export default class InteractionManager {
     this._clickHandler = new ClickHandler(this)
     this._mouseoverHandler = new MouseoverHandler(this)
     this._mouseoutHandler = new MouseoutHandler(this)
+    this._wheelHandler = new WheelHandler(this)
   }
 
   // Initialization

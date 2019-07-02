@@ -27,6 +27,7 @@
   export let y2 = undefined
   export let scaleX = undefined
   export let scaleY = undefined
+  export let scaleGeo = undefined
 
   // Interactivity
   export let onWheel = undefined
