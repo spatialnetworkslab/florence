@@ -93,7 +93,6 @@ export default class MouseoutHandler extends InteractionHandler {
         delete this._previousHits[hitId]
       }
     }
-    //console.log(this._currentMouseoverIds)
   }
 
   _getHitId (hit) {

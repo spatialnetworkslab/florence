@@ -87,10 +87,13 @@
 		<Section
 			x1={50} x2={450}
 			y1={50} y2={450}
-			scaleX={scaleA}
+      scaleX={scaleA}
 			scaleY={scaleB}
-      onWheel={() => log('abcde')}
 		>
+    <!--
+      
+      onWheel={() => log('abcde')}
+      onClick={() => log('1234')}-->
 
 			<CoordinateTransformation {transformation}>
 

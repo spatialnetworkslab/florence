@@ -48,9 +48,17 @@
     let rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
     let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
 
-    SectionContext.update(
-      newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
-    )
+    if (!scaleGeo && (scaleX && scaleY)){
+      SectionContext.update(
+        newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
+      )
+    } else if (scaleGeo && (!scaleX && !scaleY)) {
+      SectionContext.update(
+        newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
+      )
+    } else if (scaleGeo && (scaleX || scaleY)) {
+     throw new Error(`Cannot set 'scale-x' or 'scale-y' when 'scale-geo' is defined`)
+    }
   }
 
   // Interactivity

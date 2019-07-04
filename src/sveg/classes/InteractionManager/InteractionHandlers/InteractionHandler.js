@@ -14,7 +14,6 @@ export default class InteractionHandler {
 
   // Add/remove layer interactions
   addSectionInteraction (sectionId, callback) {
-    console.log('!!!')
     if (!this._sectionCallbacks.hasOwnProperty(sectionId)) {
       this._addEventListenerIfNecessary()
       this._numberOfInteractions++

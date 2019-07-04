@@ -27,7 +27,7 @@ export default class WheelHandler extends InteractionHandler {
     let sections = this._interactionManager._sections
     
     let hits = spatialIndex.queryMouseCoordinates(coordinates)
-    console.log(this._isInSection(coordinates, sections['sc0']))
+ 
     //how to remove click event signalling
     if (Object.keys(sections).length > 0) {
       for (let s in sections) {
