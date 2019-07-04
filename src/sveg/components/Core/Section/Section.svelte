@@ -27,6 +27,7 @@
   export let y2 = undefined
   export let scaleX = undefined
   export let scaleY = undefined
+  export let padding = 3
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -40,8 +41,8 @@
 
   $: {
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-    let rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
-    let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
+    let rangeX = [scaledCoordinates.x1 + padding, scaledCoordinates.x2 - padding]
+    let rangeY = [scaledCoordinates.y1 + padding, scaledCoordinates.y2 - padding]
 
     SectionContext.update(
       newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
