@@ -3,6 +3,7 @@
   import Scatterplot from './examples/Scatterplot.svelte'
   import GridLayout from './examples/GridLayout.svelte'
   import ResizeLayout from './examples/ResizeLayout.svelte'
+  import CropSection from './examples/CropSection.svelte'
 </script>
 
 <style>
@@ -39,6 +40,11 @@
   <div class="graphic-holder" style="padding-left: 50px">
     <h1>Responsive</h1>
     <ResizeLayout />
-  </div>  
+  </div>
+
+  <div class="graphic-holder" style="padding-left: 100px">
+    <h1>Crop Section</h1>
+    <CropSection />
+  </div>
 
 </div>

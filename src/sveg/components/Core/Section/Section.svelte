@@ -36,8 +36,10 @@
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
 
+  let scaledCoordinates
+
   $: {
-    let scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+    scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
     let rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
     let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
 
@@ -55,6 +57,16 @@
   })
 </script>
 
-<g class="section">
+<defs>
+  <clipPath id={`clip-${sectionId}`}>
+    <rect 
+      x={scaledCoordinates.x1} y={scaledCoordinates.y1}
+      width={scaledCoordinates.x2 - scaledCoordinates.x1}
+      height={scaledCoordinates.y2 - scaledCoordinates.y1}
+    />
+  </clipPath>
+</defs>
+
+<g class="section" clip-path={`url(#clip-${sectionId})`}>
   <slot />
 </g>
