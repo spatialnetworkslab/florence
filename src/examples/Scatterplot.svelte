@@ -93,7 +93,6 @@
           fill={transformation === 'identity' ? 'black' : 'blue'}
           radius={transformation === 'identity' ? 3 : 6}
           index={filteredData.column('$index')}
-          transition={duration}
           onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
           onMouseout={handleMouseout}
         />
@@ -103,7 +102,6 @@
           y={50}
           fill={big ? 'blue' : 'red'}
           radius={big ? 50 : 10}
-          transition={duration}
           onClick={() => log('BOOM')}
           onMouseover={() => big = true}
           onMouseout={() => big = false}
