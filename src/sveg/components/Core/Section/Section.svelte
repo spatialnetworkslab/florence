@@ -34,6 +34,7 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let padding = 3
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -43,10 +44,12 @@
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
 
+  let scaledCoordinates
+
   $: {
-    let scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-    let rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
-    let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
+    scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+    let rangeX = [scaledCoordinates.x1 + padding, scaledCoordinates.x2 - padding]
+    let rangeY = [scaledCoordinates.y1 + padding, scaledCoordinates.y2 - padding]
 
     if (!scaleGeo && (scaleX && scaleY)){
       SectionContext.update(
@@ -90,6 +93,16 @@
 
 </script>
 
-<g class="section">
+<defs>
+  <clipPath id={`clip-${sectionId}`}>
+    <rect 
+      x={scaledCoordinates.x1} y={scaledCoordinates.y1}
+      width={scaledCoordinates.x2 - scaledCoordinates.x1}
+      height={scaledCoordinates.y2 - scaledCoordinates.y1}
+    />
+  </clipPath>
+</defs>
+
+<g class="section" clip-path={`url(#clip-${sectionId})`}>
   <slot />
 </g>
