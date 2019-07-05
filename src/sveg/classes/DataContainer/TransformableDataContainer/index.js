@@ -1,4 +1,3 @@
-
 import DataContainer from '../index.js'
 import transformations from './transformations'
 
@@ -61,10 +60,10 @@ export default class TransformableDataContainer {
     return this
   }
 
-  // reproject (reprojectInstructions) {
-  //   this._data = transformations.reproject(this._data, reprojectInstructions)
-  //   return this
-  // }
+  reproject (reprojectInstructions) {
+    this._data = transformations.reproject(this._data, reprojectInstructions)
+    return this
+  }
 
   select (selection) {
     this._data = transformations.select(this._data, selection)

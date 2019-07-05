@@ -1,4 +1,3 @@
-
 import produce from 'immer'
 
 import { checkFormatColumnData, checkFormatInternal } from './utils/checkFormat.js'
