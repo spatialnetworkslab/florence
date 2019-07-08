@@ -3317,6 +3317,11 @@ merge-stream@^1.0.1:
   dependencies:
     readable-stream "^2.0.1"
 
+mgrs@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/mgrs/-/mgrs-1.0.0.tgz#fb91588e78c90025672395cb40b25f7cd6ad1829"
+  integrity sha1-+5FYjnjJACVnI5XLQLJffNatGCk=
+
 micromatch@^3.1.10, micromatch@^3.1.4:
   version "3.1.10"
   resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-3.1.10.tgz#70859bc95c9840952f359a068a3fc49f9ecfac23"
@@ -3959,6 +3964,14 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
+proj4@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/proj4/-/proj4-2.5.0.tgz#e3a88ce7e7a07221aaccbc6760dd2eafee745f03"
+  integrity sha512-XZTRT7OPdLzgvtTqL8DG2cEj8lYdovztOwiwpwRSYayOty5Ipf3H68dh/fiL+HKDEyetmQSMhkkMGiJoyziz3w==
+  dependencies:
+    mgrs "1.0.0"
+    wkt-parser "^1.2.0"
+
 prompts@^2.0.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/prompts/-/prompts-2.1.0.tgz#bf90bc71f6065d255ea2bdc0fe6520485c1b45db"
@@ -4287,6 +4300,13 @@ rollup-plugin-commonjs@^9.3.4:
     resolve "^1.10.0"
     rollup-pluginutils "^2.6.0"
 
+rollup-plugin-json@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-json/-/rollup-plugin-json-4.0.0.tgz#a18da0a4b30bf5ca1ee76ddb1422afbb84ae2b9e"
+  integrity sha512-hgb8N7Cgfw5SZAkb3jf0QXii6QX/FOkiIq2M7BAQIEydjHvTyxXHQiIzZaTFgx1GK0cRCHOCBHIyEkkLdWKxow==
+  dependencies:
+    rollup-pluginutils "^2.5.0"
+
 rollup-plugin-livereload@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/rollup-plugin-livereload/-/rollup-plugin-livereload-1.0.1.tgz#b1df6642d55cafcd87dac54bc4f7a657ab859fdf"
@@ -4335,7 +4355,7 @@ rollup-plugin-terser@^4.0.4:
     serialize-javascript "^1.6.1"
     terser "^3.14.1"
 
-rollup-pluginutils@^2.3.1, rollup-pluginutils@^2.3.3, rollup-pluginutils@^2.6.0:
+rollup-pluginutils@^2.3.1, rollup-pluginutils@^2.3.3, rollup-pluginutils@^2.5.0, rollup-pluginutils@^2.6.0:
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-2.8.1.tgz#8fa6dd0697344938ef26c2c09d2488ce9e33ce97"
   integrity sha512-J5oAoysWar6GuZo0s+3bZ6sVZAC0pfqKz68De7ZgDi5z63jOVZn1uJL/+z1jeKHNbGII8kAyHF5q8LnxSX5lQg==
@@ -5112,6 +5132,11 @@ wide-align@^1.1.0:
   integrity sha512-QGkOQc8XL6Bt5PwnsExKBPuMKBxnGxWWW3fU55Xt4feHozMUhdUMaBCk290qpm/wG5u/RSKzwdAC4i51YigihA==
   dependencies:
     string-width "^1.0.2 || 2"
+
+wkt-parser@^1.2.0:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/wkt-parser/-/wkt-parser-1.2.3.tgz#240fe1dacc816bfe5674b66180041059eaa9a9ba"
+  integrity sha512-s7zrOedGuHbbzMaQOuf8HacuCYp3LmmrHjkkN//7UEAzsYz7xJ6J+j/84ZWZkQcrRqi3xXyuc4odPHj7PEB0bw==
 
 wordwrap@~0.0.2:
   version "0.0.3"
