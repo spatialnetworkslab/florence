@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, CoordinateTransformation, Polygon, DataContainer } from '../sveg'
+  import { Graphic, Section, CoordinateTransformation, Polygon, DataContainer } from '../florence'
 
   function getRandomValueArray (N, range) {
     return new Array(N).fill(0).map(() => Math.random() * range)
