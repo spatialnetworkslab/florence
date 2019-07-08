@@ -76,7 +76,6 @@
         onMouseover={() => isHovering = true}
         onMouseout={() => isHovering = false}
         fill={isHovering ? 'blue' : 'yellow'}
-        transition={2000}
       />
     
     </CoordinateTransformation>
