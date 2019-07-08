@@ -1,6 +1,6 @@
 <script>
 	import { scaleLinear, scaleBand } from 'd3-scale'
-	import { Graphic, Section, Point, Rectangle, DataContainer, Grid } from '../sveg'
+	import { Graphic, Section, Point, Rectangle, DataContainer, Grid } from '../florence'
 
 	let cols = 2
 

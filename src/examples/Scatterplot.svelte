@@ -4,7 +4,7 @@
     Graphic, Section, CoordinateTransformation, 
     PointLayer, Point,
     DataContainer 
-  } from '../sveg'
+  } from '../florence'
 
 	export let N = 100
 
