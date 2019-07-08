@@ -16,7 +16,7 @@
 
   import InteractionManager from '../../../classes/InteractionManager'
 
-  import { scaleCoordinates } from '../../Marks/Rectangle/generateCoordinates.js'
+  import { scaleCoordinates } from '../../Marks/Rectangle/generateScreenGeometry.js'
 
   let sectionId = getId()
 

@@ -1,4 +1,4 @@
-import { warn } from '../../../utils/logging.js'
+import { warn } from 'logging.js'
 
 // Gets all cells in grid in format { areaName: {x1, x2, y1, y2}, ... }
 // given the template specs and definition

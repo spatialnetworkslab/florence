@@ -1,6 +1,10 @@
-import pointDistance from '../../../utils/geometry/pointDistance.js'
+import { pointDistance } from 'geometryUtils'
 
-export default function pointCollision (coordinates, geometry) {
-  let distance = pointDistance([coordinates.x, coordinates.y], [geometry.x, geometry.y])
-  return distance < geometry.radius
+export default function pointCollision (coordinates, pointAttributes) {
+  let distance = pointDistance(
+    [coordinates.x, coordinates.y],
+    pointAttributes.screenGeometry.coordinates
+  )
+
+  return distance < pointAttributes.radius
 }

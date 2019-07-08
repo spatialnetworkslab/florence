@@ -1,8 +1,8 @@
 import { writable } from 'svelte/store'
 import { tweened } from 'svelte/motion'
 import { cubicOut } from 'svelte/easing'
-import { interpolateLayer } from './interpolateLayer.js'
-import { transitionGeometryLayer } from './geometry'
+import { interpolate } from 'd3-interpolate'
+import { transitionGeometries } from 'geometryUtils'
 
 /**
  * Like createTransitionable, returns either a Svelte store, or a Svelte 'tweened' store,
@@ -13,16 +13,15 @@ import { transitionGeometryLayer } from './geometry'
  * @param {*} aestheticValue The initial value of the store.
  * @param {Number|Object} transitionOptions A number indicating the transtion duration, or an Object
  * with aesthetic names as keys, and Numbers OR Objects as values.
- * @param {String} [geometryType] For geometry aesthetics: the type of geometry.
  * @returns {writable|tweened}
  */
-export function createTransitionableLayer (aestheticName, aestheticValue, transitionOptions, geometryType) {
+export function createTransitionableLayer (aestheticName, aestheticValue, transitionOptions) {
   if (transitionOptions === undefined) {
     return writable(aestheticValue)
   }
 
   if (transitionOptions.constructor === Number) {
-    let options = createOptionsFromDuration(aestheticName, transitionOptions, geometryType)
+    let options = createOptionsFromDuration(aestheticName, transitionOptions)
     return tweened(aestheticValue, options)
   }
 
@@ -32,12 +31,12 @@ export function createTransitionableLayer (aestheticName, aestheticValue, transi
     let aestheticTransition = transitionOptions[aestheticName]
 
     if (aestheticTransition && aestheticTransition.constructor === Number) {
-      let options = createOptionsFromDuration(aestheticName, aestheticTransition, geometryType)
+      let options = createOptionsFromDuration(aestheticName, aestheticTransition)
       return tweened(aestheticValue, options)
     }
 
     if (aestheticTransition && aestheticTransition.constructor === Object) {
-      let options = createOptionsFromOptions(aestheticName, aestheticTransition, geometryType)
+      let options = createOptionsFromOptions(aestheticName, aestheticTransition)
       return tweened(aestheticValue, options)
     }
   }
@@ -45,28 +44,34 @@ export function createTransitionableLayer (aestheticName, aestheticValue, transi
   throw new Error(`Invalid transition for ${aestheticName}`)
 }
 
-function createOptionsFromDuration (aestheticName, duration, geometryType) {
+function createOptionsFromDuration (aestheticName, duration) {
   switch (aestheticName) {
-    case 'coordinates':
-      return { duration, easing: cubicOut, interpolate: transitionGeometryLayer[geometryType] }
-
     case 'geometry':
-      return { duration, easing: cubicOut, interpolate: transitionGeometryLayer[geometryType] }
+      return { duration, easing: cubicOut, interpolate: transitionGeometries }
 
     default:
       return { duration, easing: cubicOut, interpolate: interpolateLayer }
   }
 }
 
-function createOptionsFromOptions (aestheticName, transitionOptions, geometryType) {
+function createOptionsFromOptions (aestheticName, transitionOptions) {
   switch (aestheticName) {
-    case 'coordinates':
-      return Object.assign({ interpolate: transitionGeometryLayer[geometryType] }, transitionOptions)
-
     case 'geometry':
-      return Object.assign({ interpolate: transitionGeometryLayer[geometryType] }, transitionOptions)
+      return Object.assign({ interpolate: transitionGeometries }, transitionOptions)
 
     default:
       return Object.assign({ interpolate: interpolateLayer }, transitionOptions)
   }
+}
+
+function interpolateLayer (a, b) {
+  let aWithoutObsoleteIndices = {}
+
+  for (let index in a) {
+    if (b.hasOwnProperty(index)) {
+      aWithoutObsoleteIndices[index] = a[index]
+    }
+  }
+
+  return interpolate(aWithoutObsoleteIndices, b)
 }

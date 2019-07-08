@@ -13,7 +13,7 @@
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   
-  import { generateCoordinates } from './generateCoordinates.js'
+  import generateScreenGeometry from './generateScreenGeometry.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
 
   let markId = getId()
@@ -22,8 +22,9 @@
   const initDone = () => !initPhase
 
   // Props
-  export let x
-  export let y
+  export let x = undefined
+  export let y = undefined
+  export let geometry = undefined
   export let radius = 3
   export let fill = 'black'
   export let transition = undefined
@@ -37,39 +38,41 @@
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.subscribe()
 
-  // Convert coordinates
-  let coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
+  // Create screenGeometry
+  let screenGeometry = generateScreenGeometry(
+    { x, y, geometry }, $sectionContext, $coordinateTransformationContext
+  )
 
-  // Create transitionables
-  let tr_x = createTransitionable('x', coordinates[0], transition)
-  let tr_y = createTransitionable('y', coordinates[1], transition)
+  // Initiate transitionables
+  let tr_screenGeometry = createTransitionable('geometry', screenGeometry, transition)
   let tr_radius = createTransitionable('radius', radius, transition)
   let tr_fill = createTransitionable('fill', fill, transition)
 
-  // Handle coordinate/geometry prop transitions
+  // Handle screenGeometry transitions
   $: {
     if (initDone()) {
-      coordinates = generateCoordinates({ x, y }, $sectionContext, $coordinateTransformationContext)
-      tr_x.set(coordinates[0])
-      tr_y.set(coordinates[1])
+      screenGeometry = generateScreenGeometry(
+        { x, y, geometry }, $sectionContext, $coordinateTransformationContext
+      )
+
+      tr_screenGeometry.set(screenGeometry)
       tr_radius.set(radius)
 
       updateInteractionManagerIfNecessary()
     }
   }
 
-  // Handle other prop transitions
+  // Handle other transitions
   $: { if (initDone()) tr_fill.set(fill) }
 
   let previousTransition
 
-  // Update transition parameters
+  // Update transitionables
   beforeUpdate(() => {
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
-      tr_x = createTransitionable('x', $tr_x, transition)
-      tr_y = createTransitionable('y', $tr_y, transition)
+      tr_screenGeometry = createTransitionable('geometry', $tr_screenGeometry, transition)
       tr_radius = createTransitionable('radius', $tr_radius, transition)
       tr_fill = createTransitionable('fill', $tr_fill, transition)
     }
@@ -112,7 +115,7 @@
 
   function createMarkData () {
     return {
-      geometry: { x: coordinates[0], y: coordinates[1], radius },
+      attributes: { screenGeometry, radius },
       markId
     }
   }
@@ -121,8 +124,8 @@
 {#if $graphicContext.output() === 'svg'}
 
   <circle 
-    cx={$tr_x} 
-    cy={$tr_y} 
+    cx={$tr_screenGeometry.coordinates[0]} 
+    cy={$tr_screenGeometry.coordinates[1]} 
     r={$tr_radius} 
     fill={$tr_fill} 
   />

@@ -1,17 +1,17 @@
 <script>
 	import { scaleLinear, scaleBand } from 'd3-scale'
-	import { Graphic, Section, Point, DataContainer, Grid } from '../sveg'
+	import { Graphic, Section, Point, Rectangle, DataContainer, Grid } from '../sveg'
 
 	let cols = 2
 
 	function generateData (N) {
-  	let newData = { a: [], b: [], fruit: [] }
-  	let allFruit = ['red', 'blue', 'green', 'orange']
+  	let newData = { a: [], b: [], color: [] }
+  	let allColors = ['red', 'blue', 'green', 'orange']
 
   	for (let i = 0; i < N; i++) {
   		let cat = Math.floor(Math.random() * 4)
 
-  		newData.fruit.push(allFruit[cat])
+  		newData.color.push(allColors[cat])
   		newData.a.push(Math.floor(Math.random() * 50) + 25)
   		newData.b.push(Math.floor(Math.random() * 50))
   	}
@@ -21,11 +21,10 @@
 
   let data = new DataContainer(generateData(50))
 
-  const scaleFruit = scaleBand().domain(data.domain('fruit'))
   const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scaleLinear().domain(data.domain('b'))
 
-  const groupedData = data.groupBy('fruit').done()
+  const groupedData = data.groupBy('color').done()
 
   $: rows = Math.ceil(4/cols)
 </script>
@@ -46,24 +45,26 @@
 			y1={50} y2={450}
 			columns={cols}
 			rows={rows}
-			areaNames={['blue', 'orange', 'red', 'green']}
+			areaNames={groupedData.domain('color')}
 			let:cells
 		>
 
-			{#each groupedData.rows() as facet}
+			{#each groupedData.rows() as facet (facet.$index)}
 
 				<Section
-					{...cells[facet.fruit]}
+					{...cells[facet.color]}
 					scaleX={scaleA}
 					scaleY={scaleB}
 				>
 
-					{#each facet.$grouped.rows() as row}
+          <Rectangle fill={facet.color} opacity={0.4} />
+
+					{#each facet.$grouped.rows() as row (row.$index)}
 
 						<Point 
 							x={row.a}
 							y={row.b} 
-							fill={row.fruit}
+							fill={row.color}
 						/>
 
 					{/each}

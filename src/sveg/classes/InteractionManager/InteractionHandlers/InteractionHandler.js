@@ -18,7 +18,7 @@ export default class InteractionHandler {
       this._numberOfInteractions++
       this._layerCallbacks[layerId] = callback
 
-      this._spatialIndex.loadLayer(layerId)
+      this._spatialIndex.indexLayer(layerId)
     }
   }
 
@@ -28,7 +28,7 @@ export default class InteractionHandler {
       delete this._layerCallbacks[layerId]
       this._removeEventListenerIfNecessary()
 
-      this._spatialIndex.removeLayer(layerId)
+      this._spatialIndex.unindexLayer(layerId)
     }
   }
 
@@ -38,7 +38,7 @@ export default class InteractionHandler {
     this._numberOfInteractions++
     this._markCallbacks[markId] = callback
 
-    this._spatialIndex.loadMark(markId)
+    this._spatialIndex.indexMark(markId)
   }
 
   removeMarkInteraction (markId) {
@@ -46,7 +46,7 @@ export default class InteractionHandler {
     delete this._markCallbacks[markId]
     this._numberOfInteractions--
 
-    this._spatialIndex.removeMark(markId)
+    this._spatialIndex.unindexMark(markId)
   }
 
   _isInLayer (hit) {

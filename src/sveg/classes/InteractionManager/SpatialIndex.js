@@ -7,13 +7,13 @@ export default class SpatialIndex {
     this._interactionHandler = interactionHandler
   }
 
-  // Layer loading and removing
-  loadLayer (layerId) {
+  // Layer indexing and unindexing
+  indexLayer (layerId) {
     let indexableData = this._interactionHandler._layers[layerId]
     this._rbush.load(indexableData)
   }
 
-  removeLayer (layerId) {
+  unindexLayer (layerId) {
     let layer = this._interactionHandler._layers[layerId]
 
     for (let i = 0; i < layer.length; i++) {
@@ -23,12 +23,12 @@ export default class SpatialIndex {
   }
 
   // Mark loading and removing
-  loadMark (markId) {
+  indexMark (markId) {
     let indexableItem = this._interactionHandler._marks[markId]
     this._rbush.insert(indexableItem)
   }
 
-  removeMark (markId) {
+  unindexMark (markId) {
     let indexableItem = this._interactionHandler._marks[markId]
     this._rbush.remove(indexableItem)
   }
@@ -47,7 +47,7 @@ export default class SpatialIndex {
       let indexQueryResult = indexQueryResults[i]
       let collisionTest = collisionTests[indexQueryResult.markType]
 
-      if (collisionTest(coordinates, indexQueryResult.geometry)) {
+      if (collisionTest(coordinates, indexQueryResult.attributes)) {
         hits.push(indexQueryResult)
       }
     }
