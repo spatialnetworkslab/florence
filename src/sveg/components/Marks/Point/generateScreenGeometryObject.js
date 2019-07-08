@@ -4,7 +4,7 @@ import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
 import { ensureValidCombination } from './generateScreenGeometry.js'
 import { isDefined, isUndefined } from 'equals.js'
-import getNMarks from '../utils/getNMarks.js'
+import getNumberOfMarks from '../utils/getNumberOfMarks.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {
   let { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
@@ -44,7 +44,7 @@ function createScaledGeometryArrayFromCoordinates (x, y, sectionContext) {
   let xValue = x.constructor === Function ? x(scales) : x
   let yValue = y.constructor === Function ? y(scales) : y
 
-  let length = getNPoints(xValue, yValue)
+  let length = getNumberOfPoints(xValue, yValue)
 
   let xIsPrimitive = xValue.constructor !== Array
   let yIsPrimitive = yValue.constructor !== Array
@@ -57,7 +57,7 @@ function createScaledGeometryArrayFromCoordinates (x, y, sectionContext) {
   return { scaledGeometryArray, length }
 }
 
-const getNPoints = getNMarks('PointLayer')
+const getNumberOfPoints = getNumberOfMarks('PointLayer')
 
 function scaleCoordinate (c, scale, needsScaling, isPrimitive, length) {
   let array

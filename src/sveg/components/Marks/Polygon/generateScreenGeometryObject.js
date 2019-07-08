@@ -3,7 +3,7 @@ import { scaleGeometries } from 'geometryUtils'
 import { ensureValidCombination, createGeometryFromScaledProps } from './generateScreenGeometry.js'
 import getIndexArray from '../utils/getIndexArray.js'
 import { isDefined, isUndefined } from 'equals.js'
-import getNMarks from '../utils/getNMarks.js'
+import getNumberOfMarks from '../utils/getNumberOfMarks.js'
 
 export default function (
   geometryProps, sectionContext, coordinateTransformationContext, interpolate, indexProp
@@ -48,7 +48,7 @@ function createScaledGeometryArrayFromCoordinates (x, y, sectionContext) {
   let xValues = xNeedsScaling ? x : x(scales)
   let yValues = yNeedsScaling ? y : y(scales)
 
-  let length = getNPolygons(xValues, yValues)
+  let length = getNumberOfPolygons(xValues, yValues)
 
   let scaledGeometryArray = []
 
@@ -63,4 +63,4 @@ function createScaledGeometryArrayFromCoordinates (x, y, sectionContext) {
   return { scaledGeometryArray, length }
 }
 
-const getNPolygons = getNMarks('PolygonLayer')
+const getNumberOfPolygons = getNumberOfMarks('PolygonLayer')
