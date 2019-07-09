@@ -15,7 +15,6 @@ export function indexPointLayer ({ geometries, indexArray, layerId }) {
 
   for (let i = 0; i < indexArray.length; i++) {
     let $index = indexArray[i]
-
     let pointGeometry = getPoint(geometries, $index)
     let item = calculateBBox(pointGeometry)
 

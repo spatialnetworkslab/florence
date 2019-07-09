@@ -15,6 +15,7 @@ export default class MouseoutHandler extends InteractionHandler {
       let eventManager = interactionManager._eventManager
       let listenerId = interactionManager._id + '-mouseout'
 
+      // How do we chain listening for events here? 
       eventManager.addEventListener('mousemove', listenerId, handler)
     }
   }
@@ -31,7 +32,6 @@ export default class MouseoutHandler extends InteractionHandler {
 
   _handleEvent (coordinates, mouseEvent) {
     this._currentMouseoverIds = {}
-
     this._storeSectionHits(mouseEvent)
 
     let spatialIndex = this._spatialIndex
@@ -42,9 +42,10 @@ export default class MouseoutHandler extends InteractionHandler {
 
   _storeSectionHits (mouseEvent) {
     let sections = this._interactionManager._sections
+    let eventCoordinates = { 'x': mouseEvent.clientX, 'y': mouseEvent.clientY }
 
     for (let s in sections) {
-      if (!this._mouseAlreadyOver(s)) {
+      if (this._isInSection(eventCoordinates, sections[s]) && !this._mouseAlreadyOver(s)) {
         this._previousHits[s] = sections[s]
       }
       this._currentMouseoverIds[s] = true
@@ -64,20 +65,18 @@ export default class MouseoutHandler extends InteractionHandler {
     }
   }
 
-
-  // how do mouseout events get activated
+  // TO FIX
   _fireForMouseOutHits (mouseEvent) {
     let sections = this._interactionManager._sections
     let eventCoordinates = { 'x': mouseEvent.clientX, 'y': mouseEvent.clientY }
 
     for (let hitId in this._previousHits) {
-
       // activates if it's not currently being hovered over
       if (!this._currentMouseoverIds.hasOwnProperty(hitId)) {
         let hit = this._previousHits[hitId]
-
+      
         if (sections.hasOwnProperty(hitId)) {
-          if (this._isInSection(eventCoordinates, sections[s])){
+          if (this._isInSection(eventCoordinates, sections[hitId])) {
             this._sectionCallbacks[hitId](hitId, mouseEvent)
           }
         }
@@ -89,7 +88,6 @@ export default class MouseoutHandler extends InteractionHandler {
         if (this._isMark(hit)) {
           this._markCallbacks[hit.markId](mouseEvent)
         }
-
         delete this._previousHits[hitId]
       }
     }
@@ -99,7 +97,6 @@ export default class MouseoutHandler extends InteractionHandler {
     let id
     if (this._isInLayer(hit)) id = hit.layerId + '-' + hit.$index
     if (this._isMark(hit)) id = hit.markId
-
     return id
   }
 

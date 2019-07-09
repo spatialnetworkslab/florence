@@ -5,6 +5,7 @@ export default class EventManager {
     this._domNode = domNode
     this._svgPoint = this._domNode.createSVGPoint()
 
+    // event normalisation here? 
     this._clickTracker = new EventTracker(this, 'click')
     this._mousemoveTracker = new EventTracker(this, 'mousemove')
     this._mousedownTracker = new EventTracker(this, 'mousedown')
@@ -60,6 +61,7 @@ class EventTracker {
 
   _handleEvent (mouseEvent) {
     let coordinates = this._eventManager._getMouseCoordinates(mouseEvent)
+   
     for (let listenerId in this._callbacks) {
       this._callbacks[listenerId](coordinates, mouseEvent)
     }

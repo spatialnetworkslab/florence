@@ -34,7 +34,13 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+
+  // export let interactionManager = undefined
+  // InteractionManager.registerIntx
+
+  // Aesthetics
   export let padding = 3
+  export let backgroundColor = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -87,7 +93,6 @@
       if (onMouseover) $interactionManagerContext.addSectionInteraction('mouseover', sectionId, onMouseover)
       if (onMouseout) $interactionManagerContext.addSectionInteraction('mouseout', sectionId, onMouseout)
       if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', sectionId, onWheel)
-      //if (onClick) $interactionManagerContext.addSectionInteraction('click', sectionId, onClick)
     }
   }
 
@@ -103,6 +108,10 @@
   </clipPath>
 </defs>
 
-<g class="section" clip-path={`url(#clip-${sectionId})`}>
+<g class="section" clip-path={`url(#clip-${sectionId})`} >
+  {#if backgroundColor}
+    <rect width="100%" height="100%" fill={backgroundColor}/>
+  {/if}
+  
   <slot />
 </g>

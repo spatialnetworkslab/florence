@@ -18,7 +18,6 @@ export default class InteractionHandler {
       this._addEventListenerIfNecessary()
       this._numberOfInteractions++
       this._sectionCallbacks[sectionId] = callback
-      // this._spatialIndex.loadLayer(sectionId)
     }
   }
 
@@ -70,7 +69,7 @@ export default class InteractionHandler {
   }
 
   _isInSection (hit, geometry) {
-    if (hit.x <= geometry.maxX && hit.x >= geometry.minX && hit.y <= geometry.maxY && hit.y >= geometry.minY) {
+    if (hit.x <= geometry.x2 && hit.x >= geometry.x1 && hit.y <= geometry.y2 && hit.y >= geometry.y1) {
       return true
     }
     return false

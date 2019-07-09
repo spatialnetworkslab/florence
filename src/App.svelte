@@ -41,11 +41,10 @@
     <h1>Responsive</h1>
     <ResizeLayout />
   </div>   -->
-  </div>
 
   <div class="graphic-holder" style="padding-left: 100px">
     <h1>Crop Section</h1>
     <CropSection />
   </div>
-
+  
 </div>

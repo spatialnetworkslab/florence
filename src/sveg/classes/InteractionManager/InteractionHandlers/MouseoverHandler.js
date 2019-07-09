@@ -46,18 +46,15 @@ export default class MouseoverHandler extends InteractionHandler {
     let eventCoordinates = { 'x': mouseEvent.clientX, 'y': mouseEvent.clientY }
 
     for (let s in sections) {
-      //console.log('___', this._mouseAlreadyOver(s))
+
       if (!this._mouseAlreadyOver(s)) {
-        //console.log(this._currentMouseoverIds, this._sectionCallbacks)
         this._previousMouseoverIds[s] = true
-        if (this._isInSection(eventCoordinates, sections[s]) && !this._currentMouseoverIds[s] && this._sectionCallbacks[s]) {
+        if (this._isInSection(eventCoordinates, sections[s]) && this._sectionCallbacks[s]) {
           this._sectionCallbacks[s](s, mouseEvent)
-          //console.log(this._currentMouseoverIds)
         }
-        this._currentMouseoverIds[s] = true
       }
+      //this._currentMouseoverIds[s] = true
     }
-    //console.log(this._currentMouseoverIds)
   }
 
   _handleHits (hits, mouseEvent) {
@@ -83,12 +80,10 @@ export default class MouseoverHandler extends InteractionHandler {
 
   _cleanupPreviousHits () {
     for (let hitId in this._previousMouseoverIds) {
-      //console.log(hitId, !this._currentMouseoverIds.hasOwnProperty(hitId))
       if (!this._currentMouseoverIds.hasOwnProperty(hitId)) {
         delete this._previousMouseoverIds[hitId]
       }
     }
-    //console.log('1234',this._currentMouseoverIds)
   }
 
   _getHitId (hit) {

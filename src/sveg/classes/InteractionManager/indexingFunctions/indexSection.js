@@ -12,10 +12,10 @@ export function indexSection (sectionData) {
 
 function calculateBBox (sectionGeometry) {
   return {
-    minX: sectionGeometry.rangeX[0],
-    maxX: sectionGeometry.rangeX[1],
-    minY: sectionGeometry.rangeY[0],
-    maxY: sectionGeometry.rangeY[1]
+    x1: sectionGeometry.rangeX[0],
+    x2: sectionGeometry.rangeX[1],
+    y1: sectionGeometry.rangeY[0],
+    y2: sectionGeometry.rangeY[1]
   }
 }
 
