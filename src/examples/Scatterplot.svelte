@@ -87,9 +87,9 @@
   <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
 </div>
 
-<!-- <div>
+<div>
   <button on:click={() => treshold = 40}>Filter: x > 40</button>
-</div> -->
+</div>
 
 <div>
 
