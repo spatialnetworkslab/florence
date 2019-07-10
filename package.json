@@ -1,8 +1,8 @@
 {
   "name": "florence",
   "version": "0.0.1",
-  "svelte": "src/index.mjs",
-  "module": "src/index.mjs",
+  "svelte": "src/index.js",
+  "module": "src/index.js",
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",

@@ -1,4 +1,4 @@
-import { DataContainer } from '../../../../'
+import DataContainer from '../../../../src/classes/DataContainer/index.js'
 import {
   valid, missingType, missingFeatures, emptyFeatures,
   notSameProperties, validGeometries,

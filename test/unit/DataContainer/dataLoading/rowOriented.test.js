@@ -1,4 +1,4 @@
-import { DataContainer } from '../../../../'
+import DataContainer from '../../../../src/classes/DataContainer/index.js'
 
 describe('loading row-oriented data', () => {
   test('valid row-oriented data throws no error', () => {
