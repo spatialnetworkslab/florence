@@ -27,6 +27,8 @@ export default class WheelHandler extends InteractionHandler {
     if (Object.keys(sections).length > 0) {
       for (let s in sections) {
         if (this._isInSection(coordinates, sections[s])) {
+
+          // Thinking of taking this object execution code out – would users possibly feed objects to the interactionManager?
           if (typeof this._sectionCallbacks[sections[s].sectionId] === 'object') {
             this._sectionCallbacks[sections[s].sectionId].callback(s.sectionId, mouseEvent)
           } else {
@@ -35,6 +37,5 @@ export default class WheelHandler extends InteractionHandler {
         }
       }
     }
-
   }
 }

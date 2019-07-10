@@ -5,6 +5,7 @@
     PointLayer, Point,
     DataContainer 
   } from '../sveg'
+
 	export let N = 100
 	const data = new DataContainer(generateData(N, 0.25))
 	function generateData (N, error) {
@@ -41,32 +42,6 @@
     hoverPoints = hoverPoints
   }
 
-  let radius = 7
-
-  // how to scale increase/decrease in radius
-  // how to scale other props?
-  // const handleZoom = {
-  //   delta: 'wheelDelta',
-  //   zoomFactor: 0.3,
-  //   maxZoom: 2,
-  //   minZoom: 1,
-  //   callback: function (id, event) {
-  //     scaleA.domain[0] = scaleA.domain[0] - event[this.delta] * this.zoomFactor
-  //     scaleA.domain[1] = scaleA.domain[1] + event[this.delta] * this.zoomFactor
-  //     scaleB.domain[0] = scaleB.domain[0] - event[this.delta] * this.zoomFactor
-  //     scaleB.domain[1] = scaleB.domain[1] + event[this.delta] * this.zoomFactor
-  //     console.log(event)
-  //     radius = radius - event[this.delta] * this.zoomFactor >= 0.5 ? radius - event[this.delta] * this.zoomFactor : 0.5
-  //   }
-  // }
-
-  function handleZoom(id, event) {
-    let delta = 'wheelDelta'
-    let zoomFactor = 0.3
-    let maxZoom = 2
-    let minZoom = 1
-    radius = radius - event[delta] * zoomFactor >= 0.5 ? radius - event[delta] * zoomFactor : 0.5
-  }
 </script>
 
 <div>
@@ -107,7 +82,6 @@
       backgroundColor={background}
       onMouseover={() => background = 'orange'}
       onMouseout={() => background = 'pink'}
-      onWheel={ handleZoom }
 		>
 
 			<CoordinateTransformation {transformation}>
@@ -115,7 +89,7 @@
           x={filteredData.column('a')}
           y={filteredData.column('b')}
           fill={transformation === 'identity' ? 'black' : 'blue'}
-          radius={transformation === 'identity' ? radius : 6}
+          radius={transformation === 'identity' ? 3 : 6}
           index={filteredData.column('$index')}
           transition={duration}
           onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
@@ -126,7 +100,7 @@
           x={50}
           y={50}
           fill={big ? 'blue' : 'red'}
-          radius={big ? 50 : radius* 2}
+          radius={big ? 50 : 10}
           transition={duration}
           onClick={() => log('BOOM')}
           onMouseover={() => big = true}

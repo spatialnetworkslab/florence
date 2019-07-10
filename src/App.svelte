@@ -22,17 +22,17 @@
 
 <div class="container">
 
-  <!-- <div class="graphic-holder">
+  <div class="graphic-holder">
     <h1>Bar chart</h1>
     <BarChart />
-  </div> -->
+  </div>
 
   <div class="graphic-holder">
     <h1>Scatterplot</h1>
     <Scatterplot />
   </div>
 
-  <!-- <div class="graphic-holder">
+  <div class="graphic-holder">
     <h1>Grid</h1>
     <GridLayout />
   </div>
@@ -40,11 +40,11 @@
   <div class="graphic-holder" style="padding-left: 50px">
     <h1>Responsive</h1>
     <ResizeLayout />
-  </div>   -->
+  </div>  
 
   <div class="graphic-holder" style="padding-left: 100px">
-    <h1>Crop Section</h1>
+    <h1>Zoom Section (with wheel)</h1>
     <CropSection />
   </div>
-  
+
 </div>

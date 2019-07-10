@@ -34,9 +34,7 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
-
-  // export let interactionManager = undefined
-  // InteractionManager.registerIntx
+  //export let onPan = undefined
 
   // Aesthetics
   export let padding = 3
@@ -93,6 +91,7 @@
       if (onMouseover) $interactionManagerContext.addSectionInteraction('mouseover', sectionId, onMouseover)
       if (onMouseout) $interactionManagerContext.addSectionInteraction('mouseout', sectionId, onMouseout)
       if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', sectionId, onWheel)
+      //if (onPan) $interactionManagerContext.addSectionInteraction('pan', sectionId, onPan)
     }
   }
 
