@@ -50,7 +50,7 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test:integration": "run-p --race dev:test cy:run",
-    "test": "jest"
+    "test:unit": "jest"
   },
   "jest": {
     "verbose": true,
