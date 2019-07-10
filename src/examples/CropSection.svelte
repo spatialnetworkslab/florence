@@ -42,37 +42,39 @@
     let delta = 'wheelDelta', zoomFactor = 0.3, maxZoom = 2, minZoom = 1, scale = 1
     let pos = {x:0, y:0}
     let deltaVal = Math.max(-1, Math.min(1, event[delta]))
-    let zoom_x = event.pageX, zoom_y = event.pageY
-    let size = {w: 300, h: 300}
+
+    // an experiment on getting the zoom to happen on a particular point
+    // let zoom_x = event.pageX, zoom_y = event.pageY
+    // let size = {w: 300, h: 300}
 
     // determine the point on where the slide is zoomed in
-    let zoom_target = {}
-    zoom_target.x = (zoom_x - pos.x)/scale
-    zoom_target.y = (zoom_y - pos.y)/scale
+    // let zoom_target = {}
+    // zoom_target.x = (zoom_x - pos.x)/scale
+    // zoom_target.y = (zoom_y - pos.y)/scale
 
     // apply zoom
-    scale += deltaVal * zoomFactor * scale
-    scale = Math.max(1, Math.min(maxZoom, scale))
+    // scale += deltaVal * zoomFactor * scale
+    // scale = Math.max(1, Math.min(maxZoom, scale))
     //console.log('+++', scale)
 
     // calculate x and y based on zoom
-    pos.x = -zoom_target.x * scale + zoom_x
-    pos.y = -zoom_target.y * scale + zoom_y
+    // pos.x = -zoom_target.x * scale + zoom_x
+    // pos.y = -zoom_target.y * scale + zoom_y
 
     // Make sure the slide stays in its container area when zooming out
-    if(pos.x>0){
-      pos.x = 0
-    }
-    if(pos.x+size.w*scale<size.w) {
-      pos.x = -size.w*(scale-1)
-    }
+    // if(pos.x>0){
+    //   pos.x = 0
+    // }
+    // if(pos.x+size.w*scale<size.w) {
+    //   pos.x = -size.w*(scale-1)
+    // }
 
-    if(pos.y>0) {
-      pos.y = 0
-    }
-    if(pos.y+size.h*scale<size.h) {
-      pos.y = -size.h*(scale-1)
-    }
+    // if(pos.y>0) {
+    //   pos.y = 0
+    // }
+    // if(pos.y+size.h*scale<size.h) {
+    //   pos.y = -size.h*(scale-1)
+    // }
 
     // x1 = x1 - pos.x
     // x2 = x2 + pos.x

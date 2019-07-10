@@ -43,7 +43,7 @@
   </div>  
 
   <div class="graphic-holder" style="padding-left: 100px">
-    <h1>Zoom Section (with wheel)</h1>
+    <h1>Zoom section with wheel</h1>
     <CropSection />
   </div>
 
