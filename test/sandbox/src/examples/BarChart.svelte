@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, CoordinateTransformation, RectangleLayer, DataContainer } from '../../src/'
+  import { Graphic, Section, CoordinateTransformation, RectangleLayer, DataContainer } from '../../../../'
   
   let data = new DataContainer({ 
     quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
@@ -33,7 +33,6 @@
   const log = console.log
 </script>
 
-<h1>Bar chart</h1>
 <div>
   <label for="height-slider">Height:</label>
   <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
