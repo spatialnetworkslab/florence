@@ -24,7 +24,7 @@
     "rbush": "^3.0.0",
     "robust-point-in-polygon": "^1.0.3",
     "rollup": "^1.10.1",
-    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-commonjs": "^10.0.1",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-livereload": "^1.0.0",
     "rollup-plugin-node-globals": "^1.4.0",
