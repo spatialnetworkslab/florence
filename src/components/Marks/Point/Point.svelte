@@ -124,6 +124,7 @@
 {#if $graphicContext.output() === 'svg'}
 
   <circle 
+    class="point"
     cx={$tr_screenGeometry.coordinates[0]} 
     cy={$tr_screenGeometry.coordinates[1]} 
     r={$tr_radius} 

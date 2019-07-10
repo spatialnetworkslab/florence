@@ -133,6 +133,7 @@
 {#if $graphicContext.output() === 'svg'}
 
   <path 
+    class="rectangle"
     d={generatePath($tr_screenGeometry)} 
     fill={$tr_fill}
     style={`opacity: ${$tr_opacity}`}

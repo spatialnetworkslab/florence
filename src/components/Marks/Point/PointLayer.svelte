@@ -144,6 +144,7 @@
   {#each indexArray as $index ($index)}
 
     <circle
+      class="point"
       cx={$tr_screenGeometryObject[$index].coordinates[0]}
       cy={$tr_screenGeometryObject[$index].coordinates[1]}
       r={$tr_radiusObject[$index]}
