@@ -35,7 +35,8 @@ jobs:
 workflows:
   unit_and_integration:
     jobs:
+      - unit_test
       - cypress/run:
           yarn: true
           command: yarn run test:integration
-      - unit_test
+

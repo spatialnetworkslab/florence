@@ -54,6 +54,7 @@
   },
   "jest": {
     "verbose": true,
+    "testMatch": [ "**/*.test.js"],
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
     },
