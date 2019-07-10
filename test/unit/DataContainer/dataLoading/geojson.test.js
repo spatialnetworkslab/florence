@@ -1,6 +1,6 @@
-import DataContainer from '../../index.js'
+import { DataContainer } from '../../../../'
 import {
-  valid, missingType, missingFeatures, emptyFeatures, 
+  valid, missingType, missingFeatures, emptyFeatures,
   notSameProperties, validGeometries,
   propertiesWith$, propertiesWithSlash
 } from '../__data__/makeGeoJSON.js/'

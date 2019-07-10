@@ -1,4 +1,4 @@
-import DataContainer from '../../index.js'
+import { DataContainer } from '../../../../'
 
 describe('loading row-oriented data', () => {
   test('valid row-oriented data throws no error', () => {
@@ -58,7 +58,7 @@ describe('loading row-oriented data', () => {
       { $fruit: 'apple', quantity: 1 },
       { $fruit: 'banana', quantity: 2 },
       { $fruit: 'coconut', quantity: 3 }
-    ] 
+    ]
 
     expect(() => new DataContainer(data)).toThrow()
   })

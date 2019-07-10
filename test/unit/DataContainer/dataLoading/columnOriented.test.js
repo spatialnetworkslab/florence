@@ -1,4 +1,4 @@
-import DataContainer from '../../index.js'
+import { DataContainer } from '../../../../'
 
 describe('loading column-oriented data', () => {
   test('valid column-oriented data throws no error', () => {

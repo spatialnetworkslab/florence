@@ -1,4 +1,4 @@
-import DataContainer from '../../index.js'
+import { DataContainer } from '../../../../'
 import { valid } from '../__data__/makeGeoJSON.js'
 
 describe('determining column types', () => {
