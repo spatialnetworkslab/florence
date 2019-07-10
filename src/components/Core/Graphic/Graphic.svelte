@@ -31,16 +31,21 @@
   }
 
   let rootNode
+ 
+  // set up event and interaction manager
+  let eventManager = new EventManager()
+  EventManagerContext.update(eventManagerContext, eventManager)
+
+  let interactionManager = new InteractionManager()
+  interactionManager.setId('graphic')
+  interactionManager.linkEventManager(eventManager)
+
+  InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
   onMount(() => {
-    let eventManager = new EventManager(rootNode)
-    EventManagerContext.update(eventManagerContext, eventManager)
-
-    let interactionManager = new InteractionManager()
-    interactionManager.setId('graphic')
-    interactionManager.linkEventManager(eventManager)
-
-    InteractionManagerContext.update(interactionManagerContext, interactionManager)
+    // only on mount can we bind the svg root node and attach actual event listeners
+    eventManager.addRootNode(rootNode)
+    eventManager.attachEventListeners()
   })
 </script>
 

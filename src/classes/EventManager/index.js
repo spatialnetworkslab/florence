@@ -1,22 +1,43 @@
 let handler
 
 export default class EventManager {
-  constructor (domNode) {
-    this._domNode = domNode
-    this._svgPoint = this._domNode.createSVGPoint()
-
+  constructor () {
+    this._mounted = false
     this._clickTracker = new EventTracker(this, 'click')
     this._mousemoveTracker = new EventTracker(this, 'mousemove')
     this._mousedownTracker = new EventTracker(this, 'mousedown')
     this._mouseupTracker = new EventTracker(this, 'mouseup')
+    this._listeners = {}
+  }
+
+  addRootNode (domNode) {
+    this._domNode = domNode
+    this._svgPoint = this._domNode.createSVGPoint()
+    this._mounted = true
+  }
+
+  attachEventListeners () {
+    if (this._mounted) {
+      for (let listenerId in this._listeners) {
+        let { eventName, callback } = this._listeners[listenerId]
+        let tracker = this[getTrackerName(eventName)]
+        tracker.addEventListener(listenerId, callback)
+      }
+    } else {
+      // you should really only call this when mounted
+    }
   }
 
   addEventListener (eventName, listenerId, callback) {
-    let tracker = this[getTrackerName(eventName)]
-    tracker.addEventListener(listenerId, callback)
+    this._listeners[listenerId] = Object.assign({}, { eventName, callback })
+    if (this._mounted) {
+      let tracker = this[getTrackerName(eventName)]
+      tracker.addEventListener(listenerId, callback)
+    }
   }
 
   removeEventListener (eventName, listenerId) {
+    delete this._listeners[listenerId]
     let tracker = this[getTrackerName(eventName)]
     tracker.removeEventListener(listenerId)
   }

@@ -6,8 +6,6 @@
 </script>
 
 <script>
-  import { onMount } from 'svelte'
-
   import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from './SectionContext'
   import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
@@ -45,14 +43,13 @@
       newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
     )
   }
+  
+  // set up interaction manager
+  let interactionManager = new InteractionManager()
+  interactionManager.setId(sectionId)
+  interactionManager.linkEventManager($eventManagerContext)
+  InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
-  onMount(() => {
-    let interactionManager = new InteractionManager()
-    interactionManager.setId(sectionId)
-    interactionManager.linkEventManager($eventManagerContext)
-
-    InteractionManagerContext.update(interactionManagerContext, interactionManager)
-  })
 </script>
 
 <g class="section">
