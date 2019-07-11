@@ -6,7 +6,7 @@
   import Polygons from './examples/Polygons.svelte'
   import GridLayout from './examples/GridLayout.svelte'
   import ResizeLayout from './examples/ResizeLayout.svelte'
-  import ScatterPlot from './examples/ScatterPlot.svelte'
+  import Scatterplot from './examples/Scatterplot.svelte'
 
   // and add them to this component array
   let components = [
@@ -28,7 +28,7 @@
     },
      { name: "Scatterplot",
       url: "/scatterplot",
-      component: ScatterPlot
+      component: Scatterplot
     }
   ]
 </script>
