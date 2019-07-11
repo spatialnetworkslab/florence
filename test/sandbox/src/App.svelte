@@ -6,7 +6,7 @@
   import Polygons from './examples/Polygons.svelte'
   import GridLayout from './examples/GridLayout.svelte'
   import ResizeLayout from './examples/ResizeLayout.svelte'
-  import ScatterPlot from './examples/ScatterPlot.svelte'
+  import Scatterplot from './examples/Scatterplot.svelte'
   import ZoomSection from './examples/ZoomSection.svelte'
 
   // and add them to this component array
@@ -29,7 +29,7 @@
     },
      { name: "Scatterplot",
       url: "/scatterplot",
-      component: ScatterPlot
+      component: Scatterplot
     },
      { name: "Zoom Section",
       url: "/zoomsection",
@@ -39,21 +39,37 @@
 </script>
 
 <div class="flex-grid">
+
   <div class="left-col">
+
    <ul class="toc">
+
     {#each components as component}
+
       <li><Link href={component.url}>{component.name}</Link></li>  
+    
     {/each}
+   
    </ul>
+
   </div>
+
   <div class="right-col">
+
     <Router>
+
       <Route path="/" component={components[0].component} />
-       {#each components as component}
+        
+        {#each components as component}
+          
           <Route path={component.url} component={component.component} />
+        
         {/each}
+
     </Router>
+
   </div>
+
 </div>
 
 <style>

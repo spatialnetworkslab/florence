@@ -101,6 +101,6 @@ const eventNameToTrackerNameMap = {
   mousemove: '_mousemoveTracker',
   mousedown: '_mousedownTracker',
   mouseup: '_mouseupTracker',
-  wheel: '_wheelTracker',
+  wheel: '_wheelTracker'
   //pan: '_panTracker'
 }
