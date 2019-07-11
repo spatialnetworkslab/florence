@@ -4,7 +4,7 @@
   "svelte": "src/index.js",
   "module": "src/index.js",
   "devDependencies": {
-    "@babel/core": "^7.4.5",
+    "@babel/core": "^7.5.4",
     "@babel/preset-env": "^7.4.5",
     "@turf/meta": "^6.0.2",
     "babel-jest": "^24.8.0",
