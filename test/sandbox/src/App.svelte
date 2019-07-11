@@ -1,5 +1,5 @@
 <script>
-  import { Router, Route, Link } from 'svero'
+  import { Router, Link, Route } from 'svelte-routing'
 
   // import all playground examples here
   import BarChart from './examples/BarChart.svelte'
@@ -32,25 +32,24 @@
     }
   ]
 </script>
-
-<div class="flex-grid">
-  <div class="left-col">
-   <ul class="toc">
-    {#each components as component}
-      <li><Link href={component.url}>{component.name}</Link></li>  
-    {/each}
-   </ul>
+<Router url="">
+  <div class="flex-grid">
+    <div class="left-col">
+    <ul class="toc">
+      {#each components as component}
+        <li><Link to={component.url}>{component.name}</Link></li>  
+      {/each}
+    </ul>
+    </div>
+    <div class="right-col">
+        <Route path="/" component={components[0].component} />
+        {#each components as component}
+            <Route path={component.url} component={component.component} />
+          {/each}
+      
+    </div>
   </div>
-  <div class="right-col">
-    <Router>
-      <Route path="/" component={components[0].component} />
-       {#each components as component}
-          <Route path={component.url} component={component.component} />
-        {/each}
-    </Router>
-  </div>
-</div>
-
+</Router>
 <style>
 .flex-grid {
   display: flex;
