@@ -2,9 +2,11 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-version: 2
+version: 2.1
+orbs:
+  cypress: cypress-io/cypress@1.8.0
 jobs:
-  build:
+  unit_test:
     docker:
       # specify the version you desire here
       - image: circleci/node:10.16
@@ -29,4 +31,12 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: yarn test
+      - run: yarn run test:unit
+workflows:
+  unit_and_integration:
+    jobs:
+      - unit_test
+      - cypress/run:
+          yarn: true
+          command: yarn run test:integration
+
