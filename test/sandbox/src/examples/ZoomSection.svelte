@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, Rectangle, Point } from '../sveg'
+  import { Graphic, Section, Rectangle, Point } from '../../../../'
 
   let x1 = 0
   let x2 = 10

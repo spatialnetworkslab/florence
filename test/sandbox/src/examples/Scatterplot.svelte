@@ -41,7 +41,6 @@
     delete hoverPoints[ix]
     hoverPoints = hoverPoints
   }
-
 </script>
 
 <div>

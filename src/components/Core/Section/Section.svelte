@@ -6,6 +6,8 @@
 </script>
 
 <script>
+  import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
+
   import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from './SectionContext'
   import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
@@ -71,21 +73,24 @@
   interactionManager.setId(sectionId)
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
+  let isInteractive
 
   // Interactivity
   $: isInteractive = onWheel !== undefined || onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
-  
+
   onMount(() => {
     updateInteractionManagerIfNecessary()
   })
 
-  function updateInteractionManagerIfNecessary () {
-    let interactionManager = new InteractionManager()
-    interactionManager.setId(sectionId)
-    interactionManager.linkEventManager($eventManagerContext)
-    InteractionManagerContext.update(interactionManagerContext, interactionManager)
+  onDestroy(() => {
+    removeLayerFromSpatialIndexIfNecessary()
+  })
 
+
+  // Helpers
+  function updateInteractionManagerIfNecessary () {
     if (isInteractive) {
+
       let scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
       let rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
       let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
@@ -95,10 +100,15 @@
       if (onMouseover) $interactionManagerContext.addSectionInteraction('mouseover', sectionId, onMouseover)
       if (onMouseout) $interactionManagerContext.addSectionInteraction('mouseout', sectionId, onMouseout)
       if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', sectionId, onWheel)
-      //if (onPan) $interactionManagerContext.addSectionInteraction('pan', sectionId, onPan)
     }
   }
 
+  function removeLayerFromSpatialIndexIfNecessary () {
+    if ($interactionManagerContext.sectionIsLoaded(sectionId)) {
+      $interactionManagerContext.removeAllSectionInteractions(sectionId)
+      $interactionManagerContext.removeSection(sectionId)
+    }
+  }
 </script>
 
 <defs>

@@ -7,6 +7,7 @@
   import GridLayout from './examples/GridLayout.svelte'
   import ResizeLayout from './examples/ResizeLayout.svelte'
   import ScatterPlot from './examples/ScatterPlot.svelte'
+  import ZoomSection from './examples/ZoomSection.svelte'
 
   // and add them to this component array
   let components = [
@@ -29,6 +30,10 @@
      { name: "Scatterplot",
       url: "/scatterplot",
       component: ScatterPlot
+    },
+     { name: "Zoom Section",
+      url: "/zoomsection",
+      component: ZoomSection
     }
   ]
 </script>

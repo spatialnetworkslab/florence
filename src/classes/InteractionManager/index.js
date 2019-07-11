@@ -2,7 +2,6 @@ import ClickHandler from './InteractionHandlers/ClickHandler.js'
 import MouseoverHandler from './InteractionHandlers/MouseoverHandler.js'
 import MouseoutHandler from './InteractionHandlers/MouseoutHandler.js'
 import WheelHandler from './InteractionHandlers/WheelHandler.js'
-import PanHandler from './InteractionHandlers/PanHandler.js'
 import { markIndexing, layerIndexing, sectionIndexing } from './indexingFunctions'
 
 export default class InteractionManager {
@@ -18,7 +17,6 @@ export default class InteractionManager {
     this._mouseoverHandler = new MouseoverHandler(this)
     this._mouseoutHandler = new MouseoutHandler(this)
     this._wheelHandler = new WheelHandler(this)
-    this._panHandler = new PanHandler(this)
   }
 
   // Initialization
@@ -34,7 +32,7 @@ export default class InteractionManager {
   loadSection (sectionType, sectionData) {
     let indexingFunction = sectionIndexing[sectionType]
     let indexableData = indexingFunction(sectionData)
-    
+
     let sectionId = sectionData.sectionId
     this._sections[sectionId] = indexableData
   }
@@ -83,11 +81,11 @@ export default class InteractionManager {
 
   // Add/remove section interactions
   addSectionInteraction (interactionName, sectionId, callback) {
+    console.log(interactionName, sectionId, callback)
     if (interactionName === 'click') this._clickHandler.addSectionInteraction(sectionId, callback)
     if (interactionName === 'mouseover') this._mouseoverHandler.addSectionInteraction(sectionId, callback)
     if (interactionName === 'mouseout') this._mouseoutHandler.addSectionInteraction(sectionId, callback)
     if (interactionName === 'wheel') this._wheelHandler.addSectionInteraction(sectionId, callback)
-    //if (interactionName === 'pan') this._panHandler.addSectionInteraction(sectionId, callback)
   }
 
   removeAllSectionInteractions (sectionId) {
@@ -95,7 +93,6 @@ export default class InteractionManager {
     this._mouseoverHandler.removeSectionInteraction(sectionId)
     this._mouseoutHandler.removeSectionInteraction(sectionId)
     this._wheelHandler.removeSectionInteraction(sectionId)
-    this._panHandler.removeSectionInteraction(sectionId)
   }
 
   // Add/remove layer interactions
