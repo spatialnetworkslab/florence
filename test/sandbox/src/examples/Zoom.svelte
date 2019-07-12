@@ -6,15 +6,9 @@
   let y = 0
   let k = 1
 
-  let zoomIdentity = { x, y, k }
-
   let data = {
     x: [1, 2, 3, 1, 2, 3, 1, 2, 3],
     y: [1, 1, 1, 2, 2, 2, 3, 3, 3]
-  }
-
-  $: {
-    zoomIdentity = { x, y, k }
   }
 </script>
 
@@ -32,7 +26,7 @@ k:
     y1={50} y2={450}
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
-    {zoomIdentity}
+    zoomIdentity={{ x, y, k }}
   >
 
     <Rectangle fill="blue" opacity={0.3} />
