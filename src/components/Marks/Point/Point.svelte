@@ -12,6 +12,7 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
+  import * as ZoomContext from '../../Core/Section/ZoomContext'
   
   import generateScreenGeometry from './generateScreenGeometry.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
@@ -37,25 +38,36 @@
   const sectionContext = SectionContext.subscribe()
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.subscribe()
+  const zoomContext = ZoomContext.subscribe()
 
   // Create screenGeometry
-  let screenGeometry = generateScreenGeometry(
+  let unzoomedSceenGeometry = generateScreenGeometry(
     { x, y, geometry }, $sectionContext, $coordinateTransformationContext
   )
+  let screenGeometry = applyZooming()
 
   // Initiate transitionables
   let tr_screenGeometry = createTransitionable('geometry', screenGeometry, transition)
   let tr_radius = createTransitionable('radius', radius, transition)
   let tr_fill = createTransitionable('fill', fill, transition)
 
+  // Handle zooming
+  $: {
+    if ($zoomContext) {
+      applyZooming()
+    }
+  }
+
   // Handle screenGeometry transitions
   $: {
     if (initDone()) {
-      screenGeometry = generateScreenGeometry(
+      unzoomedSceenGeometry = generateScreenGeometry(
         { x, y, geometry }, $sectionContext, $coordinateTransformationContext
       )
 
-      tr_screenGeometry.set(screenGeometry)
+      screenGeometry = applyZooming()
+
+      tr_screenGeometry.set(unzoomedSceenGeometry)
       tr_radius.set(radius)
 
       updateInteractionManagerIfNecessary()
