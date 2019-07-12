@@ -11,6 +11,7 @@
   import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
   import * as EventManagerContext from '../Graphic/EventManagerContext'
   import * as InteractionManagerContext from './InteractionManagerContext'
+  import * as ZoomContext from './ZoomContext'
 
   import InteractionManager from '../../../classes/InteractionManager'
 
@@ -25,6 +26,7 @@
   export let y2 = undefined
   export let scaleX = undefined
   export let scaleY = undefined
+  export let zoomIdentity = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -33,6 +35,7 @@
   CoordinateTransformationContext.ensureNotParent()
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
+  const zoomContext = ZoomContext.init()
 
   $: {
     let scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
@@ -50,6 +53,10 @@
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
+  // update zooming and panning
+  $: {
+    zoomContext.update(zoomIdentity)
+  }
 </script>
 
 <g class="section">
