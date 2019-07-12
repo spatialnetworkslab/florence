@@ -2047,10 +2047,10 @@ eslint-plugin-standard@^4.0.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-standard/-/eslint-plugin-standard-4.0.0.tgz#f845b45109c99cd90e77796940a344546c8f6b5c"
   integrity sha512-OwxJkR6TQiYMmt1EsNRMe5qG3GsbjlcOhbGUBY4LtavF9DsLaTcoR+j2Tdjqi23oUwKNUqX7qcn5fPStafMdlA==
 
-eslint-plugin-svelte3@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-svelte3/-/eslint-plugin-svelte3-1.2.3.tgz#d6ffaaaac55c77d2d59e8a06e168e66990ddc072"
-  integrity sha512-2FhqmE5HwPsbpsPalM6Ej9VdXML5vHYUoSvS1dvJ9tZr8wDATuOnebP5DIHt3U0EHGUYwIjJGBn2JG2gXgb9Wg==
+eslint-plugin-svelte3@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-svelte3/-/eslint-plugin-svelte3-2.7.0.tgz#9ad4debc4153b8ad0b48e1aa59e11baf8bd6bdcb"
+  integrity sha512-VUVwe4cUSf+zePqeT9aexXo4RR9yBgnauQIJTwqDhLeX6WWxNWNkk3tUTJcDRCoXRjwwmictkYPhoiYw98B4zA==
 
 eslint-scope@^4.0.3:
   version "4.0.3"
