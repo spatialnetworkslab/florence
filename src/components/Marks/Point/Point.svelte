@@ -14,6 +14,7 @@
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   import * as ZoomContext from '../../Core/Section/ZoomContext'
   
+  import { transformGeometry } from 'geometryUtils'
   import generateScreenGeometry from './generateScreenGeometry.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
 
@@ -44,17 +45,16 @@
   let unzoomedSceenGeometry = generateScreenGeometry(
     { x, y, geometry }, $sectionContext, $coordinateTransformationContext
   )
-  let screenGeometry = applyZooming()
 
   // Initiate transitionables
-  let tr_screenGeometry = createTransitionable('geometry', screenGeometry, transition)
+  let tr_screenGeometry = createTransitionable('geometry', getZoomedScreenGeometry(), transition)
   let tr_radius = createTransitionable('radius', radius, transition)
   let tr_fill = createTransitionable('fill', fill, transition)
 
   // Handle zooming
   $: {
     if ($zoomContext) {
-      applyZooming()
+      tr_screenGeometry.set(getZoomedScreenGeometry())
     }
   }
 
@@ -65,9 +65,7 @@
         { x, y, geometry }, $sectionContext, $coordinateTransformationContext
       )
 
-      screenGeometry = applyZooming()
-
-      tr_screenGeometry.set(unzoomedSceenGeometry)
+      tr_screenGeometry.set(getZoomedScreenGeometry())
       tr_radius.set(radius)
 
       updateInteractionManagerIfNecessary()
@@ -106,6 +104,14 @@
   })
 
   // Helpers
+  function getZoomedScreenGeometry () {
+    if ($zoomContext) {
+      return transformGeometry(unzoomedSceenGeometry, $zoomContext.apply)
+    } else {
+      return unzoomedSceenGeometry
+    }
+  }
+
   function updateInteractionManagerIfNecessary () {
     removeMarkFromSpatialIndexIfNecessary()
 

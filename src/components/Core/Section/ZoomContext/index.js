@@ -15,15 +15,8 @@ export function init () {
 
 export function update (zoomContext, zoomId) {
   if (zoomId) {
-    if (isZoomIdentityObject(zoomId)) {
-      let zoomIdentityFunction = zoomIdentity.translate(zoomId.x, zoomId.y).scale(zoomId.k)
-      console.log(zoomIdentityFunction)
-      zoomContext.set(zoomIdentityFunction)
-    }
-
-    if (isZoomIdentityFuction(zoomId)) {
-      zoomContext.set(zoomId)
-    }
+    let zoomIdentityFunction = zoomIdentity.translate(zoomId.x, zoomId.y).scale(zoomId.k)
+    zoomContext.set(zoomIdentityFunction)
   }
 
   if (!zoomId) {
