@@ -1,3 +1,6 @@
+import { getContext, setContext } from 'svelte'
+import { writable } from 'svelte/store'
+
 import { zoomIdentity } from 'd3-zoom'
 
 const key = {}
@@ -15,8 +18,10 @@ export function init () {
 
 export function update (zoomContext, zoomId) {
   if (zoomId) {
-    let zoomIdentityFunction = zoomIdentity.translate(zoomId.x, zoomId.y).scale(zoomId.k)
-    zoomContext.set(zoomIdentityFunction)
+    let { x, y, k } = zoomId
+    let transformation = p => [p[0] * k + x, p[1] * k + y]
+
+    zoomContext.set(transformation)
   }
 
   if (!zoomId) {

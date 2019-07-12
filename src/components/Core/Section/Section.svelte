@@ -55,7 +55,7 @@
 
   // update zooming and panning
   $: {
-    zoomContext.update(zoomIdentity)
+    ZoomContext.update(zoomContext, zoomIdentity)
   }
 </script>
 

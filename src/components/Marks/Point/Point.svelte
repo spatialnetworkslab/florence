@@ -106,7 +106,7 @@
   // Helpers
   function getZoomedScreenGeometry () {
     if ($zoomContext) {
-      return transformGeometry(unzoomedSceenGeometry, $zoomContext.apply)
+      return transformGeometry(unzoomedSceenGeometry, $zoomContext)
     } else {
       return unzoomedSceenGeometry
     }
