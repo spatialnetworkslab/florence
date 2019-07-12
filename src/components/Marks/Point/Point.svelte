@@ -45,6 +45,7 @@
   let unzoomedSceenGeometry = generateScreenGeometry(
     { x, y, geometry }, $sectionContext, $coordinateTransformationContext
   )
+  let screenGeometry
 
   // Initiate transitionables
   let tr_screenGeometry = createTransitionable('geometry', getZoomedScreenGeometry(), transition)
@@ -106,10 +107,12 @@
   // Helpers
   function getZoomedScreenGeometry () {
     if ($zoomContext) {
-      return transformGeometry(unzoomedSceenGeometry, $zoomContext)
+      screenGeometry = transformGeometry(unzoomedSceenGeometry, $zoomContext)
     } else {
-      return unzoomedSceenGeometry
+      screenGeometry = unzoomedSceenGeometry
     }
+
+    return screenGeometry
   }
 
   function updateInteractionManagerIfNecessary () {

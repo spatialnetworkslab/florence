@@ -52,6 +52,7 @@
   )
   let indexArray = _.indexArray
   let unzoomedScreenGeometryObject = _.screenGeometryObject
+  let screenGeometryObject
 
   // Generate other prop objects
   let radiusObject = generatePropObject(radius, indexArray)
@@ -125,10 +126,12 @@
   // Helpers
   function getZoomedScreenGeometryObject () {
     if ($zoomContext) {
-      return transformGeometries(unzoomedScreenGeometryObject, $zoomContext)
+      screenGeometryObject = transformGeometries(unzoomedScreenGeometryObject, $zoomContext)
     } else {
-      return unzoomedScreenGeometryObject
+      screenGeometryObject = unzoomedScreenGeometryObject
     }
+
+    return screenGeometryObject
   }
 
   function updateInteractionManagerIfNecessary () {
