@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, RectangleLayer, Rectangle } from '../../../../'
+  import { Graphic, Section, PolygonLayer, Rectangle } from '../../../../'
 
   let x = 0
   let y = 0
@@ -41,11 +41,32 @@ k:
 
     {/each} -->
     
-    <RectangleLayer
+    <!-- <RectangleLayer
       x1={data.x.map(v => v - 0.3)} x2={data.x.map(v => v + 0.3)}
       y1={data.y.map(v => v - 0.3)} y2={data.y.map(v => v + 0.3)}
       fill="red"
-    />
+    /> -->
+    
+    <!-- <Polygon
+      x={[0, 3, 3, 0, 0]}
+      y={[0, 0, 3, 3, 0]}
+      fill="red"
+    /> -->
+    <PolygonLayer
+      x={[
+        [0, 1, 1, 0, 0],
+        [1, 2, 2, 1, 1],
+        [2, 3, 3, 2, 2]
+      ]}
+      y={[
+        [0, 0, 1, 1, 0],
+        [1, 1, 2, 2, 1],
+        [2, 2, 3, 3, 2]
+      ]}
+      fill={[
+        'red', 'green', 'yellow'
+      ]}
+    /> 
   
   </Section>
 
