@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, Point, Rectangle } from '../../../../'
+  import { Graphic, Section, PointLayer, Rectangle } from '../../../../'
 
   let data = {
     x: [1, 2, 3, 1, 2, 3, 1, 2, 3],
@@ -20,7 +20,7 @@
 
     <Rectangle fill="blue" opacity={0.3} />
 
-    {#each data.x as _, i}
+    <!-- {#each data.x as _, i}
 
       <Point
         x={data.x[i]}
@@ -29,7 +29,13 @@
         radius={6}
       />
 
-    {/each}
+    {/each} -->
+    
+    <PointLayer 
+      x={data.x} y={data.y}
+      fill="red"
+      radius={6}
+    />
   
   </Section>
 

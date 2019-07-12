@@ -12,7 +12,9 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
+  import * as ZoomContext from '../../Core/Section/ZoomContext'
   
+  import { transformGeometries } from 'geometryUtils'
   import generateScreenGeometryObject from './generateScreenGeometryObject.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import { generatePropObject } from '../utils/generatePropObject.js'
@@ -39,28 +41,31 @@
   const sectionContext = SectionContext.subscribe()
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.subscribe()
+  const zoomContext = ZoomContext.subscribe()
 
   // Generate screenGeometryObject and index array
-  let { screenGeometryObject, indexArray } = generateScreenGeometryObject(
+  let _ = generateScreenGeometryObject(
     { x, y, geometry }, 
     $sectionContext,
     $coordinateTransformationContext,
     index
   )
+  let indexArray = _.indexArray
+  let unzoomedScreenGeometryObject = _.screenGeometryObject
 
   // Generate other prop objects
   let radiusObject = generatePropObject(radius, indexArray)
   let fillObject = generatePropObject(fill, indexArray)
 
   // Initiate transitionables
-  let tr_screenGeometryObject = createTransitionableLayer('geometry', screenGeometryObject, transition)
+  let tr_screenGeometryObject = createTransitionableLayer('geometry', getZoomedScreenGeometryObject(), transition)
   let tr_radiusObject = createTransitionableLayer('radius', radiusObject, transition)
   let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
 
   // Handle screenGeometryObject transitions
   $: {
     if (initDone()) {
-      let _ = generateScreenGeometryObject(
+      _ = generateScreenGeometryObject(
         { x, y, geometry }, 
         $sectionContext,
         $coordinateTransformationContext,
@@ -68,11 +73,11 @@
       )
       
       indexArray = _.indexArray
-      screenGeometryObject = _.screenGeometryObject
+      unzoomedScreenGeometryObject = _.screenGeometryObject
 
       radiusObject = generatePropObject(radius, indexArray)
 
-      tr_screenGeometryObject.set(screenGeometryObject)
+      tr_screenGeometryObject.set(getZoomedScreenGeometryObject())
       tr_radiusObject.set(radiusObject)
 
       updateInteractionManagerIfNecessary()
@@ -111,6 +116,14 @@
   })
 
   // Helpers
+  function getZoomedScreenGeometryObject () {
+    if ($zoomContext) {
+      return transformGeometries(unzoomedScreenGeometryObject, $zoomContext)
+    } else {
+      return unzoomedScreenGeometryObject
+    }
+  }
+
   function updateInteractionManagerIfNecessary () {
     removeLayerFromSpatialIndexIfNecessary()
 
