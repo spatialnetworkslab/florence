@@ -62,6 +62,13 @@
   let tr_radiusObject = createTransitionableLayer('radius', radiusObject, transition)
   let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
 
+  // Handle zooming
+  $: {
+    if ($zoomContext) {
+      tr_screenGeometryObject.set(getZoomedScreenGeometryObject())
+    }
+  }
+
   // Handle screenGeometryObject transitions
   $: {
     if (initDone()) {
