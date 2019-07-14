@@ -1,0 +1,4 @@
+[build]
+  base    = "site"
+  command = "yarn run export"
+  publish = "site/__sapper__/export"
