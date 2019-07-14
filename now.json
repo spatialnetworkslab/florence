@@ -1,0 +1,8 @@
+{
+    "version": 2,
+    "name": "florence-site",
+    "builds": [
+        { "src": "site/package.json", "use": "sapper export", "config": { "distDir": "site/__sapper__/export" }}
+    ],
+    "alias": "florence-site"
+}
