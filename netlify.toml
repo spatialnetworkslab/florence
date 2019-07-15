@@ -4,4 +4,4 @@
   publish = "site/__sapper__/export"
 
 [context.deploy-preview.environment]
-  NODE_ENV = "development"
+  NODE_ENV = "production"
