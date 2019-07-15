@@ -1,6 +1,6 @@
 [build]
   base    = "site"
-  command = "yarn run export"
+  command = "npm run export"
   publish = "site/__sapper__/export"
 
 [context.deploy-preview.environment]
