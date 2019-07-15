@@ -74,7 +74,7 @@ class SectionContext {
       }
     } else {
       this._scaleX = '1'
-      this_scaleY = '1'
+      this._scaleY = '1'
     }
   }
 }
