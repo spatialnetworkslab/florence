@@ -21,6 +21,8 @@ k:
 
 <Graphic width={500} height={500}>
 
+  <!-- <Rectangle fill="blue" opacity={0.3} /> -->
+
   <Section 
     x1={50} x2={450}
     y1={50} y2={450}
