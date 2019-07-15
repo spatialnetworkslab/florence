@@ -7,7 +7,8 @@
     "build": "sapper build",
     "export": "sapper export",
     "start": "node __sapper__/build",
-    "build:florence": "cd ../ && npm install --only=prod && cd site/ && npm link ../"
+    "build:florence": "cd ../ && npm install --only=prod && cd site/ && npm link ../",
+    "export:netlify": "npm run build:florence && npm run export"
   },
   "dependencies": {
     "compression": "^1.7.1",
