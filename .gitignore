@@ -3,3 +3,4 @@ node_modules
 !/src/node_modules
 public/bundle.*
 test/sandbox/public/bundle.*
+dist
