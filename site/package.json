@@ -3,9 +3,9 @@
   "description": "Site for Florence",
   "version": "0.0.1",
   "scripts": {
-    "dev": "sapper dev",
-    "build": "sapper build",
-    "export": "sapper export",
+    "dev": "sapper dev --ext '.svelte .sveltex'",
+    "build": "sapper build --ext '.svelte .sveltex'",
+    "export": "sapper export --ext '.svelte .sveltex'",
     "start": "node __sapper__/build",
     "link": "cd ../ && npm install --production && cd site/ && npm link ../",
     "build:netlify": "cd ../ && rm package-lock.json && export NODE_ENV=production && npm install && cd site/ && npm link ../",
@@ -33,6 +33,7 @@
     "rollup-plugin-svelte": "^5.0.1",
     "rollup-plugin-terser": "^5.1.1",
     "sapper": "^0.27.0",
-    "svelte": "^3.6.7"
+    "svelte": "^3.6.7",
+    "sveltex": "git+https://f3da89bc07d42fe52516ff9eefe08975c112c2a5:x-oauth-basic@github.com/spatialnetworkslab/sveltex.git"
   }
 }
