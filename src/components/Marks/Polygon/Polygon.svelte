@@ -12,7 +12,9 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
+  import * as ZoomContext from '../../Core/Section/ZoomContext'
 
+  import { transformGeometry } from 'geometryUtils'
   import generateScreenGeometry from './generateScreenGeometry.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
@@ -39,31 +41,40 @@
   const sectionContext = SectionContext.subscribe()
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.subscribe()
+  const zoomContext = ZoomContext.subscribe()
 
   // Create screenGeometry
-  let screenGeometry = generateScreenGeometry(
+  let unzoomedSceenGeometry = generateScreenGeometry(
     { x, y, geometry },
     $sectionContext,
     $coordinateTransformationContext,
     interpolate
   )
+  let screenGeometry
 
   // Initiate transitionables
-  let tr_screenGeometry = createTransitionable('geometry', screenGeometry, transition)
+  let tr_screenGeometry = createTransitionable('geometry', getZoomedScreenGeometry(), transition)
   let tr_fill = createTransitionable('fill', fill, transition)
   let tr_opacity = createTransitionable('opacity', opacity, transition)
+
+  // Handle zooming
+  $: {
+    if ($zoomContext) {
+      tr_screenGeometry.set(getZoomedScreenGeometry())
+    }
+  }
 
   // Handle screenGeometry transitions
   $: {
     if (initDone()) {
-      screenGeometry = generateScreenGeometry(
+      unzoomedSceenGeometry = generateScreenGeometry(
         { x, y, geometry },
         $sectionContext,
         $coordinateTransformationContext,
         interpolate
       )
 
-      tr_screenGeometry.set(screenGeometry)
+      tr_screenGeometry.set(getZoomedScreenGeometry())
 
       updateInteractionManagerIfNecessary()
     }
@@ -102,6 +113,16 @@
   })
 
   // Helpers
+  function getZoomedScreenGeometry () {
+    if ($zoomContext) {
+      screenGeometry = transformGeometry(unzoomedSceenGeometry, $zoomContext)
+    } else {
+      screenGeometry = unzoomedSceenGeometry
+    }
+
+    return screenGeometry
+  }
+
   function updateInteractionManagerIfNecessary () {
     removeLayerFromSpatialIndexIfNecessary()
 

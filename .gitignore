@@ -4,3 +4,4 @@ node_modules
 package-lock.json
 public/bundle.*
 test/sandbox/public/bundle.*
+test/integration/testing-app/public/bundle.*

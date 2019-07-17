@@ -12,6 +12,8 @@
   import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
   import * as EventManagerContext from '../Graphic/EventManagerContext'
   import * as InteractionManagerContext from './InteractionManagerContext'
+  import * as ZoomContext from './ZoomContext'
+
   import InteractionManager from '../../../classes/InteractionManager'
   import { scaleCoordinates } from '../../Marks/Rectangle/generateScreenGeometry.js'
 
@@ -24,6 +26,8 @@
   export let y2 = undefined
   export let scaleX = undefined
   export let scaleY = undefined
+  export let zoomIdentity = undefined
+
   export let scaleGeo = undefined
   
   // Interactivity
@@ -44,6 +48,8 @@
   CoordinateTransformationContext.ensureNotParent()
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
+  const zoomContext = ZoomContext.init()
+
   
   let scaledCoordinates
   
@@ -69,9 +75,12 @@
   interactionManager.setId(sectionId)
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
-  
-  let isInteractive
-  
+
+  // update zooming and panning
+  $: {
+    ZoomContext.update(zoomContext, zoomIdentity)
+  }
+    
   // Interactivity
   $: isInteractive = onWheel !== undefined || onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
   
