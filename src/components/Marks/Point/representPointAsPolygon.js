@@ -4,7 +4,7 @@ export default function representPointAsPolygon (point, radius) {
   const y = point.coordinates[1]
 
   const circumference = Math.PI * 2 * radius
-  const steps = Math.ceil(circumference)
+  const steps = Math.max(Math.ceil(circumference), 9)
 
   const polygon = {
     type: 'Polygon',
@@ -19,6 +19,9 @@ export default function representPointAsPolygon (point, radius) {
       ]
     )
   }
+
+  // close polygon
+  polygon.coordinates[0].push(polygon.coordinates[0][0])
 
   return polygon
 }

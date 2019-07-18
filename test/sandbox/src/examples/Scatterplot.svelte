@@ -94,14 +94,13 @@
           onMouseout={handleMouseout}
         /> -->
 
-        {#each filteredData.rows() as row}
+        {#each filteredData.rows() as row (row.$index)}
 
           <Point 
             x={row.a}
             y={row.b}
             fill={transformation === 'identity' ? 'black' : 'blue'}
             radius={transformation === 'identity' ? 3 : 6}
-            index={row.$index}
             onMouseover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
             onMouseout={() => handleMouseout(row.$index)}
           />
