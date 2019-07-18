@@ -17,6 +17,8 @@
   import { transformGeometry } from 'geometryUtils'
   import generateScreenGeometry from './generateScreenGeometry.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
+  import representPointAsPolygon from './representPointAsPolygon.js'
+  import generatePath from '../utils/generatePath.js'
 
   let markId = getId()
 
@@ -144,12 +146,10 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  <circle 
+  <path
     class="point"
-    cx={$tr_screenGeometry.coordinates[0]} 
-    cy={$tr_screenGeometry.coordinates[1]} 
-    r={$tr_radius} 
-    fill={$tr_fill} 
+    d={generatePath(representPointAsPolygon($tr_screenGeometry, $tr_radius))}
+    fill={$tr_fill}
   />
 
 {/if}

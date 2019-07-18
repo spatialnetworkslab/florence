@@ -84,7 +84,7 @@
 		>
 
 			<CoordinateTransformation {transformation}>
-        <PointLayer
+        <!-- <PointLayer
           x={filteredData.column('a')}
           y={filteredData.column('b')}
           fill={transformation === 'identity' ? 'black' : 'blue'}
@@ -92,7 +92,21 @@
           index={filteredData.column('$index')}
           onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
           onMouseout={handleMouseout}
-        />
+        /> -->
+
+        {#each filteredData.rows() as row}
+
+          <Point 
+            x={row.a}
+            y={row.b}
+            fill={transformation === 'identity' ? 'black' : 'blue'}
+            radius={transformation === 'identity' ? 3 : 6}
+            index={row.$index}
+            onMouseover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
+            onMouseout={() => handleMouseout(row.$index)}
+          />
+
+        {/each}
 
         <Point
           x={50}
