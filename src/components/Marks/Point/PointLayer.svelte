@@ -18,6 +18,8 @@
   import generateScreenGeometryObject from './generateScreenGeometryObject.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import { generatePropObject } from '../utils/generatePropObject.js'
+  import representPointAsPolygon from './representPointAsPolygon.js'
+  import generatePath from '../utils/generatePath.js'
 
   let layerId = getId()
 
@@ -166,11 +168,13 @@
 
   {#each indexArray as $index ($index)}
 
-    <circle
+    <path
       class="point"
-      cx={$tr_screenGeometryObject[$index].coordinates[0]}
-      cy={$tr_screenGeometryObject[$index].coordinates[1]}
-      r={$tr_radiusObject[$index]}
+      d={generatePath(
+        representPointAsPolygon(
+          $tr_screenGeometryObject[$index], $tr_radiusObject[$index]
+        )
+      )}
       fill={$tr_fillObject[$index]}
     />
 
