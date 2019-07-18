@@ -3,8 +3,8 @@ import { scaleGeometry } from 'geometryUtils'
 import { isDefined, isUndefined } from 'equals.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext) {
-  let scaledGeometry = createScaledGeometry(geometryProps, sectionContext)
-  let screenGeometry = createScreenGeometry(scaledGeometry, coordinateTransformationContext)
+  const scaledGeometry = createScaledGeometry(geometryProps, sectionContext)
+  const screenGeometry = createScreenGeometry(scaledGeometry, coordinateTransformationContext)
 
   return screenGeometry
 }

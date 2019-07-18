@@ -4,22 +4,21 @@ import { warn } from 'logging.js'
 // given the template specs and definition
 export function getAllCells (templateRows, templateCols, rowGap, colGap, coords) {
   let numCols
-  let numRows
 
   // Divide svg into rows first
-  let getRows = getRowCells(templateRows, rowGap, coords)
-  numRows = getRows.length
+  const getRows = getRowCells(templateRows, rowGap, coords)
+  const numRows = getRows.length
 
   let colSizes = []
-  let rowSizes = []
+  const rowSizes = []
 
   let allCells = []
 
   // Divide each row into columns
   // Practically speaking, it doesn't make a difference
   // which comes first
-  for (let i of getRows) {
-    let rowCols = getColCells(templateCols, colGap, i)
+  for (const i of getRows) {
+    const rowCols = getColCells(templateCols, colGap, i)
 
     allCells = allCells.concat(rowCols)
 
@@ -35,16 +34,16 @@ export function getAllCells (templateRows, templateCols, rowGap, colGap, coords)
 // Divides each row into columns
 export function getColCells (specs, colGap, ranges) {
   let start = ranges.x1
-  let cells = []
+  const cells = []
 
   specs = validateGridSpec(specs, 'gridTemplateColumns')
 
   if (specs.constructor === String) {
-    let individualSpecs = specs.split(/\s/)
-    let frameStep = getFrameStep(individualSpecs, ranges.x2 - ranges.x1)
+    const individualSpecs = specs.split(/\s/)
+    const frameStep = getFrameStep(individualSpecs, ranges.x2 - ranges.x1)
 
-    for (let i of individualSpecs) {
-      let value = parseInt(i.slice(0, -2))
+    for (const i of individualSpecs) {
+      const value = parseInt(i.slice(0, -2))
       if (i.endsWith('px')) {
         cells.push(value)
       } else if (i.endsWith('fr')) {
@@ -52,22 +51,22 @@ export function getColCells (specs, colGap, ranges) {
       }
     }
   } else if (specs.constructor === Array) {
-    let stepX = (ranges.x2 - ranges.x1) / specs.length
+    const stepX = (ranges.x2 - ranges.x1) / specs.length
 
     for (let j = 0; j < specs.length; j++) {
       cells.push(stepX)
     }
   } else if (specs.constructor === Number) {
-    let stepX = (ranges.x2 - ranges.x1) / specs
+    const stepX = (ranges.x2 - ranges.x1) / specs
 
     for (let k = 0; k < specs; k++) {
       cells.push(stepX)
     }
   }
 
-  let numCells = cells.length
+  const numCells = cells.length
 
-  let cellSpecs = []
+  const cellSpecs = []
 
   for (let i = 0; i < numCells; i++) {
     cellSpecs.push({
@@ -88,15 +87,15 @@ export function getColCells (specs, colGap, ranges) {
 // is similar to getColCells
 export function getRowCells (specs, rowGap, ranges) {
   let start = ranges.y1
-  let cells = []
+  const cells = []
 
   specs = validateGridSpec(specs, 'gridTemplateColumns')
 
   if (specs.constructor === String) {
-    let individualSpecs = specs.split(/\s/)
-    let frameStep = getFrameStep(individualSpecs, ranges.y2 - ranges.y1)
+    const individualSpecs = specs.split(/\s/)
+    const frameStep = getFrameStep(individualSpecs, ranges.y2 - ranges.y1)
 
-    for (let i of individualSpecs) {
+    for (const i of individualSpecs) {
       if (i.endsWith('px')) {
         cells.push(parseInt(i.slice(0, -2)))
       } else if (i.endsWith('fr')) {
@@ -104,22 +103,22 @@ export function getRowCells (specs, rowGap, ranges) {
       }
     }
   } else if (specs.constructor === Array) {
-    let stepY = (ranges.y2 - ranges.y1) / specs.length
+    const stepY = (ranges.y2 - ranges.y1) / specs.length
 
     for (let j = 0; j < specs.length; j++) {
       cells.push(stepY)
     }
   } else if (specs.constructor === Number) {
-    let stepY = (ranges.y2 - ranges.y1) / specs
+    const stepY = (ranges.y2 - ranges.y1) / specs
 
     for (let k = 0; k < specs; k++) {
       cells.push(stepY)
     }
   }
 
-  let numCells = cells.length
+  const numCells = cells.length
 
-  let cellSpecs = []
+  const cellSpecs = []
 
   for (let i = 0; i < numCells; i++) {
     cellSpecs.push({
@@ -140,8 +139,8 @@ export function getRowCells (specs, rowGap, ranges) {
 function getFrameStep (specs, range) {
   let frameCount = 0
 
-  for (let i of specs) {
-    let value = parseInt(i.slice(0, -2))
+  for (const i of specs) {
+    const value = parseInt(i.slice(0, -2))
 
     if (i.endsWith('px')) {
       range = range - value
@@ -159,8 +158,8 @@ function getFrameStep (specs, range) {
 
 // Adjacent cells with the same name are merged into a single area
 export function mergeNameSpecs (cellNames, cellSpecs, numCols) {
-  let namesLength = cellNames.length
-  let specsLength = cellSpecs.length
+  const namesLength = cellNames.length
+  const specsLength = cellSpecs.length
 
   if (namesLength < specsLength) {
     warn('Cell names do not match up with number of cells specified, this may cause errors in your chart.')
@@ -174,12 +173,12 @@ export function mergeNameSpecs (cellNames, cellSpecs, numCols) {
     warn('Cell names do not match up with number of cells specified, this may cause errors in your chart.')
   }
 
-  let allSpecs = {}
-  let cellStartEnd = {}
+  const allSpecs = {}
+  const cellStartEnd = {}
 
   // Some logic for merging cells
   for (let j = 0; j < specsLength; j++) {
-    let cellName = cellNames[j]
+    const cellName = cellNames[j]
 
     if (cellName === undefined) {
       allSpecs[j] = cellSpecs[j]
@@ -189,11 +188,11 @@ export function mergeNameSpecs (cellNames, cellSpecs, numCols) {
     } else {
       allSpecs[cellName] = cellMerge(cellName, allSpecs[cellName], cellSpecs[j])
 
-      let newRow = Math.floor(j / numCols)
-      let newCol = j % numCols
+      const newRow = Math.floor(j / numCols)
+      const newCol = j % numCols
 
-      let currentRow = cellStartEnd[cellName].endRow
-      let currentCol = cellStartEnd[cellName].endCol
+      const currentRow = cellStartEnd[cellName].endRow
+      const currentCol = cellStartEnd[cellName].endCol
 
       cellStartEnd[cellName].endRow = newRow > currentRow ? newRow : currentRow
       cellStartEnd[cellName].endCol = newCol > currentCol ? newCol : currentCol
@@ -209,7 +208,7 @@ export function mergeNameSpecs (cellNames, cellSpecs, numCols) {
 // This function is intentionally quite dumb so that incorrect specs
 // do not crash the graph but cause visibly incorrect rendering
 function cellMerge (cellName, cell1, cell2) {
-  let newSpecs = {}
+  const newSpecs = {}
 
   newSpecs.x1 = cell1.x1 < cell2.x1 ? cell1.x1 : cell2.x1
   newSpecs.x2 = cell1.x2 > cell2.x2 ? cell1.x2 : cell2.x2
@@ -251,17 +250,17 @@ function validateGridSpec (a, direction) {
 // This function is quite inefficient, can be optimized at a later date
 // Only console warnings are issued, the graph is still rendered (but incorrectly)
 function validateCellSpaces (spaces, indvCells, numCols) {
-  for (let areaName in spaces) {
-    let area = spaces[areaName]
+  for (const areaName in spaces) {
+    const area = spaces[areaName]
 
-    let startRow = area.startRow
-    let startCol = area.startCol
-    let endRow = area.endRow
-    let endCol = area.endCol
+    const startRow = area.startRow
+    const startCol = area.startCol
+    const endRow = area.endRow
+    const endCol = area.endCol
 
     for (let r = startRow; r <= endRow; r++) {
       for (let c = startCol; c <= endCol; c++) {
-        let index = r * numCols + c
+        const index = r * numCols + c
         if (indvCells[index] !== areaName) {
           warn(`Area ${areaName} may not be rectangular in prop gridTemplateAreas, this can cause errors in your chart.`)
         }

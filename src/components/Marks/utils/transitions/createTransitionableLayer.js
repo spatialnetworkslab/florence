@@ -21,22 +21,22 @@ export function createTransitionableLayer (aestheticName, aestheticValue, transi
   }
 
   if (transitionOptions.constructor === Number) {
-    let options = createOptionsFromDuration(aestheticName, transitionOptions)
+    const options = createOptionsFromDuration(aestheticName, transitionOptions)
     return tweened(aestheticValue, options)
   }
 
   if (transitionOptions.constructor === Object) {
-    if (!transitionOptions.hasOwnProperty(aestheticName)) return writable(aestheticValue)
+    if (!(aestheticName in transitionOptions)) return writable(aestheticValue)
 
-    let aestheticTransition = transitionOptions[aestheticName]
+    const aestheticTransition = transitionOptions[aestheticName]
 
     if (aestheticTransition && aestheticTransition.constructor === Number) {
-      let options = createOptionsFromDuration(aestheticName, aestheticTransition)
+      const options = createOptionsFromDuration(aestheticName, aestheticTransition)
       return tweened(aestheticValue, options)
     }
 
     if (aestheticTransition && aestheticTransition.constructor === Object) {
-      let options = createOptionsFromOptions(aestheticName, aestheticTransition)
+      const options = createOptionsFromOptions(aestheticName, aestheticTransition)
       return tweened(aestheticValue, options)
     }
   }
@@ -65,10 +65,10 @@ function createOptionsFromOptions (aestheticName, transitionOptions) {
 }
 
 function interpolateLayer (a, b) {
-  let aWithoutObsoleteIndices = {}
+  const aWithoutObsoleteIndices = {}
 
-  for (let index in a) {
-    if (b.hasOwnProperty(index)) {
+  for (const index in a) {
+    if (index in b) {
       aWithoutObsoleteIndices[index] = a[index]
     }
   }

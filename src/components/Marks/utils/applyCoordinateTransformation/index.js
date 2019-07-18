@@ -7,7 +7,7 @@ export default function (
   let transformedCoordinates
 
   if (transformationNecessary(coordinateTransformationContext)) {
-    let transformFunc = coordinateTransformationContext.transform.bind(coordinateTransformationContext)
+    const transformFunc = coordinateTransformationContext.transform.bind(coordinateTransformationContext)
 
     if (interpolate) {
       transformedCoordinates = interpolateCoordinates(coordinates, transformFunc, visibilityTreshold)
@@ -31,13 +31,13 @@ function transformationNecessary (coordinateTransformationContext) {
 }
 
 function interpolateCoordinates (coordinates, transformFunc, visibilityTreshold) {
-  let geometryType = detectGeometryType(coordinates)
+  const geometryType = detectGeometryType(coordinates)
 
   return interpolate[geometryType](coordinates, transformFunc, visibilityTreshold)
 }
 
 function transformCoordinates (coordinates, transformFunc, visibilityTreshold) {
-  let geometryType = detectGeometryType(coordinates)
+  const geometryType = detectGeometryType(coordinates)
 
   return transform[geometryType](coordinates, transformFunc, visibilityTreshold)
 }
@@ -65,7 +65,7 @@ function isPointArray (coordinates) {
   if (coordinates.constructor !== Array) return false
 
   for (let i = 0; i < coordinates.length; i++) {
-    let entry = coordinates[i]
+    const entry = coordinates[i]
     if (!isPoint(entry)) return false
   }
 

@@ -2,13 +2,13 @@ import { interpolateArray } from 'd3-interpolate'
 import { pointDistance, pointIntersectsLineSegment } from 'geometryUtils'
 
 export function pointArray (points, transformFunc, visibilityTreshold) {
-  let interpolatedPoints = []
+  const interpolatedPoints = []
 
   let from
   let to
 
   for (let i = 0; i < points.length - 1; i++) {
-    let j = i + 1
+    const j = i + 1
 
     from = points[i]
     to = points[j]
@@ -23,12 +23,12 @@ export function pointArray (points, transformFunc, visibilityTreshold) {
 
 function interpolatePointPair (from, to, transformFunc, treshold, resampledPoints) {
   if (interpolationBetweenPointsNecessary(from, to, transformFunc, treshold)) {
-    let midPoint = interpolateNPoints(from, to, 1)[0]
+    const midPoint = interpolateNPoints(from, to, 1)[0]
 
     interpolatePointPair(from, midPoint, transformFunc, treshold, resampledPoints)
     interpolatePointPair(midPoint, to, transformFunc, treshold, resampledPoints)
   } else {
-    let transformedFrom = transformFunc(from)
+    const transformedFrom = transformFunc(from)
     resampledPoints.push(transformedFrom)
   }
 }
@@ -38,7 +38,7 @@ function interpolateNPoints (from, to, numberOfPoints) {
   const points = []
 
   for (let i = 1; i < numberOfPoints + 1; i++) {
-    let fraction = 1 / (numberOfPoints + 1) * i
+    const fraction = 1 / (numberOfPoints + 1) * i
     points.push(interpolator(fraction))
   }
 
@@ -47,9 +47,9 @@ function interpolateNPoints (from, to, numberOfPoints) {
 
 function interpolationBetweenPointsNecessary (from, to, transformFunc, treshold) {
   // We will sample two points between 'from' and' to' and put all 4 points in an Array.
-  let pointsInBetween = interpolateNPoints(from, to, 2)
-  let pointsPlusPointsInBetween = [from, ...pointsInBetween, to]
-  let transformedPoints = pointsPlusPointsInBetween.map(transformFunc)
+  const pointsInBetween = interpolateNPoints(from, to, 2)
+  const pointsPlusPointsInBetween = [from, ...pointsInBetween, to]
+  const transformedPoints = pointsPlusPointsInBetween.map(transformFunc)
 
   // If the transformed points are really close together, we can skip the resampling
   if (pointsCloseTogether(transformedPoints, treshold)) return false
@@ -61,21 +61,21 @@ function interpolationBetweenPointsNecessary (from, to, transformFunc, treshold)
 }
 
 function pointsCloseTogether (points, treshold) {
-  let firstPoint = points[0]
-  let secondPoint = points[1]
-  let lastPoint = points[points.length - 1]
+  const firstPoint = points[0]
+  const secondPoint = points[1]
+  const lastPoint = points[points.length - 1]
 
   return pointDistance(firstPoint, lastPoint) < treshold &&
     pointDistance(secondPoint, lastPoint < treshold)
 }
 
 function pointsOnOneLine (points, treshold) {
-  let firstPoint = points[0]
-  let secondPoint = points[1]
-  let thirdPoint = points[2]
-  let lastPoint = points[points.length - 1]
+  const firstPoint = points[0]
+  const secondPoint = points[1]
+  const thirdPoint = points[2]
+  const lastPoint = points[points.length - 1]
 
-  let lineSegment = [firstPoint, lastPoint]
+  const lineSegment = [firstPoint, lastPoint]
 
   return pointIntersectsLineSegment(secondPoint, lineSegment, treshold) &&
     pointIntersectsLineSegment(thirdPoint, lineSegment, treshold)

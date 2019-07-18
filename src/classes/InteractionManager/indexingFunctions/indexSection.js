@@ -1,7 +1,7 @@
 export function indexSection (sectionData) {
-  let sectionGeometry = {'rangeX': sectionData.rangeX, 'rangeY': sectionData.rangeY}
+  const sectionGeometry = { rangeX: sectionData.rangeX, rangeY: sectionData.rangeY }
 
-  let item = calculateBBox(sectionGeometry)
+  const item = calculateBBox(sectionGeometry)
 
   item.geometry = sectionGeometry
   item.elementType = 'Section'
@@ -18,4 +18,3 @@ function calculateBBox (sectionGeometry) {
     y2: sectionGeometry.rangeY[1]
   }
 }
-

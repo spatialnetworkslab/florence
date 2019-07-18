@@ -7,9 +7,9 @@ import { isDefined, isUndefined } from 'equals.js'
 import getNumberOfMarks from '../utils/getNumberOfMarks.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {
-  let { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
-  let indexArray = getIndexArray(indexProp, length)
-  let screenGeometryObject = createScreenGeometryObject(scaledGeometryArray, coordinateTransformationContext, indexArray)
+  const { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
+  const indexArray = getIndexArray(indexProp, length)
+  const screenGeometryObject = createScreenGeometryObject(scaledGeometryArray, coordinateTransformationContext, indexArray)
 
   return { screenGeometryObject, indexArray }
 }
@@ -29,30 +29,30 @@ function createScaledGeometryArray (geometryProps, sectionContext) {
 }
 
 function scaleGeometryProp (geometry, sectionContext) {
-  let scaledGeometryArray = scaleGeometries(geometry, sectionContext.scales())
-  let length = scaledGeometryArray.length
+  const scaledGeometryArray = scaleGeometries(geometry, sectionContext.scales())
+  const length = scaledGeometryArray.length
 
   return { scaledGeometryArray, length }
 }
 
 function createScaledGeometryArrayFromCoordinates (x, y, sectionContext) {
-  let scales = sectionContext.scales()
+  const scales = sectionContext.scales()
 
-  let xNeedsScaling = x.constructor !== Function
-  let yNeedsScaling = y.constructor !== Function
+  const xNeedsScaling = x.constructor !== Function
+  const yNeedsScaling = y.constructor !== Function
 
-  let xValue = x.constructor === Function ? x(scales) : x
-  let yValue = y.constructor === Function ? y(scales) : y
+  const xValue = x.constructor === Function ? x(scales) : x
+  const yValue = y.constructor === Function ? y(scales) : y
 
-  let length = getNumberOfPoints(xValue, yValue)
+  const length = getNumberOfPoints(xValue, yValue)
 
-  let xIsPrimitive = xValue.constructor !== Array
-  let yIsPrimitive = yValue.constructor !== Array
+  const xIsPrimitive = xValue.constructor !== Array
+  const yIsPrimitive = yValue.constructor !== Array
 
-  let scaledX = scaleCoordinate(xValue, scales.scaleX, xNeedsScaling, xIsPrimitive, length)
-  let scaledY = scaleCoordinate(yValue, scales.scaleY, yNeedsScaling, yIsPrimitive, length)
+  const scaledX = scaleCoordinate(xValue, scales.scaleX, xNeedsScaling, xIsPrimitive, length)
+  const scaledY = scaleCoordinate(yValue, scales.scaleY, yNeedsScaling, yIsPrimitive, length)
 
-  let scaledGeometryArray = createGeometryArrayFromScaledCoordinates(scaledX, scaledY, length)
+  const scaledGeometryArray = createGeometryArrayFromScaledCoordinates(scaledX, scaledY, length)
 
   return { scaledGeometryArray, length }
 }
@@ -70,7 +70,7 @@ function scaleCoordinate (c, scale, needsScaling, isPrimitive, length) {
 }
 
 function createGeometryArrayFromScaledCoordinates (scaledX, scaledY, length) {
-  let geometryArray = []
+  const geometryArray = []
 
   for (let i = 0; i < length; i++) {
     geometryArray.push({

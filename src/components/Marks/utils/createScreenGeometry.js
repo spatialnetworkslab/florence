@@ -4,7 +4,7 @@ export function createScreenGeometry (
   geometry, coordinateTransformationContext, interpolate, visibilityTreshold = 1
 ) {
   if (transformationNecessary(coordinateTransformationContext)) {
-    let transformFunc = coordinateTransformationContext.transform.bind(coordinateTransformationContext)
+    const transformFunc = coordinateTransformationContext.transform.bind(coordinateTransformationContext)
 
     if (interpolate) {
       return interpolateGeometry(geometry, transformFunc, visibilityTreshold)
@@ -28,15 +28,15 @@ function transformationNecessary (coordinateTransformationContext) {
 export function createScreenGeometryObject (
   scaledGeometryArray, coordinateTransformationContext, indexArray, interpolate, visibilityTreshold = 1
 ) {
-  let screenGeometryObject = {}
+  const screenGeometryObject = {}
 
   for (let i = 0; i < scaledGeometryArray.length; i++) {
-    let scaledGeometry = scaledGeometryArray[i]
-    let screenGeometry = createScreenGeometry(
+    const scaledGeometry = scaledGeometryArray[i]
+    const screenGeometry = createScreenGeometry(
       scaledGeometry, coordinateTransformationContext, interpolate, visibilityTreshold
     )
 
-    let index = indexArray[i]
+    const index = indexArray[i]
 
     screenGeometryObject[index] = screenGeometry
   }

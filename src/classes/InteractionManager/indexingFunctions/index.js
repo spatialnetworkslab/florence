@@ -4,18 +4,17 @@ import { indexSection } from './indexSection.js'
 import { indexPolygon, indexPolygonLayer } from './indexPolygon.js'
 
 export const markIndexing = {
-  'Point': indexPoint,
-  'Rectangle': indexRectangle,
-  'Polygon': indexPolygon
+  Point: indexPoint,
+  Rectangle: indexRectangle,
+  Polygon: indexPolygon
 }
 
 export const layerIndexing = {
-  'Point': indexPointLayer,
-  'Rectangle': indexRectangleLayer,
-  'Polygon': indexPolygonLayer
+  Point: indexPointLayer,
+  Rectangle: indexRectangleLayer,
+  Polygon: indexPolygonLayer
 }
 
 export const sectionIndexing = {
-  'Section': indexSection
+  Section: indexSection
 }
-
