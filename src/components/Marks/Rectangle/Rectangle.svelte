@@ -25,5 +25,6 @@
   type="Rectangle"
   {x1} {x2} {y1} {y2}
   {fill} {opacity}
-  {transition} {interpolate} {onClick} {onMouseover} {onMouseout}
+  {transition} {onClick} {onMouseover} {onMouseout}
+  {interpolate}
 />
