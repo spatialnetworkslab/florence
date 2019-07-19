@@ -15,9 +15,9 @@
   import * as ZoomContext from '../../Core/Section/ZoomContext'
   
   import { transformGeometry } from 'geometryUtils'
-  import generateScreenGeometry from './generateScreenGeometry.js'
+  import createCoordSysGeometry from './createCoordSysGeometry.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
-  import representPointAsPolygon from './representPointAsPolygon.js'
+  import { representPointAsPolygon } from './representPointAsPolygon.js'
   import generatePath from '../utils/generatePath.js'
 
   let markId = getId()
@@ -45,13 +45,14 @@
   const zoomContext = ZoomContext.subscribe()
 
   // Create screenGeometry
-  let unzoomedSceenGeometry = generateScreenGeometry(
+  let coordSysGeometry = createCoordSysGeometry(
     { x, y, geometry }, $sectionContext, $coordinateTransformationContext
   )
+  let pixelGeometry
   let screenGeometry
 
   // Initiate transitionables
-  let tr_screenGeometry = createTransitionable('geometry', getZoomedScreenGeometry(), transition)
+  let tr_screenGeometry = createTransitionable('geometry', getScreenGeometry(), transition)
   let tr_radius = createTransitionable('radius', radius, transition)
   let tr_fill = createTransitionable('fill', fill, transition)
   let tr_opacity = createTransitionable('opacity', opacity, transition)
@@ -59,19 +60,19 @@
   // Handle zooming
   $: {
     if ($zoomContext) {
-      tr_screenGeometry.set(getZoomedScreenGeometry())
+      tr_screenGeometry.set(getScreenGeometry())
     }
   }
 
   // Handle screenGeometry transitions
   $: {
     if (initDone()) {
-      unzoomedSceenGeometry = generateScreenGeometry(
+      coordSysGeometry = generateScreenGeometry(
         { x, y, geometry }, $sectionContext, $coordinateTransformationContext
       )
 
-      tr_screenGeometry.set(getZoomedScreenGeometry())
       tr_radius.set(radius)
+      tr_screenGeometry.set(getScreenGeometry())
 
       updateInteractionManagerIfNecessary()
     }
@@ -110,12 +111,14 @@
   })
 
   // Helpers
-  function getZoomedScreenGeometry () {
+  function getScreenGeometry () {
     if ($zoomContext) {
-      screenGeometry = transformGeometry(unzoomedSceenGeometry, $zoomContext)
+      pixelGeometry = transformGeometry(coordSysGeometry, $zoomContext)
     } else {
-      screenGeometry = unzoomedSceenGeometry
+      pixelGeometry = coordSysGeometry
     }
+
+    screenGeometry = representPointAsPolygon(pixelGeometry, radius)
 
     return screenGeometry
   }
@@ -141,7 +144,7 @@
 
   function createMarkData () {
     return {
-      attributes: { screenGeometry, radius },
+      attributes: { pixelGeometry, radius },
       markId
     }
   }
@@ -151,7 +154,7 @@
 
   <path
     class="point"
-    d={generatePath(representPointAsPolygon($tr_screenGeometry, $tr_radius))}
+    d={generatePath($tr_screenGeometry)}
     fill={$tr_fill}
     style={`opacity: ${$tr_opacity}`}
   />

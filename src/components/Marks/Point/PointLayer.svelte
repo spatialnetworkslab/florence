@@ -15,10 +15,10 @@
   import * as ZoomContext from '../../Core/Section/ZoomContext'
   
   import { transformGeometries } from 'geometryUtils'
-  import generateScreenGeometryObject from './generateScreenGeometryObject.js'
+  import createCoordSysGeometryObject from './createCoordSysGeometryObject.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import { generatePropObject } from '../utils/generatePropObject.js'
-  import representPointAsPolygon from './representPointAsPolygon.js'
+  import { representPointsAsPolygons } from './representPointAsPolygon.js'
   import generatePath from '../utils/generatePath.js'
 
   let layerId = getId()
@@ -47,14 +47,15 @@
   const zoomContext = ZoomContext.subscribe()
 
   // Generate screenGeometryObject and index array
-  let _ = generateScreenGeometryObject(
+  let _ = createCoordSysGeometryObject(
     { x, y, geometry }, 
     $sectionContext,
     $coordinateTransformationContext,
     index
   )
   let indexArray = _.indexArray
-  let unzoomedScreenGeometryObject = _.screenGeometryObject
+  let coordSysGeometryObject = _.coordSysGeometryObject
+  let pixelGeometryObject
   let screenGeometryObject
 
   // Generate other prop objects
@@ -63,7 +64,7 @@
   let opacityObject = generatePropObject(opacity, indexArray)
 
   // Initiate transitionables
-  let tr_screenGeometryObject = createTransitionableLayer('geometry', getZoomedScreenGeometryObject(), transition)
+  let tr_screenGeometryObject = createTransitionableLayer('geometry', getScreenGeometryObject(), transition)
   let tr_radiusObject = createTransitionableLayer('radius', radiusObject, transition)
   let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
   let tr_opacityObject = createTransitionableLayer('opacity', opacityObject, transition)
@@ -78,7 +79,7 @@
   // Handle screenGeometryObject transitions
   $: {
     if (initDone()) {
-      _ = generateScreenGeometryObject(
+      _ = createCoordSysGeometryObject(
         { x, y, geometry }, 
         $sectionContext,
         $coordinateTransformationContext,
@@ -86,12 +87,12 @@
       )
       
       indexArray = _.indexArray
-      unzoomedScreenGeometryObject = _.screenGeometryObject
+      coordSysGeometryObject = _.coordSysGeometryObject
 
       radiusObject = generatePropObject(radius, indexArray)
-
-      tr_screenGeometryObject.set(getZoomedScreenGeometryObject())
       tr_radiusObject.set(radiusObject)
+
+      tr_screenGeometryObject.set(getScreenGeometryObject())
 
       updateInteractionManagerIfNecessary()
     }
@@ -130,12 +131,14 @@
   })
 
   // Helpers
-  function getZoomedScreenGeometryObject () {
+  function getScreenGeometryObject () {
     if ($zoomContext) {
-      screenGeometryObject = transformGeometries(unzoomedScreenGeometryObject, $zoomContext)
+      pixelGeometryObject = transformGeometries(coordSysGeometryObject, $zoomContext)
     } else {
-      screenGeometryObject = unzoomedScreenGeometryObject
+      pixelGeometryObject = coordSysGeometryObject
     }
+
+    screenGeometryObject = representPointsAsPolygons(pixelGeometryObject, radiusObject)
 
     return screenGeometryObject
   }
@@ -174,11 +177,7 @@
 
     <path
       class="point"
-      d={generatePath(
-        representPointAsPolygon(
-          $tr_screenGeometryObject[$index], $tr_radiusObject[$index]
-        )
-      )}
+      d={generatePath($tr_screenGeometryObject[$index])}
       fill={$tr_fillObject[$index]}
       style={`opacity: ${$tr_opacityObject[$index]}`}
     />

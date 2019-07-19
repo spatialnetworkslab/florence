@@ -1,4 +1,4 @@
-import { createScreenGeometryObject } from '../utils/createScreenGeometry.js'
+import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
 import { scaleGeometries } from 'geometryUtils'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
@@ -9,9 +9,11 @@ import getNumberOfMarks from '../utils/getNumberOfMarks.js'
 export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {
   const { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
   const indexArray = getIndexArray(indexProp, length)
-  const screenGeometryObject = createScreenGeometryObject(scaledGeometryArray, coordinateTransformationContext, indexArray)
+  const coordSysGeometryObject = createCoordSysGeometryObject(
+    scaledGeometryArray, coordinateTransformationContext, indexArray
+  )
 
-  return { screenGeometryObject, indexArray }
+  return { coordSysGeometryObject, indexArray }
 }
 
 function createScaledGeometryArray (geometryProps, sectionContext) {

@@ -1,5 +1,5 @@
 // https://stackoverflow.com/a/155678/7237112
-export default function representPointAsPolygon (point, radius) {
+export function representPointAsPolygon (point, radius) {
   const x = point.coordinates[0]
   const y = point.coordinates[1]
 
@@ -24,4 +24,14 @@ export default function representPointAsPolygon (point, radius) {
   polygon.coordinates[0].push(polygon.coordinates[0][0])
 
   return polygon
+}
+
+export function representPointsAsPolygons (points, radii) {
+  const polygons = {}
+
+  for (const key in points) {
+    polygons[key] = representPointAsPolygon(points[key], radii[key])
+  }
+
+  return polygons
 }

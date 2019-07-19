@@ -1,6 +1,6 @@
 import { interpolateGeometry, transformGeometry } from 'geometryUtils'
 
-export function createScreenGeometry (
+export function createCoordSysGeometry (
   geometry, coordinateTransformationContext, interpolate, visibilityTreshold = 1
 ) {
   if (transformationNecessary(coordinateTransformationContext)) {
@@ -25,14 +25,14 @@ function transformationNecessary (coordinateTransformationContext) {
   coordinateTransformationContext.type() !== 'identity'
 }
 
-export function createScreenGeometryObject (
+export function createCoordSysGeometryObject (
   scaledGeometryArray, coordinateTransformationContext, indexArray, interpolate, visibilityTreshold = 1
 ) {
   const screenGeometryObject = {}
 
   for (let i = 0; i < scaledGeometryArray.length; i++) {
     const scaledGeometry = scaledGeometryArray[i]
-    const screenGeometry = createScreenGeometry(
+    const screenGeometry = createCoordSysGeometry(
       scaledGeometry, coordinateTransformationContext, interpolate, visibilityTreshold
     )
 
