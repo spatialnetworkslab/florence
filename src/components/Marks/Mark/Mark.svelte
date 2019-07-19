@@ -16,7 +16,7 @@
   
   import createCoordSysGeometryFuncs from './createCoordSysGeometryFuncs.js'
   import createScreenGeometryFuncs from './createScreenGeometryFuncs.js'
-  import createMarkDataFuncs from './createMarkDataFuncs.js'
+  import _createDataNecessaryForIndexing from './createDataNecessaryForIndexing.js'
   import { transformGeometry } from 'geometryUtils'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
 
@@ -135,7 +135,7 @@
     removeMarkFromSpatialIndexIfNecessary()
 
     if (isInteractive) {
-      $interactionManagerContext.loadMark(type, createMarkData())
+      $interactionManagerContext.loadMark(type, createDataNecessaryForIndexing())
 
       if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
       if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
@@ -150,11 +150,10 @@
     }
   }
 
-  function createMarkData () {
-    return {
-      attributes: { pixelGeometry, radius },
-      markId
-    }
+  function createDataNecessaryForIndexing () {
+    return _createDataNecessaryForIndexing(
+      type, markId, { screenGeometry, pixelGeometry }, aesthetics
+    )
   }
 </script>
 
