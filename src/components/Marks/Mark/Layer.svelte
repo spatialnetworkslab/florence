@@ -188,7 +188,6 @@
   }
 
   function updateInteractionManagerIfNecessary () {
-    console.log('updating...')
     removeLayerFromSpatialIndexIfNecessary()
 
     if (isInteractive) {
