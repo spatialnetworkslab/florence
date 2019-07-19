@@ -1,13 +1,17 @@
 <script>
   import Mark from '../Mark/Mark.svelte'
 
-  // Props
+  // Aesthetics: positioning
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
   export let radius = 3
+
+  // Aesthetics: other
   export let fill = 'black'
   export let opacity = 1
+
+  // Transitions and interactions
   export let transition = undefined
   export let onClick = undefined
   export let onMouseover = undefined
@@ -16,6 +20,7 @@
 
 <Mark
   type="Point"
-  {x} {y} {geometry} {radius} {fill} {opacity} 
+  {x} {y} {geometry} {radius} 
+  {fill} {opacity} 
   {transition} {onClick} {onMouseover} {onMouseout} 
 />

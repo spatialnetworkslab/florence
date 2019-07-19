@@ -38,11 +38,11 @@
   export let y1 = undefined
   export let y2 = undefined
   export let geometry = undefined
-  export let radius = 3
+  export let radius = undefined
 
   // Aesthetics: other
-  export let fill = 'black'
-  export let opacity = 1
+  export let fill = undefined
+  export let opacity = undefined
 
   // Transitions and interactions
   export let transition = undefined
@@ -50,6 +50,10 @@
   export let onMouseover = undefined
   export let onMouseout = undefined
 
+  // Other
+  export let interpolate = undefined
+
+  // Validate aesthetics
   let aesthetics = validateAesthetics(
     type,
     { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
@@ -64,13 +68,14 @@
     }
   }
 
+  // Select appriopriate geometry conversion functions
   let createCoordSysGeometry = createCoordSysGeometryFuncs[type]
   let createScreenGeometry = createScreenGeometryFuncs[type]
 
   $: {
     if (initDone()) {
       createCoordSysGeometry = createCoordSysGeometryFuncs[type]
-      createScreenGeometry = createCoordSysGeometryFuncs[type]
+      createScreenGeometry = createScreenGeometryFuncs[type]
     }
   }
 
@@ -83,7 +88,10 @@
 
   // Create screenGeometry
   let coordSysGeometry = createCoordSysGeometry(
-    aesthetics, $sectionContext, $coordinateTransformationContext
+    aesthetics, 
+    $sectionContext, 
+    $coordinateTransformationContext,
+    interpolate
   )
   let pixelGeometry
   let screenGeometry
@@ -105,7 +113,9 @@
   $: {
     if (initDone()) {
       coordSysGeometry = createCoordSysGeometry(
-        { x, y, geometry }, $sectionContext, $coordinateTransformationContext
+        aesthetics, 
+        $sectionContext, 
+        $coordinateTransformationContext
       )
 
       tr_radius.set(radius)
@@ -120,7 +130,7 @@
 
   let previousTransition
 
-  // Update transitionables
+  // Update transitionables when transition settings change
   beforeUpdate(() => {
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition

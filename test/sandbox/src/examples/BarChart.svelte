@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, CoordinateTransformation, RectangleLayer, DataContainer } from '../../../../'
+  import { Graphic, Section, CoordinateTransformation, Rectangle, RectangleLayer, DataContainer } from '../../../../'
   
   let data = new DataContainer({ 
     quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
@@ -70,7 +70,7 @@
 
     <CoordinateTransformation {transformation}>
     
-      <RectangleLayer 
+      <!-- <RectangleLayer 
         x1={filteredData.column('fruit')}
         x2={({ scaleX }) => filteredData.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
         y1={0}
@@ -78,7 +78,20 @@
         fill={transformation === 'identity' ? 'green' : 'blue'}
         index={filteredData.column('$index')}
         onClick={ix => log(ix)}
-      />
+      /> -->
+
+      {#each filteredData.rows() as row (row.$index)}
+
+        <Rectangle 
+          x1={row.fruit}
+          x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
+          y1={0}
+          y2={row.meanQuantity}
+          fill={transformation === 'identity' ? 'green' : 'blue'}
+          onClick={() => { log(row.$index) }}
+        />
+
+      {/each}
 
     </CoordinateTransformation>
 
