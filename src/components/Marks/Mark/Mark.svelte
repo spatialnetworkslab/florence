@@ -14,6 +14,7 @@
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   import * as ZoomContext from '../../Core/Section/ZoomContext'
   
+  import validateAesthetics from './validateAesthetics.js'
   import createCoordSysGeometryFuncs from './createCoordSysGeometryFuncs.js'
   import createScreenGeometryFuncs from './createScreenGeometryFuncs.js'
   import _createDataNecessaryForIndexing from './createDataNecessaryForIndexing.js'
@@ -27,20 +28,32 @@
   let initPhase = true
   const initDone = () => !initPhase
 
-  // Props
   export let type
+  
+  // Aesthetics: positioning
   export let x = undefined
   export let y = undefined
+  export let x1 = undefined
+  export let x2 = undefined
+  export let y1 = undefined
+  export let y2 = undefined
   export let geometry = undefined
   export let radius = 3
+
+  // Aesthetics: other
   export let fill = 'black'
   export let opacity = 1
+
+  // Transitions and interactions
   export let transition = undefined
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
 
-  $: aesthetics = { x, y, geometry, radius, fill, opacity }
+  $: aesthetics = validateAesthetics(
+    type,
+    { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+  )
 
   $: createCoordSysGeometry = createCoordSysGeometryFuncs[type]
   $: createScreenGeometry = createCoordSysGeometryFuncs[type]
