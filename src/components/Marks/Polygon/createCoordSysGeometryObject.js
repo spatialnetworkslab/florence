@@ -6,7 +6,7 @@ import { isDefined, isUndefined } from 'equals.js'
 import getNumberOfMarks from '../utils/getNumberOfMarks.js'
 
 export default function (
-  geometryProps, sectionContext, coordinateTransformationContext, interpolate, indexProp
+  geometryProps, sectionContext, coordinateTransformationContext, indexProp, interpolate
 ) {
   const { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
   const indexArray = getIndexArray(indexProp, length)

@@ -51,8 +51,8 @@
     { x1, x2, y1, y2 },
     $sectionContext,
     $coordinateTransformationContext,
-    interpolate,
-    index
+    index,
+    interpolate
   )
   let indexArray = _.indexArray
   let coordSysGeometryObject = _.coordSysGeometryObject
@@ -82,8 +82,8 @@
         { x1, x2, y1, y2 },
         $sectionContext,
         $coordinateTransformationContext,
-        interpolate,
-        index
+        index,
+        interpolate
       )
 
       indexArray = _.indexArray

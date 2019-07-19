@@ -16,16 +16,18 @@
   
   import validateAesthetics from './validateAesthetics.js'
   import { transformGeometries } from 'geometryUtils'
-  import createCoordSysGeometryObject from './createCoordSysGeometryObject.js'
+  import { layerCoordSysGeometryFuncs } from './coordSysGeometryFuncs.js'
+  import { layerScreenGeometryFuncs } from './screenGeometryFuncs.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import { generatePropObject } from '../utils/generatePropObject.js'
-  import { representPointsAsPolygons } from './representPointAsPolygon.js'
   import generatePath from '../utils/generatePath.js'
 
   let layerId = getId()
 
   let initPhase = true
   const initDone = () => !initPhase
+
+  export let type
 
   // Aesthetics: positioning
   export let x = undefined
@@ -67,8 +69,15 @@
   }
 
   // Select appriopriate geometry conversion functions
-  let createCoordSysGeometryObject
-  let createScreenGeometryObject
+  let createCoordSysGeometryObject = layerCoordSysGeometryFuncs[type]
+  let createScreenGeometryObject = layerScreenGeometryFuncs[type]
+
+  $: {
+    if (initDone()) {
+      createCoordSysGeometryObject = layerCoordSysGeometryFuncs[type]
+      createScreenGeometryObject = layerScreenGeometryFuncs[type]
+    }
+  }
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -79,11 +88,13 @@
 
   // Generate screenGeometryObject and index array
   let _ = createCoordSysGeometryObject(
-    { x, y, geometry }, 
+    aesthetics, 
     $sectionContext,
     $coordinateTransformationContext,
-    index
+    index,
+    interpolate
   )
+
   let indexArray = _.indexArray
   let coordSysGeometryObject = _.coordSysGeometryObject
   let pixelGeometryObject
@@ -111,10 +122,11 @@
   $: {
     if (initDone()) {
       _ = createCoordSysGeometryObject(
-        { x, y, geometry }, 
+        aesthetics, 
         $sectionContext,
         $coordinateTransformationContext,
-        index
+        index,
+        interpolate
       )
       
       indexArray = _.indexArray
@@ -169,7 +181,7 @@
       pixelGeometryObject = coordSysGeometryObject
     }
 
-    screenGeometryObject = representPointsAsPolygons(pixelGeometryObject, radiusObject)
+    screenGeometryObject = createScreenGeometryObject(pixelGeometryObject, { radiusObject })
 
     return screenGeometryObject
   }

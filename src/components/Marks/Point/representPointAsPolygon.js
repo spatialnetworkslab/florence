@@ -26,11 +26,11 @@ export function representPointAsPolygon (point, { radius }) {
   return polygon
 }
 
-export function representPointsAsPolygons (points, radii) {
+export function representPointsAsPolygons (points, { radiusObject }) {
   const polygons = {}
 
   for (const key in points) {
-    polygons[key] = representPointAsPolygon(points[key], { radius: radii[key] })
+    polygons[key] = representPointAsPolygon(points[key], { radius: radiusObject[key] })
   }
 
   return polygons

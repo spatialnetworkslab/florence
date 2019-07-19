@@ -4,7 +4,7 @@ import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
 
 export default function (
-  coordinateProps, sectionContext, coordinateTransformationContext, interpolate, indexProp
+  coordinateProps, sectionContext, coordinateTransformationContext, indexProp, interpolate
 ) {
   const { scaledCoordinates, length } = scaleCoordinates(coordinateProps, sectionContext)
   const indexArray = getIndexArray(indexProp, length)

@@ -50,8 +50,8 @@
     { x, y, geometry },
     $sectionContext,
     $coordinateTransformationContext,
-    interpolate,
-    index
+    index,
+    interpolate
   )
 
   let indexArray = _.indexArray
@@ -78,12 +78,12 @@
   // Handle coordinate/geometry prop transitions
   $: {
     if (initDone()) {
-      let _ = createCoordSysGeometryObject(
+      _ = createCoordSysGeometryObject(
         { x, y, geometry },
         $sectionContext,
         $coordinateTransformationContext,
-        interpolate,
-        index
+        index,
+        interpolate
       )
 
       indexArray = _.indexArray

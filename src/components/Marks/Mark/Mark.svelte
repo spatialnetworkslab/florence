@@ -15,8 +15,8 @@
   import * as ZoomContext from '../../Core/Section/ZoomContext'
   
   import validateAesthetics from './validateAesthetics.js'
-  import createCoordSysGeometryFuncs from './createCoordSysGeometryFuncs.js'
-  import createScreenGeometryFuncs from './createScreenGeometryFuncs.js'
+  import { markCoordSysGeometryFuncs } from './coordSysGeometryFuncs.js'
+  import { markScreenGeometryFuncs } from './screenGeometryFuncs.js'
   import { createDataNecessaryForIndexingMark } from './createDataNecessaryForIndexing.js'
   import { transformGeometry } from 'geometryUtils'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
@@ -69,13 +69,13 @@
   }
 
   // Select appriopriate geometry conversion functions
-  let createCoordSysGeometry = createCoordSysGeometryFuncs[type]
-  let createScreenGeometry = createScreenGeometryFuncs[type]
+  let createCoordSysGeometry = markCoordSysGeometryFuncs[type]
+  let createScreenGeometry = markScreenGeometryFuncs[type]
 
   $: {
     if (initDone()) {
-      createCoordSysGeometry = createCoordSysGeometryFuncs[type]
-      createScreenGeometry = createScreenGeometryFuncs[type]
+      createCoordSysGeometry = markCoordSysGeometryFuncs[type]
+      createScreenGeometry = markScreenGeometryFuncs[type]
     }
   }
 
