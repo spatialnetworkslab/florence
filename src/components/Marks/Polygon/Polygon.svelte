@@ -44,7 +44,7 @@
   const zoomContext = ZoomContext.subscribe()
 
   // Create screenGeometry
-  let coordSysSceenGeometry = createCoordSysGeometry(
+  let coordSysGeometry = createCoordSysGeometry(
     { x, y, geometry },
     $sectionContext,
     $coordinateTransformationContext,
@@ -114,7 +114,7 @@
   })
 
   // Helpers
-  function getZoomedScreenGeometry () {
+  function getScreenGeometry () {
     if ($zoomContext) {
       pixelGeometry = transformGeometry(coordSysGeometry, $zoomContext)
     } else {

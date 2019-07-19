@@ -1,5 +1,5 @@
 import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
-import { createScaledGeometry, ensureValidCombination } from './generateScreenGeometry.js'
+import { createScaledGeometry, ensureValidCombination } from './createCoordSysGeometry.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
 

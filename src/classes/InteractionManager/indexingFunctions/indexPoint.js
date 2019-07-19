@@ -31,8 +31,8 @@ export function indexPointLayer ({ layerAttributes, indexArray, layerId }) {
 }
 
 function calculateBBoxPoint (pointAttributes) {
-  const x = pointAttributes.screenGeometry.coordinates[0]
-  const y = pointAttributes.screenGeometry.coordinates[1]
+  const x = pointAttributes.pixelGeometry.coordinates[0]
+  const y = pointAttributes.pixelGeometry.coordinates[1]
 
   return {
     minX: x - pointAttributes.radius,
@@ -44,7 +44,7 @@ function calculateBBoxPoint (pointAttributes) {
 
 function getPointAttributes (layerAttributes, $index) {
   return {
-    screenGeometry: layerAttributes.screenGeometryObject[$index],
+    pixelGeometry: layerAttributes.pixelGeometryObject[$index],
     radius: layerAttributes.radiusObject[$index]
   }
 }

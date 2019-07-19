@@ -67,7 +67,7 @@
   // Handle screenGeometry transitions
   $: {
     if (initDone()) {
-      coordSysGeometry = generateScreenGeometry(
+      coordSysGeometry = createCoordSysGeometry(
         { x, y, geometry }, $sectionContext, $coordinateTransformationContext
       )
 

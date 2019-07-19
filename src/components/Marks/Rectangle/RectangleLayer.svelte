@@ -128,7 +128,7 @@
   })
 
   // Helpers
-  function getZoomedScreenGeometryObject () {
+  function getScreenGeometryObject () {
     if ($zoomContext) {
       pixelGeometryObject = transformGeometries(coordSysGeometryObject, $zoomContext)
     } else {

@@ -1,6 +1,6 @@
 import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
 import { scaleGeometries } from 'geometryUtils'
-import { ensureValidCombination, createGeometryFromScaledProps } from './generateScreenGeometry.js'
+import { ensureValidCombination, createGeometryFromScaledProps } from './createCoordSysGeometry.js'
 import getIndexArray from '../utils/getIndexArray.js'
 import { isDefined, isUndefined } from 'equals.js'
 import getNumberOfMarks from '../utils/getNumberOfMarks.js'

@@ -2,7 +2,7 @@ import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js
 import { scaleGeometries } from 'geometryUtils'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
-import { ensureValidCombination } from './generateScreenGeometry.js'
+import { ensureValidCombination } from './createCoordSysGeometry.js'
 import { isDefined, isUndefined } from 'equals.js'
 import getNumberOfMarks from '../utils/getNumberOfMarks.js'
 

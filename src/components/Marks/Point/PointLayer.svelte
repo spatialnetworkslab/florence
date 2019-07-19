@@ -72,7 +72,7 @@
   // Handle zooming
   $: {
     if ($zoomContext) {
-      tr_screenGeometryObject.set(getZoomedScreenGeometryObject())
+      tr_screenGeometryObject.set(getScreenGeometryObject())
     }
   }
 
@@ -164,7 +164,7 @@
 
   function createLayerData () {
     return {
-      layerAttributes: { screenGeometryObject, radiusObject },
+      layerAttributes: { pixelGeometryObject, radiusObject },
       layerId,
       indexArray
     }

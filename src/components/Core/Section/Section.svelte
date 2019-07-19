@@ -15,7 +15,7 @@
   import * as ZoomContext from './ZoomContext'
 
   import InteractionManager from '../../../classes/InteractionManager'
-  import { scaleCoordinates } from '../../Marks/Rectangle/generateScreenGeometry.js'
+  import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
 
   let sectionId = getId()
   
