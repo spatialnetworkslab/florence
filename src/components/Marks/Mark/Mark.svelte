@@ -1,7 +1,7 @@
 <script context="module">
   let idCounter = 0
   function getId () {
-    return 'm' + idCounter++
+    return 'mark' + idCounter++
   }
 </script>
 
