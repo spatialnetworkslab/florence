@@ -3,5 +3,6 @@ export default {
   y: true,
   geometry: true,
   radius: true,
+  fill: true,
   opacity: true
 }

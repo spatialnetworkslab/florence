@@ -50,13 +50,29 @@
   export let onMouseover = undefined
   export let onMouseout = undefined
 
-  $: aesthetics = validateAesthetics(
+  let aesthetics = validateAesthetics(
     type,
     { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
   )
 
-  $: createCoordSysGeometry = createCoordSysGeometryFuncs[type]
-  $: createScreenGeometry = createCoordSysGeometryFuncs[type]
+  $: {
+    if (initDone()) {
+      aesthetics = validateAesthetics(
+        type,
+        { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+      )
+    }
+  }
+
+  let createCoordSysGeometry = createCoordSysGeometryFuncs[type]
+  let createScreenGeometry = createScreenGeometryFuncs[type]
+
+  $: {
+    if (initDone()) {
+      createCoordSysGeometry = createCoordSysGeometryFuncs[type]
+      createScreenGeometry = createCoordSysGeometryFuncs[type]
+    }
+  }
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
