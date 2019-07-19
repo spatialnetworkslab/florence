@@ -188,6 +188,7 @@
   }
 
   function updateInteractionManagerIfNecessary () {
+    console.log('updating...')
     removeLayerFromSpatialIndexIfNecessary()
 
     if (isInteractive) {
@@ -208,7 +209,7 @@
 
   function createDataNecessaryForIndexing () {
     return createDataNecessaryForIndexingLayer(
-      type, layerId, index, { pixelGeometryObject, screenGeometryObject }, { radiusObject }
+      type, layerId, indexArray, { pixelGeometryObject, screenGeometryObject }, { radiusObject }
     )
   }
 </script>
@@ -218,7 +219,7 @@
   {#each indexArray as $index ($index)}
 
     <path
-      class="point"
+      class={type.toLowerCase()}
       d={generatePath($tr_screenGeometryObject[$index])}
       fill={$tr_fillObject[$index]}
       style={`opacity: ${$tr_opacityObject[$index]}`}
