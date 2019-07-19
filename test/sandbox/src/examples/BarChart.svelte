@@ -70,7 +70,7 @@
 
     <CoordinateTransformation {transformation}>
     
-      <!-- <RectangleLayer 
+      <RectangleLayer 
         x1={filteredData.column('fruit')}
         x2={({ scaleX }) => filteredData.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
         y1={0}
@@ -78,9 +78,9 @@
         fill={transformation === 'identity' ? 'green' : 'blue'}
         index={filteredData.column('$index')}
         onClick={ix => log(ix)}
-      /> -->
+      />
 
-      {#each filteredData.rows() as row (row.$index)}
+      <!-- {#each filteredData.rows() as row (row.$index)}
 
         <Rectangle 
           x1={row.fruit}
@@ -91,7 +91,7 @@
           onClick={() => { log(row.$index) }}
         />
 
-      {/each}
+      {/each} -->
 
     </CoordinateTransformation>
 

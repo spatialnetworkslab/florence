@@ -17,17 +17,19 @@
 export function generatePropObject (propValue, indexArray) {
   const propObj = {}
 
-  if (propValue.constructor === Array) {
-    for (let i = 0; i < indexArray.length; i++) {
-      const index = indexArray[i]
-      propObj[index] = propValue[i]
+  if (propValue) {
+    if (propValue.constructor === Array) {
+      for (let i = 0; i < indexArray.length; i++) {
+        const index = indexArray[i]
+        propObj[index] = propValue[i]
+      }
     }
-  }
-
-  if (propValue.constructor !== Array) {
-    for (let i = 0; i < indexArray.length; i++) {
-      const index = indexArray[i]
-      propObj[index] = propValue
+  
+    if (propValue.constructor !== Array) {
+      for (let i = 0; i < indexArray.length; i++) {
+        const index = indexArray[i]
+        propObj[index] = propValue
+      }
     }
   }
 

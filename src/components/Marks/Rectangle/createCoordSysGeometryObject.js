@@ -39,10 +39,12 @@ function scaleCoordinates (coordinateProps, sectionContext) {
   return { scaledCoordinates, length }
 }
 
+const coordinateNames = ['x1', 'x2', 'y1', 'y2']
+
 function whichCoordinatesNeedScaling (coordinates) {
   const coordinatesThatNeedScaling = {}
 
-  for (const coordinateName in coordinates) {
+  for (const coordinateName of coordinateNames) {
     const coordinateValue = coordinates[coordinateName]
     coordinatesThatNeedScaling[coordinateName] = coordinateValue && coordinateValue.constructor !== Function
   }
@@ -53,7 +55,7 @@ function whichCoordinatesNeedScaling (coordinates) {
 function getMissingCoordinatesFromContext (coordinates, sectionContext) {
   const nonMissingCoordinates = {}
 
-  for (const coordinateName in coordinates) {
+  for (const coordinateName of coordinateNames) {
     const coordinateValue = coordinates[coordinateName]
     nonMissingCoordinates[coordinateName] = coordinateValue || sectionContext[coordinateName]()
   }
