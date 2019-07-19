@@ -15,7 +15,7 @@
   import * as ZoomContext from '../../Core/Section/ZoomContext'
   
   import { transformGeometries } from 'geometryUtils'
-  import generateScreenGeometryObject from './generateScreenGeometryObject.js'
+  import createCoordSysGeometryObject from './createCoordSysGeometryObject.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import { generatePropObject } from '../utils/generatePropObject.js'
   import generatePath from '../utils/generatePath.js'
@@ -47,7 +47,7 @@
   const zoomContext = ZoomContext.subscribe()
 
   // Generate screenGeometryObject and index array
-  let _ = generateScreenGeometryObject(
+  let _ = createCoordSysGeometryObject(
     { x1, x2, y1, y2 },
     $sectionContext,
     $coordinateTransformationContext,
@@ -55,7 +55,8 @@
     index
   )
   let indexArray = _.indexArray
-  let unzoomedScreenGeometryObject = _.screenGeometryObject
+  let coordSysGeometryObject = _.coordSysGeometryObject
+  let pixelGeometryObject
   let screenGeometryObject
 
   // Generate other prop arrays
@@ -63,21 +64,21 @@
   let opacityObject = generatePropObject(opacity, indexArray)
 
   // Initiate transitionables
-  let tr_screenGeometryObject = createTransitionableLayer('geometry', getZoomedScreenGeometryObject(), transition)
+  let tr_screenGeometryObject = createTransitionableLayer('geometry', getScreenGeometryObject(), transition)
   let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
   let tr_opacityObject = createTransitionableLayer('opacity', opacityObject, transition)
 
   // Handle zooming
   $: {
     if ($zoomContext) {
-      tr_screenGeometryObject.set(getZoomedScreenGeometryObject())
+      tr_screenGeometryObject.set(getScreenGeometryObject())
     }
   }
 
   // Handle coordinate/geometry prop transitions
   $: {
     if (initDone()) {
-      _ = generateScreenGeometryObject(
+      _ = createCoordSysGeometryObject(
         { x1, x2, y1, y2 },
         $sectionContext,
         $coordinateTransformationContext,
@@ -86,9 +87,9 @@
       )
 
       indexArray = _.indexArray
-      unzoomedScreenGeometryObject = _.screenGeometryObject
+      coordSysGeometryObject = _.coordSysGeometryObject
 
-      tr_screenGeometryObject.set(getZoomedScreenGeometryObject())
+      tr_screenGeometryObject.set(getScreenGeometryObject())
 
       updateInteractionManagerIfNecessary()
     }
@@ -129,10 +130,12 @@
   // Helpers
   function getZoomedScreenGeometryObject () {
     if ($zoomContext) {
-      screenGeometryObject = transformGeometries(unzoomedScreenGeometryObject, $zoomContext)
+      pixelGeometryObject = transformGeometries(coordSysGeometryObject, $zoomContext)
     } else {
-      screenGeometryObject = unzoomedScreenGeometryObject
+      pixelGeometryObject = coordSysGeometryObject
     }
+
+    screenGeometryObject = pixelGeometryObject
 
     return screenGeometryObject
   }
