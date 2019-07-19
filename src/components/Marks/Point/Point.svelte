@@ -31,6 +31,7 @@
   export let geometry = undefined
   export let radius = 3
   export let fill = 'black'
+  export let opacity = 1
   export let transition = undefined
   export let onClick = undefined
   export let onMouseover = undefined
@@ -53,6 +54,7 @@
   let tr_screenGeometry = createTransitionable('geometry', getZoomedScreenGeometry(), transition)
   let tr_radius = createTransitionable('radius', radius, transition)
   let tr_fill = createTransitionable('fill', fill, transition)
+  let tr_opacity = createTransitionable('opacity', opacity, transition)
 
   // Handle zooming
   $: {
@@ -88,6 +90,7 @@
       tr_screenGeometry = createTransitionable('geometry', $tr_screenGeometry, transition)
       tr_radius = createTransitionable('radius', $tr_radius, transition)
       tr_fill = createTransitionable('fill', $tr_fill, transition)
+      tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
     }
   })
 
@@ -150,6 +153,7 @@
     class="point"
     d={generatePath(representPointAsPolygon($tr_screenGeometry, $tr_radius))}
     fill={$tr_fill}
+    style={`opacity: ${$tr_opacity}`}
   />
 
 {/if}

@@ -32,6 +32,7 @@
   export let geometry = undefined
   export let radius = 3
   export let fill = 'black'
+  export let opacity = 1
   export let transition = undefined
   export let index = undefined
   export let onClick = undefined
@@ -59,11 +60,13 @@
   // Generate other prop objects
   let radiusObject = generatePropObject(radius, indexArray)
   let fillObject = generatePropObject(fill, indexArray)
+  let opacityObject = generatePropObject(opacity, indexArray)
 
   // Initiate transitionables
   let tr_screenGeometryObject = createTransitionableLayer('geometry', getZoomedScreenGeometryObject(), transition)
   let tr_radiusObject = createTransitionableLayer('radius', radiusObject, transition)
   let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
+  let tr_opacityObject = createTransitionableLayer('opacity', opacityObject, transition)
 
   // Handle zooming
   $: {
@@ -107,6 +110,7 @@
       tr_screenGeometryObject = createTransitionableLayer('geometry', $tr_screenGeometryObject, transition)
       tr_radiusObject = createTransitionableLayer('radius', $tr_radiusObject, transition)
       tr_fillObject = createTransitionableLayer('fill', $tr_fillObject, transition)
+      tr_opacityObject = createTransitionableLayer('opacity', $tr_opacityObject, transition)
     }
   })
 
@@ -176,6 +180,7 @@
         )
       )}
       fill={$tr_fillObject[$index]}
+      style={`opacity: ${$tr_opacityObject[$index]}`}
     />
 
   {/each}
