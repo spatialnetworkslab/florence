@@ -20,6 +20,7 @@
   import { layerScreenGeometryFuncs } from './screenGeometryFuncs.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import { generatePropObject } from '../utils/generatePropObject.js'
+  import { createDataNecessaryForIndexingLayer } from './createDataNecessaryForIndexing.js'
   import generatePath from '../utils/generatePath.js'
 
   let layerId = getId()
@@ -190,7 +191,7 @@
     removeLayerFromSpatialIndexIfNecessary()
 
     if (isInteractive) {
-      $interactionManagerContext.loadLayer('Point', createLayerData())
+      $interactionManagerContext.loadLayer(type, createDataNecessaryForIndexing())
 
       if (onClick) $interactionManagerContext.addLayerInteraction('click', layerId, onClick)
       if (onMouseover) $interactionManagerContext.addLayerInteraction('mouseover', layerId, onMouseover)
@@ -205,12 +206,10 @@
     }
   }
 
-  function createLayerData () {
-    return {
-      layerAttributes: { pixelGeometryObject, radiusObject },
-      layerId,
-      indexArray
-    }
+  function createDataNecessaryForIndexing () {
+    return createDataNecessaryForIndexingLayer(
+      type, layerId, index, { pixelGeometryObject, screenGeometryObject }, { radiusObject }
+    )
   }
 </script>
 
