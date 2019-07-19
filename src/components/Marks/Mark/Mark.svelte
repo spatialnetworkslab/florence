@@ -67,7 +67,7 @@
 
   // Create screenGeometry
   let coordSysGeometry = createCoordSysGeometry(
-    { x, y, geometry }, $sectionContext, $coordinateTransformationContext
+    aesthetics, $sectionContext, $coordinateTransformationContext
   )
   let pixelGeometry
   let screenGeometry
