@@ -1,7 +1,7 @@
 <script context="module">
   let idCounter = 0
   function getId () {
-    return 'm' + idCounter++
+    return 'pt' + idCounter++
   }
 </script>
 
@@ -14,13 +14,10 @@
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   import * as ZoomContext from '../../Core/Section/ZoomContext'
   
-  import validateAesthetics from './validateAesthetics.js'
-  import createCoordSysGeometryFuncs from './createCoordSysGeometryFuncs.js'
-  import createScreenGeometryFuncs from './createScreenGeometryFuncs.js'
-  import { createDataNecessaryForIndexingMark } from './createDataNecessaryForIndexing.js'
   import { transformGeometry } from 'geometryUtils'
+  import createCoordSysGeometry from './createCoordSysGeometry.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
-
+  import { representPointAsPolygon } from './representPointAsPolygon.js'
   import generatePath from '../utils/generatePath.js'
 
   let markId = getId()
@@ -28,35 +25,17 @@
   let initPhase = true
   const initDone = () => !initPhase
 
-  export let type
-  
-  // Aesthetics: positioning
+  // Props
   export let x = undefined
   export let y = undefined
-  export let x1 = undefined
-  export let x2 = undefined
-  export let y1 = undefined
-  export let y2 = undefined
   export let geometry = undefined
   export let radius = 3
-
-  // Aesthetics: other
   export let fill = 'black'
   export let opacity = 1
-
-  // Transitions and interactions
   export let transition = undefined
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
-
-  $: aesthetics = validateAesthetics(
-    type,
-    { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
-  )
-
-  $: createCoordSysGeometry = createCoordSysGeometryFuncs[type]
-  $: createScreenGeometry = createCoordSysGeometryFuncs[type]
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -67,7 +46,7 @@
 
   // Create screenGeometry
   let coordSysGeometry = createCoordSysGeometry(
-    aesthetics, $sectionContext, $coordinateTransformationContext
+    { x, y, geometry }, $sectionContext, $coordinateTransformationContext
   )
   let pixelGeometry
   let screenGeometry
@@ -139,7 +118,7 @@
       pixelGeometry = coordSysGeometry
     }
 
-    screenGeometry = createScreenGeometry(pixelGeometry, aesthetics)
+    screenGeometry = representPointAsPolygon(pixelGeometry, radius)
 
     return screenGeometry
   }
@@ -148,7 +127,7 @@
     removeMarkFromSpatialIndexIfNecessary()
 
     if (isInteractive) {
-      $interactionManagerContext.loadMark(type, createDataNecessaryForIndexing())
+      $interactionManagerContext.loadMark('Point', createMarkData())
 
       if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
       if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
@@ -163,17 +142,18 @@
     }
   }
 
-  function createDataNecessaryForIndexing () {
-    return createDataNecessaryForIndexingMark(
-      type, markId, { screenGeometry, pixelGeometry }, aesthetics
-    )
+  function createMarkData () {
+    return {
+      attributes: { pixelGeometry, radius },
+      markId
+    }
   }
 </script>
 
 {#if $graphicContext.output() === 'svg'}
 
   <path
-    class={type.toLowerCase()}
+    class="point"
     d={generatePath($tr_screenGeometry)}
     fill={$tr_fill}
     style={`opacity: ${$tr_opacity}`}

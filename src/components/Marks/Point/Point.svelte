@@ -1,29 +1,5 @@
-<script context="module">
-  let idCounter = 0
-  function getId () {
-    return 'pt' + idCounter++
-  }
-</script>
-
 <script>
-  import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
-
-  import * as GraphicContext from '../../Core/Graphic/GraphicContext'
-  import * as SectionContext from '../../Core/Section/SectionContext'
-  import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
-  import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
-  import * as ZoomContext from '../../Core/Section/ZoomContext'
-  
-  import { transformGeometry } from 'geometryUtils'
-  import createCoordSysGeometry from './createCoordSysGeometry.js'
-  import { createTransitionable, transitionsEqual } from '../utils/transitions'
-  import { representPointAsPolygon } from './representPointAsPolygon.js'
-  import generatePath from '../utils/generatePath.js'
-
-  let markId = getId()
-
-  let initPhase = true
-  const initDone = () => !initPhase
+  import Mark from '../Mark/Mark.svelte'
 
   // Props
   export let x = undefined
@@ -36,127 +12,10 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
-
-  // Contexts
-  const graphicContext = GraphicContext.subscribe()
-  const sectionContext = SectionContext.subscribe()
-  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
-  const interactionManagerContext = InteractionManagerContext.subscribe()
-  const zoomContext = ZoomContext.subscribe()
-
-  // Create screenGeometry
-  let coordSysGeometry = createCoordSysGeometry(
-    { x, y, geometry }, $sectionContext, $coordinateTransformationContext
-  )
-  let pixelGeometry
-  let screenGeometry
-
-  // Initiate transitionables
-  let tr_screenGeometry = createTransitionable('geometry', getScreenGeometry(), transition)
-  let tr_radius = createTransitionable('radius', radius, transition)
-  let tr_fill = createTransitionable('fill', fill, transition)
-  let tr_opacity = createTransitionable('opacity', opacity, transition)
-
-  // Handle zooming
-  $: {
-    if ($zoomContext) {
-      tr_screenGeometry.set(getScreenGeometry())
-    }
-  }
-
-  // Handle screenGeometry transitions
-  $: {
-    if (initDone()) {
-      coordSysGeometry = createCoordSysGeometry(
-        { x, y, geometry }, $sectionContext, $coordinateTransformationContext
-      )
-
-      tr_radius.set(radius)
-      tr_screenGeometry.set(getScreenGeometry())
-
-      updateInteractionManagerIfNecessary()
-    }
-  }
-
-  // Handle other transitions
-  $: { if (initDone()) tr_fill.set(fill) }
-
-  let previousTransition
-
-  // Update transitionables
-  beforeUpdate(() => {
-    if (!transitionsEqual(previousTransition, transition)) {
-      previousTransition = transition
-
-      tr_screenGeometry = createTransitionable('geometry', $tr_screenGeometry, transition)
-      tr_radius = createTransitionable('radius', $tr_radius, transition)
-      tr_fill = createTransitionable('fill', $tr_fill, transition)
-      tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
-    }
-  })
-
-  afterUpdate(() => {
-    initPhase = false
-  })
-
-  // Interactivity
-  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
-
-  onMount(() => {
-    updateInteractionManagerIfNecessary()
-  })
-
-  onDestroy(() => {
-    removeMarkFromSpatialIndexIfNecessary()
-  })
-
-  // Helpers
-  function getScreenGeometry () {
-    if ($zoomContext) {
-      pixelGeometry = transformGeometry(coordSysGeometry, $zoomContext)
-    } else {
-      pixelGeometry = coordSysGeometry
-    }
-
-    screenGeometry = representPointAsPolygon(pixelGeometry, radius)
-
-    return screenGeometry
-  }
-
-  function updateInteractionManagerIfNecessary () {
-    removeMarkFromSpatialIndexIfNecessary()
-
-    if (isInteractive) {
-      $interactionManagerContext.loadMark('Point', createMarkData())
-
-      if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
-      if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
-      if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
-    }
-  }
-
-  function removeMarkFromSpatialIndexIfNecessary () {
-    if ($interactionManagerContext.markIsLoaded(markId)) {
-      $interactionManagerContext.removeAllMarkInteractions(markId)
-      $interactionManagerContext.removeMark(markId)
-    }
-  }
-
-  function createMarkData () {
-    return {
-      attributes: { pixelGeometry, radius },
-      markId
-    }
-  }
 </script>
 
-{#if $graphicContext.output() === 'svg'}
-
-  <path
-    class="point"
-    d={generatePath($tr_screenGeometry)}
-    fill={$tr_fill}
-    style={`opacity: ${$tr_opacity}`}
-  />
-
-{/if}
+<Mark
+  type="Point"
+  {x} {y} {geometry} {radius} {fill} {opacity} 
+  {transition} {onClick} {onMouseover} {onMouseout} 
+/>
