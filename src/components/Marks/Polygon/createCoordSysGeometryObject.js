@@ -1,4 +1,4 @@
-import { createScreenGeometryObject } from '../utils/createScreenGeometry.js'
+import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
 import { scaleGeometries } from 'geometryUtils'
 import { ensureValidCombination, createGeometryFromScaledProps } from './generateScreenGeometry.js'
 import getIndexArray from '../utils/getIndexArray.js'
@@ -10,11 +10,11 @@ export default function (
 ) {
   const { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
   const indexArray = getIndexArray(indexProp, length)
-  const screenGeometryObject = createScreenGeometryObject(
+  const coordSysGeometryObject = createCoordSysGeometryObject(
     scaledGeometryArray, coordinateTransformationContext, indexArray, interpolate
   )
 
-  return { screenGeometryObject, indexArray }
+  return { coordSysGeometryObject, indexArray }
 }
 
 function createScaledGeometryArray (geometryProps, sectionContext) {
