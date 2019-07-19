@@ -1,7 +1,7 @@
 <script context="module">
   let idCounter = 0
   function getId () {
-    return 'mark' + idCounter++
+    return 'm' + idCounter++
   }
 </script>
 
@@ -14,9 +14,13 @@
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   import * as ZoomContext from '../../Core/Section/ZoomContext'
   
+  import createCoordSysGeometryFuncs from './createCoordSysGeometryFuncs.js'
+  import createScreenGeometryFuncs from './createScreenGeometryFuncs.js'
+  import createMarkDataFuncs from './createMarkDataFuncs.js'
   import { transformGeometry } from 'geometryUtils'
-  import { generateScreenGeometry, ensureValidPropCombination } from './generateScreenGeometry.js'
-  // import { createTransitionable, transitionsEqual } from '../utils/transitions'
+  import { createTransitionable, transitionsEqual } from '../utils/transitions'
+
+  import generatePath from '../utils/generatePath.js'
 
   let markId = getId()
 
@@ -25,25 +29,21 @@
 
   // Props
   export let type
-
-  // Positioning props
   export let x = undefined
   export let y = undefined
-  export let x1 = undefined
-  export let x2 = undefined
-  export let y1 = undefined
-  export let y2 = undefined
   export let geometry = undefined
-
-  // Other aesthetics
   export let radius = 3
   export let fill = 'black'
-
-  // Transitions/interactions
+  export let opacity = 1
   export let transition = undefined
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+
+  $: aesthetics = { x, y, geometry, radius, fill, opacity }
+
+  $: createCoordSysGeometry = createCoordSysGeometryFuncs[type]
+  $: createScreenGeometry = createCoordSysGeometryFuncs[type]
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -53,35 +53,34 @@
   const zoomContext = ZoomContext.subscribe()
 
   // Create screenGeometry
-  $: positioningProps = { x, y, x1, x2, y1, y2, geometry }
-  ensureValidPropCombination(type, positioningProps)
-
-  let unzoomedSceenGeometry = generateScreenGeometry(type)(
-    positioningProps, $sectionContext, $coordinateTransformationContext
+  let coordSysGeometry = createCoordSysGeometry(
+    { x, y, geometry }, $sectionContext, $coordinateTransformationContext
   )
+  let pixelGeometry
   let screenGeometry
 
   // Initiate transitionables
-  let tr_screenGeometry = createTransitionable('geometry', getZoomedScreenGeometry(), transition)
+  let tr_screenGeometry = createTransitionable('geometry', getScreenGeometry(), transition)
   let tr_radius = createTransitionable('radius', radius, transition)
   let tr_fill = createTransitionable('fill', fill, transition)
+  let tr_opacity = createTransitionable('opacity', opacity, transition)
 
   // Handle zooming
   $: {
     if ($zoomContext) {
-      tr_screenGeometry.set(getZoomedScreenGeometry())
+      tr_screenGeometry.set(getScreenGeometry())
     }
   }
 
   // Handle screenGeometry transitions
   $: {
     if (initDone()) {
-      unzoomedSceenGeometry = generateScreenGeometry(
-        positioningProps, $sectionContext, $coordinateTransformationContext
+      coordSysGeometry = createCoordSysGeometry(
+        { x, y, geometry }, $sectionContext, $coordinateTransformationContext
       )
 
-      tr_screenGeometry.set(getZoomedScreenGeometry())
       tr_radius.set(radius)
+      tr_screenGeometry.set(getScreenGeometry())
 
       updateInteractionManagerIfNecessary()
     }
@@ -100,6 +99,7 @@
       tr_screenGeometry = createTransitionable('geometry', $tr_screenGeometry, transition)
       tr_radius = createTransitionable('radius', $tr_radius, transition)
       tr_fill = createTransitionable('fill', $tr_fill, transition)
+      tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
     }
   })
 
@@ -119,12 +119,14 @@
   })
 
   // Helpers
-  function getZoomedScreenGeometry () {
+  function getScreenGeometry () {
     if ($zoomContext) {
-      screenGeometry = transformGeometry(unzoomedSceenGeometry, $zoomContext)
+      pixelGeometry = transformGeometry(coordSysGeometry, $zoomContext)
     } else {
-      screenGeometry = unzoomedSceenGeometry
+      pixelGeometry = coordSysGeometry
     }
+
+    screenGeometry = createScreenGeometry(pixelGeometry, aesthetics)
 
     return screenGeometry
   }
@@ -133,7 +135,7 @@
     removeMarkFromSpatialIndexIfNecessary()
 
     if (isInteractive) {
-      $interactionManagerContext.loadMark('Point', createMarkData())
+      $interactionManagerContext.loadMark(type, createMarkData())
 
       if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
       if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
@@ -150,7 +152,7 @@
 
   function createMarkData () {
     return {
-      attributes: { screenGeometry, radius },
+      attributes: { pixelGeometry, radius },
       markId
     }
   }
@@ -158,12 +160,11 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  <circle 
-    class="point"
-    cx={$tr_screenGeometry.coordinates[0]} 
-    cy={$tr_screenGeometry.coordinates[1]} 
-    r={$tr_radius} 
-    fill={$tr_fill} 
+  <path
+    class={type.toLowerCase()}
+    d={generatePath($tr_screenGeometry)}
+    fill={$tr_fill}
+    style={`opacity: ${$tr_opacity}`}
   />
 
 {/if}
