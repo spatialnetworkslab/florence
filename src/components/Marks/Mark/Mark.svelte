@@ -52,6 +52,7 @@
 
   // Other
   export let interpolate = undefined
+  export let _asPath = true
 
   // Validate aesthetics every time input changes
   $: {
@@ -167,7 +168,11 @@
       pixelGeometry = coordSysGeometry
     }
 
-    screenGeometry = createScreenGeometry(pixelGeometry, { radius })
+    if (_asPath) {
+      screenGeometry = createScreenGeometry(pixelGeometry, { radius })
+    } else {
+      screenGeometry = pixelGeometry
+    }
 
     return screenGeometry
   }
@@ -200,11 +205,28 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  <path
-    class={type.toLowerCase()}
-    d={generatePath($tr_screenGeometry)}
-    fill={$tr_fill}
-    style={`opacity: ${$tr_opacity}`}
-  />
+  {#if type !== 'Point' || _asPath}
+
+    <path
+      class={type.toLowerCase()}
+      d={generatePath($tr_screenGeometry)}
+      fill={$tr_fill}
+      style={`opacity: ${$tr_opacity}`}
+    />
+
+  {/if}
+
+  {#if type === 'Point' && !_asPath}
+
+    <circle 
+      class="point"
+      cx={$tr_screenGeometry.coordinates[0]}
+      cy={$tr_screenGeometry.coordinates[1]}
+      r={$tr_radius}
+      fill={$tr_fill}
+      style={`opacity: ${$tr_opacity}`}
+    />
+
+  {/if}
 
 {/if}

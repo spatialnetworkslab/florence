@@ -22,5 +22,6 @@
   type="Point"
   {x} {y} {geometry} {radius} 
   {fill} {opacity} 
-  {transition} {onClick} {onMouseover} {onMouseout} 
+  {transition} {onClick} {onMouseover} {onMouseout}
+  _asPath={false}
 />

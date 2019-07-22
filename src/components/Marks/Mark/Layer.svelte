@@ -53,6 +53,7 @@
   // Other
   export let index = undefined
   export let interpolate = undefined
+  export let _asPath = true
 
   // Validate aesthetics every time input changes
   $: {
@@ -183,7 +184,11 @@
       pixelGeometryObject = coordSysGeometryObject
     }
 
-    screenGeometryObject = createScreenGeometryObject(pixelGeometryObject, { radiusObject })
+    if (_asPath) {
+      screenGeometryObject = createScreenGeometryObject(pixelGeometryObject, { radiusObject })
+    } else {
+      screenGeometryObject = pixelGeometryObject
+    }
 
     return screenGeometryObject
   }
@@ -216,15 +221,36 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#each indexArray as $index ($index)}
+  {#if type !== 'Point' || _asPath}
 
-    <path
-      class={type.toLowerCase()}
-      d={generatePath($tr_screenGeometryObject[$index])}
-      fill={$tr_fillObject[$index]}
-      style={`opacity: ${$tr_opacityObject[$index]}`}
-    />
+    {#each indexArray as $index ($index)}
 
-  {/each}
+      <path
+        class={type.toLowerCase()}
+        d={generatePath($tr_screenGeometryObject[$index])}
+        fill={$tr_fillObject[$index]}
+        style={`opacity: ${$tr_opacityObject[$index]}`}
+      />
+
+    {/each}
+
+  {/if}
+
+  {#if type === 'Point' && !_asPath}
+
+    {#each indexArray as $index ($index)}
+
+      <circle
+        class="point"
+        cx={$tr_screenGeometryObject[$index].coordinates[0]}
+        cy={$tr_screenGeometryObject[$index].coordinates[1]}
+        r={$tr_radiusObject[$index]}
+        fill={$tr_fillObject[$index]}
+        style={`opacity: ${$tr_opacityObject[$index]}`}
+      />
+
+    {/each}
+
+  {/if}
 
 {/if}

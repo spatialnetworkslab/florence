@@ -26,5 +26,5 @@
   {x} {y} {geometry} {radius}
   {fill} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {index}
+  {index} _asPath={false}
 />
