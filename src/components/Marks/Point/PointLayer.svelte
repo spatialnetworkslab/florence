@@ -5,9 +5,9 @@
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
-  export let radius = 3
 
   // Aesthetics: other
+  export let radius = 3
   export let fill = 'black'
   export let opacity = 1
 

@@ -38,9 +38,9 @@
   export let y1 = undefined
   export let y2 = undefined
   export let geometry = undefined
-  export let radius = undefined
 
   // Aesthetics: other
+  export let radius = undefined
   export let fill = undefined
   export let opacity = undefined
 
@@ -53,18 +53,19 @@
   // Other
   export let interpolate = undefined
 
-  // Validate aesthetics
-  let aesthetics = validateAesthetics(
-    type,
-    { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
-  )
-
+  // Validate aesthetics every time input changes
+  $: {
+    validateAesthetics(
+      type,
+      { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+    )
+  }
+  
+  // Create 'positioning' aesthetics object
+  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
   $: {
     if (initDone()) {
-      aesthetics = validateAesthetics(
-        type,
-        { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
-      )
+      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
     }
   }
 
@@ -88,7 +89,7 @@
 
   // Create screenGeometry
   let coordSysGeometry = createCoordSysGeometry(
-    aesthetics, 
+    positioningAesthetics, 
     $sectionContext, 
     $coordinateTransformationContext,
     interpolate
@@ -113,9 +114,10 @@
   $: {
     if (initDone()) {
       coordSysGeometry = createCoordSysGeometry(
-        aesthetics, 
+        positioningAesthetics, 
         $sectionContext, 
-        $coordinateTransformationContext
+        $coordinateTransformationContext,
+        interpolate
       )
 
       tr_radius.set(radius)
@@ -165,7 +167,7 @@
       pixelGeometry = coordSysGeometry
     }
 
-    screenGeometry = createScreenGeometry(pixelGeometry, aesthetics)
+    screenGeometry = createScreenGeometry(pixelGeometry, { radius })
 
     return screenGeometry
   }
@@ -191,7 +193,7 @@
 
   function createDataNecessaryForIndexing () {
     return createDataNecessaryForIndexingMark(
-      type, markId, { screenGeometry, pixelGeometry }, aesthetics
+      type, markId, { screenGeometry, pixelGeometry }, { radius }
     )
   }
 </script>

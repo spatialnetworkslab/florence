@@ -16,8 +16,6 @@ export default function (type, aesthetics) {
   if (type === 'Polygon') {
     validateAesthetics(aesthetics, polygonAesthetics)
   }
-
-  return aesthetics
 }
 
 function validateAesthetics (passedAesthetics, allowedAesthetics) {

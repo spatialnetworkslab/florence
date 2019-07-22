@@ -38,9 +38,9 @@
   export let y1 = undefined
   export let y2 = undefined
   export let geometry = undefined
-  export let radius = undefined
 
   // Aesthetics: other
+  export let radius = undefined
   export let fill = undefined
   export let opacity = undefined
 
@@ -54,18 +54,19 @@
   export let index = undefined
   export let interpolate = undefined
 
-  // Validate aesthetics
-  let aesthetics = validateAesthetics(
-    type,
-    { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
-  )
+  // Validate aesthetics every time input changes
+  $: {
+    validateAesthetics(
+      type,
+      { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+    )
+  }
 
+  // Create 'positioning' aesthetics object
+  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
   $: {
     if (initDone()) {
-      aesthetics = validateAesthetics(
-        type,
-        { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
-      )
+      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
     }
   }
 
@@ -89,7 +90,7 @@
 
   // Generate screenGeometryObject and index array
   let _ = createCoordSysGeometryObject(
-    aesthetics, 
+    positioningAesthetics, 
     $sectionContext,
     $coordinateTransformationContext,
     index,
@@ -123,7 +124,7 @@
   $: {
     if (initDone()) {
       _ = createCoordSysGeometryObject(
-        aesthetics, 
+        positioningAesthetics, 
         $sectionContext,
         $coordinateTransformationContext,
         index,
