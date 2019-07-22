@@ -41,8 +41,8 @@
 
   // Aesthetics: other
   export let radius = undefined
-  export let fill = 'black'
-  export let opacity = 1
+  export let fill = undefined
+  export let opacity = undefined
 
   // Transitions and interactions
   export let transition = undefined
@@ -55,11 +55,17 @@
   export let _asPath = true
 
   // Validate aesthetics every time input changes
+  let aesthetics = validateAesthetics(
+    type,
+    { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+  )
   $: {
-    validateAesthetics(
-      type,
-      { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
-    )
+    if (initDone()) {
+      aesthetics = validateAesthetics(
+        type,
+        { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+      )
+    }
   }
   
   // Create 'positioning' aesthetics object
@@ -100,9 +106,9 @@
 
   // Initiate transitionables
   let tr_screenGeometry = createTransitionable('geometry', getScreenGeometry(), transition)
-  let tr_radius = createTransitionable('radius', radius, transition)
-  let tr_fill = createTransitionable('fill', fill, transition)
-  let tr_opacity = createTransitionable('opacity', opacity, transition)
+  let tr_radius = createTransitionable('radius', aesthetics.radius, transition)
+  let tr_fill = createTransitionable('fill', aesthetics.fill, transition)
+  let tr_opacity = createTransitionable('opacity', aesthetics.opacity, transition)
 
   // Handle zooming
   $: {
@@ -122,7 +128,7 @@
       )
 
       if (type === 'Point') {
-        tr_radius.set(radius)
+        tr_radius.set(aesthetics.radius)
       }
       
       tr_screenGeometry.set(getScreenGeometry())
@@ -172,7 +178,7 @@
     }
 
     if (_asPath) {
-      screenGeometry = createScreenGeometry(pixelGeometry, { radius })
+      screenGeometry = createScreenGeometry(pixelGeometry, { radius: aesthetics.radius })
     } else {
       screenGeometry = pixelGeometry
     }
@@ -201,7 +207,7 @@
 
   function createDataNecessaryForIndexing () {
     return createDataNecessaryForIndexingMark(
-      type, markId, { screenGeometry, pixelGeometry }, { radius }
+      type, markId, { screenGeometry, pixelGeometry }, { radius: aesthetics.radius }
     )
   }
 </script>

@@ -7,8 +7,8 @@
   export let geometry = undefined
 
   // Aesthetics: other
-  export let fill = 'black'
-  export let opacity = 1
+  export let fill = undefined
+  export let opacity = undefined
 
   // Transitions and interactions
   export let transition = undefined

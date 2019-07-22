@@ -2,32 +2,53 @@ import pointAesthetics from '../Point/aesthetics.js'
 import rectangleAesthetics from '../Rectangle/aesthetics.js'
 import polygonAesthetics from '../Polygon/aesthetics.js'
 
-import { isDefined } from 'equals.js'
+import { isDefined, isUndefined } from 'equals.js'
 
 export default function (type, aesthetics) {
   if (type === 'Point') {
-    validateAesthetics(aesthetics, pointAesthetics)
+    return validateAesthetics(aesthetics, pointAesthetics)
   }
 
   if (type === 'Rectangle') {
-    validateAesthetics(aesthetics, rectangleAesthetics)
+    return validateAesthetics(aesthetics, rectangleAesthetics)
   }
 
   if (type === 'Polygon') {
-    validateAesthetics(aesthetics, polygonAesthetics)
+    return validateAesthetics(aesthetics, polygonAesthetics)
   }
 }
 
 function validateAesthetics (passedAesthetics, allowedAesthetics) {
+  const aesthetics = {}
+
   for (const aestheticName in passedAesthetics) {
     const aestheticValue = passedAesthetics[aestheticName]
+    const aestheticRequirements = allowedAesthetics[aestheticName]
 
     if (isDefined(aestheticValue)) {
       if (!(aestheticName in allowedAesthetics)) throw aestheticNotAllowedError(aestheticName)
+      aesthetics[aestheticName] = aestheticValue
+    }
+
+    if (isUndefined(aestheticValue)) {
+      if (aestheticName in allowedAesthetics) {
+        if (aestheticRequirements.required) throw aestheticRequiredError(aestheticName)
+        if (aestheticRequirements.default) {
+          aesthetics[aestheticName] = aestheticRequirements.default
+        } else {
+          aesthetics[aestheticName] = aestheticValue
+        }
+      }
     }
   }
+
+  return aesthetics
 }
 
 const aestheticNotAllowedError = name => {
-  throw new Error(`Aesthetic '${name}' not allowed`)
+  return new Error(`Aesthetic '${name}' not allowed`)
+}
+
+const aestheticRequiredError = name => {
+  return new Error(`Required aesthetic '${name}' is missing`)
 }

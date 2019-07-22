@@ -1,8 +1,22 @@
 export default {
-  x1: true,
-  x2: true,
-  y1: true,
-  y2: true,
-  fill: true,
-  opacity: true
+  x1: {
+    required: false
+  },
+  x2: {
+    required: false
+  },
+  y1: {
+    required: false
+  },
+  y2: {
+    required: false
+  },
+  fill: {
+    required: false,
+    default: 'black'
+  },
+  opacity: {
+    required: false,
+    default: 1
+  }
 }
