@@ -30,7 +30,8 @@
       type: 'Point',
       x: row.b,
       y: row.c,
-      radius: 3
+      radius: 6,
+      fill: 'red'
     })
 
     barchartMarks.push({
@@ -38,11 +39,14 @@
       x1: row.a,
       x2: ({ scaleX }) => scaleX(row.a) + scaleX.bandwidth(),
       y1: 0,
-      y2: row.b
+      y2: row.b,
+      fill: 'blue'
     })
   }
 
   $: marks = currentChartType === 'scatterplot' ? scatterplotMarks : barchartMarks
+
+  const indices = [0, 1, 2, 3]
 </script>
 
 <label for="type-selector">Chart:</label>
@@ -58,12 +62,14 @@
     y1={50} y2={450}
     scaleX={scales.x}
     scaleY={scales.y}
+    padding={10}
   >
 
-    {#each marks as markProps, i (i)}
+    {#each indices as index (index)}
 
       <Mark
-        {...markProps}
+        {...marks[index]}
+        transition={2000}
       />
 
     {/each}

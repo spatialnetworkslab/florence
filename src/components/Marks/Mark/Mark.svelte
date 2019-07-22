@@ -70,10 +70,6 @@
     }
   }
 
-  $: {
-    console.log(type)
-  }
-
   // Select appriopriate geometry conversion functions
   let createCoordSysGeometry = markCoordSysGeometryFuncs[type]
   let createScreenGeometry = markScreenGeometryFuncs[type]
@@ -125,7 +121,10 @@
         interpolate
       )
 
-      tr_radius.set(radius)
+      if (type === 'Point') {
+        tr_radius.set(radius)
+      }
+      
       tr_screenGeometry.set(getScreenGeometry())
 
       updateInteractionManagerIfNecessary()
