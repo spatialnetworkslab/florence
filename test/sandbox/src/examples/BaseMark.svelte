@@ -1,0 +1,70 @@
+<script>
+  import { scaleLinear, scaleBand } from 'd3-scale'
+  import { DataContainer, Graphic, Section, Mark } from '../../../../'
+
+  let currentChartType = 'scatterplot'
+
+  const data = new DataContainer({
+    a: ['a', 'b', 'c', 'd'],
+    b: [10, 30, 20, 50],
+    c: [4, 9, 10, 8]
+  })
+
+  const scatterplotScales = {
+    x: scaleLinear().domain(data.domain('b')),
+    y: scaleLinear().domain(data.domain('c'))
+  }
+
+  const barchartScales = {
+    x: scaleBand().domain(data.domain('a')),
+    y: scaleLinear().domain(data.domain('b'))
+  }
+
+  $: scales = currentChartType === 'scatterplot' ? scatterplotScales: barchartScales
+
+  const scatterplotMarks = []
+  const barchartMarks = []
+
+  for (let row of data.rows()) {
+    scatterplotMarks.push({
+      type: 'Point',
+      x: row.b,
+      y: row.c
+    })
+
+    barchartMarks.push({
+      type: 'Rectangle',
+      x1: row.a,
+      x2: ({ scaleX }) => scaleX(row.a) + scaleX.bandwidth(),
+      y1: 0,
+      y2: row.b
+    })
+  }
+
+  let marks = currentChartType === 'scatterplot' ? scatterplotMarks : barchartMarks
+</script>
+
+<label for="type-selector">Chart:</label>
+<select name="type-selector" bind:value={currentChartType}>
+  <option value="scatterplot">Scatterplot</option>
+  <option value="barchart">Bar chart</option>
+</select>
+
+<Graphic width={500} height={500}>
+
+  <Section
+    x1={50} x2={450}
+    y1={50} y2={450}
+    scaleX={scales.x}
+    scaleY={scales.y}
+  >
+
+    {#each marks as markProps, i (i)}
+
+      <Mark {...markProps} />
+
+    {/each}
+  
+  </Section>
+
+</Graphic>
