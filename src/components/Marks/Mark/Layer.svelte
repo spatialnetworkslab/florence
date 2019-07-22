@@ -135,8 +135,10 @@
       indexArray = _.indexArray
       coordSysGeometryObject = _.coordSysGeometryObject
 
-      radiusObject = generatePropObject(radius, indexArray)
-      tr_radiusObject.set(radiusObject)
+      if (type === 'Point') {
+        radiusObject = generatePropObject(radius, indexArray)
+        tr_radiusObject.set(radiusObject)
+      }
 
       tr_screenGeometryObject.set(getScreenGeometryObject())
 
