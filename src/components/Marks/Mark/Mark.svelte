@@ -41,8 +41,8 @@
 
   // Aesthetics: other
   export let radius = undefined
-  export let fill = undefined
-  export let opacity = undefined
+  export let fill = 'black'
+  export let opacity = 1
 
   // Transitions and interactions
   export let transition = undefined
@@ -51,7 +51,7 @@
   export let onMouseout = undefined
 
   // Other
-  export let interpolate = undefined
+  export let interpolate = false
   export let _asPath = true
 
   // Validate aesthetics every time input changes
@@ -68,6 +68,10 @@
     if (initDone()) {
       positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
     }
+  }
+
+  $: {
+    console.log(type)
   }
 
   // Select appriopriate geometry conversion functions

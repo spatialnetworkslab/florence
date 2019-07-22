@@ -16,8 +16,8 @@
   }
 
   const barchartScales = {
-    x: scaleBand().domain(data.domain('a')),
-    y: scaleLinear().domain(data.domain('b'))
+    x: scaleBand().domain(data.domain('a')).padding(0.2),
+    y: scaleLinear().domain([0, data.domain('b')[1]])
   }
 
   $: scales = currentChartType === 'scatterplot' ? scatterplotScales: barchartScales
@@ -29,7 +29,8 @@
     scatterplotMarks.push({
       type: 'Point',
       x: row.b,
-      y: row.c
+      y: row.c,
+      radius: 3
     })
 
     barchartMarks.push({
@@ -41,7 +42,7 @@
     })
   }
 
-  let marks = currentChartType === 'scatterplot' ? scatterplotMarks : barchartMarks
+  $: marks = currentChartType === 'scatterplot' ? scatterplotMarks : barchartMarks
 </script>
 
 <label for="type-selector">Chart:</label>
@@ -61,7 +62,9 @@
 
     {#each marks as markProps, i (i)}
 
-      <Mark {...markProps} />
+      <Mark
+        {...markProps}
+      />
 
     {/each}
   
