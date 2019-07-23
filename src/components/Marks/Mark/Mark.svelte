@@ -226,7 +226,7 @@
     screenGeometryRecalculationNecessary = true
   }
 
-  function updateScreenGeometryObject () {
+  function updateScreenGeometry () {
     if (_asPolygon) {
       screenGeometry = createScreenGeometry(pixelGeometry, { radius: aesthetics.radius })
     } else {

@@ -103,12 +103,14 @@
 
   updateCoordSysGeometryObject()
   updatePixelGeometryObject()
-  updateScreenGeometryObject()
 
   // Generate other prop objects
   let radiusObject = generatePropObject(aesthetics.radius, indexArray)
   let fillObject = generatePropObject(aesthetics.fill, indexArray)
   let opacityObject = generatePropObject(aesthetics.opacity, indexArray)
+
+  // This one uses the radiusObject in some cases, so must be done after the prop objects
+  updateScreenGeometryObject()
 
   // Initiate transitionables
   let tr_screenGeometryObject = createTransitionableLayer('geometry', screenGeometryObject, transition)
