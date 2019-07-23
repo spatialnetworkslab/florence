@@ -17,7 +17,7 @@
   import validateAesthetics from './validateAesthetics.js'
   import { transformGeometries } from 'geometryUtils'
   import { layerCoordSysGeometryFuncs } from './coordSysGeometryFuncs.js'
-  import { layerScreenGeometryFuncs } from './screenGeometryFuncs.js'
+  import { layerRepresentAsPolygonFuncs } from './representAsPolygonFuncs.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import { generatePropObject } from '../utils/generatePropObject.js'
   import { createDataNecessaryForIndexingLayer } from './createDataNecessaryForIndexing.js'
@@ -79,12 +79,12 @@
 
   // Select appriopriate geometry conversion functions
   let createCoordSysGeometryObject = layerCoordSysGeometryFuncs[type]
-  let createScreenGeometryObject = layerScreenGeometryFuncs[type]
+  let representAsPolygonObject = layerRepresentAsPolygonFuncs[type]
 
   $: {
     if (initDone()) {
       createCoordSysGeometryObject = layerCoordSysGeometryFuncs[type]
-      createScreenGeometryObject = layerScreenGeometryFuncs[type]
+      representAsPolygonObject = layerRepresentAsPolygonFuncs[type]
     }
   }
 
@@ -243,7 +243,7 @@
 
   function updateScreenGeometryObject () {
     if (_asPolygon) {
-      screenGeometryObject = createScreenGeometryObject(pixelGeometryObject, { radiusObject })
+      screenGeometryObject = representAsPolygonObject(pixelGeometryObject, { radiusObject })
     } else {
       screenGeometryObject = pixelGeometryObject
     }

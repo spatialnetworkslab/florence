@@ -1,6 +1,6 @@
 import { representPointAsPolygon, representPointsAsPolygons } from '../Point/representPointAsPolygon.js'
 
-export const markScreenGeometryFuncs = new Proxy({
+export const markRepresentAsPolygonFuncs = new Proxy({
   Point: representPointAsPolygon
 }, {
   get: (obj, prop) => {
@@ -12,7 +12,7 @@ export const markScreenGeometryFuncs = new Proxy({
   }
 })
 
-export const layerScreenGeometryFuncs = new Proxy({
+export const layerRepresentAsPolygonFuncs = new Proxy({
   Point: representPointsAsPolygons
 }, {
   get: (obj, prop) => {
