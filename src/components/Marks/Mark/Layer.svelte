@@ -95,19 +95,15 @@
   const interactionManagerContext = InteractionManagerContext.subscribe()
   const zoomContext = ZoomContext.subscribe()
 
-  // Generate screenGeometryObject and index array
-  let _ = createCoordSysGeometryObject(
-    positioningAesthetics, 
-    $sectionContext,
-    $coordinateTransformationContext,
-    index,
-    interpolate
-  )
-
-  let indexArray = _.indexArray
-  let coordSysGeometryObject = _.coordSysGeometryObject
+  // Initiate geometry objects and index array
+  let indexArray
+  let coordSysGeometryObject
   let pixelGeometryObject
   let screenGeometryObject
+
+  updateCoordSysGeometryObject()
+  updatePixelGeometryObject()
+  updateScreenGeometryObject()
 
   // Generate other prop objects
   let radiusObject = generatePropObject(aesthetics.radius, indexArray)
@@ -115,56 +111,56 @@
   let opacityObject = generatePropObject(aesthetics.opacity, indexArray)
 
   // Initiate transitionables
-  let tr_screenGeometryObject = createTransitionableLayer('geometry', getScreenGeometryObject(), transition)
+  let tr_screenGeometryObject = createTransitionableLayer('geometry', screenGeometryObject, transition)
   let tr_radiusObject = createTransitionableLayer('radius', radiusObject, transition)
   let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
   let tr_opacityObject = createTransitionableLayer('opacity', opacityObject, transition)
 
-  // Handle zooming
-  $: {
-    if ($zoomContext) {
-      tr_screenGeometryObject.set(getScreenGeometryObject())
-    }
-  }
-
-  // Handle screenGeometryObject transitions
+  // Handle coordSysGeometryObject changes
   $: {
     if (initDone()) {
-      _ = createCoordSysGeometryObject(
+      scheduleUpdateCoordSysGeometryObject(
         positioningAesthetics, 
         $sectionContext,
         $coordinateTransformationContext,
         index,
         interpolate
       )
-      
-      indexArray = _.indexArray
-      coordSysGeometryObject = _.coordSysGeometryObject
-
-      tr_screenGeometryObject.set(getScreenGeometryObject())
-
-      updateInteractionManagerIfNecessary()
     }
   }
 
-  // Handle other transitions
-  $: { if (initDone()) tr_fillObject.set(generatePropObject(aesthetics.fill, indexArray)) }
-  $: { if (initDone()) tr_opacityObject.set(generatePropObject(aesthetics.opacity, indexArray)) }
+  // Handle zooming changes
   $: {
     if (initDone()) {
-      if (type === 'Point' && !_asPolygon) {
+      scheduleUpdatePixelGeometryObject(
+        $zoomContext
+      )
+    }
+  }
+
+  // Handle radius changes
+  $: {
+    if (initDone()) {
+      if (!_asPolygon) {
         radiusObject = generatePropObject(aesthetics.radius, indexArray)
         tr_radiusObject.set(radiusObject)
       }
 
-      if (type === 'Point' && _asPolygon) {
-
+      if (_asPolygon) {
+        scheduleUpdateScreenGeometryObject()
       }
     }
   }
 
+  // Handle other changes
+  $: { if (initDone()) tr_fillObject.set(generatePropObject(aesthetics.fill, indexArray)) }
+  $: { if (initDone()) tr_opacityObject.set(generatePropObject(aesthetics.opacity, indexArray)) }
+
   let previousTransition
-  let screenGeometryRecalculationNecessary = false
+
+  let coordSysGeometryObjectRecalculationNecessary = false
+  let pixelGeometryObjectRecalculationNecessary = false
+  let screenGeometryObjectRecalculationNecessary = false
 
   beforeUpdate(() => {
     // Update transitionables
@@ -177,12 +173,20 @@
       tr_opacityObject = createTransitionableLayer('opacity', $tr_opacityObject, transition)
     }
 
-    // Recalculate screenGeometry is necessary
-    if (screenGeometryRecalculationNecessary) {
+    if (coordSysGeometryObjectRecalculationNecessary) updateCoordSysGeometryObject()
+
+    if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
+
+    if (screenGeometryObjectRecalculationNecessary) {
+      updateScreenGeometryObject()
       tr_screenGeometryObject.set(screenGeometryObject)
 
-      screenGeometryRecalculationNecessary = false
+      updateInteractionManagerIfNecessary()
     }
+
+    coordSysGeometryObjectRecalculationNecessary = false
+    pixelGeometryObjectRecalculationNecessary = false
+    screenGeometryObjectRecalculationNecessary = false
   })
 
   afterUpdate(() => {
@@ -201,26 +205,48 @@
   })
 
   // Helpers
-  function getScreenGeometryObject () {
+  function scheduleUpdateCoordSysGeometryObject () {
+    coordSysGeometryObjectRecalculationNecessary = true
+    pixelGeometryObjectRecalculationNecessary = true
+    screenGeometryObjectRecalculationNecessary = true
+  }
+
+  function updateCoordSysGeometryObject () {
+    let _ = createCoordSysGeometryObject(
+      positioningAesthetics, 
+      $sectionContext,
+      $coordinateTransformationContext,
+      index,
+      interpolate
+    )
+
+    indexArray = _.indexArray
+    coordSysGeometryObject = _.coordSysGeometryObject
+  }
+
+  function scheduleUpdatePixelGeometryObject () {
+    pixelGeometryObjectRecalculationNecessary = true
+    screenGeometryObjectRecalculationNecessary = true
+  }
+
+  function updatePixelGeometryObject () {
     if ($zoomContext) {
       pixelGeometryObject = transformGeometries(coordSysGeometryObject, $zoomContext)
     } else {
       pixelGeometryObject = coordSysGeometryObject
     }
-
-    screenGeometryObject = representAsPolygonObjectIfNecessary()
-
-    return screenGeometryObject
   }
 
-  function representAsPolygonObjectIfNecessary () {
+  function scheduleUpdateScreenGeometryObject () {
+    screenGeometryObjectRecalculationNecessary = true
+  }
+
+  function updateScreenGeometryObject () {
     if (_asPolygon) {
       screenGeometryObject = createScreenGeometryObject(pixelGeometryObject, { radiusObject })
     } else {
       screenGeometryObject = pixelGeometryObject
     }
-
-    return screenGeometryObject
   }
 
   function updateInteractionManagerIfNecessary () {

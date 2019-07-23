@@ -94,61 +94,62 @@
   const interactionManagerContext = InteractionManagerContext.subscribe()
   const zoomContext = ZoomContext.subscribe()
 
-  // Create screenGeometry
-  let coordSysGeometry = createCoordSysGeometry(
-    positioningAesthetics, 
-    $sectionContext, 
-    $coordinateTransformationContext,
-    interpolate
-  )
+  // Initiate geometries
+  let coordSysGeometry
   let pixelGeometry
   let screenGeometry
 
+  updateCoordSysGeometry()
+  updatePixelGeometry()
+  updateScreenGeometry()
+
   // Initiate transitionables
-  let tr_screenGeometry = createTransitionable('geometry', getScreenGeometry(), transition)
+  let tr_screenGeometry = createTransitionable('geometry', screenGeometry, transition)
   let tr_radius = createTransitionable('radius', aesthetics.radius, transition)
   let tr_fill = createTransitionable('fill', aesthetics.fill, transition)
   let tr_opacity = createTransitionable('opacity', aesthetics.opacity, transition)
 
-  // Handle zooming
-  $: {
-    if ($zoomContext) {
-      tr_screenGeometry.set(getScreenGeometry())
-    }
-  }
-
-  // Handle screenGeometry transitions
+  // Handle coordSysGeometry changes
   $: {
     if (initDone()) {
-      coordSysGeometry = createCoordSysGeometry(
+      scheduleUpdateCoordSysGeometry(
         positioningAesthetics, 
         $sectionContext, 
         $coordinateTransformationContext,
         interpolate
       )
-      
-      tr_screenGeometry.set(getScreenGeometry())
-
-      updateInteractionManagerIfNecessary()
     }
   }
 
-  // Handle other transitions
-  $: { if (initDone()) tr_fill.set(aesthetics.fill) }
-  $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
+  // Handle zooming changes
   $: {
     if (initDone()) {
-      if (type === 'Point' && !_asPolygon) {
+      scheduleUpdatePixelGeometry($zoomContext)
+    }
+  }
+
+  // Handle radius changes
+  $: {
+    if (initDone()) {
+      if (!_asPolygon) {
         tr_radius.set(aesthetics.radius)
       }
 
-      if (type === 'Point' && _asPolygon) {
-        representAsPolygonIfNecessary()
+      if (_asPolygon) {
+        scheduleUpdateScreenGeometry()
       }
     }
   }
 
+  // Handle other changes
+  $: { if (initDone()) tr_fill.set(aesthetics.fill) }
+  $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
+
   let previousTransition
+
+  let coordSysGeometryRecalculationNecessary = false
+  let pixelGeometryRecalculationNecessary = false
+  let screenGeometryRecalculationNecessary = false
 
   // Update transitionables when transition settings change
   beforeUpdate(() => {
@@ -160,6 +161,21 @@
       tr_fill = createTransitionable('fill', $tr_fill, transition)
       tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
     }
+
+     if (coordSysGeometryRecalculationNecessary) updateCoordSysGeometry()
+
+     if (pixelGeometryRecalculationNecessary) updatePixelGeometry()
+
+     if (screenGeometryRecalculationNecessary) {
+       updateScreenGeometry()
+       tr_screenGeometry.set(screenGeometry)
+       
+       updateInteractionManagerIfNecessary()
+     }
+
+     coordSysGeometryRecalculationNecessary = false
+     pixelGeometryRecalculationNecessary = false
+     screenGeometryRecalculationNecessary = false
   })
 
   afterUpdate(() => {
@@ -178,26 +194,44 @@
   })
 
   // Helpers
-  function getScreenGeometry () {
+  function scheduleUpdateCoordSysGeometry () {
+    coordSysGeometryRecalculationNecessary = true
+    pixelGeometryRecalculationNecessary = true
+    screenGeometryRecalculationNecessary = true
+  }
+
+  function updateCoordSysGeometry () {
+    coordSysGeometry = createCoordSysGeometry(
+      positioningAesthetics, 
+      $sectionContext, 
+      $coordinateTransformationContext,
+      interpolate
+    )
+  }
+
+  function scheduleUpdatePixelGeometry () {
+    pixelGeometryRecalculationNecessary = true
+    screenGeometryRecalculationNecessary = true
+  }
+
+  function updatePixelGeometry () {
     if ($zoomContext) {
       pixelGeometry = transformGeometry(coordSysGeometry, $zoomContext)
     } else {
       pixelGeometry = coordSysGeometry
     }
-
-    screenGeometry = representAsPolygonIfNecessary()
-
-    return screenGeometry
   }
 
-  function representAsPolygonIfNecessary () {
+  function scheduleUpdateScreenGeometry () {
+    screenGeometryRecalculationNecessary = true
+  }
+
+  function updateScreenGeometryObject () {
     if (_asPolygon) {
       screenGeometry = createScreenGeometry(pixelGeometry, { radius: aesthetics.radius })
     } else {
       screenGeometry = pixelGeometry
     }
-
-    return screenGeometry
   }
 
   function updateInteractionManagerIfNecessary () {
