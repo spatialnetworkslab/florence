@@ -52,7 +52,7 @@
 
   // Other
   export let interpolate = false
-  export let _asPath = true
+  export let _asPolygon = true
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
@@ -126,10 +126,6 @@
         $coordinateTransformationContext,
         interpolate
       )
-
-      if (type === 'Point') {
-        tr_radius.set(aesthetics.radius)
-      }
       
       tr_screenGeometry.set(getScreenGeometry())
 
@@ -138,7 +134,19 @@
   }
 
   // Handle other transitions
-  $: { if (initDone()) tr_fill.set(fill) }
+  $: { if (initDone()) tr_fill.set(aesthetics.fill) }
+  $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
+  $: {
+    if (initDone()) {
+      if (type === 'Point' && !_asPolygon) {
+        tr_radius.set(aesthetics.radius)
+      }
+
+      if (type === 'Point' && _asPolygon) {
+        representAsPolygonIfNecessary()
+      }
+    }
+  }
 
   let previousTransition
 
@@ -177,7 +185,13 @@
       pixelGeometry = coordSysGeometry
     }
 
-    if (_asPath) {
+    screenGeometry = representAsPolygonIfNecessary()
+
+    return screenGeometry
+  }
+
+  function representAsPolygonIfNecessary () {
+    if (_asPolygon) {
       screenGeometry = createScreenGeometry(pixelGeometry, { radius: aesthetics.radius })
     } else {
       screenGeometry = pixelGeometry
@@ -214,7 +228,7 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#if type !== 'Point' || _asPath}
+  {#if type !== 'Point' || _asPolygon}
 
     <path
       class={type.toLowerCase()}
@@ -225,7 +239,7 @@
 
   {/if}
 
-  {#if type === 'Point' && !_asPath}
+  {#if type === 'Point' && !_asPolygon}
 
     <circle 
       class="point"

@@ -23,5 +23,5 @@
   {x} {y} {geometry} {radius} 
   {fill} {opacity} 
   {transition} {onClick} {onMouseover} {onMouseout}
-  _asPath={false}
+  _asPolygon={false}
 />

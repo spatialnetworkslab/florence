@@ -53,7 +53,7 @@
   // Other
   export let index = undefined
   export let interpolate = undefined
-  export let _asPath = true
+  export let _asPolygon = true
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
@@ -141,11 +141,6 @@
       indexArray = _.indexArray
       coordSysGeometryObject = _.coordSysGeometryObject
 
-      if (type === 'Point') {
-        radiusObject = generatePropObject(aesthetics.radius, indexArray)
-        tr_radiusObject.set(radiusObject)
-      }
-
       tr_screenGeometryObject.set(getScreenGeometryObject())
 
       updateInteractionManagerIfNecessary()
@@ -154,11 +149,25 @@
 
   // Handle other transitions
   $: { if (initDone()) tr_fillObject.set(generatePropObject(aesthetics.fill, indexArray)) }
+  $: { if (initDone()) tr_opacityObject.set(generatePropObject(aesthetics.opacity, indexArray)) }
+  $: {
+    if (initDone()) {
+      if (type === 'Point' && !_asPolygon) {
+        radiusObject = generatePropObject(aesthetics.radius, indexArray)
+        tr_radiusObject.set(radiusObject)
+      }
+
+      if (type === 'Point' && _asPolygon) {
+
+      }
+    }
+  }
 
   let previousTransition
+  let screenGeometryRecalculationNecessary = false
 
-  // Update transitionables
   beforeUpdate(() => {
+    // Update transitionables
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
@@ -166,6 +175,13 @@
       tr_radiusObject = createTransitionableLayer('radius', $tr_radiusObject, transition)
       tr_fillObject = createTransitionableLayer('fill', $tr_fillObject, transition)
       tr_opacityObject = createTransitionableLayer('opacity', $tr_opacityObject, transition)
+    }
+
+    // Recalculate screenGeometry is necessary
+    if (screenGeometryRecalculationNecessary) {
+      tr_screenGeometryObject.set(screenGeometryObject)
+
+      screenGeometryRecalculationNecessary = false
     }
   })
 
@@ -192,7 +208,13 @@
       pixelGeometryObject = coordSysGeometryObject
     }
 
-    if (_asPath) {
+    screenGeometryObject = representAsPolygonObjectIfNecessary()
+
+    return screenGeometryObject
+  }
+
+  function representAsPolygonObjectIfNecessary () {
+    if (_asPolygon) {
       screenGeometryObject = createScreenGeometryObject(pixelGeometryObject, { radiusObject })
     } else {
       screenGeometryObject = pixelGeometryObject
@@ -229,7 +251,7 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#if type !== 'Point' || _asPath}
+  {#if type !== 'Point' || _asPolygon}
 
     {#each indexArray as $index ($index)}
 
@@ -244,7 +266,7 @@
 
   {/if}
 
-  {#if type === 'Point' && !_asPath}
+  {#if type === 'Point' && !_asPolygon}
 
     {#each indexArray as $index ($index)}
 
