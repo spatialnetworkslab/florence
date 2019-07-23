@@ -134,9 +134,7 @@
   // Handle zooming changes
   $: {
     if (initDone()) {
-      scheduleUpdatePixelGeometryObject(
-        $zoomContext
-      )
+      scheduleUpdatePixelGeometryObject($zoomContext)
     }
   }
 

@@ -92,6 +92,7 @@
           index={filteredData.column('$index')}
           onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
           onMouseout={handleMouseout}
+          transition={duration}
         />
 
         <!-- {#each filteredData.rows() as row (row.$index)}

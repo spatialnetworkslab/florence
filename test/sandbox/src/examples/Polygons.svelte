@@ -85,6 +85,7 @@
         onMouseout={() => isHovering = false}
         fill={isHovering ? 'blue' : 'yellow'}
         index={[0]}
+        transition={2000}
       />
     
     </CoordinateTransformation>
