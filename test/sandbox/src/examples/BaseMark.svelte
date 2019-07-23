@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { DataContainer, Graphic, Section, Mark } from '../../../../'
+  import { DataContainer, Graphic, Section, Layer, Mark } from '../../../../'
 
   let currentChartType = 'scatterplot'
 
@@ -22,6 +22,7 @@
 
   $: scales = currentChartType === 'scatterplot' ? scatterplotScales: barchartScales
 
+  // MARKS
   const scatterplotMarks = []
   const barchartMarks = []
 
@@ -47,6 +48,26 @@
   $: marks = currentChartType === 'scatterplot' ? scatterplotMarks : barchartMarks
 
   const indices = [0, 1, 2, 3]
+
+  // LAYERS
+  const scatterplotLayer = {
+    type: 'Point',
+    x: data.column('b'),
+    y: data.column('c'),
+    radius: 6,
+    fill: 'red'
+  }
+
+  const barchartLayer = {
+    type: 'Rectangle',
+    x1: data.column('a'),
+    x2: ({ scaleX }) => data.map('a', a => scaleX(a) + scaleX.bandwidth()),
+    y1: 0,
+    y2: data.column('b'),
+    fill: 'blue'
+  }
+
+  $: layer = currentChartType === 'scatterplot' ? scatterplotLayer : barchartLayer
 </script>
 
 <label for="type-selector">Chart:</label>
@@ -65,14 +86,19 @@
     padding={10}
   >
 
-    {#each indices as index (index)}
+    <!-- {#each indices as index (index)}
 
       <Mark
         {...marks[index]}
         transition={2000}
       />
 
-    {/each}
+    {/each} -->
+
+    <Layer 
+      {...layer}
+      transition={2000}
+    />
   
   </Section>
 
