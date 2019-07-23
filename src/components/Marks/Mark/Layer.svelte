@@ -56,11 +56,17 @@
   export let _asPath = true
 
   // Validate aesthetics every time input changes
+  let aesthetics = validateAesthetics(
+    type,
+    { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+  )
   $: {
-    validateAesthetics(
-      type,
-      { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
-    )
+    if (initDone()) {
+      aesthetics = validateAesthetics(
+        type,
+        { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+      )
+    }
   }
 
   // Create 'positioning' aesthetics object
@@ -104,9 +110,9 @@
   let screenGeometryObject
 
   // Generate other prop objects
-  let radiusObject = generatePropObject(radius, indexArray)
-  let fillObject = generatePropObject(fill, indexArray)
-  let opacityObject = generatePropObject(opacity, indexArray)
+  let radiusObject = generatePropObject(aesthetics.radius, indexArray)
+  let fillObject = generatePropObject(aesthetics.fill, indexArray)
+  let opacityObject = generatePropObject(aesthetics.opacity, indexArray)
 
   // Initiate transitionables
   let tr_screenGeometryObject = createTransitionableLayer('geometry', getScreenGeometryObject(), transition)
@@ -136,7 +142,7 @@
       coordSysGeometryObject = _.coordSysGeometryObject
 
       if (type === 'Point') {
-        radiusObject = generatePropObject(radius, indexArray)
+        radiusObject = generatePropObject(aesthetics.radius, indexArray)
         tr_radiusObject.set(radiusObject)
       }
 
@@ -147,7 +153,7 @@
   }
 
   // Handle other transitions
-  $: { if (initDone()) tr_fillObject.set(generatePropObject(fill, indexArray)) }
+  $: { if (initDone()) tr_fillObject.set(generatePropObject(aesthetics.fill, indexArray)) }
 
   let previousTransition
 
