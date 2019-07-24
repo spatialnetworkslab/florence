@@ -3,12 +3,11 @@ let handler
 export default class EventManager {
   constructor () {
     this._mounted = false
-    this._clickTracker = new EventTracker(this, 'click')
+
     this._mousemoveTracker = new EventTracker(this, 'mousemove')
     this._mousedownTracker = new EventTracker(this, 'mousedown')
     this._mouseupTracker = new EventTracker(this, 'mouseup')
-    this._wheelTracker = new EventTracker(this, 'wheel')
-    // this._panTracker = new EventTracker(this, 'pan')
+
     this._listeners = {}
   }
 
@@ -97,10 +96,7 @@ function getTrackerName (eventName) {
 }
 
 const eventNameToTrackerNameMap = {
-  click: '_clickTracker',
   mousemove: '_mousemoveTracker',
   mousedown: '_mousedownTracker',
-  mouseup: '_mouseupTracker',
-  wheel: '_wheelTracker'
-  // pan: '_panTracker'
+  mouseup: '_mouseupTracker'
 }

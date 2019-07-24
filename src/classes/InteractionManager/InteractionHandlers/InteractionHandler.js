@@ -7,33 +7,13 @@ export default class InteractionHandler {
     this._interactionManager = interactionManager
     this._numberOfInteractions = 0
 
-    this._sectionCallbacks = {}
     this._layerCallbacks = {}
     this._markCallbacks = {}
   }
 
   // Add/remove layer interactions
-  addSectionInteraction (sectionId, callback) {
-    if (!this._sectionCallbacks.hasOwnProperty(sectionId)) {
-      this._addEventListenerIfNecessary()
-      this._numberOfInteractions++
-      this._sectionCallbacks[sectionId] = callback
-    }
-  }
-
-  removeSectionInteraction (sectionId) {
-    if (this._sectionCallbacks.hasOwnProperty(sectionId)) {
-      this._numberOfInteractions--
-      delete this._sectionCallbacks[sectionId]
-      this._removeEventListenerIfNecessary()
-
-      // this._spatialIndex.removeLayer(sectionId)
-    }
-  }
-
-  // Add/remove layer interactions
   addLayerInteraction (layerId, callback) {
-    if (!this._layerCallbacks.hasOwnProperty(layerId)) {
+    if (!(layerId in this._layerCallbacks)) {
       this._addEventListenerIfNecessary()
       this._numberOfInteractions++
       this._layerCallbacks[layerId] = callback
@@ -43,7 +23,7 @@ export default class InteractionHandler {
   }
 
   removeLayerInteraction (layerId) {
-    if (this._layerCallbacks.hasOwnProperty(layerId)) {
+    if (layerId in this._layerCallbacks) {
       this._numberOfInteractions--
       delete this._layerCallbacks[layerId]
       this._removeEventListenerIfNecessary()
@@ -77,10 +57,10 @@ export default class InteractionHandler {
   }
 
   _isInLayer (hit) {
-    return hit.hasOwnProperty('layerId')
+    return 'layerId' in hit
   }
 
   _isMark (hit) {
-    return hit.hasOwnProperty('markId')
+    return 'markId' in hit
   }
 }

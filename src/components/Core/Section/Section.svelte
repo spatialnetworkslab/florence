@@ -27,15 +27,6 @@
   export let scaleX = undefined
   export let scaleY = undefined
   export let zoomIdentity = undefined
-
-  export let scaleGeo = undefined
-  
-  // Interactivity
-  export let onWheel = undefined
-  export let onClick = undefined
-  export let onMouseover = undefined
-  export let onMouseout = undefined
-  //export let onPan = undefined
   
   // Aesthetics
   export let padding = 3
@@ -53,64 +44,26 @@
   
   let scaledCoordinates
   
-  $: {
-    scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-    let rangeX = [scaledCoordinates.x1 + padding, scaledCoordinates.x2 - padding]
-    let rangeY = [scaledCoordinates.y1 + padding, scaledCoordinates.y2 - padding]
-    if (!scaleGeo && (scaleX && scaleY)){
-      SectionContext.update(
-        newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
-      )
-    } else if (scaleGeo && (!scaleX && !scaleY)) {
-      SectionContext.update(
-        newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
-      )
-    } else if (scaleGeo && (scaleX || scaleY)) {
-     throw new Error(`Cannot set 'scale-x' or 'scale-y' when 'scale-geo' is defined`)
-    }
-  }
-  
-  // set up interaction manager
+  // Set up InteractionManager
   let interactionManager = new InteractionManager()
   interactionManager.setId(sectionId)
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
-  // update zooming and panning
+  // Update InteractionManager on changes
+  $: {
+    scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+    let rangeX = [scaledCoordinates.x1 + padding, scaledCoordinates.x2 - padding]
+    let rangeY = [scaledCoordinates.y1 + padding, scaledCoordinates.y2 - padding]
+    
+    SectionContext.update(
+      newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
+    )
+  }
+
+  // Update zooming and panning
   $: {
     ZoomContext.update(zoomContext, zoomIdentity)
-  }
-    
-  // Interactivity
-  $: isInteractive = onWheel !== undefined || onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
-  
-  onMount(() => {
-    updateInteractionManagerIfNecessary()
-  })
-  
-  onDestroy(() => {
-    removeLayerFromSpatialIndexIfNecessary()
-  })
-  
-  // Helpers
-  function updateInteractionManagerIfNecessary () {
-    if (isInteractive) {
-      let scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-      let rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
-      let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
-      $interactionManagerContext.loadSection('Section', {rangeX, rangeY, sectionId})
-      if (onClick) $interactionManagerContext.addSectionInteraction('click', sectionId, onClick)
-      if (onMouseover) $interactionManagerContext.addSectionInteraction('mouseover', sectionId, onMouseover)
-      if (onMouseout) $interactionManagerContext.addSectionInteraction('mouseout', sectionId, onMouseout)
-      if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', sectionId, onWheel)
-    }
-  }
-  
-  function removeLayerFromSpatialIndexIfNecessary () {
-    if ($interactionManagerContext.sectionIsLoaded(sectionId)) {
-      $interactionManagerContext.removeAllSectionInteractions(sectionId)
-      $interactionManagerContext.removeSection(sectionId)
-    }
   }
 </script>
 

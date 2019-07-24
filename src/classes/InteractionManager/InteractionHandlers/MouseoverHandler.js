@@ -41,21 +41,6 @@ export default class MouseoverHandler extends InteractionHandler {
     this._cleanupPreviousHits()
   }
 
-  _handleSectionHits (mouseEvent) {
-    const sections = this._interactionManager._sections
-    const eventCoordinates = { x: mouseEvent.clientX, y: mouseEvent.clientY }
-
-    for (const s in sections) {
-      if (!this._mouseAlreadyOver(s)) {
-        this._previousMouseoverIds[s] = true
-        if (this._isInSection(eventCoordinates, sections[s]) && this._sectionCallbacks[s]) {
-          this._sectionCallbacks[s](s, mouseEvent)
-        }
-      }
-      // this._currentMouseoverIds[s] = true
-    }
-  }
-
   _handleHits (hits, mouseEvent) {
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
