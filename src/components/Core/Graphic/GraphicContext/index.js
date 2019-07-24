@@ -21,7 +21,7 @@ class GraphicContext {
 function validateRendererOptions (options) {
   if (!(
     options.constructor === Object &&
-    options.hasOwnProperty('output') &&
+    'output' in options &&
     ['svg'].includes(options.output)
   )) {
     throw new Error(`Invalid renderer options: ${JSON.stringify(options)}`)
@@ -35,7 +35,7 @@ export function subscribe () {
 }
 
 export function init () {
-  let graphicContext = writable()
+  const graphicContext = writable()
   setContext(key, graphicContext)
 
   return graphicContext

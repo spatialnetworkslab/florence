@@ -1,12 +1,12 @@
-import { createScreenGeometry } from '../utils/createScreenGeometry.js'
 import { scaleGeometry } from 'geometryUtils'
+import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
 import { isDefined, isUndefined } from 'equals.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext) {
-  let scaledGeometry = createScaledGeometry(geometryProps, sectionContext)
-  let screenGeometry = createScreenGeometry(scaledGeometry, coordinateTransformationContext)
+  const scaledGeometry = createScaledGeometry(geometryProps, sectionContext)
+  const coordSysGeometry = createCoordSysGeometry(scaledGeometry, coordinateTransformationContext)
 
-  return screenGeometry
+  return coordSysGeometry
 }
 
 function createScaledGeometry (geometryProps, sectionContext) {

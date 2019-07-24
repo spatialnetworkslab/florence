@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, CoordinateTransformation, Polygon, DataContainer } from '../../../../'
+  import { Graphic, Section, CoordinateTransformation, Polygon, PolygonLayer, DataContainer } from '../../../../'
 
   function getRandomValueArray (N, range) {
     return new Array(N).fill(0).map(() => Math.random() * range)
@@ -70,12 +70,22 @@
 
     <CoordinateTransformation {transformation}>
 
-      <Polygon
+      <!-- <Polygon
         geometry={geometries[chosenGeometry]}
         interpolate
         onMouseover={() => isHovering = true}
         onMouseout={() => isHovering = false}
         fill={isHovering ? 'blue' : 'yellow'}
+      /> -->
+
+      <PolygonLayer 
+        geometry={[geometries[chosenGeometry]]}
+        interpolate
+        onMouseover={() => isHovering = true}
+        onMouseout={() => isHovering = false}
+        fill={isHovering ? 'blue' : 'yellow'}
+        index={[0]}
+        transition={2000}
       />
     
     </CoordinateTransformation>

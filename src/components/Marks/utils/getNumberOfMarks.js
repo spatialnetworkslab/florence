@@ -4,7 +4,7 @@ export default function (layerName) {
       throw new Error(`${layerName}: at least 'x' or 'y' must evaluate to an Array`)
     }
 
-    let length = x.constructor === Array ? x.length : y.length
+    const length = x.constructor === Array ? x.length : y.length
 
     if (x.constructor === Array && y.constructor === Array) {
       if (x.length !== length || y.length !== length) {

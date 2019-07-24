@@ -1,17 +1,17 @@
-import { createScreenGeometry } from '../utils/createScreenGeometry.js'
+import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
 import { isInvalid, isUndefined, isDefined } from 'equals.js'
 
 export default function (coordinateProps, sectionContext, coordinateTransformationContext, interpolate) {
-  let scaledCoordinates = scaleCoordinates(coordinateProps, sectionContext)
-  let scaledGeometry = createScaledGeometry(scaledCoordinates)
+  const scaledCoordinates = scaleCoordinates(coordinateProps, sectionContext)
+  const scaledGeometry = createScaledGeometry(scaledCoordinates)
 
-  let transformedPoints = createScreenGeometry(
+  const coordSysGeometry = createCoordSysGeometry(
     scaledGeometry,
     coordinateTransformationContext,
     interpolate
   )
 
-  return transformedPoints
+  return coordSysGeometry
 }
 
 export function scaleCoordinates (coordinateProps, sectionContext) {
@@ -60,8 +60,8 @@ function onlyOne (a, b) {
 const invalidCoordinateValueError = (value, name) => new Error(`Rectangle: invalid coordinate value for '${name}': ${s(value)}`)
 
 function validateTypes (coordinates) {
-  for (let coordinateName in coordinates) {
-    let coordinate = coordinates[coordinateName]
+  for (const coordinateName in coordinates) {
+    const coordinate = coordinates[coordinateName]
 
     if (isDefined(coordinate)) {
       if (isInvalid(coordinate)) throw invalidCoordinateValueError(coordinate, coordinateName)

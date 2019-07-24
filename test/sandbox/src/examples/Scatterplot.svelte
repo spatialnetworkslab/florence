@@ -7,23 +7,18 @@
   } from '../../../../'
 
 	export let N = 100
-
 	const data = new DataContainer(generateData(N, 0.25))
-
 	function generateData (N, error) {
 		const getError = () => -error + (Math.random() * (2 * error)) * N
-
 		let data = { a: [], b: [] }
 		for (let i = 0; i < N; i++) {
 			data.a.push(i + getError())
 			data.b.push(i + getError())
 		}
-
 		return data
   }
   
   let treshold = 0
-
   $: filteredData = data
     .filter(row => row.a > treshold)
     .done()
@@ -37,11 +32,11 @@
 
   const log = console.log
 
+  let background = "pink"
   let big = false
-
   let hoverPoints = {}
-  $: hoverPointKeys = Object.keys(hoverPoints)
 
+  $: hoverPointKeys = Object.keys(hoverPoints)
   function handleMouseout (ix) {
     delete hoverPoints[ix]
     hoverPoints = hoverPoints
@@ -83,10 +78,10 @@
 			y1={50} y2={450}
 			scaleX={scaleA}
 			scaleY={scaleB}
+      backgroundColor={background}
 		>
 
 			<CoordinateTransformation {transformation}>
-
         <PointLayer
           x={filteredData.column('a')}
           y={filteredData.column('b')}
@@ -95,7 +90,21 @@
           index={filteredData.column('$index')}
           onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
           onMouseout={handleMouseout}
+          transition={duration}
         />
+
+        <!-- {#each filteredData.rows() as row (row.$index)}
+
+          <Point 
+            x={row.a}
+            y={row.b}
+            fill={transformation === 'identity' ? 'black' : 'blue'}
+            radius={transformation === 'identity' ? 3 : 6}
+            onMouseover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
+            onMouseout={() => handleMouseout(row.$index)}
+          />
+
+        {/each} -->
 
         <Point
           x={50}

@@ -9,43 +9,43 @@ export default class SpatialIndex {
 
   // Layer indexing and unindexing
   indexLayer (layerId) {
-    let indexableData = this._interactionHandler._layers[layerId]
+    const indexableData = this._interactionHandler._layers[layerId]
     this._rbush.load(indexableData)
   }
 
   unindexLayer (layerId) {
-    let layer = this._interactionHandler._layers[layerId]
+    const layer = this._interactionHandler._layers[layerId]
 
     for (let i = 0; i < layer.length; i++) {
-      let item = layer[i]
+      const item = layer[i]
       this._rbush.remove(item)
     }
   }
 
   // Mark loading and removing
   indexMark (markId) {
-    let indexableItem = this._interactionHandler._marks[markId]
+    const indexableItem = this._interactionHandler._marks[markId]
     this._rbush.insert(indexableItem)
   }
 
   unindexMark (markId) {
-    let indexableItem = this._interactionHandler._marks[markId]
+    const indexableItem = this._interactionHandler._marks[markId]
     this._rbush.remove(indexableItem)
   }
 
   // Query functions
   queryMouseCoordinates (mouseCoordinates, radius) {
-    let searchArea = searchAreaFromCoordinates(mouseCoordinates, radius)
-    let indexQueryResults = this._rbush.search(searchArea)
+    const searchArea = searchAreaFromCoordinates(mouseCoordinates, radius)
+    const indexQueryResults = this._rbush.search(searchArea)
     return this._getHits(mouseCoordinates, indexQueryResults)
   }
 
   _getHits (coordinates, indexQueryResults) {
-    let hits = []
+    const hits = []
 
     for (let i = 0; i < indexQueryResults.length; i++) {
-      let indexQueryResult = indexQueryResults[i]
-      let collisionTest = collisionTests[indexQueryResult.markType]
+      const indexQueryResult = indexQueryResults[i]
+      const collisionTest = collisionTests[indexQueryResult.markType]
 
       if (collisionTest(coordinates, indexQueryResult.attributes)) {
         hits.push(indexQueryResult)

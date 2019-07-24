@@ -1,19 +1,19 @@
-import { createScreenGeometry } from '../utils/createScreenGeometry.js'
+import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
 import { scaleGeometry } from 'geometryUtils'
 import { isDefined, isUndefined } from 'equals.js'
 
 export default function (
   geometryProps, sectionContext, coordinateTransformationContext, interpolate
 ) {
-  let scaledGeometry = createScaledGeometry(geometryProps, sectionContext)
-  let screenGeometry = createScreenGeometry(scaledGeometry, coordinateTransformationContext, interpolate)
+  const scaledGeometry = createScaledGeometry(geometryProps, sectionContext)
+  const coordSysGeometry = createCoordSysGeometry(scaledGeometry, coordinateTransformationContext, interpolate)
 
-  return screenGeometry
+  return coordSysGeometry
 }
 
 function createScaledGeometry (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps)
-  let scales = sectionContext.scales()
+  const scales = sectionContext.scales()
 
   if (isDefined(geometryProps.geometry)) {
     return scaleGeometry(geometryProps.geometry, scales)
@@ -35,15 +35,15 @@ export function ensureValidCombination (geometryProps) {
 const invalidCombinationError = new Error(`Polygon: Invalid combination of 'x', 'y', and 'geometry' props`)
 
 function createScaledGeometryFromCoordinateProps (x, y, scales) {
-  let scaledX = getValueX(x, scales)
-  let scaledY = getValueY(y, scales)
+  const scaledX = getValueX(x, scales)
+  const scaledY = getValueY(y, scales)
 
   return createGeometryFromScaledProps(scaledX, scaledY)
 }
 
 function makeValueGetter (scaleName) {
   return function getValue (coordinateProp, scales, length) {
-    let scale = scales[scaleName]
+    const scale = scales[scaleName]
 
     if (coordinateProp.constructor === Function) {
       return handleFunctionProp(coordinateProp, scales, length)
@@ -57,7 +57,7 @@ const getValueX = makeValueGetter('scaleX')
 const getValueY = makeValueGetter('scaleY')
 
 function handleFunctionProp (coordinateProp, scales) {
-  let value = coordinateProp(scales)
+  const value = coordinateProp(scales)
   if (value.constructor === Array) return value
 
   throw noArrayError
@@ -74,7 +74,7 @@ const noArrayError = new Error(`Polygon: 'x' and 'y' must evaluate to an Array`)
 export function createGeometryFromScaledProps (x, y) {
   ensureCorrectLength(x, y)
 
-  let outerRing = []
+  const outerRing = []
 
   for (let i = 0; i < x.length; i++) {
     outerRing.push([x[i], y[i]])

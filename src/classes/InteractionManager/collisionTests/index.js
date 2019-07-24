@@ -3,7 +3,7 @@ import rectangleCollision from './rectangleCollision.js'
 import polygonCollision from './polygonCollision.js'
 
 export default {
-  'Point': pointCollision,
-  'Rectangle': rectangleCollision,
-  'Polygon': polygonCollision
+  Point: pointCollision,
+  Rectangle: rectangleCollision,
+  Polygon: polygonCollision
 }
