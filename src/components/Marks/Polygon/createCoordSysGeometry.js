@@ -1,5 +1,5 @@
 import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
-import { scaleGeometry } from 'geometryUtils'
+import { scaleGeometry, linearRingIsClockwise } from 'geometryUtils'
 import { isDefined, isUndefined } from 'equals.js'
 
 export default function (
@@ -82,6 +82,11 @@ export function createGeometryFromScaledProps (x, y) {
 
   // Close the polygon
   outerRing.push([x[0], y[0]])
+
+  // To adhere to the GeoJSON spec, outer rings must always be counter-clockwise
+  if (linearRingIsClockwise(outerRing)) {
+    outerRing.reverse()
+  }
 
   return {
     type: 'Polygon',
