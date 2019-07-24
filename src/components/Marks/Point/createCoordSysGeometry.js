@@ -21,10 +21,6 @@ function createScaledGeometry (geometryProps, sectionContext) {
   }
 }
 
-function scaleGeometryProp (geometry, sectionContext) {
-  return scaleGeometry(geometry, sectionContext.scales())
-}
-
 export function ensureValidCombination (geometryProps) {
   if (isDefined(geometryProps.geometry)) {
     if (isDefined(geometryProps.x) || isDefined(geometryProps.y)) throw invalidCombinationError
@@ -34,6 +30,10 @@ export function ensureValidCombination (geometryProps) {
 }
 
 const invalidCombinationError = new Error(`Point: invalid combination of props 'x', 'y' and 'geometry'`)
+
+function scaleGeometryProp (geometry, sectionContext) {
+  return scaleGeometry(geometry, sectionContext.scales())
+}
 
 function createScaledGeometryFromCoordinates (x, y, sectionContext) {
   const scales = sectionContext.scales()
