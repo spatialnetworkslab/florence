@@ -42,6 +42,8 @@
   // Aesthetics: other
   export let radius = undefined
   export let fill = undefined
+  export let strokeWidth = undefined
+  export let stroke = undefined
   export let opacity = undefined
 
   // Transitions and interactions
@@ -58,13 +60,19 @@
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
     type,
-    { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+    { 
+      x, y, x1, x2, y1, y2, geometry, 
+      radius, fill, strokeWidth, stroke, opacity 
+    }
   )
   $: {
     if (initDone()) {
       aesthetics = validateAesthetics(
         type,
-        { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+        { 
+          x, y, x1, x2, y1, y2, geometry,
+          radius, fill, strokeWidth, stroke, opacity
+        }
       )
     }
   }
@@ -107,15 +115,19 @@
   // Generate other prop objects
   let radiusObject = generatePropObject(aesthetics.radius, indexArray)
   let fillObject = generatePropObject(aesthetics.fill, indexArray)
+  let strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
+  let strokeObject = generatePropObject(aesthetics.stroke, indexArray)
   let opacityObject = generatePropObject(aesthetics.opacity, indexArray)
 
-  // This one uses the radiusObject in some cases, so must be done after the prop objects
+  // This one uses the radiusObject/strokeWidthObject in some cases, so must be done after the prop objects
   updateScreenGeometryObject()
 
   // Initiate transitionables
   let tr_screenGeometryObject = createTransitionableLayer('geometry', screenGeometryObject, transition)
   let tr_radiusObject = createTransitionableLayer('radius', radiusObject, transition)
   let tr_fillObject = createTransitionableLayer('fill', fillObject, transition)
+  let tr_strokeWidthObject = createTransitionableLayer('strokeWidth', strokeWidthObject, transition)
+  let tr_strokeObject = createTransitionableLayer('stroke', strokeObject, transition)
   let tr_opacityObject = createTransitionableLayer('opacity', opacityObject, transition)
 
   // Handle coordSysGeometryObject changes
@@ -138,12 +150,15 @@
     }
   }
 
-  // Handle radius changes
+  // Handle radius and strokeWidth changes
   $: {
     if (initDone()) {
       if (!_asPolygon) {
         radiusObject = generatePropObject(aesthetics.radius, indexArray)
         tr_radiusObject.set(radiusObject)
+
+        strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
+        tr_strokeWidthObject.set(strokeWidthObject)
       }
 
       if (_asPolygon) {
@@ -154,6 +169,7 @@
 
   // Handle other changes
   $: { if (initDone()) tr_fillObject.set(generatePropObject(aesthetics.fill, indexArray)) }
+  $: { if (initDone()) tr_stroke.set(aesthetics.stroke) }
   $: { if (initDone()) tr_opacityObject.set(generatePropObject(aesthetics.opacity, indexArray)) }
 
   let previousTransition
@@ -170,6 +186,8 @@
       tr_screenGeometryObject = createTransitionableLayer('geometry', $tr_screenGeometryObject, transition)
       tr_radiusObject = createTransitionableLayer('radius', $tr_radiusObject, transition)
       tr_fillObject = createTransitionableLayer('fill', $tr_fillObject, transition)
+      tr_strokeWidthObject = createTransitionableLayer('strokeWidth', $tr_strokeWidthObject, transition)
+      tr_strokeObject = createTransitionableLayer('stroke', $tr_strokeObject, transition)
       tr_opacityObject = createTransitionableLayer('opacity', $tr_opacityObject, transition)
     }
 
@@ -273,11 +291,15 @@
       type, layerId, indexArray, { pixelGeometryObject, screenGeometryObject }, { radiusObject }
     )
   }
+
+  $: renderPolygon = !['Point', 'Line'].includes(type) || _asPolygon
+  $: renderCircle = type === 'Point' && !_asPolygon
+  $: renderLine = type === 'Line' && !_asPolygon
 </script>
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#if type !== 'Point' || _asPolygon}
+  {#if renderPolygon}
 
     {#each indexArray as $index ($index)}
 
@@ -292,7 +314,7 @@
 
   {/if}
 
-  {#if type === 'Point' && !_asPolygon}
+  {#if renderCircle}
 
     {#each indexArray as $index ($index)}
 
@@ -302,6 +324,23 @@
         cy={$tr_screenGeometryObject[$index].coordinates[1]}
         r={$tr_radiusObject[$index]}
         fill={$tr_fillObject[$index]}
+        style={`opacity: ${$tr_opacityObject[$index]}`}
+      />
+
+    {/each}
+
+  {/if}
+
+  {#if renderLine}
+
+    {#each indexArray as $index ($index)}
+
+      <path
+        class="line"
+        d={generatePath($tr_screenGeometryObject[$index])}
+        fill="none"
+        stroke-width={$tr_strokeWidthObject[$index]}
+        stroke={$tr_strokeObject[$index]}
         style={`opacity: ${$tr_opacityObject[$index]}`}
       />
 

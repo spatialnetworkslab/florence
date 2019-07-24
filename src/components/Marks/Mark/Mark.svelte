@@ -171,8 +171,8 @@
       tr_screenGeometry = createTransitionable('geometry', $tr_screenGeometry, transition)
       tr_radius = createTransitionable('radius', $tr_radius, transition)
       tr_fill = createTransitionable('fill', $tr_fill, transition)
-      tr_strokeWidth = createTransitionable('strokeWidth', aesthetics.strokeWidth, transition)
-      tr_stroke = createTransitionable('stroke', aesthetics.stroke, transition)
+      tr_strokeWidth = createTransitionable('strokeWidth', $tr_strokeWidth, transition)
+      tr_stroke = createTransitionable('stroke', $tr_stroke, transition)
       tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
     }
 
@@ -310,8 +310,8 @@
       class="line"
       d={generatePath($tr_screenGeometry)}
       fill="none"
-      stroke={$tr_stroke}
       stroke-width={$tr_strokeWidth}
+      stroke={$tr_stroke}
       style={`opacity: ${$tr_opacity}`}
     />
 
