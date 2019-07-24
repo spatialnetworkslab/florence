@@ -32,8 +32,6 @@ export default class MouseoverHandler extends InteractionHandler {
   _handleEvent (coordinates, mouseEvent) {
     this._currentMouseoverIds = {}
 
-    this._handleSectionHits(mouseEvent)
-
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(coordinates)
     this._handleHits(hits, mouseEvent)

@@ -31,7 +31,6 @@ export default class MouseoutHandler extends InteractionHandler {
 
   _handleEvent (coordinates, mouseEvent) {
     this._currentMouseoverIds = {}
-    this._storeSectionHits(mouseEvent)
 
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(coordinates)
