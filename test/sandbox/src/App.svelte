@@ -9,6 +9,7 @@
   import Scatterplot from './examples/Scatterplot.svelte'
   import Zoom from './examples/Zoom.svelte'
   import BaseMark from './examples/BaseMark.svelte'
+  import Line from './examples/Line.svelte'
 
   // and add them to this component array
   let components = [
@@ -46,6 +47,11 @@
       name: 'Base mark',
       url: '/basemark',
       component: BaseMark
+    },
+    {
+      name: 'Line',
+      url: '/line',
+      component: Line
     }
   ]
 </script>

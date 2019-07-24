@@ -35,7 +35,8 @@ function scaleGeometryProp (geometry, sectionContext) {
   return scaleGeometry(geometry, sectionContext.scales())
 }
 
-function createScaledGeometryFromCoordinateProps (x, y, scales) {
+function createScaledGeometryFromCoordinateProps (x, y, sectionContext) {
+  const scales = sectionContext.scales()
   const scaledX = getValueX(x, scales)
   const scaledY = getValueY(y, scales)
 
@@ -65,6 +66,7 @@ function handleFunctionProp (coordinateProp, scales) {
 }
 
 function handleOtherProp (coordinateProp, scale, length) {
+
   if (coordinateProp.constructor === Array) return coordinateProp.map(scale)
 
   throw noArrayError
