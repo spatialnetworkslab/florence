@@ -49,7 +49,6 @@
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
   const zoomContext = ZoomContext.init()
-
   
   let scaledCoordinates
   
@@ -75,6 +74,7 @@
   interactionManager.setId(sectionId)
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
+  let isInteractive = undefined
 
   // update zooming and panning
   $: {
@@ -83,7 +83,7 @@
     
   // Interactivity
   $: isInteractive = onWheel !== undefined || onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
-  
+
   onMount(() => {
     updateInteractionManagerIfNecessary()
   })

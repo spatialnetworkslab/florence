@@ -1,6 +1,6 @@
-import InteractionHandler from './InteractionHandler.js'
+import SectionInteractionHandler from './SectionInteractionHandler.js'
 
-export default class WheelHandler extends InteractionHandler {
+export default class WheelHandler extends SectionInteractionHandler {
   _addEventListenerIfNecessary () {
     if (this._numberOfInteractions === 0) {
       let handler = this._handleEvent.bind(this)
@@ -22,8 +22,8 @@ export default class WheelHandler extends InteractionHandler {
   }
 
   _handleEvent (coordinates, mouseEvent) {
-    let sections = this._interactionManager._sections
-
+    console.log('@@@', coordinates, mouseEvent)
+    //console.log(mouseEvent)
     if (Object.keys(sections).length > 0) {
       for (let s in sections) {
         if (this._isInSection(coordinates, sections[s])) {

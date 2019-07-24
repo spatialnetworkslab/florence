@@ -32,7 +32,6 @@ export default class InteractionManager {
   loadSection (sectionType, sectionData) {
     let indexingFunction = sectionIndexing[sectionType]
     let indexableData = indexingFunction(sectionData)
-
     let sectionId = sectionData.sectionId
     this._sections[sectionId] = indexableData
   }
@@ -81,7 +80,6 @@ export default class InteractionManager {
 
   // Add/remove section interactions
   addSectionInteraction (interactionName, sectionId, callback) {
-    console.log(interactionName, sectionId, callback)
     if (interactionName === 'click') this._clickHandler.addSectionInteraction(sectionId, callback)
     if (interactionName === 'mouseover') this._mouseoverHandler.addSectionInteraction(sectionId, callback)
     if (interactionName === 'mouseout') this._mouseoutHandler.addSectionInteraction(sectionId, callback)

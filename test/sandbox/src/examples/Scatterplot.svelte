@@ -79,8 +79,6 @@
 			scaleX={scaleA}
 			scaleY={scaleB}
       backgroundColor={background}
-      onMouseover={() => background = 'orange'}
-      onMouseout={() => background = 'pink'}
 		>
 
 			<CoordinateTransformation {transformation}>

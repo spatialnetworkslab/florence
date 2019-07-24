@@ -46,7 +46,6 @@ class SectionContext {
   }
 
   interactionManager () {
-    console.log(this._interactionManager)
     return this._interactionManager
   }
 

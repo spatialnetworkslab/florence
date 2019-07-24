@@ -10,14 +10,31 @@
     x: [1, 2, 3, 1, 2, 3, 1, 2, 3],
     y: [1, 1, 1, 2, 2, 2, 3, 3, 3]
   }
+
+  function handleZoom (id, event) {
+    console.log(id, event)
+    k = Math.max(-1, Math.min(1, event['wheelDelta']))
+
+    // x = event.pageX
+    // y = event.pageY
+    // let delta = 'wheelDelta', zoomFactor = 0.3, maxZoom = 2, minZoom = 1, scale = 1
+    // let pos = {x:0, y:0}
+    // let deltaVal = Math.max(-1, Math.min(1, event[delta]))
+        
+    // x1 = x1 - deltaVal * zoomFactor
+    // x2 = x2 + deltaVal * zoomFactor
+    // y1 = y1 - deltaVal * zoomFactor
+    // y2 = y2 + deltaVal * zoomFactor
+    // radius = radius - deltaVal * zoomFactor >= 0.5 ? radius - deltaVal * zoomFactor : 0.5
+  }
 </script>
 
 x:
-<input type="range" min={-300} max={300} bind:value={x} /> <br />
+<input type="range" min={-300} max={300} bind:value={x} /> {x} <br />
 y:
-<input type="range" min={-300} max={300} bind:value={y} /> <br />
+<input type="range" min={-300} max={300} bind:value={y} />  {y} <br />
 k:
-<input type="range" min={0} max={3} step={0.1} bind:value={k} /> <br />
+<input type="range" min={0} max={3} step={0.1} bind:value={k} /> {k} <br />
 
 <Graphic width={500} height={500}>
 
@@ -29,6 +46,7 @@ k:
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
     zoomIdentity={{ x, y, k }}
+    onWheel={ handleZoom }
   >
 
     <Rectangle fill="blue" opacity={0.3} />
