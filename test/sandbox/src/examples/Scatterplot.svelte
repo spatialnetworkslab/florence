@@ -32,7 +32,7 @@
 
   const log = console.log
 
-  let background = "pink"
+  let background = "grey"
   let big = false
   let hoverPoints = {}
 

@@ -89,7 +89,7 @@
   })
   
   onDestroy(() => {
-    removeLayerFromSpatialIndexIfNecessary()
+    removeSectionFromSpatialIndexIfNecessary()
   })
   
   // Helpers
@@ -106,7 +106,7 @@
     }
   }
   
-  function removeLayerFromSpatialIndexIfNecessary () {
+  function removeSectionFromSpatialIndexIfNecessary () {
     if ($interactionManagerContext.sectionIsLoaded(sectionId)) {
       $interactionManagerContext.removeAllSectionInteractions(sectionId)
       $interactionManagerContext.removeSection(sectionId)

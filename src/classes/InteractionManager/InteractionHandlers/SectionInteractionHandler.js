@@ -1,15 +1,14 @@
 import SpatialIndex from '../SpatialIndex.js'
 
-export default class InteractionHandler {
+export default class SectionInteractionHandler {
   constructor (interactionManager) {
-    console.log(interactionManager)
     this._interactionManager = interactionManager
     this._callback = undefined
   }
 
   // Add/remove layer interactions
   addSectionInteraction (sectionId, callback) {
-    if (!this._callback && this._id) {
+    if (this.callback === undefined && this._interactionManager._id === sectionId) {
       this._callback = callback
       this._id = sectionId
       this._addEventListenerIfNecessary()

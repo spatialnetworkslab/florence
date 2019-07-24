@@ -30,10 +30,10 @@ export default class InteractionManager {
 
   // Section loading and removing
   loadSection (sectionType, sectionData) {
-    let indexingFunction = sectionIndexing[sectionType]
+    let indexingFunction = sectionIndexing[sectionType] // Need to rethink this because using an object here is unnecessary
     let indexableData = indexingFunction(sectionData)
     let sectionId = sectionData.sectionId
-    this._sections[sectionId] = indexableData
+    this._sections[sectionId] = indexableData // Stores id, geometry, section bbox
   }
 
   sectionIsLoaded (sectionId) {

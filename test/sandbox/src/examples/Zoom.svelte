@@ -12,8 +12,9 @@
   }
 
   function handleZoom (id, event) {
-    console.log(id, event)
-    k = Math.max(-1, Math.min(1, event['wheelDelta']))
+    x = event.mouse.x
+    y = event.mouse.y
+    k += event.wheelDelta
 
     // x = event.pageX
     // y = event.pageY
