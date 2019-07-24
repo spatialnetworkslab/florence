@@ -8,7 +8,6 @@
   import ResizeLayout from './examples/ResizeLayout.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
   import Zoom from './examples/Zoom.svelte'
-  import ZoomSection from './examples/ZoomSection.svelte'
   import BaseMark from './examples/BaseMark.svelte'
 
   // and add them to this component array
@@ -42,11 +41,6 @@
       name: 'Zoom',
       url: '/zoom',
       component: Zoom
-    },
-    { 
-      name: 'Zoom Section',
-      url: '/zoomsection',
-      component: ZoomSection
     },
     {
       name: 'Base mark',
