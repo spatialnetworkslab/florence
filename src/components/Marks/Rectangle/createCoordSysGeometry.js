@@ -102,9 +102,9 @@ export function createScaledGeometry (c) {
     coordinates: [
       [
         [c.x1, c.y1],
-        [c.x1, c.y2],
-        [c.x2, c.y2],
         [c.x2, c.y1],
+        [c.x2, c.y2],
+        [c.x1, c.y2],
         [c.x1, c.y1]
       ]
     ]
