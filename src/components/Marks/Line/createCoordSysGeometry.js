@@ -66,7 +66,6 @@ function handleFunctionProp (coordinateProp, scales) {
 }
 
 function handleOtherProp (coordinateProp, scale, length) {
-
   if (coordinateProp.constructor === Array) return coordinateProp.map(scale)
 
   throw noArrayError

@@ -6,6 +6,7 @@ import createCoordSysGeometryLine from '../Line/createCoordSysGeometry.js'
 import createCoordSysGeometryObjectPoint from '../Point/createCoordSysGeometryObject.js'
 import createCoordSysGeometryObjectRectangle from '../Rectangle/createCoordSysGeometryObject.js'
 import createCoordSysGeometryObjectPolygon from '../Polygon/createCoordSysGeometryObject.js'
+import createCoordSysGeometryObjectLine from '../Line/createCoordSysGeometryObject.js'
 
 export const markCoordSysGeometryFuncs = new Proxy({
   Point: createCoordSysGeometryPoint,
@@ -25,7 +26,8 @@ export const markCoordSysGeometryFuncs = new Proxy({
 export const layerCoordSysGeometryFuncs = new Proxy({
   Point: createCoordSysGeometryObjectPoint,
   Rectangle: createCoordSysGeometryObjectRectangle,
-  Polygon: createCoordSysGeometryObjectPolygon
+  Polygon: createCoordSysGeometryObjectPolygon,
+  Line: createCoordSysGeometryObjectLine
 }, {
   get: (obj, prop) => {
     if (prop in obj) {

@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { DataContainer, Graphic, Section, Line } from '../../../../'
+  import { DataContainer, Graphic, Section, Line, LineLayer } from '../../../../'
 
   const data = new DataContainer({
     x: [1, 2, 4, 6, 9, 10, 12, 13],
@@ -17,9 +17,14 @@
     scaleY={scaleLinear().domain(data.domain('y'))}
   >
 
-    <Line
+    <!-- <Line
       x={data.column('x')}
       y={data.column('y')}
+    /> -->
+
+    <LineLayer
+      x={[data.column('x')]}
+      y={[data.column('y')]}
     />
   
   </Section>
