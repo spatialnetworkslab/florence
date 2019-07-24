@@ -80,8 +80,10 @@ export function createGeometryFromScaledProps (x, y) {
     outerRing.push([x[i], y[i]])
   }
 
-  // Close the polygon
-  outerRing.push([x[0], y[0]])
+  // To adhere to the GeoJSON spec, outer rings must always be closed
+  if (isNotClosed(outerRing)) {
+    outerRing.push([x[0], y[0]])
+  }
 
   // To adhere to the GeoJSON spec, outer rings must always be counter-clockwise
   if (linearRingIsClockwise(outerRing)) {
@@ -101,3 +103,10 @@ function ensureCorrectLength (x, y) {
 
 const notSameLengthError = new Error(`Polygon: 'x' and 'y' must have same length`)
 const notEnoughPointsError = new Error('Polygon: must consist of at least 3 points')
+
+function isNotClosed (ring) {
+  const first = ring[0]
+  const last = ring[ring.length - 1]
+
+  return first[0] !== last[0] || first[1] !== last[1]
+}
