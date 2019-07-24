@@ -4,6 +4,7 @@ export default class EventManager {
   constructor () {
     this._mounted = false
 
+    this._clickTracker = new EventTracker(this, 'click')
     this._mousemoveTracker = new EventTracker(this, 'mousemove')
     this._mousedownTracker = new EventTracker(this, 'mousedown')
     this._mouseupTracker = new EventTracker(this, 'mouseup')
@@ -92,10 +93,11 @@ function getTrackerName (eventName) {
   const trackerName = eventNameToTrackerNameMap[eventName]
 
   if (trackerName) return trackerName
-  throw new Error(`Invalid event name: '${eventName}`)
+  throw new Error(`Invalid event name: '${eventName}'`)
 }
 
 const eventNameToTrackerNameMap = {
+  click: '_clickTracker',
   mousemove: '_mousemoveTracker',
   mousedown: '_mousedownTracker',
   mouseup: '_mouseupTracker'
