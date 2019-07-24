@@ -115,6 +115,8 @@
   let tr_screenGeometry = createTransitionable('geometry', screenGeometry, transition)
   let tr_radius = createTransitionable('radius', aesthetics.radius, transition)
   let tr_fill = createTransitionable('fill', aesthetics.fill, transition)
+  let tr_strokeWidth = createTransitionable('strokeWidth', aesthetics.strokeWidth, transition)
+  let tr_stroke = createTransitionable('stroke', aesthetics.stroke, transition)
   let tr_opacity = createTransitionable('opacity', aesthetics.opacity, transition)
 
   // Handle coordSysGeometry changes
@@ -136,11 +138,12 @@
     }
   }
 
-  // Handle radius changes
+  // Handle radius and strokeWidth changes
   $: {
     if (initDone()) {
       if (!_asPolygon) {
         tr_radius.set(aesthetics.radius)
+        tr_strokeWidth.set(aesthetics.strokeWidth)
       }
 
       if (_asPolygon) {
@@ -151,6 +154,7 @@
 
   // Handle other changes
   $: { if (initDone()) tr_fill.set(aesthetics.fill) }
+  $: { if (initDone()) tr_stroke.set(aesthetics.stroke) }
   $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
 
   let previousTransition
@@ -167,6 +171,8 @@
       tr_screenGeometry = createTransitionable('geometry', $tr_screenGeometry, transition)
       tr_radius = createTransitionable('radius', $tr_radius, transition)
       tr_fill = createTransitionable('fill', $tr_fill, transition)
+      tr_strokeWidth = createTransitionable('strokeWidth', aesthetics.strokeWidth, transition)
+      tr_stroke = createTransitionable('stroke', aesthetics.stroke, transition)
       tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
     }
 
@@ -266,11 +272,15 @@
       type, markId, { screenGeometry, pixelGeometry }, { radius: aesthetics.radius }
     )
   }
+
+  $: renderPolygon = !['Point', 'Line'].includes(type) || _asPolygon
+  $: renderCircle = type === 'Point' && !_asPolygon
+  $: renderLine = type === 'Line' && !_asPolygon
 </script>
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#if type !== 'Point' || _asPolygon}
+  {#if renderPolygon}
 
     <path
       class={type.toLowerCase()}
@@ -281,7 +291,7 @@
 
   {/if}
 
-  {#if type === 'Point' && !_asPolygon}
+  {#if renderCircle}
 
     <circle 
       class="point"
@@ -293,5 +303,11 @@
     />
 
   {/if}
+
+  // {#if renderLine}
+
+  //   <path
+
+  // {/if}
 
 {/if}
