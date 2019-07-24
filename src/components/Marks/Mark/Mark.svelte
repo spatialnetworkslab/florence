@@ -304,10 +304,17 @@
 
   {/if}
 
-  // {#if renderLine}
+  {#if renderLine}
 
-  //   <path
+    <path
+      class="line"
+      d={generatePath($tr_screenGeometry)}
+      fill="none"
+      stroke={$tr_stroke}
+      stroke-width={$tr_strokeWidth}
+      style={`opacity: ${$tr_opacity}`}
+    />
 
-  // {/if}
+  {/if}
 
 {/if}
