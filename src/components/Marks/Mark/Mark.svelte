@@ -42,6 +42,8 @@
   // Aesthetics: other
   export let radius = undefined
   export let fill = undefined
+  export let strokeWidth = undefined
+  export let stroke = undefined
   export let opacity = undefined
 
   // Transitions and interactions
@@ -57,13 +59,19 @@
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
     type,
-    { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+    { 
+      x, y, x1, x2, y1, y2, geometry, 
+      radius, fill, strokeWidth, stroke, opacity
+    }
   )
   $: {
     if (initDone()) {
       aesthetics = validateAesthetics(
         type,
-        { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+        { 
+          x, y, x1, x2, y1, y2, geometry, 
+          radius, fill, strokeWidth, stroke, opacity 
+        }
       )
     }
   }

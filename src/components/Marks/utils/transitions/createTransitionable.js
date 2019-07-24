@@ -46,15 +46,10 @@ export function createTransitionable (aestheticName, aestheticValue, transitionO
 }
 
 function createOptionsFromDuration (aestheticName, duration) {
-  switch (aestheticName) {
-    case 'geometry':
-      return { duration, easing: cubicOut, interpolate: transitionGeometry }
-
-    case 'fill':
-      return { duration, easing: cubicOut, interpolate }
-
-    default:
-      return { duration, easing: cubicOut }
+  if (aestheticName === 'geometry') {
+    return { duration, easing: cubicOut, interpolate: transitionGeometry }
+  } else {
+    return { duration, easing: cubicOut, interpolate }
   }
 }
 
@@ -98,14 +93,9 @@ function numberOfKeys (obj) {
 }
 
 function createOptionsFromOptions (aestheticName, transitionOptions) {
-  switch (aestheticName) {
-    case 'geometry':
-      return Object.assign({ interpolate: transitionGeometry }, transitionOptions)
-
-    case 'fill':
-      return Object.assign({ interpolate }, transitionOptions)
-
-    default:
-      return transitionOptions
+  if (aestheticName === 'geometry') {
+    return Object.assign({ interpolate: transitionGeometry }, transitionOptions)
+  } else {
+    return Object.assign({ interpolate }, transitionOptions)
   }
 }
