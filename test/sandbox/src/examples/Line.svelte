@@ -17,15 +17,17 @@
     scaleY={scaleLinear().domain(data.domain('y'))}
   >
 
-    <!-- <Line
+    <Line
       x={data.column('x')}
       y={data.column('y')}
-    /> -->
+      strokeWidth={10}
+    />
 
-    <LineLayer
+    <!-- <LineLayer
       x={[data.column('x')]}
       y={[data.column('y')]}
-    />
+      strokeWidth={10}
+    /> -->
   
   </Section>
 

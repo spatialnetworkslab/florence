@@ -1,7 +1,9 @@
 import { representPointAsPolygon, representPointsAsPolygons } from '../Point/representPointAsPolygon.js'
+import { representLineAsPolygon } from '../Line/representLineAsPolygon.js'
 
 export const markRepresentAsPolygonFuncs = new Proxy({
-  Point: representPointAsPolygon
+  Point: representPointAsPolygon,
+  Line: representLineAsPolygon
 }, {
   get: (obj, prop) => {
     if (prop in obj) {
