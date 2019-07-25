@@ -169,7 +169,7 @@
 
   // Handle other changes
   $: { if (initDone()) tr_fillObject.set(generatePropObject(aesthetics.fill, indexArray)) }
-  $: { if (initDone()) tr_stroke.set(aesthetics.stroke) }
+  $: { if (initDone()) tr_strokeObject.set(aesthetics.stroke) }
   $: { if (initDone()) tr_opacityObject.set(generatePropObject(aesthetics.opacity, indexArray)) }
 
   let previousTransition
