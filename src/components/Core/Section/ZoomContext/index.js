@@ -18,7 +18,6 @@ export function update (zoomContext, zoomId) {
   if (zoomId) {
     const { x, y, k } = zoomId
     const transformation = p => [p[0] * k + x, p[1] * k + y]
-
     zoomContext.set(transformation)
   }
 

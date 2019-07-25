@@ -11,10 +11,77 @@
     y: [1, 1, 1, 2, 2, 2, 3, 3, 3]
   }
 
+  function handlePan (id, event) {
+    console.log(event)
+    x -= event.delta.x
+    y -= event.delta.y
+  }
+
   function handleZoom (id, event) {
-    x = event.mouse.x
-    y = event.mouse.y
-    k += event.wheelDelta
+    k += event.wheelDelta // max zoom controls k value
+    const factor = 0.5
+    const max_scale = 4
+    const pos = { x: 0, y: 0 }
+    const zoom_target = { x: 0, y: 0 }
+    //console.log(event.originalEvent)
+    const zoom_point = { x: event.originalEvent.pageX - 50, 
+                         y: event.originalEvent.pageY - 50 }
+    let scale = 1
+    console.log(zoom_point)
+    // an experiment on getting the zoom to happen on a particular point
+    // let zoom_x = event.pageX, zoom_y = event.pageY
+    let size = {w: 400, h: 400}
+
+    // determine the point on where the slide is zoomed in
+    // let zoom_target = {}
+    zoom_target.x = (zoom_point.x - pos.x)/scale
+    zoom_target.y = (zoom_point.y - pos.y)/scale
+
+    // apply zoom
+    scale += event.wheelDelta * factor * scale
+    scale = Math.max(1,Math.min(max_scale,scale))
+
+    // calculate x and y based on zoom
+    pos.x = -zoom_target.x * scale + zoom_point.x
+    pos.y = -zoom_target.y * scale + zoom_point.y
+    //console.log(pos)
+
+    // Make sure the slide stays in its container area when zooming out
+    if(pos.x>0)
+        pos.x = 0
+    if(pos.x+size.w*scale<size.w)
+        pos.x = size.w*(scale-1)/2
+    if(pos.y>0)
+        pos.y = 0
+      if(pos.y+size.h*scale<size.h)
+        pos.y = size.h*(scale-1)/2
+    console.log(pos)
+
+    // x = pos.x + size.w*(scale-1)/2
+    // y = pos.y + size.h*(scale-1)/2
+    x += event.wheelDelta
+    y += event.wheelDelta
+    console.log(x, y)
+    // Make sure the slide stays in its container area when zooming out
+    // if(pos.x>0){
+    //   pos.x = 0
+    // }
+    // if(pos.x+size.w*scale<size.w) {
+    //   pos.x = -size.w*(scale-1)
+    // }
+
+    // if(pos.y>0) {
+    //   pos.y = 0
+    // }
+    // if(pos.y+size.h*scale<size.h) {
+    //   pos.y = -size.h*(scale-1)
+    // }
+
+    // x1 = x1 - pos.x
+    // x2 = x2 + pos.x
+    // y1 = y1 - pos.y
+    // y2 = y2 + pos.y
+
 
     // x = event.pageX
     // y = event.pageY
@@ -48,6 +115,7 @@ k:
     scaleY={scaleLinear().domain([0, 4])}
     zoomIdentity={{ x, y, k }}
     onWheel={ handleZoom }
+    onPan ={ handlePan }
   >
 
     <Rectangle fill="blue" opacity={0.3} />

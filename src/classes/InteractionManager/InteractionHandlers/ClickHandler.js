@@ -3,7 +3,6 @@ import SectionInteractionHandler from './SectionInteractionHandler.js'
 
 export default class ClickHandler extends InteractionHandler {
   _addEventListenerIfNecessary () {
-    
     if (this._numberOfInteractions === 0) {
       let handler = this._handleEvent.bind(this)
       let interactionManager = this._interactionManager
