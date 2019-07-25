@@ -12,7 +12,6 @@
   }
 
   function handlePan (id, event) {
-    console.log(event)
     x -= event.delta.x
     y -= event.delta.y
   }

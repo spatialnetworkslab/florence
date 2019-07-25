@@ -16,6 +16,8 @@ export default class WheelHandler extends SectionInteractionHandler {
 
       this._panningActive = undefined
       this._panStartPosition = undefined
+      this._panPreviousPosition = undefined
+      this._panCurrentPosition = undefined
       this._panEndPosition = undefined
     }
   }
@@ -34,6 +36,7 @@ export default class WheelHandler extends SectionInteractionHandler {
   _handleMouseDown (coordinates, mouseEvent) {
     this._panningActive = true
     this._panStartPosition = coordinates
+    this._panCurrentPosition = coordinates
     this._startMouseEvent = mouseEvent
     // console.log('start', this._panningActive, this.panStartPosition)
   }
@@ -56,7 +59,7 @@ export default class WheelHandler extends SectionInteractionHandler {
     }
   }
 
-  _callStoredCallback (start, end ) {
+  _callStoredCallback (start, end) {
     const delta = { x: start.x - end.x, y: start.y - end.y }
     const event = { delta, startMouse: this._startMouseEvent, endMouse: this._endMouseEvent }
 
