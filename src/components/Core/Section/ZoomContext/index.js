@@ -18,6 +18,10 @@ export function update (zoomContext, zoomId) {
   if (zoomId) {
     const { x, y, k } = zoomId
     const transformation = p => [p[0] * k + x, p[1] * k + y]
+<<<<<<< HEAD
+=======
+
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
     zoomContext.set(transformation)
   }
 

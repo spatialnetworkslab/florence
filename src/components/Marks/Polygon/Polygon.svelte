@@ -1,11 +1,5 @@
-<script context="module">
-  let idCounter = 0
-  function getId () {
-    return 'pl' + idCounter++
-  }
-</script>
-
 <script>
+<<<<<<< HEAD
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
@@ -18,24 +12,26 @@
   import generateScreenGeometry from './generateScreenGeometry.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
+=======
+  import Mark from '../Mark/Mark.svelte'
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
 
-  let markId = getId()
-
-  let initPhase = true
-  const initDone = () => !initPhase
-
-  // Props
+  // Aesthetics: positioning
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
-  export let fill = 'black'
-  export let opacity = 1
+
+  // Aesthetics: other
+  export let fill = undefined
+  export let opacity = undefined
+
+  // Transitions and interactions
   export let transition = undefined
-  export let interpolate = false
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
 
+<<<<<<< HEAD
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
@@ -148,15 +144,16 @@
       markId
     }
   }
+=======
+  // Other
+  export let interpolate = false
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
 </script>
 
-{#if $graphicContext.output() === 'svg'}
-
-  <path 
-    class="polygon"
-    d={generatePath($tr_screenGeometry)} 
-    fill={$tr_fill}
-    style={`opacity: ${$tr_opacity}`}
-  />
-
-{/if}
+<Mark
+  type="Polygon"
+  {x} {y} {geometry}
+  {fill} {opacity}
+  {transition} {onClick} {onMouseover} {onMouseout}
+  {interpolate}
+/>

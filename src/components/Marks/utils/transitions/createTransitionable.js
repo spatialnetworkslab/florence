@@ -22,22 +22,22 @@ export function createTransitionable (aestheticName, aestheticValue, transitionO
   }
 
   if (transitionOptions.constructor === Number) {
-    let options = createOptionsFromDuration(aestheticName, transitionOptions)
+    const options = createOptionsFromDuration(aestheticName, transitionOptions)
     return tweened(aestheticValue, options)
   }
 
   if (transitionOptions.constructor === Object) {
-    if (!transitionOptions.hasOwnProperty(aestheticName)) return writable(aestheticValue)
+    if (!(aestheticName in transitionOptions)) return writable(aestheticValue)
 
-    let aestheticTransition = transitionOptions[aestheticName]
+    const aestheticTransition = transitionOptions[aestheticName]
 
     if (aestheticTransition && aestheticTransition.constructor === Number) {
-      let options = createOptionsFromDuration(aestheticName, aestheticTransition)
+      const options = createOptionsFromDuration(aestheticName, aestheticTransition)
       return tweened(aestheticValue, options)
     }
 
     if (aestheticTransition && aestheticTransition.constructor === Object) {
-      let options = createOptionsFromOptions(aestheticName, aestheticTransition)
+      const options = createOptionsFromOptions(aestheticName, aestheticTransition)
       return tweened(aestheticValue, options)
     }
   }
@@ -71,9 +71,9 @@ function transitionObjectsEqual (a, b) {
 
   if (numberOfKeys(a) !== numberOfKeys(b)) return false
 
-  for (let aesthetic in a) {
-    let aestheticA = a[aesthetic]
-    let aestheticB = b[aesthetic]
+  for (const aesthetic in a) {
+    const aestheticA = a[aesthetic]
+    const aestheticB = b[aesthetic]
     if (aestheticA.constructor !== Object) return aestheticA === aestheticB
     if (!aestheticTransitionObjectsEqual(aestheticA, aestheticB)) return false
   }
@@ -86,7 +86,7 @@ function aestheticTransitionObjectsEqual (a, b) {
 
   if (numberOfKeys(a) !== numberOfKeys(b)) return false
 
-  for (let key in a) {
+  for (const key in a) {
     if (a[key] !== b[key]) return false
   }
 

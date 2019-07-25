@@ -44,7 +44,7 @@ export function subscribe () {
 }
 
 export function init () {
-  let coordinateTransformationContext = writable()
+  const coordinateTransformationContext = writable()
   setContext(key, coordinateTransformationContext)
 
   return coordinateTransformationContext

@@ -3,12 +3,12 @@ let handler
 export default class EventManager {
   constructor () {
     this._mounted = false
+
     this._clickTracker = new EventTracker(this, 'click')
     this._mousemoveTracker = new EventTracker(this, 'mousemove')
     this._mousedownTracker = new EventTracker(this, 'mousedown')
     this._mouseupTracker = new EventTracker(this, 'mouseup')
     this._wheelTracker = new EventTracker(this, 'wheel')
-    //this._panTracker = new EventTracker(this, 'pan')
     this._listeners = {}
   }
 
@@ -20,9 +20,9 @@ export default class EventManager {
 
   attachEventListeners () {
     if (this._mounted) {
-      for (let listenerId in this._listeners) {
-        let { eventName, callback } = this._listeners[listenerId]
-        let tracker = this[getTrackerName(eventName)]
+      for (const listenerId in this._listeners) {
+        const { eventName, callback } = this._listeners[listenerId]
+        const tracker = this[getTrackerName(eventName)]
         tracker.addEventListener(listenerId, callback)
       }
     } else {
@@ -33,14 +33,14 @@ export default class EventManager {
   addEventListener (eventName, listenerId, callback) {
     this._listeners[listenerId] = Object.assign({}, { eventName, callback })
     if (this._mounted) {
-      let tracker = this[getTrackerName(eventName)]
+      const tracker = this[getTrackerName(eventName)]
       tracker.addEventListener(listenerId, callback)
     }
   }
 
   removeEventListener (eventName, listenerId) {
     delete this._listeners[listenerId]
-    let tracker = this[getTrackerName(eventName)]
+    const tracker = this[getTrackerName(eventName)]
     tracker.removeEventListener(listenerId)
   }
 
@@ -81,19 +81,19 @@ class EventTracker {
   }
 
   _handleEvent (mouseEvent) {
-    let coordinates = this._eventManager._getMouseCoordinates(mouseEvent)
-   
-    for (let listenerId in this._callbacks) {
+    const coordinates = this._eventManager._getMouseCoordinates(mouseEvent)
+
+    for (const listenerId in this._callbacks) {
       this._callbacks[listenerId](coordinates, mouseEvent)
     }
   }
 }
 
 function getTrackerName (eventName) {
-  let trackerName = eventNameToTrackerNameMap[eventName]
+  const trackerName = eventNameToTrackerNameMap[eventName]
 
   if (trackerName) return trackerName
-  throw new Error(`Invalid event name: '${eventName}`)
+  throw new Error(`Invalid event name: '${eventName}'`)
 }
 
 const eventNameToTrackerNameMap = {
@@ -102,5 +102,4 @@ const eventNameToTrackerNameMap = {
   mousedown: '_mousedownTracker',
   mouseup: '_mouseupTracker',
   wheel: '_wheelTracker'
-  //pan: '_panTracker'
 }

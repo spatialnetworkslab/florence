@@ -11,7 +11,7 @@ export default class InteractionHandler {
   
   // Add/remove layer interactions
   addLayerInteraction (layerId, callback) {
-    if (!this._layerCallbacks.hasOwnProperty(layerId)) {
+    if (!(layerId in this._layerCallbacks)) {
       this._addEventListenerIfNecessary()
       this._numberOfInteractions++
       this._layerCallbacks[layerId] = callback
@@ -21,7 +21,7 @@ export default class InteractionHandler {
   }
 
   removeLayerInteraction (layerId) {
-    if (this._layerCallbacks.hasOwnProperty(layerId)) {
+    if (layerId in this._layerCallbacks) {
       this._numberOfInteractions--
       delete this._layerCallbacks[layerId]
       this._removeEventListenerIfNecessary()
@@ -47,11 +47,18 @@ export default class InteractionHandler {
     this._spatialIndex.unindexMark(markId)
   }
 
+  _isInSection (hit, geometry) {
+    if (hit.x <= geometry.x2 && hit.x >= geometry.x1 && hit.y <= geometry.y2 && hit.y >= geometry.y1) {
+      return true
+    }
+    return false
+  }
+
   _isInLayer (hit) {
-    return hit.hasOwnProperty('layerId')
+    return 'layerId' in hit
   }
 
   _isMark (hit) {
-    return hit.hasOwnProperty('markId')
+    return 'markId' in hit
   }
 }

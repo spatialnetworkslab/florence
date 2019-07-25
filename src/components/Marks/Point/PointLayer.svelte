@@ -1,11 +1,5 @@
-<script context="module">
-  let idCounter = 0
-  function getId () {
-    return 'ptl' + idCounter++
-  }
-</script>
-
 <script>
+<<<<<<< HEAD
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
@@ -23,19 +17,27 @@
 
   let initPhase = true
   const initDone = () => !initPhase
+=======
+  import Layer from '../Mark/Layer.svelte'
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
 
-  // Props
+  // Aesthetics: positioning
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
-  export let radius = 3
-  export let fill = 'black'
+
+  // Aesthetics: other
+  export let radius = undefined
+  export let fill = undefined
+  export let opacity = undefined
+
+  // Transitions and interactions
   export let transition = undefined
-  export let index = undefined
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
 
+<<<<<<< HEAD
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
@@ -160,20 +162,16 @@
       indexArray
     }
   }
+=======
+  // Other
+  export let index = undefined
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
 </script>
 
-{#if $graphicContext.output() === 'svg'}
-
-  {#each indexArray as $index ($index)}
-
-    <circle
-      class="point"
-      cx={$tr_screenGeometryObject[$index].coordinates[0]}
-      cy={$tr_screenGeometryObject[$index].coordinates[1]}
-      r={$tr_radiusObject[$index]}
-      fill={$tr_fillObject[$index]}
-    />
-
-  {/each}
-
-{/if}
+<Layer 
+  type="Point"
+  {x} {y} {geometry} {radius}
+  {fill} {opacity}
+  {transition} {onClick} {onMouseover} {onMouseout}
+  {index} _asPolygon={false}
+/>

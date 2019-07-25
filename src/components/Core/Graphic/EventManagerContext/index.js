@@ -8,7 +8,7 @@ export function subscribe () {
 }
 
 export function init () {
-  let eventManagerContext = writable()
+  const eventManagerContext = writable()
   setContext(key, eventManagerContext)
 
   return eventManagerContext

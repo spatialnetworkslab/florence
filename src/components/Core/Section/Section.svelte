@@ -15,7 +15,11 @@
   import * as ZoomContext from './ZoomContext'
 
   import InteractionManager from '../../../classes/InteractionManager'
+<<<<<<< HEAD
   import { scaleCoordinates } from '../../Marks/Rectangle/generateScreenGeometry.js'
+=======
+  import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
 
   let sectionId = getId()
   
@@ -27,6 +31,7 @@
   export let scaleX = undefined
   export let scaleY = undefined
   export let zoomIdentity = undefined
+<<<<<<< HEAD
 
   export let scaleGeo = undefined
   
@@ -34,6 +39,9 @@
   export let onWheel = undefined
   export let onPan = undefined
 
+=======
+  
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
   // Aesthetics
   export let padding = 3
   export let backgroundColor = undefined
@@ -46,6 +54,7 @@
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
   const zoomContext = ZoomContext.init()
+<<<<<<< HEAD
   
   let scaledCoordinates
   
@@ -58,8 +67,13 @@
         newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
       )
   }
+=======
+
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
   
-  // set up interaction manager
+  let scaledCoordinates
+  
+  // Set up InteractionManager
   let interactionManager = new InteractionManager()
   interactionManager.setId(sectionId)
   interactionManager.linkEventManager($eventManagerContext)
@@ -91,6 +105,7 @@
       
       $interactionManagerContext.loadSection('Section', {rangeX, rangeY, sectionId})
 
+<<<<<<< HEAD
       if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', sectionId, onWheel)
       if (onPan) $interactionManagerContext.addSectionInteraction('pan', sectionId, onPan)
     }
@@ -101,6 +116,22 @@
       $interactionManagerContext.removeAllSectionInteractions(sectionId)
       $interactionManagerContext.removeSection(sectionId)
     }
+=======
+  // Update InteractionManager on changes
+  $: {
+    scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+    let rangeX = [scaledCoordinates.x1 + padding, scaledCoordinates.x2 - padding]
+    let rangeY = [scaledCoordinates.y1 + padding, scaledCoordinates.y2 - padding]
+    
+    SectionContext.update(
+      newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
+    )
+  }
+
+  // Update zooming and panning
+  $: {
+    ZoomContext.update(zoomContext, zoomIdentity)
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
   }
 </script>
 

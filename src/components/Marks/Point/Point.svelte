@@ -1,11 +1,5 @@
-<script context="module">
-  let idCounter = 0
-  function getId () {
-    return 'pt' + idCounter++
-  }
-</script>
-
 <script>
+<<<<<<< HEAD
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
@@ -19,20 +13,26 @@
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
 
   let markId = getId()
+=======
+  import Mark from '../Mark/Mark.svelte'
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
 
-  let initPhase = true
-  const initDone = () => !initPhase
-
-  // Props
+  // Aesthetics: positioning
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
-  export let radius = 3
-  export let fill = 'black'
+
+  // Aesthetics: other
+  export let radius = undefined
+  export let fill = undefined
+  export let opacity = undefined
+
+  // Transitions and interactions
   export let transition = undefined
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+<<<<<<< HEAD
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -140,16 +140,14 @@
       markId
     }
   }
+=======
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
 </script>
 
-{#if $graphicContext.output() === 'svg'}
-
-  <circle 
-    class="point"
-    cx={$tr_screenGeometry.coordinates[0]} 
-    cy={$tr_screenGeometry.coordinates[1]} 
-    r={$tr_radius} 
-    fill={$tr_fill} 
-  />
-
-{/if}
+<Mark
+  type="Point"
+  {x} {y} {geometry} {radius} 
+  {fill} {opacity} 
+  {transition} {onClick} {onMouseover} {onMouseout}
+  _asPolygon={false}
+/>

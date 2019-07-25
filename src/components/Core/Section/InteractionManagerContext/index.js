@@ -8,7 +8,7 @@ export function subscribe () {
 }
 
 export function init () {
-  let interactionManagerContext = writable()
+  const interactionManagerContext = writable()
   setContext(key, interactionManagerContext)
 
   return interactionManagerContext

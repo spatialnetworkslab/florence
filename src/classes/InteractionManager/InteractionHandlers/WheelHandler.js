@@ -34,10 +34,12 @@ export default class WheelHandler extends SectionInteractionHandler {
     const wheelDelta = this._defaultWheelDelta(mouseEvent)
     const mouse = { x: coordinates.x, y: coordinates.y }
     const evt = { wheelDelta, mouse, originalEvent: mouseEvent }
-    const id = this._interactionManager._id
-    // what other information would the user need?
-    const sectionBbox = this._interactionManager._sections[id]
 
+    const interactionManager = this._interactionManager
+    const id = interactionManager._id
+    const sectionBbox = interactionManager._sections[id]
+
+    // what other information would the user need?
     if (this._isInSection(coordinates, sectionBbox)) {
       this._callback(id, evt)
     }

@@ -48,15 +48,15 @@ export default class InteractionManager {
 
   // Layer loading and removing
   loadLayer (layerType, layerData) {
-    let indexingFunction = layerIndexing[layerType]
-    let indexableData = indexingFunction(layerData)
+    const indexingFunction = layerIndexing[layerType]
+    const indexableData = indexingFunction(layerData)
 
-    let layerId = layerData.layerId
+    const layerId = layerData.layerId
     this._layers[layerId] = indexableData
   }
 
   layerIsLoaded (layerId) {
-    return this._layers.hasOwnProperty(layerId)
+    return layerId in this._layers
   }
 
   removeLayer (layerId) {
@@ -65,15 +65,15 @@ export default class InteractionManager {
 
   // Mark loading and removing
   loadMark (markType, markData) {
-    let indexingFunction = markIndexing[markType]
-    let indexableItem = indexingFunction(markData)
+    const indexingFunction = markIndexing[markType]
+    const indexableItem = indexingFunction(markData)
 
-    let markId = markData.markId
+    const markId = markData.markId
     this._marks[markId] = indexableItem
   }
 
   markIsLoaded (markId) {
-    return this._marks.hasOwnProperty(markId)
+    return markId in this._marks
   }
 
   removeMark (markId) {

@@ -1,11 +1,5 @@
-<script context="module">
-  let idCounter = 0
-  function getId () {
-    return 'pll' + idCounter++
-  }
-</script>
-
 <script>
+<<<<<<< HEAD
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
@@ -24,20 +18,26 @@
 
   let initPhase = true
   const initDone = () => !initPhase
+=======
+  import Layer from '../Mark/Layer.svelte'
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
 
-  // Props
+  // Aesthetics: positioning
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
-  export let fill = 'black'
-  export let opacity = 1
+
+  // Aesthetics: other
+  export let fill = undefined
+  export let opacity = undefined
+
+  // Transitions and interactions
   export let transition = undefined
-  export let interpolate = false
-  export let index = undefined
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
 
+<<<<<<< HEAD
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
@@ -162,19 +162,17 @@
       indexArray
     }
   }
+=======
+  // Other
+  export let interpolate = false
+  export let index = undefined
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
 </script>
 
-{#if $graphicContext.output() === 'svg'}
-
-  {#each indexArray as $index ($index)}
-
-    <path 
-      class="polygon"
-      d={generatePath($tr_screenGeometryObject[$index])} 
-      fill={$tr_fillObject[$index]}
-      style={`opacity: ${$tr_opacityObject[$index]}`}
-    />
-
-  {/each}
-
-{/if}
+<Layer 
+  type="Polygon"
+  {x} {y} {geometry}
+  {fill} {opacity}
+  {transition} {onClick} {onMouseover} {onMouseout}
+  {index} {interpolate}
+/>

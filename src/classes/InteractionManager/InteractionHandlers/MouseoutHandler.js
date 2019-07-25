@@ -10,10 +10,10 @@ export default class MouseoutHandler extends InteractionHandler {
 
   _addEventListenerIfNecessary () {
     if (this._numberOfInteractions === 0) {
-      let handler = this._handleEvent.bind(this)
-      let interactionManager = this._interactionManager
-      let eventManager = interactionManager._eventManager
-      let listenerId = interactionManager._id + '-mouseout'
+      const handler = this._handleEvent.bind(this)
+      const interactionManager = this._interactionManager
+      const eventManager = interactionManager._eventManager
+      const listenerId = interactionManager._id + '-mouseout'
 
       // How do we chain listening for events here? 
       eventManager.addEventListener('mousemove', listenerId, handler)
@@ -22,9 +22,9 @@ export default class MouseoutHandler extends InteractionHandler {
 
   _removeEventListenerIfNecessary () {
     if (this._numberOfInteractions === 0) {
-      let interactionManager = this._interactionManager
-      let eventManager = interactionManager._eventManager
-      let listenerId = interactionManager._id + '-mouseout'
+      const interactionManager = this._interactionManager
+      const eventManager = interactionManager._eventManager
+      const listenerId = interactionManager._id + '-mouseout'
 
       eventManager.removeEventListener('mousemove', listenerId)
     }
@@ -33,16 +33,17 @@ export default class MouseoutHandler extends InteractionHandler {
   _handleEvent (coordinates, mouseEvent) {
     this._currentMouseoverIds = {}
 
-    let spatialIndex = this._spatialIndex
-    let hits = spatialIndex.queryMouseCoordinates(coordinates)
+    const spatialIndex = this._spatialIndex
+    const hits = spatialIndex.queryMouseCoordinates(coordinates)
+
     this._storeHits(hits)
     this._fireForMouseOutHits(mouseEvent)
   }
   
   _storeHits (hits) {
     for (let i = 0; i < hits.length; i++) {
-      let hit = hits[i]
-      let hitId = this._getHitId(hit)
+      const hit = hits[i]
+      const hitId = this._getHitId(hit)
 
       if (!this._mouseAlreadyOver(hitId)) {
         this._previousHits[hitId] = hit
@@ -54,12 +55,9 @@ export default class MouseoutHandler extends InteractionHandler {
 
   // TO FIX
   _fireForMouseOutHits (mouseEvent) {
-    let eventCoordinates = { 'x': mouseEvent.clientX, 'y': mouseEvent.clientY }
-
-    for (let hitId in this._previousHits) {
-      // activates if it's not currently being hovered over
-      if (!this._currentMouseoverIds.hasOwnProperty(hitId)) {
-        let hit = this._previousHits[hitId]
+    for (const hitId in this._previousHits) {
+      if (!(hitId in this._currentMouseoverIds)) {
+        const hit = this._previousHits[hitId]
 
         if (this._isInLayer(hit)) {
           this._layerCallbacks[hit.layerId](hit.$index, mouseEvent)
@@ -81,6 +79,6 @@ export default class MouseoutHandler extends InteractionHandler {
   }
 
   _mouseAlreadyOver (hitId) {
-    return this._previousHits.hasOwnProperty(hitId)
+    return hitId in this._previousHits
   }
 }

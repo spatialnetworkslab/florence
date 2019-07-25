@@ -1,11 +1,5 @@
-<script context="module">
-  let idCounter = 0
-  function getId () {
-    return 'rt' + idCounter++
-  }
-</script>
-
 <script>
+<<<<<<< HEAD
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
@@ -20,23 +14,27 @@
   import generatePath from '../utils/generatePath.js'
 
   let markId = getId()
+=======
+  import Mark from '../Mark/Mark.svelte'
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
 
-  let initPhase = true
-  const initDone = () => !initPhase
-
-  // Props
+  // Aesthetics: positioning
   export let x1 = undefined
   export let x2 = undefined
   export let y1 = undefined
   export let y2 = undefined
-  export let fill = 'black'
-  export let opacity = 1
+
+  // Aesthetics: other
+  export let fill = undefined
+  export let opacity = undefined
+
+  // Transitions and interactions
   export let transition = undefined
-  export let interpolate = true
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
 
+<<<<<<< HEAD
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
@@ -149,15 +147,16 @@
       markId
     }
   }
+=======
+  // Other
+  export let interpolate = true
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
 </script>
 
-{#if $graphicContext.output() === 'svg'}
-
-  <path 
-    class="rectangle"
-    d={generatePath($tr_screenGeometry)} 
-    fill={$tr_fill}
-    style={`opacity: ${$tr_opacity}`}
-  />
-
-{/if}
+<Mark
+  type="Rectangle"
+  {x1} {x2} {y1} {y2}
+  {fill} {opacity}
+  {transition} {onClick} {onMouseover} {onMouseout}
+  {interpolate}
+/>

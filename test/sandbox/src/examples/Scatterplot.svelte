@@ -32,7 +32,11 @@
 
   const log = console.log
 
+<<<<<<< HEAD
   let background = "grey"
+=======
+  let background = "pink"
+>>>>>>> dce9377a55a6a8857144259233e6558678791518
   let big = false
   let hoverPoints = {}
 
@@ -90,7 +94,21 @@
           index={filteredData.column('$index')}
           onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
           onMouseout={handleMouseout}
+          transition={duration}
         />
+
+        <!-- {#each filteredData.rows() as row (row.$index)}
+
+          <Point 
+            x={row.a}
+            y={row.b}
+            fill={transformation === 'identity' ? 'black' : 'blue'}
+            radius={transformation === 'identity' ? 3 : 6}
+            onMouseover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
+            onMouseout={() => handleMouseout(row.$index)}
+          />
+
+        {/each} -->
 
         <Point
           x={50}
