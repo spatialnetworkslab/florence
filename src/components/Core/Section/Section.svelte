@@ -15,11 +15,7 @@
   import * as ZoomContext from './ZoomContext'
 
   import InteractionManager from '../../../classes/InteractionManager'
-<<<<<<< HEAD
   import { scaleCoordinates } from '../../Marks/Rectangle/generateScreenGeometry.js'
-=======
-  import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
->>>>>>> dce9377a55a6a8857144259233e6558678791518
 
   let sectionId = getId()
   
@@ -31,7 +27,6 @@
   export let scaleX = undefined
   export let scaleY = undefined
   export let zoomIdentity = undefined
-<<<<<<< HEAD
 
   export let scaleGeo = undefined
   
@@ -39,9 +34,6 @@
   export let onWheel = undefined
   export let onPan = undefined
 
-=======
-  
->>>>>>> dce9377a55a6a8857144259233e6558678791518
   // Aesthetics
   export let padding = 3
   export let backgroundColor = undefined
@@ -105,7 +97,6 @@
       
       $interactionManagerContext.loadSection('Section', {rangeX, rangeY, sectionId})
 
-<<<<<<< HEAD
       if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', sectionId, onWheel)
       if (onPan) $interactionManagerContext.addSectionInteraction('pan', sectionId, onPan)
     }
@@ -116,7 +107,6 @@
       $interactionManagerContext.removeAllSectionInteractions(sectionId)
       $interactionManagerContext.removeSection(sectionId)
     }
-=======
   // Update InteractionManager on changes
   $: {
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
@@ -131,7 +121,6 @@
   // Update zooming and panning
   $: {
     ZoomContext.update(zoomContext, zoomIdentity)
->>>>>>> dce9377a55a6a8857144259233e6558678791518
   }
 </script>
 
