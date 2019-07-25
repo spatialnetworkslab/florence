@@ -8,11 +8,8 @@
   import ResizeLayout from './examples/ResizeLayout.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
   import Zoom from './examples/Zoom.svelte'
-<<<<<<< HEAD
   import ZoomSection from './examples/ZoomSection.svelte'
-=======
   import BaseMark from './examples/BaseMark.svelte'
->>>>>>> dce9377a55a6a8857144259233e6558678791518
 
   // and add them to this component array
   let components = [
@@ -46,17 +43,15 @@
       url: '/zoom',
       component: Zoom
     },
-<<<<<<< HEAD
     { 
       name: "Zoom Section",
       url: "/zoomsection",
       component: ZoomSection
-=======
+    },
     {
       name: 'Base mark',
       url: '/basemark',
       component: BaseMark
->>>>>>> dce9377a55a6a8857144259233e6558678791518
     }
   ]
 </script>
