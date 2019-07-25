@@ -2,7 +2,7 @@ import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js
 import { scaleGeometries } from 'geometryUtils'
 import {
   ensureValidCombination, createScaledGeometryArrayFromXYProps
-} from './createCoordSysGeometry.js'
+} from '../utils/createScaledGeometryFromXYProps.js'
 import getIndexArray from '../utils/getIndexArray.js'
 import { isDefined, isUndefined } from 'equals.js'
 

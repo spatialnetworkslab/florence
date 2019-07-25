@@ -127,7 +127,7 @@ export function createScaledGeometryArrayFromXYProps (x, y, scales, markType) {
     const scaledX = xNeedsScaling ? x[i].map(scaleX) : xValues[i]
     const scaledY = yNeedsScaling ? y[i].map(scaleY) : yValues[i]
 
-    const scaledGeometry = createGeometryFromScaledProps(scaledX, scaledY)
+    const scaledGeometry = createGeometryFromScaledProps(scaledX, scaledY, markType)
     scaledGeometryArray.push(scaledGeometry)
   }
 
