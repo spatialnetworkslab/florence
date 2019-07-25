@@ -27,6 +27,10 @@
   export let scaleX = undefined
   export let scaleY = undefined
   export let zoomIdentity = undefined
+
+  // Interactivity
+  export let onWheel = undefined
+  export let onPan = undefined
   
   // Aesthetics
   export let padding = 3
@@ -40,7 +44,6 @@
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
   const zoomContext = ZoomContext.init()
-
   
   let scaledCoordinates
   
@@ -49,7 +52,39 @@
   interactionManager.setId(sectionId)
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
+  let isInteractive = undefined
+  
+    // Interactivity
+  $: isInteractive = onWheel !== undefined || onPan !== undefined
 
+  onMount(() => {
+    updateInteractionManagerIfNecessary()
+  })
+  
+  onDestroy(() => {
+    removeSectionInteractionsIfNecessary()
+  })
+  
+  // Helpers
+  function updateInteractionManagerIfNecessary () {
+    if (isInteractive) {
+      let scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+      let rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
+      let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
+      
+      $interactionManagerContext.loadSection('Section', {rangeX, rangeY, sectionId})
+      console.log(onWheel)
+      if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', sectionId, onWheel)
+      if (onPan) $interactionManagerContext.addSectionInteraction('pan', sectionId, onPan)
+    }
+  }
+  
+  function removeSectionInteractionsIfNecessary () {
+    if ($interactionManagerContext.sectionIsLoaded(sectionId)) {
+      $interactionManagerContext.removeAllSectionInteractions(sectionId)
+      $interactionManagerContext.removeSection(sectionId)
+    }
+    
   // Update InteractionManager on changes
   $: {
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)

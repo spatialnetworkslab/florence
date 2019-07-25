@@ -1,7 +1,9 @@
 import ClickHandler from './InteractionHandlers/ClickHandler.js'
 import MouseoverHandler from './InteractionHandlers/MouseoverHandler.js'
 import MouseoutHandler from './InteractionHandlers/MouseoutHandler.js'
-import { markIndexing, layerIndexing } from './indexingFunctions'
+import WheelHandler from './InteractionHandlers/WheelHandler.js'
+import PanHandler from './InteractionHandlers/PanHandler.js'
+import { markIndexing, layerIndexing, sectionIndexing } from './indexingFunctions'
 
 export default class InteractionManager {
   constructor () {
@@ -15,6 +17,8 @@ export default class InteractionManager {
     this._clickHandler = new ClickHandler(this)
     this._mouseoverHandler = new MouseoverHandler(this)
     this._mouseoutHandler = new MouseoutHandler(this)
+    this._wheelHandler = new WheelHandler(this)
+    this._panHandler = new PanHandler(this)
   }
 
   // Initialization
@@ -24,6 +28,22 @@ export default class InteractionManager {
 
   linkEventManager (eventManager) {
     this._eventManager = eventManager
+  }
+
+  // Section loading and removing
+  loadSection (sectionType, sectionData) {
+    let indexingFunction = sectionIndexing[sectionType] // Need to rethink this because using an object here is unnecessary
+    let indexableData = indexingFunction(sectionData)
+    let sectionId = sectionData.sectionId
+    this._sections[sectionId] = indexableData // Stores id, geometry, section bbox
+  }
+
+  sectionIsLoaded (sectionId) {
+    return this._sections.hasOwnProperty(sectionId)
+  }
+
+  removeSection (sectionId) {
+    delete this._sections[sectionId]
   }
 
   // Layer loading and removing
@@ -58,6 +78,16 @@ export default class InteractionManager {
 
   removeMark (markId) {
     delete this._marks[markId]
+  }
+
+  // Add/remove section interactions
+  addSectionInteraction (interactionName, sectionId, callback) {
+    if (interactionName === 'wheel') this._wheelHandler.addSectionInteraction(sectionId, callback)
+    if (interactionName === 'pan') this._panHandler.addSectionInteraction(sectionId, callback)
+  }
+
+  removeAllSectionInteractions (sectionId) {
+    this._wheelHandler.removeSectionInteraction(sectionId)
   }
 
   // Add/remove layer interactions
