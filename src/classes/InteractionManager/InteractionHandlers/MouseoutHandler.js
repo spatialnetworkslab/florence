@@ -32,26 +32,13 @@ export default class MouseoutHandler extends InteractionHandler {
 
   _handleEvent (coordinates, mouseEvent) {
     this._currentMouseoverIds = {}
-    this._storeSectionHits(mouseEvent)
 
     let spatialIndex = this._spatialIndex
     let hits = spatialIndex.queryMouseCoordinates(coordinates)
     this._storeHits(hits)
     this._fireForMouseOutHits(mouseEvent)
   }
-
-  _storeSectionHits (mouseEvent) {
-    let sections = this._interactionManager._sections
-    let eventCoordinates = { 'x': mouseEvent.clientX, 'y': mouseEvent.clientY }
-
-    for (let s in sections) {
-      if (this._isInSection(eventCoordinates, sections[s]) && !this._mouseAlreadyOver(s)) {
-        this._previousHits[s] = sections[s]
-      }
-      this._currentMouseoverIds[s] = true
-    }
-  }
-
+  
   _storeHits (hits) {
     for (let i = 0; i < hits.length; i++) {
       let hit = hits[i]
@@ -67,19 +54,12 @@ export default class MouseoutHandler extends InteractionHandler {
 
   // TO FIX
   _fireForMouseOutHits (mouseEvent) {
-    let sections = this._interactionManager._sections
     let eventCoordinates = { 'x': mouseEvent.clientX, 'y': mouseEvent.clientY }
 
     for (let hitId in this._previousHits) {
       // activates if it's not currently being hovered over
       if (!this._currentMouseoverIds.hasOwnProperty(hitId)) {
         let hit = this._previousHits[hitId]
-      
-        if (sections.hasOwnProperty(hitId)) {
-          if (this._isInSection(eventCoordinates, sections[hitId])) {
-            this._sectionCallbacks[hitId](hitId, mouseEvent)
-          }
-        }
 
         if (this._isInLayer(hit)) {
           this._layerCallbacks[hit.layerId](hit.$index, mouseEvent)

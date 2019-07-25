@@ -33,24 +33,29 @@ export default class WheelHandler extends SectionInteractionHandler {
     }
   }
 
+  // Record initial mousedown
   _handleMouseDown (coordinates, mouseEvent) {
     this._panningActive = true
     this._panStartPosition = coordinates
     this._panCurrentPosition = coordinates
     this._startMouseEvent = mouseEvent
-    // console.log('start', this._panningActive, this.panStartPosition)
   }
 
+  // For smooth dragging, perform callback even during drag
+  // To bound dragging to only the section, check cursor location and if still in section
   _handleMouseMove (coordinates, mouseEvent) {
-    if (this._panningActive) {
+    const sectionBbox = this._interactionManager._sections[this._id]
+
+    if (this._panningActive && this._isInSection(coordinates, sectionBbox)) {
       this._panPreviousPosition = this._panCurrentPosition
       this._panCurrentPosition = coordinates
-      // console.log('drag', this._panCurrentPosition, this.panStartPosition)
-      // perform callback even during drag
       this._callStoredCallback(this._panPreviousPosition, this._panCurrentPosition)
+    } else {
+      this._handleMouseUp(coordinates, mouseEvent)
     }
   }
 
+  // Record mouseup
   _handleMouseUp (coordinates, mouseEvent) {
     if (this._panningActive) {
       this._panningActive = false
@@ -59,14 +64,11 @@ export default class WheelHandler extends SectionInteractionHandler {
     }
   }
 
+  // TODO: What other information would be useful to the user?
   _callStoredCallback (start, end) {
     const delta = { x: start.x - end.x, y: start.y - end.y }
     const event = { delta, startMouse: this._startMouseEvent, endMouse: this._endMouseEvent }
 
     this._callback(this._id, event)
-    // compute delta
-    // compute transformed delta
-    // feed that as normalised value
-    // start coordinates, end coordiantes, normDelta, original events (?)
   }
 }

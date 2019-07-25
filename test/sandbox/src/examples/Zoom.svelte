@@ -11,13 +11,36 @@
     y: [1, 1, 1, 2, 2, 2, 3, 3, 3]
   }
 
+  // handlePan and handleZoom should be placed in some sort of utility function box
+  // How to stop dragging after cursor exists the section
+  // How do we link them to the external svelte function?
   function handlePan (id, event) {
-    x -= event.delta.x
-    y -= event.delta.y
+    // x -= event.delta.x
+    // y -= event.delta.y
+    let extentX = [-300, 300]
+    let extentY = [-300, 300]
+
+    let tempX = x - event.delta.x
+    let tempY = y - event.delta.y
+
+    if (tempX <= extentX[1] && tempX >= extentX[0]){
+      x -= event.delta.x
+    }
+    
+    if (tempY <= extentY[1] && tempY >= extentY[0]){
+      y -= event.delta.y
+    }
   }
 
-  function handleZoom (id, event) {
-    k += event.wheelDelta // max zoom controls k value
+  // active question - how to bound zoom
+  // how to pinpoint zoom
+  function handleZoom (id, event, step = 0.5, minZoom = 0, maxZoom = 3) {
+    let tempK = k - event.wheelDelta * step
+    if (tempK >= minZoom && tempK <= maxZoom){
+      k -= event.wheelDelta * step
+    }
+
+    // k += Math.max(1, Math.min(maxZoom, event.wheelDelta)) * step // max zoom controls k value
     const factor = 0.5
     const max_scale = 4
     const pos = { x: 0, y: 0 }
@@ -26,7 +49,7 @@
     const zoom_point = { x: event.originalEvent.pageX - 50, 
                          y: event.originalEvent.pageY - 50 }
     let scale = 1
-    console.log(zoom_point)
+    // console.log(zoom_point)
     // an experiment on getting the zoom to happen on a particular point
     // let zoom_x = event.pageX, zoom_y = event.pageY
     let size = {w: 400, h: 400}
@@ -54,13 +77,13 @@
         pos.y = 0
       if(pos.y+size.h*scale<size.h)
         pos.y = size.h*(scale-1)/2
-    console.log(pos)
+    // console.log(pos)
 
     // x = pos.x + size.w*(scale-1)/2
     // y = pos.y + size.h*(scale-1)/2
-    x += event.wheelDelta
-    y += event.wheelDelta
-    console.log(x, y)
+    // x += event.wheelDelta
+    // y += event.wheelDelta
+    // console.log(x, y)
     // Make sure the slide stays in its container area when zooming out
     // if(pos.x>0){
     //   pos.x = 0
