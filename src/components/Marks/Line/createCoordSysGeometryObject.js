@@ -1,9 +1,10 @@
 import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
 import { scaleGeometries } from 'geometryUtils'
-import { ensureValidCombination, createGeometryFromScaledProps } from './createCoordSysGeometry.js'
+import {
+  ensureValidCombination, createScaledGeometryArrayFromXYProps
+} from './createCoordSysGeometry.js'
 import getIndexArray from '../utils/getIndexArray.js'
 import { isDefined, isUndefined } from 'equals.js'
-import getNumberOfMarks from '../utils/getNumberOfMarks.js'
 
 export default function (
   geometryProps, sectionContext, coordinateTransformationContext, indexProp, interpolate
@@ -19,48 +20,22 @@ export default function (
 
 function createScaledGeometryArray (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps)
+  const scales = sectionContext.scales()
 
   if (isDefined(geometryProps.geometry)) {
-    return scaleGeometryProp(geometryProps.geometry, sectionContext)
+    return scaleGeometryProp(geometryProps.geometry, scales)
   }
 
   if (isUndefined(geometryProps.geometry)) {
-    return createScaledGeometryArrayFromCoordinates(
-      geometryProps.x, geometryProps.y, sectionContext
+    return createScaledGeometryArrayFromXYProps(
+      geometryProps.x, geometryProps.y, scales, 'Line'
     )
   }
 }
 
-function scaleGeometryProp (geometry, sectionContext) {
-  const scaledGeometryArray = scaleGeometries(geometry, sectionContext.scales())
+function scaleGeometryProp (geometry, scales) {
+  const scaledGeometryArray = scaleGeometries(geometry, scales)
   const length = scaledGeometryArray.length
 
   return { scaledGeometryArray, length }
 }
-
-function createScaledGeometryArrayFromCoordinates (x, y, sectionContext) {
-  const scales = sectionContext.scales()
-  const { scaleX, scaleY } = scales
-
-  const xNeedsScaling = x.constructor !== Function
-  const yNeedsScaling = y.constructor !== Function
-
-  const xValues = xNeedsScaling ? x : x(scales)
-  const yValues = yNeedsScaling ? y : y(scales)
-
-  const length = getNumberOfPolygons(xValues, yValues)
-
-  const scaledGeometryArray = []
-
-  for (let i = 0; i < xValues.length; i++) {
-    const scaledX = xNeedsScaling ? x[i].map(scaleX) : xValues[i]
-    const scaledY = yNeedsScaling ? y[i].map(scaleY) : yValues[i]
-
-    const scaledGeometry = createGeometryFromScaledProps(scaledX, scaledY)
-    scaledGeometryArray.push(scaledGeometry)
-  }
-
-  return { scaledGeometryArray, length }
-}
-
-const getNumberOfPolygons = getNumberOfMarks('LineLayer')

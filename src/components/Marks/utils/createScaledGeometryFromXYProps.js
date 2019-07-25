@@ -1,7 +1,8 @@
 import { linearRingIsClockwise } from 'geometryUtils'
 import { isDefined } from 'equals.js'
+import getNumberOfMarks from './getNumberOfMarks.js'
 
-export default function createScaledGeometryFromXYProps (x, y, scales, markType) {
+export function createScaledGeometryFromXYProps (x, y, scales, markType) {
   const scaledX = getValueX(x, scales, markType)
   const scaledY = getValueY(y, scales, markType)
 
@@ -108,3 +109,27 @@ export function ensureValidCombination (geometryProps, markType) {
 }
 
 const invalidCombinationError = mark => new Error(`${mark}: Invalid combination of 'x', 'y', and 'geometry' props`)
+
+export function createScaledGeometryArrayFromXYProps (x, y, scales, markType) {
+  const { scaleX, scaleY } = scales
+
+  const xNeedsScaling = x.constructor !== Function
+  const yNeedsScaling = y.constructor !== Function
+
+  const xValues = xNeedsScaling ? x : x(scales)
+  const yValues = yNeedsScaling ? y : y(scales)
+
+  const length = getNumberOfMarks(xValues, yValues, markType)
+
+  const scaledGeometryArray = []
+
+  for (let i = 0; i < xValues.length; i++) {
+    const scaledX = xNeedsScaling ? x[i].map(scaleX) : xValues[i]
+    const scaledY = yNeedsScaling ? y[i].map(scaleY) : yValues[i]
+
+    const scaledGeometry = createGeometryFromScaledProps(scaledX, scaledY)
+    scaledGeometryArray.push(scaledGeometry)
+  }
+
+  return { scaledGeometryArray, length }
+}
