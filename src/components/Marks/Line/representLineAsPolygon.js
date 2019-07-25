@@ -47,7 +47,7 @@ function getCornerPointsAtIndex (coordinates, strokeWidth, index) {
   const slopeBefore = getSlope(...segmentBeforeCorner)
   const slopeAFter = getSlope(...segmentAfterCorner)
 
-  
+  // 
 }
 
 function getEndCornerPoints (coordinates, strokeWidth) {
