@@ -70,41 +70,10 @@ function getCornerPointsIndex (lineString, index, distance) {
   const previousUnitVector = getUnitVector(previousSegment)
   const nextUnitVector = getUnitVector(nextSegment)
 
-  const cornerPoint = previousSegment[1]
-  const crossProduct = getCrossProduct(previousUnitVector, nextUnitVector)
-
   let bottomPoint
   let topPoint
 
-  if (crossProduct === 0) {
-    const normalVector = getNormalVector(previousUnitVector)
-
-    bottomPoint = movePoint(cornerPoint, normalVector, distance)
-    topPoint = movePoint(cornerPoint, normalVector, -distance)
-  }
-
-  if (crossProduct !== 0) {
-    const smallCorner = movePoint(
-      movePoint(cornerPoint, nextUnitVector, distance),
-      previousUnitVector,
-      -distance
-    )
-    const bigCorner = movePoint(
-      movePoint(cornerPoint, previousUnitVector, distance),
-      nextUnitVector,
-      -distance
-    )
-
-    if (crossProduct > 0) {
-      bottomPoint = bigCorner
-      topPoint = smallCorner
-    }
-
-    if (crossProduct < 0) {
-      bottomPoint = smallCorner
-      topPoint = bigCorner
-    }
-  }
+  // TODO
 
   return [bottomPoint, topPoint]
 }
@@ -130,5 +99,3 @@ function movePoint (point, unitVector, distance) {
     point[1] + unitVector[1] * distance
   ]
 }
-
-const getCrossProduct = (a, b) => (a[0] * b[1]) - (a[1] * b[0])

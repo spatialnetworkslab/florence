@@ -10,18 +10,30 @@
 
 <Graphic width={500} height={500}>
 
-  <Section
+  <!-- <Section
     x1={50} x2={450}
     y1={50} y2={450}
     scaleX={scaleLinear().domain(data.domain('x'))}
     scaleY={scaleLinear().domain(data.domain('y'))}
+  > -->
+  <Section
+    x1={50} x2={450}
+    y1={50} y2={450}
+    scaleX={scaleLinear().domain([0, 9])}
+    scaleY={scaleLinear().domain([0, 9])}
   >
 
     <Line
+      x={[0, 9]}
+      y={[0, 9]}
+      strokeWidth={10}
+    />
+
+    <!-- <Line
       x={data.column('x')}
       y={data.column('y')}
       strokeWidth={10}
-    />
+    /> -->
 
     <!-- <LineLayer
       x={[data.column('x')]}

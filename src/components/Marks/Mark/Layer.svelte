@@ -261,7 +261,7 @@
 
   function updateScreenGeometryObject () {
     if (_asPolygon) {
-      screenGeometryObject = representAsPolygonObject(pixelGeometryObject, { radiusObject })
+      screenGeometryObject = representAsPolygonObject(pixelGeometryObject, { radiusObject, strokeWidthObject })
     } else {
       screenGeometryObject = pixelGeometryObject
     }
