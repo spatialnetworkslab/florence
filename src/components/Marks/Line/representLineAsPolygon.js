@@ -1,22 +1,32 @@
+import { pointDistance } from 'geometryUtils'
+
 export function representLineAsPolygon (lineString, { strokeWidth }) {
   const length = lineString.coordinates.length
+  const lastIndex = length - 1
+  const distance = strokeWidth / 2
 
   const coordinatesBottom = new Array(length)
   const coordinatesTop = new Array(length)
 
-  const beginCornerPoints = getBeginCornerPoints(lineString, strokeWidth)
-  coordinatesBottom[0] = beginCornerPoints.bottom
-  coordinatesTop[length - 1] = beginCornerPoints.top
+  for (let i = 0; i < length; i++) {
+    if (i === 0) {
+      const [bottomPoint, topPoint] = getCornerPointsStart(lineString, distance)
+      coordinatesBottom[0] = bottomPoint
+      coordinatesTop[lastIndex] = topPoint
+    }
 
-  for (let i = 1; i < length - 1; i++) {
-    const cornerPoints = getCornerPointsAtIndex(lineString.coordinates, strokeWidth, i)
-    coordinatesBottom[i] = cornerPoints.bottom
-    coordinatesTop[length - i] = cornerPoints.top
+    if (i === lastIndex) {
+      const [bottomPoint, topPoint] = getCornerPointsEnd(lineString, distance)
+      coordinatesBottom[lastIndex] = bottomPoint
+      coordinatesTop[0] = topPoint
+    }
+
+    if (i > 0 && i < lastIndex) {
+      const [bottomPoint, topPoint] = getCornerPointsIndex(lineString, i, distance)
+      coordinatesBottom[i] = bottomPoint
+      coordinatesTop[lastIndex - i] = topPoint
+    }
   }
-
-  const endCornerPoints = getEndCornerPoints(lineString, strokeWidth)
-  coordinatesBottom[length - 1] = endCornerPoints.bottom
-  coordinatesTop[0] = endCornerPoints.top
 
   const outerRing = coordinatesBottom.append(coordinatesTop)
 
@@ -29,77 +39,94 @@ export function representLineAsPolygon (lineString, { strokeWidth }) {
   }
 }
 
-function getBeginCornerPoints (coordinates, strokeWidth) {
-  const a = coordinates[0]
-  const b = coordinates[1]
+function getCornerPointsStart (lineString, distance) {
+  const segment = getNextSegment(0, lineString.coordinates)
+  const unitVector = getUnitVector(segment)
+  const normalVector = getNormalVector(unitVector)
 
-  const slope = getSlope(a, b)
-  const perpendicularSlope = flipSlope(slope)
+  const bottomPoint = movePoint(segment[0], normalVector, distance)
+  const topPoint = movePoint(segment[0], normalVector, -distance)
 
-  const deltas = getXAndYDeltas(a, strokeWidth / 2, perpendicularSlope)
-  return getCornerPoints(a, deltas)
+  return [bottomPoint, topPoint]
 }
 
-function getCornerPointsAtIndex (coordinates, strokeWidth, index) {
-  const segmentBeforeCorner = [coordinates[index - 1], coordinates[index]]
-  const segmentAfterCorner = [coordinates[index], coordinates[index + 1]]
+function getCornerPointsEnd (lineString, distance) {
+  const segment = getPreviousSegment(lineString.coordinates.length - 1, lineString.coordinates)
+  const unitVector = getUnitVector(segment)
+  const normalVector = getNormalVector(unitVector)
 
-  const slopeBefore = getSlope(...segmentBeforeCorner)
-  const slopeAFter = getSlope(...segmentAfterCorner)
+  const bottomPoint = movePoint(segment[1], normalVector, distance)
+  const topPoint = movePoint(segment[1], normalVector, -distance)
 
-  // 
+  return [bottomPoint, topPoint]
 }
 
-function getEndCornerPoints (coordinates, strokeWidth) {
-  const length = coordinates.length
-  
-  const a = coordinates[length - 2]
-  const b = coordinates[length - 1]
+function getCornerPointsIndex (lineString, index, distance) {
+  const previousSegment = getPreviousSegment(index, lineString.coordinates)
+  const nextSegment = getNextSegment(index, lineString.coordinates)
 
-  const slope = getSlope(a, b)
-  const perpendicularSlope = flipSlope(slope)
+  const previousUnitVector = getUnitVector(previousSegment)
+  const nextUnitVector = getUnitVector(nextSegment)
 
-  const deltas = getXAndYDeltas(a, strokeWidth / 2, perpendicularSlope)
-  return getCornerPoints(b, deltas)
-}
+  const cornerPoint = previousSegment[1]
+  const crossProduct = getCrossProduct(previousUnitVector, nextUnitVector)
 
-function getSlope (a, b) {
-  return (b[1] - a[1]) / (b[0] - a[0])
-}
-
-function flipSlope (slope) {
-  return -(1 / slope)
-}
-
-// https://www.geeksforgeeks.org/find-points-at-a-given-distance-on-a-line-of-given-slope/
-function getXAndYDeltas (fromPoint, distance, slope) {
-  if (slope === 0) {
-    return { x: distance, y: 0 }
-  }
-
-  if (slope === Infinity) {
-    return { x: 0, y: distance }
-  }
-
-  const x = distance / Math.sqrt(1 + (slope * slope))
-  const y = slope * x
-
-  return [x, y]
-}
-
-function getCornerPoints (center, deltas) {
   let bottomPoint
   let topPoint
 
-  if (deltas.y < 0) {
-    bottomPoint = [center[0] + deltas[0], center[1] + deltas[1]]
-    topPoint = [center[0] - deltas[0], center[1] - deltas[1]]
+  if (crossProduct === 0) {
+    const normalVector = getNormalVector(previousUnitVector)
+
+    bottomPoint = movePoint(cornerPoint, normalVector, distance)
+    topPoint = movePoint(cornerPoint, normalVector, -distance)
   }
 
-  if (deltas.y > 0) {
-    bottomPoint = [center[0] - deltas[0], center[1] - deltas[1]]
-    topPoint = [center[0] + deltas[0], center[1] + deltas[1]]
+  if (crossProduct !== 0) {
+    const smallCorner = movePoint(
+      movePoint(cornerPoint, nextUnitVector, distance),
+      previousUnitVector,
+      -distance
+    )
+    const bigCorner = movePoint(
+      movePoint(cornerPoint, previousUnitVector, distance),
+      nextUnitVector,
+      -distance
+    )
+
+    if (crossProduct > 0) {
+      bottomPoint = bigCorner
+      topPoint = smallCorner
+    }
+
+    if (crossProduct < 0) {
+      bottomPoint = smallCorner
+      topPoint = bigCorner
+    }
   }
 
-  return { bottom: bottomPoint, top: topPoint }
+  return [bottomPoint, topPoint]
 }
+
+const getPreviousSegment = (i, coordinates) => [coordinates[i - 1], coordinates[i]]
+const getNextSegment = (i, coordinates) => [coordinates[i], coordinates[i + 1]]
+
+function getUnitVector (segment) {
+  const [a, b] = segment
+
+  const magnitude = pointDistance(a, b)
+  const dx = b[0] - a[0]
+  const dy = b[1] - a[1]
+
+  return [dx / magnitude, dy / magnitude]
+}
+
+const getNormalVector = vector => [-vector[0], vector[1]]
+
+function movePoint (point, unitVector, distance) {
+  return [
+    point[0] + unitVector[0] * distance,
+    point[1] + unitVector[1] * distance
+  ]
+}
+
+const getCrossProduct = (a, b) => (a[0] * b[1]) - (a[1] * b[0])
