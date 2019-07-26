@@ -30,7 +30,8 @@ export function representLineAsPolygon (lineString, { strokeWidth }) {
 
   const outerRing = coordinatesBottom.concat(coordinatesTop)
 
-  // TODO: close ring
+  // Close ring
+  // TODO: only close if necessary
   outerRing.push(outerRing[0])
 
   // TODO: check winding order?
@@ -43,24 +44,16 @@ export function representLineAsPolygon (lineString, { strokeWidth }) {
 
 function getCornerPointsStart (lineString, distance) {
   const segment = getNextSegment(0, lineString.coordinates)
-  const unitVector = getUnitVector(segment)
-  const normalVector = getNormalVector(unitVector)
+  const cornerPoint = segment[0]
 
-  const bottomPoint = movePoint(segment[0], normalVector, distance)
-  const topPoint = movePoint(segment[0], normalVector, -distance)
-
-  return [bottomPoint, topPoint]
+  return getPerpendicularPoints(segment, cornerPoint)
 }
 
 function getCornerPointsEnd (lineString, distance) {
   const segment = getPreviousSegment(lineString.coordinates.length - 1, lineString.coordinates)
-  const unitVector = getUnitVector(segment)
-  const normalVector = getNormalVector(unitVector)
+  const cornerPoint = segment[1]
 
-  const bottomPoint = movePoint(segment[1], normalVector, distance)
-  const topPoint = movePoint(segment[1], normalVector, -distance)
-
-  return [bottomPoint, topPoint]
+  return getPerpendicularPoints(segment, cornerPoint)
 }
 
 function getCornerPointsIndex (lineString, index, distance) {
@@ -70,10 +63,26 @@ function getCornerPointsIndex (lineString, index, distance) {
   const previousUnitVector = getUnitVector(previousSegment)
   const nextUnitVector = getUnitVector(nextSegment)
 
-  let bottomPoint
-  let topPoint
+  const previousCornerPerpendicularPoints = getPerpendicularPoints(
+    previousSegment, previousSegment[0], distance
+  )
+  const nextCornerPerpendicularPoints = getPerpendicularPoints(
+    nextSegment, nextSegment[1], distance
+  )
 
-  // TODO
+  const bottomPoint = findIntersection(
+    previousCornerPerpendicularPoints[0],
+    previousUnitVector,
+    nextCornerPerpendicularPoints[0],
+    nextUnitVector
+  )
+
+  const topPoint = findIntersection(
+    previousCornerPerpendicularPoints[1],
+    previousUnitVector,
+    nextCornerPerpendicularPoints[1],
+    nextUnitVector
+  )
 
   return [bottomPoint, topPoint]
 }
@@ -98,4 +107,37 @@ function movePoint (point, unitVector, distance) {
     point[0] + unitVector[0] * distance,
     point[1] + unitVector[1] * distance
   ]
+}
+
+function getPerpendicularPoints (segment, point, distance) {
+  const unitVector = getUnitVector(segment)
+  const normalVector = getNormalVector(unitVector)
+
+  const bottomPoint = movePoint(point, normalVector, distance)
+  const topPoint = movePoint(point, normalVector, -distance)
+
+  return [bottomPoint, topPoint]
+}
+
+function findIntersection (point1, vector1, point2, vector2) {
+  const lambda1 = findLambda(point1, vector1, point2, vector2)
+  return [
+    point1[0] + (vector1[0] * lambda1),
+    point1[1] + (vector1[1] * lambda1)
+  ]
+}
+
+function findLambda (p1, v1, p2, v2) {
+  const deltaX = p1[0] - p2[0]
+  const deltaY = p1[1] - p2[1]
+
+  const v1x = v1[0]
+  const v2x = v2[0]
+  const v1y = v1[1]
+  const v2y = v2[1]
+
+  const lambda1 = ((v2x * deltaY) - (deltaX * v2y)) /
+    ((v1x * v2y) - (v2x * v1y))
+
+  return lambda1
 }
