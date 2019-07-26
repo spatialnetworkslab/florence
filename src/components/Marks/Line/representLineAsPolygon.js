@@ -28,9 +28,11 @@ export function representLineAsPolygon (lineString, { strokeWidth }) {
     }
   }
 
-  const outerRing = coordinatesBottom.append(coordinatesTop)
+  const outerRing = coordinatesBottom.concat(coordinatesTop)
 
   // TODO: close ring
+  outerRing.push(outerRing[0])
+
   // TODO: check winding order?
 
   return {

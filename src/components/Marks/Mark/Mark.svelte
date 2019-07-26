@@ -242,7 +242,7 @@
 
   function updateScreenGeometry () {
     if (_asPolygon) {
-      screenGeometry = representAsPolygon(pixelGeometry, { radius: aesthetics.radius })
+      screenGeometry = representAsPolygon(pixelGeometry, aesthetics)
     } else {
       screenGeometry = pixelGeometry
     }
