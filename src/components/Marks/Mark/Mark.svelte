@@ -299,7 +299,7 @@
       stroke-width={$tr_strokeWidth}
       fill-opacity={$tr_fillOpacity}
       stroke-opacity={$tr_strokeOpacity}
-      opacity={$opacity}
+      opacity={$tr_opacity}
     />
 
   {/if}
@@ -316,7 +316,7 @@
       stroke-width={$tr_strokeWidth}
       fill-opacity={$tr_fillOpacity}
       stroke-opacity={$tr_strokeOpacity}
-      opacity={$opacity}
+      opacity={$tr_opacity}
     />
 
   {/if}

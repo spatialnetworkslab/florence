@@ -322,7 +322,7 @@
         stroke-width={$tr_strokeWidthObject[$index]}
         fill-opacity={$tr_fillOpacityObject[$index]}
         stroke-opacity={$tr_strokeOpacityObject[$index]}
-        opacity={$opacityObject[$index]}
+        opacity={$tr_opacityObject[$index]}
       />
 
     {/each}
@@ -343,7 +343,7 @@
         stroke-width={$tr_strokeWidthObject[$index]}
         fill-opacity={$tr_fillOpacityObject[$index]}
         stroke-opacity={$tr_strokeOpacityObject[$index]}
-        opacity={$opacityObject[$index]}
+        opacity={$tr_opacityObject[$index]}
       />
 
     {/each}
