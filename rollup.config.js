@@ -6,26 +6,20 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import globals from 'rollup-plugin-node-globals';
 import json from 'rollup-plugin-json';
+import pkg from './package.json';
 
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
-	input: 'src/main.js',
-	output: {
-		sourcemap: true,
-		format: 'iife',
-		name: 'app',
-		file: 'public/bundle.js'
-	},
+	input: 'src/index.js',
+	output: [
+		{ file: pkg.module, 'format': 'es' },
+		{ file: pkg.main, 'format': 'umd', name: 'florence' }
+	],
 	plugins: [
 		svelte({
 			// enable run-time checks when not in production
-			dev: !production,
-			// we'll extract any component CSS out into
-			// a separate file — better for performance
-			css: css => {
-				css.write('public/bundle.css');
-			}
+			dev: !production
 		}),
 
 		// If you have external dependencies installed from
@@ -44,8 +38,8 @@ export default {
 			compact: true
 		}),
 
-    // Allows you to use 'process'
-    globals(),
+		// Allows you to use 'process'
+		globals(),
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production
