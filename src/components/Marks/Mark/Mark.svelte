@@ -42,7 +42,12 @@
   // Aesthetics: other
   export let radius = undefined
   export let fill = undefined
+  export let stroke = undefined
+  export let strokeWidth = undefined
+  export let strokeOpacity = undefined
+  export let fillOpacity = undefined
   export let opacity = undefined
+  export let text = undefined
 
   // Transitions and interactions
   export let transition = undefined
@@ -57,13 +62,21 @@
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
     type,
-    { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+    {
+      x, y, x1, x2, y1, y2, geometry, 
+      radius, fill, stroke, strokeWidth, strokeOpacity,
+      fillOpacity, opacity, text 
+    }
   )
   $: {
     if (initDone()) {
       aesthetics = validateAesthetics(
         type,
-        { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+        {
+          x, y, x1, x2, y1, y2, geometry, 
+          radius, fill, stroke, strokeWidth, strokeOpacity,
+          fillOpacity, opacity, text 
+        }
       )
     }
   }
@@ -107,6 +120,10 @@
   let tr_screenGeometry = createTransitionable('geometry', screenGeometry, transition)
   let tr_radius = createTransitionable('radius', aesthetics.radius, transition)
   let tr_fill = createTransitionable('fill', aesthetics.fill, transition)
+  let tr_stroke = createTransitionable('stroke', aesthetics.stroke, transition)
+  let tr_strokeWidth = createTransitionable('strokeWidth', aesthetics.strokeWidth, transition)
+  let tr_fillOpacity = createTransitionable('fillOpacity', aesthetics.fillOpacity, transition)
+  let tr_strokeOpacity = createTransitionable('strokeOpacity', aesthetics.strokeOpacity, transition)
   let tr_opacity = createTransitionable('opacity', aesthetics.opacity, transition)
 
   // Handle coordSysGeometry changes
@@ -128,11 +145,12 @@
     }
   }
 
-  // Handle radius changes
+  // Handle radius and strokeWidth changes
   $: {
     if (initDone()) {
       if (!_asPolygon) {
         tr_radius.set(aesthetics.radius)
+        tr_strokeWidth.set(aesthetics.strokeWidth)
       }
 
       if (_asPolygon) {
@@ -143,6 +161,10 @@
 
   // Handle other changes
   $: { if (initDone()) tr_fill.set(aesthetics.fill) }
+  $: { if (initDone()) tr_stroke.set(aesthetics.stroke) }
+  $: { if (initDone()) tr_strokeWidth.set(aesthetics.strokeWidth) }
+  $: { if (initDone()) tr_fillOpacity.set(aesthetics.fillOpacity) }
+  $: { if (initDone()) tr_strokeOpacity.set(aesthetics.strokeOpacity) }
   $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
 
   let previousTransition
@@ -159,7 +181,12 @@
       tr_screenGeometry = createTransitionable('geometry', $tr_screenGeometry, transition)
       tr_radius = createTransitionable('radius', $tr_radius, transition)
       tr_fill = createTransitionable('fill', $tr_fill, transition)
+      tr_stroke = createTransitionable('stroke', $tr_stroke, transition)
+      tr_strokeWidth = createTransitionable('strokeWidth', $tr_strokeWidth, transition)
+      tr_fillOpacity = createTransitionable('fillOpacity', $tr_fillOpacity, transition)
+      tr_strokeOpacity = createTransitionable('strokeOpacity', $tr_strokeOpacity, transition)
       tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
+
     }
 
      if (coordSysGeometryRecalculationNecessary) updateCoordSysGeometry()
@@ -268,7 +295,11 @@
       class={type.toLowerCase()}
       d={generatePath($tr_screenGeometry)}
       fill={$tr_fill}
-      style={`opacity: ${$tr_opacity}`}
+      stroke={$tr_stroke}
+      stroke-width={$tr_strokeWidth}
+      fill-opacity={$tr_fillOpacity}
+      stroke-opacity={$tr_strokeOpacity}
+      opacity={$opacity}
     />
 
   {/if}
@@ -281,7 +312,11 @@
       cy={$tr_screenGeometry.coordinates[1]}
       r={$tr_radius}
       fill={$tr_fill}
-      style={`opacity: ${$tr_opacity}`}
+      stroke={$tr_stroke}
+      stroke-width={$tr_strokeWidth}
+      fill-opacity={$tr_fillOpacity}
+      stroke-opacity={$tr_strokeOpacity}
+      opacity={$opacity}
     />
 
   {/if}
