@@ -36,5 +36,25 @@ export default {
   },
   text: {
     required: false
+  },
+  fontFamily: {
+    required: false,
+    default: 'Helvetica'
+  },
+  fontSize: {
+    required: false,
+    default: 16
+  },
+  fontWeight: {
+    required: false,
+    default: 'normal'
+  },
+  rotation: {
+    required: false,
+    default: 0
+  },
+  anchorPoint: {
+    required: false,
+    default: 'center'
   }
 }

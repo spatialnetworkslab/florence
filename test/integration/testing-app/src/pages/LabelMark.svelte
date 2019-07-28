@@ -23,13 +23,17 @@
     x1={50} x2={450}
     y1={50} y2={450}
     scaleX={scaleLinear().domain([0, 20])}
-	scaleY={scaleLinear().domain([0, 20])}
+	  scaleY={scaleLinear().domain([0, 20])}
   >
     
     <Label 
         x={data.x}
         y={data.y}
         text={data.text}
+        fontFamily="Georgia"
+        fontSize="20"
+        fontWeight="bold"
+        rotation={45}
     />
 
   </Section>

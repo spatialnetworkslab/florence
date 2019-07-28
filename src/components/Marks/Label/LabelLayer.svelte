@@ -15,6 +15,11 @@
   export let fillOpacity = undefined
   export let opacity = undefined
   export let text = undefined
+  export let fontFamily = undefined
+  export let fontSize = undefined
+  export let fontWeight = undefined
+  export let rotation = undefined
+  export let anchorPoint = undefined
 
   // Transitions and interactions
   export let transition = undefined
@@ -27,11 +32,12 @@
 </script>
 
 <Layer 
-  type="Point"
+  type="Label"
   {x} {y} {geometry}
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {text}
+  {fontFamily} {fontSize} {fontWeight} {rotation} {anchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
   {index} _asPolygon={false}
 />

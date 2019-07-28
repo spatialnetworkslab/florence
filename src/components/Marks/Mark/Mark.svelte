@@ -23,6 +23,8 @@
 
   import generatePath from '../utils/generatePath.js'
 
+  import textAnchorPoint from '../utils/textAnchorPoint.js'
+
   let markId = getId()
 
   let initPhase = true
@@ -47,7 +49,14 @@
   export let strokeOpacity = undefined
   export let fillOpacity = undefined
   export let opacity = undefined
+
+  // Aesthetics: text-specific
   export let text = undefined
+  export let fontFamily = undefined
+  export let fontSize = undefined
+  export let fontWeight = undefined
+  export let rotation = undefined
+  export let anchorPoint = undefined
 
   // Transitions and interactions
   export let transition = undefined
@@ -65,7 +74,8 @@
     {
       x, y, x1, x2, y1, y2, geometry, 
       radius, fill, stroke, strokeWidth, strokeOpacity,
-      fillOpacity, opacity, text 
+      fillOpacity, opacity,
+      text, fontFamily, fontSize, fontWeight, rotation, anchorPoint
     }
   )
   $: {
@@ -75,7 +85,8 @@
         {
           x, y, x1, x2, y1, y2, geometry, 
           radius, fill, stroke, strokeWidth, strokeOpacity,
-          fillOpacity, opacity, text 
+          fillOpacity, opacity,
+          text, fontFamily, fontSize, fontWeight, rotation, anchorPoint 
         }
       )
     }
@@ -126,6 +137,11 @@
   let tr_strokeOpacity = createTransitionable('strokeOpacity', aesthetics.strokeOpacity, transition)
   let tr_opacity = createTransitionable('opacity', aesthetics.opacity, transition)
 
+  // text transtitionables
+  let tr_fontSize = createTransitionable('fontSize', aesthetics.fontSize, transition)
+  let tr_fontWeight = createTransitionable('fontWeight', aesthetics.fontWeight, transition)
+  let tr_rotation = createTransitionable('rotation', aesthetics.rotation, transition)
+
   // Handle coordSysGeometry changes
   $: {
     if (initDone()) {
@@ -167,6 +183,19 @@
   $: { if (initDone()) tr_strokeOpacity.set(aesthetics.strokeOpacity) }
   $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
 
+  // text aes changes
+
+  $: { if (initDone()) tr_fontSize.set(aesthetics.fontSize) }
+  $: { if (initDone()) tr_fontWeight.set(aesthetics.fontWeight) }
+  $: { if (initDone()) tr_rotation.set(aesthetics.rotation) }
+
+  // non-transitionable aesthetics that need additional calculation
+  let rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`
+  let parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint)
+  $: { if (initDone()) rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`}
+  $: { if (initDone()) parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint)}
+
+
   let previousTransition
 
   let coordSysGeometryRecalculationNecessary = false
@@ -186,6 +215,10 @@
       tr_fillOpacity = createTransitionable('fillOpacity', $tr_fillOpacity, transition)
       tr_strokeOpacity = createTransitionable('strokeOpacity', $tr_strokeOpacity, transition)
       tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
+
+      tr_fontSize = createTransitionable('fontSize', $tr_fontSize, transition)
+      tr_fontWeight = createTransitionable('fontWeight', $tr_fontWeight, transition)
+      tr_rotation = createTransitionable('rotation', $tr_rotation, transition)
 
     }
 
@@ -289,7 +322,7 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#if type !== 'Point' || _asPolygon}
+  {#if !(['Point', 'Label'].includes(type)) || _asPolygon}
 
     <path
       class={type.toLowerCase()}
@@ -318,6 +351,30 @@
       stroke-opacity={$tr_strokeOpacity}
       opacity={$tr_opacity}
     />
+
+  {/if}
+
+  {#if type === 'Label'}
+
+    <text 
+      class="label"
+      x={$tr_screenGeometry.coordinates[0]}
+      y={$tr_screenGeometry.coordinates[1]}
+      fill={$tr_fill}
+      stroke={$tr_stroke}
+      stroke-width={$tr_strokeWidth}
+      fill-opacity={$tr_fillOpacity}
+      stroke-opacity={$tr_strokeOpacity}
+      opacity={$tr_opacity}
+      transform={rotateTransform}
+      font-family={fontFamily}
+      font-size={$tr_fontSize + ' px'}
+      font-weight={$tr_fontWeight}
+      text-anchor={parsedTextAnchorPoint.textAnchor}
+      dominant-baseline={parsedTextAnchorPoint.dominantBaseline}
+    >
+    {aesthetics.text}
+    </text>
 
   {/if}
 
