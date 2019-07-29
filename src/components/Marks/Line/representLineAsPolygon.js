@@ -65,28 +65,37 @@ function getCornerPointsIndex (lineString, index, distance) {
   const previousUnitVector = getUnitVector(previousSegment)
   const nextUnitVector = getUnitVector(nextSegment)
 
-  const previousCornerPerpendicularPoints = getParallelPoints(
-    previousSegment, previousSegment[0], distance
-  )
-  const nextCornerPerpendicularPoints = getParallelPoints(
-    nextSegment, nextSegment[1], distance
-  )
+  if (previousUnitVector[0] === nextUnitVector[0] && previousUnitVector[1] === nextUnitVector[1]) {
+    // unit vectors are the same, we can just use the existing line point
 
-  const bottomPoint = findIntersection(
-    previousCornerPerpendicularPoints[0],
-    previousUnitVector,
-    nextCornerPerpendicularPoints[0],
-    nextUnitVector
-  )
+    const currentCornerPerpendicularPoints = getParallelPoints(
+      previousSegment, previousSegment[1], distance
+    )
 
-  const topPoint = findIntersection(
-    previousCornerPerpendicularPoints[1],
-    previousUnitVector,
-    nextCornerPerpendicularPoints[1],
-    nextUnitVector
-  )
+    return currentCornerPerpendicularPoints
+  } else {
+    const previousCornerPerpendicularPoints = getParallelPoints(
+      previousSegment, previousSegment[0], distance
+    )
+    const nextCornerPerpendicularPoints = getParallelPoints(
+      nextSegment, nextSegment[1], distance
+    )
 
-  return [bottomPoint, topPoint]
+    const bottomPoint = findIntersection(
+      previousCornerPerpendicularPoints[0],
+      previousUnitVector,
+      nextCornerPerpendicularPoints[0],
+      nextUnitVector
+    )
+    const topPoint = findIntersection(
+      previousCornerPerpendicularPoints[1],
+      previousUnitVector,
+      nextCornerPerpendicularPoints[1],
+      nextUnitVector
+    )
+
+    return [bottomPoint, topPoint]
+  }
 }
 
 const getPreviousSegment = (i, coordinates) => [coordinates[i - 1], coordinates[i]]
@@ -132,7 +141,6 @@ function findIntersection (point1, vector1, point2, vector2) {
 export function findLambda (p1, v1, p2, v2) {
   const deltaX = p1[0] - p2[0]
   const deltaY = p1[1] - p2[1]
-
   const v1x = v1[0]
   const v2x = v2[0]
   const v1y = v1[1]
@@ -140,6 +148,5 @@ export function findLambda (p1, v1, p2, v2) {
 
   const lambda1 = ((v2x * deltaY) - (deltaX * v2y)) /
     ((v1x * v2y) - (v2x * v1y))
-
   return lambda1
 }
