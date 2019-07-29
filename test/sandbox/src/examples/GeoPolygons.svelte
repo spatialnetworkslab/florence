@@ -11,9 +11,8 @@
 <Graphic width={500} height={500}>
 
   <Section
-    x1={50} x2={450}
-    y1={50} y2={450}
     {...geoScales}
+    flipY
   >
 
     <PolygonLayer 

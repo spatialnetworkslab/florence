@@ -24,8 +24,8 @@ export default function (bbox) {
 
   function updateRanges () {
     if (rangeX && rangeY) {
-      const rangeDeltaX = rangeX[1] - rangeX[0]
-      const rangeDeltaY = rangeY[1] - rangeY[0]
+      const rangeDeltaX = Math.abs(rangeX[1] - rangeX[0])
+      const rangeDeltaY = Math.abs(rangeY[1] - rangeY[0])
       const midX = (rangeX[0] + rangeX[1]) / 2
       const midY = (rangeY[0] + rangeY[1]) / 2
 

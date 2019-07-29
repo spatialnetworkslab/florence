@@ -14,6 +14,8 @@
   export let height
   export let scaleX = undefined
   export let scaleY = undefined
+  export let flipX = false
+  export let flipY = false
   export let renderer = undefined
 
   const graphicContext = GraphicContext.init()
@@ -29,6 +31,8 @@
   $: {
     let rangeX = [0, width]
     let rangeY = [0, height]
+    if (flipX) rangeX.reverse()
+    if (flipY) rangeY.reverse()
     SectionContext.update(sectionContext, { rangeX, rangeY, scaleX, scaleY })
   }
 

@@ -79,6 +79,7 @@
 			scaleX={scaleA}
 			scaleY={scaleB}
       backgroundColor={background}
+      flipY
 		>
 
 			<CoordinateTransformation {transformation}>
