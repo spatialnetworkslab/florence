@@ -17,6 +17,13 @@ export function createDataNecessaryForIndexingMark (type, markId, geometryTypes,
     attributes = { screenGeometry: geometryTypes.screenGeometry }
   }
 
+  if (type === 'Line') {
+    attributes = {
+      pixelGeometry: geometryTypes.pixelGeometry,
+      strokeWidth: aesthetics.strokeWidth
+    }
+  }
+
   markData.attributes = attributes
 
   return markData
@@ -41,6 +48,13 @@ export function createDataNecessaryForIndexingLayer (
 
   if (type === 'Polygon') {
     layerAttributes = { screenGeometryObject: geometryObjects.screenGeometryObject }
+  }
+
+  if (type === 'Line') {
+    layerAttributes = {
+      pixelGeometryObject: geometryObjects.pixelGeometryObject,
+      strokeWidthObject: aestheticsObjects.strokeWidthObject
+    }
   }
 
   layerData.layerAttributes = layerAttributes

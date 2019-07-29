@@ -288,7 +288,7 @@
 
   function createDataNecessaryForIndexing () {
     return createDataNecessaryForIndexingLayer(
-      type, layerId, indexArray, { pixelGeometryObject, screenGeometryObject }, { radiusObject }
+      type, layerId, indexArray, { pixelGeometryObject, screenGeometryObject }, { radiusObject, strokeWidthObject }
     )
   }
 

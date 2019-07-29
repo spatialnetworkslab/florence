@@ -269,7 +269,7 @@
 
   function createDataNecessaryForIndexing () {
     return createDataNecessaryForIndexingMark(
-      type, markId, { screenGeometry, pixelGeometry }, { radius: aesthetics.radius }
+      type, markId, { screenGeometry, pixelGeometry }, aesthetics
     )
   }
 
