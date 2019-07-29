@@ -34,6 +34,8 @@ export function representLineAsPolygon (lineString, { strokeWidth }) {
   // TODO: only close if necessary
   outerRing.push(outerRing[0])
 
+  console.log(outerRing)
+
   // TODO: check winding order?
 
   return {
@@ -46,14 +48,14 @@ function getCornerPointsStart (lineString, distance) {
   const segment = getNextSegment(0, lineString.coordinates)
   const cornerPoint = segment[0]
 
-  return getPerpendicularPoints(segment, cornerPoint, distance)
+  return getParallelPoints(segment, cornerPoint, distance)
 }
 
 function getCornerPointsEnd (lineString, distance) {
   const segment = getPreviousSegment(lineString.coordinates.length - 1, lineString.coordinates)
   const cornerPoint = segment[1]
 
-  return getPerpendicularPoints(segment, cornerPoint, distance)
+  return getParallelPoints(segment, cornerPoint, distance)
 }
 
 function getCornerPointsIndex (lineString, index, distance) {
@@ -63,10 +65,10 @@ function getCornerPointsIndex (lineString, index, distance) {
   const previousUnitVector = getUnitVector(previousSegment)
   const nextUnitVector = getUnitVector(nextSegment)
 
-  const previousCornerPerpendicularPoints = getPerpendicularPoints(
+  const previousCornerPerpendicularPoints = getParallelPoints(
     previousSegment, previousSegment[0], distance
   )
-  const nextCornerPerpendicularPoints = getPerpendicularPoints(
+  const nextCornerPerpendicularPoints = getParallelPoints(
     nextSegment, nextSegment[1], distance
   )
 
@@ -100,7 +102,7 @@ function getUnitVector (segment) {
   return [dx / magnitude, dy / magnitude]
 }
 
-const getNormalVector = vector => [-vector[0], vector[1]]
+const getNormalVector = vector => [-vector[1], vector[0]]
 
 function movePoint (point, unitVector, distance) {
   return [
@@ -109,7 +111,7 @@ function movePoint (point, unitVector, distance) {
   ]
 }
 
-function getPerpendicularPoints (segment, point, distance) {
+export function getParallelPoints (segment, point, distance) {
   const unitVector = getUnitVector(segment)
   const normalVector = getNormalVector(unitVector)
 
@@ -127,7 +129,7 @@ function findIntersection (point1, vector1, point2, vector2) {
   ]
 }
 
-function findLambda (p1, v1, p2, v2) {
+export function findLambda (p1, v1, p2, v2) {
   const deltaX = p1[0] - p2[0]
   const deltaY = p1[1] - p2[1]
 
