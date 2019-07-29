@@ -67,7 +67,7 @@ export default class WheelHandler extends SectionInteractionHandler {
   // TODO: What other information would be useful to the user?
   _callStoredCallback (coordinates, mouseEvent, start, end) {
     const delta = { x: start.x - end.x, y: start.y - end.y }
-    const event = { delta, x: coordinates.x, y: coordinates.y, 
+    const event = { delta, coordinates: coordinates,
                     originalMouseEvent: mouseEvent, startMouse: this._startMouseEvent, 
                     endMouse: this._endMouseEvent }
 
