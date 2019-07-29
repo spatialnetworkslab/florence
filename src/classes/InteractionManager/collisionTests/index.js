@@ -5,5 +5,6 @@ import polygonCollision from './polygonCollision.js'
 export default {
   Point: pointCollision,
   Rectangle: rectangleCollision,
-  Polygon: polygonCollision
+  Polygon: polygonCollision,
+  Label: pointCollision
 }

@@ -13,5 +13,12 @@ context('Assertions', () => {
     it('[render] labels has correct text', () => {
       cy.get('.label').last().should('contain', 'Testing3')
     })
+
+    it('[interaction] clicking on label changes color', () => {
+      var label = cy.get('.label').first()
+      label.should('have.attr', 'fill', 'yellow')
+      label.click()
+      label.should('have.attr', 'fill', 'blue')
+    })
   })
 })

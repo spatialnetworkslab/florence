@@ -415,7 +415,7 @@
       <text 
         class="label"
         x={$tr_screenGeometryObject[$index].coordinates[0]}
-        y={$tr_screenGeometryObject[$index].coordinates[0]}
+        y={$tr_screenGeometryObject[$index].coordinates[1]}
         fill={$tr_fillObject[$index]}
         stroke={$tr_strokeObject[$index]}
         stroke-width={$tr_strokeWidthObject[$index]}

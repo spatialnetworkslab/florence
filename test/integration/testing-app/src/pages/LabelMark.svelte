@@ -11,6 +11,8 @@
       rotation: [45, 10, 90]
   }
 
+   let isActive = false
+
 </script>
 
 <Graphic 
@@ -28,13 +30,18 @@
   >
     
     <Label 
-        x={data.x[0]}
-        y={data.y[0]}
+        x={data.x[0] + 3}
+        y={data.y[0] + 3}
         text={data.text[0]}
         fontFamily="Georgia"
         fontSize="20"
         fontWeight="bold"
         rotation={data.rotation[0]}
+        onClick={() => {
+          console.log('click')
+          isActive = true
+        }}
+        fill={isActive ? 'blue' : 'yellow'}
     />
 
     <LabelLayer 
