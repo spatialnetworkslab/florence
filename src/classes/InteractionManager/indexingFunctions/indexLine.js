@@ -24,7 +24,8 @@ export function indexLine (markData) {
 function createSegmentItem (segment, attributes, i) {
   const segmentGeometry = { type: 'LineString', coordinates: segment }
   const bbox = calculateBBoxGeometry(segmentGeometry)
-  const item = createItemFromBBox(bbox)
+  let item = createItemFromBBox(bbox)
+  item = takeIntoAccountStrokeWidth(item, attributes.strokeWidth)
 
   item.attributes = {}
   item.attributes.strokeWidth = attributes.strokeWidth
@@ -33,6 +34,19 @@ function createSegmentItem (segment, attributes, i) {
   item.segmentIndex = i
 
   return item
+}
+
+function takeIntoAccountStrokeWidth (item, strokeWidth) {
+  const halfStrokeWidth = strokeWidth / 2
+
+  const newBbox = {
+    minX: item.minX - halfStrokeWidth,
+    maxX: item.maxX + halfStrokeWidth,
+    minY: item.minY - halfStrokeWidth,
+    maxY: item.maxY + halfStrokeWidth
+  }
+
+  return Object.assign(item, newBbox)
 }
 
 export function indexLineLayer ({ layerAttributes, indexArray, layerId }) {
@@ -44,10 +58,10 @@ export function indexLineLayer ({ layerAttributes, indexArray, layerId }) {
     const pixelGeometry = lineAttributes.pixelGeometry
     const lineStringCoords = pixelGeometry.coordinates
 
-    for (let j = 0; j < lineStringCoords.length - 1; i++) {
-      const segment = [lineStringCoords[i], lineStringCoords[i + 1]]
+    for (let j = 0; j < lineStringCoords.length - 1; j++) {
+      const segment = [lineStringCoords[j], lineStringCoords[j + 1]]
 
-      const item = createSegmentItem(segment, lineAttributes, i)
+      const item = createSegmentItem(segment, lineAttributes, j)
       item.$index = $index
       item.layerId = layerId
 

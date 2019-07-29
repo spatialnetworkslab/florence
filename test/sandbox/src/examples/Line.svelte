@@ -10,43 +10,20 @@
 
 <Graphic width={500} height={500}>
 
-  <!-- <Section
+  <Section
     x1={50} x2={450}
     y1={50} y2={450}
     scaleX={scaleLinear().domain(data.domain('x'))}
     scaleY={scaleLinear().domain(data.domain('y'))}
-  > -->
-  <Section
-    x1={50} x2={450}
-    y1={50} y2={450}
-    scaleX={scaleLinear().domain([0, 9])}
-    scaleY={scaleLinear().domain([0, 9])}
-    padding={15}
+    padding={10}
   >
 
-    <!-- <Line
-      x={[0, 4.5, 9]}
-      y={[0, 4.5, 9]}
-      strokeWidth={10}
-    /> -->
-
-    <Line
-      x={[0, 2, 9]}
-      y={[0, 2, 9]}
-      strokeWidth={10}
-    />
-
-    <!-- <Line
-      x={data.column('x')}
-      y={data.column('y')}
-      strokeWidth={10}
-    /> -->
-
-    <!-- <LineLayer
+    <LineLayer
       x={[data.column('x')]}
       y={[data.column('y')]}
       strokeWidth={10}
-    /> -->
+      onClick={console.log}
+    />
   
   </Section>
 
