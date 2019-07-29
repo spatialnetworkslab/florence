@@ -1,13 +1,14 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, Label } from '../../../../../src/'
+  import { Graphic, Section, Label, LabelLayer } from '../../../../../src/'
   
 
 
   const data = {
-      x: 5,
-      y: 10,
-      text: "Testing"
+      x: [5, 3, 2],
+      y: [10, 5, 2],
+      text: ["Testing1", "Testing2", "Testing3"],
+      rotation: [45, 10, 90]
   }
 
 </script>
@@ -27,13 +28,23 @@
   >
     
     <Label 
+        x={data.x[0]}
+        y={data.y[0]}
+        text={data.text[0]}
+        fontFamily="Georgia"
+        fontSize="20"
+        fontWeight="bold"
+        rotation={data.rotation[0]}
+    />
+
+    <LabelLayer 
         x={data.x}
         y={data.y}
         text={data.text}
         fontFamily="Georgia"
         fontSize="20"
         fontWeight="bold"
-        rotation={45}
+        rotation={data.rotation}
     />
 
   </Section>

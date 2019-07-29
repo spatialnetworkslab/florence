@@ -22,6 +22,7 @@
   import { generatePropObject } from '../utils/generatePropObject.js'
   import { createDataNecessaryForIndexingLayer } from './createDataNecessaryForIndexing.js'
   import generatePath from '../utils/generatePath.js'
+  import textAnchorPoint from '../utils/textAnchorPoint.js'
 
   let layerId = getId()
 
@@ -47,7 +48,14 @@
   export let strokeOpacity = undefined
   export let fillOpacity = undefined
   export let opacity = undefined
+
+  // Aesthetics: text-specific
   export let text = undefined
+  export let fontFamily = undefined
+  export let fontSize = undefined
+  export let fontWeight = undefined
+  export let rotation = undefined
+  export let anchorPoint = undefined
 
   // Transitions and interactions
   export let transition = undefined
@@ -66,7 +74,8 @@
     {
       x, y, x1, x2, y1, y2, geometry, 
       radius, fill, stroke, strokeWidth, strokeOpacity,
-      fillOpacity, opacity, text 
+      fillOpacity, opacity,
+      text, fontFamily, fontSize, fontWeight, rotation, anchorPoint 
     }
   )
   $: {
@@ -76,7 +85,8 @@
         {
           x, y, x1, x2, y1, y2, geometry, 
           radius, fill, stroke, strokeWidth, strokeOpacity,
-          fillOpacity, opacity, text 
+          fillOpacity, opacity,
+          text, fontFamily, fontSize, fontWeight, rotation, anchorPoint 
         }
       )
     }
@@ -126,6 +136,11 @@
   let fillOpacityObject = generatePropObject(aesthetics.fillOpacity, indexArray)
   let opacityObject = generatePropObject(aesthetics.opacity, indexArray)
   let textObject = generatePropObject(aesthetics.text, indexArray)
+  let fontFamilyObject = generatePropObject(aesthetics.fontFamily, indexArray)
+  let fontSizeObject = generatePropObject(aesthetics.fontSize, indexArray)
+  let fontWeightObject = generatePropObject(aesthetics.fontWeight, indexArray)
+  let rotationObject = generatePropObject(aesthetics.rotation, indexArray)
+  let anchorPointObject = generatePropObject(aesthetics.anchorPoint, indexArray)
 
 
   // This one uses the radiusObject/strokeWidthObject in some cases, so must be done after the prop objects
@@ -140,6 +155,11 @@
   let tr_strokeOpacityObject = createTransitionableLayer('strokeOpacity', strokeOpacityObject, transition)
   let tr_fillOpacityObject = createTransitionableLayer('fillOpacity', fillOpacityObject, transition)
   let tr_opacityObject = createTransitionableLayer('opacity', opacityObject, transition)
+
+  // text transtitionables
+  let tr_fontSizeObject = createTransitionableLayer('fontSize', fontSizeObject, transition)
+  let tr_fontWeightObject = createTransitionableLayer('fontWeight', fontWeightObject, transition)
+  let tr_rotationObject = createTransitionableLayer('rotation', rotationObject, transition)
 
   // Handle coordSysGeometryObject changes
   $: {
@@ -185,6 +205,22 @@
   $: { if (initDone()) tr_fillOpacityObject.set(generatePropObject(aesthetics.fillOpacity, indexArray)) }
   $: { if (initDone()) tr_opacityObject.set(generatePropObject(aesthetics.opacity, indexArray)) }
 
+  // text aes changes
+  $: { if (initDone()) tr_fontSizeObject.set(generatePropObject(aesthetics.fontSize, indexArray)) }
+  $: { if (initDone()) tr_fontWeightObject.set(generatePropObject(aesthetics.fontWeight, indexArray)) }
+  $: { if (initDone()) tr_rotationObject.set(generatePropObject(aesthetics.rotation, indexArray)) }
+
+  // non-transitionable aesthetics
+  $: { if (initDone()) textObject = generatePropObject(aesthetics.text, indexArray)}
+  $: { if (initDone()) fontFamilyObject = generatePropObject(aesthetics.fontFamily, indexArray)}
+  $: { if (initDone()) anchorPointObject = generatePropObject(aesthetics.anchorPoint, indexArray)}
+
+  let rotateTransformObject = createRotationObject()
+  let parsedTextAnchorPointObject = createTextAnchorObject()
+  $: { if (initDone()) rotateTransform = createRotationObject()}
+  $: { if (initDone()) parsedTextAnchorPoint = createTextAnchorObject()}
+
+
   let previousTransition
 
   let coordSysGeometryObjectRecalculationNecessary = false
@@ -204,6 +240,10 @@
       tr_strokeOpacityObject = createTransitionableLayer('strokeOpacity', $tr_strokeOpacityObject, transition)
       tr_fillOpacityObject = createTransitionableLayer('fillOpacity', $tr_fillOpacityObject, transition)
       tr_opacityObject = createTransitionableLayer('opacity', $tr_opacityObject, transition)
+
+      tr_fontSizeObject = createTransitionableLayer('fontSize', $tr_fontSizeObject, transition)
+      tr_fontWeightObject = createTransitionableLayer('fontWeight', $tr_fontWeightObject, transition)
+      tr_rotationObject = createTransitionableLayer('rotation', $tr_rotationObject, transition)
     }
 
     if (coordSysGeometryObjectRecalculationNecessary) updateCoordSysGeometryObject()
@@ -238,6 +278,24 @@
   })
 
   // Helpers
+  function createRotationObject() {
+    const propObj = {}
+    for (let i = 0; i < indexArray.length; i++) {
+        const index = indexArray[i]
+        propObj[index] = `rotate(${$tr_rotationObject[index]}, ${$tr_screenGeometryObject[index].coordinates[0]}, ${$tr_screenGeometryObject[index].coordinates[1]})`
+    }
+    return propObj
+  }
+
+  function createTextAnchorObject() {
+    const propObj = {}
+    for (let i = 0; i < indexArray.length; i++) {
+        const index = indexArray[i]
+        propObj[index] = textAnchorPoint(anchorPointObject[index])
+    }
+    return propObj
+  }
+
   function scheduleUpdateCoordSysGeometryObject () {
     coordSysGeometryObjectRecalculationNecessary = true
     pixelGeometryObjectRecalculationNecessary = true
@@ -310,7 +368,7 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#if type !== 'Point' || _asPolygon}
+  {#if !(['Point', 'Label'].includes(type)) || _asPolygon}
 
     {#each indexArray as $index ($index)}
 
@@ -346,6 +404,34 @@
         opacity={$tr_opacityObject[$index]}
       />
 
+    {/each}
+
+  {/if}
+
+  {#if type === 'Label'}
+
+    {#each indexArray as $index ($index)}
+
+      <text 
+        class="label"
+        x={$tr_screenGeometryObject[$index].coordinates[0]}
+        y={$tr_screenGeometryObject[$index].coordinates[0]}
+        fill={$tr_fillObject[$index]}
+        stroke={$tr_strokeObject[$index]}
+        stroke-width={$tr_strokeWidthObject[$index]}
+        fill-opacity={$tr_fillOpacityObject[$index]}
+        stroke-opacity={$tr_strokeOpacityObject[$index]}
+        opacity={$tr_opacityObject[$index]}
+        transform={rotateTransformObject[$index]}
+        font-family={fontFamilyObject[$index]}
+        font-size={$tr_fontSizeObject[$index] + ' px'}
+        font-weight={$tr_fontWeightObject[$index]}
+        text-anchor={parsedTextAnchorPointObject[$index].textAnchor}
+        dominant-baseline={parsedTextAnchorPointObject[$index].dominantBaseline}
+      >
+      {textObject[$index]}
+      </text>
+    
     {/each}
 
   {/if}

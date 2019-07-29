@@ -6,15 +6,12 @@ context('Assertions', () => {
   })
 
   describe('Label Mark Tests', () => {
-    it('[render] rectangles rendered', () => {
-      cy.get('.label').should('have.length', 1)
+    it('[render] labels rendered', () => {
+      cy.get('.label').should('have.length', 4)
     })
 
-    // it('[interaction] clicking on rectangle changes color', () => {
-    //   var rectangle = cy.get('.rectangle').first()
-    //   rectangle.should('have.attr', 'fill', 'yellow')
-    //   rectangle.click()
-    //   rectangle.should('have.attr', 'fill', 'blue')
-    // })
+    it('[render] labels has correct text', () => {
+      cy.get('.label').last().should('contain', 'Testing3')
+    })
   })
 })
