@@ -46,14 +46,14 @@ function getCornerPointsStart (lineString, distance) {
   const segment = getNextSegment(0, lineString.coordinates)
   const cornerPoint = segment[0]
 
-  return getPerpendicularPoints(segment, cornerPoint)
+  return getPerpendicularPoints(segment, cornerPoint, distance)
 }
 
 function getCornerPointsEnd (lineString, distance) {
   const segment = getPreviousSegment(lineString.coordinates.length - 1, lineString.coordinates)
   const cornerPoint = segment[1]
 
-  return getPerpendicularPoints(segment, cornerPoint)
+  return getPerpendicularPoints(segment, cornerPoint, distance)
 }
 
 function getCornerPointsIndex (lineString, index, distance) {

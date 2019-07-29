@@ -21,11 +21,12 @@
     y1={50} y2={450}
     scaleX={scaleLinear().domain([0, 9])}
     scaleY={scaleLinear().domain([0, 9])}
+    padding={15}
   >
 
     <Line
-      x={[0, 9]}
-      y={[0, 9]}
+      x={[0, 6, 9]}
+      y={[0, 8, 9]}
       strokeWidth={10}
     />
 
