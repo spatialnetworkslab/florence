@@ -22,10 +22,13 @@ export function indexLine (markData) {
 }
 
 function createSegmentItem (segment, attributes, i) {
-  const bbox = calculateBBoxGeometry({ type: 'LineString', coordinates: segment })
+  const segmentGeometry = { type: 'LineString', coordinates: segment }
+  const bbox = calculateBBoxGeometry(segmentGeometry)
   const item = createItemFromBBox(bbox)
 
-  item.attributes = attributes
+  item.attributes = {}
+  item.attributes.strokeWidth = attributes.strokeWidth
+  item.attributes.segmentGeometry = segmentGeometry
   item.markType = 'Line'
   item.segmentIndex = i
 
