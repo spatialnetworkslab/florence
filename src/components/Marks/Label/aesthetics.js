@@ -8,10 +8,6 @@ export default {
   geometry: {
     required: false
   },
-  radius: {
-    required: false,
-    default: 3
-  },
   fill: {
     required: false,
     default: 'black'

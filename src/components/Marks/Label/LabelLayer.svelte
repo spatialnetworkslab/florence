@@ -7,7 +7,6 @@
   export let geometry = undefined
 
   // Aesthetics: other
-  export let radius = undefined
   export let fill = undefined
   export let stroke = undefined
   export let strokeWidth = undefined
