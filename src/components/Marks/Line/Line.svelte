@@ -23,5 +23,5 @@
   {x} {y} {geometry}
   {strokeWidth} {stroke} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  _asPolygon={true}
+  _asPolygon={false}
 />

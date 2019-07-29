@@ -18,6 +18,13 @@
     padding={10}
   >
 
+    <!-- <Line
+      x={data.column('x')}
+      y={data.column('y')}
+      strokeWidth={10}
+      onClick={console.log}
+    /> -->
+
     <LineLayer
       x={[data.column('x')]}
       y={[data.column('y')]}

@@ -41,6 +41,16 @@ export function representLineAsPolygon (lineString, { strokeWidth }) {
   }
 }
 
+export function representLinesAsPolygons (lines, { strokeWidthObject }) {
+  const polygons = {}
+
+  for (const key in lines) {
+    polygons[key] = representLineAsPolygon(lines[key], { strokeWidth: strokeWidthObject[key] })
+  }
+
+  return polygons
+}
+
 function getCornerPointsStart (lineString, distance) {
   const segment = getNextSegment(0, lineString.coordinates)
   const cornerPoint = segment[0]
