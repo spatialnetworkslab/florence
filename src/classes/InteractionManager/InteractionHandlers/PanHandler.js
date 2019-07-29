@@ -49,7 +49,7 @@ export default class WheelHandler extends SectionInteractionHandler {
     if (this._panningActive && this._isInSection(coordinates, sectionBbox)) {
       this._panPreviousPosition = this._panCurrentPosition
       this._panCurrentPosition = coordinates
-      this._callStoredCallback(this._panPreviousPosition, this._panCurrentPosition)
+      this._callStoredCallback(coordinates, mouseEvent, this._panPreviousPosition, this._panCurrentPosition)
     } else {
       this._handleMouseUp(coordinates, mouseEvent)
     }
@@ -65,9 +65,11 @@ export default class WheelHandler extends SectionInteractionHandler {
   }
 
   // TODO: What other information would be useful to the user?
-  _callStoredCallback (start, end) {
+  _callStoredCallback (coordinates, mouseEvent, start, end) {
     const delta = { x: start.x - end.x, y: start.y - end.y }
-    const event = { delta, startMouse: this._startMouseEvent, endMouse: this._endMouseEvent }
+    const event = { delta, x: coordinates.x, y: coordinates.y, 
+                    originalMouseEvent: mouseEvent, startMouse: this._startMouseEvent, 
+                    endMouse: this._endMouseEvent }
 
     this._callback(this._id, event)
   }

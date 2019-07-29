@@ -8,6 +8,7 @@ export default class EventManager {
     this._mousemoveTracker = new EventTracker(this, 'mousemove')
     this._mousedownTracker = new EventTracker(this, 'mousedown')
     this._mouseupTracker = new EventTracker(this, 'mouseup')
+    this._wheelTracker = new EventTracker(this, 'wheel')
 
     this._listeners = {}
   }
@@ -100,5 +101,6 @@ const eventNameToTrackerNameMap = {
   click: '_clickTracker',
   mousemove: '_mousemoveTracker',
   mousedown: '_mousedownTracker',
-  mouseup: '_mouseupTracker'
+  mouseup: '_mouseupTracker',
+  wheel: '_wheelTracker'
 }

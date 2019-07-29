@@ -20,6 +20,8 @@ export default class WheelHandler extends SectionInteractionHandler {
   }
 
   _defaultWheelDelta (event) {
+    // do some normalisation
+    // based on d3
     return -event.deltaY * (event.deltaMode ? 120 : 1) / 500
   }
 
@@ -32,8 +34,7 @@ export default class WheelHandler extends SectionInteractionHandler {
     this._nopropagation(mouseEvent)
 
     const wheelDelta = this._defaultWheelDelta(mouseEvent)
-    const mouse = { x: coordinates.x, y: coordinates.y }
-    const evt = { wheelDelta, mouse, originalEvent: mouseEvent }
+    const evt = { wheelDelta, coordinates: coordinates, originalEvent: mouseEvent }
 
     const interactionManager = this._interactionManager
     const id = interactionManager._id

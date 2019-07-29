@@ -53,7 +53,7 @@
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
   let isInteractive = undefined
-  
+
     // Interactivity
   $: isInteractive = onWheel !== undefined || onPan !== undefined
 
@@ -73,7 +73,7 @@
       let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
       
       $interactionManagerContext.loadSection('Section', {rangeX, rangeY, sectionId})
-      console.log(onWheel)
+
       if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', sectionId, onWheel)
       if (onPan) $interactionManagerContext.addSectionInteraction('pan', sectionId, onPan)
     }
@@ -84,7 +84,8 @@
       $interactionManagerContext.removeAllSectionInteractions(sectionId)
       $interactionManagerContext.removeSection(sectionId)
     }
-    
+  }
+
   // Update InteractionManager on changes
   $: {
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
