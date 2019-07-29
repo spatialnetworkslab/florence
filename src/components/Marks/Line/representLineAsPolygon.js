@@ -30,13 +30,10 @@ export function representLineAsPolygon (lineString, { strokeWidth }) {
 
   const outerRing = coordinatesBottom.concat(coordinatesTop)
 
-  // Close ring
-  // TODO: only close if necessary
-  outerRing.push(outerRing[0])
-
-  console.log(outerRing)
-
-  // TODO: check winding order?
+  // Close ring if necessary
+  if (ringIsNotClosed(outerRing)) {
+    outerRing.push(outerRing[0])
+  }
 
   return {
     type: 'Polygon',
@@ -149,4 +146,13 @@ export function findLambda (p1, v1, p2, v2) {
   const lambda1 = ((v2x * deltaY) - (deltaX * v2y)) /
     ((v1x * v2y) - (v2x * v1y))
   return lambda1
+}
+
+function ringIsNotClosed (ring) {
+  const first = ring[0]
+  const last = ring[ring.length - 1]
+
+  const closed = first[0] === last[0] && first[1] === last[1]
+
+  return !closed
 }
