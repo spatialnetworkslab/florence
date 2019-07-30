@@ -1,34 +1,31 @@
-export default function createZoomHandler (zoomIdentity, extents, step) {
+export default function createZoomHandler (zoomId, minZoom, maxZoom, step) {
   const handler = function (id, event) {
-    let extentX
-    let extentY
-    const oZoomIdentity = { x: zoomIdentity.x, y: zoomIdentity.y, k: zoomIdentity.k }
-
-    if (extents.x && extents.y) {
-      extentX = extents.x
-      extentY = extents.y
-    }
+    let x = zoomId.x
+    let y = zoomId.y
+    let k = zoomId.k
 
     // stops zooming if past extents X and Y
-    const tempX = zoomIdentity.x - event.delta.x
-    const tempY = zoomIdentity.y - event.delta.y
+    const tempK = k - event.wheelDelta * step
 
-    if (tempX <= extentX[1] && tempX >= extentX[0]) {
-      zoomIdentity.x -= event.delta.x
+    if (tempK >= minZoom && tempK <= maxZoom) {
+      k -= event.wheelDelta * step
     }
 
-    if (tempY <= extentY[1] && tempY >= extentY[0]) {
-      zoomIdentity.Y -= event.delta.y
-    }
+    const offsetX = -(event.coordinates.x * event.wheelDelta)
+    const offsetY = -(event.coordinates.y * event.WheelDelta)
+
+    x += offsetX
+    y += offsetY
+
+    const zoomIdentity = { x, y, k }
+    return zoomIdentity
   }
 
   // Resets zoomIdentity to original zoomIdentity (oZoomIdentity)
-  const reset = function () {
-    { x, y, k } = oZoomIdentity
-    zoomIdentity = { x, y, k }
+  const reset = function (oZoomIdentity = zoomId) {
+    return oZoomIdentity
   }
 
-  handler.center = center
   handler.reset = reset
 
   return handler

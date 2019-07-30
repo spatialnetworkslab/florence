@@ -20,9 +20,9 @@ export default class WheelHandler extends SectionInteractionHandler {
   }
 
   _defaultWheelDelta (event) {
-    // do some normalisation
+    // normalised for all browsers
     // based on d3
-    return -event.deltaY * (event.deltaMode ? 120 : 1) / 500
+    return -event.deltaY * (event.deltaMode ? 120 : 1) / 500;
   }
 
   _nopropagation (event) {

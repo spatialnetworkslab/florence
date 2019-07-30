@@ -1,53 +1,64 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, PolygonLayer, Rectangle, createPanHandler, createZoomHandler } from '../../../../'
+  import { Graphic, Section, PolygonLayer, Rectangle, createPanHandler, createZoomHandler } from '../../../../src'
 
   let x = 0
   let y = 0
   let k = 1
-  let zoomIdentity = { x, y, k }
 
   let data = {
     x: [1, 2, 3, 1, 2, 3, 1, 2, 3],
     y: [1, 1, 1, 2, 2, 2, 3, 3, 3]
   }
 
-  // const handlePan = createPanHandler(zoomIdentity, {
-  //   extentX: [-300, 300],
-  //   extentY: [-300, 300]
-  // }
+  const handlePan = createPanHandler({x, y, k}, {
+    extentX: [-300, 300],
+    extentY: [-300, 300]
+  })
 
   // default pan, zoom behaviors in createPanHandler, createZoomHandler
   // TODO: test manipulating zoomIdentity from there
-  function handlePan (id, event) {
-    let extentX = [-300, 300]
-    let extentY = [-300, 300]
+  // function handlePan (id, event) {
+  //   let extentX = [-300, 300]
+  //   let extentY = [-300, 300]
 
-    let tempX = x - event.delta.x
-    let tempY = y - event.delta.y
+  //   let tempX = x - event.delta.x
+  //   let tempY = y - event.delta.y
 
-    if (tempX <= extentX[1] && tempX >= extentX[0]){
-      x -= event.delta.x
-    }
+  //   if (tempX <= extentX[1] && tempX >= extentX[0]){
+  //     x -= event.delta.x
+  //   }
     
-    if (tempY <= extentY[1] && tempY >= extentY[0]){
-      y -= event.delta.y
-    }
-  }
+  //   if (tempY <= extentY[1] && tempY >= extentY[0]){
+  //     y -= event.delta.y
+  //   }
+  // }
 
-  // active question - how to bound zoom
-  // how to pinpoint zoom
-  function handleZoom (id, event, step = 0.5, minZoom = 0, maxZoom = 3) {
+  // active question - how to bound panning in pinpoint zoom?
+  function handleZoom (id, event, step = 0.5, extentZoom = [0, 3], extentX = [-300, 300], extentY = [-300, 300]) {
     let tempK = k - event.wheelDelta * step
-    if (tempK >= minZoom && tempK <= maxZoom){
+    if (tempK >= extentZoom[0] && tempK <= extentZoom[1]){
       k -= event.wheelDelta * step
     }
-    
-    let offsetX = -(event.coordinates.x * event.wheelDelta)
-    let offsetY = -(event.coordinates.y * event.WheelDelta)
 
-    x += offsetX
-    y += offsetY
+    let offsetX = -(event.coordinates.x * event.wheelDelta * step)
+    let offsetY = -(event.coordinates.y * event.wheelDelta * step)
+    //console.log(event.coordinates, event.wheelDelta, -offsetX, y -offsetY)
+
+    let tempX = x - offsetX
+    let tempY = y - offsetY
+
+    x -= offsetX
+    y -= offsetY
+
+    // if (tempX <= extentX[1] && tempX >= extentX[0]){
+    //   x -= offsetX
+    // }
+
+    // if (tempY <= extentY[1] && tempY >= extentY[0]){
+    //   y -= offsetY
+    // }
+   
   }
 </script>
 
@@ -67,8 +78,8 @@ k:
     y1={50} y2={450}
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
-    zoomIdentity={{ x, y, k }}
-    onWheel={ handleZoom }
+    zoomIdentity = {{x, y, k}}
+    onWheel={handleZoom }
     onPan ={ handlePan }
   >
 

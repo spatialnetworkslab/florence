@@ -1,41 +1,41 @@
-export default function createPanHandler (zoomIdentity, extents, centerPt = {x: 0, y: 0}) {
+export default function createPanHandler (zoomId, extents, centerPt = { x: 0, y: 0 }) {
   const handler = function (id, event) {
-    let extentX
-    let extentY
-    const oZoomIdentity = { x: zoomIdentity.x, y: zoomIdentity.y, k: zoomIdentity.k }
-
-    if (extents.x && extents.y) {
-      extentX = extents.x
-      extentY = extents.y
-    }
+    let x = zoomId.x
+    let y = zoomId.y
+    const k = zoomId.k
+    const extentX = extents.extentX
+    const extentY = extents.extentY
 
     // stops panning if past extents X and Y
-    const tempX = zoomIdentity.x - event.delta.x
-    const tempY = zoomIdentity.y - event.delta.y
+    const tempX = x - event.delta.x
+    const tempY = y - event.delta.y
 
     if (tempX <= extentX[1] && tempX >= extentX[0]) {
-      zoomIdentity.x -= event.delta.x
+      x -= event.delta.x
     }
 
     if (tempY <= extentY[1] && tempY >= extentY[0]) {
-      zoomIdentity.Y -= event.delta.y
+      y -= event.delta.y
     }
+
+    let zoomIdentity = { x, y, k }
+    console.log(zoomIdentity, this._interactionManager)
+    return zoomIdentity
   }
 
   // Brings viewport back to specified centerPt
+  // TODO test this (missing k)
   const center = function () {
-    zoomIdentity.x = centerPt.x
-    zoomIdentity.y = centerPt.y
+    zoomId.x = centerPt.x
+    zoomId.y = centerPt.y
+    return zoomId
   }
 
   // Resets zoomIdentity to original zoomIdentity (oZoomIdentity)
-  const reset = function () {
-    { x, y, k } = oZoomIdentity
-    zoomIdentity = { x, y, k }
+  const reset = function (x, y, k) {
+    zoomId = { x, y, k }
+    return zoomId
   }
-
-  handler.center = center
-  handler.reset = reset
 
   return handler
 }
