@@ -26,7 +26,6 @@ export default function createZoomHandler (zoomId, minZoom, maxZoom, extents, st
         zoomId.x += offsetX
         zoomId.y += offsetY
       }
-
     }
 
     return zoomId
