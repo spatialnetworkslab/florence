@@ -83,12 +83,8 @@ class EventTracker {
 
   _handleEvent (mouseEvent) {
     const coordinates = this._eventManager._getMouseCoordinates(mouseEvent)
-    
-    for (const listenerId in this._callbacks) {
-      // if (listenerId === 'sc0-wheel') {
-      //   console.log(mouseEvent)
-      // }
 
+    for (const listenerId in this._callbacks) {
       this._callbacks[listenerId](coordinates, mouseEvent)
     }
   }
