@@ -3,7 +3,8 @@
   "description": "Site for Florence",
   "version": "0.0.1",
   "scripts": {
-    "dev": "sapper dev --ext '.svelte .sveltex'",
+    "dev": "npm run copy-workers && sapper dev --ext '.svelte .sveltex'",
+    "copy-workers": "rm -rf static/workers && cp -r node_modules/@sveltejs/svelte-repl/workers static",
     "build": "sapper build --ext '.svelte .sveltex'",
     "export": "sapper export --ext '.svelte .sveltex'",
     "start": "node __sapper__/build",
@@ -22,6 +23,7 @@
     "@babel/plugin-transform-runtime": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/runtime": "^7.0.0",
+    "@sveltejs/svelte-repl": "^0.1.8",
     "d3-scale": "^3.0.0",
     "npm-run-all": "^4.1.5",
     "rollup": "^1.12.0",
