@@ -1,6 +1,6 @@
 <script>
 	import { scaleLinear, scaleBand } from 'd3-scale'
-	import { Graphic, Section, Point, Rectangle, DataContainer, Grid } from '../../../../'
+	import { Graphic, Section, Point, Rectangle, DataContainer, Grid } from '../../../../src/'
 
 	function generateData (N) {
   	let newData = { a: [], b: [], fruit: [] }

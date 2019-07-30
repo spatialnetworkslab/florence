@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, CoordinateTransformation, Polygon, DataContainer } from '../../../../'
+  import { Graphic, Section, CoordinateTransformation, Polygon, PolygonLayer, DataContainer } from '../../../../src/'
 
   function getRandomValueArray (N, range) {
     return new Array(N).fill(0).map(() => Math.random() * range)
@@ -10,27 +10,27 @@
     a: {
       type: 'Polygon',
       coordinates: [
-        [[0, 0], [5, 10], [10, 0], [0, 0]],
-        [[2, 2], [8, 2], [5, 8], [2, 2]]
+        [[0, 0], [10, 0], [5, 10], [0, 0]],
+        [[2, 2], [5, 8], [8, 2], [2, 2]]
       ]
     },
     b: {
       type: 'Polygon',
       coordinates: [
-        [[0, 0],  [0, 10], [10, 10], [10, 0], [0, 0]],
-        [[3, 3], [7, 3], [7, 7], [3, 7], [3, 3]],
-        [[7.5, 7.5], [9.5, 7.5], [9.5, 9.5], [7.5, 9.5], [7.5, 7.5]]
+        [[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]],
+        [[3, 3], [3, 7], [7, 7], [7, 3], [3, 3]],
+        [[7.5, 7.5], [7.5, 9.5], [9.5, 9.5], [9.5, 7.5], [7.5, 7.5]]
       ]
     },
     c: {
       type: 'MultiPolygon',
       coordinates: [
         [
-          [[0, 0], [0, 10], [3, 10], [4.5, 5], [3, 0], [0, 0]],
-          [[1, 1], [2, 1], [4, 5], [2, 9], [1, 9], [1, 1]]
+          [[0, 0], [3, 0], [4.5, 5], [3, 10], [0, 10], [0, 0]],
+          [[1, 1], [1, 9], [2, 9], [4, 5], [2, 1], [1, 1]]
         ],
         [
-          [[7, 0], [5.5, 5], [7, 10], [10, 10], [10, 0], [7, 0]]
+          [[7, 0], [10, 0], [10, 10], [7, 10], [5.5, 5], [7, 0]]
         ]
       ]
     }
@@ -70,12 +70,22 @@
 
     <CoordinateTransformation {transformation}>
 
-      <Polygon
+      <!-- <Polygon
         geometry={geometries[chosenGeometry]}
         interpolate
         onMouseover={() => isHovering = true}
         onMouseout={() => isHovering = false}
         fill={isHovering ? 'blue' : 'yellow'}
+      /> -->
+
+      <PolygonLayer 
+        geometry={[geometries[chosenGeometry]]}
+        interpolate
+        onMouseover={() => isHovering = true}
+        onMouseout={() => isHovering = false}
+        fill={isHovering ? 'blue' : 'yellow'}
+        index={[0]}
+        transition={2000}
       />
     
     </CoordinateTransformation>

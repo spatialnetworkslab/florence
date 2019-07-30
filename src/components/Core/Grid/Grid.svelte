@@ -2,7 +2,7 @@
   import * as SectionContext from '../Section/SectionContext'
   import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
 
-  import { scaleCoordinates } from '../../Marks/Rectangle/generateScreenGeometry.js'
+  import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
   import { getAllCells, mergeNameSpecs } from './gridUtils.js'
   import { printGrid } from './viewGrid.js'
 
@@ -23,6 +23,7 @@
   CoordinateTransformationContext.ensureNotParent()
   const sectionContext = SectionContext.subscribe()
 
+  let scaledCoordinates
   $: scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
 
   let allCells

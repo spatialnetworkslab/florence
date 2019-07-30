@@ -39,8 +39,8 @@ class SectionContext {
   }
 
   scales () {
-    let scaleX = this._scaleX
-    let scaleY = this._scaleY
+    const scaleX = this._scaleX
+    const scaleY = this._scaleY
     return { scaleX, scaleY }
   }
 
@@ -79,7 +79,7 @@ export function subscribe () {
 }
 
 export function init () {
-  let sectionContext = writable()
+  const sectionContext = writable()
   setContext(key, sectionContext)
 
   return sectionContext

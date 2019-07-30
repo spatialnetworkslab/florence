@@ -6,7 +6,6 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import globals from 'rollup-plugin-node-globals';
 import json from 'rollup-plugin-json';
-import analyze from 'rollup-plugin-analyzer';
 import pkg from './package.json';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -20,7 +19,7 @@ export default {
 	plugins: [
 		svelte({
 			// enable run-time checks when not in production
-			dev: !production,
+			dev: !production
 		}),
 
 		// If you have external dependencies installed from

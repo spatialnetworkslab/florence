@@ -4,4 +4,4 @@ node_modules
 public/bundle.*
 test/sandbox/public/bundle.*
 test/integration/testing-app/public/bundle.*
-dist
+dist/

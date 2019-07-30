@@ -10,10 +10,10 @@ export default class MouseoverHandler extends InteractionHandler {
 
   _addEventListenerIfNecessary () {
     if (this._numberOfInteractions === 0) {
-      let handler = this._handleEvent.bind(this)
-      let interactionManager = this._interactionManager
-      let eventManager = interactionManager._eventManager
-      let listenerId = interactionManager._id + '-mouseover'
+      const handler = this._handleEvent.bind(this)
+      const interactionManager = this._interactionManager
+      const eventManager = interactionManager._eventManager
+      const listenerId = interactionManager._id + '-mouseover'
 
       eventManager.addEventListener('mousemove', listenerId, handler)
     }
@@ -21,9 +21,9 @@ export default class MouseoverHandler extends InteractionHandler {
 
   _removeEventListenerIfNecessary () {
     if (this._numberOfInteractions === 0) {
-      let interactionManager = this._interactionManager
-      let eventManager = interactionManager._eventManager
-      let listenerId = interactionManager._id + '-mouseover'
+      const interactionManager = this._interactionManager
+      const eventManager = interactionManager._eventManager
+      const listenerId = interactionManager._id + '-mouseover'
 
       eventManager.removeEventListener('mousemove', listenerId)
     }
@@ -32,16 +32,17 @@ export default class MouseoverHandler extends InteractionHandler {
   _handleEvent (coordinates, mouseEvent) {
     this._currentMouseoverIds = {}
 
-    let spatialIndex = this._spatialIndex
-    let hits = spatialIndex.queryMouseCoordinates(coordinates)
+    const spatialIndex = this._spatialIndex
+    const hits = spatialIndex.queryMouseCoordinates(coordinates)
     this._handleHits(hits, mouseEvent)
+
     this._cleanupPreviousHits()
   }
 
   _handleHits (hits, mouseEvent) {
     for (let i = 0; i < hits.length; i++) {
-      let hit = hits[i]
-      let hitId = this._getHitId(hit)
+      const hit = hits[i]
+      const hitId = this._getHitId(hit)
 
       if (!this._mouseAlreadyOver(hitId)) {
         this._previousMouseoverIds[hitId] = true
@@ -60,8 +61,8 @@ export default class MouseoverHandler extends InteractionHandler {
   }
 
   _cleanupPreviousHits () {
-    for (let hitId in this._previousMouseoverIds) {
-      if (!this._currentMouseoverIds.hasOwnProperty(hitId)) {
+    for (const hitId in this._previousMouseoverIds) {
+      if (!(hitId in this._currentMouseoverIds)) {
         delete this._previousMouseoverIds[hitId]
       }
     }
@@ -76,6 +77,6 @@ export default class MouseoverHandler extends InteractionHandler {
   }
 
   _mouseAlreadyOver (hitId) {
-    return this._previousMouseoverIds.hasOwnProperty(hitId)
+    return hitId in this._previousMouseoverIds
   }
 }
