@@ -26,6 +26,7 @@
         });
     })
 
+	$: if (repl) repl.set({components: components})
     $: mobile = width < 560;
     $: svelteUrl = process.browser && version === 'local' ?
 		`${location.origin}/repl/local` :

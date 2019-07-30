@@ -1,6 +1,6 @@
 <script context="module">
   export async function preload() {
-    const res = await this.fetch(`examples.json`)
+    const res = await this.fetch(`repl.json`)
     const items = await res.json()
     if (res.status === 200) {
       return { items }
@@ -23,11 +23,21 @@
 .left-col {
   margin-right: 80px;
 }
+
+.toc {
+    list-style-type: none;
+}
 </style>
 
 <div class="flex-grid">
 	<div class="left-col">
-		<SideNav { items }/>
+		<nav>
+      <ul class="toc">
+          {#each items as item}
+              <li><a href=repl#{item.slug}>{item.title}</a></li>  
+          {/each}
+      </ul>
+    </nav>
 	</div>
 	<div class="right-col">
 		<main>

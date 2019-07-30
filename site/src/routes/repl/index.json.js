@@ -1,26 +1,17 @@
-import fs from 'fs'
-import path from 'path'
+import send from '@polka/send'
+import { getExamples } from './_content.js'
 
-const files = fs
-  .readdirSync('src/routes/examples/')
-  .filter(file => {
-    const match = /^(\d+)-(.+)\.svelte$/.exec(file)
-    return match
-  })
-  .map(file => {
-    const match = /^(\d+)-(.+)\.svelte$/.exec(file)
-    const [, prefix, name] = match
-    return {
-      name: name,
-      path: 'examples/' + prefix + '-' + name
-    }
-  })
-
-const contents = JSON.stringify(files)
+let cached
 
 export function get (req, res) {
-  res.writeHead(200, {
-    'Content-Type': 'application/json'
-  })
-  res.end(contents)
+  try {
+    if (!cached || process.env.NODE_ENV !== 'production') {
+      cached = getExamples().filter(example => example.title)
+    }
+    send(res, 200, cached)
+  } catch (e) {
+    send(res, e.status || 500, {
+      message: e.message
+    })
+  }
 }
