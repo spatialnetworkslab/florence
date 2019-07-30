@@ -5,6 +5,7 @@
   let x = 0
   let y = 0
   let k = 1
+  let zoomIdentity = {x, y, k}
 
   let data = {
     x: [1, 2, 3, 1, 2, 3, 1, 2, 3],
@@ -13,8 +14,8 @@
 
   const handlePan = createPanHandler({x, y, k}, {
     extentX: [-300, 300],
-    extentY: [-300, 300]
-  })
+    extentY: [-300, 300]},
+    { x: 0, y: 0 })
 
   // default pan, zoom behaviors in createPanHandler, createZoomHandler
   // TODO: test manipulating zoomIdentity from there
@@ -79,8 +80,8 @@ k:
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
     zoomIdentity = {{x, y, k}}
-    onWheel={handleZoom }
-    onPan ={ handlePan }
+    onWheel={handleZoom}
+    onPan ={zoomIdentity = handlePan}
   >
 
   <!-- <Section 
