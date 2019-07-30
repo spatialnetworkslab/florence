@@ -66,6 +66,7 @@
     y1={50} y2={450}
     scaleX={scaleFruit} 
 		scaleY={scaleMeanQuantity}
+    flipY
   >
 
     <CoordinateTransformation {transformation}>

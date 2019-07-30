@@ -14,6 +14,11 @@ context('Assertions', () => {
       cy.get('.label').last().should('contain', 'Testing3')
     })
 
+    it('[render] labels snapshot correctly', () => {
+      cy.get('svg')
+        .snapshot({ name: 'svg with 4 text labels' })
+    })
+
     it('[interaction] clicking on label changes color', () => {
       var label = cy.get('.label').first()
       label.should('have.attr', 'fill', 'yellow')

@@ -3,6 +3,7 @@
 
   // import all playground examples here
   import Rectangles from './pages/Rectangles.svelte'
+  import Geo from './pages/Geo.svelte'
   import LabelMark from './pages/LabelMark.svelte'
 
 
@@ -11,6 +12,10 @@
     { name: "Rectangles",
       url: "/rectangles",
       component: Rectangles
+    },
+     { name: "Geo",
+      url: "/geo",
+      component: Geo
     },
     { name: "Label Mark",
       url: "/label-mark",

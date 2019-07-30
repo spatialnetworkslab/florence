@@ -19,3 +19,4 @@ export { default as createPanHandler } from './components/Interactions/createPan
 export { default as createZoomHandler } from './components/Interactions/createZoomHandler'
 
 export { default as DataContainer } from './classes/DataContainer'
+export { default as createGeoScales } from './helpers/createGeoScales.js'
