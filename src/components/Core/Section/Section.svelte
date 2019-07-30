@@ -76,8 +76,8 @@
       
       $interactionManagerContext.loadSection({ rangeX, rangeY, sectionId })
 
-      if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', sectionId, onWheel)
-      if (onPan) $interactionManagerContext.addSectionInteraction('pan', sectionId, onPan)
+      if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', onWheel)
+      if (onPan) $interactionManagerContext.addSectionInteraction('pan', onPan)
     }
   }
   

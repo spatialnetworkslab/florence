@@ -4,17 +4,15 @@ import getScrollLineHeight from './utils/getScrollLineHeight.js'
 const scrollLineHeight = getScrollLineHeight()
 
 export default class WheelHandler extends SectionInteractionHandler {
-  _addEventListenerIfNecessary () {
-    if (this._callback) {
-      const handler = this._handleEvent.bind(this)
-      const eventManager = this._interactionManager._eventManager
-      const listenerId = this._interactionManager._id + '-wheel'
-      eventManager.addEventListener('wheel', listenerId, handler)
-    }
+  _addEventListener () {
+    const handler = this._handleEvent.bind(this)
+    const eventManager = this._interactionManager._eventManager
+    const listenerId = this._interactionManager._id + '-wheel'
+    eventManager.addEventListener('wheel', listenerId, handler)
   }
 
-  _removeEventListenerIfNecessary () {
-    if (this._numberOfInteractions === 0) {
+  _removeEventListener () {
+    if (this._callback) {
       const eventManager = this._interactionManager._eventManager
       const listenerId = this._interactionManager._id + '-wheel'
 

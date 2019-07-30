@@ -1,29 +1,31 @@
 import SectionInteractionHandler from './SectionInteractionHandler.js'
 
 export default class WheelHandler extends SectionInteractionHandler {
-  _addEventListenerIfNecessary () {
-    if (this._callback) {
-      const mouseDownHandler = this._handleMouseDown.bind(this)
-      const mouseMoveHandler = this._handleMouseMove.bind(this)
-      const mouseUpHandler = this._handleMouseUp.bind(this)
+  constructor (interactionManager) {
+    super(interactionManager)
 
-      const eventManager = this._interactionManager._eventManager
-      const listenerId = this._interactionManager._id + '-pan'
-
-      eventManager.addEventListener('mousedown', listenerId + '-mousedown', mouseDownHandler)
-      eventManager.addEventListener('mousemove', listenerId + '-mousemove', mouseMoveHandler)
-      eventManager.addEventListener('mouseup', listenerId + '-mouseup', mouseUpHandler)
-
-      this._panningActive = undefined
-      this._panStartPosition = undefined
-      this._panPreviousPosition = undefined
-      this._panCurrentPosition = undefined
-      this._panEndPosition = undefined
-    }
+    this._panningActive = undefined
+    this._panStartPosition = undefined
+    this._panPreviousPosition = undefined
+    this._panCurrentPosition = undefined
+    this._panEndPosition = undefined
   }
 
-  _removeEventListenerIfNecessary () {
-    if (this._numberOfInteractions === 0) {
+  _addEventListener () {
+    const mouseDownHandler = this._handleMouseDown.bind(this)
+    const mouseMoveHandler = this._handleMouseMove.bind(this)
+    const mouseUpHandler = this._handleMouseUp.bind(this)
+
+    const eventManager = this._interactionManager._eventManager
+    const listenerId = this._interactionManager._id + '-pan'
+
+    eventManager.addEventListener('mousedown', listenerId + '-mousedown', mouseDownHandler)
+    eventManager.addEventListener('mousemove', listenerId + '-mousemove', mouseMoveHandler)
+    eventManager.addEventListener('mouseup', listenerId + '-mouseup', mouseUpHandler)
+  }
+
+  _removeEventListener () {
+    if (this._callback) {
       const eventManager = this._interactionManager._eventManager
       const listenerId = this._interactionManager._id + '-pan'
 
@@ -64,12 +66,16 @@ export default class WheelHandler extends SectionInteractionHandler {
     }
   }
 
-  // TODO: What other information would be useful to the user?
   _callStoredCallback (coordinates, mouseEvent, start, end) {
     const delta = { x: start.x - end.x, y: start.y - end.y }
-    const event = { delta, x: coordinates.x, y: coordinates.y, 
-                    originalMouseEvent: mouseEvent, startMouse: this._startMouseEvent, 
-                    endMouse: this._endMouseEvent }
+    const event = {
+      delta,
+      x: coordinates.x,
+      y: coordinates.y,
+      originalMouseEvent: mouseEvent,
+      startMouse: this._startMouseEvent,
+      endMouse: this._endMouseEvent
+    }
 
     this._callback(event)
   }

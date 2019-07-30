@@ -5,19 +5,14 @@ export default class SectionInteractionHandler {
   }
 
   // Add/remove layer interactions
-  addSectionInteraction (sectionId, callback) {
-    if (this._callback === undefined && this._interactionManager._id === sectionId) {
-      this._callback = callback
-      this._id = sectionId
-      this._addEventListenerIfNecessary()
-    }
+  addSectionInteraction (callback) {
+    this._callback = callback
+    this._addEventListener()
   }
 
   removeSectionInteraction (sectionId) {
-    if (this._interactionManager._id === sectionId) {
-      this._callback = undefined
-      this._removeEventListenerIfNecessary()
-    }
+    this._removeEventListener()
+    this._callback = undefined
   }
 
   _isInSection (hit, geometry) {
