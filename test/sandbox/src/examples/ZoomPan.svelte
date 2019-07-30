@@ -14,7 +14,7 @@
   })
 
   const zoom = createZoomHandler(zoomIdentity, {
-    minZoom: 0,
+    minZoom: 0.2,
     maxZoom: 3,
     extentX: [-500, 500],
     extentY: [-500, 500],

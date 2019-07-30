@@ -36,7 +36,6 @@ export default class WheelHandler extends SectionInteractionHandler {
     this._nopropagation(mouseEvent)
 
     const wheelDelta = this._defaultWheelDelta(mouseEvent)
-    console.log(wheelDelta)
     const event = { wheelDelta, coordinates: coordinates, originalEvent: mouseEvent }
     const sectionBbox = this._interactionManager._section
 
