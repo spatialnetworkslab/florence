@@ -14,7 +14,7 @@ export default class SectionInteractionHandler {
   }
 
   removeSectionInteraction (sectionId) {
-    if (this._sectionCallbacks.hasOwnProperty(sectionId)) {
+    if (this._interactionManager._id === sectionId) {
       this._callback = undefined
       this._removeEventListenerIfNecessary()
     }

@@ -13,4 +13,7 @@ export { default as PointLayer } from './components/Marks/Point/PointLayer.svelt
 export { default as RectangleLayer } from './components/Marks/Rectangle/RectangleLayer.svelte'
 export { default as PolygonLayer } from './components/Marks/Polygon/PolygonLayer.svelte'
 
+export { default as createPanHandler } from './components/Interactions/createPanHandler'
+export { default as createZoomHandler } from './components/Interactions/createZoomHandler'
+
 export { default as DataContainer } from './classes/DataContainer'

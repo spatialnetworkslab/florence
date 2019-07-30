@@ -1,22 +1,25 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, PolygonLayer, Rectangle } from '../../../../'
+  import { Graphic, Section, PolygonLayer, Rectangle, createPanHandler, createZoomHandler } from '../../../../'
 
   let x = 0
   let y = 0
   let k = 1
+  let zoomIdentity = { x, y, k }
 
   let data = {
     x: [1, 2, 3, 1, 2, 3, 1, 2, 3],
     y: [1, 1, 1, 2, 2, 2, 3, 3, 3]
   }
 
-  // handlePan and handleZoom should be placed in some sort of utility functions
-  // How do we link util version handlePan/handleZoom to external svelte x, y, k?
+  // const handlePan = createPanHandler(zoomIdentity, {
+  //   extentX: [-300, 300],
+  //   extentY: [-300, 300]
+  // }
+
+  // default pan, zoom behaviors in createPanHandler, createZoomHandler
+  // TODO: test manipulating zoomIdentity from there
   function handlePan (id, event) {
-    // x -= event.delta.x
-    // y -= event.delta.y
-    // console.log(event, '222')
     let extentX = [-300, 300]
     let extentY = [-300, 300]
 
@@ -39,8 +42,9 @@
     if (tempK >= minZoom && tempK <= maxZoom){
       k -= event.wheelDelta * step
     }
-    offsetX = -(event.coordinates.x * event.wheelDelta);
-    offsetY = -(event.coordinates.y * event.WheelDelta);
+    
+    let offsetX = -(event.coordinates.x * event.wheelDelta)
+    let offsetY = -(event.coordinates.y * event.WheelDelta)
 
     x += offsetX
     y += offsetY
@@ -67,6 +71,17 @@ k:
     onWheel={ handleZoom }
     onPan ={ handlePan }
   >
+
+  <!-- <Section 
+    x1={50} x2={450}
+    y1={50} y2={450}
+    scaleX={scaleLinear().domain([0, 4])}
+    scaleY={scaleLinear().domain([0, 4])}
+    zoomIdentity={{ x, y, k }}
+    onWheel={ zoomIdentity = handleZoom }
+    onPan ={ zoomIdentity = handlePan }
+  > -->
+
 
     <Rectangle fill="blue" opacity={0.3} />
 
