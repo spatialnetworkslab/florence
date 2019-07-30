@@ -1,7 +1,35 @@
 import { pointDistance } from 'geometryUtils'
 
 export function representLineAsPolygon (lineString, { strokeWidth }) {
-  const length = lineString.coordinates.length
+  const lineCoordinates = lineString.coordinates
+
+  if (lineString.type === 'LineString') {
+    const outerRing = createOuterRing(lineCoordinates, strokeWidth)
+
+    return {
+      type: 'Polygon',
+      coordinates: [outerRing]
+    }
+  }
+
+  if (lineString.type === 'MultiLineString') {
+    const polygons = []
+
+    for (let i = 0; i < lineCoordinates.length; i++) {
+      polygons.push(
+        [createOuterRing(lineCoordinates[i], strokeWidth)]
+      )
+    }
+
+    return {
+      type: 'MultiPolygon',
+      coordinates: polygons
+    }
+  }
+}
+
+function createOuterRing (lineCoordinates, strokeWidth) {
+  const length = lineCoordinates.length
   const lastIndex = length - 1
   const distance = strokeWidth / 2
 
@@ -10,19 +38,19 @@ export function representLineAsPolygon (lineString, { strokeWidth }) {
 
   for (let i = 0; i < length; i++) {
     if (i === 0) {
-      const [bottomPoint, topPoint] = getCornerPointsStart(lineString, distance)
+      const [bottomPoint, topPoint] = getCornerPointsStart(lineCoordinates, distance)
       coordinatesBottom[0] = bottomPoint
       coordinatesTop[lastIndex] = topPoint
     }
 
     if (i === lastIndex) {
-      const [bottomPoint, topPoint] = getCornerPointsEnd(lineString, distance)
+      const [bottomPoint, topPoint] = getCornerPointsEnd(lineCoordinates, distance)
       coordinatesBottom[lastIndex] = bottomPoint
       coordinatesTop[0] = topPoint
     }
 
     if (i > 0 && i < lastIndex) {
-      const [bottomPoint, topPoint] = getCornerPointsIndex(lineString, i, distance)
+      const [bottomPoint, topPoint] = getCornerPointsIndex(lineCoordinates, i, distance)
       coordinatesBottom[i] = bottomPoint
       coordinatesTop[lastIndex - i] = topPoint
     }
@@ -35,10 +63,7 @@ export function representLineAsPolygon (lineString, { strokeWidth }) {
     outerRing.push(outerRing[0])
   }
 
-  return {
-    type: 'Polygon',
-    coordinates: [outerRing]
-  }
+  return outerRing
 }
 
 export function representLinesAsPolygons (lines, { strokeWidthObject }) {
@@ -51,23 +76,23 @@ export function representLinesAsPolygons (lines, { strokeWidthObject }) {
   return polygons
 }
 
-function getCornerPointsStart (lineString, distance) {
-  const segment = getNextSegment(0, lineString.coordinates)
+function getCornerPointsStart (lineCoordinates, distance) {
+  const segment = getNextSegment(0, lineCoordinates)
   const cornerPoint = segment[0]
 
   return getParallelPoints(segment, cornerPoint, distance)
 }
 
-function getCornerPointsEnd (lineString, distance) {
-  const segment = getPreviousSegment(lineString.coordinates.length - 1, lineString.coordinates)
+function getCornerPointsEnd (lineCoordinates, distance) {
+  const segment = getPreviousSegment(lineCoordinates.length - 1, lineCoordinates)
   const cornerPoint = segment[1]
 
   return getParallelPoints(segment, cornerPoint, distance)
 }
 
-function getCornerPointsIndex (lineString, index, distance) {
-  const previousSegment = getPreviousSegment(index, lineString.coordinates)
-  const nextSegment = getNextSegment(index, lineString.coordinates)
+function getCornerPointsIndex (lineCoordinates, index, distance) {
+  const previousSegment = getPreviousSegment(index, lineCoordinates)
+  const nextSegment = getNextSegment(index, lineCoordinates)
 
   const previousUnitVector = getUnitVector(previousSegment)
   const nextUnitVector = getUnitVector(nextSegment)
