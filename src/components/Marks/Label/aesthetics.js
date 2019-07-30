@@ -1,14 +1,11 @@
 export default {
-  x1: {
+  x: {
     required: false
   },
-  x2: {
+  y: {
     required: false
   },
-  y1: {
-    required: false
-  },
-  y2: {
+  geometry: {
     required: false
   },
   fill: {
@@ -32,5 +29,28 @@ export default {
   opacity: {
     required: false,
     default: 1
+  },
+  text: {
+    required: false
+  },
+  fontFamily: {
+    required: false,
+    default: 'Helvetica'
+  },
+  fontSize: {
+    required: false,
+    default: 16
+  },
+  fontWeight: {
+    required: false,
+    default: 'normal'
+  },
+  rotation: {
+    required: false,
+    default: 0
+  },
+  anchorPoint: {
+    required: false,
+    default: 'center'
   }
 }

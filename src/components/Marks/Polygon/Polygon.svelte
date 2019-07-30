@@ -8,6 +8,10 @@
 
   // Aesthetics: other
   export let fill = undefined
+  export let stroke = undefined
+  export let strokeWidth = undefined
+  export let strokeOpacity = undefined
+  export let fillOpacity = undefined
   export let opacity = undefined
 
   // Transitions and interactions
@@ -23,7 +27,8 @@
 <Mark
   type="Polygon"
   {x} {y} {geometry}
-  {fill} {opacity}
+  {fill} {stroke} {strokeWidth}
+  {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
   {interpolate}
 />

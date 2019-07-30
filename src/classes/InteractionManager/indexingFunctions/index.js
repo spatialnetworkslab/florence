@@ -5,11 +5,13 @@ import { indexPolygon, indexPolygonLayer } from './indexPolygon.js'
 export const markIndexing = {
   Point: indexPoint,
   Rectangle: indexRectangle,
-  Polygon: indexPolygon
+  Polygon: indexPolygon,
+  Label: indexPoint
 }
 
 export const layerIndexing = {
   Point: indexPointLayer,
   Rectangle: indexRectangleLayer,
-  Polygon: indexPolygonLayer
+  Polygon: indexPolygonLayer,
+  Label: indexPointLayer
 }

@@ -4,6 +4,7 @@
   // import all playground examples here
   import Rectangles from './pages/Rectangles.svelte'
   import Geo from './pages/Geo.svelte'
+  import LabelMark from './pages/LabelMark.svelte'
 
 
   // and add them to this component array
@@ -15,6 +16,10 @@
      { name: "Geo",
       url: "/geo",
       component: Geo
+    },
+    { name: "Label Mark",
+      url: "/label-mark",
+      component: LabelMark
     }
   ]
 </script>
