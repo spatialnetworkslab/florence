@@ -1,7 +1,7 @@
-export default function createPanHandler (zoomId, extents) {
+export default function createPanHandler (zoomId, options) {
   const handler = function (event) {
-    const extentX = extents.extentX
-    const extentY = extents.extentY
+    const extentX = options.extentX
+    const extentY = options.extentY
 
     // stops panning if past extents X and Y
     const tempX = zoomId.x - event.delta.x

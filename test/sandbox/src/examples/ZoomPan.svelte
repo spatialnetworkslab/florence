@@ -10,11 +10,17 @@
 
   const pan = createPanHandler(zoomIdentity, {
     extentX: [-500, 500],
-    extentY: [-500, 500]})
+    extentY: [-500, 500]
+  })
 
-  const zoom = createZoomHandler(zoomIdentity, 0, 3,
-    { extentX: [-500, 500],extentY: [-500, 500] }, step,
-    {x: 0, y:0})
+  const zoom = createZoomHandler(zoomIdentity, {
+    minZoom: 0,
+    maxZoom: 3,
+    extentX: [-500, 500],
+    extentY: [-500, 500],
+    step,
+    center: { x: 0, y: 0 }
+  })
 </script>
 
 x:
