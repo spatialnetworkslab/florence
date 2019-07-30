@@ -10,7 +10,7 @@ context('Assertions', () => {
       cy.get('.rectangle').should('have.length', 3)
     })
 
-    it('[render] rectangles snapshop correctly', () => {
+    it('[render] rectangles snapshot correctly', () => {
       cy.get('svg')
         .snapshot({ name: 'svg with 3 rectangles' })
     })
