@@ -5,70 +5,38 @@
   let x = 0
   let y = 0
   let k = 1
-  let zoomIdentity = {x, y, k}
+  let zoomIdentity = { x, y, k }
+  let step = 1
 
   let data = {
     x: [1, 2, 3, 1, 2, 3, 1, 2, 3],
     y: [1, 1, 1, 2, 2, 2, 3, 3, 3]
   }
 
-  const handlePan = createPanHandler({x, y, k}, {
-    extentX: [-300, 300],
-    extentY: [-300, 300]},
-    { x: 0, y: 0 })
+  const pan = createPanHandler(zoomIdentity, {
+    extentX: [-500, 500],
+    extentY: [-500, 500]})
 
-  // default pan, zoom behaviors in createPanHandler, createZoomHandler
-  // TODO: test manipulating zoomIdentity from there
-  // function handlePan (id, event) {
-  //   let extentX = [-300, 300]
-  //   let extentY = [-300, 300]
-
-  //   let tempX = x - event.delta.x
-  //   let tempY = y - event.delta.y
-
-  //   if (tempX <= extentX[1] && tempX >= extentX[0]){
-  //     x -= event.delta.x
-  //   }
-    
-  //   if (tempY <= extentY[1] && tempY >= extentY[0]){
-  //     y -= event.delta.y
-  //   }
-  // }
-
-  // active question - how to bound panning in pinpoint zoom?
-  function handleZoom (id, event, step = 0.5, extentZoom = [0, 3], extentX = [-300, 300], extentY = [-300, 300]) {
-    let tempK = k - event.wheelDelta * step
-    if (tempK >= extentZoom[0] && tempK <= extentZoom[1]){
-      k -= event.wheelDelta * step
-    }
-
-    let offsetX = -(event.coordinates.x * event.wheelDelta * step)
-    let offsetY = -(event.coordinates.y * event.wheelDelta * step)
-    //console.log(event.coordinates, event.wheelDelta, -offsetX, y -offsetY)
-
-    let tempX = x - offsetX
-    let tempY = y - offsetY
-
-    x -= offsetX
-    y -= offsetY
-
-    // if (tempX <= extentX[1] && tempX >= extentX[0]){
-    //   x -= offsetX
-    // }
-
-    // if (tempY <= extentY[1] && tempY >= extentY[0]){
-    //   y -= offsetY
-    // }
-   
-  }
+  const zoom = createZoomHandler(zoomIdentity, 0, 3,
+    { extentX: [-500, 500],extentY: [-500, 500] }, step,
+    {x: 0, y:0})
 </script>
 
 x:
-<input type="range" min={-300} max={300} bind:value={x} /> {x} <br />
+<input type="range" min={-300} max={300} bind:value={zoomIdentity.x} /> {zoomIdentity.x} <br />
 y:
-<input type="range" min={-300} max={300} bind:value={y} />  {y} <br />
+<input type="range" min={-300} max={300} bind:value={zoomIdentity.y} />  {zoomIdentity.y} <br />
 k:
-<input type="range" min={0} max={3} step={0.1} bind:value={k} /> {k} <br />
+<input type="range" min={0} max={3} step={0.1} bind:value={zoomIdentity.k} /> {zoomIdentity.k} <br />
+
+<div>
+  <!-- Resets zoomId to pan origin { x: 0, y: 0, k: <present k value> } -->
+  <button on:click={e => zoomIdentity = pan.reset() }> Reset pan </button>
+  <!-- Resets zoomId to zoom origin { x: 0, y: 0, k: 1 } -->
+  <button on:click={e => zoomIdentity = zoom.reset() }> Reset zoom </button>
+  <!-- Brings viewport back to specified view point -->
+  <button on:click={e => zoomIdentity = zoom.center() }> Center from Zoom </button>
+</div>
 
 <Graphic width={500} height={500}>
 
@@ -79,21 +47,10 @@ k:
     y1={50} y2={450}
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
-    zoomIdentity = {{x, y, k}}
-    onWheel={handleZoom}
-    onPan ={zoomIdentity = handlePan}
+    zoomIdentity={zoomIdentity}
+    onWheel={ e => zoomIdentity = zoom(e) }
+    onPan ={ e => zoomIdentity = pan(e) }
   >
-
-  <!-- <Section 
-    x1={50} x2={450}
-    y1={50} y2={450}
-    scaleX={scaleLinear().domain([0, 4])}
-    scaleY={scaleLinear().domain([0, 4])}
-    zoomIdentity={{ x, y, k }}
-    onWheel={ zoomIdentity = handleZoom }
-    onPan ={ zoomIdentity = handlePan }
-  > -->
-
 
     <Rectangle fill="blue" opacity={0.3} />
 

@@ -44,7 +44,7 @@ export default class WheelHandler extends SectionInteractionHandler {
   // For smooth dragging, perform callback even during drag
   // To bound dragging to only the section, check cursor location and if still in section
   _handleMouseMove (coordinates, mouseEvent) {
-    const sectionBbox = this._interactionManager._sections[this._id]
+    const sectionBbox = this._interactionManager._section
 
     if (this._panningActive && this._isInSection(coordinates, sectionBbox)) {
       this._panPreviousPosition = this._panCurrentPosition
@@ -71,6 +71,6 @@ export default class WheelHandler extends SectionInteractionHandler {
                     originalMouseEvent: mouseEvent, startMouse: this._startMouseEvent, 
                     endMouse: this._endMouseEvent }
 
-    this._callback(this._id, event)
+    this._callback(event)
   }
 }

@@ -13,7 +13,7 @@ export default class WheelHandler extends SectionInteractionHandler {
   _removeEventListenerIfNecessary () {
     if (this._numberOfInteractions === 0) {
       const eventManager = this._interactionManager._eventManager
-      const listenerId = interactionManager._id + '-wheel'
+      const listenerId = this._interactionManager._id + '-wheel'
 
       eventManager.removeEventListener('wheel', listenerId)
     }
@@ -34,15 +34,11 @@ export default class WheelHandler extends SectionInteractionHandler {
     this._nopropagation(mouseEvent)
 
     const wheelDelta = this._defaultWheelDelta(mouseEvent)
-    const evt = { wheelDelta, coordinates: coordinates, originalEvent: mouseEvent }
+    const event = { wheelDelta, coordinates: coordinates, originalEvent: mouseEvent }
+    const sectionBbox = this._interactionManager._section
 
-    const interactionManager = this._interactionManager
-    const id = interactionManager._id
-    const sectionBbox = interactionManager._sections[id]
-
-    // what other information would the user need?
     if (this._isInSection(coordinates, sectionBbox)) {
-      this._callback(id, evt)
+      this._callback(event)
     }
   }
 }

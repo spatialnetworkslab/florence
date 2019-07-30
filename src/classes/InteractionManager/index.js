@@ -7,7 +7,7 @@ import { markIndexing, layerIndexing, sectionIndexing } from './indexingFunction
 
 export default class InteractionManager {
   constructor () {
-    this._sections = {}
+    this._section = undefined
     this._layers = {}
     this._marks = {}
 
@@ -32,18 +32,20 @@ export default class InteractionManager {
 
   // Section loading and removing
   loadSection (sectionType, sectionData) {
-    let indexingFunction = sectionIndexing[sectionType] // Need to rethink this because using an object here is unnecessary
-    let indexableData = indexingFunction(sectionData)
-    let sectionId = sectionData.sectionId
-    this._sections[sectionId] = indexableData // Stores id, geometry, section bbox
+    const indexingFunction = sectionIndexing[sectionType] // Need to rethink this because using an object here is unnecessary
+    const indexableData = indexingFunction(sectionData)
+    this._section = indexableData // Stores id, geometry, section bbox
   }
 
-  sectionIsLoaded (sectionId) {
-    return this._sections.hasOwnProperty(sectionId)
+  sectionIsLoaded () {
+    if (this._section) {
+      return true
+    }
+    return false
   }
 
-  removeSection (sectionId) {
-    delete this._sections[sectionId]
+  removeSection () {
+    this._section = undefined
   }
 
   // Layer loading and removing
