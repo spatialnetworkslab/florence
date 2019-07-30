@@ -7,8 +7,12 @@ context('Assertions', () => {
 
   describe('Rectangle Tests', () => {
     it('[render] rectangles rendered', () => {
-      // https://on.cypress.io/should
       cy.get('.rectangle').should('have.length', 3)
+    })
+
+    it('[render] rectangles snapshop correctly', () => {
+      cy.get('svg')
+        .snapshot({ name: 'svg with 3 rectangles' })
     })
 
     it('[interaction] clicking on rectangle changes color', () => {

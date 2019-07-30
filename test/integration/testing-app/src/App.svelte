@@ -3,6 +3,7 @@
 
   // import all playground examples here
   import Rectangles from './pages/Rectangles.svelte'
+  import Geo from './pages/Geo.svelte'
 
 
   // and add them to this component array
@@ -10,6 +11,10 @@
     { name: "Rectangles",
       url: "/rectangles",
       component: Rectangles
+    },
+     { name: "Geo",
+      url: "/geo",
+      component: Geo
     }
   ]
 </script>
