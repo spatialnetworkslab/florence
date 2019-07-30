@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { DataContainer, Graphic, Section, Line, LineLayer } from '../../../../'
+  import { DataContainer, Graphic, Section, Line, LineLayer } from '../../../../src'
 
   // const data = new DataContainer({
   //   x: [1, 2, 4, 6, 9, 10, 12, 13],
