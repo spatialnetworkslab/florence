@@ -8,14 +8,40 @@ export function indexLine (markData) {
   const pixelGeometry = lineAttributes.pixelGeometry
   const lineStringCoords = pixelGeometry.coordinates
 
+  if (pixelGeometry.type === 'LineString') {
+    return indexLineString(lineStringCoords, lineAttributes, markId)
+  }
+
+  if (pixelGeometry.type === 'MultiLineString') {
+    return indexMultiLineString(lineStringCoords, lineAttributes, markId)
+  }
+}
+
+function indexLineString (lineStringCoords, lineAttributes, markId, lineStringIndex) {
   const indexableSegments = []
 
   for (let i = 0; i < lineStringCoords.length - 1; i++) {
     const segment = [lineStringCoords[i], lineStringCoords[i + 1]]
 
     const item = createSegmentItem(segment, lineAttributes, i)
+    if (lineStringIndex) {
+      // Only for MultiLineStrings
+      item.lineStringIndex = lineStringIndex
+    }
     item.markId = markId
     indexableSegments.push(item)
+  }
+
+  return indexableSegments
+}
+
+function indexMultiLineString (lineStringCoords, lineAttributes, markId) {
+  const indexableSegments = []
+
+  for (let lineStringIndex = 0; lineStringIndex < lineStringCoords.length; lineStringIndex++) {
+    indexableSegments.concat(indexLineString(
+      lineStringCoords[lineStringIndex], lineAttributes, markId, lineStringIndex
+    ))
   }
 
   return indexableSegments
@@ -58,14 +84,22 @@ export function indexLineLayer ({ layerAttributes, indexArray, layerId }) {
     const pixelGeometry = lineAttributes.pixelGeometry
     const lineStringCoords = pixelGeometry.coordinates
 
-    for (let j = 0; j < lineStringCoords.length - 1; j++) {
-      const segment = [lineStringCoords[j], lineStringCoords[j + 1]]
+    if (pixelGeometry.type === 'LineString') {
+      let segments = indexLineString(
+        lineStringCoords, lineAttributes, $index
+      )
 
-      const item = createSegmentItem(segment, lineAttributes, j)
-      item.$index = $index
-      item.layerId = layerId
+      segments = modifyForLayer(segments, layerId)
+      items.concat(segments)
+    }
 
-      items.push(item)
+    if (pixelGeometry.type === 'MultiLineString') {
+      let segments = indexMultiLineString(
+        lineStringCoords, lineAttributes, $index
+      )
+
+      segments = modifyForLayer(segments, layerId)
+      items.concat(segments)
     }
   }
 
@@ -77,4 +111,15 @@ function createLineAttributes (attributes, $index) {
     pixelGeometry: attributes.pixelGeometryObject[$index],
     strokeWidth: attributes.strokeWidthObject[$index]
   }
+}
+
+function modifyForLayer (segments, layerId) {
+  for (let i = 0; i < segments.length; i++) {
+    const segmentItem = segments[i]
+    segmentItem.$index = segmentItem.markId
+    delete segmentItem.markId
+    segmentItem.layerId = layerId
+  }
+
+  return segments
 }
