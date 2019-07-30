@@ -15,8 +15,8 @@ export { default as RectangleLayer } from './components/Marks/Rectangle/Rectangl
 export { default as PolygonLayer } from './components/Marks/Polygon/PolygonLayer.svelte'
 export { default as LabelLayer } from './components/Marks/Label/LabelLayer.svelte'
 
-export { default as createPanHandler } from './components/Interactions/createPanHandler'
-export { default as createZoomHandler } from './components/Interactions/createZoomHandler'
+export { default as createPanHandler } from './interactions/createPanHandler'
+export { default as createZoomHandler } from './interactions/createZoomHandler'
 
 export { default as DataContainer } from './classes/DataContainer'
 export { default as createGeoScales } from './helpers/createGeoScales.js'
