@@ -1,6 +1,7 @@
 import pointAesthetics from '../Point/aesthetics.js'
 import rectangleAesthetics from '../Rectangle/aesthetics.js'
 import polygonAesthetics from '../Polygon/aesthetics.js'
+import labelAesthetics from '../Label/aesthetics.js'
 
 import { isDefined, isUndefined } from 'equals.js'
 
@@ -15,6 +16,10 @@ export default function (type, aesthetics) {
 
   if (type === 'Polygon') {
     return validateAesthetics(aesthetics, polygonAesthetics)
+  }
+
+  if (type === 'Label') {
+    return validateAesthetics(aesthetics, labelAesthetics)
   }
 }
 
