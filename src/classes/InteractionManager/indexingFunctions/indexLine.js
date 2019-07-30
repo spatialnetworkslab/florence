@@ -36,10 +36,10 @@ function indexLineString (lineStringCoords, lineAttributes, markId, lineStringIn
 }
 
 function indexMultiLineString (lineStringCoords, lineAttributes, markId) {
-  const indexableSegments = []
+  let indexableSegments = []
 
   for (let lineStringIndex = 0; lineStringIndex < lineStringCoords.length; lineStringIndex++) {
-    indexableSegments.concat(indexLineString(
+    indexableSegments = indexableSegments.concat(indexLineString(
       lineStringCoords[lineStringIndex], lineAttributes, markId, lineStringIndex
     ))
   }
