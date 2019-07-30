@@ -3,7 +3,7 @@ import MouseoverHandler from './InteractionHandlers/MouseoverHandler.js'
 import MouseoutHandler from './InteractionHandlers/MouseoutHandler.js'
 import WheelHandler from './InteractionHandlers/WheelHandler.js'
 import PanHandler from './InteractionHandlers/PanHandler.js'
-import { markIndexing, layerIndexing, sectionIndexing } from './indexingFunctions'
+import { markIndexing, layerIndexing } from './indexingFunctions'
 
 export default class InteractionManager {
   constructor () {
@@ -31,10 +31,9 @@ export default class InteractionManager {
   }
 
   // Section loading and removing
-  loadSection (sectionType, sectionData) {
-    const indexingFunction = sectionIndexing[sectionType] // Need to rethink this because using an object here is unnecessary
-    const indexableData = indexingFunction(sectionData)
-    this._section = indexableData // Stores id, geometry, section bbox
+  loadSection (sectionData) {
+    const sectionCoordinates = getSectionCoordinates(sectionData)
+    this._section = Object.assign(sectionData, sectionCoordinates)
   }
 
   sectionIsLoaded () {
@@ -116,5 +115,14 @@ export default class InteractionManager {
     this._clickHandler.removeMarkInteraction(markId)
     this._mouseoverHandler.removeMarkInteraction(markId)
     this._mouseoutHandler.removeMarkInteraction(markId)
+  }
+}
+
+function getSectionCoordinates (sectionData) {
+  return {
+    x1: sectionData.rangeX[0],
+    x2: sectionData.rangeX[1],
+    y1: sectionData.rangeY[0],
+    y2: sectionData.rangeY[1]
   }
 }

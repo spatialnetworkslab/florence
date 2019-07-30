@@ -74,7 +74,7 @@
       let rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
       let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
       
-      $interactionManagerContext.loadSection('Section', {rangeX, rangeY, sectionId})
+      $interactionManagerContext.loadSection({ rangeX, rangeY, sectionId })
 
       if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', sectionId, onWheel)
       if (onPan) $interactionManagerContext.addSectionInteraction('pan', sectionId, onPan)
