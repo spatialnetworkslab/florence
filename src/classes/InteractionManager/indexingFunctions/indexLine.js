@@ -76,7 +76,7 @@ function takeIntoAccountStrokeWidth (item, strokeWidth) {
 }
 
 export function indexLineLayer ({ layerAttributes, indexArray, layerId }) {
-  const items = []
+  let items = []
 
   for (let i = 0; i < indexArray.length; i++) {
     const $index = indexArray[i]
@@ -90,7 +90,7 @@ export function indexLineLayer ({ layerAttributes, indexArray, layerId }) {
       )
 
       segments = modifyForLayer(segments, layerId)
-      items.concat(segments)
+      items = items.concat(segments)
     }
 
     if (pixelGeometry.type === 'MultiLineString') {
@@ -99,7 +99,7 @@ export function indexLineLayer ({ layerAttributes, indexArray, layerId }) {
       )
 
       segments = modifyForLayer(segments, layerId)
-      items.concat(segments)
+      items = items.concat(segments)
     }
   }
 
