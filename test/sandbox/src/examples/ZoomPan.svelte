@@ -8,11 +8,6 @@
   let zoomIdentity = { x, y, k }
   let step = 1
 
-  let data = {
-    x: [1, 2, 3, 1, 2, 3, 1, 2, 3],
-    y: [1, 1, 1, 2, 2, 2, 3, 3, 3]
-  }
-
   const pan = createPanHandler(zoomIdentity, {
     extentX: [-500, 500],
     extentY: [-500, 500]})
@@ -49,32 +44,11 @@ k:
     scaleY={scaleLinear().domain([0, 4])}
     zoomIdentity={zoomIdentity}
     onWheel={ e => zoomIdentity = zoom(e) }
-    onPan ={ e => zoomIdentity = pan(e) }
+    onPan={ e => zoomIdentity = pan(e) }
   >
 
     <Rectangle fill="blue" opacity={0.3} />
 
-    <!-- {#each data.x as _, i}
-
-      <Rectangle
-        x1={data.x[i] - 0.3} x2={data.x[i] + 0.3}
-        y1={data.y[i] - 0.3} y2={data.y[i] + 0.3}
-        fill={'red'}
-      />
-
-    {/each} -->
-    
-    <!-- <RectangleLayer
-      x1={data.x.map(v => v - 0.3)} x2={data.x.map(v => v + 0.3)}
-      y1={data.y.map(v => v - 0.3)} y2={data.y.map(v => v + 0.3)}
-      fill="red"
-    /> -->
-    
-    <!-- <Polygon
-      x={[0, 3, 3, 0, 0]}
-      y={[0, 0, 3, 3, 0]}
-      fill="red"
-    /> -->
     <PolygonLayer
       x={[
         [0, 1, 1, 0, 0],
