@@ -1,4 +1,7 @@
 import SectionInteractionHandler from './SectionInteractionHandler.js'
+import getScrollLineHeight from './utils/getScrollLineHeight.js'
+
+const scrollLineHeight = getScrollLineHeight()
 
 export default class WheelHandler extends SectionInteractionHandler {
   _addEventListenerIfNecessary () {
@@ -21,8 +24,7 @@ export default class WheelHandler extends SectionInteractionHandler {
 
   _defaultWheelDelta (event) {
     // normalised for all browsers
-    // based on d3
-    return -event.deltaY * (event.deltaMode ? 120 : 1) / 500;
+    return -event.deltaY * (event.deltaMode ? scrollLineHeight : 1) / 500
   }
 
   _nopropagation (event) {
@@ -34,6 +36,7 @@ export default class WheelHandler extends SectionInteractionHandler {
     this._nopropagation(mouseEvent)
 
     const wheelDelta = this._defaultWheelDelta(mouseEvent)
+    console.log(wheelDelta)
     const event = { wheelDelta, coordinates: coordinates, originalEvent: mouseEvent }
     const sectionBbox = this._interactionManager._section
 
