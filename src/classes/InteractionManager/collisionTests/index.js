@@ -7,5 +7,6 @@ export default {
   Point: pointCollision,
   Rectangle: rectangleCollision,
   Polygon: polygonCollision,
-  Line: lineCollision
+  Line: lineCollision,
+  Label: pointCollision
 }

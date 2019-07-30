@@ -9,6 +9,13 @@ export function createDataNecessaryForIndexingMark (type, markId, geometryTypes,
     }
   }
 
+  if (type === 'Label') {
+    attributes = {
+      pixelGeometry: geometryTypes.pixelGeometry,
+      radius: aesthetics.fontSize
+    }
+  }
+
   if (type === 'Rectangle') {
     attributes = { screenGeometry: geometryTypes.screenGeometry }
   }
@@ -39,6 +46,13 @@ export function createDataNecessaryForIndexingLayer (
     layerAttributes = {
       pixelGeometryObject: geometryObjects.pixelGeometryObject,
       radiusObject: aestheticsObjects.radiusObject
+    }
+  }
+
+  if (type === 'Label') {
+    layerAttributes = {
+      pixelGeometryObject: geometryObjects.pixelGeometryObject,
+      radiusObject: aestheticsObjects.fontSizeObject
     }
   }
 

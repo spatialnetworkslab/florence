@@ -23,6 +23,7 @@
   CoordinateTransformationContext.ensureNotParent()
   const sectionContext = SectionContext.subscribe()
 
+  let scaledCoordinates
   $: scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
 
   let allCells

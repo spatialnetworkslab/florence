@@ -26,6 +26,8 @@
   export let y2 = undefined
   export let scaleX = undefined
   export let scaleY = undefined
+  export let flipX = false
+  export let flipY = false
   export let zoomIdentity = undefined
   
   // Aesthetics
@@ -55,7 +57,8 @@
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
     let rangeX = [scaledCoordinates.x1 + padding, scaledCoordinates.x2 - padding]
     let rangeY = [scaledCoordinates.y1 + padding, scaledCoordinates.y2 - padding]
-    
+    if (flipX) rangeX.reverse()
+    if (flipY) rangeY.reverse()
     SectionContext.update(
       newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
     )
@@ -70,9 +73,10 @@
 <defs>
   <clipPath id={`clip-${sectionId}`}>
     <rect 
-      x={scaledCoordinates.x1} y={scaledCoordinates.y1}
-      width={scaledCoordinates.x2 - scaledCoordinates.x1}
-      height={scaledCoordinates.y2 - scaledCoordinates.y1}
+      x={Math.min(scaledCoordinates.x1, scaledCoordinates.x2)}
+      y={Math.min(scaledCoordinates.y1, scaledCoordinates.y2)}
+      width={Math.abs(scaledCoordinates.x2 - scaledCoordinates.x1)}
+      height={Math.abs(scaledCoordinates.y2 - scaledCoordinates.y1)}
     />
   </clipPath>
 </defs>

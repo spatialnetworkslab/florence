@@ -12,7 +12,8 @@ export const markCoordSysGeometryFuncs = new Proxy({
   Point: createCoordSysGeometryPoint,
   Rectangle: createCoordSysGeometryRectangle,
   Polygon: createCoordSysGeometryPolygon,
-  Line: createCoordSysGeometryLine
+  Line: createCoordSysGeometryLine,
+  Label: createCoordSysGeometryPoint
 }, {
   get: (obj, prop) => {
     if (prop in obj) {
@@ -27,7 +28,8 @@ export const layerCoordSysGeometryFuncs = new Proxy({
   Point: createCoordSysGeometryObjectPoint,
   Rectangle: createCoordSysGeometryObjectRectangle,
   Polygon: createCoordSysGeometryObjectPolygon,
-  Line: createCoordSysGeometryObjectLine
+  Line: createCoordSysGeometryObjectLine,
+  Label: createCoordSysGeometryObjectPoint
 }, {
   get: (obj, prop) => {
     if (prop in obj) {

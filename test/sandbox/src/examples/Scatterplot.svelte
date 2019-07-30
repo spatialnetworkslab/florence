@@ -4,7 +4,7 @@
     Graphic, Section, CoordinateTransformation, 
     PointLayer, Point,
     DataContainer 
-  } from '../../../../'
+  } from '../../../../src/'
 
 	export let N = 100
 	const data = new DataContainer(generateData(N, 0.25))
@@ -79,6 +79,7 @@
 			scaleX={scaleA}
 			scaleY={scaleB}
       backgroundColor={background}
+      flipY
 		>
 
 			<CoordinateTransformation {transformation}>

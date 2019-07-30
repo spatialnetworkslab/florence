@@ -7,13 +7,18 @@
   export let geometry = undefined
 
   // Aesthetics: other
-  export let radius = undefined
   export let fill = undefined
   export let stroke = undefined
   export let strokeWidth = undefined
   export let strokeOpacity = undefined
   export let fillOpacity = undefined
   export let opacity = undefined
+  export let text = undefined
+  export let fontFamily = undefined
+  export let fontSize = undefined
+  export let fontWeight = undefined
+  export let rotation = undefined
+  export let anchorPoint = undefined
 
   // Transitions and interactions
   export let transition = undefined
@@ -23,10 +28,12 @@
 </script>
 
 <Mark
-  type="Point"
-  {x} {y} {geometry} {radius} 
+  type="Label"
+  {x} {y} {geometry} 
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
+  {text}
+  {fontFamily} {fontSize} {fontWeight} {rotation} {anchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
   _asPolygon={false}
 />

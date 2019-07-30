@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, PolygonLayer, Rectangle } from '../../../../'
+  import { Graphic, Section, PolygonLayer, Rectangle } from '../../../../src/'
 
   let x = 0
   let y = 0

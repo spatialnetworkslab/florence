@@ -7,12 +7,14 @@ export const markIndexing = {
   Point: indexPoint,
   Rectangle: indexRectangle,
   Polygon: indexPolygon,
-  Line: indexLine
+  Line: indexLine,
+  Label: indexPoint
 }
 
 export const layerIndexing = {
   Point: indexPointLayer,
   Rectangle: indexRectangleLayer,
   Polygon: indexPolygonLayer,
-  Line: indexLineLayer
+  Line: indexLineLayer,
+  Label: indexPointLayer
 }

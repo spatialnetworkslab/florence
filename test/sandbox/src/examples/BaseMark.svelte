@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { DataContainer, Graphic, Section, Layer, Mark } from '../../../../'
+  import { DataContainer, Graphic, Section, Layer, Mark } from '../../../../src/'
 
   let currentChartType = 'scatterplot'
 

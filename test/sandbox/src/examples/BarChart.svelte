@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, CoordinateTransformation, Rectangle, RectangleLayer, DataContainer } from '../../../../'
+  import { Graphic, Section, CoordinateTransformation, Rectangle, RectangleLayer, DataContainer } from '../../../../src/'
   
   let data = new DataContainer({ 
     quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
@@ -66,6 +66,7 @@
     y1={50} y2={450}
     scaleX={scaleFruit} 
 		scaleY={scaleMeanQuantity}
+    flipY
   >
 
     <CoordinateTransformation {transformation}>
