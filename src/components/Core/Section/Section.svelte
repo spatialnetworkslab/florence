@@ -82,9 +82,9 @@
   }
   
   function removeSectionInteractionsIfNecessary () {
-    if ($interactionManagerContext.sectionIsLoaded(sectionId)) {
-      $interactionManagerContext.removeAllSectionInteractions(sectionId)
-      $interactionManagerContext.removeSection(sectionId)
+    if ($interactionManagerContext.sectionIsLoaded()) {
+      $interactionManagerContext.removeAllSectionInteractions()
+      $interactionManagerContext.removeSection()
     }
   }
 
