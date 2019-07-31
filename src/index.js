@@ -15,5 +15,4 @@ export { default as RectangleLayer } from './components/Marks/Rectangle/Rectangl
 export { default as PolygonLayer } from './components/Marks/Polygon/PolygonLayer.svelte'
 export { default as LabelLayer } from './components/Marks/Label/LabelLayer.svelte'
 
-export { default as DataContainer } from './classes/DataContainer'
 export { default as createGeoScales } from './helpers/createGeoScales.js'

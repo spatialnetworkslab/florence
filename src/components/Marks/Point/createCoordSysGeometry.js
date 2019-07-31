@@ -1,6 +1,6 @@
-import { scaleGeometry } from 'geometryUtils'
+import { scaleGeometry } from '../../../utils/geometryUtils/index.js'
 import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
-import { isDefined, isUndefined } from 'equals.js'
+import { isDefined, isUndefined } from '../../../utils/equals.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext) {
   const scaledGeometry = createScaledGeometry(geometryProps, sectionContext)

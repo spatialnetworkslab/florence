@@ -2,7 +2,7 @@ import { writable } from 'svelte/store'
 import { tweened } from 'svelte/motion'
 import { cubicOut } from 'svelte/easing'
 import { interpolate } from 'd3-interpolate'
-import { transitionGeometries } from 'geometryUtils'
+import { transitionGeometries } from '../../../../utils/geometryUtils/index.js'
 
 /**
  * Like createTransitionable, returns either a Svelte store, or a Svelte 'tweened' store,
