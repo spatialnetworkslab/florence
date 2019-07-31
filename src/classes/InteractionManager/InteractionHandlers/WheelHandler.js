@@ -20,7 +20,7 @@ export default class WheelHandler extends SectionInteractionHandler {
     }
   }
 
-  // normalised for all browsers, trackpads and mouses
+  // normalised for most browsers, trackpads and mouses
   // based on openstreemtmaps: https://github.com/openstreetmap/iD/blob/f61c482188b1b747fdf528ac2992f6ed9e8a2b6a/modules/renderer/map.js#L376-L396
   // and normalize-wheel: https://github.com/basilfx/normalize-wheel/blob/master/src/normalizeWheel.js
   // Key data: This code tries to resolve a single slow step on a wheel to 1.
