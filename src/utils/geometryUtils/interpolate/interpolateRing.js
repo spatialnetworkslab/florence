@@ -1,5 +1,5 @@
 import { interpolateArray } from 'd3-interpolate'
-import { pointDistance, pointIntersectsLineSegment } from 'geometryUtils'
+import { pointDistance, pointIntersectsLineSegment } from '../index.js'
 
 export default function (points, transformFunc, visibilityTreshold) {
   const interpolatedPoints = []

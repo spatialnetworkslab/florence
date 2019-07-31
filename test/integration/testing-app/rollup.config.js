@@ -36,7 +36,7 @@ export default {
     commonjs(),
 
     json({
-      include: ['node_modules/proj4/**', '**/src/data/**'],
+      include: ['**/src/data/**'],
       compact: true
     }),
 

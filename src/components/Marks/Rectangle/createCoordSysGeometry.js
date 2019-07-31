@@ -1,5 +1,5 @@
 import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
-import { isInvalid, isUndefined, isDefined } from 'equals.js'
+import { isInvalid, isUndefined, isDefined } from '../../../utils/equals.js'
 
 export default function (coordinateProps, sectionContext, coordinateTransformationContext, interpolate) {
   const scaledCoordinates = scaleCoordinates(coordinateProps, sectionContext)

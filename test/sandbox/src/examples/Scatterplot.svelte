@@ -2,9 +2,9 @@
 	import { scaleLinear } from 'd3-scale'
 	import { 
     Graphic, Section, CoordinateTransformation, 
-    PointLayer, Point,
-    DataContainer 
+    PointLayer, Point 
   } from '../../../../src/'
+  import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
 	const data = new DataContainer(generateData(N, 0.25))

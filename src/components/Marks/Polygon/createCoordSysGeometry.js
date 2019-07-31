@@ -1,6 +1,6 @@
 import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
-import { scaleGeometry, linearRingIsClockwise } from 'geometryUtils'
-import { isDefined, isUndefined } from 'equals.js'
+import { scaleGeometry, linearRingIsClockwise } from '../../../utils/geometryUtils/index.js'
+import { isDefined, isUndefined } from '../../../utils/equals.js'
 
 export default function (
   geometryProps, sectionContext, coordinateTransformationContext, interpolate

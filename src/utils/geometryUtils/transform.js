@@ -1,4 +1,4 @@
-import { coordEach } from '@turf/meta'
+import coordEach from './coordEach.js'
 
 export function scaleGeometries (geometries, { scaleX, scaleY }) {
   const transformFunc = position => [scaleX(position[0]), scaleY(position[1])]
