@@ -1,4 +1,4 @@
-import { interpolateGeometry, transformGeometry } from 'geometryUtils'
+import { interpolateGeometry, transformGeometry } from '../../../utils/geometryUtils/index.js'
 
 export function createCoordSysGeometry (
   geometry, coordinateTransformationContext, interpolate, visibilityTreshold = 1
