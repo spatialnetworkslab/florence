@@ -1,7 +1,8 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, CoordinateTransformation, Rectangle, RectangleLayer, DataContainer } from '../../../../src/'
-  
+  import { Graphic, Section, CoordinateTransformation, Rectangle, RectangleLayer } from '../../../../src/'
+  import DataContainer from '@snlab/florence-datacontainer'
+
   let data = new DataContainer({ 
     quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
     fruit: [NaN, 'anchovies', 'banana', 'banana', 'coconut', 'coconut', 'durian', 'durian']

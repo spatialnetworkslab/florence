@@ -15,7 +15,7 @@
   import * as ZoomContext from '../../Core/Section/ZoomContext'
   
   import validateAesthetics from './validateAesthetics.js'
-  import { transformGeometries } from 'geometryUtils'
+  import { transformGeometries } from '../../../utils/geometryUtils/index.js'
   import { layerCoordSysGeometryFuncs } from './coordSysGeometryFuncs.js'
   import { layerRepresentAsPolygonFuncs } from './representAsPolygonFuncs.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'

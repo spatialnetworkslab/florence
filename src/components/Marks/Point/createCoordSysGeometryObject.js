@@ -1,9 +1,9 @@
 import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
-import { scaleGeometries } from 'geometryUtils'
+import { scaleGeometries } from '../../../utils/geometryUtils/index.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
 import { ensureValidCombination } from './createCoordSysGeometry.js'
-import { isDefined, isUndefined } from 'equals.js'
+import { isDefined, isUndefined } from '../../../utils/equals.js'
 import getNumberOfMarks from '../utils/getNumberOfMarks.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {

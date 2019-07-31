@@ -4,7 +4,7 @@ import polygonAesthetics from '../Polygon/aesthetics.js'
 import lineAesthetics from '../Line/aesthetics.js'
 import labelAesthetics from '../Label/aesthetics.js'
 
-import { isDefined, isUndefined } from 'equals.js'
+import { isDefined, isUndefined } from '../../../utils/equals.js'
 
 export default function (type, aesthetics) {
   if (type === 'Point') {

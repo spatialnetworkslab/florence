@@ -18,7 +18,7 @@
   import { markCoordSysGeometryFuncs } from './coordSysGeometryFuncs.js'
   import { markRepresentAsPolygonFuncs } from './representAsPolygonFuncs.js'
   import { createDataNecessaryForIndexingMark } from './createDataNecessaryForIndexing.js'
-  import { transformGeometry } from 'geometryUtils'
+  import { transformGeometry } from '../../../utils/geometryUtils/index.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
 
   import generatePath from '../utils/generatePath.js'

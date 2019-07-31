@@ -1,10 +1,10 @@
-import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
+import { createCoordSysGeometryObject } from '../../../utils/geometryUtils/index.js'
 import { scaleGeometries } from 'geometryUtils'
 import {
   ensureValidCombination, createScaledGeometryArrayFromXYProps
 } from '../utils/createScaledGeometryFromXYProps.js'
 import getIndexArray from '../utils/getIndexArray.js'
-import { isDefined, isUndefined } from 'equals.js'
+import { isDefined, isUndefined } from '../../../utils/equals.js'
 
 export default function (
   geometryProps, sectionContext, coordinateTransformationContext, indexProp, interpolate

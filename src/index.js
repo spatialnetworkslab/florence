@@ -17,5 +17,6 @@ export { default as PolygonLayer } from './components/Marks/Polygon/PolygonLayer
 export { default as LineLayer } from './components/Marks/Line/LineLayer.svelte'
 export { default as LabelLayer } from './components/Marks/Label/LabelLayer.svelte'
 
-export { default as DataContainer } from './classes/DataContainer'
 export { default as createGeoScales } from './helpers/createGeoScales.js'
+export { default as createPanHandler } from './helpers/createPanHandler'
+export { default as createZoomHandler } from './helpers/createZoomHandler'
