@@ -23,15 +23,25 @@ export default class WheelHandler extends SectionInteractionHandler {
   // normalised for most browsers, trackpads and mouses
   // based on openstreemtmaps: https://github.com/openstreetmap/iD/blob/f61c482188b1b747fdf528ac2992f6ed9e8a2b6a/modules/renderer/map.js#L376-L396
   // and normalize-wheel: https://github.com/basilfx/normalize-wheel/blob/master/src/normalizeWheel.js
-  // Enables side scroll and up down scroll
+  // Enables normal scrolling motion + legacy delta tracking
   _defaultWheelDelta (event) {
     let delta
 
+    // Legacy
+    // IE pixels
+    if ('wheelDelta' in event && event.wheelDelta !== 0) {
+      delta = -event.wheelDelta
+    } 
+
+    // Mozilla
+    if ('detail' in event && event.detail !== 0) {
+      delta = -event.detail
+    } 
+
+    // Most other cases
     if ('deltaY' in event && event.deltaY !== 0) {
       delta = -event.deltaY
-    } else if ('deltaX' in event && event.deltaX !== 0) {
-      delta = -event.deltaX
-    }
+    } 
 
     return delta * (event.deltaMode ? scrollLineHeight : 1) / 500
   }
