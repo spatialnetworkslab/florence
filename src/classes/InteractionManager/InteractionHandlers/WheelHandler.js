@@ -1,7 +1,7 @@
 import SectionInteractionHandler from './SectionInteractionHandler.js'
 import getScrollLineHeight from './utils/getScrollLineHeight.js'
 
-const scrollLineHeight = getScrollLineHeight()
+let scrollLineHeight
 
 export default class WheelHandler extends SectionInteractionHandler {
   _addEventListener () {
@@ -42,6 +42,10 @@ export default class WheelHandler extends SectionInteractionHandler {
     if ('deltaY' in event && event.deltaY !== 0) {
       delta = -event.deltaY
     } 
+
+    if (!scrollLineHeight) {
+      scrollLineHeight = getScrollLineHeight()
+    }
 
     return delta * (event.deltaMode ? scrollLineHeight : 1) / 500
   }
