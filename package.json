@@ -1,5 +1,5 @@
 {
-  "name": "florence",
+  "name": "@snlab/florence",
   "version": "0.0.1",
   "svelte": "src/index.js",
   "main": "dist/index.js",
@@ -51,8 +51,13 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test:integration": "run-p --race dev:test cy:run",
-    "test:unit": "jest"
+    "test:unit": "jest",
+    "prepublishOnly": "npm run build"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "jest": {
     "verbose": true,
     "testMatch": [
