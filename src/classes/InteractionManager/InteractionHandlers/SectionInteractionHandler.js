@@ -10,7 +10,7 @@ export default class SectionInteractionHandler {
     this._addEventListener()
   }
 
-  removeSectionInteraction (sectionId) {
+  removeSectionInteraction () {
     this._removeEventListener()
     this._callback = undefined
   }

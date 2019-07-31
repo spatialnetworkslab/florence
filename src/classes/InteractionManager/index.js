@@ -87,9 +87,9 @@ export default class InteractionManager {
     if (interactionName === 'pan') this._panHandler.addSectionInteraction(callback)
   }
 
-  removeAllSectionInteractions (sectionId) {
-    this._wheelHandler.removeSectionInteraction(sectionId)
-    this._panHandler.removeSectionInteraction(sectionId)
+  removeAllSectionInteractions () {
+    this._wheelHandler.removeSectionInteraction()
+    this._panHandler.removeSectionInteraction()
   }
 
   // Add/remove layer interactions
