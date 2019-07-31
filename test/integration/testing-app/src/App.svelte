@@ -5,6 +5,7 @@
   import Rectangles from './pages/Rectangles.svelte'
   import Geo from './pages/Geo.svelte'
   import LabelMark from './pages/LabelMark.svelte'
+  import Zoom from './pages/Zoom.svelte'
 
 
   // and add them to this component array
@@ -20,6 +21,10 @@
     { name: "Label Mark",
       url: "/label-mark",
       component: LabelMark
+    },
+     { name: "Zoom",
+      url: "/zoom",
+      component: Zoom
     }
   ]
 </script>
