@@ -11,10 +11,10 @@ context('Assertions', () => {
     })
 
     it('[interaction] clicking on line changes color', () => {
-      const line = cy.get('./line').first()
-      line.should('have.attr', 'fill', 'red')
-      line.click()
-      line.should('have.attr', 'fill', 'green')
+      const line = cy.get('.line').first()
+      line.should('have.attr', 'stroke', 'red')
+      line.click({ force: true })
+      line.should('have.attr', 'stroke', 'green')
     })
   })
 })
