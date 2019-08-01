@@ -1,5 +1,5 @@
-import { createCoordSysGeometryObject } from '../../../utils/geometryUtils/index.js'
-import { scaleGeometries } from 'geometryUtils'
+import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
+import { scaleGeometries } from '../../../utils/geometryUtils'
 import {
   ensureValidCombination, createScaledGeometryArrayFromXYProps
 } from '../utils/createScaledGeometryFromXYProps.js'

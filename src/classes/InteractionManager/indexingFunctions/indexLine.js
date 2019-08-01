@@ -1,4 +1,4 @@
-import { calculateBBoxGeometry } from 'geometryUtils'
+import { calculateBBoxGeometry } from '../../../utils/geometryUtils'
 import createItemFromBBox from './utils/createItemFromBBox.js'
 
 export function indexLine (markData) {

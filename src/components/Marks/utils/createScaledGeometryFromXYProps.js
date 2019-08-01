@@ -1,5 +1,5 @@
-import { linearRingIsClockwise } from 'geometryUtils'
-import { isDefined } from 'equals.js'
+import { linearRingIsClockwise } from '../../../utils/geometryUtils'
+import { isDefined } from '../../../utils/equals.js'
 import getNumberOfMarks from './getNumberOfMarks.js'
 
 export function createScaledGeometryFromXYProps (x, y, scales, markType) {

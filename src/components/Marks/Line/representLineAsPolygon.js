@@ -1,4 +1,4 @@
-import { pointDistance } from 'geometryUtils'
+import { pointDistance } from '../../../utils/geometryUtils'
 
 export function representLineAsPolygon (lineString, { strokeWidth }) {
   const lineCoordinates = lineString.coordinates

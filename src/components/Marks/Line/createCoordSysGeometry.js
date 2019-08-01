@@ -1,6 +1,6 @@
-import { scaleGeometry } from 'geometryUtils'
+import { scaleGeometry } from '../../../utils/geometryUtils'
 import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
-import { isDefined, isUndefined } from 'equals.js'
+import { isDefined, isUndefined } from '../../../utils/equals.js'
 import { createScaledGeometryFromXYProps, ensureValidCombination }
   from '../utils/createScaledGeometryFromXYProps.js'
 

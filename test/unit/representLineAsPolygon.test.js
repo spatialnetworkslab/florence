@@ -1,4 +1,4 @@
-import { findLambda, getParallelPoints } from '../representLineAsPolygon.js'
+import { findLambda, getParallelPoints } from '../../src/components/Marks/Line/representLineAsPolygon.js'
 
 describe('representLineAsPolygon', () => {
   test('findLambda works correctly', () => {
