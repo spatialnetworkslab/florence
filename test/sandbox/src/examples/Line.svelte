@@ -15,6 +15,8 @@
       [[1, 1], [4, 4], [1, 4], [4, 1]]
     ]
   }
+
+  let clicked = false
 </script>
 
 <Graphic width={500} height={500}>
@@ -30,15 +32,16 @@
     <Line
       geometry={multiLineString}
       strokeWidth={2}
-      onClick={console.log}
+      stroke={clicked ? 'green': 'red'}
+      onClick={clicked = true}
     />
 
     <LineLayer
       x={[data.column('x')]}
       y={[data.column('y')]}
       strokeWidth={10}
-      stroke={'red'}
-      onClick={console.log}
+      stroke={clicked ? 'green' : 'red'}
+      onClick={clicked = true}
     />
   
   </Section>
