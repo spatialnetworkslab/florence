@@ -34,10 +34,14 @@
 		<nav>
       <ul class="toc">
           {#each items as item}
-              <li><a href=repl#{item.slug}>{item.title}</a></li>  
+              <li><a href=repl#{item.slug}>{item.title}</a></li>
           {/each}
       </ul>
     </nav>
+    <!-- this is a horrible hack but sapper needs to know about all the 
+    [slug].json links and we don't have them in preload currently so this
+    will point to a page that has all of the json files listes -->
+    <a style="visibility: hidden" href="repl/all">List of all examples (just to get export to work..)</a>
 	</div>
 	<div class="right-col">
 		<main>
