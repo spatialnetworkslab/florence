@@ -1,6 +1,7 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { DataContainer, Graphic, Section, Line, LineLayer } from '../../../../src'
+  import { Graphic, Section, Line, LineLayer } from '../../../../src/'
+  import DataContainer from '@snlab/florence-datacontainer'
 
   // const data = new DataContainer({
   //   x: [1, 2, 4, 6, 9, 10, 12, 13],
