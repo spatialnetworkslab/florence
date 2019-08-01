@@ -1,6 +1,7 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { DataContainer, Graphic, Section, Layer, Mark } from '../../../../src/'
+  import { Graphic, Section, Layer, Mark } from '../../../../src/'
+  import DataContainer from '@snlab/florence-datacontainer'
 
   let currentChartType = 'scatterplot'
 

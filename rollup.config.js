@@ -5,7 +5,6 @@ import commonjs from 'rollup-plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import globals from 'rollup-plugin-node-globals';
-import json from 'rollup-plugin-json';
 import pkg from './package.json';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -30,14 +29,6 @@ export default {
 		resolve(),
 		commonjs(),
 		// analyze({ summaryOnly: true }),
-
-		// proj4 imports package.json so we need a json loader
-		// this is supposedly fixed (https://github.com/proj4js/proj4js/issues/214#issuecomment-274966431)
-		// but apparently not (at least with rollup)
-		json({
-			include: 'node_modules/proj4/**',
-			compact: true
-		}),
 
 		// Allows you to use 'process'
 		globals(),

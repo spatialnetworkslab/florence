@@ -1,5 +1,6 @@
 <script>
-  import { Graphic, Section, PolygonLayer, DataContainer, createGeoScales } from '../../../../src/'
+  import { Graphic, Section, PolygonLayer, createGeoScales } from '../../../../src/'
+  import DataContainer from '@snlab/florence-datacontainer'
 
   // import data
   import hex from '../data/hexagons.json'

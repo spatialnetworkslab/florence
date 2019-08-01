@@ -1,11 +1,13 @@
 import ClickHandler from './InteractionHandlers/ClickHandler.js'
 import MouseoverHandler from './InteractionHandlers/MouseoverHandler.js'
 import MouseoutHandler from './InteractionHandlers/MouseoutHandler.js'
+import WheelHandler from './InteractionHandlers/WheelHandler.js'
+import PanHandler from './InteractionHandlers/PanHandler.js'
 import { markIndexing, layerIndexing } from './indexingFunctions'
 
 export default class InteractionManager {
   constructor () {
-    this._sections = {}
+    this._section = undefined
     this._layers = {}
     this._marks = {}
 
@@ -15,6 +17,8 @@ export default class InteractionManager {
     this._clickHandler = new ClickHandler(this)
     this._mouseoverHandler = new MouseoverHandler(this)
     this._mouseoutHandler = new MouseoutHandler(this)
+    this._wheelHandler = new WheelHandler(this)
+    this._panHandler = new PanHandler(this)
   }
 
   // Initialization
@@ -24,6 +28,23 @@ export default class InteractionManager {
 
   linkEventManager (eventManager) {
     this._eventManager = eventManager
+  }
+
+  // Section loading and removing
+  loadSection (sectionData) {
+    const sectionCoordinates = getSectionCoordinates(sectionData)
+    this._section = Object.assign(sectionData, sectionCoordinates)
+  }
+
+  sectionIsLoaded () {
+    if (this._section) {
+      return true
+    }
+    return false
+  }
+
+  removeSection () {
+    this._section = undefined
   }
 
   // Layer loading and removing
@@ -60,6 +81,17 @@ export default class InteractionManager {
     delete this._marks[markId]
   }
 
+  // Add/remove section interactions
+  addSectionInteraction (interactionName, callback) {
+    if (interactionName === 'wheel') this._wheelHandler.addSectionInteraction(callback)
+    if (interactionName === 'pan') this._panHandler.addSectionInteraction(callback)
+  }
+
+  removeAllSectionInteractions () {
+    this._wheelHandler.removeSectionInteraction()
+    this._panHandler.removeSectionInteraction()
+  }
+
   // Add/remove layer interactions
   addLayerInteraction (interactionName, layerId, callback) {
     if (interactionName === 'click') this._clickHandler.addLayerInteraction(layerId, callback)
@@ -84,5 +116,14 @@ export default class InteractionManager {
     this._clickHandler.removeMarkInteraction(markId)
     this._mouseoverHandler.removeMarkInteraction(markId)
     this._mouseoutHandler.removeMarkInteraction(markId)
+  }
+}
+
+function getSectionCoordinates (sectionData) {
+  return {
+    x1: sectionData.rangeX[0],
+    x2: sectionData.rangeX[1],
+    y1: sectionData.rangeY[0],
+    y2: sectionData.rangeY[1]
   }
 }
