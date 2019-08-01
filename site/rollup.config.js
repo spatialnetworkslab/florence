@@ -37,10 +37,6 @@ export default {
         dedupe
       }),
       commonjs(),
-      json({
-        include: '../node_modules/proj4/**',
-        compact: true
-      }),
 
       legacy && babel({
         extensions: ['.js', '.mjs', '.html', '.svelte'],
