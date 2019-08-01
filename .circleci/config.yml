@@ -35,8 +35,8 @@ jobs:
 workflows:
   unit_and_integration:
     jobs:
-      - unit_test
+      # - unit_test # running unit tests from cypress workspace to save time
       - cypress/run:
           yarn: true
-          command: yarn run test:integration
+          command: yarn run test:unit && yarn run test:integration
 
