@@ -25,18 +25,32 @@ export default class SpatialIndex {
   // Mark loading and removing
   indexMark (markId) {
     const indexableItem = this._interactionHandler._marks[markId]
-    this._rbush.insert(indexableItem)
+
+    if (multipleSegments(indexableItem)) {
+      this._rbush.load(indexableItem)
+    } else {
+      this._rbush.insert(indexableItem)
+    }
   }
 
   unindexMark (markId) {
     const indexableItem = this._interactionHandler._marks[markId]
-    this._rbush.remove(indexableItem)
+
+    if (multipleSegments(indexableItem)) {
+      for (let i = 0; i < indexableItem.length; i++) {
+        const item = indexableItem[i]
+        this._rbush.remove(item)
+      }
+    } else {
+      this._rbush.remove(indexableItem)
+    }
   }
 
   // Query functions
   queryMouseCoordinates (mouseCoordinates, radius) {
     const searchArea = searchAreaFromCoordinates(mouseCoordinates, radius)
     const indexQueryResults = this._rbush.search(searchArea)
+
     return this._getHits(mouseCoordinates, indexQueryResults)
   }
 
@@ -63,4 +77,8 @@ function searchAreaFromCoordinates (coordinates, radius = 3) {
     minY: coordinates.y - radius,
     maxY: coordinates.y + radius
   }
+}
+
+function multipleSegments (indexableItem) {
+  return indexableItem.constructor === Array
 }

@@ -45,22 +45,18 @@ export function createTransitionableLayer (aestheticName, aestheticValue, transi
 }
 
 function createOptionsFromDuration (aestheticName, duration) {
-  switch (aestheticName) {
-    case 'geometry':
-      return { duration, easing: cubicOut, interpolate: transitionGeometries }
-
-    default:
-      return { duration, easing: cubicOut, interpolate: interpolateLayer }
+  if (aestheticName === 'geometry') {
+    return { duration, easing: cubicOut, interpolate: transitionGeometries }
+  } else {
+    return { duration, easing: cubicOut, interpolate: interpolateLayer }
   }
 }
 
 function createOptionsFromOptions (aestheticName, transitionOptions) {
-  switch (aestheticName) {
-    case 'geometry':
-      return Object.assign({ interpolate: transitionGeometries }, transitionOptions)
-
-    default:
-      return Object.assign({ interpolate: interpolateLayer }, transitionOptions)
+  if (aestheticName === 'geometry') {
+    return Object.assign({ interpolate: transitionGeometries }, transitionOptions)
+  } else {
+    return Object.assign({ interpolate: interpolateLayer }, transitionOptions)
   }
 }
 

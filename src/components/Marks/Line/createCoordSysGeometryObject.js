@@ -28,7 +28,7 @@ function createScaledGeometryArray (geometryProps, sectionContext) {
 
   if (isUndefined(geometryProps.geometry)) {
     return createScaledGeometryArrayFromXYProps(
-      geometryProps.x, geometryProps.y, scales, 'Polygon'
+      geometryProps.x, geometryProps.y, scales, 'Line'
     )
   }
 }

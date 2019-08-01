@@ -9,6 +9,7 @@
   import Scatterplot from './examples/Scatterplot.svelte'
   import ZoomPan from './examples/ZoomPan.svelte'
   import BaseMark from './examples/BaseMark.svelte'
+  import Line from './examples/Line.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
 
   // and add them to this component array
@@ -48,7 +49,12 @@
       url: '/basemark',
       component: BaseMark
     },
-     {
+    {
+      name: 'Line',
+      url: '/line',
+      component: Line
+    },
+    {
       name: 'Geo Polygons',
       url: '/geopolygons',
       component: GeoPolygons

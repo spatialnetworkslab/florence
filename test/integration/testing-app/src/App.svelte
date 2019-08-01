@@ -6,7 +6,7 @@
   import Geo from './pages/Geo.svelte'
   import LabelMark from './pages/LabelMark.svelte'
   import Zoom from './pages/Zoom.svelte'
-
+  import Line from './pages/Line.svelte'
 
   // and add them to this component array
   let components = [
@@ -22,9 +22,14 @@
       url: "/label-mark",
       component: LabelMark
     },
-     { name: "Zoom",
+    { name: "Zoom",
       url: "/zoom",
       component: Zoom
+    },
+    {
+      name: 'Line',
+      url: '/line',
+      component: Line
     }
   ]
 </script>

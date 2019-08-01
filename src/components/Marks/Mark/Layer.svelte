@@ -334,7 +334,7 @@
 
   function updateScreenGeometryObject () {
     if (_asPolygon) {
-      screenGeometryObject = representAsPolygonObject(pixelGeometryObject, { radiusObject })
+      screenGeometryObject = representAsPolygonObject(pixelGeometryObject, { radiusObject, strokeWidthObject })
     } else {
       screenGeometryObject = pixelGeometryObject
     }
@@ -361,14 +361,19 @@
 
   function createDataNecessaryForIndexing () {
     return createDataNecessaryForIndexingLayer(
-      type, layerId, indexArray, { pixelGeometryObject, screenGeometryObject }, { radiusObject }
+      type, layerId, indexArray, { pixelGeometryObject, screenGeometryObject }, { radiusObject, strokeWidthObject }
     )
   }
+
+  $: renderPolygon = !['Point', 'Line', 'Label'].includes(type) || _asPolygon
+  $: renderCircle = type === 'Point' && !_asPolygon
+  $: renderLine = type === 'Line' && !_asPolygon
+  $: renderLabel = type === 'Label'
 </script>
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#if !(['Point', 'Label'].includes(type)) || _asPolygon}
+  {#if renderPolygon}
 
     {#each indexArray as $index ($index)}
 
@@ -387,7 +392,7 @@
 
   {/if}
 
-  {#if type === 'Point' && !_asPolygon}
+  {#if renderCircle}
 
     {#each indexArray as $index ($index)}
 
@@ -408,7 +413,24 @@
 
   {/if}
 
-  {#if type === 'Label'}
+  {#if renderLine}
+
+    {#each indexArray as $index ($index)}
+
+      <path
+        class="line"
+        d={generatePath($tr_screenGeometryObject[$index])}
+        fill="none"
+        stroke-width={$tr_strokeWidthObject[$index]}
+        stroke={$tr_strokeObject[$index]}
+        style={`opacity: ${$tr_opacityObject[$index]}`}
+      />
+
+    {/each}
+  
+  {/if}
+
+  {#if renderLabel}
 
     {#each indexArray as $index ($index)}
 
@@ -429,7 +451,7 @@
         text-anchor={parsedTextAnchorPointObject[$index].textAnchor}
         dominant-baseline={parsedTextAnchorPointObject[$index].dominantBaseline}
       >
-      {textObject[$index]}
+        {textObject[$index]}
       </text>
     
     {/each}

@@ -288,7 +288,7 @@
 
   function updateScreenGeometry () {
     if (_asPolygon) {
-      screenGeometry = representAsPolygon(pixelGeometry, { radius: aesthetics.radius })
+      screenGeometry = representAsPolygon(pixelGeometry, aesthetics)
     } else {
       screenGeometry = pixelGeometry
     }
@@ -315,14 +315,19 @@
 
   function createDataNecessaryForIndexing () {
     return createDataNecessaryForIndexingMark(
-      type, markId, { screenGeometry, pixelGeometry }, { radius: aesthetics.radius, fontSize: aesthetics.fontSize }
+      type, markId, { screenGeometry, pixelGeometry }, aesthetics
     )
   }
+
+  $: renderPolygon = !['Point', 'Line', 'Label'].includes(type) || _asPolygon
+  $: renderCircle = type === 'Point' && !_asPolygon
+  $: renderLine = type === 'Line' && !_asPolygon
+  $: renderLabel = type === 'Label'
 </script>
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#if !(['Point', 'Label'].includes(type)) || _asPolygon}
+  {#if renderPolygon}
 
     <path
       class={type.toLowerCase()}
@@ -337,7 +342,7 @@
 
   {/if}
 
-  {#if type === 'Point' && !_asPolygon}
+  {#if renderCircle}
 
     <circle 
       class="point"
@@ -354,7 +359,20 @@
 
   {/if}
 
-  {#if type === 'Label'}
+  {#if renderLine}
+
+    <path
+      class="line"
+      d={generatePath($tr_screenGeometry)}
+      fill="none"
+      stroke-width={$tr_strokeWidth}
+      stroke={$tr_stroke}
+      style={`opacity: ${$tr_opacity}`}
+    />
+  
+  {/if}
+
+  {#if renderLabel}
 
     <text 
       class="label"
@@ -373,7 +391,7 @@
       text-anchor={parsedTextAnchorPoint.textAnchor}
       dominant-baseline={parsedTextAnchorPoint.dominantBaseline}
     >
-    {aesthetics.text}
+      {aesthetics.text}
     </text>
 
   {/if}
