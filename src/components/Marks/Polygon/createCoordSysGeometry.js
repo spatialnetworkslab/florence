@@ -1,7 +1,7 @@
 import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
 import { scaleGeometry } from '../../../utils/geometryUtils/index.js'
 import { isDefined, isUndefined } from '../../../utils/equals.js'
-import { createScaledGeometryFromXYProps, ensureValidCombination }
+import { createScaledGeometryFromXYProps, ensureValidCombination } from '../utils/createScaledGeometryFromXYProps.js'
 
 export default function (
   geometryProps, sectionContext, coordinateTransformationContext, interpolate
