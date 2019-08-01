@@ -13,7 +13,7 @@ context('Assertions', () => {
     it('[interaction] clicking on line changes color', () => {
       const line = cy.get('.line').first()
       line.should('have.attr', 'stroke', 'red')
-      line.click({ force: true })
+      line.click(1, 1, { force: true })
       line.should('have.attr', 'stroke', 'green')
     })
   })
