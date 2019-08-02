@@ -41,6 +41,22 @@
     delete hoverPoints[ix]
     hoverPoints = hoverPoints
   }
+  
+  let bigPoint = { x: 50, y: 50 }
+  let dragPoint
+
+  function handleDragStart (pixelCoords, localCoords, mouseEvent) {
+    dragPoint = localCoords
+  }
+
+  function handleDrag (pixelCoords, localCoords, mouseEvent) {
+    dragPoint = localCoords
+  }
+
+  function handleDragEnd (pixelCoords, localCoords, mouseEvent) {
+    bigPoint = dragPoint
+    dragPoint = undefined
+  }
 
 </script>
 
@@ -109,14 +125,27 @@
         {/each} -->
 
         <Point
-          x={50}
-          y={50}
+          x={bigPoint.x}
+          y={bigPoint.y}
           fill={big ? 'blue' : 'red'}
+          opacity={dragPoint ? 0 : 1}
           radius={big ? 50 : 10}
           onClick={() => log('BOOM')}
           onMouseover={() => big = true}
           onMouseout={() => big = false}
+          onDragStart={handleDragStart}
+          onDrag={handleDrag}
+          onDragEnd={handleDragEnd}
         />
+
+        {#if dragPoint}
+          <Point
+            x={dragPoint.x}
+            y={dragPoint.y}
+            radius={10}
+            fill={'red'}
+          />
+        {/if}
 
         {#each hoverPointKeys as key (key)}
 
@@ -128,6 +157,7 @@
           />
 
         {/each}
+
 
       </CoordinateTransformation>
 		

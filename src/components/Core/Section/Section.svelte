@@ -98,6 +98,7 @@
     SectionContext.update(
       newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
     )
+    interactionManager.linkSection($newSectionContext)
   }
 
   // Update zooming and panning

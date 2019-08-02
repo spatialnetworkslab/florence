@@ -3,6 +3,7 @@ import MouseoverHandler from './InteractionHandlers/MouseoverHandler.js'
 import MouseoutHandler from './InteractionHandlers/MouseoutHandler.js'
 import WheelHandler from './InteractionHandlers/WheelHandler.js'
 import PanHandler from './InteractionHandlers/PanHandler.js'
+import DragHandler from './InteractionHandlers/DragHandler.js'
 import { markIndexing, layerIndexing } from './indexingFunctions'
 
 export default class InteractionManager {
@@ -19,11 +20,16 @@ export default class InteractionManager {
     this._mouseoutHandler = new MouseoutHandler(this)
     this._wheelHandler = new WheelHandler(this)
     this._panHandler = new PanHandler(this)
+    this._dragHandler = new DragHandler(this)
   }
 
   // Initialization
   setId (id) {
     this._id = id
+  }
+
+  linkSection (section) {
+    this._sections = section
   }
 
   linkEventManager (eventManager) {
@@ -110,12 +116,14 @@ export default class InteractionManager {
     if (interactionName === 'click') this._clickHandler.addMarkInteraction(markId, callback)
     if (interactionName === 'mouseover') this._mouseoverHandler.addMarkInteraction(markId, callback)
     if (interactionName === 'mouseout') this._mouseoutHandler.addMarkInteraction(markId, callback)
+    if (interactionName === 'drag') this._dragHandler.addMarkInteraction(markId, callback)
   }
 
   removeAllMarkInteractions (markId) {
     this._clickHandler.removeMarkInteraction(markId)
     this._mouseoverHandler.removeMarkInteraction(markId)
     this._mouseoutHandler.removeMarkInteraction(markId)
+    this._dragHandler.removeMarkInteraction(markId)
   }
 }
 

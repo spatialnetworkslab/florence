@@ -20,6 +20,9 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onDragStart = undefined
+  export let onDrag = undefined
+  export let onDragEnd = undefined
 </script>
 
 <Mark
@@ -28,5 +31,6 @@
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
+  {onDragStart} {onDrag} {onDragEnd}
   _asPolygon={false}
 />
