@@ -28,6 +28,7 @@ export default {
 		// https://github.com/rollup/rollup-plugin-commonjs
 		resolve(),
 		commonjs(),
+		// analyze({ summaryOnly: true }),
 
 		// Allows you to use 'process'
 		globals(),
