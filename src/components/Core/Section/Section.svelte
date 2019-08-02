@@ -48,56 +48,37 @@
   const zoomContext = ZoomContext.init()
   
   let scaledCoordinates
+  let rangeX
+  let rangeY
   
   // Set up InteractionManager
   let interactionManager = new InteractionManager()
   interactionManager.setId(sectionId)
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
-  let isInteractive = undefined
 
-    // Interactivity
-  $: isInteractive = onWheel !== undefined || onPan !== undefined
-
-  onMount(() => {
-    updateInteractionManagerIfNecessary()
-  })
-  
-  onDestroy(() => {
-    removeSectionInteractionsIfNecessary()
-  })
-  
-  // Helpers
-  function updateInteractionManagerIfNecessary () {
-    if (isInteractive) {
-      let scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-      let rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
-      let rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
-      
-      $interactionManagerContext.loadSection({ rangeX, rangeY, sectionId })
-
-      if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', onWheel)
-      if (onPan) $interactionManagerContext.addSectionInteraction('pan', onPan)
-    }
-  }
-  
-  function removeSectionInteractionsIfNecessary () {
-    if ($interactionManagerContext.sectionIsLoaded()) {
-      $interactionManagerContext.removeAllSectionInteractions()
-      $interactionManagerContext.removeSection()
-    }
-  }
-
-  // Update InteractionManager on changes
+  // Keep SectionContext and InteractionManagerContext up to date
   $: {
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-    let rangeX = [scaledCoordinates.x1 + padding, scaledCoordinates.x2 - padding]
-    let rangeY = [scaledCoordinates.y1 + padding, scaledCoordinates.y2 - padding]
+    rangeX = [scaledCoordinates.x1 + padding, scaledCoordinates.x2 - padding]
+    rangeY = [scaledCoordinates.y1 + padding, scaledCoordinates.y2 - padding]
+
     if (flipX) rangeX.reverse()
     if (flipY) rangeY.reverse()
+    
     SectionContext.update(
       newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
     )
+
+    $interactionManagerContext.loadSection({ sectionId, rangeX, rangeY, scaleX, scaleY })
+  }
+
+  // Change callbacks if necessary
+  $: {
+    $interactionManagerContext.removeAllSectionInteractions()
+
+    if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', onWheel)
+    if (onPan) $interactionManagerContext.addSectionInteraction('pan', onPan)
   }
 
   // Update zooming and panning
