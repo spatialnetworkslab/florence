@@ -5,6 +5,7 @@
   import * as SectionContext from '../Section/SectionContext'
   import * as EventManagerContext from './EventManagerContext'
   import * as InteractionManagerContext from '../Section/InteractionManagerContext'
+  import * as CoordinateTransformationContext from '../Section/CoordinateTransformationContext'
   import * as ZoomContext from '../Section/ZoomContext'
 
   import EventManager from '../../../classes/EventManager'
@@ -22,6 +23,7 @@
   const sectionContext = SectionContext.init()
   const eventManagerContext = EventManagerContext.init()
   const interactionManagerContext = InteractionManagerContext.init()
+  CoordinateTransformationContext.init()
   ZoomContext.init()
 
   $: {
