@@ -1,6 +1,6 @@
 <script>
   import * as SectionContext from '../Section/SectionContext'
-  import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
+  import * as CoordinateTransformationContext from '../Section/CoordinateTransformationContext'
 
   import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
   import { getAllCells, mergeNameSpecs } from './gridUtils.js'

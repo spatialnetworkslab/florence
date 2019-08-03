@@ -39,8 +39,7 @@ class CoordinateTransformationContext {
 const key = {}
 
 export function subscribe () {
-  // silly hack for when there is no CoordinateTransformation context
-  return getContext(key) ? getContext(key) : writable()
+  return getContext(key)
 }
 
 export function init () {
@@ -51,11 +50,17 @@ export function init () {
 }
 
 export function update (coordinateTransformationContext, options) {
-  coordinateTransformationContext.set(new CoordinateTransformationContext(options))
+  if (options.transformation) {
+    coordinateTransformationContext.set(new CoordinateTransformationContext(options))
+  } else {
+    coordinateTransformationContext.set(undefined)
+  }
 }
 
 export function ensureNotParent () {
   if (getContext(key)) {
-    throw new Error('CoordinateTransformation components cannot contain anything other than Marks or Layers')
+    throw new Error(
+      'Sections with a coordinate transformation cannot contain anything other than Marks or Layers'
+    )
   }
 }

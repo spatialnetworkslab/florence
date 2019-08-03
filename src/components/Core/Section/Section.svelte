@@ -9,7 +9,7 @@
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
   import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from './SectionContext'
-  import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
+  import * as CoordinateTransformationContext from './CoordinateTransformationContext'
   import * as EventManagerContext from '../Graphic/EventManagerContext'
   import * as InteractionManagerContext from './InteractionManagerContext'
   import * as ZoomContext from './ZoomContext'
@@ -29,6 +29,7 @@
   export let flipX = false
   export let flipY = false
   export let zoomIdentity = undefined
+  export let transformation = undefined
 
   // Interactivity
   export let onWheel = undefined
@@ -43,6 +44,7 @@
   const sectionContext = SectionContext.subscribe()
   const newSectionContext = SectionContext.init()
   CoordinateTransformationContext.ensureNotParent()
+  const coordinateTransformationContext = CoordinateTransformationContext.init()
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
   const zoomContext = ZoomContext.init()
@@ -57,7 +59,7 @@
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
-  // Keep SectionContext and InteractionManagerContext up to date
+  // Keep contexts up to date
   $: {
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
     rangeX = [scaledCoordinates.x1 + padding, scaledCoordinates.x2 - padding]
@@ -72,6 +74,10 @@
 
     SectionContext.update(
       newSectionContext, updatedSectionContext
+    )
+
+    CoordinateTransformationContext.update(
+      coordinateTransformationContext, { rangeX, rangeY, transformation }
     )
 
     $interactionManagerContext.loadSection(updatedSectionContext)
