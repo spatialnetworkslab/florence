@@ -2,13 +2,14 @@ import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
 
 class SectionContext {
-  constructor ({ sectionId, rangeX, rangeY, scaleX, scaleY }) {
+  constructor ({ sectionId, rangeX, rangeY, scaleX, scaleY, padding }) {
     this._sectionId = sectionId
 
     this._rangeX = undefined
     this._rangeY = undefined
     this._scaleX = undefined
     this._scaleY = undefined
+    this._padding = padding
 
     this._handleRanges(rangeX, rangeY)
     this._handleScales(scaleX, scaleY)

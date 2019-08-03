@@ -367,7 +367,7 @@
       fill="none"
       stroke-width={$tr_strokeWidth}
       stroke={$tr_stroke}
-      style={`opacity: ${$tr_opacity}`}
+      opacity={$tr_opacity}
     />
   
   {/if}
