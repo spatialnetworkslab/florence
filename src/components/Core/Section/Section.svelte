@@ -75,6 +75,7 @@
 
   // Change callbacks if necessary
   $: {
+    console.log('updating...')
     $interactionManagerContext.removeAllSectionInteractions()
 
     if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', onWheel)

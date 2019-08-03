@@ -31,7 +31,9 @@
   let transformation = 'identity'
   let duration = 2000
 
-  const log = console.log
+  $: handler = transformation === 'identity' ?
+    () => { console.log('id') } :
+    () => { console.log('polar') }
 </script>
 
 <div>
@@ -91,7 +93,7 @@
           y2={row.meanQuantity}
           fill={transformation === 'identity' ? 'green' : 'blue'}
           transition={2000}
-          onClick={() => { log(row.$index) }}
+          onClick={handler}
         />
 
       {/each}
