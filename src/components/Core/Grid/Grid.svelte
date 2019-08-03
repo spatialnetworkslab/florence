@@ -1,4 +1,5 @@
 <script>
+  import { beforeUpdate } from 'svelte'
   import * as SectionContext from '../Section/SectionContext'
   import * as CoordinateTransformationContext from '../Section/CoordinateTransformationContext'
 
@@ -20,7 +21,7 @@
   export let viewGridShape = false // Option to console log rows in cols in grid
 
   // Contexts
-  CoordinateTransformationContext.ensureNotParent()
+  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const sectionContext = SectionContext.subscribe()
 
   let scaledCoordinates
@@ -39,6 +40,9 @@
   // Get named cells
   $: allSpecs = mergeNameSpecs(areaNames, allCells, numCols)
 
+  beforeUpdate(() => {
+    CoordinateTransformationContext.ensureNotParent($coordinateTransformationContext)
+  })
 </script>
 
 <g>
