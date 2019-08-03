@@ -10,6 +10,10 @@ export function transitionGeometry (fromGeometry, toGeometry) {
     return transshape.transshape(fromGeometry, toGeometry)
   }
 
+  if (lineStringTransition(fromGeometry, toGeometry)) {
+    return transshape.transshape(fromGeometry, toGeometry)
+  }
+
   throw new Error('Invalid input')
 }
 
@@ -35,6 +39,13 @@ const polygonTypes = ['Polygon', 'MultiPolygon']
 function polygonTransition (fromGeometry, toGeometry) {
   return polygonTypes.includes(fromGeometry.type) &&
     polygonTypes.includes(toGeometry.type)
+}
+
+const lineStringTypes = ['LineString', 'MultiLineString']
+
+function lineStringTransition (fromGeometry, toGeometry) {
+  return lineStringTypes.includes(fromGeometry.type) &&
+    lineStringTypes.includes(toGeometry.type)
 }
 
 function getFirstGeometry (layer) {

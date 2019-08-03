@@ -716,6 +716,19 @@
     )
   }
 
+  function linearRingLength (linearRing) {
+    let totalLength = 0;
+
+    for (let i = 0; i < linearRing.length - 1; i++) {
+      const from = linearRing[i];
+      const to = linearRing[i + 1];
+
+      totalLength += pointDistance(from, to);
+    }
+
+    return totalLength
+  }
+
   /*
     Why this weird map function when there is Array.map?
     Well, usually premature optimization is the root of all evil,
@@ -782,14 +795,25 @@
   function insertPointsLinearRing (inputLinearRing, numberOfAdditionalPoints) {
     let linearRing = cloneLinearRing(inputLinearRing);
     linearRing = removeClosingPoint(linearRing);
+    linearRing = insertPoints(linearRing, numberOfAdditionalPoints, { ring: true });
+    linearRing = closeRing(linearRing);
 
-    const edgeLengths = getEdgeLengths(linearRing);
+    return linearRing
+  }
+
+  function insertPointsLineString (inputLineString, numberOfAdditionalPoints) {
+    const lineString = cloneLinearRing(inputLineString);
+    return insertPoints(lineString, numberOfAdditionalPoints, { ring: false })
+  }
+
+  function insertPoints (lineString, numberOfAdditionalPoints, { ring }) {
+    const edgeLengths = getEdgeLengths(lineString, ring);
     let orderedEdgeIds = getOrderDescending(edgeLengths);
 
     for (let i = 0; i < numberOfAdditionalPoints; i++) {
       const longestEdgeId = orderedEdgeIds[0];
 
-      const edge = getEdge(linearRing, longestEdgeId);
+      const edge = getEdge(lineString, longestEdgeId);
 
       const edgeLength = edgeLengths[longestEdgeId];
 
@@ -798,22 +822,20 @@
 
       // Remove old edge
       orderedEdgeIds.shift();
-      linearRing[longestEdgeId] = null;
+      lineString[longestEdgeId] = null;
       edgeLengths[longestEdgeId] = null;
 
       // Insert new edges
       orderedEdgeIds = insertOrderedId(orderedEdgeIds, edgeLengths, longestEdgeId, newEdgesLength);
 
-      linearRing[longestEdgeId] = newEdges[0][0];
-      linearRing.splice(longestEdgeId + 1, 0, newEdges[1][0]);
+      lineString[longestEdgeId] = newEdges[0][0];
+      lineString.splice(longestEdgeId + 1, 0, newEdges[1][0]);
 
       edgeLengths[longestEdgeId] = newEdgesLength;
       edgeLengths.splice(longestEdgeId + 1, 0, newEdgesLength);
     }
 
-    linearRing = closeRing(linearRing);
-
-    return linearRing
+    return lineString
   }
 
   function cloneLinearRing (linearRing) {
@@ -826,10 +848,11 @@
     return clonedLinearRing
   }
 
-  function getEdgeLengths (linearRing) {
+  function getEdgeLengths (linearRing, ring) {
     const edgeLengths = [];
+    const edges = ring ? linearRing.length : linearRing.length - 1;
 
-    for (let i = 0; i < linearRing.length; i++) {
+    for (let i = 0; i < edges; i++) {
       const edge = getEdge(linearRing, i);
 
       edgeLengths.push(pointDistance(edge[0], edge[1]));
@@ -922,20 +945,32 @@
     return fromLinearRing
   }
 
-  function isLinearRing (polygon) {
-    return polygon.constructor === Array
+  function isLinearRing (ring) {
+    return ring.constructor === Array
   }
 
-  function isPolygon (polygon) {
-    return polygon.constructor === Object && polygon.type === 'Polygon'
+  function isPolygon (geometry) {
+    return geometry.constructor === Object && geometry.type === 'Polygon'
   }
 
-  function isMultiPolygon (polygon) {
-    return polygon.constructor === Object && polygon.type === 'MultiPolygon'
+  function isMultiPolygon (geometry) {
+    return geometry.constructor === Object && geometry.type === 'MultiPolygon'
   }
 
-  function isPolygonOrMultiPolygon (input) {
-    return isPolygon(input) || isMultiPolygon(input)
+  function isPolygonOrMultiPolygon (geometry) {
+    return isPolygon(geometry) || isMultiPolygon(geometry)
+  }
+
+  function isLineString (geometry) {
+    return geometry.constructor === Object && geometry.type === 'LineString'
+  }
+
+  function isMultiLineString (geometry) {
+    return geometry.constructor === Object && geometry.type === 'MultiLineString'
+  }
+
+  function isLineStringOrMultiLineString (geometry) {
+    return isLineString(geometry) || isMultiLineString(geometry)
   }
 
   function polygonArea (polygon) {
@@ -2630,9 +2665,201 @@
     }
   }
 
+  function lineStringtoLineString (from, to) {
+    const [preparedFromCoordinates, preparedToCoordinates] = prepareCoordinates(
+      from.coordinates, to.coordinates
+    );
+
+    return createInterpolator(from, to, preparedFromCoordinates, preparedToCoordinates)
+  }
+
+  function prepareCoordinates (fromCoordinates, toCoordinates) {
+    const lengthDifference = fromCoordinates.length - toCoordinates.length;
+
+    let preparedFromCoordinates = fromCoordinates;
+    let preparedToCoordinates = toCoordinates;
+
+    if (lengthDifference > 0) {
+      preparedToCoordinates = insertPointsLineString(fromCoordinates, lengthDifference);
+    }
+
+    if (lengthDifference < 0) {
+      preparedFromCoordinates = insertPointsLineString(fromCoordinates, -lengthDifference);
+    }
+
+    preparedFromCoordinates = reverseIfBetterMatching(preparedFromCoordinates, preparedToCoordinates);
+
+    return [preparedFromCoordinates, preparedToCoordinates]
+  }
+
+  function createInterpolator (from, to, preparedFromCoordinates, preparedToCoordinates) {
+    const coordinateInterpolator = interpolate(preparedFromCoordinates, preparedToCoordinates);
+
+    return function interpolator (t) {
+      if (t === 0) return from
+      if (t === 1) return to
+
+      return {
+        type: 'LineString',
+        coordinates: coordinateInterpolator(t)
+      }
+    }
+  }
+
+  function reverseIfBetterMatching (from, to) {
+    const normalTotalSquareDistance = getTotalSquaredDistancePositions(from, to);
+    const fromReversed = cloneLinearRing(from).reverse();
+    const reversedTotalSquareDistance = getTotalSquaredDistancePositions(fromReversed, to);
+
+    if (normalTotalSquareDistance <= reversedTotalSquareDistance) {
+      return from
+    } else {
+      return fromReversed
+    }
+  }
+
+  function getTotalSquaredDistancePositions (from, to) {
+    let totalSquaredDistance = 0;
+
+    for (let i = 0; i < from.length; i++) {
+      totalSquaredDistance += pointDistance(from[i], to[i]);
+    }
+
+    return totalSquaredDistance
+  }
+
+  function movePointAlongLine (a, b, distance) {
+    const unitVector = getUnitVector(a, b);
+    return movePoint(a, unitVector, distance)
+  }
+
+  function getUnitVector (a, b) {
+    const magnitude = pointDistance(a, b);
+    const dx = b[0] - a[0];
+    const dy = b[1] - a[1];
+
+    return [dx / magnitude, dy / magnitude]
+  }
+
+  function movePoint (point, unitVector, distance) {
+    return [
+      point[0] + unitVector[0] * distance,
+      point[1] + unitVector[1] * distance
+    ]
+  }
+
+  function multiLineStringToLineString (from, to) {
+    const numberOfFromLineStrings = from.coordinates.length;
+    const preparedToCoordinates = cutIntoMultiLineString(to.coordinates, numberOfFromLineStrings);
+    const lineStringInterpolators = createLineStringInterpolators(from.coordinates, preparedToCoordinates);
+
+    return createInterpolator$1(from, to, lineStringInterpolators)
+  }
+
+  function lineStringToMultiLineString (from, to) {
+    const reverseInterpolator = multiLineStringToLineString(to, from);
+
+    return function interpolator (t) {
+      return reverseInterpolator(1 - t)
+    }
+  }
+
+  function cutIntoMultiLineString (toCoordinates, numberOfLineStrings) {
+    const multiLineStringCoordinates = [];
+
+    const totalLengthTo = linearRingLength(toCoordinates);
+    const desiredSegmentSize = totalLengthTo / numberOfLineStrings;
+
+    const lastPointIndex = toCoordinates.length - 1;
+
+    let currentSegment = [];
+    let elapsedDistanceSinceLastCut = 0;
+
+    for (let i = 0; i < lastPointIndex; i++) {
+      const a = toCoordinates[i];
+      currentSegment.push(a);
+      const b = toCoordinates[i + 1];
+
+      const distanceAB = pointDistance(a, b);
+      const distanceIncludingCurrentSegment = elapsedDistanceSinceLastCut + distanceAB;
+
+      if (distanceIncludingCurrentSegment < desiredSegmentSize) {
+        elapsedDistanceSinceLastCut += distanceAB;
+      }
+
+      if (distanceIncludingCurrentSegment >= desiredSegmentSize) {
+        const numberOfCuts = Math.floor(distanceIncludingCurrentSegment / desiredSegmentSize);
+
+        const cutCoordinates = calculateCutCoordinates(
+          a, b, elapsedDistanceSinceLastCut, desiredSegmentSize, numberOfCuts
+        );
+
+        currentSegment = currentSegment.concat(cutCoordinates);
+        multiLineStringCoordinates.push(currentSegment);
+
+        const lastCut = cutCoordinates[cutCoordinates.length - 1];
+
+        if (pointsEqual(lastCut, b)) {
+          currentSegment = [];
+        } else {
+          currentSegment = [lastCut];
+        }
+
+        elapsedDistanceSinceLastCut = pointDistance(lastCut, b);
+      }
+    }
+
+    return multiLineStringCoordinates
+  }
+
+  function calculateCutCoordinates (a, b, offset, size, numberOfCuts) {
+    const cuts = [];
+
+    for (let i = 1; i <= numberOfCuts; i++) {
+      cuts.push(movePointAlongLine(a, b, ((size * i) - offset)));
+    }
+
+    return cuts
+  }
+
+  function pointsEqual (a, b) {
+    return a[0] === b[0] && a[1] === b[1]
+  }
+
+  function createLineStringInterpolators (fromCoordinates, toCoordinates) {
+    const interpolators = [];
+
+    for (let i = 0; i < fromCoordinates.length; i++) {
+      const fromLineString = fromCoordinates[i];
+      const toLineString = toCoordinates[i];
+
+      const [preparedFromLineString, preparedToLineString] = prepareCoordinates(fromLineString, toLineString);
+      const interpolator = interpolate(preparedFromLineString, preparedToLineString);
+      interpolators.push(interpolator);
+    }
+
+    return interpolators
+  }
+
+  function createInterpolator$1 (from, to, lineStringInterpolators) {
+    return function interpolator (t) {
+      if (t === 0) return from
+      if (t === 1) return to
+
+      return {
+        type: 'MultiLineString',
+        coordinates: map(
+          lineStringInterpolators,
+          lineStringInterpolator => lineStringInterpolator(t)
+        )
+      }
+    }
+  }
+
   function transshape (from, to) {
     ensureValidInput(from, to);
 
+    // Polygon transitions
     if (from.type === 'Polygon' && to.type === 'Polygon') {
       return polygonToPolygon(from, to)
     }
@@ -2648,15 +2875,35 @@
     if (from.type === 'MultiPolygon' && to.type === 'MultiPolygon') {
       return multiPolygonToMultiPolygon(from, to)
     }
+
+    // LineString transitions
+    if (from.type === 'LineString' && to.type === 'LineString') {
+      return lineStringtoLineString(from, to)
+    }
+
+    if (from.type === 'MultiLineString' && to.type === 'LineString') {
+      return multiLineStringToLineString(from, to)
+    }
+
+    if (from.type === 'LineString' && to.type === 'MultiLineString') {
+      return lineStringToMultiLineString(from, to)
+    }
   }
 
   function ensureValidInput (from, to) {
-    if (!(
-      isPolygonOrMultiPolygon(from) &&
-      isPolygonOrMultiPolygon(to)
-    )) {
-      throw new Error('Invalid input')
+    if (bothPolygons(from, to) || bothLines(from, to)) {
+      return
     }
+
+    throw new Error('Invalid input')
+  }
+
+  function bothPolygons (from, to) {
+    return isPolygonOrMultiPolygon(from) && isPolygonOrMultiPolygon(to)
+  }
+
+  function bothLines (from, to) {
+    return isLineStringOrMultiLineString(from) && isLineStringOrMultiLineString(to)
   }
 
   function implode (geometry) {
