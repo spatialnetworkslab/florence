@@ -66,16 +66,19 @@
     if (flipX) rangeX.reverse()
     if (flipY) rangeY.reverse()
     
+    const updatedSectionContext = { 
+      sectionId, rangeX, rangeY, scaleX, scaleY, padding
+    }
+
     SectionContext.update(
-      newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
+      newSectionContext, updatedSectionContext
     )
 
-    $interactionManagerContext.loadSection({ sectionId, rangeX, rangeY, scaleX, scaleY })
+    $interactionManagerContext.loadSection(updatedSectionContext)
   }
 
   // Change callbacks if necessary
   $: {
-    console.log('updating...')
     $interactionManagerContext.removeAllSectionInteractions()
 
     if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', onWheel)
