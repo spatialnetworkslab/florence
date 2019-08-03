@@ -386,7 +386,7 @@
       opacity={$tr_opacity}
       transform={rotateTransform}
       font-family={fontFamily}
-      font-size={$tr_fontSize + ' px'}
+      font-size={$tr_fontSize + 'px'}
       font-weight={$tr_fontWeight}
       text-anchor={parsedTextAnchorPoint.textAnchor}
       dominant-baseline={parsedTextAnchorPoint.dominantBaseline}
