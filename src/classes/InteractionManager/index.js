@@ -36,17 +36,6 @@ export default class InteractionManager {
     this._section = Object.assign(sectionData, sectionCoordinates)
   }
 
-  sectionIsLoaded () {
-    if (this._section) {
-      return true
-    }
-    return false
-  }
-
-  removeSection () {
-    this._section = undefined
-  }
-
   // Layer loading and removing
   loadLayer (layerType, layerData) {
     const indexingFunction = layerIndexing[layerType]
