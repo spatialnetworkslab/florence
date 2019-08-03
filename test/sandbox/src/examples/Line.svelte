@@ -25,7 +25,7 @@
   };
 
   let clicked = false
-  let geometry = clicked ?
+  $: geometry = clicked ?
     multiLineString2 :
     multiLineString
 </script>
@@ -42,10 +42,11 @@
     padding={10}>
 
     <Line
-      geometry={multiLineString}
+      {geometry}
       strokeWidth={2}
       stroke={clicked ? 'green' : 'red'}
       onClick={() => { clicked = !clicked }} 
+      transition={2000}
     />
 
     <LineLayer

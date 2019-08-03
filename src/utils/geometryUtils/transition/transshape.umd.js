@@ -2635,8 +2635,6 @@
       if (t === 0) return from
       if (t === 1) return to
 
-      const interpolatedPolygons = map(polygonInterpolators, polygonInterpolator => polygonInterpolator(t));
-
       return combineIntoMultiPolygon(
         map(polygonInterpolators, polygonInterpolator => polygonInterpolator(t))
       )
@@ -2750,10 +2748,10 @@
 
   function multiLineStringToLineString (from, to) {
     const numberOfFromLineStrings = from.coordinates.length;
-    const preparedToCoordinates = cutIntoMultiLineString(to.coordinates, numberOfFromLineStrings);
+    const preparedToCoordinates = cutLineString(to.coordinates, numberOfFromLineStrings);
     const lineStringInterpolators = createLineStringInterpolators(from.coordinates, preparedToCoordinates);
 
-    return createInterpolator$1(from, to, lineStringInterpolators)
+    return createMultiLineStringInterpolator(from, to, lineStringInterpolators)
   }
 
   function lineStringToMultiLineString (from, to) {
@@ -2764,7 +2762,7 @@
     }
   }
 
-  function cutIntoMultiLineString (toCoordinates, numberOfLineStrings) {
+  function cutLineString (toCoordinates, numberOfLineStrings) {
     const multiLineStringCoordinates = [];
 
     const totalLengthTo = linearRingLength(toCoordinates);
@@ -2841,7 +2839,7 @@
     return interpolators
   }
 
-  function createInterpolator$1 (from, to, lineStringInterpolators) {
+  function createMultiLineStringInterpolator (from, to, lineStringInterpolators) {
     return function interpolator (t) {
       if (t === 0) return from
       if (t === 1) return to
@@ -2854,6 +2852,95 @@
         )
       }
     }
+  }
+
+  function matchLineStrings (input, target) {
+    const inputOrder = getInputOrder(input, target);
+    return inputOrder.map(i => input[i])
+  }
+
+  function getInputOrder (input, target) {
+    const inputLengths = map(input, linearRingLength);
+    const targetLengths = map(target, linearRingLength);
+
+    const inputLengthOrderDescending = getOrderDescending(inputLengths);
+    const targetLengthOrderDescending = getOrderDescending(targetLengths);
+
+    const pairs = {};
+
+    for (let i = 0; i < targetLengthOrderDescending.length; i++) {
+      const inputIndex = inputLengthOrderDescending[i];
+      const targetIndex = targetLengthOrderDescending[i];
+
+      pairs[inputIndex] = targetIndex;
+    }
+
+    const inputOrder = [];
+
+    for (let i = 0; i < target.length; i++) {
+      inputOrder.push(pairs[i]);
+    }
+
+    return inputOrder
+  }
+
+  function multiLineStringToMultiLineString (from, to) {
+    let fromLineStrings = from.coordinates;
+    let toLineStrings = to.coordinates;
+
+    const lengthDifference = fromLineStrings.length - toLineStrings.length;
+
+    if (lengthDifference > 0) {
+      toLineStrings = splitLineStrings(toLineStrings, lengthDifference);
+    }
+
+    if (lengthDifference < 0) {
+      fromLineStrings = splitLineStrings(fromLineStrings, -lengthDifference);
+    }
+
+    fromLineStrings = matchLineStrings(fromLineStrings, toLineStrings);
+
+    const lineStringInterpolators = createLineStringInterpolators(fromLineStrings, toLineStrings);
+
+    return createMultiLineStringInterpolator(from, to, lineStringInterpolators)
+  }
+
+  function splitLineStrings (lineStrings, numberOfDesiredLineStrings) {
+    const lineStringLengths = getLengths(lineStrings);
+    const numberOfCutsPerLineString = assignCuts(lineStringLengths, numberOfDesiredLineStrings);
+
+    let resultingLineStrings = [];
+
+    for (let i = 0; i < numberOfCutsPerLineString.length; i++) {
+      const lineString = lineStrings[i];
+      const numberOfCuts = numberOfCutsPerLineString[i];
+
+      if (numberOfCuts === 0) {
+        resultingLineStrings.push(lineString);
+      }
+
+      if (numberOfCuts > 0) {
+        const numberOfDesiredPieces = numberOfCuts + 1;
+
+        resultingLineStrings = resultingLineStrings.concat(
+          cutLineString(lineString, numberOfDesiredPieces)
+        );
+      }
+    }
+
+    return resultingLineStrings
+  }
+
+  function getLengths (lineStrings) {
+    const lengths = [];
+
+    for (let i = 0; i < lineStrings.length; i++) {
+      lengths.push(
+        linearRingLength(lineStrings[i])
+      );
+    }
+
+    return lengths
   }
 
   function transshape (from, to) {
@@ -2887,6 +2974,10 @@
 
     if (from.type === 'LineString' && to.type === 'MultiLineString') {
       return lineStringToMultiLineString(from, to)
+    }
+
+    if (from.type === 'MultiLineString' && to.type === 'MultiLineString') {
+      return multiLineStringToMultiLineString(from, to)
     }
   }
 
