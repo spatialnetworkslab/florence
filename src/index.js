@@ -1,6 +1,5 @@
 export { default as Graphic } from './components/Core/Graphic/Graphic.svelte'
 export { default as Section } from './components/Core/Section/Section.svelte'
-export { default as CoordinateTransformation } from './components/Core/CoordinateTransformation/CoordinateTransformation.svelte'
 export { default as Grid } from './components/Core/Grid/Grid.svelte'
 
 export { default as Mark } from './components/Marks/Mark/Mark.svelte'

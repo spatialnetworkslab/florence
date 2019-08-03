@@ -6,7 +6,7 @@
 </script>
 
 <script>
-  import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
+  import { beforeUpdate } from 'svelte'
   import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from './SectionContext'
   import * as CoordinateTransformationContext from './CoordinateTransformationContext'
@@ -43,8 +43,8 @@
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
   const newSectionContext = SectionContext.init()
-  CoordinateTransformationContext.ensureNotParent()
-  const coordinateTransformationContext = CoordinateTransformationContext.init()
+  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
+  const newCoordinateTransformationContext = CoordinateTransformationContext.init()
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
   const zoomContext = ZoomContext.init()
@@ -77,7 +77,7 @@
     )
 
     CoordinateTransformationContext.update(
-      coordinateTransformationContext, { rangeX, rangeY, transformation }
+      newCoordinateTransformationContext, { rangeX, rangeY, transformation }
     )
 
     $interactionManagerContext.loadSection(updatedSectionContext)
@@ -95,6 +95,10 @@
   $: {
     ZoomContext.update(zoomContext, zoomIdentity)
   }
+
+  beforeUpdate(() => {
+    CoordinateTransformationContext.ensureNotParent($coordinateTransformationContext)
+  })
 </script>
 
 <defs>
