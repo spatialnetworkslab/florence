@@ -16,18 +16,11 @@
     ]
   }
 
-  // const multiLineString2 = {
-  //   type: 'MultiLineString',
-  //   coordinates: [
-  //     [[0, 0], [4, 4], [8, 8]],
-  //     [[2, 0], [6, 1], [8, 2]]
-  //   ]
-  // }
-
   const multiLineString2 = {
-    type: 'LineString',
+    type: 'MultiLineString',
     coordinates: [
-      [0, 0], [4, 4], [8, 8]
+      [[0, 0], [4, 4], [8, 8]],
+      [[2, 0], [6, 1], [8, 2]]
     ]
   }
 
