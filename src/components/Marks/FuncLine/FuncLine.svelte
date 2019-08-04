@@ -44,26 +44,26 @@
   const interactionManagerContext = InteractionManagerContext.subscribe()
   const zoomContext = ZoomContext.subscribe()
 
-  let screenGeometry = createScreenGeometry()
+  let pixelGeometry
+  let screenGeometry
 
   // Initiate transitionables
   let tr_screenGeometry = createTransitionable('geometry', screenGeometry, transition)
-  let tr_stroke = createTransitionable('stroke', aesthetics.stroke, transition)
-  let tr_strokeWidth = createTransitionable('strokeWidth', aesthetics.strokeWidth, transition)
-  let tr_opacity = createTransitionable('opacity', aesthetics.opacity, transition)
+  let tr_stroke = createTransitionable('stroke', stroke, transition)
+  let tr_strokeWidth = createTransitionable('strokeWidth', strokeWidth, transition)
+  let tr_opacity = createTransitionable('opacity', opacity, transition)
 
   // Handle screenGeometry changes
   $: {
     if (initDone()) {
-      screenGeometry = createScreenGeometry()
-      tr_screenGeometry.set(screenGeometry)
+      // TODO
     }
   }
 
   // Handle other changes
-  $: { if (initDone()) tr_stroke.set(aesthetics.stroke) }
-  $: { if (initDone()) tr_strokeWidth.set(aesthetics.strokeWidth) }
-  $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
+  $: { if (initDone()) tr_stroke.set(stroke) }
+  $: { if (initDone()) tr_strokeWidth.set(strokeWidth) }
+  $: { if (initDone()) tr_opacity.set(opacity) }
 
   let previousTransition
 
@@ -72,7 +72,10 @@
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
-      
+      tr_screenGeometry = createTransitionable('geometry', $tr_screenGeometry, transition)
+      tr_stroke = createTransitionable('stroke', $tr_stroke, transition)
+      tr_strokeWidth = createTransitionable('strokeWidth', $tr_strokeWidth, transition)
+      tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
     }
   })
 
