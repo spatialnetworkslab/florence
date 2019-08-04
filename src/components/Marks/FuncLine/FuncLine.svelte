@@ -82,13 +82,43 @@
   afterUpdate(() => {
     initPhase = false
   })
+
+  // Helpers
+  function updateInteractionManagerIfNecessary () {
+    removeMarkFromSpatialIndexIfNecessary()
+
+    if (isInteractive) {
+      $interactionManagerContext.loadMark('Line', createDataNecessaryForIndexing())
+
+      if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
+      if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
+      if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
+    }
+  }
+
+  function removeMarkFromSpatialIndexIfNecessary () {
+    if ($interactionManagerContext.markIsLoaded(markId)) {
+      $interactionManagerContext.removeAllMarkInteractions(markId)
+      $interactionManagerContext.removeMark(markId)
+    }
+  }
+
+  function createDataNecessaryForIndexing () {
+    return createDataNecessaryForIndexingMark(
+      'Line', markId, { screenGeometry, pixelGeometry }, aesthetics
+    )
+  }
 </script>
 
-<path
-  class="line"
-  d={generatePath($tr_screenGeometry)}
-  fill="none"
-  stroke-width={$tr_strokeWidth}
-  stroke={$tr_stroke}
-  style={`opacity: ${$tr_opacity}`}
-/>
+{#if $graphicContext.output() === 'svg'}
+
+  <path
+    class="line"
+    d={generatePath($tr_screenGeometry)}
+    fill="none"
+    stroke-width={$tr_strokeWidth}
+    stroke={$tr_stroke}
+    style={`opacity: ${$tr_opacity}`}
+  />
+
+{/if}
