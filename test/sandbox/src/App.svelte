@@ -11,7 +11,7 @@
   import BaseMark from './examples/BaseMark.svelte'
   import Line from './examples/Line.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
-  import LineFuncs from './examples/LineFuncs.svelte'
+  import FuncLines from './examples/FuncLines.svelte'
 
   // and add them to this component array
   let components = [
@@ -61,9 +61,9 @@
       component: GeoPolygons
     },
     {
-      name: 'Lines with func prop',
-      url: 'linefuncs',
-      component: LineFuncs
+      name: 'FuncLines',
+      url: 'funclines',
+      component: FuncLines
     }
   ]
 </script>

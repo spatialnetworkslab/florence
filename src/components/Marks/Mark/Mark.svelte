@@ -176,6 +176,8 @@
 
   // Update transitionables when transition settings change
   beforeUpdate(() => {
+    console.log('firing')
+
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 

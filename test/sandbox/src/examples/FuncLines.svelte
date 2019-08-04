@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, Line } from '../../../../src/'
+  import { Graphic, Section, FuncLine } from '../../../../src/'
 </script>
 
 <Graphic width={500} height={500}>
@@ -12,7 +12,7 @@
     scaleY={scaleLinear().domain([-1, 1])}
   >
 
-    <Line 
+    <FuncLine
       func={x => x ** 2}
       stroke="red"
     />
