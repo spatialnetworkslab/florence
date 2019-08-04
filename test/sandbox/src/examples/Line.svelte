@@ -1,28 +1,35 @@
 <script>
-  import { scaleLinear } from "d3-scale";
-  import { Graphic, Section, Line, LineLayer } from "../../../../src/";
-  import DataContainer from "@snlab/florence-datacontainer";
+  import { scaleLinear } from 'd3-scale'
+  import { Graphic, Section, Line, LineLayer } from '../../../../src/'
+  import DataContainer from '@snlab/florence-datacontainer'
 
   const data = new DataContainer({
     x: [1, 2, 4, 6, 9, 10, 12, 13],
-    y: new Array(8).fill(0).map((_, i) => Math.random() * i)
-  });
+    y: new Array(8).fill(0).map((_, i) => Math.random() * (i * 2))
+  })
 
   const multiLineString = {
-    type: "MultiLineString",
+    type: 'MultiLineString',
     coordinates: [
       [[0, 0], [2, 8], [9, 9]], 
       [[1, 1], [4, 4], [1, 4], [4, 1]]
     ]
-  };
+  }
+
+  // const multiLineString2 = {
+  //   type: 'MultiLineString',
+  //   coordinates: [
+  //     [[0, 0], [4, 4], [8, 8]],
+  //     [[2, 0], [6, 1], [8, 2]]
+  //   ]
+  // }
 
   const multiLineString2 = {
-    type: "MultiLineString",
+    type: 'LineString',
     coordinates: [
-      [[0, 0], [4, 4], [8, 8]],
-      [[2, 0], [6, 1], [8, 2]]
+      [0, 0], [4, 4], [8, 8]
     ]
-  };
+  }
 
   let clicked = false
   $: geometry = clicked ?

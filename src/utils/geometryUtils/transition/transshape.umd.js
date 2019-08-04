@@ -2678,7 +2678,7 @@
     let preparedToCoordinates = toCoordinates;
 
     if (lengthDifference > 0) {
-      preparedToCoordinates = insertPointsLineString(fromCoordinates, lengthDifference);
+      preparedToCoordinates = insertPointsLineString(toCoordinates, lengthDifference);
     }
 
     if (lengthDifference < 0) {
