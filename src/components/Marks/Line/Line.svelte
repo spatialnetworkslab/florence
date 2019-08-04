@@ -5,7 +5,6 @@
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
-  export let func = undefined
 
   // Aesthetics: other
   export let strokeWidth = undefined
@@ -24,7 +23,7 @@
 
 <Mark 
   type="Line"
-  {x} {y} {geometry} {func}
+  {x} {y} {geometry}
   {strokeWidth} {stroke} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
   {interpolate} _asPolygon={false}

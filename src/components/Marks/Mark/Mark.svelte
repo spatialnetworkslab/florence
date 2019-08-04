@@ -40,7 +40,6 @@
   export let y1 = undefined
   export let y2 = undefined
   export let geometry = undefined
-  export let func = undefined
 
   // Aesthetics: other
   export let radius = undefined
@@ -70,7 +69,7 @@
   export let _asPolygon = true
 
   // Create 'positioning' aesthetics object
-  $: positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, func }
+  $: positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
 
   // Validate aesthetics every time input changes
   $: aesthetics = validateAesthetics(type, {
