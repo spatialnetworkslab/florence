@@ -1,0 +1,7 @@
+[build]
+  base    = "site"
+  command = "npm run export:netlify"
+  publish = "site/__sapper__/export"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "development"

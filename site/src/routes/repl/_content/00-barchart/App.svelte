@@ -1,8 +1,8 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, Rectangle, RectangleLayer } from '../../../../src/'
-  import DataContainer from '@snlab/florence-datacontainer'
-
+  import { Graphic, Section, CoordinateTransformation, RectangleLayer } from '@snlab/florence@0.1.2'
+  import DataContainer from '@snlab/florence-datacontainer/dist/florence-datacontainer.umd.js'
+  
   let data = new DataContainer({ 
     quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
     fruit: [NaN, 'anchovies', 'banana', 'banana', 'coconut', 'coconut', 'durian', 'durian']
@@ -31,9 +31,7 @@
   let transformation = 'identity'
   let duration = 2000
 
-  $: handler = transformation === 'identity' ?
-    () => { console.log('id') } :
-    () => { console.log('polar') }
+  const log = console.log
 </script>
 
 <div>
@@ -69,11 +67,11 @@
     y1={50} y2={450}
     scaleX={scaleFruit} 
 		scaleY={scaleMeanQuantity}
-    flipY
-    {transformation}
   >
 
-    <!-- <RectangleLayer 
+    <CoordinateTransformation {transformation}>
+    
+      <RectangleLayer 
         x1={filteredData.column('fruit')}
         x2={({ scaleX }) => filteredData.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
         y1={0}
@@ -81,21 +79,9 @@
         fill={transformation === 'identity' ? 'green' : 'blue'}
         index={filteredData.column('$index')}
         onClick={ix => log(ix)}
-    /> -->
-
-    {#each filteredData.rows() as row (row.$index)}
-
-      <Rectangle 
-        x1={row.fruit}
-        x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
-        y1={0}
-        y2={row.meanQuantity}
-        fill={transformation === 'identity' ? 'green' : 'blue'}
-        transition={2000}
-        onClick={handler}
       />
 
-    {/each}
+    </CoordinateTransformation>
 
   </Section>
 

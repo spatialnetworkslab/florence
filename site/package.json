@@ -1,0 +1,43 @@
+{
+  "name": "florence-site",
+  "description": "Site for Florence",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "npm run copy-workers && sapper dev --ext '.svelte .sveltex'",
+    "copy-workers": "rm -rf static/workers && cp -r node_modules/@sveltejs/svelte-repl/workers static",
+    "build": "sapper build --ext '.svelte .sveltex'",
+    "export": "npm run copy-workers && sapper export --ext '.svelte .sveltex'",
+    "start": "node __sapper__/build",
+    "link": "cd ../ && npm install --production && cd site/ && npm link ../",
+    "build:netlify": "cd ../ && rm package-lock.json && export NODE_ENV=production && npm install && cd site/ && npm link ../",
+    "export:netlify": "npm run build:netlify && npm run export"
+  },
+  "dependencies": {
+    "@polka/send": "^1.0.0-next.3",
+    "compression": "^1.7.1",
+    "polka": "^1.0.0-next.4",
+    "sirv": "^0.4.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
+    "@snlab/florence-datacontainer": "^0.1.1",
+    "@sveltejs/svelte-repl": "^0.1.8",
+    "d3-scale": "^3.0.0",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^1.12.0",
+    "rollup-plugin-babel": "^4.0.2",
+    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-svelte": "^5.0.1",
+    "rollup-plugin-terser": "^5.1.1",
+    "sapper": "^0.27.0",
+    "svelte": "^3.6.7",
+    "sveltex": "git+https://f3da89bc07d42fe52516ff9eefe08975c112c2a5:x-oauth-basic@github.com/spatialnetworkslab/sveltex.git"
+  }
+}
