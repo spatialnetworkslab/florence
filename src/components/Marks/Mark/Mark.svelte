@@ -68,21 +68,48 @@
   export let interpolate = false
   export let _asPolygon = true
 
-  // Create 'positioning' aesthetics object
-  $: positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
-
   // Validate aesthetics every time input changes
-  $: aesthetics = validateAesthetics(type, {
-      ...positioningAesthetics,
+  let aesthetics = validateAesthetics(
+    type,
+    {
+      x, y, x1, x2, y1, y2, geometry, 
       radius, fill, stroke, strokeWidth, strokeOpacity,
       fillOpacity, opacity,
       text, fontFamily, fontSize, fontWeight, rotation, anchorPoint
     }
   )
+  $: {
+    if (initDone()) {
+      aesthetics = validateAesthetics(
+        type,
+        {
+          x, y, x1, x2, y1, y2, geometry, 
+          radius, fill, stroke, strokeWidth, strokeOpacity,
+          fillOpacity, opacity,
+          text, fontFamily, fontSize, fontWeight, rotation, anchorPoint 
+        }
+      )
+    }
+  }
+  
+  // Create 'positioning' aesthetics object
+  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
+  $: {
+    if (initDone()) {
+      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
+    }
+  }
 
   // Select appriopriate geometry conversion functions
-  $: createCoordSysGeometry = markCoordSysGeometryFuncs[type]
-  $: representAsPolygon = markRepresentAsPolygonFuncs[type]
+  let createCoordSysGeometry = markCoordSysGeometryFuncs[type]
+  let representAsPolygon = markRepresentAsPolygonFuncs[type]
+
+  $: {
+    if (initDone()) {
+      createCoordSysGeometry = markCoordSysGeometryFuncs[type]
+      representAsPolygon = markRepresentAsPolygonFuncs[type]
+    }
+  }
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -157,6 +184,7 @@
   $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
 
   // text aes changes
+
   $: { if (initDone()) tr_fontSize.set(aesthetics.fontSize) }
   $: { if (initDone()) tr_fontWeight.set(aesthetics.fontWeight) }
   $: { if (initDone()) tr_rotation.set(aesthetics.rotation) }
@@ -176,8 +204,6 @@
 
   // Update transitionables when transition settings change
   beforeUpdate(() => {
-    console.log('firing')
-
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
 
