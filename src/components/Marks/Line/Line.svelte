@@ -5,6 +5,7 @@
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
+  export let func = undefined
 
   // Aesthetics: other
   export let strokeWidth = undefined
@@ -16,12 +17,15 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+
+  // Other
+  export let interpolate = true
 </script>
 
 <Mark 
   type="Line"
-  {x} {y} {geometry}
+  {x} {y} {geometry} {func}
   {strokeWidth} {stroke} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  _asPolygon={false}
+  {interpolate} _asPolygon={false}
 />

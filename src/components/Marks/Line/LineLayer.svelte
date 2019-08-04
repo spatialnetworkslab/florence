@@ -5,6 +5,7 @@
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
+  export let func = undefined
 
   // Aesthetics: other
   export let strokeWidth = undefined
@@ -19,12 +20,13 @@
 
   // Other
   export let index = undefined
+  export let interpolate = true
 </script>
 
 <Layer 
   type="Line"
-  {x} {y} {geometry}
+  {x} {y} {geometry} {func}
   {strokeWidth} {stroke} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {index} _asPolygon={false}
+  {interpolate} {index} _asPolygon={false}
 />

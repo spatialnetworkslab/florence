@@ -8,6 +8,9 @@ export default {
   geometry: {
     required: false
   },
+  func: {
+    required: false
+  },
   strokeWidth: {
     required: false,
     default: 3

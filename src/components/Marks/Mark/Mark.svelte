@@ -40,6 +40,7 @@
   export let y1 = undefined
   export let y2 = undefined
   export let geometry = undefined
+  export let func = undefined
 
   // Aesthetics: other
   export let radius = undefined
@@ -72,7 +73,7 @@
   let aesthetics = validateAesthetics(
     type,
     {
-      x, y, x1, x2, y1, y2, geometry, 
+      x, y, x1, x2, y1, y2, geometry, func,
       radius, fill, stroke, strokeWidth, strokeOpacity,
       fillOpacity, opacity,
       text, fontFamily, fontSize, fontWeight, rotation, anchorPoint
@@ -83,7 +84,7 @@
       aesthetics = validateAesthetics(
         type,
         {
-          x, y, x1, x2, y1, y2, geometry, 
+          x, y, x1, x2, y1, y2, geometry, func,
           radius, fill, stroke, strokeWidth, strokeOpacity,
           fillOpacity, opacity,
           text, fontFamily, fontSize, fontWeight, rotation, anchorPoint 
@@ -93,10 +94,10 @@
   }
   
   // Create 'positioning' aesthetics object
-  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
+  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, func }
   $: {
     if (initDone()) {
-      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
+      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, func }
     }
   }
 
