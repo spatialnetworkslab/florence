@@ -69,48 +69,21 @@
   export let interpolate = false
   export let _asPolygon = true
 
+  // Create 'positioning' aesthetics object
+  $: positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, func }
+
   // Validate aesthetics every time input changes
-  let aesthetics = validateAesthetics(
-    type,
-    {
-      x, y, x1, x2, y1, y2, geometry, func,
+  $: aesthetics = validateAesthetics(type, {
+      ...positioningAesthetics,
       radius, fill, stroke, strokeWidth, strokeOpacity,
       fillOpacity, opacity,
       text, fontFamily, fontSize, fontWeight, rotation, anchorPoint
     }
   )
-  $: {
-    if (initDone()) {
-      aesthetics = validateAesthetics(
-        type,
-        {
-          x, y, x1, x2, y1, y2, geometry, func,
-          radius, fill, stroke, strokeWidth, strokeOpacity,
-          fillOpacity, opacity,
-          text, fontFamily, fontSize, fontWeight, rotation, anchorPoint 
-        }
-      )
-    }
-  }
-  
-  // Create 'positioning' aesthetics object
-  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, func }
-  $: {
-    if (initDone()) {
-      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, func }
-    }
-  }
 
   // Select appriopriate geometry conversion functions
-  let createCoordSysGeometry = markCoordSysGeometryFuncs[type]
-  let representAsPolygon = markRepresentAsPolygonFuncs[type]
-
-  $: {
-    if (initDone()) {
-      createCoordSysGeometry = markCoordSysGeometryFuncs[type]
-      representAsPolygon = markRepresentAsPolygonFuncs[type]
-    }
-  }
+  $: createCoordSysGeometry = markCoordSysGeometryFuncs[type]
+  $: representAsPolygon = markRepresentAsPolygonFuncs[type]
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -185,7 +158,6 @@
   $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
 
   // text aes changes
-
   $: { if (initDone()) tr_fontSize.set(aesthetics.fontSize) }
   $: { if (initDone()) tr_fontWeight.set(aesthetics.fontWeight) }
   $: { if (initDone()) tr_rotation.set(aesthetics.rotation) }
