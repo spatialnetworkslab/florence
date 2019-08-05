@@ -24,12 +24,47 @@
   let background = '#808080'
   let padding = '#E8E8E8'
 
+    export let vjust = "bottom"
+  export let y = undefined
+  export let offset = 0
+
+  export let ticks = true
+  export let tickCount = 10
+  export let tickValues = undefined
+  export let tickSize = 5
+  export let tickWidth = 0.5
+
+  export let labelFormat = undefined
+  export let labelOffset = 2
+  export let labelRotate = 0
+  export let labelFont = "Helvetica"
+  export let labelFontSize = 10
+
+
+  let options = {
+    vjust: 'bottom',
+    y: undefined,
+    offset: 0,
+    ticks: 'true',
+    tickCount: '10',
+    tickValues: '',
+    tickSize: 5,
+    tickWidth: 0.5
+  }
+
 </script>
 
 <div>
   <label for="height-slider">Height:</label>
   <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
 </div>
+
+{#each Object.keys(options) as option}
+  <div>
+    <label for={option}>{option}:</label>
+    <input bind:value={options[option]} name={option} />
+  </div>
+{/each}
 
 
 <div>
@@ -55,8 +90,14 @@
         />
 		
         <XAxis
-          offset={10}
-          vjust={'bottom'}
+          offset={Number(options.offset)}
+          vjust={isNaN(options.vjust) ? options.vjust : Number(options.vjust)}
+          y={Number(options.y)}
+          ticks={options.ticks === 'true'}
+          tickCount={Number(options.tickCount)}
+          tickValues={options.tickValues.split(',')}
+          tickSize={Number(options.tickSize)}
+          tickWidth={Number(options.tickWidth)}
         />
 		</Section>
 

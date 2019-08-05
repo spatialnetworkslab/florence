@@ -211,7 +211,7 @@
   $: { if (initDone()) tr_rotationObject.set(generatePropObject(aesthetics.rotation, indexArray)) }
 
   // non-transitionable aesthetics
-  $: { if (initDone()) textObject = generatePropObject(aesthetics.text, indexArray)}
+  $: { if (initDone()) textObject = generatePropObject(aesthetics.text, indexArray); console.log(indexArray, textObject)}
   $: { if (initDone()) fontFamilyObject = generatePropObject(aesthetics.fontFamily, indexArray)}
   $: { if (initDone()) anchorPointObject = generatePropObject(aesthetics.anchorPoint, indexArray)}
 

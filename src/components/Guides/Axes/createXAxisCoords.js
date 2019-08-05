@@ -1,13 +1,12 @@
-export function createXAxisCoords (vjust, rangeX, rangeY, offset) {
+export function createXAxisCoords (vjust, y, rangeX, rangeY, offset, scaleX, scaleY) {
   // there are three ways of setting the position of the axis, in order of precedence
   // 1. vjust with 'bottom', 'center' or 'top'
   // 2. vjust with a number (relative position within content of section
   // 3. y prop with either a single number (positioning in data coords)
   //    or a function that returns an array of 2 numbers (in pixel coords)
-
+  console.log(y)
   let xCoords
   let yCoords
-
   const x0 = rangeX[0]
   const x1 = rangeX[1]
   const y0 = rangeY[0]
@@ -38,7 +37,7 @@ export function createXAxisCoords (vjust, rangeX, rangeY, offset) {
       return [y1 - offset, y1 - offset]
     }
   }
-  if (typeof vjust === 'number') {
+  if (!isNaN(vjust)) {
     xCoords = () => {
       return [x0, x1]
     }
@@ -47,11 +46,11 @@ export function createXAxisCoords (vjust, rangeX, rangeY, offset) {
       return [yCoord, yCoord]
     }
   }
-  if (typeof y === 'number') {
+  if (!isNaN(y)) {
     xCoords = () => {
       return [x0, x1]
     }
-    yCoords = [y, y]
+    yCoords = () => [scaleY(y), scaleY(y)]
   }
   if (typeof y === 'function') {
     xCoords = () => {
@@ -59,6 +58,7 @@ export function createXAxisCoords (vjust, rangeX, rangeY, offset) {
     }
     yCoords = y
   }
+  console.log(yCoords)
   return { xCoords, yCoords }
 }
 
@@ -70,7 +70,7 @@ export function generateXTickGeoms (tickPositions, yCoords, tickSize) {
   if (typeof yCoords === 'function') {
     yStart = yCoords()[0]
   } else {
-    yStart = yCoords()
+    yStart = yCoords[0]
     yFunction = false
   }
   for (let index = 0; index < tickPositions.length; index++) {
@@ -90,7 +90,7 @@ export function generateXLabelGeoms (tickPositions, yCoords, tickSize, labelOffs
   if (typeof yCoords === 'function') {
     yStart = yCoords()[0]
   } else {
-    yStart = yCoords()
+    yStart = yCoords[0]
     yFunction = false
   }
   for (let index = 0; index < tickPositions.length; index++) {

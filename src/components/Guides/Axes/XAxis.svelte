@@ -26,17 +26,32 @@
   // Contexts
   const sectionContext = SectionContext.subscribe()
   
-  if (typeof scale === "undefined") {
-    scale = $sectionContext._scaleX
+  let xCoords
+  let yCoords
+  let tickPositions
+  let tickXCoords
+  let tickYCoords
+  let tickLabelXCoords
+  let tickLabelYCoords
+  let format
+  let tickLabelText
+
+  $: {
+    if (typeof scale === "undefined") {
+      scale = $sectionContext._scaleX
+    }
+    ({xCoords, yCoords} = createXAxisCoords(vjust, y, $sectionContext._rangeX, $sectionContext._rangeY, offset, scale, $sectionContext._scaleY))
   }
-
-  const {xCoords, yCoords} = createXAxisCoords(vjust, $sectionContext._rangeX, $sectionContext._rangeY, offset)
-
-  const tickPositions = scale.ticks(tickCount)
-  const {tickXCoords, tickYCoords} = generateXTickGeoms(tickPositions, yCoords, tickSize)
-  const {tickLabelXCoords, tickLabelYCoords} = generateXLabelGeoms(tickPositions, yCoords, tickSize, labelOffset)
-  const format = (labelFormat) ? labelFormat : scale.tickFormat(tickCount)
-  const tickLabelText = tickPositions.map(format)
+  $: {
+    tickPositions = scale.ticks(tickCount);
+    console.log(tickPositions);
+    ({tickXCoords, tickYCoords} = generateXTickGeoms(tickPositions, yCoords, tickSize));
+    ({tickLabelXCoords, tickLabelYCoords} = generateXLabelGeoms(tickPositions, yCoords, tickSize, labelOffset))
+    format = (labelFormat) ? labelFormat : scale.tickFormat(tickPositions.length)
+    console.log(format)
+    tickLabelText = tickPositions.map(format)
+    console.log(tickLabelText)
+  }
 </script>
 
 <Line x={xCoords} y={yCoords} strokeWidth={1} />
