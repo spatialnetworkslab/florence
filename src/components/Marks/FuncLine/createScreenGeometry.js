@@ -1,50 +1,15 @@
 import { interpolate } from 'd3-interpolate'
-import { interpolateGeometry } from '../../../utils/geometryUtils'
 
 export default function createScreenGeometry (func, sectionContext, coordinateTransformationContext, zoomContext) {
-  const dataPoints = generateDataPoints(func, sectionContext)
-  const geometry = {
-    type: 'LineString',
-    coordinates: dataPoints
-  }
-  const totalTransformation = createTotalTransformation(sectionContext, coordinateTransformationContext, zoomContext)
-
-  return interpolateGeometry(geometry, totalTransformation)
+  
 }
 
-function generateDataPoints (func, sectionContext) {
-  const domains = getDomains(sectionContext)
-  return interpolatePointsFromFunc(func, domains)
-}
-
-function getDomains (sectionContext) {
+function findDomains () {
   const domains = {}
 
-  if (isValidScale(sectionContext._scaleX)) {
-    domains.x = sectionContext._scaleX.domain()
-  } else {
-    domains.x = sectionContext._rangeX
-  }
-
-  if (isValidScale(sectionContext._scaleY)) {
-    domains.y = sectionContext._scaleY.domain()
-  } else {
-    domains.y = sectionContext._rangeY
-  }
+  // TODO
 
   return domains
-}
-
-function isValidScale (scale) {
-  if (scale && scale.constructor === Function) {
-    if (scale.domain && scale.domain().every(d => d.constructor === Number)) {
-      return true
-    }
-
-    throw new Error('FuncLine can only be used with functions that have numeric domains')
-  } else {
-    return false
-  }
 }
 
 function interpolatePointsFromFunc (func, domains, resolution = 100) {
@@ -64,38 +29,4 @@ function interpolatePointsFromFunc (func, domains, resolution = 100) {
   }
 
   return points
-}
-
-function createTotalTransformation (sectionContext, coordinateTransformationContext, zoomContext) {
-  const { scaleX, scaleY } = sectionContext.scales()
-
-  const sectionTransformation = ([x, y]) => ([scaleX(x), scaleY(y)])
-  const coordinateTransformation = createCoordinateTransformation(coordinateTransformationContext)
-  const zoomTransformation = createZoomTransformation(zoomContext)
-
-  console.log(zoomTransformation)
-
-  const totalTransformation = position => zoomTransformation(
-    coordinateTransformation(
-      sectionTransformation(position)
-    )
-  )
-
-  return totalTransformation
-}
-
-function createCoordinateTransformation (coordinateTransformationContext) {
-  if (coordinateTransformationContext) {
-    return coordinateTransformationContext.transform.bind(coordinateTransformationContext)
-  } else {
-    return position => position
-  }
-}
-
-function createZoomTransformation (zoomContext) {
-  if (zoomContext) {
-    return zoomContext
-  } else {
-    return position => position
-  }
 }
