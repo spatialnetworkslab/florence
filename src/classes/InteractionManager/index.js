@@ -31,7 +31,8 @@ export default class InteractionManager {
   }
 
   // Section loading and removing
-  loadSection (sectionData) {
+  loadSection (_sectionData) {
+    const sectionData = removeUnderscores(_sectionData)
     const sectionCoordinates = getSectionCoordinates(sectionData)
     this._section = Object.assign(sectionData, sectionCoordinates)
   }
@@ -106,6 +107,16 @@ export default class InteractionManager {
     this._mouseoverHandler.removeMarkInteraction(markId)
     this._mouseoutHandler.removeMarkInteraction(markId)
   }
+}
+
+function removeUnderscores (_sectionData) {
+  const sectionData = {}
+
+  for (const key in _sectionData) {
+    sectionData[key.substring(1)] = _sectionData[key]
+  }
+
+  return sectionData
 }
 
 function getSectionCoordinates (sectionData) {
