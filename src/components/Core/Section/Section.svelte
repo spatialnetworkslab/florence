@@ -80,7 +80,7 @@
       newCoordinateTransformationContext, { rangeX, rangeY, transformation }
     )
 
-    $interactionManagerContext.loadSection(updatedSectionContext)
+    $interactionManagerContext.loadSection($newSectionContext)
   }
 
   // Change callbacks if necessary
