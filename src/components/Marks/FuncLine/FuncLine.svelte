@@ -46,8 +46,8 @@
 
   let screenGeometry = createScreenGeometry(
     func, 
-    $graphicContext,
     $sectionContext,
+    $coordinateTransformationContext,
     $zoomContext
   )
 
@@ -61,9 +61,9 @@
   $: {
     if (initDone()) {
       screenGeometry = createScreenGeometry(
-        func, 
-        $graphicContext,
+        func,
         $sectionContext,
+        $coordinateTransformationContext,
         $zoomContext
       )
     }
