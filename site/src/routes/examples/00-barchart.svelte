@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, CoordinateTransformation, RectangleLayer } from '../../../../src/'
+  import { Graphic, Section, RectangleLayer } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
   
   let data = new DataContainer({ 
@@ -67,21 +67,18 @@
     y1={50} y2={450}
     scaleX={scaleFruit} 
 		scaleY={scaleMeanQuantity}
+    {transformation}
   >
 
-    <CoordinateTransformation {transformation}>
-    
-      <RectangleLayer 
-        x1={filteredData.column('fruit')}
-        x2={({ scaleX }) => filteredData.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
-        y1={0}
-        y2={filteredData.column('meanQuantity')}
-        fill={transformation === 'identity' ? 'green' : 'blue'}
-        index={filteredData.column('$index')}
-        onClick={ix => log(ix)}
-      />
-
-    </CoordinateTransformation>
+    <RectangleLayer 
+      x1={filteredData.column('fruit')}
+      x2={({ scaleX }) => filteredData.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
+      y1={0}
+      y2={filteredData.column('meanQuantity')}
+      fill={transformation === 'identity' ? 'green' : 'blue'}
+      index={filteredData.column('$index')}
+      onClick={ix => log(ix)}
+    />
 
   </Section>
 
