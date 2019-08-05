@@ -1,9 +1,9 @@
 import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
-import { scaleGeometries } from 'geometryUtils'
+import { scaleGeometries } from '../../../utils/geometryUtils/index.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getIndexArray from '../utils/getIndexArray.js'
 import { ensureValidCombination } from './createCoordSysGeometry.js'
-import { isDefined, isUndefined } from 'equals.js'
+import { isDefined, isUndefined } from '../../../utils/equals.js'
 import getNumberOfMarks from '../utils/getNumberOfMarks.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {
@@ -46,7 +46,7 @@ function createScaledGeometryArrayFromCoordinates (x, y, sectionContext) {
   const xValue = x.constructor === Function ? x(scales) : x
   const yValue = y.constructor === Function ? y(scales) : y
 
-  const length = getNumberOfPoints(xValue, yValue)
+  const length = getNumberOfMarks(xValue, yValue, 'Point')
 
   const xIsPrimitive = xValue.constructor !== Array
   const yIsPrimitive = yValue.constructor !== Array
@@ -58,8 +58,6 @@ function createScaledGeometryArrayFromCoordinates (x, y, sectionContext) {
 
   return { scaledGeometryArray, length }
 }
-
-const getNumberOfPoints = getNumberOfMarks('PointLayer')
 
 function scaleCoordinate (c, scale, needsScaling, isPrimitive, length) {
   let array

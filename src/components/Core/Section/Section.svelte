@@ -6,10 +6,10 @@
 </script>
 
 <script>
-  import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
+  import { beforeUpdate } from 'svelte'
   import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from './SectionContext'
-  import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
+  import * as CoordinateTransformationContext from './CoordinateTransformationContext'
   import * as EventManagerContext from '../Graphic/EventManagerContext'
   import * as InteractionManagerContext from './InteractionManagerContext'
   import * as ZoomContext from './ZoomContext'
@@ -26,7 +26,14 @@
   export let y2 = undefined
   export let scaleX = undefined
   export let scaleY = undefined
+  export let flipX = false
+  export let flipY = false
   export let zoomIdentity = undefined
+  export let transformation = undefined
+
+  // Interactivity
+  export let onWheel = undefined
+  export let onPan = undefined
   
   // Aesthetics
   export let padding = 3
@@ -36,13 +43,15 @@
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
   const newSectionContext = SectionContext.init()
-  CoordinateTransformationContext.ensureNotParent()
+  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
+  const newCoordinateTransformationContext = CoordinateTransformationContext.init()
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
   const zoomContext = ZoomContext.init()
-
   
   let scaledCoordinates
+  let rangeX
+  let rangeY
   
   // Set up InteractionManager
   let interactionManager = new InteractionManager()
@@ -50,29 +59,55 @@
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
-  // Update InteractionManager on changes
+  // Keep contexts up to date
   $: {
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-    let rangeX = [scaledCoordinates.x1 + padding, scaledCoordinates.x2 - padding]
-    let rangeY = [scaledCoordinates.y1 + padding, scaledCoordinates.y2 - padding]
+    rangeX = [scaledCoordinates.x1 + padding, scaledCoordinates.x2 - padding]
+    rangeY = [scaledCoordinates.y1 + padding, scaledCoordinates.y2 - padding]
+
+    if (flipX) rangeX.reverse()
+    if (flipY) rangeY.reverse()
     
+    const updatedSectionContext = { 
+      sectionId, rangeX, rangeY, scaleX, scaleY, padding
+    }
+
     SectionContext.update(
-      newSectionContext, { sectionId, rangeX, rangeY, scaleX, scaleY }
+      newSectionContext, updatedSectionContext
     )
+
+    CoordinateTransformationContext.update(
+      newCoordinateTransformationContext, { rangeX, rangeY, transformation }
+    )
+
+    $interactionManagerContext.loadSection(updatedSectionContext)
+  }
+
+  // Change callbacks if necessary
+  $: {
+    $interactionManagerContext.removeAllSectionInteractions()
+
+    if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', onWheel)
+    if (onPan) $interactionManagerContext.addSectionInteraction('pan', onPan)
   }
 
   // Update zooming and panning
   $: {
     ZoomContext.update(zoomContext, zoomIdentity)
   }
+
+  beforeUpdate(() => {
+    CoordinateTransformationContext.ensureNotParent($coordinateTransformationContext)
+  })
 </script>
 
 <defs>
   <clipPath id={`clip-${sectionId}`}>
     <rect 
-      x={scaledCoordinates.x1} y={scaledCoordinates.y1}
-      width={scaledCoordinates.x2 - scaledCoordinates.x1}
-      height={scaledCoordinates.y2 - scaledCoordinates.y1}
+      x={Math.min(scaledCoordinates.x1, scaledCoordinates.x2)}
+      y={Math.min(scaledCoordinates.y1, scaledCoordinates.y2)}
+      width={Math.abs(scaledCoordinates.x2 - scaledCoordinates.x1)}
+      height={Math.abs(scaledCoordinates.y2 - scaledCoordinates.y1)}
     />
   </clipPath>
 </defs>

@@ -7,8 +7,10 @@
   import GridLayout from './examples/GridLayout.svelte'
   import ResizeLayout from './examples/ResizeLayout.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
-  import Zoom from './examples/Zoom.svelte'
+  import ZoomPan from './examples/ZoomPan.svelte'
   import BaseMark from './examples/BaseMark.svelte'
+  import Line from './examples/Line.svelte'
+  import GeoPolygons from './examples/GeoPolygons.svelte'
 
   // and add them to this component array
   let components = [
@@ -38,14 +40,24 @@
       component: Scatterplot
     },
     {
-      name: 'Zoom',
-      url: '/zoom',
-      component: Zoom
+      name: 'ZoomPan',
+      url: '/zoompan',
+      component: ZoomPan
     },
     {
       name: 'Base mark',
       url: '/basemark',
       component: BaseMark
+    },
+    {
+      name: 'Line',
+      url: '/line',
+      component: Line
+    },
+    {
+      name: 'Geo Polygons',
+      url: '/geopolygons',
+      component: GeoPolygons
     }
   ]
 </script>

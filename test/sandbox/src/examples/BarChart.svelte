@@ -1,7 +1,8 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, CoordinateTransformation, Rectangle, RectangleLayer, DataContainer } from '../../../../'
-  
+  import { Graphic, Section, Rectangle, RectangleLayer } from '../../../../src/'
+  import DataContainer from '@snlab/florence-datacontainer'
+
   let data = new DataContainer({ 
     quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
     fruit: [NaN, 'anchovies', 'banana', 'banana', 'coconut', 'coconut', 'durian', 'durian']
@@ -30,7 +31,9 @@
   let transformation = 'identity'
   let duration = 2000
 
-  const log = console.log
+  $: handler = transformation === 'identity' ?
+    () => { console.log('id') } :
+    () => { console.log('polar') }
 </script>
 
 <div>
@@ -66,11 +69,11 @@
     y1={50} y2={450}
     scaleX={scaleFruit} 
 		scaleY={scaleMeanQuantity}
+    flipY
+    {transformation}
   >
 
-    <CoordinateTransformation {transformation}>
-    
-      <!-- <RectangleLayer 
+    <!-- <RectangleLayer 
         x1={filteredData.column('fruit')}
         x2={({ scaleX }) => filteredData.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
         y1={0}
@@ -78,23 +81,21 @@
         fill={transformation === 'identity' ? 'green' : 'blue'}
         index={filteredData.column('$index')}
         onClick={ix => log(ix)}
-      /> -->
+    /> -->
 
-      {#each filteredData.rows() as row (row.$index)}
+    {#each filteredData.rows() as row (row.$index)}
 
-        <Rectangle 
-          x1={row.fruit}
-          x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
-          y1={0}
-          y2={row.meanQuantity}
-          fill={transformation === 'identity' ? 'green' : 'blue'}
-          transition={2000}
-          onClick={() => { log(row.$index) }}
-        />
+      <Rectangle 
+        x1={row.fruit}
+        x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
+        y1={0}
+        y2={row.meanQuantity}
+        fill={transformation === 'identity' ? 'green' : 'blue'}
+        transition={2000}
+        onClick={handler}
+      />
 
-      {/each}
-
-    </CoordinateTransformation>
+    {/each}
 
   </Section>
 

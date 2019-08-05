@@ -9,12 +9,26 @@ export function createDataNecessaryForIndexingMark (type, markId, geometryTypes,
     }
   }
 
+  if (type === 'Label') {
+    attributes = {
+      pixelGeometry: geometryTypes.pixelGeometry,
+      radius: aesthetics.fontSize
+    }
+  }
+
   if (type === 'Rectangle') {
     attributes = { screenGeometry: geometryTypes.screenGeometry }
   }
 
   if (type === 'Polygon') {
     attributes = { screenGeometry: geometryTypes.screenGeometry }
+  }
+
+  if (type === 'Line') {
+    attributes = {
+      pixelGeometry: geometryTypes.pixelGeometry,
+      strokeWidth: aesthetics.strokeWidth
+    }
   }
 
   markData.attributes = attributes
@@ -35,12 +49,26 @@ export function createDataNecessaryForIndexingLayer (
     }
   }
 
+  if (type === 'Label') {
+    layerAttributes = {
+      pixelGeometryObject: geometryObjects.pixelGeometryObject,
+      radiusObject: aestheticsObjects.fontSizeObject
+    }
+  }
+
   if (type === 'Rectangle') {
     layerAttributes = { screenGeometryObject: geometryObjects.screenGeometryObject }
   }
 
   if (type === 'Polygon') {
     layerAttributes = { screenGeometryObject: geometryObjects.screenGeometryObject }
+  }
+
+  if (type === 'Line') {
+    layerAttributes = {
+      pixelGeometryObject: geometryObjects.pixelGeometryObject,
+      strokeWidthObject: aestheticsObjects.strokeWidthObject
+    }
   }
 
   layerData.layerAttributes = layerAttributes

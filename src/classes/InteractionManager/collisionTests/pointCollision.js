@@ -1,4 +1,4 @@
-import { pointDistance } from 'geometryUtils'
+import { pointDistance } from '../../../utils/geometryUtils/index.js'
 
 export default function pointCollision (coordinates, pointAttributes) {
   const distance = pointDistance(
