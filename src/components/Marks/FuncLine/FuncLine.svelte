@@ -44,8 +44,12 @@
   const interactionManagerContext = InteractionManagerContext.subscribe()
   const zoomContext = ZoomContext.subscribe()
 
-  let pixelGeometry
-  let screenGeometry
+  let screenGeometry = createScreenGeometry(
+    func, 
+    $graphicContext,
+    $sectionContext,
+    $zoomContext
+  )
 
   // Initiate transitionables
   let tr_screenGeometry = createTransitionable('geometry', screenGeometry, transition)
@@ -56,7 +60,12 @@
   // Handle screenGeometry changes
   $: {
     if (initDone()) {
-      // TODO
+      screenGeometry = createScreenGeometry(
+        func, 
+        $graphicContext,
+        $sectionContext,
+        $zoomContext
+      )
     }
   }
 
@@ -105,7 +114,7 @@
 
   function createDataNecessaryForIndexing () {
     return createDataNecessaryForIndexingMark(
-      'Line', markId, { screenGeometry, pixelGeometry }, aesthetics
+      'Line', markId, { screenGeometry }, aesthetics
     )
   }
 </script>
