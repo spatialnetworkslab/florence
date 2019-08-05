@@ -85,10 +85,7 @@
 
   // Change callbacks if necessary
   $: {
-    $interactionManagerContext.removeAllSectionInteractions()
-
-    if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', onWheel)
-    if (onPan) $interactionManagerContext.addSectionInteraction('pan', onPan)
+    removeSectionInteractionsIfNecessary(onWheel, onPan)
   }
 
   // Update zooming and panning
@@ -99,6 +96,13 @@
   beforeUpdate(() => {
     CoordinateTransformationContext.ensureNotParent($coordinateTransformationContext)
   })
+
+  function removeSectionInteractionsIfNecessary () {
+    $interactionManagerContext.removeAllSectionInteractions()
+
+    if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', onWheel)
+    if (onPan) $interactionManagerContext.addSectionInteraction('pan', onPan)
+  }
 </script>
 
 <defs>
