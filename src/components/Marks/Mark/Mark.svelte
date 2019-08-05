@@ -202,6 +202,25 @@
   let pixelGeometryRecalculationNecessary = false
   let screenGeometryRecalculationNecessary = false
 
+  $: {
+    if (initDone()) {
+      if (coordSysGeometryRecalculationNecessary) updateCoordSysGeometry()
+
+      if (pixelGeometryRecalculationNecessary) updatePixelGeometry()
+
+      if (screenGeometryRecalculationNecessary) {
+        updateScreenGeometry()
+        tr_screenGeometry.set(screenGeometry)
+        
+        updateInteractionManagerIfNecessary()
+      }
+
+      coordSysGeometryRecalculationNecessary = false
+      pixelGeometryRecalculationNecessary = false
+      screenGeometryRecalculationNecessary = false
+    }
+  }
+
   // Update transitionables when transition settings change
   beforeUpdate(() => {
     if (!transitionsEqual(previousTransition, transition)) {
@@ -221,21 +240,6 @@
       tr_rotation = createTransitionable('rotation', $tr_rotation, transition)
 
     }
-
-     if (coordSysGeometryRecalculationNecessary) updateCoordSysGeometry()
-
-     if (pixelGeometryRecalculationNecessary) updatePixelGeometry()
-
-     if (screenGeometryRecalculationNecessary) {
-       updateScreenGeometry()
-       tr_screenGeometry.set(screenGeometry)
-       
-       updateInteractionManagerIfNecessary()
-     }
-
-     coordSysGeometryRecalculationNecessary = false
-     pixelGeometryRecalculationNecessary = false
-     screenGeometryRecalculationNecessary = false
   })
 
   afterUpdate(() => {

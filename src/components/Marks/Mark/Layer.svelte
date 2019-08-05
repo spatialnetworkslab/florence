@@ -119,12 +119,11 @@
   const zoomContext = ZoomContext.subscribe()
 
   // Initiate geometry objects and index array
-  let indexArray
   let coordSysGeometryObject
   let pixelGeometryObject
   let screenGeometryObject
 
-  updateCoordSysGeometryObject()
+  let indexArray = updateCoordSysGeometryObject()
   updatePixelGeometryObject()
 
   // Generate other prop objects
@@ -211,7 +210,7 @@
   $: { if (initDone()) tr_rotationObject.set(generatePropObject(aesthetics.rotation, indexArray)) }
 
   // non-transitionable aesthetics
-  $: { if (initDone()) textObject = generatePropObject(aesthetics.text, indexArray); console.log(indexArray, textObject)}
+  $: { if (initDone()) textObject = generatePropObject(aesthetics.text, indexArray)}
   $: { if (initDone()) fontFamilyObject = generatePropObject(aesthetics.fontFamily, indexArray)}
   $: { if (initDone()) anchorPointObject = generatePropObject(aesthetics.anchorPoint, indexArray)}
 
@@ -226,6 +225,25 @@
   let coordSysGeometryObjectRecalculationNecessary = false
   let pixelGeometryObjectRecalculationNecessary = false
   let screenGeometryObjectRecalculationNecessary = false
+
+  $: {
+    if (coordSysGeometryObjectRecalculationNecessary) {
+      indexArray = updateCoordSysGeometryObject()
+    }
+
+    if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
+
+    if (screenGeometryObjectRecalculationNecessary) {
+      updateScreenGeometryObject()
+      tr_screenGeometryObject.set(screenGeometryObject)
+
+      updateInteractionManagerIfNecessary()
+    }
+
+    coordSysGeometryObjectRecalculationNecessary = false
+    pixelGeometryObjectRecalculationNecessary = false
+    screenGeometryObjectRecalculationNecessary = false
+  }
 
   beforeUpdate(() => {
     // Update transitionables
@@ -246,20 +264,6 @@
       tr_rotationObject = createTransitionableLayer('rotation', $tr_rotationObject, transition)
     }
 
-    if (coordSysGeometryObjectRecalculationNecessary) updateCoordSysGeometryObject()
-
-    if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
-
-    if (screenGeometryObjectRecalculationNecessary) {
-      updateScreenGeometryObject()
-      tr_screenGeometryObject.set(screenGeometryObject)
-
-      updateInteractionManagerIfNecessary()
-    }
-
-    coordSysGeometryObjectRecalculationNecessary = false
-    pixelGeometryObjectRecalculationNecessary = false
-    screenGeometryObjectRecalculationNecessary = false
   })
 
   afterUpdate(() => {
@@ -310,9 +314,8 @@
       index,
       interpolate
     )
-
-    indexArray = _.indexArray
     coordSysGeometryObject = _.coordSysGeometryObject
+    return _.indexArray
   }
 
   function scheduleUpdatePixelGeometryObject () {
