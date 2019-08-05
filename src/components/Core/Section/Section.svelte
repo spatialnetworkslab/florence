@@ -85,7 +85,6 @@
 
   // Change callbacks if necessary
   $: {
-    console.log('retriggering')
     removeSectionInteractionsIfNecessary(onWheel, onPan)
   }
 
