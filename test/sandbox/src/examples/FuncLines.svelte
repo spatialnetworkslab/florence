@@ -1,20 +1,67 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, FuncLine } from '../../../../src/'
+  import { Graphic, Section, FuncLine, createPanHandler, createZoomHandler } from '../../../../src/'
+
+  let funcName = 'sin'
+
+  const funcs = {
+    sin: Math.sin,
+    exp: Math.exp,
+    linear: x => x,
+    power2: x => x ** 2
+  }
+
+  $: func = funcs[funcName]
+
+  let zoomIdentity = { x: 0, y: 0, k: 1 }
+  let step = 1
+
+  const pan = createPanHandler(zoomIdentity, {
+    extentX: [-500, 500],
+    extentY: [-500, 500]
+  })
+
+  const zoom = createZoomHandler(zoomIdentity, {
+    minZoom: 0.2,
+    maxZoom: 3,
+    extentX: [-500, 500],
+    extentY: [-500, 500],
+    step,
+    center: { x: 0, y: 0 }
+  })
 </script>
+
+<div>
+  <label for="func-name">Function:</label>
+    
+  <select name="func-name" bind:value={funcName}>
+    <option value="sin">Sine</option>
+    <option value="exp">Exp</option>
+    <option value="linear">Linear</option>
+    <option value="power2">Power 2</option>
+  </select>
+    
+</div>
 
 <Graphic width={500} height={500}>
 
   <Section
     x1={50} x2={450}
     y1={50} y2={450}
-    scaleX={scaleLinear().domain([-1, 1])}
-    scaleY={scaleLinear().domain([-1, 1])}
+    scaleX={scaleLinear().domain([-3, 3])}
+    scaleY={scaleLinear().domain([-2, 2])}
+    flipY
+    backgroundColor="#d3d3d3"
+    {zoomIdentity}
+    onWheel={e => zoomIdentity = zoom(e)}
+    onPan={e => zoomIdentity = pan(e)}
   >
 
     <FuncLine
-      func={x => x ** 2}
+      {func}
       stroke="red"
+      strokeWidth={7}
+      transition={2000}
     />
   
   </Section>

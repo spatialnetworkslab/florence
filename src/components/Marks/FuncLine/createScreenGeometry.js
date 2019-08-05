@@ -56,18 +56,14 @@ function interpolatePointsFromFunc (func, domains, resolution = 100) {
     const x = interpolator(i / resolution)
     const y = func(x)
 
-    if (inDomain([x, y], domains)) {
+    if (y.constructor === Number && !isNaN(y)) {
       points.push([x, y])
+    } else {
+      throw new Error(`FuncLine: func is only allowed to return numbers. Received '${y}'`)
     }
   }
 
   return points
-}
-
-function inDomain (point, domains) {
-  const yMin = Math.min(...domains.y)
-  const yMax = Math.max(...domains.y)
-  return point[1] > yMin && point[1] < yMax
 }
 
 function createTotalTransformation (sectionContext, coordinateTransformationContext, zoomContext) {
@@ -76,6 +72,8 @@ function createTotalTransformation (sectionContext, coordinateTransformationCont
   const sectionTransformation = ([x, y]) => ([scaleX(x), scaleY(y)])
   const coordinateTransformation = createCoordinateTransformation(coordinateTransformationContext)
   const zoomTransformation = createZoomTransformation(zoomContext)
+
+  console.log(zoomTransformation)
 
   const totalTransformation = position => zoomTransformation(
     coordinateTransformation(

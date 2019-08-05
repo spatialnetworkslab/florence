@@ -66,6 +66,8 @@
         $coordinateTransformationContext,
         $zoomContext
       )
+
+      tr_screenGeometry.set(screenGeometry)
     }
   }
 
