@@ -1,6 +1,7 @@
 import { interpolate } from 'd3-interpolate'
-import { interpolateGeometry } from '../../../utils/geometryUtils'
+import { transformGeometry, interpolateGeometry } from '../../../utils/geometryUtils'
 import { isDefined, isUndefined } from '../../../utils/equals.js'
+import { warn } from '../../../utils/logging.js'
 
 export default function createScreenGeometry ({ func, x }, sectionContext, coordinateTransformationContext, zoomContext) {
   ensureValidInput(func, x)
@@ -10,7 +11,16 @@ export default function createScreenGeometry ({ func, x }, sectionContext, coord
     type: 'LineString',
     coordinates: dataPoints
   }
+
   const totalTransformation = createTotalTransformation(sectionContext, coordinateTransformationContext, zoomContext)
+
+  if (geometryCompletelyOffScreen(geometry, totalTransformation, sectionContext)) {
+    warn('FuncLine was completely out of Section window. Please check your Section scales and FuncLine props.')
+    return {
+      type: 'LineString',
+      coordinates: [[0, 0], [0, 1]]
+    }
+  }
 
   return interpolateGeometry(geometry, totalTransformation)
 }
@@ -44,7 +54,7 @@ function getDomainX (sectionContext) {
 }
 
 function isValidScale (scale) {
-  if (scale && scale.constructor === Function) {
+  if (scale && scale.constructor === Function && scale.name !== '') {
     if (scale.domain && scale.domain().every(d => d.constructor === Number)) {
       return true
     }
@@ -104,4 +114,23 @@ function createZoomTransformation (zoomContext) {
   } else {
     return position => position
   }
+}
+
+function geometryCompletelyOffScreen (geometry, totalTransformation, sectionContext) {
+  const transformedGeometry = transformGeometry(geometry, totalTransformation)
+
+  const rangeX = [sectionContext.x1(), sectionContext.x2()].sort((a, b) => a - b)
+  const rangeY = [sectionContext.y1(), sectionContext.y2()].sort((a, b) => a - b)
+
+  for (let i = 0; i < transformedGeometry.coordinates.length; i++) {
+    const point = transformedGeometry.coordinates[i]
+    if (pointIsInRange(point, rangeX, rangeY)) return false
+  }
+
+  return true
+}
+
+function pointIsInRange (point, rangeX, rangeY) {
+  return point[0] >= rangeX[0] && point[0] <= rangeX[1] &&
+    point[1] >= rangeY[0] && point[1] <= rangeY[1]
 }
