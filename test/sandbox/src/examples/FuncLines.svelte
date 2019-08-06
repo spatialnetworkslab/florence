@@ -29,6 +29,8 @@
     step,
     center: { x: 0, y: 0 }
   })
+
+  const handle = zoomId => { zoomIdentity = zoomId }
 </script>
 
 <div>
@@ -53,8 +55,8 @@
     flipY
     backgroundColor="#d3d3d3"
     {zoomIdentity}
-    onWheel={e => zoomIdentity = zoom(e)}
-    onPan={e => zoomIdentity = pan(e)}
+    onWheel={e => handle(zoom(e))}
+    onPan={e => handle(pan(e))}
   >
 
     <FuncLine

@@ -46,7 +46,7 @@
   const zoomContext = ZoomContext.subscribe()
 
   let screenGeometry = createScreenGeometry(
-    func, 
+    { func, x }, 
     $sectionContext,
     $coordinateTransformationContext,
     $zoomContext
