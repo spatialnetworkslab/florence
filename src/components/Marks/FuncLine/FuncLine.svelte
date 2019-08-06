@@ -25,6 +25,7 @@
 
   // Aesthetics: positioning
   export let func
+  export let x = undefined
 
   // Aesthetics: other
   export let strokeWidth = undefined
@@ -61,7 +62,7 @@
   $: {
     if (initDone()) {
       screenGeometry = createScreenGeometry(
-        func,
+        { func, x },
         $sectionContext,
         $coordinateTransformationContext,
         $zoomContext
