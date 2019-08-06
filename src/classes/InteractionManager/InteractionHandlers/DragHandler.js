@@ -66,24 +66,18 @@ export default class DragHandler extends InteractionHandler {
   }
 
   _getLocalCoordinates (pixelCoords) {
-    const section = this._interactionManager._sections
+    const section = this._interactionManager._section
 
-    const scaleX = section._scaleX
-    const scaleY = section._scaleY
+    const scaleX = section.scales().scaleX
+    const scaleY = section.scales().scaleY
 
-    const range =
-    { minX: scaleX.invert(section._rangeX[0]),
-      maxX: scaleX.invert(section._rangeX[1]),
-      minY: scaleY.invert(section._rangeY[0]),
-      maxY: scaleY.invert(section._rangeY[1]) }
+    const clampedX = this._clamp(pixelCoords.x, section.x1(), section.x2())
+    const clampedY = this._clamp(pixelCoords.y, section.y2(), section.y1())
 
-    const localX = scaleX.invert(pixelCoords.x)
-    const localY = scaleY.invert(pixelCoords.y)
+    const localX = scaleX.invert(clampedX)
+    const localY = scaleY.invert(clampedY)
 
-    const clampedX = this._clamp(localX, range.minX, range.maxX)
-    const clampedY = this._clamp(localY, range.minY, range.maxY)
-
-    return { x: clampedX, y: clampedY }
+    return { x: localX, y: localY }
   }
 
   _clamp (coord, min, max) {

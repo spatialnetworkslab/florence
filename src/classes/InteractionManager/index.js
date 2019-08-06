@@ -28,29 +28,13 @@ export default class InteractionManager {
     this._id = id
   }
 
-  linkSection (section) {
-    this._sections = section
-  }
-
   linkEventManager (eventManager) {
     this._eventManager = eventManager
   }
 
   // Section loading and removing
   loadSection (sectionData) {
-    const sectionCoordinates = getSectionCoordinates(sectionData)
-    this._section = Object.assign(sectionData, sectionCoordinates)
-  }
-
-  sectionIsLoaded () {
-    if (this._section) {
-      return true
-    }
-    return false
-  }
-
-  removeSection () {
-    this._section = undefined
+    this._section = sectionData
   }
 
   // Layer loading and removing
@@ -124,14 +108,5 @@ export default class InteractionManager {
     this._mouseoverHandler.removeMarkInteraction(markId)
     this._mouseoutHandler.removeMarkInteraction(markId)
     this._dragHandler.removeMarkInteraction(markId)
-  }
-}
-
-function getSectionCoordinates (sectionData) {
-  return {
-    x1: sectionData.rangeX[0],
-    x2: sectionData.rangeX[1],
-    y1: sectionData.rangeY[0],
-    y2: sectionData.rangeY[1]
   }
 }

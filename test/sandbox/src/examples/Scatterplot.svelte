@@ -1,9 +1,6 @@
 <script>
 	import { scaleLinear } from 'd3-scale'
-	import { 
-    Graphic, Section, CoordinateTransformation, 
-    PointLayer, Point 
-  } from '../../../../src/'
+	import { Graphic, Grid, Section, PointLayer, Point } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
@@ -97,70 +94,67 @@
 			scaleY={scaleB}
       backgroundColor={background}
       flipY
+      {transformation}
 		>
 
-			<CoordinateTransformation {transformation}>
-        <PointLayer
-          x={filteredData.column('a')}
-          y={filteredData.column('b')}
+			<PointLayer
+        x={filteredData.column('a')}
+        y={filteredData.column('b')}
+        fill={transformation === 'identity' ? 'black' : 'blue'}
+        radius={transformation === 'identity' ? 3 : 6}
+        index={filteredData.column('$index')}
+        onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
+        onMouseout={handleMouseout}
+        transition={duration}
+      />
+
+      <!-- {#each filteredData.rows() as row (row.$index)}
+
+        <Point 
+          x={row.a}
+          y={row.b}
           fill={transformation === 'identity' ? 'black' : 'blue'}
           radius={transformation === 'identity' ? 3 : 6}
-          index={filteredData.column('$index')}
-          onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
-          onMouseout={handleMouseout}
-          transition={duration}
+          onMouseover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
+          onMouseout={() => handleMouseout(row.$index)}
         />
 
-        <!-- {#each filteredData.rows() as row (row.$index)}
+      {/each} -->
 
-          <Point 
-            x={row.a}
-            y={row.b}
-            fill={transformation === 'identity' ? 'black' : 'blue'}
-            radius={transformation === 'identity' ? 3 : 6}
-            onMouseover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
-            onMouseout={() => handleMouseout(row.$index)}
-          />
+      <Point
+        x={bigPoint.x}
+        y={bigPoint.y}
+        fill={big ? 'blue' : 'red'}
+        opacity={dragPoint ? 0 : 1}
+        radius={big ? 50 : 10}
+        onClick={() => log('BOOM')}
+        onMouseover={() => big = true}
+        onMouseout={() => big = false}
+        onDragStart={handleDragStart}
+        onDrag={handleDrag}
+        onDragEnd={handleDragEnd}
+      />
 
-        {/each} -->
+      {#if dragPoint}
+        <Point
+          x={dragPoint.x}
+          y={dragPoint.y}
+          radius={10}
+          fill={'red'}
+        />
+      {/if}
+
+      {#each hoverPointKeys as key (key)}
 
         <Point
-          x={bigPoint.x}
-          y={bigPoint.y}
-          fill={big ? 'blue' : 'red'}
-          opacity={dragPoint ? 0 : 1}
-          radius={big ? 50 : 10}
-          onClick={() => log('BOOM')}
-          onMouseover={() => big = true}
-          onMouseout={() => big = false}
-          onDragStart={handleDragStart}
-          onDrag={handleDrag}
-          onDragEnd={handleDragEnd}
+          x={hoverPoints[key].a}
+          y={hoverPoints[key].b}
+          radius={10}
+          fill={'green'}
         />
 
-        {#if dragPoint}
-          <Point
-            x={dragPoint.x}
-            y={dragPoint.y}
-            radius={10}
-            fill={'red'}
-          />
-        {/if}
+      {/each}
 
-        {#each hoverPointKeys as key (key)}
-
-          <Point
-            x={hoverPoints[key].a}
-            y={hoverPoints[key].b}
-            radius={10}
-            fill={'green'}
-          />
-
-        {/each}
-
-
-      </CoordinateTransformation>
-		
 		</Section>
 
 	</Graphic>
