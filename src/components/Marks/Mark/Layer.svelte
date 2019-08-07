@@ -214,10 +214,10 @@
   $: { if (initDone()) fontFamilyObject = generatePropObject(aesthetics.fontFamily, indexArray)}
   $: { if (initDone()) anchorPointObject = generatePropObject(aesthetics.anchorPoint, indexArray)}
 
-  let rotateTransformObject = createRotationObject()
-  let parsedTextAnchorPointObject = createTextAnchorObject()
-  $: { if (initDone()) rotateTransform = createRotationObject()}
-  $: { if (initDone()) parsedTextAnchorPoint = createTextAnchorObject()}
+  let rotateTransformObject = createRotationObject($tr_rotationObject, $tr_screenGeometryObject, indexArray)
+  let parsedTextAnchorPointObject = createTextAnchorObject(anchorPointObject, indexArray)
+  $: { if (initDone()) rotateTransformObject = createRotationObject($tr_rotationObject, $tr_screenGeometryObject, indexArray)}
+  $: { if (initDone()) parsedTextAnchorPointObject = createTextAnchorObject(anchorPointObject, indexArray)}
 
 
   let previousTransition
@@ -282,16 +282,16 @@
   })
 
   // Helpers
-  function createRotationObject() {
+  function createRotationObject(rotationObject, screenGeometryObject, indexArray) {
     const propObj = {}
     for (let i = 0; i < indexArray.length; i++) {
         const index = indexArray[i]
-        propObj[index] = `rotate(${$tr_rotationObject[index]}, ${$tr_screenGeometryObject[index].coordinates[0]}, ${$tr_screenGeometryObject[index].coordinates[1]})`
+        propObj[index] = `rotate(${rotationObject[index]}, ${screenGeometryObject[index].coordinates[0]}, ${screenGeometryObject[index].coordinates[1]})`
     }
     return propObj
   }
 
-  function createTextAnchorObject() {
+  function createTextAnchorObject(anchorPointObject, indexArray) {
     const propObj = {}
     for (let i = 0; i < indexArray.length; i++) {
         const index = indexArray[i]
