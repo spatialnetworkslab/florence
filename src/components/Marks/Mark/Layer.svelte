@@ -377,87 +377,89 @@
 {#if $graphicContext.output() === 'svg'}
 
   {#if renderPolygon}
+    <g class={`${type.toLowerCase()}-layer`}>
+      {#each indexArray as $index ($index)}
 
-    {#each indexArray as $index ($index)}
+        <path
+          class={type.toLowerCase()}
+          d={generatePath($tr_screenGeometryObject[$index])}
+          fill={$tr_fillObject[$index]}
+          stroke={$tr_strokeObject[$index]}
+          stroke-width={$tr_strokeWidthObject[$index]}
+          fill-opacity={$tr_fillOpacityObject[$index]}
+          stroke-opacity={$tr_strokeOpacityObject[$index]}
+          opacity={$tr_opacityObject[$index]}
+        />
 
-      <path
-        class={type.toLowerCase()}
-        d={generatePath($tr_screenGeometryObject[$index])}
-        fill={$tr_fillObject[$index]}
-        stroke={$tr_strokeObject[$index]}
-        stroke-width={$tr_strokeWidthObject[$index]}
-        fill-opacity={$tr_fillOpacityObject[$index]}
-        stroke-opacity={$tr_strokeOpacityObject[$index]}
-        opacity={$tr_opacityObject[$index]}
-      />
-
-    {/each}
+      {/each}
+    </g>
 
   {/if}
 
   {#if renderCircle}
+    <g class="point-layer">
+      {#each indexArray as $index ($index)}
 
-    {#each indexArray as $index ($index)}
+        <circle
+          class="point"
+          cx={$tr_screenGeometryObject[$index].coordinates[0]}
+          cy={$tr_screenGeometryObject[$index].coordinates[1]}
+          r={$tr_radiusObject[$index]}
+          fill={$tr_fillObject[$index]}
+          stroke={$tr_strokeObject[$index]}
+          stroke-width={$tr_strokeWidthObject[$index]}
+          fill-opacity={$tr_fillOpacityObject[$index]}
+          stroke-opacity={$tr_strokeOpacityObject[$index]}
+          opacity={$tr_opacityObject[$index]}
+        />
 
-      <circle
-        class="point"
-        cx={$tr_screenGeometryObject[$index].coordinates[0]}
-        cy={$tr_screenGeometryObject[$index].coordinates[1]}
-        r={$tr_radiusObject[$index]}
-        fill={$tr_fillObject[$index]}
-        stroke={$tr_strokeObject[$index]}
-        stroke-width={$tr_strokeWidthObject[$index]}
-        fill-opacity={$tr_fillOpacityObject[$index]}
-        stroke-opacity={$tr_strokeOpacityObject[$index]}
-        opacity={$tr_opacityObject[$index]}
-      />
-
-    {/each}
-
+      {/each}
+    </g>
   {/if}
 
   {#if renderLine}
+    <g class="line-layer">
+      {#each indexArray as $index ($index)}
 
-    {#each indexArray as $index ($index)}
+        <path
+          class="line"
+          d={generatePath($tr_screenGeometryObject[$index])}
+          fill="none"
+          stroke-width={$tr_strokeWidthObject[$index]}
+          stroke={$tr_strokeObject[$index]}
+          style={`opacity: ${$tr_opacityObject[$index]}`}
+        />
 
-      <path
-        class="line"
-        d={generatePath($tr_screenGeometryObject[$index])}
-        fill="none"
-        stroke-width={$tr_strokeWidthObject[$index]}
-        stroke={$tr_strokeObject[$index]}
-        style={`opacity: ${$tr_opacityObject[$index]}`}
-      />
-
-    {/each}
-  
+      {/each}
+    </g>
   {/if}
 
   {#if renderLabel}
+    <g class="label-layer">
+      {#each indexArray as $index ($index)}
 
-    {#each indexArray as $index ($index)}
-
-      <text 
-        class="label"
-        x={$tr_screenGeometryObject[$index].coordinates[0]}
-        y={$tr_screenGeometryObject[$index].coordinates[1]}
-        fill={$tr_fillObject[$index]}
-        stroke={$tr_strokeObject[$index]}
-        stroke-width={$tr_strokeWidthObject[$index]}
-        fill-opacity={$tr_fillOpacityObject[$index]}
-        stroke-opacity={$tr_strokeOpacityObject[$index]}
-        opacity={$tr_opacityObject[$index]}
-        transform={rotateTransformObject[$index]}
-        font-family={fontFamilyObject[$index]}
-        font-size={$tr_fontSizeObject[$index] + 'px'}
-        font-weight={$tr_fontWeightObject[$index]}
-        text-anchor={parsedTextAnchorPointObject[$index].textAnchor}
-        dominant-baseline={parsedTextAnchorPointObject[$index].dominantBaseline}
-      >
-        {textObject[$index]}
-      </text>
-    
-    {/each}
+        <text 
+          class="label"
+          x={$tr_screenGeometryObject[$index].coordinates[0]}
+          y={$tr_screenGeometryObject[$index].coordinates[1]}
+          fill={$tr_fillObject[$index]}
+          stroke={$tr_strokeObject[$index]}
+          stroke-width={$tr_strokeWidthObject[$index]}
+          fill-opacity={$tr_fillOpacityObject[$index]}
+          stroke-opacity={$tr_strokeOpacityObject[$index]}
+          opacity={$tr_opacityObject[$index]}
+          transform={rotateTransformObject[$index]}
+          font-family={fontFamilyObject[$index]}
+          font-size={$tr_fontSizeObject[$index] + 'px'}
+          font-weight={$tr_fontWeightObject[$index]}
+          text-anchor={parsedTextAnchorPointObject[$index].textAnchor}
+          dominant-baseline={parsedTextAnchorPointObject[$index].dominantBaseline}
+        >
+          {textObject[$index]}
+        </text>
+      
+      {/each}
+    </g>
 
   {/if}
 

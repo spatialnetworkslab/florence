@@ -119,7 +119,7 @@
 
 <g class="section" clip-path={`url(#clip-${sectionId})`} >
   {#if paddingColor}
-    <rect
+    <rect class="padding-background"
       mask={`url(#clip-${sectionId}-data)`}
       width="100%"
       height="100%" 
@@ -127,7 +127,7 @@
     />
   {/if}
   {#if backgroundColor}
-    <rect
+    <rect class="content-background"
       x={Math.min(...rangeX)}
       y={Math.min(...rangeY)}
       width={Math.abs(rangeX[0] - rangeX[1])}
