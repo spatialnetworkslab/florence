@@ -73,7 +73,7 @@
     if (flipY) rangeY.reverse()
     
     const updatedSectionContext = { 
-      sectionId, rangeX, rangeY, scaleX, scaleY, padding
+      sectionId, rangeX, rangeY, scaleX, scaleY, padding, flipX, flipY
     }
 
     SectionContext.update(
