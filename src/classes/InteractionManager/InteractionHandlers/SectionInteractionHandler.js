@@ -16,7 +16,10 @@ export default class SectionInteractionHandler {
   }
 
   _isInSection (hit, geometry) {
-    if (hit.x <= geometry.x2 && hit.x >= geometry.x1 && hit.y <= geometry.y2 && hit.y >= geometry.y1) {
+    const xRange = [geometry.x1, geometry.x2].sort((a, b) => a - b)
+    const yRange = [geometry.y1, geometry.y2].sort((a, b) => a - b)
+
+    if (hit.x <= xRange[1] && hit.x >= xRange[0] && hit.y <= yRange[1] && hit.y >= yRange[0]) {
       return true
     }
     return false

@@ -16,6 +16,9 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+
+  // Other
+  export let interpolate = true
 </script>
 
 <Mark 
@@ -23,5 +26,5 @@
   {x} {y} {geometry}
   {strokeWidth} {stroke} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  _asPolygon={false}
+  {interpolate} _asPolygon={false}
 />
