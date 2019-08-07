@@ -1,7 +1,9 @@
 .DS_Store
 node_modules
 !/src/node_modules
-package-lock.json
 public/bundle.*
 test/sandbox/public/bundle.*
 test/integration/testing-app/public/bundle.*
+dist/
+package-lock.json
+yarn.lock

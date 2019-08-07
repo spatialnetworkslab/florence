@@ -10,7 +10,7 @@
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
-  import * as CoordinateTransformationContext from '../../Core/CoordinateTransformation/CoordinateTransformationContext'
+  import * as CoordinateTransformationContext from '../../Core/Section/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   import * as ZoomContext from '../../Core/Section/ZoomContext'
   
@@ -18,10 +18,12 @@
   import { markCoordSysGeometryFuncs } from './coordSysGeometryFuncs.js'
   import { markRepresentAsPolygonFuncs } from './representAsPolygonFuncs.js'
   import { createDataNecessaryForIndexingMark } from './createDataNecessaryForIndexing.js'
-  import { transformGeometry } from 'geometryUtils'
+  import { transformGeometry } from '../../../utils/geometryUtils/index.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
 
   import generatePath from '../utils/generatePath.js'
+
+  import textAnchorPoint from '../utils/textAnchorPoint.js'
 
   let markId = getId()
 
@@ -42,7 +44,19 @@
   // Aesthetics: other
   export let radius = undefined
   export let fill = undefined
+  export let stroke = undefined
+  export let strokeWidth = undefined
+  export let strokeOpacity = undefined
+  export let fillOpacity = undefined
   export let opacity = undefined
+
+  // Aesthetics: text-specific
+  export let text = undefined
+  export let fontFamily = undefined
+  export let fontSize = undefined
+  export let fontWeight = undefined
+  export let rotation = undefined
+  export let anchorPoint = undefined
 
   // Transitions and interactions
   export let transition = undefined
@@ -57,13 +71,23 @@
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
     type,
-    { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+    {
+      x, y, x1, x2, y1, y2, geometry, 
+      radius, fill, stroke, strokeWidth, strokeOpacity,
+      fillOpacity, opacity,
+      text, fontFamily, fontSize, fontWeight, rotation, anchorPoint
+    }
   )
   $: {
     if (initDone()) {
       aesthetics = validateAesthetics(
         type,
-        { x, y, x1, x2, y1, y2, geometry, radius, fill, opacity }
+        {
+          x, y, x1, x2, y1, y2, geometry, 
+          radius, fill, stroke, strokeWidth, strokeOpacity,
+          fillOpacity, opacity,
+          text, fontFamily, fontSize, fontWeight, rotation, anchorPoint 
+        }
       )
     }
   }
@@ -107,7 +131,16 @@
   let tr_screenGeometry = createTransitionable('geometry', screenGeometry, transition)
   let tr_radius = createTransitionable('radius', aesthetics.radius, transition)
   let tr_fill = createTransitionable('fill', aesthetics.fill, transition)
+  let tr_stroke = createTransitionable('stroke', aesthetics.stroke, transition)
+  let tr_strokeWidth = createTransitionable('strokeWidth', aesthetics.strokeWidth, transition)
+  let tr_fillOpacity = createTransitionable('fillOpacity', aesthetics.fillOpacity, transition)
+  let tr_strokeOpacity = createTransitionable('strokeOpacity', aesthetics.strokeOpacity, transition)
   let tr_opacity = createTransitionable('opacity', aesthetics.opacity, transition)
+
+  // text transtitionables
+  let tr_fontSize = createTransitionable('fontSize', aesthetics.fontSize, transition)
+  let tr_fontWeight = createTransitionable('fontWeight', aesthetics.fontWeight, transition)
+  let tr_rotation = createTransitionable('rotation', aesthetics.rotation, transition)
 
   // Handle coordSysGeometry changes
   $: {
@@ -128,11 +161,12 @@
     }
   }
 
-  // Handle radius changes
+  // Handle radius and strokeWidth changes
   $: {
     if (initDone()) {
       if (!_asPolygon) {
         tr_radius.set(aesthetics.radius)
+        tr_strokeWidth.set(aesthetics.strokeWidth)
       }
 
       if (_asPolygon) {
@@ -143,7 +177,24 @@
 
   // Handle other changes
   $: { if (initDone()) tr_fill.set(aesthetics.fill) }
+  $: { if (initDone()) tr_stroke.set(aesthetics.stroke) }
+  $: { if (initDone()) tr_strokeWidth.set(aesthetics.strokeWidth) }
+  $: { if (initDone()) tr_fillOpacity.set(aesthetics.fillOpacity) }
+  $: { if (initDone()) tr_strokeOpacity.set(aesthetics.strokeOpacity) }
   $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
+
+  // text aes changes
+
+  $: { if (initDone()) tr_fontSize.set(aesthetics.fontSize) }
+  $: { if (initDone()) tr_fontWeight.set(aesthetics.fontWeight) }
+  $: { if (initDone()) tr_rotation.set(aesthetics.rotation) }
+
+  // non-transitionable aesthetics that need additional calculation
+  let rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`
+  let parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint)
+  $: { if (initDone()) rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`}
+  $: { if (initDone()) parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint)}
+
 
   let previousTransition
 
@@ -159,7 +210,16 @@
       tr_screenGeometry = createTransitionable('geometry', $tr_screenGeometry, transition)
       tr_radius = createTransitionable('radius', $tr_radius, transition)
       tr_fill = createTransitionable('fill', $tr_fill, transition)
+      tr_stroke = createTransitionable('stroke', $tr_stroke, transition)
+      tr_strokeWidth = createTransitionable('strokeWidth', $tr_strokeWidth, transition)
+      tr_fillOpacity = createTransitionable('fillOpacity', $tr_fillOpacity, transition)
+      tr_strokeOpacity = createTransitionable('strokeOpacity', $tr_strokeOpacity, transition)
       tr_opacity = createTransitionable('opacity', $tr_opacity, transition)
+
+      tr_fontSize = createTransitionable('fontSize', $tr_fontSize, transition)
+      tr_fontWeight = createTransitionable('fontWeight', $tr_fontWeight, transition)
+      tr_rotation = createTransitionable('rotation', $tr_rotation, transition)
+
     }
 
      if (coordSysGeometryRecalculationNecessary) updateCoordSysGeometry()
@@ -228,7 +288,7 @@
 
   function updateScreenGeometry () {
     if (_asPolygon) {
-      screenGeometry = representAsPolygon(pixelGeometry, { radius: aesthetics.radius })
+      screenGeometry = representAsPolygon(pixelGeometry, aesthetics)
     } else {
       screenGeometry = pixelGeometry
     }
@@ -255,25 +315,34 @@
 
   function createDataNecessaryForIndexing () {
     return createDataNecessaryForIndexingMark(
-      type, markId, { screenGeometry, pixelGeometry }, { radius: aesthetics.radius }
+      type, markId, { screenGeometry, pixelGeometry }, aesthetics
     )
   }
+
+  $: renderPolygon = !['Point', 'Line', 'Label'].includes(type) || _asPolygon
+  $: renderCircle = type === 'Point' && !_asPolygon
+  $: renderLine = type === 'Line' && !_asPolygon
+  $: renderLabel = type === 'Label'
 </script>
 
 {#if $graphicContext.output() === 'svg'}
 
-  {#if type !== 'Point' || _asPolygon}
+  {#if renderPolygon}
 
     <path
       class={type.toLowerCase()}
       d={generatePath($tr_screenGeometry)}
       fill={$tr_fill}
-      style={`opacity: ${$tr_opacity}`}
+      stroke={$tr_stroke}
+      stroke-width={$tr_strokeWidth}
+      fill-opacity={$tr_fillOpacity}
+      stroke-opacity={$tr_strokeOpacity}
+      opacity={$tr_opacity}
     />
 
   {/if}
 
-  {#if type === 'Point' && !_asPolygon}
+  {#if renderCircle}
 
     <circle 
       class="point"
@@ -281,8 +350,49 @@
       cy={$tr_screenGeometry.coordinates[1]}
       r={$tr_radius}
       fill={$tr_fill}
+      stroke={$tr_stroke}
+      stroke-width={$tr_strokeWidth}
+      fill-opacity={$tr_fillOpacity}
+      stroke-opacity={$tr_strokeOpacity}
+      opacity={$tr_opacity}
+    />
+
+  {/if}
+
+  {#if renderLine}
+
+    <path
+      class="line"
+      d={generatePath($tr_screenGeometry)}
+      fill="none"
+      stroke-width={$tr_strokeWidth}
+      stroke={$tr_stroke}
       style={`opacity: ${$tr_opacity}`}
     />
+  
+  {/if}
+
+  {#if renderLabel}
+
+    <text 
+      class="label"
+      x={$tr_screenGeometry.coordinates[0]}
+      y={$tr_screenGeometry.coordinates[1]}
+      fill={$tr_fill}
+      stroke={$tr_stroke}
+      stroke-width={$tr_strokeWidth}
+      fill-opacity={$tr_fillOpacity}
+      stroke-opacity={$tr_strokeOpacity}
+      opacity={$tr_opacity}
+      transform={rotateTransform}
+      font-family={fontFamily}
+      font-size={$tr_fontSize + ' px'}
+      font-weight={$tr_fontWeight}
+      text-anchor={parsedTextAnchorPoint.textAnchor}
+      dominant-baseline={parsedTextAnchorPoint.dominantBaseline}
+    >
+      {aesthetics.text}
+    </text>
 
   {/if}
 

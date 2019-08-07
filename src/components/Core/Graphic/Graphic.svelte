@@ -5,6 +5,7 @@
   import * as SectionContext from '../Section/SectionContext'
   import * as EventManagerContext from './EventManagerContext'
   import * as InteractionManagerContext from '../Section/InteractionManagerContext'
+  import * as CoordinateTransformationContext from '../Section/CoordinateTransformationContext'
   import * as ZoomContext from '../Section/ZoomContext'
 
   import EventManager from '../../../classes/EventManager'
@@ -14,12 +15,15 @@
   export let height
   export let scaleX = undefined
   export let scaleY = undefined
+  export let flipX = false
+  export let flipY = false
   export let renderer = undefined
 
   const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
   const eventManagerContext = EventManagerContext.init()
   const interactionManagerContext = InteractionManagerContext.init()
+  CoordinateTransformationContext.init()
   ZoomContext.init()
 
   $: {
@@ -29,6 +33,8 @@
   $: {
     let rangeX = [0, width]
     let rangeY = [0, height]
+    if (flipX) rangeX.reverse()
+    if (flipY) rangeY.reverse()
     SectionContext.update(sectionContext, { rangeX, rangeY, scaleX, scaleY })
   }
 

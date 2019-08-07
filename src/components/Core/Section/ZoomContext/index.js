@@ -18,6 +18,8 @@ export function update (zoomContext, zoomId) {
   if (zoomId) {
     const { x, y, k } = zoomId
     const transformation = p => [p[0] * k + x, p[1] * k + y]
+    const inverseTransformation = p => [(p[0] - x) / k, (p[1] - y) / k]
+    transformation.invert = inverseTransformation
 
     zoomContext.set(transformation)
   }
