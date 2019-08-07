@@ -1,14 +1,14 @@
-export function createXAxisCoords (vjust, y, sectionContext, offset, scaleX, scaleY) {
+export function createXAxisCoords (vjust, y, offset, scaleX, scaleY) {
   // there are three ways of setting the position of the axis, in order of precedence
   // 1. vjust with 'bottom', 'center' or 'top'
   // 2. vjust with a number (relative position within content of section
   // 3. y prop with either a single number (positioning in data coords)
   //    or a function that returns an array of 2 numbers (in pixel coords)
 
-  const x1 = sectionContext.x1()
-  const x2 = sectionContext.x2()
-  const y1 = sectionContext.y1()
-  const y2 = sectionContext.y2()
+  const x1 = scaleX.range()[0]
+  const x2 = scaleX.range()[1]
+  const y1 = scaleY.range()[0]
+  const y2 = scaleY.range()[1]
   const xCoords = () => {
     return [x1, x2]
   }
@@ -54,12 +54,12 @@ export function createXAxisCoords (vjust, y, sectionContext, offset, scaleX, sca
   return { xCoords, yCoords }
 }
 
-export function createTitleXCoord (hjust, axisXCoords, x, sectionContext, offset, axisHeight, flip, fontSize) {
+export function createTitleXCoord (hjust, axisXCoords, x, scaleX, scaleY, offset, axisHeight, flip, fontSize) {
   if (x) {
     return () => x
   }
-  const x1 = sectionContext.x1()
-  const x2 = sectionContext.x2()
+  const x1 = scaleX.range()[0]
+  const x2 = scaleX.range()[1]
   let justification
 
   if (hjust === 'axis') {
@@ -83,12 +83,12 @@ export function createTitleXCoord (hjust, axisXCoords, x, sectionContext, offset
   return () => x1 + Math.abs(x1 - x2) * justification + offset
 }
 
-export function createTitleYCoord (vjust, axisYCoords, y, sectionContext, offset, height, flip, fontSize) {
+export function createTitleYCoord (vjust, axisYCoords, y, scaleX, scaleY, offset, height, flip, fontSize) {
   if (y) {
     return () => y
   }
-  const y1 = sectionContext.y1()
-  const y2 = sectionContext.y2()
+  const y1 = scaleY.range()[0]
+  const y2 = scaleY.range()[1]
   let heightOffset
   if (offset === 'axis') {
     heightOffset = height + 1
@@ -120,30 +120,30 @@ export function createTitleYCoord (vjust, axisYCoords, y, sectionContext, offset
   return () => y1 - Math.abs(y1 - y2) * justification + heightOffset
 }
 
-export function generateXTickGeoms (tickPositions, yCoords, baseLineWidth, tickSize, flip) {
+export function generateXTickGeoms (tickPositions, yCoords, scale, baseLineWidth, tickSize, flip) {
   const x = []
   const y = []
   const yStart = yCoords()[0]
   let offset = baseLineWidth / 2 + tickSize
   if (flip) offset = -offset
   for (let index = 0; index < tickPositions.length; index++) {
-    const tick = tickPositions[index]
+    const tick = scale(tickPositions[index])
     x.push([tick, tick])
     y.push([yStart, yStart + offset])
   }
-  return { tickXCoords: x, tickYCoords: () => y }
+  return { tickXCoords: () => x, tickYCoords: () => y }
 }
 
-export function generateXLabelGeoms (tickPositions, yCoords, baseLineWidth, tickSize, labelOffset, flip) {
+export function generateXLabelGeoms (tickPositions, yCoords, scale, baseLineWidth, tickSize, labelOffset, flip) {
   const x = []
   const y = []
   const yStart = yCoords()[0]
   let offset = baseLineWidth / 2 + tickSize + labelOffset
   if (flip) offset = -offset
   for (let index = 0; index < tickPositions.length; index++) {
-    const tick = tickPositions[index]
+    const tick = scale(tickPositions[index])
     x.push(tick)
     y.push(yStart + offset)
   }
-  return { tickLabelXCoords: x, tickLabelYCoords: () => y }
+  return { tickLabelXCoords: () => x, tickLabelYCoords: () => y }
 }
