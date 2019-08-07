@@ -3,7 +3,7 @@
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from "../../Core/Section/SectionContext"
 
-  import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord} from "./createXAxisCoords.js"
+  import { createYAxisCoords, createYTickGeoms, createYLabelGeoms, createTitleXCoord, createTitleYCoord} from "./createYAxisCoords.js"
 
   // global properties
   export let scale = undefined
@@ -17,10 +17,10 @@
   export let baseLineWidth = 1
 
   // axis positioning
-  export let vjust = "bottom"
+  export let vjust = undefined
   export let y = undefined
-  export let yOffset = 0
-  export let hjust = undefined // not used for x axis
+  export let yOffset = undefined
+  export let hjust = 'left'
   export let x = undefined
   export let xOffset = 0
 
@@ -45,11 +45,11 @@
   export let labelColor = 'black'
 
   // axis title
-  export let titleHjust = 'center'
-  export let titleXOffset = 0
+  export let titleHjust = 'axis'
+  export let titleXOffset = 'axis'
   export let titleX = undefined
-  export let titleVjust = 'axis'
-  export let titleYOffset = 'axis'
+  export let titleVjust = 'center'
+  export let titleYOffset = 0
   export let titleY = undefined
   export let title = ''
   export let titleColor = 'black'
@@ -57,8 +57,8 @@
   export let titleFontSize = '12'
   export let titleFontWeight = 'normal'
   export let titleOpacity = 1
-  export let titleRotation = 0
-  export let titleAnchorPoint = 't'
+  export let titleRotation = -90
+  export let titleAnchorPoint = 'center'
 
 
   // Contexts
@@ -76,40 +76,42 @@
   let tickLabelText
   let titleXCoord
   let titleYCoord
-  let axisHeight
-  let labelAnchorPoint = 't'
-  let scaleX
+  let axisWidth
+  let labelAnchorPoint = 'r'
+  let scaleY
 
   $: {
-    scaleX = (typeof scale === "undefined") ? $sectionContext._scaleX : scale; 
-    ({xCoords, yCoords} = createXAxisCoords(vjust, y, yOffset, scaleX, $sectionContext._scaleY, $sectionContext))
+    scaleY = (typeof scale === "undefined") ? $sectionContext._scaleY : scale;
+    console.log(xOffset);
+    ({xCoords, yCoords} = createYAxisCoords(hjust, x, xOffset, $sectionContext._scaleX, scaleY, $sectionContext));
   }
   $: {
     if (Array.isArray(tickValues) && tickValues.length > 0) {
       tickPositions = tickValues
     } else {
-      tickPositions = scaleX.ticks(tickCount)
+      tickPositions = scaleY.ticks(tickCount)
     }
-    if (tickExtra && tickPositions[0] !== scaleX.domain()[0]) {
-      tickPositions.unshift(scaleX.domain()[0])
+    if (tickExtra && tickPositions[0] !== scaleY.domain()[0]) {
+      tickPositions.unshift(scaleY.domain()[0])
     }
-    ({tickXCoords, tickYCoords} = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
-    ({tickLabelXCoords, tickLabelYCoords} = createXLabelGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, labelOffset, flip))
-    format = (labelFormat) ? labelFormat : scaleX.tickFormat(tickPositions.length)
+    ({tickXCoords, tickYCoords} = createYTickGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, flip));
+    ({tickLabelXCoords, tickLabelYCoords} = createYLabelGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, labelOffset, flip))
+    format = (labelFormat) ? labelFormat : scaleY.tickFormat(tickPositions.length)
     tickLabelText = tickPositions.map(format)
-    axisHeight = baseLineWidth + tickSize + labelOffset + labelFontSize
-    if (flip) labelAnchorPoint = 'b'
+    axisWidth = baseLineWidth + tickSize + labelOffset + labelFontSize
+    if (flip) labelAnchorPoint = 'l'
   }
   $: {
     if (title.length > 0) {
-      titleXCoord = createTitleXCoord(titleHjust, xCoords, titleX, scaleX, $sectionContext._scaleY, titleXOffset, axisHeight, flip, titleFontSize, $sectionContext)
-      titleYCoord = createTitleYCoord(titleVjust, yCoords, titleY, scaleX, $sectionContext._scaleY, titleYOffset, axisHeight, flip, titleFontSize, $sectionContext)
+      titleXCoord = createTitleXCoord(titleHjust, xCoords, titleX, $sectionContext._scaleX, scaleY, titleXOffset, axisWidth, flip, titleFontSize, $sectionContext)
+      titleYCoord = createTitleYCoord(titleVjust, yCoords, titleY, $sectionContext._scaleX, scaleY, titleYOffset, axisWidth, flip, titleFontSize, $sectionContext)
+      console.log(titleXCoord(), titleYCoord())
     }
   }
 </script>
 
 {#if $graphicContext.output() === 'svg'}
-  <g class="x-axis">
+  <g class="y-axis">
     {#if baseLine}
     <Line x={xCoords} y={yCoords} strokeWidth={baseLineWidth} opacity={baseLineOpacity} stroke={baseLineColor} />
     {/if}

@@ -2,7 +2,7 @@
 	import { scaleLinear } from 'd3-scale'
 	import { 
     Graphic, Section, 
-    PointLayer, XAxis
+    PointLayer, XAxis, YAxis
   } from '../../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
@@ -56,7 +56,7 @@
     flip: 'false',
     vjust: 'bottom',
     y: undefined,
-    offset: 0,
+    yOffset: 0,
     ticks: 'true',
     tickCount: '8',
     tickValues: '',
@@ -125,7 +125,7 @@
 			scaleY={scaleB}
       backgroundColor={background}
       paddingColor={padding}
-      padding={{left: 25, right: 25, top: 25, bottom: 40}}
+      padding={{left: 40, right: 25, top: 25, bottom: 40}}
       flipY
 		>
         <PointLayer
@@ -135,7 +135,7 @@
         />
 		
         <XAxis
-          offset={Number(options.offset)}
+          yOffset={Number(options.yOffset)}
           flip={options.flip === 'true'}
           vjust={isNaN(options.vjust) ? options.vjust : Number(options.vjust)}
           y={Number(options.y)}
@@ -173,6 +173,7 @@
           titleAnchorPoint={options.titleAnchorPoint}
 
         />
+        <YAxis hjust={'left'} baseLineWidth={1} title="Test Y Axis"/>
 		</Section>
 
 	</Graphic>
