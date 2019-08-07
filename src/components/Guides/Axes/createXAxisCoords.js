@@ -1,103 +1,149 @@
-export function createXAxisCoords (vjust, y, rangeX, rangeY, offset, scaleX, scaleY) {
+export function createXAxisCoords (vjust, y, sectionContext, offset, scaleX, scaleY) {
   // there are three ways of setting the position of the axis, in order of precedence
   // 1. vjust with 'bottom', 'center' or 'top'
   // 2. vjust with a number (relative position within content of section
   // 3. y prop with either a single number (positioning in data coords)
   //    or a function that returns an array of 2 numbers (in pixel coords)
-  console.log(y)
-  let xCoords
+
+  const x1 = sectionContext.x1()
+  const x2 = sectionContext.x2()
+  const y1 = sectionContext.y1()
+  const y2 = sectionContext.y2()
+  const xCoords = () => {
+    return [x1, x2]
+  }
+
   let yCoords
-  const x0 = rangeX[0]
-  const x1 = rangeX[1]
-  const y0 = rangeY[0]
-  const y1 = rangeY[1]
 
   if (vjust === 'bottom') {
-    xCoords = () => {
-      return [x0, x1]
-    }
     yCoords = () => {
-      return [y0 + offset, y0 + offset]
+      return [y1 + offset, y1 + offset]
     }
   }
   if (vjust === 'center') {
-    xCoords = () => {
-      return [x0, x1]
-    }
-    const yCoord = (y1 - y0) * 0.5 + y0
+    const yCoord = (y2 - y1) * 0.5 + y1
     yCoords = () => {
       return [yCoord + offset, yCoord + offset]
     }
   }
   if (vjust === 'top') {
-    xCoords = () => {
-      return [x0, x1]
-    }
     yCoords = () => {
-      return [y1 - offset, y1 - offset]
+      return [y2 - offset, y2 - offset]
     }
   }
   if (!isNaN(vjust)) {
-    xCoords = () => {
-      return [x0, x1]
-    }
-    const yCoord = (y1 - y0) * vjust + y0
+    const yCoord = (y2 - y1) * vjust + y1
     yCoords = () => {
       return [yCoord, yCoord]
     }
   }
   if (!isNaN(y)) {
-    xCoords = () => {
-      return [x0, x1]
-    }
     yCoords = () => [scaleY(y), scaleY(y)]
   }
   if (typeof y === 'function') {
-    xCoords = () => {
-      return [x0, x1]
-    }
     yCoords = y
   }
-  console.log(yCoords)
+  if (yCoords === undefined) {
+    // we still haven't set yCoords
+    // which means we don't have a y prop and a non-valid vjust prop
+    // probably should throw warning
+    yCoords = () => {
+      return [y1 + offset, y1 + offset]
+    }
+  }
   return { xCoords, yCoords }
 }
 
-export function generateXTickGeoms (tickPositions, yCoords, tickSize) {
+export function createTitleXCoord (hjust, axisXCoords, x, sectionContext, offset, axisHeight, flip, fontSize) {
+  if (x) {
+    return () => x
+  }
+  const x1 = sectionContext.x1()
+  const x2 = sectionContext.x2()
+  let justification
+
+  if (hjust === 'axis') {
+    return () => axisXCoords()[0]
+  }
+  if (hjust === 'center') {
+    justification = 0.5
+  }
+  if (hjust === 'left') {
+    justification = 0
+  }
+  if (hjust === 'right') {
+    justification = 1
+  }
+  if (!isNaN(hjust)) {
+    justification = hjust
+  }
+  if (justification === undefined) {
+    justification = 0.5
+  }
+  return () => x1 + Math.abs(x1 - x2) * justification + offset
+}
+
+export function createTitleYCoord (vjust, axisYCoords, y, sectionContext, offset, height, flip, fontSize) {
+  if (y) {
+    return () => y
+  }
+  const y1 = sectionContext.y1()
+  const y2 = sectionContext.y2()
+  let heightOffset
+  if (offset === 'axis') {
+    heightOffset = height + 1
+    if (flip) heightOffset = -heightOffset - fontSize
+  } else {
+    heightOffset = offset
+  }
+  let justification
+
+  if (vjust === 'axis') {
+    return () => axisYCoords()[0] + heightOffset
+  }
+
+  if (vjust === 'center') {
+    justification = 0.5
+  }
+  if (vjust === 'bottom') {
+    justification = 0
+  }
+  if (vjust === 'top') {
+    justification = 1
+  }
+  if (!isNaN(vjust)) {
+    justification = vjust
+  }
+  if (justification === undefined) {
+    justification = 0.5
+  }
+  return () => y1 - Math.abs(y1 - y2) * justification + heightOffset
+}
+
+export function generateXTickGeoms (tickPositions, yCoords, baseLineWidth, tickSize, flip) {
   const x = []
   const y = []
-  let yStart
-  let yFunction = true
-  if (typeof yCoords === 'function') {
-    yStart = yCoords()[0]
-  } else {
-    yStart = yCoords[0]
-    yFunction = false
-  }
+  const yStart = yCoords()[0]
+  let offset = baseLineWidth / 2 + tickSize
+  if (flip) offset = -offset
   for (let index = 0; index < tickPositions.length; index++) {
     const tick = tickPositions[index]
     x.push([tick, tick])
-    y.push([yStart, yStart + tickSize])
+    y.push([yStart, yStart + offset])
   }
-  const yWrapper = (yFunction) ? () => y : y
-  return { tickXCoords: x, tickYCoords: yWrapper }
+  return { tickXCoords: x, tickYCoords: () => y }
 }
 
-export function generateXLabelGeoms (tickPositions, yCoords, tickSize, labelOffset) {
+export function generateXLabelGeoms (tickPositions, yCoords, baseLineWidth, tickSize, labelOffset, flip) {
   const x = []
   const y = []
-  let yStart
-  let yFunction = true
-  if (typeof yCoords === 'function') {
-    yStart = yCoords()[0]
-  } else {
-    yStart = yCoords[0]
-    yFunction = false
-  }
+  const yStart = yCoords()[0]
+  let offset = baseLineWidth / 2 + tickSize + labelOffset
+  if (flip) offset = -offset
   for (let index = 0; index < tickPositions.length; index++) {
     const tick = tickPositions[index]
     x.push(tick)
-    y.push(yStart + tickSize + labelOffset)
+    y.push(yStart + offset)
   }
-  const yWrapper = (yFunction) ? () => y : y
-  return { tickLabelXCoords: x, tickLabelYCoords: yWrapper }
+  return { tickLabelXCoords: x, tickLabelYCoords: () => y }
 }

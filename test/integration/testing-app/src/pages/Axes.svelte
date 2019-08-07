@@ -20,16 +20,19 @@
   const scaleA = scaleLinear().domain(data.domain('a')).nice()
   const scaleB = scaleLinear().domain(data.domain('b')).nice()
   
-  let height = 500
+  let height = 300
+  let width = 300
   let background = '#808080'
   let padding = '#E8E8E8'
 
-    export let vjust = "bottom"
+
+
+  export let vjust = "bottom"
   export let y = undefined
   export let offset = 0
 
   export let ticks = true
-  export let tickCount = 10
+  export let tickCount = 8
   export let tickValues = undefined
   export let tickSize = 5
   export let tickWidth = 0.5
@@ -39,38 +42,80 @@
   export let labelRotate = 0
   export let labelFont = "Helvetica"
   export let labelFontSize = 10
+  export let labelFontWeight = 'normal'
+  export let labelOpacity = 1
+
+
+    export let baseLine = true
+  export let baseLineColor = 'black'
+  export let baseLineOpacity = 1
+  export let baseLineWidth = 1
 
 
   let options = {
+    flip: 'false',
     vjust: 'bottom',
     y: undefined,
     offset: 0,
     ticks: 'true',
-    tickCount: '10',
+    tickCount: '8',
     tickValues: '',
     tickSize: 5,
-    tickWidth: 0.5
+    tickWidth: 0.5,
+    tickColor: 'black',
+    tickOpacity: 1,
+    tickExtra: 'false',
+    baseLine: 'true',
+    baseLineColor: 'black',
+    baseLineOpacity: 1,
+    baseLineWidth: 1,
+    labelFormat: undefined,
+    labelOffset: 2,
+    labelRotate: 0,
+    labelFont: "Helvetica",
+    labelFontSize: 10,
+    labelFontWeight: 'normal',
+    labelOpacity: 1,
+    labelColor: 'black',
+    titleHjust: 'center',
+    titleXOffset: 0,
+    titleYOffset: 'axis',
+    titleVjust: 'axis',
+    title: 'Test Title',
+    titleColor: 'black',
+    titleFont: 'Helvetica',
+    titleFontSize: '12',
+    titleFontWeight: 'normal',
+    titleOpacity: 1,
+    titleRotation: 0,
+    titleAnchorPoint: 't'
   }
 
 </script>
 
-<div>
-  <label for="height-slider">Height:</label>
-  <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
+<div class="options">
+  <div>
+    <label for="height-slider">Height:</label>
+    <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
+  </div>
+
+  <div>
+    <label for="width-slider">Width:</label>
+    <input type="range" min="0" max="500" bind:value={width} name="width-slider" />
+  </div>
+
+  {#each Object.keys(options) as option}
+    <div>
+      <label for={option}>{option}:</label>
+      <input bind:value={options[option]} name={option} />
+    </div>
+  {/each}
 </div>
 
-{#each Object.keys(options) as option}
-  <div>
-    <label for={option}>{option}:</label>
-    <input bind:value={options[option]} name={option} />
-  </div>
-{/each}
-
-
-<div>
+<div class="graphic">
 
 	<Graphic 
-    width={500} {height}
+    width={width} {height}
     scaleX={scaleLinear().domain([0, 500])}
     scaleY={scaleLinear().domain([0, 500])}
   >
@@ -80,7 +125,7 @@
 			scaleY={scaleB}
       backgroundColor={background}
       paddingColor={padding}
-      padding={{left: 25, right: 100, top: 25, bottom: 100}}
+      padding={{left: 25, right: 25, top: 25, bottom: 40}}
       flipY
 		>
         <PointLayer
@@ -91,16 +136,54 @@
 		
         <XAxis
           offset={Number(options.offset)}
+          flip={options.flip === 'true'}
           vjust={isNaN(options.vjust) ? options.vjust : Number(options.vjust)}
           y={Number(options.y)}
+          baseLine={options.baseLine === 'true'}
+          baseLineColor={options.baseLineColor}
+          baseLineOpacity={Number(options.baseLineOpacity)}
+          baseLineWidth={Number(options.baseLineWidth)}
           ticks={options.ticks === 'true'}
           tickCount={Number(options.tickCount)}
-          tickValues={options.tickValues.split(',')}
+          tickValues={(options.tickValues.length > 0) ? options.tickValues.split(',') : []}
           tickSize={Number(options.tickSize)}
           tickWidth={Number(options.tickWidth)}
+          tickColor={options.tickColor}
+          tickOpacity={Number(options.tickOpacity)}
+          tickExtra={options.tickExtra === 'true'}
+          labelFormat = {options.labelFormat}
+          labelOffset = {Number(options.labelOffset)}
+          labelRotate = {Number(options.labelRotate)}
+          labelFont = {options.labelFont}
+          labelFontSize = {Number(options.labelFontSize)}
+          labelFontWeight = {options.labelFontWeight}
+          labelOpacity = {Number(options.labelOpacity)}
+          labelColor={options.labelColor}
+          titleHjust={options.titleHjust}
+          titleXOffset={Number(options.titleXOffset)}
+          titleYOffset={options.titleYOffset}
+          titleVjust={options.titleVjust}
+          title={options.title}
+          titleColor={options.titleColor}
+          titleFont={options.titleFont}
+          titleFontSize={Number(options.titleFontSize)}
+          titleFontWeight={options.titleFontWeight}
+          titleOpacity={Number(options.titleOpacity)}
+          titleRotation={Number(options.titleRotation)}
+          titleAnchorPoint={options.titleAnchorPoint}
+
         />
 		</Section>
 
 	</Graphic>
 
 </div>
+
+<style>
+.options {
+  float: left;
+}
+.graphic {
+  float: right;
+}
+</style>
