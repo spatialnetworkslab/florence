@@ -123,7 +123,7 @@
           transition={2000}
         />
 		
-        <XAxis
+        <!-- <XAxis
           yOffset={Number(options.yOffset)}
           flip={options.flip === 'true'}
           vjust={isNaN(options.vjust) ? options.vjust : Number(options.vjust)}
@@ -161,7 +161,8 @@
           titleRotation={Number(options.titleRotation)}
           titleAnchorPoint={options.titleAnchorPoint}
         />
-        <!-- <YAxis hjust={'left'} baseLineWidth={1} title="Test Y Axis"/> -->
+
+        <YAxis hjust={'left'} baseLineWidth={1} title="Test Y Axis"/> -->
 		</Section>
 
 	</Graphic>

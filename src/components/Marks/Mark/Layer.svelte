@@ -185,11 +185,11 @@
   // Handle radius/strokeWidth changes
   $: {
     if (initDone()) {
-      if (!_asPolygon) {
-        radiusObject = generatePropObject(aesthetics.radius, indexArray)
-        tr_radiusObject.set(radiusObject)
+      radiusObject = generatePropObject(aesthetics.radius, indexArray)
+      strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
 
-        strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
+      if (!_asPolygon) {
+        tr_radiusObject.set(radiusObject)
         tr_strokeWidthObject.set(strokeWidthObject)
       }
 
@@ -313,6 +313,9 @@
 
   function updateScreenGeometryObject () {
     if (_asPolygon) {
+      // console.log(Object.keys(pixelGeometryObject))
+      // console.log(Object.keys(radiusObject))
+
       screenGeometryObject = representAsPolygonObject(pixelGeometryObject, { radiusObject, strokeWidthObject })
     } else {
       screenGeometryObject = pixelGeometryObject
