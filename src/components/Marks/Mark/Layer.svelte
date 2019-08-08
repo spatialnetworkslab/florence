@@ -121,9 +121,12 @@
   // Initiate geometry objects and index array
   let coordSysGeometryObject
   let pixelGeometryObject
+  let screenGeometryObject
 
-  let indexArray = updateCoordSysGeometryObject()
+  updateCoordSysGeometryObject()
   updatePixelGeometryObject()
+
+  let indexArray = Object.keys(coordSysGeometryObject)
 
   // Generate other prop objects
   let radiusObject = generatePropObject(aesthetics.radius, indexArray)
@@ -141,8 +144,8 @@
   let anchorPointObject = generatePropObject(aesthetics.anchorPoint, indexArray)
 
 
-  // This one uses the radiusObject/strokeWidthObject in some cases, so must be done after the prop objects
-  let screenGeometryObject = updateScreenGeometryObject()
+  // This uses the radiusObject/strokeWidthObject in some cases, so must be done after the prop objects
+  updateScreenGeometryObject()
 
   // Initiate transitionables
   let tr_screenGeometryObject = createTransitionableLayer('geometry', screenGeometryObject, transition)
@@ -213,11 +216,6 @@
   $: { if (initDone()) fontFamilyObject = generatePropObject(aesthetics.fontFamily, indexArray)}
   $: { if (initDone()) anchorPointObject = generatePropObject(aesthetics.anchorPoint, indexArray)}
 
-  let rotateTransformObject = createRotationObject($tr_rotationObject, $tr_screenGeometryObject, indexArray)
-  let parsedTextAnchorPointObject = createTextAnchorObject(anchorPointObject, indexArray)
-
-
-
   let previousTransition
 
   let coordSysGeometryObjectRecalculationNecessary = false
@@ -226,16 +224,15 @@
 
   $: {
     if (coordSysGeometryObjectRecalculationNecessary) {
-      indexArray = updateCoordSysGeometryObject()
-      console.log('indexArray updated')
+      updateCoordSysGeometryObject()
     }
     
     if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
 
     if (screenGeometryObjectRecalculationNecessary) {
-      screenGeometryObject = updateScreenGeometryObject()
-      tr_screenGeometryObject.set(screenGeometryObject)
-      console.log('screenGeom updated - the next two object should be equal!', screenGeometryObject, $tr_screenGeometryObject)
+      updateScreenGeometryObject()
+      updateScreenGeometryObjectTransitionable()
+
       updateInteractionManagerIfNecessary()
     }
 
@@ -244,15 +241,9 @@
     screenGeometryObjectRecalculationNecessary = false
   }
 
-  $: { if (initDone()) rotateTransformObject = createRotationObject($tr_rotationObject, $tr_screenGeometryObject, indexArray)}
-  $: { if (initDone()) parsedTextAnchorPointObject = createTextAnchorObject(anchorPointObject, indexArray)}
-
   beforeUpdate(() => {
     // Update transitionables
     if (!transitionsEqual(previousTransition, transition) && initDone()) {
-      console.log(previousTransition, transition)
-      previousTransition = transition
-      console.log('transition time!')
       tr_screenGeometryObject = createTransitionableLayer('geometry', $tr_screenGeometryObject, transition)
       tr_radiusObject = createTransitionableLayer('radius', $tr_radiusObject, transition)
       tr_fillObject = createTransitionableLayer('fill', $tr_fillObject, transition)
@@ -267,6 +258,7 @@
       tr_rotationObject = createTransitionableLayer('rotation', $tr_rotationObject, transition)
     }
 
+    previousTransition = transition
   })
 
   afterUpdate(() => {
@@ -284,26 +276,14 @@
     removeLayerFromSpatialIndexIfNecessary()
   })
 
+  // Index array
+  $: {
+    if (initDone()) {
+      indexArray = Object.keys($tr_screenGeometryObject)
+    }
+  }
+
   // Helpers
-  function createRotationObject(rotationObject, screenGeometryObject, indexArray) {
-    console.log('This should be equal!!', Object.keys(screenGeometryObject).length, indexArray.length)
-    const propObj = {}
-    for (let i = 0; i < indexArray.length; i++) {
-        const index = indexArray[i]
-        propObj[index] = `rotate(${rotationObject[index]}, ${screenGeometryObject[index].coordinates[0]}, ${screenGeometryObject[index].coordinates[1]})`
-    }
-    return propObj
-  }
-
-  function createTextAnchorObject(anchorPointObject, indexArray) {
-    const propObj = {}
-    for (let i = 0; i < indexArray.length; i++) {
-        const index = indexArray[i]
-        propObj[index] = textAnchorPoint(anchorPointObject[index])
-    }
-    return propObj
-  }
-
   function scheduleUpdateCoordSysGeometryObject () {
     coordSysGeometryObjectRecalculationNecessary = true
     pixelGeometryObjectRecalculationNecessary = true
@@ -311,15 +291,13 @@
   }
 
   function updateCoordSysGeometryObject () {
-    let _ = createCoordSysGeometryObject(
+    coordSysGeometryObject = createCoordSysGeometryObject(
       positioningAesthetics, 
       $sectionContext,
       $coordinateTransformationContext,
       index,
       interpolate
     )
-    coordSysGeometryObject = _.coordSysGeometryObject
-    return _.indexArray
   }
 
   function scheduleUpdatePixelGeometryObject () {
@@ -341,10 +319,14 @@
 
   function updateScreenGeometryObject () {
     if (_asPolygon) {
-      return representAsPolygonObject(pixelGeometryObject, { radiusObject, strokeWidthObject })
+      screenGeometryObject = representAsPolygonObject(pixelGeometryObject, { radiusObject, strokeWidthObject })
     } else {
-      return pixelGeometryObject
+      screenGeometryObject = pixelGeometryObject
     }
+  }
+
+  function updateScreenGeometryObjectTransitionable () {
+    tr_screenGeometryObject.set(screenGeometryObject)
   }
 
   function updateInteractionManagerIfNecessary () {
@@ -382,7 +364,7 @@
 
   {#if renderPolygon}
     <g class={`${type.toLowerCase()}-layer`}>
-      {#each indexArray as $index ($index)}
+      {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
 
         <path
           class={type.toLowerCase()}
@@ -452,12 +434,16 @@
           fill-opacity={$tr_fillOpacityObject[$index]}
           stroke-opacity={$tr_strokeOpacityObject[$index]}
           opacity={$tr_opacityObject[$index]}
-          transform={rotateTransformObject[$index]}
+          transform={`
+            rotate(${$tr_rotationObject[$index]}, 
+            ${$tr_screenGeometryObject[$index].coordinates[0]}, 
+            ${$tr_screenGeometryObject[$index].coordinates[1]})
+          `}
           font-family={fontFamilyObject[$index]}
           font-size={$tr_fontSizeObject[$index] + 'px'}
           font-weight={$tr_fontWeightObject[$index]}
-          text-anchor={parsedTextAnchorPointObject[$index].textAnchor}
-          dominant-baseline={parsedTextAnchorPointObject[$index].dominantBaseline}
+          text-anchor={textAnchorPoint(anchorPointObject[$index]).textAnchor}
+          dominant-baseline={textAnchorPoint(anchorPointObject[$index]).dominantBaseline}
         >
           {textObject[$index]}
         </text>

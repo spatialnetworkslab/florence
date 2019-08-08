@@ -9,14 +9,13 @@
 	let N = 100
 	let data = new DataContainer(generateData(N, 0.25))
 	function generateData (N, error) {
-    console.log('N', N)
 		const getError = () => -error + (Math.random() * (2 * error)) * N
-		let data = { a: [], b: [] }
+		let _data = { a: [], b: [] }
 		for (let i = 0; i < N; i++) {
-			data.a.push(i + getError())
-			data.b.push(i + getError())
+			_data.a.push(i + getError())
+			_data.b.push(i + getError())
 		}
-		return data
+		return _data
   }
   let scaleA = scaleLinear().domain(data.domain('a')).nice()
   let scaleB = scaleLinear().domain(data.domain('b')).nice()
@@ -28,9 +27,7 @@
   
   function updateData() {
     N = Math.floor(Math.random() * (300 - 50 + 1)) + 50 // random number between 50-300
-    console.log(N)
     data = new DataContainer(generateData(N, 0.25))
-    console.log(data.column('$index'))
   }
 
   let height = 300
@@ -123,10 +120,11 @@
           x={data.column('a')}
           y={data.column('b')}
           index={data.column('$index')}
+          fill={width < 200 ? 'green': 'black'}
           transition={2000}
         />
 		
-        <!-- <XAxis
+        <XAxis
           yOffset={Number(options.yOffset)}
           flip={options.flip === 'true'}
           vjust={isNaN(options.vjust) ? options.vjust : Number(options.vjust)}
@@ -165,7 +163,7 @@
           titleAnchorPoint={options.titleAnchorPoint}
 
         />
-        <YAxis hjust={'left'} baseLineWidth={1} title="Test Y Axis"/> -->
+        <YAxis hjust={'left'} baseLineWidth={1} title="Test Y Axis"/>
 		</Section>
 
 	</Graphic>
