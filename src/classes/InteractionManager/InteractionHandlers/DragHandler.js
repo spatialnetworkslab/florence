@@ -4,8 +4,8 @@ export default class DragHandler extends InteractionHandler {
   constructor (interactionManager) {
     super(interactionManager)
 
-    this._dragging = false
     this._draggingId = undefined
+    this._hit = undefined
   }
 
   _addEventListenerIfNecessary () {
@@ -36,31 +36,49 @@ export default class DragHandler extends InteractionHandler {
     }
   }
 
+  /**
+   * These handlers extend the MouseEvent with extra props which
+   * we call a mouseDragEvent in the following functions:
+   * - _handleHits()
+   * - _executeCallback()
+   *
+   * The _mousedownHandler also queries for hits, which are used to
+   * determine the layer/mark on which the drag event has been fired.
+   *
+   * @param {SVGPoint} coordinates - The SVGPoint object
+   * @param {Object} mouseEvent - The original MouseEvent
+   */
   _mousedownHandler (coordinates, mouseEvent) {
+    mouseEvent.SVGPoint = coordinates
+    mouseEvent.localCoords = this._getLocalCoordinates(coordinates)
+    mouseEvent.dragType = 'onDragStart'
+
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(coordinates)
 
     if (hits.length > 0) {
-      this._dragging = true
-      const firstHit = hits[0]
-      this._draggingId = firstHit.markId
-      const localCoords = this._getLocalCoordinates(coordinates)
-      this._markCallbacks[this._draggingId].onDragStart(coordinates, localCoords, mouseEvent)
+      this._hit = hits[0]
+      this._handleHits(mouseEvent)
     }
   }
 
   _mousemoveHandler (coordinates, mouseEvent) {
-    if (this._dragging) {
-      const localCoords = this._getLocalCoordinates(coordinates)
-      this._markCallbacks[this._draggingId].onDrag(coordinates, localCoords, mouseEvent)
+    mouseEvent.SVGPoint = coordinates
+    mouseEvent.localCoords = this._getLocalCoordinates(coordinates)
+    mouseEvent.dragType = 'onDrag'
+
+    if (this._draggingId) {
+      this._handleHits(mouseEvent)
     }
   }
 
   _mouseupHandler (coordinates, mouseEvent) {
-    if (this._dragging) {
-      const localCoords = this._getLocalCoordinates(coordinates)
-      this._markCallbacks[this._draggingId].onDragEnd(coordinates, localCoords, mouseEvent)
-      this._dragging = false
+    mouseEvent.SVGPoint = coordinates
+    mouseEvent.localCoords = this._getLocalCoordinates(coordinates)
+    mouseEvent.dragType = 'onDragEnd'
+
+    if (this._draggingId) {
+      this._handleHits(mouseEvent)
       this._draggingId = undefined
     }
   }
@@ -71,8 +89,8 @@ export default class DragHandler extends InteractionHandler {
     const scaleX = section.scales().scaleX
     const scaleY = section.scales().scaleY
 
-    const clampedX = this._clamp(pixelCoords.x, section.x1(), section.x2())
-    const clampedY = this._clamp(pixelCoords.y, section.y2(), section.y1())
+    const clampedX = this._clamp(pixelCoords.x, section.x1, section.x2)
+    const clampedY = this._clamp(pixelCoords.y, section.y1, section.y2)
 
     const localX = scaleX.invert(clampedX)
     const localY = scaleY.invert(clampedY)
@@ -82,5 +100,33 @@ export default class DragHandler extends InteractionHandler {
 
   _clamp (coord, min, max) {
     return Math.max(min, Math.min(coord, max))
+  }
+
+  /**
+   * Checks whether a hit is in a layer or is a mark.
+   * @param {Object} mouseDragEvent - The augmented MouseEvent passed to each handler
+   */
+  _handleHits (mouseDragEvent) {
+    if (this._isInLayer(this._hit)) {
+      mouseDragEvent.hitIndex = this._hit.$index
+      this._executeCallback('layer', mouseDragEvent)
+    }
+
+    if (this._isMark(this._hit)) {
+      this._executeCallback('mark', mouseDragEvent)
+    }
+  }
+
+  /**
+   * Executes the callback associated with a drag type.
+   * @param {string} primitive - A layer or mark
+   * @param {Object} mouseDragEvent - See _handleHits()
+   */
+  _executeCallback (primitive, mouseDragEvent) {
+    if (mouseDragEvent.dragType === 'onDragStart') {
+      this._draggingId = this._hit[`${primitive}Id`]
+    }
+
+    this[`_${primitive}Callbacks`][this._draggingId][mouseDragEvent.dragType](mouseDragEvent)
   }
 }

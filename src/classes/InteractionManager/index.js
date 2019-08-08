@@ -87,12 +87,14 @@ export default class InteractionManager {
     if (interactionName === 'click') this._clickHandler.addLayerInteraction(layerId, callback)
     if (interactionName === 'mouseover') this._mouseoverHandler.addLayerInteraction(layerId, callback)
     if (interactionName === 'mouseout') this._mouseoutHandler.addLayerInteraction(layerId, callback)
+    if (interactionName === 'drag') this._dragHandler.addLayerInteraction(layerId, callback)
   }
 
   removeAllLayerInteractions (layerId) {
     this._clickHandler.removeLayerInteraction(layerId)
     this._mouseoverHandler.removeLayerInteraction(layerId)
     this._mouseoutHandler.removeLayerInteraction(layerId)
+    this._dragHandler.removeLayerInteraction(layerId)
   }
 
   // Add/remove mark interactions

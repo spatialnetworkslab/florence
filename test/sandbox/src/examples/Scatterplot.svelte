@@ -4,7 +4,7 @@
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
-	const data = new DataContainer(generateData(N, 0.25))
+	let data = new DataContainer(generateData(N, 0.25))
 	function generateData (N, error) {
 		const getError = () => -error + (Math.random() * (2 * error)) * N
 		let data = { a: [], b: [] }
@@ -42,17 +42,36 @@
   let bigPoint = { x: 50, y: 50 }
   let dragPoint
 
-  function handleDragStart (pixelCoords, localCoords, mouseEvent) {
-    dragPoint = localCoords
+  function handleDragStart (event) {
+    dragPoint = event.localCoords
   }
 
-  function handleDrag (pixelCoords, localCoords, mouseEvent) {
-    dragPoint = localCoords
+  function handleDrag (event) {
+    dragPoint = event.localCoords
   }
 
-  function handleDragEnd (pixelCoords, localCoords, mouseEvent) {
+  function handleDragEnd (event) {
     bigPoint = dragPoint
     dragPoint = undefined
+  }
+
+  let dragPointLayer
+  let opacityArray = Array(100).fill(1)
+
+  function handleLayerDragStart (event) {
+    opacityArray[event.hitIndex] = 0
+    dragPointLayer = event.localCoords
+  }
+
+  function handleLayerDrag (event) {
+    dragPointLayer = event.localCoords
+  }
+
+  function handleLayerDragEnd (event) {
+    data._data.a[event.hitIndex] = dragPointLayer.x
+    data._data.b[event.hitIndex] = dragPointLayer.y
+    opacityArray[event.hitIndex] = 1
+    dragPointLayer = undefined
   }
 
 </script>
@@ -100,13 +119,26 @@
 			<PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}
+        opacity={opacityArray}
         fill={transformation === 'identity' ? 'black' : 'blue'}
-        radius={transformation === 'identity' ? 3 : 6}
+        radius={transformation === 'identity' ? 4 : 6}
         index={filteredData.column('$index')}
         onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
         onMouseout={handleMouseout}
-        transition={duration}
+        onDragStart={handleLayerDragStart}
+        onDrag={handleLayerDrag}
+        onDragEnd={handleLayerDragEnd}
       />
+        <!-- transition={duration} -->
+
+      {#if dragPointLayer}
+        <Point
+          x={dragPointLayer.x}
+          y={dragPointLayer.y}
+          radius={5}
+          fill={'black'}
+        />
+      {/if}
 
       <!-- {#each filteredData.rows() as row (row.$index)}
 
@@ -144,7 +176,7 @@
         />
       {/if}
 
-      {#each hoverPointKeys as key (key)}
+      <!-- {#each hoverPointKeys as key (key)}
 
         <Point
           x={hoverPoints[key].a}
@@ -153,7 +185,7 @@
           fill={'green'}
         />
 
-      {/each}
+      {/each} -->
 
 		</Section>
 

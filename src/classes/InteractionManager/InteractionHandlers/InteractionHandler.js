@@ -50,10 +50,10 @@ export default class InteractionHandler {
   }
 
   _isInSection (hit, geometry) {
-    return (hit.x >= geometry.x1() &&
-            hit.x <= geometry.x2() &&
-            hit.y >= geometry.y1() &&
-            hit.y <= geometry.y2())
+    return (hit.x >= geometry.x1 &&
+            hit.x <= geometry.x2 &&
+            hit.y >= geometry.y1 &&
+            hit.y <= geometry.y2)
   }
 
   _isInLayer (hit) {
