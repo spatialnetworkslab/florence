@@ -29,9 +29,15 @@ export default class WheelHandler extends SectionInteractionHandler {
     const touchMoveHandler = this._handleTouchMove.bind(this)
     const touchEndHandler = this._handleTouchEnd.bind(this)
 
+    // not sure if necessary?
+    // In case touch gets interrupted
+    // Prescribed for cleanup
+    const touchCancelHandler = this._handleTouchEnd.bind(this)
+
     eventManager.addEventListener('touchstart', listenerId + '-touchstart', touchStartHandler)
     eventManager.addEventListener('touchmove', listenerId + '-touchmove', touchMoveHandler)
     eventManager.addEventListener('touchend', listenerId + '-touchend', touchEndHandler)
+    eventManager.addEventListener('touchcancel', listenerId + '-touchcancel', touchCancelHandler)
   }
 
   _removeEventListener () {
@@ -46,12 +52,12 @@ export default class WheelHandler extends SectionInteractionHandler {
       eventManager.removeEventListener('touchstart', listenerId + '-touchstart')
       eventManager.removeEventListener('touchmove', listenerId + '-touchmove')
       eventManager.removeEventListener('touchend', listenerId + '-touchend')
+      eventManager.removeEventListener('touchcancel', listenerId + '-touchcancel')
     }
   }
 
   // Record initial mousedown
   _handleMouseDown (coordinates, mouseEvent) {
-    console.log(coordinates)
     this._panningActive = true
     this._panStartPosition = coordinates
     this._panCurrentPosition = coordinates
@@ -62,7 +68,6 @@ export default class WheelHandler extends SectionInteractionHandler {
   // To bound dragging to only the section, check cursor location and if still in section
   _handleMouseMove (coordinates, mouseEvent) {
     const sectionBbox = this._interactionManager._section
-    console.log(coordinates)
     if (this._panningActive && this._isInSection(coordinates, sectionBbox)) {
       this._panPreviousPosition = this._panCurrentPosition
       this._panCurrentPosition = coordinates
@@ -84,7 +89,6 @@ export default class WheelHandler extends SectionInteractionHandler {
 
   // Record initial touchstart
   _handleTouchStart (coordinates, touchEvent) {
-    //console.log('1', coordinates)
     this._panningActive = true
     this._panStartPosition = coordinates
     this._panCurrentPosition = coordinates
@@ -95,9 +99,8 @@ export default class WheelHandler extends SectionInteractionHandler {
   // To bound panning to only the section
   // check cursor location and if it is still in section
   _handleTouchMove (coordinates, touchEvent) {
-    //console.log('2', coordinates, touchEvent)
     const sectionBbox = this._interactionManager._section
-    //console.log(this._panningActive, this._isInSection(coordinates, sectionBbox))
+    
     if (this._panningActive && this._isInSection(coordinates, sectionBbox)) {
       this._panPreviousPosition = this._panCurrentPosition
       this._panCurrentPosition = coordinates
@@ -109,7 +112,6 @@ export default class WheelHandler extends SectionInteractionHandler {
 
   // Record touchend
   _handleTouchEnd (coordinates, touchEvent) {
-    // console.log('3', coordinates)
     if (this._panningActive) {
       this._panningActive = false
       this._panEndCoordinates = this._panCurrentPosition
@@ -118,7 +120,6 @@ export default class WheelHandler extends SectionInteractionHandler {
   }
 
   _callStoredCallback (coordinates, evt, start, end) {
-    console.log(coordinates, evt, start, end)
     const delta = { x: start.x - end.x, y: start.y - end.y }
     const event = {
       delta,

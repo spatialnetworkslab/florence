@@ -10,8 +10,9 @@ export default class EventManager {
     this._mouseupTracker = new EventTracker(this, 'mouseup')
     this._wheelTracker = new EventTracker(this, 'wheel')
     this._touchstartTracker = new EventTracker(this, 'touchstart')
-    this._touchendTracker = new EventTracker(this, 'touchend')
     this._touchmoveTracker = new EventTracker(this, 'touchmove')
+    this._touchendTracker = new EventTracker(this, 'touchend')
+    this._touchcancelTracker = new EventTracker(this, 'touchcancel')
 
     this._listeners = {}
   }
@@ -56,7 +57,7 @@ export default class EventManager {
       this._svgPoint.y = mouseEvent.clientY
     } else if (mouseEvent.targetTouches.length > 0) {
       // touch
-      // only access the first touch, even if multi-touch
+      // only access the first touch, even if multi-touch (?)
       const targetTouch = mouseEvent.targetTouches[0]
       this._svgPoint.x = targetTouch.clientX
       this._svgPoint.y = targetTouch.clientY
@@ -119,5 +120,6 @@ const eventNameToTrackerNameMap = {
   wheel: '_wheelTracker',
   touchstart: '_touchstartTracker',
   touchmove: '_touchmoveTracker',
-  touchend: '_touchendTracker'
+  touchend: '_touchendTracker',
+  touchcancel: '_touchcancelTracker'
 }
