@@ -98,7 +98,7 @@
     format = (labelFormat) ? labelFormat : scaleY.tickFormat(tickPositions.length)
     tickLabelText = tickPositions.map(format)
     axisWidth = baseLineWidth + tickSize + labelOffset + labelFontSize
-    if (flip) labelAnchorPoint = 'l'
+    labelAnchorPoint = flip ? 'l' : 'r'
   }
   $: {
     if (title.length > 0) {
