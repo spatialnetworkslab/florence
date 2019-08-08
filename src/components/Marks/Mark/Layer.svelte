@@ -125,7 +125,7 @@
 
   updateCoordSysGeometryObject()
   updatePixelGeometryObject()
-
+  
   let indexArray = Object.keys(coordSysGeometryObject)
 
   // Generate other prop objects
@@ -225,6 +225,7 @@
   $: {
     if (coordSysGeometryObjectRecalculationNecessary) {
       updateCoordSysGeometryObject()
+      indexArray = Object.keys(coordSysGeometryObject)
     }
     
     if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
@@ -275,13 +276,6 @@
   onDestroy(() => {
     removeLayerFromSpatialIndexIfNecessary()
   })
-
-  // Index array
-  $: {
-    if (initDone()) {
-      indexArray = Object.keys($tr_screenGeometryObject)
-    }
-  }
 
   // Helpers
   function scheduleUpdateCoordSysGeometryObject () {
@@ -384,7 +378,7 @@
 
   {#if renderCircle}
     <g class="point-layer">
-      {#each indexArray as $index ($index)}
+      {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
 
         <circle
           class="point"
@@ -405,7 +399,7 @@
 
   {#if renderLine}
     <g class="line-layer">
-      {#each indexArray as $index ($index)}
+      {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
 
         <path
           class="line"
@@ -422,7 +416,7 @@
 
   {#if renderLabel}
     <g class="label-layer">
-      {#each indexArray as $index ($index)}
+      {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
 
         <text 
           class="label"

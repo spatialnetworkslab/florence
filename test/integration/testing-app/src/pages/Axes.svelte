@@ -160,9 +160,8 @@
           titleOpacity={Number(options.titleOpacity)}
           titleRotation={Number(options.titleRotation)}
           titleAnchorPoint={options.titleAnchorPoint}
-
         />
-        <YAxis hjust={'left'} baseLineWidth={1} title="Test Y Axis"/>
+        <!-- <YAxis hjust={'left'} baseLineWidth={1} title="Test Y Axis"/> -->
 		</Section>
 
 	</Graphic>
