@@ -102,7 +102,6 @@ export function createTitleYCoord (vjust, axisYCoords, y, scaleX, scaleY, offset
   if (!sectionContext.flipY) yRange.reverse()
   const y1 = yRange[0]
   const y2 = yRange[1]
-  console.log(y1, y2)
   let justification
 
   if (vjust === 'axis') {

@@ -6,9 +6,10 @@
   } from '../../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
-	export let N = 100
-	const data = new DataContainer(generateData(N, 0.25))
+	let N = 100
+	let data = new DataContainer(generateData(N, 0.25))
 	function generateData (N, error) {
+    console.log('N', N)
 		const getError = () => -error + (Math.random() * (2 * error)) * N
 		let data = { a: [], b: [] }
 		for (let i = 0; i < N; i++) {
@@ -17,40 +18,25 @@
 		}
 		return data
   }
-  const scaleA = scaleLinear().domain(data.domain('a')).nice()
-  const scaleB = scaleLinear().domain(data.domain('b')).nice()
+  let scaleA = scaleLinear().domain(data.domain('a')).nice()
+  let scaleB = scaleLinear().domain(data.domain('b')).nice()
+
+  $: {
+    scaleA = scaleLinear().domain(data.domain('a')).nice()
+    scaleB = scaleLinear().domain(data.domain('b')).nice()
+  }
   
+  function updateData() {
+    N = Math.floor(Math.random() * (300 - 50 + 1)) + 50 // random number between 50-300
+    console.log(N)
+    data = new DataContainer(generateData(N, 0.25))
+    console.log(data.column('$index'))
+  }
+
   let height = 300
   let width = 300
   let background = '#808080'
   let padding = '#E8E8E8'
-
-
-
-  export let vjust = "bottom"
-  export let y = undefined
-  export let offset = 0
-
-  export let ticks = true
-  export let tickCount = 8
-  export let tickValues = undefined
-  export let tickSize = 5
-  export let tickWidth = 0.5
-
-  export let labelFormat = undefined
-  export let labelOffset = 2
-  export let labelRotate = 0
-  export let labelFont = "Helvetica"
-  export let labelFontSize = 10
-  export let labelFontWeight = 'normal'
-  export let labelOpacity = 1
-
-
-    export let baseLine = true
-  export let baseLineColor = 'black'
-  export let baseLineOpacity = 1
-  export let baseLineWidth = 1
-
 
   let options = {
     flip: 'false',
@@ -94,6 +80,9 @@
 </script>
 
 <div class="options">
+  <button on:click={updateData}>
+    Update Data
+  </button>
   <div>
     <label for="height-slider">Height:</label>
     <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
@@ -111,6 +100,8 @@
     </div>
   {/each}
 </div>
+
+
 
 <div class="graphic">
 
@@ -132,9 +123,10 @@
           x={data.column('a')}
           y={data.column('b')}
           index={data.column('$index')}
+          transition={2000}
         />
 		
-        <XAxis
+        <!-- <XAxis
           yOffset={Number(options.yOffset)}
           flip={options.flip === 'true'}
           vjust={isNaN(options.vjust) ? options.vjust : Number(options.vjust)}
@@ -173,7 +165,7 @@
           titleAnchorPoint={options.titleAnchorPoint}
 
         />
-        <YAxis hjust={'left'} baseLineWidth={1} title="Test Y Axis"/>
+        <YAxis hjust={'left'} baseLineWidth={1} title="Test Y Axis"/> -->
 		</Section>
 
 	</Graphic>
@@ -183,6 +175,9 @@
 <style>
 .options {
   float: left;
+  height: 300px;
+  overflow: auto;
+  padding: 10px;
 }
 .graphic {
   float: right;

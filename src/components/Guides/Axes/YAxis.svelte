@@ -82,7 +82,6 @@
 
   $: {
     scaleY = (typeof scale === "undefined") ? $sectionContext._scaleY : scale;
-    console.log(xOffset);
     ({xCoords, yCoords} = createYAxisCoords(hjust, x, xOffset, $sectionContext._scaleX, scaleY, $sectionContext));
   }
   $: {
@@ -105,7 +104,6 @@
     if (title.length > 0) {
       titleXCoord = createTitleXCoord(titleHjust, xCoords, titleX, $sectionContext._scaleX, scaleY, titleXOffset, axisWidth, flip, titleFontSize, $sectionContext)
       titleYCoord = createTitleYCoord(titleVjust, yCoords, titleY, $sectionContext._scaleX, scaleY, titleYOffset, axisWidth, flip, titleFontSize, $sectionContext)
-      console.log(titleXCoord(), titleYCoord())
     }
   }
 </script>

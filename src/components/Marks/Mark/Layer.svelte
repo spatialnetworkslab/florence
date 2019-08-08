@@ -121,7 +121,6 @@
   // Initiate geometry objects and index array
   let coordSysGeometryObject
   let pixelGeometryObject
-  let screenGeometryObject
 
   let indexArray = updateCoordSysGeometryObject()
   updatePixelGeometryObject()
@@ -143,7 +142,7 @@
 
 
   // This one uses the radiusObject/strokeWidthObject in some cases, so must be done after the prop objects
-  updateScreenGeometryObject()
+  let screenGeometryObject = updateScreenGeometryObject()
 
   // Initiate transitionables
   let tr_screenGeometryObject = createTransitionableLayer('geometry', screenGeometryObject, transition)
@@ -216,8 +215,7 @@
 
   let rotateTransformObject = createRotationObject($tr_rotationObject, $tr_screenGeometryObject, indexArray)
   let parsedTextAnchorPointObject = createTextAnchorObject(anchorPointObject, indexArray)
-  $: { if (initDone()) rotateTransformObject = createRotationObject($tr_rotationObject, $tr_screenGeometryObject, indexArray)}
-  $: { if (initDone()) parsedTextAnchorPointObject = createTextAnchorObject(anchorPointObject, indexArray)}
+
 
 
   let previousTransition
@@ -229,14 +227,15 @@
   $: {
     if (coordSysGeometryObjectRecalculationNecessary) {
       indexArray = updateCoordSysGeometryObject()
+      console.log('indexArray updated')
     }
-
+    
     if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
 
     if (screenGeometryObjectRecalculationNecessary) {
-      updateScreenGeometryObject()
+      screenGeometryObject = updateScreenGeometryObject()
       tr_screenGeometryObject.set(screenGeometryObject)
-
+      console.log('screenGeom updated - the next two object should be equal!', screenGeometryObject, $tr_screenGeometryObject)
       updateInteractionManagerIfNecessary()
     }
 
@@ -245,11 +244,15 @@
     screenGeometryObjectRecalculationNecessary = false
   }
 
+  $: { if (initDone()) rotateTransformObject = createRotationObject($tr_rotationObject, $tr_screenGeometryObject, indexArray)}
+  $: { if (initDone()) parsedTextAnchorPointObject = createTextAnchorObject(anchorPointObject, indexArray)}
+
   beforeUpdate(() => {
     // Update transitionables
-    if (!transitionsEqual(previousTransition, transition)) {
+    if (!transitionsEqual(previousTransition, transition) && initDone()) {
+      console.log(previousTransition, transition)
       previousTransition = transition
-
+      console.log('transition time!')
       tr_screenGeometryObject = createTransitionableLayer('geometry', $tr_screenGeometryObject, transition)
       tr_radiusObject = createTransitionableLayer('radius', $tr_radiusObject, transition)
       tr_fillObject = createTransitionableLayer('fill', $tr_fillObject, transition)
@@ -283,6 +286,7 @@
 
   // Helpers
   function createRotationObject(rotationObject, screenGeometryObject, indexArray) {
+    console.log('This should be equal!!', Object.keys(screenGeometryObject).length, indexArray.length)
     const propObj = {}
     for (let i = 0; i < indexArray.length; i++) {
         const index = indexArray[i]
@@ -337,9 +341,9 @@
 
   function updateScreenGeometryObject () {
     if (_asPolygon) {
-      screenGeometryObject = representAsPolygonObject(pixelGeometryObject, { radiusObject, strokeWidthObject })
+      return representAsPolygonObject(pixelGeometryObject, { radiusObject, strokeWidthObject })
     } else {
-      screenGeometryObject = pixelGeometryObject
+      return pixelGeometryObject
     }
   }
 
