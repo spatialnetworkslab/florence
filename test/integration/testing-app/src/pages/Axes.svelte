@@ -120,7 +120,6 @@
           x={data.column('a')}
           y={data.column('b')}
           index={data.column('$index')}
-          fill={width < 200 ? 'green': 'black'}
           transition={2000}
         />
 		

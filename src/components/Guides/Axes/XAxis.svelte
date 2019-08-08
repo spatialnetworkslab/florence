@@ -90,15 +90,17 @@
     } else {
       tickPositions = scaleX.ticks(tickCount)
     }
+
     if (tickExtra && tickPositions[0] !== scaleX.domain()[0]) {
       tickPositions.unshift(scaleX.domain()[0])
     }
     ({tickXCoords, tickYCoords} = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
     ({tickLabelXCoords, tickLabelYCoords} = createXLabelGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, labelOffset, flip))
+
     format = (labelFormat) ? labelFormat : scaleX.tickFormat(tickPositions.length)
     tickLabelText = tickPositions.map(format)
     axisHeight = baseLineWidth + tickSize + labelOffset + labelFontSize
-    if (flip) labelAnchorPoint = 'b'
+    labelAnchorPoint = flip ? 'b' : 't'
   }
   $: {
     if (title.length > 0) {
