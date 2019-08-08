@@ -47,7 +47,7 @@ function getDomainX (sectionContext) {
   if (isValidScale(sectionContext._scaleX)) {
     domainX = sectionContext._scaleX.domain()
   } else {
-    domainX = sectionContext._rangeX
+    domainX = sectionContext.rangeX
   }
 
   return domainX
@@ -119,12 +119,9 @@ function createZoomTransformation (zoomContext) {
 function geometryCompletelyOffScreen (geometry, totalTransformation, sectionContext) {
   const transformedGeometry = transformGeometry(geometry, totalTransformation)
 
-  const rangeX = [sectionContext.x1(), sectionContext.x2()].sort((a, b) => a - b)
-  const rangeY = [sectionContext.y1(), sectionContext.y2()].sort((a, b) => a - b)
-
   for (let i = 0; i < transformedGeometry.coordinates.length; i++) {
     const point = transformedGeometry.coordinates[i]
-    if (pointIsInRange(point, rangeX, rangeY)) return false
+    if (pointIsInRange(point, sectionContext.rangeX, sectionContext.rangeY)) return false
   }
 
   return true
