@@ -11,6 +11,8 @@ export default class WheelHandler extends SectionInteractionHandler {
     this._panEndPosition = undefined
   }
 
+  // Normalised for desktop: mousedown, mousemove, mouseup
+  // Mobile: touchstart, touchmove, touchend
   _addEventListener () {
     const mouseDownHandler = this._handleMouseDown.bind(this)
     const mouseMoveHandler = this._handleMouseMove.bind(this)
@@ -22,6 +24,14 @@ export default class WheelHandler extends SectionInteractionHandler {
     eventManager.addEventListener('mousedown', listenerId + '-mousedown', mouseDownHandler)
     eventManager.addEventListener('mousemove', listenerId + '-mousemove', mouseMoveHandler)
     eventManager.addEventListener('mouseup', listenerId + '-mouseup', mouseUpHandler)
+
+    const touchStartHandler = this._handleTouchStart.bind(this)
+    const touchMoveHandler = this._handleTouchMove.bind(this)
+    const touchEndHandler = this._handleTouchEnd.bind(this)
+
+    eventManager.addEventListener('touchstart', listenerId + '-touchstart', touchStartHandler)
+    eventManager.addEventListener('touchmove', listenerId + '-touchmove', touchMoveHandler)
+    eventManager.addEventListener('touchend', listenerId + '-touchend', touchEndHandler)
   }
 
   _removeEventListener () {
@@ -32,22 +42,27 @@ export default class WheelHandler extends SectionInteractionHandler {
       eventManager.removeEventListener('mousedown', listenerId + '-mousedown')
       eventManager.removeEventListener('mousemove', listenerId + '-mousemove')
       eventManager.removeEventListener('mouseup', listenerId + '-mouseup')
+
+      eventManager.removeEventListener('touchstart', listenerId + '-touchstart')
+      eventManager.removeEventListener('touchmove', listenerId + '-touchmove')
+      eventManager.removeEventListener('touchend', listenerId + '-touchend')
     }
   }
 
   // Record initial mousedown
   _handleMouseDown (coordinates, mouseEvent) {
+    console.log(coordinates)
     this._panningActive = true
     this._panStartPosition = coordinates
     this._panCurrentPosition = coordinates
-    this._startMouseEvent = mouseEvent
+    this._startEvent = mouseEvent
   }
 
   // For smooth dragging, perform callback even during drag
   // To bound dragging to only the section, check cursor location and if still in section
   _handleMouseMove (coordinates, mouseEvent) {
     const sectionBbox = this._interactionManager._section
-
+    console.log(coordinates)
     if (this._panningActive && this._isInSection(coordinates, sectionBbox)) {
       this._panPreviousPosition = this._panCurrentPosition
       this._panCurrentPosition = coordinates
@@ -62,19 +77,56 @@ export default class WheelHandler extends SectionInteractionHandler {
     if (this._panningActive) {
       this._panningActive = false
       this._panEndCoordinates = this._panCurrentPosition
-      this._endMouseEvent = mouseEvent
+      this._endEvent = mouseEvent
     }
   }
 
-  _callStoredCallback (coordinates, mouseEvent, start, end) {
+
+  // Record initial touchstart
+  _handleTouchStart (coordinates, touchEvent) {
+    //console.log('1', coordinates)
+    this._panningActive = true
+    this._panStartPosition = coordinates
+    this._panCurrentPosition = coordinates
+    this._startEvent = touchEvent
+  }
+
+  // For smooth panning, perform callback even during drag
+  // To bound panning to only the section
+  // check cursor location and if it is still in section
+  _handleTouchMove (coordinates, touchEvent) {
+    //console.log('2', coordinates, touchEvent)
+    const sectionBbox = this._interactionManager._section
+    //console.log(this._panningActive, this._isInSection(coordinates, sectionBbox))
+    if (this._panningActive && this._isInSection(coordinates, sectionBbox)) {
+      this._panPreviousPosition = this._panCurrentPosition
+      this._panCurrentPosition = coordinates
+      this._callStoredCallback(coordinates, touchEvent, this._panPreviousPosition, this._panCurrentPosition)
+    } else {
+      this._handleTouchEnd(coordinates, touchEvent)
+    }
+  }
+
+  // Record touchend
+  _handleTouchEnd (coordinates, touchEvent) {
+    // console.log('3', coordinates)
+    if (this._panningActive) {
+      this._panningActive = false
+      this._panEndCoordinates = this._panCurrentPosition
+      this._endEvent = touchEvent
+    }
+  }
+
+  _callStoredCallback (coordinates, evt, start, end) {
+    console.log(coordinates, evt, start, end)
     const delta = { x: start.x - end.x, y: start.y - end.y }
     const event = {
       delta,
       x: coordinates.x,
       y: coordinates.y,
-      originalMouseEvent: mouseEvent,
-      startMouse: this._startMouseEvent,
-      endMouse: this._endMouseEvent
+      originalMouseEvent: evt,
+      startEvent: this._startEvent,
+      endEvent: this._endEvent
     }
 
     this._callback(event)

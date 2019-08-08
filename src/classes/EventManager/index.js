@@ -9,6 +9,9 @@ export default class EventManager {
     this._mousedownTracker = new EventTracker(this, 'mousedown')
     this._mouseupTracker = new EventTracker(this, 'mouseup')
     this._wheelTracker = new EventTracker(this, 'wheel')
+    this._touchstartTracker = new EventTracker(this, 'touchstart')
+    this._touchendTracker = new EventTracker(this, 'touchend')
+    this._touchmoveTracker = new EventTracker(this, 'touchmove')
 
     this._listeners = {}
   }
@@ -46,8 +49,18 @@ export default class EventManager {
   }
 
   _getMouseCoordinates (mouseEvent) {
-    this._svgPoint.x = mouseEvent.clientX
-    this._svgPoint.y = mouseEvent.clientY
+
+    if (mouseEvent.clientX && mouseEvent.clientY) {
+      // desktop
+      this._svgPoint.x = mouseEvent.clientX
+      this._svgPoint.y = mouseEvent.clientY
+    } else if (mouseEvent.targetTouches.length > 0) {
+      // touch
+      // only access the first touch, even if multi-touch
+      const targetTouch = mouseEvent.targetTouches[0]
+      this._svgPoint.x = targetTouch.clientX
+      this._svgPoint.y = targetTouch.clientY
+    }
 
     return this._svgPoint.matrixTransform(this._domNode.getScreenCTM().inverse())
   }
@@ -82,6 +95,7 @@ class EventTracker {
   }
 
   _handleEvent (mouseEvent) {
+
     const coordinates = this._eventManager._getMouseCoordinates(mouseEvent)
 
     for (const listenerId in this._callbacks) {
@@ -102,5 +116,8 @@ const eventNameToTrackerNameMap = {
   mousemove: '_mousemoveTracker',
   mousedown: '_mousedownTracker',
   mouseup: '_mouseupTracker',
-  wheel: '_wheelTracker'
+  wheel: '_wheelTracker',
+  touchstart: '_touchstartTracker',
+  touchmove: '_touchmoveTracker',
+  touchend: '_touchendTracker'
 }
