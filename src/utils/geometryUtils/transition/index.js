@@ -59,11 +59,14 @@ function getFirstGeometry (layer) {
 }
 
 function transitionLayer (fromLayer, toLayer, interpolationMethod) {
-  const keyIntersection = getKeyIntersection(fromLayer, toLayer)
   const interpolatorObject = {}
 
-  for (const key of keyIntersection) {
-    interpolatorObject[key] = interpolationMethod(fromLayer[key], toLayer[key])
+  for (const key in toLayer) {
+    if (key in fromLayer) {
+      interpolatorObject[key] = interpolationMethod(fromLayer[key], toLayer[key])
+    } else {
+      interpolatorObject[key] = () => toLayer[key]
+    }
   }
 
   return function interpolator (t) {
@@ -77,16 +80,4 @@ function transitionLayer (fromLayer, toLayer, interpolationMethod) {
 
     return layer
   }
-}
-
-function getKeyIntersection (fromLayer, toLayer) {
-  const keyIntersection = []
-
-  for (const key in fromLayer) {
-    if (key in toLayer) {
-      keyIntersection.push(key)
-    }
-  }
-
-  return keyIntersection
 }

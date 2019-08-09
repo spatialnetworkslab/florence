@@ -7,6 +7,7 @@
 
 <script>
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
+  import { fade } from 'svelte/transition'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -411,6 +412,7 @@
           fill-opacity={$tr_fillOpacityObject[$index]}
           stroke-opacity={$tr_strokeOpacityObject[$index]}
           opacity={$tr_opacityObject[$index]}
+          in:fade
         />
 
       {/each}
