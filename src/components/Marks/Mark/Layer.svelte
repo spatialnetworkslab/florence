@@ -183,19 +183,29 @@
   }
 
   // Handle radius/strokeWidth changes
+  // $: {
+  //   if (initDone()) {
+  //     console.log('recalculating radiusObject')
+  //     radiusObject = generatePropObject(aesthetics.radius, indexArray)
+  //     strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
+
+  //     console.log(radiusObject)
+
+  //     if (!_asPolygon) {
+  //       tr_radiusObject.set(radiusObject)
+  //       tr_strokeWidthObject.set(strokeWidthObject)
+  //     }
+
+  //     if (_asPolygon) {
+  //       scheduleUpdateScreenGeometryObject()
+  //     }
+  //   }
+  // }
   $: {
     if (initDone()) {
-      console.log(indexArray)
-      radiusObject = generatePropObject(aesthetics.radius, indexArray)
-      strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
-
       if (!_asPolygon) {
-        tr_radiusObject.set(radiusObject)
-        tr_strokeWidthObject.set(strokeWidthObject)
-      }
-
-      if (_asPolygon) {
-        scheduleUpdateScreenGeometryObject()
+        tr_radiusObject.set(generatePropObject(aesthetics.radius, indexArray))
+        tr_strokeWidthObject.set(generatePropObject(aesthetics.strokeWidth, indexArray))
       }
     }
   }
@@ -227,6 +237,10 @@
     if (coordSysGeometryObjectRecalculationNecessary) {
       updateCoordSysGeometryObject()
       indexArray = Object.keys(coordSysGeometryObject)
+
+      if (_asPolygon) {
+        updateRadiusAndStrokeWidth()
+      }
     }
     
     if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
@@ -322,6 +336,11 @@
 
   function updateScreenGeometryObjectTransitionable () {
     tr_screenGeometryObject.set(screenGeometryObject)
+  }
+
+  function updateRadiusAndStrokeWidth () {
+    radiusObject = generatePropObject(aesthetics.radius, indexArray)
+    strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
   }
 
   function updateInteractionManagerIfNecessary () {
