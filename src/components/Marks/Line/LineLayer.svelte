@@ -19,6 +19,7 @@
 
   // Other
   export let index = undefined
+  export let interpolate = true
 </script>
 
 <Layer 
@@ -26,5 +27,5 @@
   {x} {y} {geometry}
   {strokeWidth} {stroke} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {index} _asPolygon={false}
+  {interpolate} {index} _asPolygon={false}
 />

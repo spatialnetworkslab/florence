@@ -21,6 +21,8 @@
     step,
     center: { x: 0, y: 0 }
   })
+
+  const handle = zoomId => { zoomIdentity = zoomId }
 </script>
 
 x:
@@ -44,9 +46,9 @@ k:
   <Section 
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
-    zoomIdentity={zoomIdentity}
-    onWheel={ e => zoomIdentity = zoom(e) }
-    onPan={ e => zoomIdentity = pan(e) }
+    {zoomIdentity}
+    onWheel={e =>  handle(zoom(e))}
+    onPan={e => handle(pan(e))}
   >
 
     <Rectangle fill="blue" opacity={0.3} />

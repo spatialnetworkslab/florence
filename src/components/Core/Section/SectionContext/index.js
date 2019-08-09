@@ -15,6 +15,8 @@ class SectionContext {
 
     this._handleRanges(rangeX, rangeY)
     this._handleScales(scaleX, scaleY)
+
+    this._padding = padding
   }
 
   rangeX () {

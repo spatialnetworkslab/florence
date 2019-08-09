@@ -6,10 +6,10 @@
 </script>
 
 <script>
-  import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
+  import { beforeUpdate } from 'svelte'
   import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from './SectionContext'
-  import * as CoordinateTransformationContext from '../CoordinateTransformation/CoordinateTransformationContext'
+  import * as CoordinateTransformationContext from './CoordinateTransformationContext'
   import * as EventManagerContext from '../Graphic/EventManagerContext'
   import * as InteractionManagerContext from './InteractionManagerContext'
   import * as ZoomContext from './ZoomContext'
@@ -29,6 +29,7 @@
   export let flipX = false
   export let flipY = false
   export let zoomIdentity = undefined
+  export let transformation = undefined
 
   // Interactivity
   export let onWheel = undefined
@@ -44,7 +45,8 @@
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
   const newSectionContext = SectionContext.init()
-  CoordinateTransformationContext.ensureNotParent()
+  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
+  const newCoordinateTransformationContext = CoordinateTransformationContext.init()
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
   const zoomContext = ZoomContext.init()
@@ -80,20 +82,32 @@
       newSectionContext, updatedSectionContext
     )
 
-    $interactionManagerContext.loadSection(updatedSectionContext)
+    CoordinateTransformationContext.update(
+      newCoordinateTransformationContext, { rangeX, rangeY, transformation }
+    )
+
+    $interactionManagerContext.loadSection($newSectionContext)
   }
 
   // Change callbacks if necessary
   $: {
-    $interactionManagerContext.removeAllSectionInteractions()
-
-    if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', onWheel)
-    if (onPan) $interactionManagerContext.addSectionInteraction('pan', onPan)
+    removeSectionInteractionsIfNecessary(onWheel, onPan)
   }
 
   // Update zooming and panning
   $: {
     ZoomContext.update(zoomContext, zoomIdentity)
+  }
+
+  beforeUpdate(() => {
+    CoordinateTransformationContext.ensureNotParent($coordinateTransformationContext)
+  })
+
+  function removeSectionInteractionsIfNecessary () {
+    $interactionManagerContext.removeAllSectionInteractions()
+
+    if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', onWheel)
+    if (onPan) $interactionManagerContext.addSectionInteraction('pan', onPan)
   }
 </script>
 

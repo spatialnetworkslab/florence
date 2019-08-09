@@ -9,7 +9,7 @@
     "export": "npm run copy-workers && sapper export --ext '.svelte .sveltex'",
     "start": "node __sapper__/build",
     "link": "cd ../ && npm install --production && cd site/ && npm link ../",
-    "build:netlify": "cd ../ && rm package-lock.json && export NODE_ENV=production && npm install && cd site/ && npm link ../",
+    "build:netlify": "cd ../ && rm package-lock.json || true && export NODE_ENV=production && npm install && cd site/ && npm link ../",
     "export:netlify": "npm run build:netlify && npm run export"
   },
   "dependencies": {
