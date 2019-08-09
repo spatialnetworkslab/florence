@@ -119,9 +119,15 @@
         <PointLayer
           x={data.column('a')}
           y={data.column('b')}
-          index={data.column('$index')}
           transition={2000}
         />
+
+        <!-- <PointLayer
+          x={data.column('a')}
+          y={data.column('b')}
+          index={data.column('$index')}
+          transition={2000}
+        /> -->
 		
         <!-- <XAxis
           yOffset={Number(options.yOffset)}

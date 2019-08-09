@@ -185,6 +185,7 @@
   // Handle radius/strokeWidth changes
   $: {
     if (initDone()) {
+      console.log(indexArray)
       radiusObject = generatePropObject(aesthetics.radius, indexArray)
       strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
 

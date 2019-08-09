@@ -59,10 +59,10 @@ function getFirstGeometry (layer) {
 }
 
 function transitionLayer (fromLayer, toLayer) {
-  const keyUnion = getKeyUnion(fromLayer, toLayer)
+  const keyIntersection = getKeyIntersection(fromLayer, toLayer)
   const interpolatorObject = {}
 
-  for (const key of keyUnion) {
+  for (const key of keyIntersection) {
     interpolatorObject[key] = transshape.transshape(fromLayer[key], toLayer[key])
   }
 
@@ -79,7 +79,14 @@ function transitionLayer (fromLayer, toLayer) {
   }
 }
 
-function getKeyUnion (fromLayer, toLayer) {
-  const keyArray = Object.keys(fromLayer).concat(Object.keys(toLayer))
-  return new Set(keyArray)
+function getKeyIntersection (fromLayer, toLayer) {
+  const keyIntersection = []
+
+  for (const key in fromLayer) {
+    if (key in toLayer) {
+      keyIntersection.push(key)
+    }
+  }
+
+  return keyIntersection
 }
