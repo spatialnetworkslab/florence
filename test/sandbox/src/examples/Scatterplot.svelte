@@ -15,9 +15,9 @@
 		return data
   }
   
-  let treshold = 0
+  let threshold = 0
   $: filteredData = data
-    .filter(row => row.a > treshold)
+    .filter(row => row.a > threshold)
     .done()
 
 	const scaleA = scaleLinear().domain(data.domain('a'))
@@ -56,10 +56,13 @@
   }
 
   let dragPointLayer
-  let opacityArray = Array(100).fill(1)
+  let dragIndex
+  $: opacityArray = Array(filteredData._length)
+    .fill()
+    .map((_, i) => +(i !== filteredData._indexToRowNumber[dragIndex]))
 
   function handleLayerDragStart (event) {
-    opacityArray[event.hitIndex] = 0
+    dragIndex = event.hitIndex
     dragPointLayer = event.localCoords
   }
 
@@ -70,8 +73,8 @@
   function handleLayerDragEnd (event) {
     data._data.a[event.hitIndex] = dragPointLayer.x
     data._data.b[event.hitIndex] = dragPointLayer.y
-    opacityArray[event.hitIndex] = 1
     dragPointLayer = undefined
+    dragIndex = undefined
   }
 
 </script>
@@ -95,7 +98,7 @@
 </div>
 
 <div>
-  <button on:click={() => treshold = 40}>Filter: x > 40</button>
+  <button on:click={() => threshold = 40}>Filter: x > 40</button>
 </div>
 
 <div>
