@@ -67,6 +67,7 @@
   // Other
   export let interpolate = false
   export let _asPolygon = true
+  export let zoomIdentity = undefined
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
