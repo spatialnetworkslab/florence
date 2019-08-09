@@ -313,9 +313,6 @@
 
   function updateScreenGeometryObject () {
     if (_asPolygon) {
-      // console.log(Object.keys(pixelGeometryObject))
-      // console.log(Object.keys(radiusObject))
-
       screenGeometryObject = representAsPolygonObject(pixelGeometryObject, { radiusObject, strokeWidthObject })
     } else {
       screenGeometryObject = pixelGeometryObject

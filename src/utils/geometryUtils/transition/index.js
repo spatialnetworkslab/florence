@@ -26,8 +26,14 @@ export function transitionGeometries (fromLayer, toLayer) {
   }
 
   if (polygonTransition(firstFromGeometry, firstToGeometry)) {
-    return transshape.transshapeLayer(fromLayer, toLayer)
+    return transitionLayer(fromLayer, toLayer)
   }
+
+  if (lineStringTransition(firstFromGeometry, firstToGeometry)) {
+    return transitionLayer(fromLayer, toLayer)
+  }
+
+  throw new Error('Invalid input')
 }
 
 function pointTransition (fromGeometry, toGeometry) {
@@ -50,4 +56,30 @@ function lineStringTransition (fromGeometry, toGeometry) {
 
 function getFirstGeometry (layer) {
   return layer[Object.keys(layer)[0]]
+}
+
+function transitionLayer (fromLayer, toLayer) {
+  const keyUnion = getKeyUnion(fromLayer, toLayer)
+  const interpolatorObject = {}
+
+  for (const key of keyUnion) {
+    interpolatorObject[key] = transshape.transshape(fromLayer[key], toLayer[key])
+  }
+
+  return function interpolator (t) {
+    if (t === 0) return fromLayer
+    if (t === 1) return toLayer
+
+    const layer = {}
+    for (const key in interpolatorObject) {
+      layer[key] = interpolatorObject[key](t)
+    }
+
+    return layer
+  }
+}
+
+function getKeyUnion (fromLayer, toLayer) {
+  const keyArray = Object.keys(fromLayer).concat(Object.keys(toLayer))
+  return new Set(keyArray)
 }
