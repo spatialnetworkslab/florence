@@ -183,24 +183,6 @@
   }
 
   // Handle radius/strokeWidth changes
-  // $: {
-  //   if (initDone()) {
-  //     console.log('recalculating radiusObject')
-  //     radiusObject = generatePropObject(aesthetics.radius, indexArray)
-  //     strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
-
-  //     console.log(radiusObject)
-
-  //     if (!_asPolygon) {
-  //       tr_radiusObject.set(radiusObject)
-  //       tr_strokeWidthObject.set(strokeWidthObject)
-  //     }
-
-  //     if (_asPolygon) {
-  //       scheduleUpdateScreenGeometryObject()
-  //     }
-  //   }
-  // }
   $: {
     if (initDone()) {
       if (!_asPolygon) {
