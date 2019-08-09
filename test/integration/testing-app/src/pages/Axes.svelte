@@ -71,7 +71,8 @@
     titleFontWeight: 'normal',
     titleOpacity: 1,
     titleRotation: 0,
-    titleAnchorPoint: 't'
+    titleAnchorPoint: 't',
+    transition: 2000
   }
 
 </script>
@@ -166,6 +167,7 @@
           titleOpacity={Number(options.titleOpacity)}
           titleRotation={Number(options.titleRotation)}
           titleAnchorPoint={options.titleAnchorPoint}
+          transition={Number(options.transition)}
         />
 
         <YAxis hjust={'left'} baseLineWidth={1} title="Test Y Axis"/>

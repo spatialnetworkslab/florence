@@ -60,6 +60,9 @@
   export let titleRotation = 0
   export let titleAnchorPoint = 't'
 
+  // transition
+  export let transition = undefined
+
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -117,16 +120,21 @@
   {/if}
 
   {#if ticks}
-    <LineLayer x={tickXCoords} y={tickYCoords} strokeWidth={tickWidth} opacity={tickOpacity} stroke={tickColor} />
+    <LineLayer 
+      x={tickXCoords} y={tickYCoords} strokeWidth={tickWidth} opacity={tickOpacity} stroke={tickColor}
+      {transition}
+    />
     <LabelLayer
       x={tickLabelXCoords} y={tickLabelYCoords} text={tickLabelText} anchorPoint={labelAnchorPoint}
       rotation={labelRotate} fontFamily={labelFont} fontSize={labelFontSize}
       fontWeight={labelFontWeight} opacity={labelOpacity} fill={labelColor}
+      {transition}
     />
   {/if}
 
   {#if title.length > 0}
-    <Label x={titleXCoord} y={titleYCoord} text={title} anchorPoint={titleAnchorPoint}
+    <Label 
+      x={titleXCoord} y={titleYCoord} text={title} anchorPoint={titleAnchorPoint}
       rotation={titleRotation} fontFamily={titleFont} fontSize={titleFontSize}
       fontWeight={titleFontWeight} opacity={titleOpacity} fill={titleColor}
     />
