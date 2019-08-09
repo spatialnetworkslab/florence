@@ -31,5 +31,5 @@
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {index} _asPolygon={true}
+  {index} _asPolygon={false}
 />
