@@ -434,37 +434,37 @@
     </g>
   {/if}
 
-  {#if renderLabel}
-    <g class="label-layer">
-      {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
+{/if}
 
-        <text 
-          class="label"
-          x={$tr_screenGeometryObject[$index].coordinates[0]}
-          y={$tr_screenGeometryObject[$index].coordinates[1]}
-          fill={$tr_fillObject[$index]}
-          stroke={$tr_strokeObject[$index]}
-          stroke-width={$tr_strokeWidthObject[$index]}
-          fill-opacity={$tr_fillOpacityObject[$index]}
-          stroke-opacity={$tr_strokeOpacityObject[$index]}
-          opacity={$tr_opacityObject[$index]}
-          transform={`
-            rotate(${$tr_rotationObject[$index]}, 
-            ${$tr_screenGeometryObject[$index].coordinates[0]}, 
-            ${$tr_screenGeometryObject[$index].coordinates[1]})
-          `}
-          font-family={fontFamilyObject[$index]}
-          font-size={$tr_fontSizeObject[$index] + 'px'}
-          font-weight={$tr_fontWeightObject[$index]}
-          text-anchor={textAnchorPoint(anchorPointObject[$index]).textAnchor}
-          dominant-baseline={textAnchorPoint(anchorPointObject[$index]).dominantBaseline}
-        >
-          {textObject[$index]}
-        </text>
+{#if renderLabel}
+  <g class="label-layer">
+    {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
+
+      <text 
+        class="label"
+        x={$tr_screenGeometryObject[$index].coordinates[0]}
+        y={$tr_screenGeometryObject[$index].coordinates[1]}
+        fill={$tr_fillObject[$index]}
+        stroke={$tr_strokeObject[$index]}
+        stroke-width={$tr_strokeWidthObject[$index]}
+        fill-opacity={$tr_fillOpacityObject[$index]}
+        stroke-opacity={$tr_strokeOpacityObject[$index]}
+        opacity={$tr_opacityObject[$index]}
+        transform={`
+          rotate(${$tr_rotationObject[$index]}, 
+          ${$tr_screenGeometryObject[$index].coordinates[0]}, 
+          ${$tr_screenGeometryObject[$index].coordinates[1]})
+        `}
+        font-family={fontFamilyObject[$index]}
+        font-size={$tr_fontSizeObject[$index] + 'px'}
+        font-weight={$tr_fontWeightObject[$index]}
+        text-anchor={textAnchorPoint(anchorPointObject[$index]).textAnchor}
+        dominant-baseline={textAnchorPoint(anchorPointObject[$index]).dominantBaseline}
+      >
+        {textObject[$index]}
+      </text>
       
-      {/each}
-    </g>
-
-  {/if}
+    {/each}
+  </g>
 
 {/if}

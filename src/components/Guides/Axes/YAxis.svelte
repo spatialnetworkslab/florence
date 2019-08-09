@@ -108,24 +108,27 @@
   }
 </script>
 
-{#if $graphicContext.output() === 'svg'}
-  <g class="y-axis">
-    {#if baseLine}
+<g class="y-axis">
+
+  {#if baseLine}
     <Line x={xCoords} y={yCoords} strokeWidth={baseLineWidth} opacity={baseLineOpacity} stroke={baseLineColor} />
-    {/if}
-    {#if ticks}
-      <LineLayer x={tickXCoords} y={tickYCoords} strokeWidth={tickWidth} opacity={tickOpacity} stroke={tickColor}/>
-      <LabelLayer
+  {/if}
+
+  {#if ticks}
+    <LineLayer x={tickXCoords} y={tickYCoords} strokeWidth={tickWidth} opacity={tickOpacity} stroke={tickColor}/>
+    <LabelLayer
       x={tickLabelXCoords} y={tickLabelYCoords} text={tickLabelText} anchorPoint={labelAnchorPoint}
       rotation={labelRotate} fontFamily={labelFont} fontSize={labelFontSize}
       fontWeight={labelFontWeight} opacity={labelOpacity} fill={labelColor}
-      />
-    {/if}
-    {#if title.length > 0}
-      <Label x={titleXCoord} y={titleYCoord} text={title} anchorPoint={titleAnchorPoint}
-        rotation={titleRotation} fontFamily={titleFont} fontSize={titleFontSize}
-        fontWeight={titleFontWeight} opacity={titleOpacity} fill={titleColor}
-      />
-    {/if}
-  </g>
-{/if}
+    />
+  {/if}
+
+  {#if title.length > 0}
+    <Label 
+      x={titleXCoord} y={titleYCoord} text={title} anchorPoint={titleAnchorPoint}
+      rotation={titleRotation} fontFamily={titleFont} fontSize={titleFontSize}
+      fontWeight={titleFontWeight} opacity={titleOpacity} fill={titleColor}
+    />
+  {/if}
+
+</g>
