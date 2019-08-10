@@ -1,5 +1,5 @@
 import SectionInteractionHandler from './SectionInteractionHandler.js'
-
+// repetitive, merge certain function handlers together
 export default class WheelHandler extends SectionInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager)
@@ -14,30 +14,31 @@ export default class WheelHandler extends SectionInteractionHandler {
   // Normalised for desktop: mousedown, mousemove, mouseup
   // Mobile: touchstart, touchmove, touchend
   _addEventListener () {
-    const mouseDownHandler = this._handleMouseDown.bind(this)
-    const mouseMoveHandler = this._handleMouseMove.bind(this)
-    const mouseUpHandler = this._handleMouseUp.bind(this)
-
     const eventManager = this._interactionManager._eventManager
     const listenerId = this._interactionManager._id + '-pan'
 
-    eventManager.addEventListener('mousedown', listenerId + '-mousedown', mouseDownHandler)
-    eventManager.addEventListener('mousemove', listenerId + '-mousemove', mouseMoveHandler)
-    eventManager.addEventListener('mouseup', listenerId + '-mouseup', mouseUpHandler)
+    if (!eventManager._isMobile) {
+      const mouseDownHandler = this._handleStart.bind(this)
+      const mouseMoveHandler = this._handleMove.bind(this)
+      const mouseUpHandler = this._handleEnd.bind(this)
 
-    const touchStartHandler = this._handleTouchStart.bind(this)
-    const touchMoveHandler = this._handleTouchMove.bind(this)
-    const touchEndHandler = this._handleTouchEnd.bind(this)
+      eventManager.addEventListener('mousedown', listenerId + '-mousedown', mouseDownHandler)
+      eventManager.addEventListener('mousemove', listenerId + '-mousemove', mouseMoveHandler)
+      eventManager.addEventListener('mouseup', listenerId + '-mouseup', mouseUpHandler)
+    } else {
+      const touchStartHandler = this._handleStart.bind(this)
+      const touchMoveHandler = this._handleMove.bind(this)
+      const touchEndHandler = this._handleEnd.bind(this)
 
-    // not sure if necessary?
-    // In case touch gets interrupted
-    // Prescribed for cleanup
-    const touchCancelHandler = this._handleTouchEnd.bind(this)
+      // In case touch gets interrupted
+      // Prescribed for cleanup
+      const touchCancelHandler = this._handleEnd.bind(this)
 
-    eventManager.addEventListener('touchstart', listenerId + '-touchstart', touchStartHandler)
-    eventManager.addEventListener('touchmove', listenerId + '-touchmove', touchMoveHandler)
-    eventManager.addEventListener('touchend', listenerId + '-touchend', touchEndHandler)
-    eventManager.addEventListener('touchcancel', listenerId + '-touchcancel', touchCancelHandler)
+      eventManager.addEventListener('touchstart', listenerId + '-touchstart', touchStartHandler)
+      eventManager.addEventListener('touchmove', listenerId + '-touchmove', touchMoveHandler)
+      eventManager.addEventListener('touchend', listenerId + '-touchend', touchEndHandler)
+      eventManager.addEventListener('touchcancel', listenerId + '-touchcancel', touchCancelHandler)
+    }
   }
 
   _removeEventListener () {
@@ -56,66 +57,38 @@ export default class WheelHandler extends SectionInteractionHandler {
     }
   }
 
-  // Record initial mousedown
-  _handleMouseDown (coordinates, mouseEvent) {
+  _nopropagation (event) {
+    event.preventDefault() // Cancel the event from affecting the whole window
+  }
+
+  // Record initial mousedown, touchstart
+  _handleStart (coordinates, event) {
+    this._nopropagation(event)
     this._panningActive = true
     this._panStartPosition = coordinates
     this._panCurrentPosition = coordinates
-    this._startEvent = mouseEvent
+    this._startEvent = event
   }
 
   // For smooth dragging, perform callback even during drag
   // To bound dragging to only the section, check cursor location and if still in section
-  _handleMouseMove (coordinates, mouseEvent) {
+  _handleMove (coordinates, event) {
     const sectionBbox = this._interactionManager._section
     if (this._panningActive && this._isInSection(coordinates, sectionBbox)) {
       this._panPreviousPosition = this._panCurrentPosition
       this._panCurrentPosition = coordinates
-      this._callStoredCallback(coordinates, mouseEvent, this._panPreviousPosition, this._panCurrentPosition)
+      this._callStoredCallback(coordinates, event, this._panPreviousPosition, this._panCurrentPosition)
     } else {
-      this._handleMouseUp(coordinates, mouseEvent)
+      this._handleEnd(coordinates, event)
     }
   }
 
-  // Record mouseup
-  _handleMouseUp (coordinates, mouseEvent) {
+  // Record mouseup, touchend
+  _handleEnd (coordinates, event) {
     if (this._panningActive) {
       this._panningActive = false
       this._panEndCoordinates = this._panCurrentPosition
-      this._endEvent = mouseEvent
-    }
-  }
-
-
-  // Record initial touchstart
-  _handleTouchStart (coordinates, touchEvent) {
-    this._panningActive = true
-    this._panStartPosition = coordinates
-    this._panCurrentPosition = coordinates
-    this._startEvent = touchEvent
-  }
-
-  // For smooth panning, perform callback even during drag
-  // To bound panning to only the section
-  // check cursor location and if it is still in section
-  _handleTouchMove (coordinates, touchEvent) {
-    const sectionBbox = this._interactionManager._section
-    
-    if (this._panningActive && this._isInSection(coordinates, sectionBbox)) {
-      this._panPreviousPosition = this._panCurrentPosition
-      this._panCurrentPosition = coordinates
-      this._callStoredCallback(coordinates, touchEvent, this._panPreviousPosition, this._panCurrentPosition)
-    } else {
-      this._handleTouchEnd(coordinates, touchEvent)
-    }
-  }
-
-  // Record touchend
-  _handleTouchEnd (coordinates, touchEvent) {
-    if (this._panningActive) {
-      this._panningActive = false
-      this._panEndCoordinates = this._panCurrentPosition
-      this._endEvent = touchEvent
+      this._endEvent = event
     }
   }
 

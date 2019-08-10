@@ -5,10 +5,31 @@ let scrollLineHeight
 
 export default class WheelHandler extends SectionInteractionHandler {
   _addEventListener () {
-    const handler = this._handleEvent.bind(this)
     const eventManager = this._interactionManager._eventManager
     const listenerId = this._interactionManager._id + '-wheel'
-    eventManager.addEventListener('wheel', listenerId, handler)
+
+    if (!eventManager._isMobile) {
+      const handler = this._handleEvent.bind(this)
+      eventManager.addEventListener('wheel', listenerId, handler)
+    } else {
+      // const touchStartHandler = this._handleTouchStart.bind(this)
+      // const touchMoveHandler = this._handleTouchMove.bind(this)
+      // const touchEndHandler = this._handleTouchEnd.bind(this)
+
+      // // In case touch gets interrupted
+      // // Prescribed for cleanup
+      // const touchCancelHandler = this._handleTouchEnd.bind(this)
+
+      // eventManager.addEventListener('touchstart', listenerId + '-touchstart', touchStartHandler)
+      // eventManager.addEventListener('touchmove', listenerId + '-touchmove', touchMoveHandler)
+      // eventManager.addEventListener('touchend', listenerId + '-touchend', touchEndHandler)
+      // eventManager.addEventListener('touchcancel', listenerId + '-touchcancel', touchCancelHandler)
+    }
+
+    // pinch gesture
+    // eventManager.addEventListener('wheel', listenerId, handler)
+    // eventManager.addEventListener('wheel', listenerId, handler)
+    // eventManager.addEventListener('wheel', listenerId, handler)
   }
 
   _removeEventListener () {
