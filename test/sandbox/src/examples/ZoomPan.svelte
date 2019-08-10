@@ -1,6 +1,10 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, PolygonLayer, Rectangle, createPanHandler, createZoomHandler } from '../../../../src'
+  import { 
+    Graphic, Section, PolygonLayer, Rectangle,
+    XAxis, YAxis,
+    createPanHandler, createZoomHandler
+  } from '../../../../src'
 
   let x = 0
   let y = 0
@@ -53,6 +57,7 @@ k:
     {zoomIdentity}
     onWheel={e => handle(zoom(e))}
     onPan={e => handle(pan(e))}
+    padding={30}
   >
 
     <Rectangle fill="blue" opacity={0.3} />
@@ -71,7 +76,10 @@ k:
       fill={[
         'red', 'green', 'yellow'
       ]}
-    /> 
+    />
+
+    <XAxis />
+    <YAxis />
   
   </Section>
 

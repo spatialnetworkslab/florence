@@ -13,6 +13,7 @@
 
   export let width
   export let height
+  export let padding = 0
   export let scaleX = undefined
   export let scaleY = undefined
   export let flipX = false
@@ -26,16 +27,21 @@
   CoordinateTransformationContext.init()
   ZoomContext.init()
 
+  // set up padding
+  if (typeof padding === 'number') {
+    padding = {left: padding, right: padding, top: padding, bottom: padding}
+  }
+
   $: {
     GraphicContext.update(graphicContext, { renderer })
   }
 
   $: {
-    let rangeX = [0, width]
-    let rangeY = [0, height]
+    let rangeX = [0 + padding.left, width - padding.right]
+    let rangeY = [0 + padding.top, height - padding.bottom]
     if (flipX) rangeX.reverse()
     if (flipY) rangeY.reverse()
-    SectionContext.update(sectionContext, { rangeX, rangeY, scaleX, scaleY })
+    SectionContext.update(sectionContext, { rangeX, rangeY, scaleX, scaleY, padding })
   }
 
   let rootNode
