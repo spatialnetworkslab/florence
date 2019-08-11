@@ -17,7 +17,7 @@ export default class WheelHandler extends SectionInteractionHandler {
     const eventManager = this._interactionManager._eventManager
     const listenerId = this._interactionManager._id + '-pan'
 
-    if (!eventManager._isMobile) {
+    if (!eventManager._isTouch) {
       const mouseDownHandler = this._handleStart.bind(this)
       const mouseMoveHandler = this._handleMove.bind(this)
       const mouseUpHandler = this._handleEnd.bind(this)
@@ -25,7 +25,7 @@ export default class WheelHandler extends SectionInteractionHandler {
       eventManager.addEventListener('mousedown', listenerId + '-mousedown', mouseDownHandler)
       eventManager.addEventListener('mousemove', listenerId + '-mousemove', mouseMoveHandler)
       eventManager.addEventListener('mouseup', listenerId + '-mouseup', mouseUpHandler)
-    } else {
+    } else if (eventManager._isTouch) {
       const touchStartHandler = this._handleStart.bind(this)
       const touchMoveHandler = this._handleMove.bind(this)
       const touchEndHandler = this._handleEnd.bind(this)
@@ -63,6 +63,7 @@ export default class WheelHandler extends SectionInteractionHandler {
 
   // Record initial mousedown, touchstart
   _handleStart (coordinates, event) {
+    console.log(coordinates, event)
     this._nopropagation(event)
     this._panningActive = true
     this._panStartPosition = coordinates

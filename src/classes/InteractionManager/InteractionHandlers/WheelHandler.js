@@ -8,7 +8,7 @@ export default class WheelHandler extends SectionInteractionHandler {
     const eventManager = this._interactionManager._eventManager
     const listenerId = this._interactionManager._id + '-wheel'
 
-    if (!eventManager._isMobile) {
+    if (!eventManager._isTouch) {
       const handler = this._handleEvent.bind(this)
       eventManager.addEventListener('wheel', listenerId, handler)
     } else {

@@ -15,7 +15,11 @@ export default class MouseoverHandler extends InteractionHandler {
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-mouseover'
 
-      eventManager.addEventListener('mousemove', listenerId, handler)
+      if (!eventManager._isTouch){
+        eventManager.addEventListener('mousemove', listenerId, handler)
+      } else {
+        eventManager.addEventListener('touchmove', listenerId, handler)
+      }
     }
   }
 

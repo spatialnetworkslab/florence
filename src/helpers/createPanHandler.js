@@ -1,4 +1,5 @@
 export default function createPanHandler (zoomId, options) {
+
   const handler = function (event) {
     const extentX = options.extentX
     const extentY = options.extentY
