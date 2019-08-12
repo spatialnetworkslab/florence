@@ -51,7 +51,7 @@ export function createZoomTransformation (zoomContext, zoomIdentity) {
 export function createZoomFunction (zoomIdentity) {
   ensureValidZoomIdentity(zoomIdentity)
 
-  const { x, y, kx, ky } = getZoomParams(zoomIdentity)
+  const { x, y, kx, ky } = zoomIdentity
   const transformation = p => [p[0] * kx + x, p[1] * ky + y]
   const inverseTransformation = p => [(p[0] - x) / kx, (p[1] - y) / ky]
   transformation.invert = inverseTransformation
@@ -60,14 +60,14 @@ export function createZoomFunction (zoomIdentity) {
 }
 
 function ensureValidZoomIdentity (zoomIdentity) {
-  if (hasValid(zoomIdentity, 'x') && hasValid(zoomIdentity, 'y')) {
-    if (hasValid(zoomIdentity, 'k')) {
-      return
-    }
-
-    if (hasValid(zoomIdentity, 'kx') && hasValid(zoomIdentity, 'ky')) {
-      return
-    }
+  if (
+    hasValid(zoomIdentity, 'x') &&
+    hasValid(zoomIdentity, 'y') &&
+    hasValid(zoomIdentity, 'kx') &&
+    hasValid(zoomIdentity, 'ky') &&
+    Object.keys(zoomIdentity).length === 4
+  ) {
+    return
   }
 
   throw new Error(`Invalid zoomIdentity: '${JSON.stringify(zoomIdentity)}`)
@@ -75,15 +75,6 @@ function ensureValidZoomIdentity (zoomIdentity) {
 
 function hasValid (zoomIdentity, key) {
   return key in zoomIdentity && zoomIdentity[key].constructor === Number
-}
-
-function getZoomParams (zoomIdentity) {
-  const x = zoomIdentity.x
-  const y = zoomIdentity.y
-  const kx = hasValid(zoomIdentity, 'kx') ? zoomIdentity.kx : zoomIdentity.k
-  const ky = hasValid(zoomIdentity, 'ky') ? zoomIdentity.ky : zoomIdentity.k
-
-  return { x, y, kx, ky }
 }
 
 function reconcileZoomIdentities (zoomContext, zoomIdentity) {
