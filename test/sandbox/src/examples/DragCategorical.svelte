@@ -1,0 +1,200 @@
+<script>
+	import { scaleLinear, scalePoint } from 'd3-scale'
+	import { Graphic, Grid, Section, PointLayer, Point } from '../../../../src/'
+  import DataContainer from '@snlab/florence-datacontainer'
+
+	export let N = 100
+	let data = new DataContainer(generateData(N, 0.25))
+	function generateData (N, error) {
+    const getError = () => -error + (Math.random() * (2 * error)) * N
+    const categories = ['a', 'b', 'c', 'd', 'e']
+
+    let data = { a: [], b: [] }
+    
+		for (let i = 0; i < N; i++) {
+			data.a.push(i + getError())
+			data.b.push(categories[Math.floor(Math.random() * 5)])
+    }
+
+		return data
+  }
+  
+  let threshold = 0
+  $: filteredData = data
+    .filter(row => row.a > threshold)
+    .done()
+
+	const scaleA = scaleLinear().domain(data.domain('a'))
+  const scaleB = scalePoint().domain(data.domain('b').sort())
+  
+  let height = 500
+  let transformation = 'identity'
+  let duration = 2000
+
+  const log = console.log
+
+  let background = "pink"
+  let big = false
+  let hoverPoints = {}
+
+  $: hoverPointKeys = Object.keys(hoverPoints)
+  function handleMouseout (ix) {
+    delete hoverPoints[ix]
+    hoverPoints = hoverPoints
+  }
+  
+  let bigPoint = { x: 50, y: 'c' }
+  let dragPoint
+
+  function handleDragStart (event) {
+    dragPoint = event.localCoords
+  }
+
+  function handleDrag (event) {
+    dragPoint = event.localCoords
+  }
+
+  function handleDragEnd (event) {
+    dragPoint = undefined
+  }
+
+  let dragPointLayer
+  let dragIndex
+  $: opacityArray = Array(filteredData._length)
+    .fill()
+    .map((_, i) => +(i !== filteredData._indexToRowNumber[dragIndex]))
+
+  function handleLayerDragStart (event) {
+    dragIndex = event.hitIndex
+    dragPointLayer = event.localCoords
+  }
+
+  function handleLayerDrag (event) {
+    dragPointLayer = event.localCoords
+  }
+
+  function handleLayerDragEnd (event) {
+    data._data.a[event.hitIndex] = dragPointLayer.x
+    data._data.b[event.hitIndex] = dragPointLayer.y
+    dragPointLayer = undefined
+    dragIndex = undefined
+  }
+
+</script>
+
+<div>
+  <label for="height-slider">Height:</label>
+  <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
+</div>
+
+<div>
+  <label for="coordinate-select">Coordinates:</label>
+  <select name="coordinate-select" bind:value={transformation}>
+    <option value="identity">Identity</option>
+    <option value="polar">Polar</option>
+  </select>
+</div>
+
+<div>
+  <label for="duration">Transition time</label>
+  <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
+</div>
+
+<div>
+  <button on:click={() => threshold = 40}>Filter: x > 40</button>
+</div>
+
+<div>
+
+	<Graphic 
+    width={500} {height}
+    scaleX={scaleLinear().domain([0, 500])}
+    scaleY={scaleLinear().domain([0, 500])}
+  >
+		
+		<Section
+			x1={50} x2={450}
+			y1={50} y2={450}
+			scaleX={scaleA}
+			scaleY={scaleB}
+      backgroundColor={background}
+      flipY
+      {transformation}
+		>
+
+			<PointLayer
+        x={filteredData.column('a')}
+        y={filteredData.column('b')}
+        opacity={opacityArray}
+        fill={transformation === 'identity' ? 'black' : 'blue'}
+        radius={transformation === 'identity' ? 4 : 6}
+        index={filteredData.column('$index')}
+        onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
+        onMouseout={handleMouseout}
+        onDragStart={handleLayerDragStart}
+        onDrag={handleLayerDrag}
+        onDragEnd={handleLayerDragEnd}
+      />
+        <!-- transition={duration} -->
+
+      {#if dragPointLayer}
+        <Point
+          x={dragPointLayer.x}
+          y={dragPointLayer.y}
+          radius={5}
+          fill={'black'}
+        />
+      {/if}
+
+      <!-- {#each filteredData.rows() as row (row.$index)}
+
+        <Point 
+          x={row.a}
+          y={row.b}
+          fill={transformation === 'identity' ? 'black' : 'blue'}
+          radius={transformation === 'identity' ? 3 : 6}
+          onMouseover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
+          onMouseout={() => handleMouseout(row.$index)}
+        />
+
+      {/each} -->
+
+      <Point
+        x={bigPoint.x}
+        y={bigPoint.y}
+        fill={big ? 'blue' : 'red'}
+        opacity={dragPoint ? 0 : 1}
+        radius={big ? 50 : 10}
+        onClick={() => log('BOOM')}
+        onMouseover={() => big = true}
+        onMouseout={() => big = false}
+        onDragStart={handleDragStart}
+        onDrag={handleDrag}
+        onDragEnd={handleDragEnd}
+      />
+
+      {#if dragPoint}
+        <Point
+          x={dragPoint.x}
+          y={dragPoint.y}
+          radius={10}
+          fill={'red'}
+        />
+      {/if}
+
+      <!-- {#each hoverPointKeys as key (key)}
+
+        <Point
+          x={hoverPoints[key].a}
+          y={hoverPoints[key].b}
+          radius={10}
+          fill={'green'}
+        />
+
+      {/each} -->
+
+		</Section>
+
+	</Graphic>
+
+</div>
