@@ -89,5 +89,9 @@ function getZoomParams (zoomIdentity) {
 }
 
 function reconcileZoomIdentities (zoomContext, zoomIdentity) {
-  return Object.assign(zoomContext, zoomIdentity)
+  const newZoomIdentity = {}
+  Object.assign(newZoomIdentity, zoomContext)
+  Object.assign(newZoomIdentity, zoomIdentity)
+
+  return newZoomIdentity
 }
