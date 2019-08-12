@@ -23,6 +23,7 @@
   // Other
   export let interpolate = false
   export let index = undefined
+  export let zoomIdentity = undefined
 </script>
 
 <Layer 
@@ -31,5 +32,5 @@
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {index} {interpolate}
+  {index} {zoomIdentity} {interpolate}
 />
