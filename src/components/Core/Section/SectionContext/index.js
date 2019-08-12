@@ -78,15 +78,36 @@ function createInvertMethod (scale) {
     const start = Math.min(lower, upper)
     const stop = Math.max(lower, upper)
 
+    const domain = scale.domain()
+    const lastIndex = domain.length - 1
+
     if (value < start + scale.padding() * scale.step()) {
-      return scale.domain()[0]
+      return domain[0]
     }
 
     if (value > stop - scale.padding() * scale.step()) {
-      return scale.domain()[scale.domain().length - 1]
+      return domain[lastIndex]
     }
 
-    const index = Math.floor((value - start - scale.padding() * scale.step()) / scale.step())
-    return scale.domain()[index]
+    let index
+
+    if (isPointScale(scale)) {
+      index = Math.round((value - start - scale.padding() * scale.step()) / scale.step())
+    }
+
+    if (isBandScale(scale)) {
+      index = Math.round((value - start - scale.padding() * scale.step()) / scale.step())
+      if (index > lastIndex) index = lastIndex
+    }
+
+    return domain[index]
   }
+}
+
+function isPointScale (scale) {
+  return !('paddingInner' in scale)
+}
+
+function isBandScale (scale) {
+  return 'paddingInner' in scale
 }

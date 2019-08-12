@@ -1,5 +1,5 @@
 <script>
-	import { scaleLinear, scalePoint } from 'd3-scale'
+	import { scaleLinear, scalePoint, scaleBand } from 'd3-scale'
 	import { Graphic, Grid, Section, PointLayer, Point } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
@@ -52,7 +52,6 @@
 			y1={50} y2={450}
 			scaleX={scaleA}
 			scaleY={scaleB}
-      flipY
       backgroundColor="pink"
 		>
 
@@ -64,6 +63,17 @@
         onDrag={handleDrag}
         onDragEnd={handleDragEnd}
       />
+
+      {#if dragPoint}
+
+        <Point
+          x={dragPoint.x}
+          y={dragPoint.y}
+          fill="red"
+          radius={10}
+        />
+
+      {/if}
 
 		</Section>
 
