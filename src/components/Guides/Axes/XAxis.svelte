@@ -1,14 +1,14 @@
 <script>
-  import { Line, LineLayer, Label, LabelLayer } from "../../../"
+  import { Line, LineLayer, Label, LabelLayer } from '../../../'
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
-  import * as SectionContext from "../../Core/Section/SectionContext"
+  import * as SectionContext from '../../Core/Section/SectionContext'
+  import * as ZoomContext from '../../Core/Section/ZoomContext'
 
-  import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord} from "./createXAxisCoords.js"
+  import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord} from './createXAxisCoords.js'
 
   // global properties
   export let scale = undefined
   export let flip = false
-
 
   // axis baseline
   export let baseLine = true
@@ -67,6 +67,7 @@
   // Contexts
   const sectionContext = SectionContext.subscribe()
   const graphicContext = GraphicContext.subscribe()
+  const zoomContext = ZoomContext.subscribe()
   
   let xCoords
   let yCoords
@@ -116,7 +117,9 @@
 <g class="x-axis">
     
   {#if baseLine}
-    <Line x={xCoords} y={yCoords} strokeWidth={baseLineWidth} opacity={baseLineOpacity} stroke={baseLineColor} />
+    <Line 
+      x={xCoords} y={yCoords} strokeWidth={baseLineWidth} opacity={baseLineOpacity} stroke={baseLineColor}
+    />
   {/if}
 
   {#if ticks}

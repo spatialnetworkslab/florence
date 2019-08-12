@@ -38,17 +38,17 @@ export function createZoomTransformation (zoomContext, zoomIdentity) {
   }
 
   if (isUndefined(zoomContext)) {
-    if (isDefined(zoomIdentity)) {
-      return createZoomFunction(zoomIdentity)
-    }
-
     if (isUndefined(zoomIdentity)) {
       return undefined
+    }
+
+    if (isDefined(zoomIdentity)) {
+      return createZoomFunction(zoomIdentity)
     }
   }
 }
 
-function createZoomFunction (zoomIdentity) {
+export function createZoomFunction (zoomIdentity) {
   ensureValidZoomIdentity(zoomIdentity)
 
   const { x, y, k } = zoomIdentity

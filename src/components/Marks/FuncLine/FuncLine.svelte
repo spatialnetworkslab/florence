@@ -52,7 +52,7 @@
     { func, x }, 
     $sectionContext,
     $coordinateTransformationContext,
-    ZoomContext.createZoomTransformation(zoomIdentity, $zoomContext)
+    ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
   )
 
   // Initiate transitionables
@@ -68,7 +68,7 @@
         { func, x },
         $sectionContext,
         $coordinateTransformationContext,
-        ZoomContext.createZoomTransformation(zoomIdentity, $zoomContext)
+        ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
       )
 
       tr_screenGeometry.set(screenGeometry)
