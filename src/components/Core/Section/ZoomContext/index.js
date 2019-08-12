@@ -1,5 +1,6 @@
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
+import { isDefined, isUndefined } from '../../../../utils/equals.js'
 
 const key = {}
 
@@ -16,8 +17,7 @@ export function init () {
 
 export function update (zoomContext, zoomIdentity) {
   if (zoomIdentity) {
-    const transformation = createZoomTransformation(zoomIdentity)
-    zoomContext.set(transformation)
+    zoomContext.set(zoomIdentity)
   }
 
   if (!zoomIdentity) {
@@ -25,7 +25,30 @@ export function update (zoomContext, zoomIdentity) {
   }
 }
 
-export function createZoomTransformation (zoomIdentity) {
+export function createZoomTransformation (zoomContext, zoomIdentity) {
+  if (isDefined(zoomContext)) {
+    if (isUndefined(zoomIdentity)) {
+      return createZoomFunction(zoomContext)
+    }
+
+    if (isDefined(zoomIdentity)) {
+      const combinedZoomIdentity = reconcileZoomIdentities(zoomContext, zoomIdentity)
+      return createZoomFunction(combinedZoomIdentity)
+    }
+  }
+
+  if (isUndefined(zoomContext)) {
+    if (isDefined(zoomIdentity)) {
+      return createZoomFunction(zoomIdentity)
+    }
+
+    if (isUndefined(zoomIdentity)) {
+      return undefined
+    }
+  }
+}
+
+function createZoomFunction (zoomIdentity) {
   ensureValidZoomIdentity(zoomIdentity)
 
   const { x, y, k } = zoomIdentity
@@ -37,13 +60,17 @@ export function createZoomTransformation (zoomIdentity) {
 }
 
 function ensureValidZoomIdentity (zoomIdentity) {
-  if ('x' in zoomIdentity && 'y' in zoomIdentity && 'k' in zoomIdentity) {
-    if (Object.keys(zoomIdentity).every(key => {
-      return zoomIdentity[key].constructor === Number
-    })) {
-      return
-    }
+  if (
+    'x' in zoomIdentity && zoomIdentity.x.constructor === Number &&
+    'y' in zoomIdentity && zoomIdentity.y.constructor === Number &&
+    'k' in zoomIdentity && zoomIdentity.k.constructor === Number
+  ) {
+    return
   }
 
   throw new Error(`Invalid zoomIdentity: '${JSON.stringify(zoomIdentity)}`)
+}
+
+function reconcileZoomIdentities (zoomContext, zoomIdentity) {
+  return Object.assign(zoomContext, zoomIdentity)
 }

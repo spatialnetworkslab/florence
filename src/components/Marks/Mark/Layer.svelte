@@ -298,9 +298,7 @@
   }
 
   function updatePixelGeometryObject () {
-    const zoomTransformation = zoomIdentity ?
-      ZoomContext.createZoomTransformation(zoomIdentity) :
-      $zoomContext
+    const zoomTransformation = ZoomContext.createZoomTransformation(zoomIdentity, $zoomContext)
 
     if (zoomTransformation) {
       pixelGeometryObject = transformGeometries(coordSysGeometryObject, $zoomContext)
