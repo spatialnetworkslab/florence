@@ -38,6 +38,9 @@
   export let onMouseover = undefined
   export let onMouseout = undefined
 
+  // Other
+  export let zoomIdentity = undefined
+
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
@@ -49,7 +52,9 @@
     { func, x }, 
     $sectionContext,
     $coordinateTransformationContext,
-    $zoomContext
+    zoomIdentity ?
+      ZoomContext.createZoomTransformation(zoomIdentity) :
+      $zoomContext
   )
 
   // Initiate transitionables
@@ -65,7 +70,9 @@
         { func, x },
         $sectionContext,
         $coordinateTransformationContext,
-        $zoomContext
+        zoomIdentity ?
+          ZoomContext.createZoomTransformation(zoomIdentity) :
+          $zoomContext
       )
 
       tr_screenGeometry.set(screenGeometry)
