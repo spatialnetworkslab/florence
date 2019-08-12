@@ -60,18 +60,12 @@ export function createZoomFunction (zoomIdentity) {
 }
 
 function ensureValidZoomIdentity (zoomIdentity) {
-  if (
-    'x' in zoomIdentity && zoomIdentity.x.constructor === Number &&
-    'y' in zoomIdentity && zoomIdentity.y.constructor === Number
-  ) {
-    if ('k' in zoomIdentity && zoomIdentity.k.constructor === Number) {
+  if (hasValid(zoomIdentity, 'x') && hasValid(zoomIdentity, 'y')) {
+    if (hasValid(zoomIdentity, 'k')) {
       return
     }
 
-    if (
-      'kx' in zoomIdentity && zoomIdentity.kx.constructor === Number &&
-      'ky' in zoomIdentity && zoomIdentity.ky.constructor === Number
-    ) {
+    if (hasValid(zoomIdentity, 'kx') && hasValid(zoomIdentity, 'ky')) {
       return
     }
   }
@@ -79,11 +73,15 @@ function ensureValidZoomIdentity (zoomIdentity) {
   throw new Error(`Invalid zoomIdentity: '${JSON.stringify(zoomIdentity)}`)
 }
 
+function hasValid (zoomIdentity, key) {
+  return key in zoomIdentity && zoomIdentity[key].constructor === Number
+}
+
 function getZoomParams (zoomIdentity) {
   const x = zoomIdentity.x
   const y = zoomIdentity.y
-  const kx = zoomIdentity.kx || zoomIdentity.k
-  const ky = zoomIdentity.ky || zoomIdentity.k
+  const kx = hasValid(zoomIdentity, 'kx') ? zoomIdentity.kx : zoomIdentity.k
+  const ky = hasValid(zoomIdentity, 'ky') ? zoomIdentity.ky : zoomIdentity.k
 
   return { x, y, kx, ky }
 }
