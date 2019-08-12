@@ -57,7 +57,7 @@ function getMissingCoordinatesFromContext (coordinates, sectionContext) {
 
   for (const coordinateName of coordinateNames) {
     const coordinateValue = coordinates[coordinateName]
-    nonMissingCoordinates[coordinateName] = coordinateValue || sectionContext[coordinateName]()
+    nonMissingCoordinates[coordinateName] = coordinateValue || sectionContext[coordinateName]
   }
 
   return nonMissingCoordinates

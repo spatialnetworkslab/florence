@@ -5,42 +5,18 @@ class SectionContext {
   constructor ({ sectionId, rangeX, rangeY, scaleX, scaleY, padding, flipX, flipY }) {
     this._sectionId = sectionId
 
-    this._rangeX = undefined
-    this._rangeY = undefined
-    this._scaleX = undefined
-    this._scaleY = undefined
-    this.flipX = flipX
-    this.flipY = flipY
-    this.padding = padding
+    this.rangeX = rangeX[1] > rangeX[0] ? rangeX : [rangeX[1], rangeX[0]]
+    this.rangeY = rangeY[1] > rangeY[0] ? rangeY : [rangeY[1], rangeY[0]]
 
-    this._handleRanges(rangeX, rangeY)
-    this._handleScales(scaleX, scaleY)
+    this.x1 = this.rangeX[0]
+    this.x2 = this.rangeX[1]
+    this.y1 = this.rangeY[0]
+    this.y2 = this.rangeY[1]
+
+    this._scaleX = scaleX ? scaleX.copy().range(rangeX) : x => x
+    this._scaleY = scaleY ? scaleY.copy().range(rangeY) : y => y
 
     this._padding = padding
-  }
-
-  rangeX () {
-    return this._rangeX
-  }
-
-  rangeY () {
-    return this._rangeY
-  }
-
-  x1 () {
-    return this._rangeX[0]
-  }
-
-  x2 () {
-    return this._rangeX[1]
-  }
-
-  y1 () {
-    return this._rangeY[0]
-  }
-
-  y2 () {
-    return this._rangeY[1]
   }
 
   scales () {
@@ -51,29 +27,6 @@ class SectionContext {
 
   interactionManager () {
     return this._interactionManager
-  }
-
-  _handleRanges (rangeX, rangeY) {
-    this._rangeX = rangeX
-    this._rangeY = rangeY
-  }
-
-  _handleScales (scaleX, scaleY) {
-    if (scaleX) {
-      this._scaleX = scaleX.copy().range(this._rangeX)
-    }
-
-    if (!scaleX) {
-      this._scaleX = x => x
-    }
-
-    if (scaleY) {
-      this._scaleY = scaleY.copy().range(this._rangeY)
-    }
-
-    if (!scaleY) {
-      this._scaleY = y => y
-    }
   }
 }
 
