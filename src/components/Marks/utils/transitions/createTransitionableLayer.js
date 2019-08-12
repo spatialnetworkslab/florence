@@ -3,6 +3,7 @@ import { tweened } from 'svelte/motion'
 import { cubicOut } from 'svelte/easing'
 import { interpolate } from 'd3-interpolate'
 import { transitionGeometries } from '../../../../utils/geometryUtils/index.js'
+import { isUndefined } from '../../../../utils/equals.js'
 
 /**
  * Like createTransitionable, returns either a Svelte store, or a Svelte 'tweened' store,
@@ -16,7 +17,7 @@ import { transitionGeometries } from '../../../../utils/geometryUtils/index.js'
  * @returns {writable|tweened}
  */
 export function createTransitionableLayer (aestheticName, aestheticValue, transitionOptions) {
-  if (transitionOptions === undefined) {
+  if (isUndefined(transitionOptions) || isUndefined(aestheticValue)) {
     return writable(aestheticValue)
   }
 
