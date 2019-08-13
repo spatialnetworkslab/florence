@@ -40,7 +40,7 @@ export default class EventManager {
       eventcancel = 'mouseout'
       eventclick = 'click'
     }
-    
+
     this._normalisedEvents = { eventstart, eventend, eventmove, eventcancel, eventclick, wheel }
 
     // Desktop
