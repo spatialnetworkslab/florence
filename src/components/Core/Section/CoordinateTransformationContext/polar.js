@@ -34,18 +34,31 @@ function polarToCartesian (theta, radius) {
   return [x, y]
 }
 
-// function cartesianToPolar (x, y) {
-//   const r = Math.sqrt(y ** 2 + x ** 2)
-//   const theta = Math.atan(x / y)
+// https://www.mathsisfun.com/polar-cartesian-coordinates.html
+function cartesianToPolar (x, y) {
+  const quadrant = getQuadrant(x, y)
 
-//   return [theta, r]
-// }
+  const r = Math.sqrt(y ** 2 + x ** 2)
+  let theta = Math.atan(x / y)
 
-// function cartesianToPolar (x, y) {
-//   const theta = Math.PI + arcctg(y / x)
-//   const radius = x / Math.sin(theta)
+  if (quadrant === 'II') {
+    theta += Math.PI * 2
+  }
 
-//   return [theta, radius]
-// }
+  if (quadrant === 'III') {
+    theta += Math.PI
+  }
 
-// const arcctg = x => Math.PI / 2 - Math.atan(x)
+  if (quadrant === 'IV') {
+    theta += Math.PI
+  }
+
+  return [theta, r]
+}
+
+function getQuadrant (x, y) {
+  if (x >= 0 && y >= 0) return 'I'
+  if (x < 0 && y >= 0) return 'II'
+  if (x < 0 && y < 0) return 'III'
+  if (x >= 0 && y < 0) return 'IV'
+}
