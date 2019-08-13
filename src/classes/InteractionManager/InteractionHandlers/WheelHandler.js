@@ -8,28 +8,8 @@ export default class WheelHandler extends SectionInteractionHandler {
     const eventManager = this._interactionManager._eventManager
     const listenerId = this._interactionManager._id + '-wheel'
 
-    //if (!eventManager._isTouch) {
     const handler = this._handleEvent.bind(this)
     eventManager.addEventListener('wheel', listenerId, handler)
-    //} else {
-      // const touchStartHandler = this._handleTouchStart.bind(this)
-      // const touchMoveHandler = this._handleTouchMove.bind(this)
-      // const touchEndHandler = this._handleTouchEnd.bind(this)
-
-      // // In case touch gets interrupted
-      // // Prescribed for cleanup
-      // const touchCancelHandler = this._handleTouchEnd.bind(this)
-
-      // eventManager.addEventListener('touchstart', listenerId + '-touchstart', touchStartHandler)
-      // eventManager.addEventListener('touchmove', listenerId + '-touchmove', touchMoveHandler)
-      // eventManager.addEventListener('touchend', listenerId + '-touchend', touchEndHandler)
-      // eventManager.addEventListener('touchcancel', listenerId + '-touchcancel', touchCancelHandler)
-    //}
-
-    // pinch gesture
-    // eventManager.addEventListener('wheel', listenerId, handler)
-    // eventManager.addEventListener('wheel', listenerId, handler)
-    // eventManager.addEventListener('wheel', listenerId, handler)
   }
 
   _removeEventListener () {
@@ -76,15 +56,27 @@ export default class WheelHandler extends SectionInteractionHandler {
     event.stopPropagation() // Don't bubble
   }
 
-  _handleEvent (coordinates, mouseEvent) {
-    this._nopropagation(mouseEvent)
+  _handleEvent (coordinates, event) {
+    this._nopropagation(event)
 
-    const wheelDelta = this._defaultWheelDelta(mouseEvent)
-    const event = { wheelDelta, coordinates: coordinates, originalEvent: mouseEvent }
+    const wheelDelta = this._defaultWheelDelta(event)
+    const evt = { wheelDelta, coordinates: coordinates, originalEvent: event }
     const sectionBbox = this._interactionManager._section
 
     if (this._isInSection(coordinates, sectionBbox)) {
-      this._callback(event)
+      this._callback(evt)
     }
+  }
+
+  _handlePinchStart (coordinates, event) {
+    console.log('1', coordinates, event)
+  }
+
+  _handlePinchMove (coordinates, event) {
+    console.log('2', coordinates, event)
+  } 
+
+  _handlePinchEnd (coordinates, event) {
+    console.log('3', coordinates, event)
   }
 }

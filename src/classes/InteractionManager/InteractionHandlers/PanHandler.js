@@ -53,7 +53,6 @@ export default class PanHandler extends SectionInteractionHandler {
   // For smooth dragging, perform callback even during drag
   // To bound dragging to only the section, check cursor location and if still in section
   _handleMove (coordinates, event) {
-
     const sectionBbox = this._interactionManager._section
     if (this._panningActive && this._isInSection(coordinates, sectionBbox)) {
       this._panPreviousPosition = this._panCurrentPosition

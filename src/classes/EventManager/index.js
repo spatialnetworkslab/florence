@@ -9,8 +9,8 @@ export default class EventManager {
     let eventmove
     let eventcancel
     let eventclick
-    let wheel =  'wheel'
-  
+    const wheel = 'wheel'
+
     // Pointer events for IE11 and MSEdge:
     if (window.navigator.pointerEnabled) {
       eventstart = 'pointerdown'
@@ -40,7 +40,7 @@ export default class EventManager {
       eventcancel = 'mouseout'
       eventclick = 'click'
     }
-
+    
     this._normalisedEvents = { eventstart, eventend, eventmove, eventcancel, eventclick, wheel }
 
     // Desktop
@@ -125,7 +125,7 @@ export default class EventManager {
     const targetTouches = event.targetTouches
     const changedTouches = event.changedTouches
 
-    if (targetTouches.length == 1 || changedTouches.length == 1) {
+    if (targetTouches.length === 1 || changedTouches.length === 1) {
       if (targetTouches[0]) {
         const targetTouch = targetTouches[0]
         this._svgPoint.x = targetTouch.clientX
