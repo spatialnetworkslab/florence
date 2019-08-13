@@ -53,7 +53,7 @@
 			scaleY={scaleB}
       backgroundColor="pink"
       transformation="polar"
-      zoomIdentity={{x: 0, y: 0, kx: 2, ky: 2}}
+      zoomIdentity={{x: 0, y: 0, kx: 1.2, ky: 1.2}}
 		>
 
 			<PointLayer
