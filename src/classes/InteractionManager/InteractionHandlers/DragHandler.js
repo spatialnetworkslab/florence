@@ -1,4 +1,5 @@
 import InteractionHandler from './InteractionHandler.js'
+import { createZoomFunction } from '../../../components/Core/Section/ZoomContext'
 
 export default class DragHandler extends InteractionHandler {
   constructor (interactionManager) {
@@ -86,8 +87,13 @@ export default class DragHandler extends InteractionHandler {
   _getLocalCoordinates (pixelCoords) {
     const im = this._interactionManager
     const section = im._section
-    const coordinateTransformation = im._coordinateTransformation._transformation
+
+    const coordinateTransformation = im._coordinateTransformation
+      ? im._coordinateTransformation._transformation
+      : undefined
     const zoom = im._zoom
+      ? createZoomFunction(im._zoom)
+      : undefined
 
     const scaleX = section.scales().scaleX
     const scaleY = section.scales().scaleY
