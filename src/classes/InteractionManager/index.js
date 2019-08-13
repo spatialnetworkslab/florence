@@ -9,6 +9,9 @@ import { markIndexing, layerIndexing } from './indexingFunctions'
 export default class InteractionManager {
   constructor () {
     this._section = undefined
+    this._coordinateTransformation = undefined
+    this._zoom = undefined
+
     this._layers = {}
     this._marks = {}
 
@@ -35,6 +38,14 @@ export default class InteractionManager {
   // Section loading and removing
   loadSection (sectionData) {
     this._section = sectionData
+  }
+
+  loadCoordinateTransformation (coordinateTransformation) {
+    this._coordinateTransformation = coordinateTransformation
+  }
+
+  loadZoom (zoom) {
+    this._zoom = zoom
   }
 
   // Layer loading and removing
