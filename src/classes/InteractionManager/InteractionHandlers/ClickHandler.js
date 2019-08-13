@@ -8,7 +8,7 @@ export default class ClickHandler extends InteractionHandler {
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-click'
 
-      eventManager.addEventListener('click', listenerId, handler)
+      eventManager.addEventListener('eventclick', listenerId, handler)
     }
   }
 
@@ -18,7 +18,7 @@ export default class ClickHandler extends InteractionHandler {
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-click'
 
-      eventManager.removeEventListener('click', listenerId)
+      eventManager.removeEventListener('eventclick', listenerId)
     }
   }
 

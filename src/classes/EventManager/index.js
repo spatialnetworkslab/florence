@@ -4,24 +4,65 @@ export default class EventManager {
   constructor () {
     this._mounted = false
 
+    let eventstart
+    let eventend
+    let eventmove
+    let eventcancel
+    let eventclick
+    let wheel =  'wheel'
+  
+    // Pointer events for IE11 and MSEdge:
+    if (window.navigator.pointerEnabled) {
+      eventstart = 'pointerdown'
+      eventend = 'pointerup'
+      eventmove = 'pointermove'
+      eventcancel = 'pointercancel'
+      eventclick = 'click'
+    // Pointer events for IE10 and WP8:
+    } else if (window.navigator.msPointerEnabled) {
+      eventstart = 'MSPointerDown'
+      eventend = 'MSPointerUp'
+      eventmove = 'MSPointerMove'
+      eventcancel = 'MSPointerCancel'
+      eventclick = ['MSPointerDown', 'MSPointerUp']
+    // Touch events for iOS & Android:
+    } else if ('ontouchstart' in window) {
+      eventstart = 'touchstart'
+      eventend = 'touchend'
+      eventmove = 'touchmove'
+      eventcancel = 'touchcancel'
+      eventclick = 'click'
+    // Mouse events for desktop:
+    } else {
+      eventstart = 'mousedown'
+      eventend = 'mouseup'
+      eventmove = 'mousemove'
+      eventcancel = 'mouseout'
+      eventclick = 'click'
+    }
+
+    this._normalisedEvents = { eventstart, eventend, eventmove, eventcancel, eventclick, wheel }
+
+    // Desktop
     this._clickTracker = new EventTracker(this, 'click')
     this._mousemoveTracker = new EventTracker(this, 'mousemove')
     this._mousedownTracker = new EventTracker(this, 'mousedown')
     this._mouseupTracker = new EventTracker(this, 'mouseup')
     this._wheelTracker = new EventTracker(this, 'wheel')
+
+    // Touch
     this._touchstartTracker = new EventTracker(this, 'touchstart')
     this._touchmoveTracker = new EventTracker(this, 'touchmove')
     this._touchendTracker = new EventTracker(this, 'touchend')
     this._touchcancelTracker = new EventTracker(this, 'touchcancel')
 
+    // Pointer
+    this._pointerstartTracker = new EventTracker(this, 'pointerdown')
+    this._pointermoveTracker = new EventTracker(this, 'pointermove')
+    this._pointerendTracker = new EventTracker(this, 'pointerup')
+    this._pointercancelTracker = new EventTracker(this, 'pointercancel')
+
     this._listeners = {}
-
-    this._isType = 'ontouchstart' in window
-    // console.log(window, this._isTouch)
-
-    // // consult `navigator` to know if mobile or desktop browser
-    // this._touch = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-    
   }
 
   addRootNode (domNode) {
@@ -34,7 +75,9 @@ export default class EventManager {
     if (this._mounted) {
       for (const listenerId in this._listeners) {
         const { eventName, callback } = this._listeners[listenerId]
-        const tracker = this[getTrackerName(eventName)]
+        const nativeEvent = this._normalisedEvents[eventName]
+        console.log(eventName)
+        const tracker = this[getTrackerName(nativeEvent)]
         tracker.addEventListener(listenerId, callback)
       }
     } else {
@@ -45,18 +88,20 @@ export default class EventManager {
   addEventListener (eventName, listenerId, callback) {
     this._listeners[listenerId] = Object.assign({}, { eventName, callback })
     if (this._mounted) {
-      const tracker = this[getTrackerName(eventName)]
+      const nativeEvent = this._normalisedEvents[eventName]
+      const tracker = this[getTrackerName(nativeEvent)]
       tracker.addEventListener(listenerId, callback)
     }
   }
 
   removeEventListener (eventName, listenerId) {
     delete this._listeners[listenerId]
-    const tracker = this[getTrackerName(eventName)]
+    const nativeEvent = this._normalisedEvents[eventName]
+    const tracker = this[getTrackerName(nativeEvent)]
     tracker.removeEventListener(listenerId)
   }
 
-  _getMouseCoordinates (event) {
+  _getCoordinates (event) {
     if (!this._isTouch || event.type.includes('mouse')) {
       // desktop
       this._getDesktopCoordinates(event)
@@ -80,7 +125,7 @@ export default class EventManager {
   _getMobileCoordinates (event) {
     const targetTouches = event.targetTouches
     const changedTouches = event.changedTouches
-    
+
     if (targetTouches.length == 1 || changedTouches.length == 1) {
       if (targetTouches[0]) {
         const targetTouch = targetTouches[0]
@@ -128,7 +173,7 @@ class EventTracker {
   }
 
   _handleEvent (event) {
-    const coordinates = this._eventManager._getMouseCoordinates(event)
+    const coordinates = this._eventManager._getCoordinates(event)
 
     for (const listenerId in this._callbacks) {
       this._callbacks[listenerId](coordinates, event)
@@ -152,5 +197,9 @@ const eventNameToTrackerNameMap = {
   touchstart: '_touchstartTracker',
   touchmove: '_touchmoveTracker',
   touchend: '_touchendTracker',
-  touchcancel: '_touchcancelTracker'
+  touchcancel: '_touchcancelTracker',
+  pointerdown: '_pointerdown',
+  pointerup: '_pointerup',
+  pointermove: '_pointermove',
+  pointercancel: '_pointercancel'
 }

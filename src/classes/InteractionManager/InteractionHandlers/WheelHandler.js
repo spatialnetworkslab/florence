@@ -8,10 +8,10 @@ export default class WheelHandler extends SectionInteractionHandler {
     const eventManager = this._interactionManager._eventManager
     const listenerId = this._interactionManager._id + '-wheel'
 
-    if (!eventManager._isTouch) {
-      const handler = this._handleEvent.bind(this)
-      eventManager.addEventListener('wheel', listenerId, handler)
-    } else {
+    //if (!eventManager._isTouch) {
+    const handler = this._handleEvent.bind(this)
+    eventManager.addEventListener('wheel', listenerId, handler)
+    //} else {
       // const touchStartHandler = this._handleTouchStart.bind(this)
       // const touchMoveHandler = this._handleTouchMove.bind(this)
       // const touchEndHandler = this._handleTouchEnd.bind(this)
@@ -24,7 +24,7 @@ export default class WheelHandler extends SectionInteractionHandler {
       // eventManager.addEventListener('touchmove', listenerId + '-touchmove', touchMoveHandler)
       // eventManager.addEventListener('touchend', listenerId + '-touchend', touchEndHandler)
       // eventManager.addEventListener('touchcancel', listenerId + '-touchcancel', touchCancelHandler)
-    }
+    //}
 
     // pinch gesture
     // eventManager.addEventListener('wheel', listenerId, handler)

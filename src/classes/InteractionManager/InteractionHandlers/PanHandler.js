@@ -17,28 +17,14 @@ export default class WheelHandler extends SectionInteractionHandler {
     const eventManager = this._interactionManager._eventManager
     const listenerId = this._interactionManager._id + '-pan'
 
-    if (!eventManager._isTouch) {
-      const mouseDownHandler = this._handleStart.bind(this)
-      const mouseMoveHandler = this._handleMove.bind(this)
-      const mouseUpHandler = this._handleEnd.bind(this)
+    // if (!eventManager._isTouch) {
+      const eventDownHandler = this._handleStart.bind(this)
+      const eventMoveHandler = this._handleMove.bind(this)
+      const eventUpHandler = this._handleEnd.bind(this)
 
-      eventManager.addEventListener('mousedown', listenerId + '-mousedown', mouseDownHandler)
-      eventManager.addEventListener('mousemove', listenerId + '-mousemove', mouseMoveHandler)
-      eventManager.addEventListener('mouseup', listenerId + '-mouseup', mouseUpHandler)
-    } else if (eventManager._isTouch) {
-      const touchStartHandler = this._handleStart.bind(this)
-      const touchMoveHandler = this._handleMove.bind(this)
-      const touchEndHandler = this._handleEnd.bind(this)
-
-      // In case touch gets interrupted
-      // Prescribed for cleanup
-      const touchCancelHandler = this._handleEnd.bind(this)
-
-      eventManager.addEventListener('touchstart', listenerId + '-touchstart', touchStartHandler)
-      eventManager.addEventListener('touchmove', listenerId + '-touchmove', touchMoveHandler)
-      eventManager.addEventListener('touchend', listenerId + '-touchend', touchEndHandler)
-      eventManager.addEventListener('touchcancel', listenerId + '-touchcancel', touchCancelHandler)
-    }
+      eventManager.addEventListener('eventstart', listenerId + '-eventstart', eventDownHandler)
+      eventManager.addEventListener('eventmove', listenerId + '-eventmove', eventMoveHandler)
+      eventManager.addEventListener('eventend', listenerId + '-eventend', eventUpHandler)
   }
 
   _removeEventListener () {
@@ -46,14 +32,9 @@ export default class WheelHandler extends SectionInteractionHandler {
       const eventManager = this._interactionManager._eventManager
       const listenerId = this._interactionManager._id + '-pan'
 
-      eventManager.removeEventListener('mousedown', listenerId + '-mousedown')
-      eventManager.removeEventListener('mousemove', listenerId + '-mousemove')
-      eventManager.removeEventListener('mouseup', listenerId + '-mouseup')
-
-      eventManager.removeEventListener('touchstart', listenerId + '-touchstart')
-      eventManager.removeEventListener('touchmove', listenerId + '-touchmove')
-      eventManager.removeEventListener('touchend', listenerId + '-touchend')
-      eventManager.removeEventListener('touchcancel', listenerId + '-touchcancel')
+      eventManager.removeEventListener('eventstart', listenerId + '-eventstart')
+      eventManager.removeEventListener('eventmove', listenerId + '-eventmove')
+      eventManager.removeEventListener('eventend', listenerId + '-eventend')
     }
   }
 
@@ -63,7 +44,6 @@ export default class WheelHandler extends SectionInteractionHandler {
 
   // Record initial mousedown, touchstart
   _handleStart (coordinates, event) {
-    console.log(coordinates, event)
     this._nopropagation(event)
     this._panningActive = true
     this._panStartPosition = coordinates
