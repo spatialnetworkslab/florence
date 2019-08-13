@@ -23,6 +23,7 @@
 
   // Other
   export let index = undefined
+  export let zoomIdentity = undefined
 </script>
 
 <Layer 
@@ -31,5 +32,5 @@
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {index} _asPolygon={false}
+  {index} {zoomIdentity} _asPolygon={false}
 />

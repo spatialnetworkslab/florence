@@ -9,12 +9,18 @@
   let x = 0
   let y = 0
   let k = 1
-  let zoomIdentity = { x, y, k }
+  let zoomIdentity = { x, y, kx: k, ky: k }
+
+  $: {
+    zoomIdentity = { x, y, kx: k, ky: k }
+  }
+
   let step = 1
 
   const pan = createPanHandler(zoomIdentity, {
     extentX: [-500, 500],
     extentY: [-500, 500]
+    // dimension: 'x'
   })
 
   const zoom = createZoomHandler(zoomIdentity, {
@@ -24,22 +30,23 @@
     extentY: [-500, 500],
     step,
     center: { x: 0, y: 0 }
+    // dimension: 'x'
   })
 
   const handle = zoomId => { zoomIdentity = zoomId }
 </script>
 
 x:
-<input type="range" min={-300} max={300} bind:value={zoomIdentity.x} /> {zoomIdentity.x} <br />
+<input type="range" min={-300} max={300} bind:value={x} /> {x} <br />
 y:
-<input type="range" min={-300} max={300} bind:value={zoomIdentity.y} />  {zoomIdentity.y} <br />
+<input type="range" min={-300} max={300} bind:value={y} />  {y} <br />
 k:
-<input type="range" min={0} max={3} step={0.1} bind:value={zoomIdentity.k} /> {zoomIdentity.k} <br />
+<input type="range" min={0} max={3} step={0.1} bind:value={k} /> {k} <br />
 
 <div>
-  <!-- Resets zoomId to pan origin { x: 0, y: 0, k: <present k value> } -->
+  <!-- Resets zoomId to pan origin { x: 0, y: 0, kx: <present k value>, ky: <present k value> } -->
   <button on:click={e => zoomIdentity = pan.reset() }> Reset pan </button>
-  <!-- Resets zoomId to zoom origin { x: 0, y: 0, k: 1 } -->
+  <!-- Resets zoomId to zoom origin { x: 0, y: 0, kx: 1, ky: 1 } -->
   <button on:click={e => zoomIdentity = zoom.reset() }> Reset zoom </button>
   <!-- Brings viewport back to specified view point -->
   <button on:click={e => zoomIdentity = zoom.center() }> Center from Zoom </button>
@@ -78,8 +85,8 @@ k:
       ]}
     />
 
-    <XAxis />
-    <YAxis />
+    <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
+    <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
   
   </Section>
 

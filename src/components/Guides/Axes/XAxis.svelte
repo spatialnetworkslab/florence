@@ -1,14 +1,14 @@
 <script>
-  import { Line, LineLayer, Label, LabelLayer } from "../../../"
+  import { Line, LineLayer, Label, LabelLayer } from '../../../'
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
-  import * as SectionContext from "../../Core/Section/SectionContext"
+  import * as SectionContext from '../../Core/Section/SectionContext'
+  import * as ZoomContext from '../../Core/Section/ZoomContext'
 
-  import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord} from "./createXAxisCoords.js"
+  import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord} from './createXAxisCoords.js'
 
   // global properties
   export let scale = undefined
   export let flip = false
-
 
   // axis baseline
   export let baseLine = true
@@ -62,11 +62,13 @@
 
   // transition
   export let transition = undefined
+  export let zoomIdentity = undefined
 
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
   const graphicContext = GraphicContext.subscribe()
+  const zoomContext = ZoomContext.subscribe()
   
   let xCoords
   let yCoords
@@ -116,19 +118,22 @@
 <g class="x-axis">
     
   {#if baseLine}
-    <Line x={xCoords} y={yCoords} strokeWidth={baseLineWidth} opacity={baseLineOpacity} stroke={baseLineColor} />
+    <Line 
+      x={xCoords} y={yCoords} strokeWidth={baseLineWidth} opacity={baseLineOpacity} stroke={baseLineColor}
+      {zoomIdentity}
+    />
   {/if}
 
   {#if ticks}
     <LineLayer 
       x={tickXCoords} y={tickYCoords} strokeWidth={tickWidth} opacity={tickOpacity} stroke={tickColor}
-      {transition}
+      {transition} {zoomIdentity}
     />
     <LabelLayer
       x={tickLabelXCoords} y={tickLabelYCoords} text={tickLabelText} anchorPoint={labelAnchorPoint}
       rotation={labelRotate} fontFamily={labelFont} fontSize={labelFontSize}
       fontWeight={labelFontWeight} opacity={labelOpacity} fill={labelColor}
-      {transition}
+      {transition} {zoomIdentity}
     />
   {/if}
 
@@ -137,6 +142,7 @@
       x={titleXCoord} y={titleYCoord} text={title} anchorPoint={titleAnchorPoint}
       rotation={titleRotation} fontFamily={titleFont} fontSize={titleFontSize}
       fontWeight={titleFontWeight} opacity={titleOpacity} fill={titleColor}
+      {zoomIdentity}
     />
   {/if}
 
