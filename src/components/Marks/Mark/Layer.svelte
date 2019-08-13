@@ -70,6 +70,7 @@
   export let index = undefined
   export let interpolate = undefined
   export let _asPolygon = true
+  export let zoomIdentity = undefined
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
@@ -301,8 +302,10 @@
   }
 
   function updatePixelGeometryObject () {
-    if ($zoomContext) {
-      pixelGeometryObject = transformGeometries(coordSysGeometryObject, $zoomContext)
+    const zoomTransformation = ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
+
+    if (zoomTransformation) {
+      pixelGeometryObject = transformGeometries(coordSysGeometryObject, zoomTransformation)
     } else {
       pixelGeometryObject = coordSysGeometryObject
     }

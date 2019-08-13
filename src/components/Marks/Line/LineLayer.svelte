@@ -20,6 +20,7 @@
   // Other
   export let index = undefined
   export let interpolate = true
+  export let zoomIdentity = undefined
 </script>
 
 <Layer 
@@ -27,5 +28,5 @@
   {x} {y} {geometry}
   {strokeWidth} {stroke} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {interpolate} {index} _asPolygon={false}
+  {interpolate} {zoomIdentity} {index} _asPolygon={false}
 />

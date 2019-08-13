@@ -26,6 +26,7 @@
 
   // Other
   export let index = undefined
+  export let zoomIdentity = undefined
 </script>
 
 <Layer 
@@ -35,5 +36,5 @@
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
   {onDragStart} {onDrag} {onDragEnd}
-  {index} _asPolygon={false}
+  {index} {zoomIdentity} _asPolygon={false}
 />

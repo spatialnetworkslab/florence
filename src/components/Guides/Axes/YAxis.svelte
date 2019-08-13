@@ -62,6 +62,7 @@
 
   // transition
   export let transition = undefined
+  export let zoomIdentity = undefined
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -113,19 +114,22 @@
 <g class="y-axis">
 
   {#if baseLine}
-    <Line x={xCoords} y={yCoords} strokeWidth={baseLineWidth} opacity={baseLineOpacity} stroke={baseLineColor} />
+    <Line 
+      x={xCoords} y={yCoords} strokeWidth={baseLineWidth} opacity={baseLineOpacity} stroke={baseLineColor}
+      {zoomIdentity}
+    />
   {/if}
 
   {#if ticks}
     <LineLayer 
       x={tickXCoords} y={tickYCoords} strokeWidth={tickWidth} opacity={tickOpacity} stroke={tickColor}
-      {transition}
+      {transition} {zoomIdentity}
     />
     <LabelLayer
       x={tickLabelXCoords} y={tickLabelYCoords} text={tickLabelText} anchorPoint={labelAnchorPoint}
       rotation={labelRotate} fontFamily={labelFont} fontSize={labelFontSize}
       fontWeight={labelFontWeight} opacity={labelOpacity} fill={labelColor}
-      {transition}
+      {transition} {zoomIdentity}
     />
   {/if}
 
@@ -134,6 +138,7 @@
       x={titleXCoord} y={titleYCoord} text={title} anchorPoint={titleAnchorPoint}
       rotation={titleRotation} fontFamily={titleFont} fontSize={titleFontSize}
       fontWeight={titleFontWeight} opacity={titleOpacity} fill={titleColor}
+      {zoomIdentity}
     />
   {/if}
 

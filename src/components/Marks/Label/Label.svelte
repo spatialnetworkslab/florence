@@ -25,6 +25,9 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+
+  // Other
+  export let zoomIdentity = undefined
 </script>
 
 <Mark
@@ -35,5 +38,5 @@
   {text}
   {fontFamily} {fontSize} {fontWeight} {rotation} {anchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
-  _asPolygon={false}
+  {zoomIdentity} _asPolygon={false}
 />

@@ -1,4 +1,6 @@
 export default function createPanHandler (zoomId, options) {
+  let dimension = options.dimension || 'both'
+
   const handler = function (event) {
     const extentX = options.extentX
     const extentY = options.extentY
@@ -14,6 +16,9 @@ export default function createPanHandler (zoomId, options) {
     if (tempY <= extentY[1] && tempY >= extentY[0]) {
       zoomId.y -= event.delta.y
     }
+
+    if (dimension === 'x') zoomId.y = 0
+    if (dimension === 'y') zoomId.x = 0
 
     return zoomId
   }
