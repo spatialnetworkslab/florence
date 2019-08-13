@@ -37,7 +37,11 @@
 
   function handleDragEnd (event) {
     dragPoint = undefined
-    // TODO update original data
+    const hitIndex = Number(event.hitIndex)
+    const position = event.localCoords
+
+    data.updateRow(hitIndex, { a: position.x, b: position.y })
+    data = data
   }
 
 </script>
