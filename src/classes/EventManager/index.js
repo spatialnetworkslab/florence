@@ -124,7 +124,6 @@ export default class EventManager {
   _getMobileCoordinates (event) {
     const targetTouches = event.targetTouches
     const changedTouches = event.changedTouches
-
     if (targetTouches.length === 1 || changedTouches.length === 1) {
       if (targetTouches[0]) {
         const targetTouch = targetTouches[0]
@@ -138,7 +137,7 @@ export default class EventManager {
         this._svgPoint.y = changedTouch.clientY
       }
     } else if (targetTouches.length > 1 || changedTouches.length > 1) {
-      // hold space
+      // to handle pinch and other multi touch gestures
     }
   }
 }
