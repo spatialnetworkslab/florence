@@ -5,7 +5,12 @@
   let x = 0
   let y = 0
   let k = 1
-  let zoomIdentity = { x, y, k }
+  let zoomIdentity = { x, y, kx: k, ky: k }
+
+  $: {
+    zoomIdentity = { x, y, kx: k, ky: k }
+  }
+
   let step = 1
 
   const pan = createPanHandler(zoomIdentity, {
@@ -33,11 +38,8 @@ k:
 <input id="k" type="range" min={0} max={3} step={0.1} bind:value={zoomIdentity.k} /> {zoomIdentity.k} <br />
 
 <div>
-  <!-- Resets zoomId to pan origin { x: 0, y: 0, k: <present k value> } -->
   <button on:click={e => zoomIdentity = pan.reset() }> Reset pan </button>
-  <!-- Resets zoomId to zoom origin { x: 0, y: 0, k: 1 } -->
   <button on:click={e => zoomIdentity = zoom.reset() }> Reset zoom </button>
-  <!-- Brings viewport back to specified view point -->
   <button on:click={e => zoomIdentity = zoom.center() }> Center from Zoom </button>
 </div>
 

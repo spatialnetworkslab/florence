@@ -23,6 +23,7 @@
 
   // Other
   export let interpolate = true
+  export let zoomIdentity = undefined
 </script>
 
 <Mark
@@ -31,5 +32,5 @@
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {interpolate}
+  {zoomIdentity} {interpolate}
 />

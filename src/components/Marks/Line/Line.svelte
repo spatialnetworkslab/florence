@@ -19,6 +19,7 @@
 
   // Other
   export let interpolate = true
+  export let zoomIdentity = undefined
 </script>
 
 <Mark 
@@ -26,5 +27,5 @@
   {x} {y} {geometry}
   {strokeWidth} {stroke} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {interpolate} _asPolygon={false}
+  {interpolate} {zoomIdentity} _asPolygon={false}
 />

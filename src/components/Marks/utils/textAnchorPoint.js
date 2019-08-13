@@ -19,5 +19,8 @@ export default function textAnchorPoint (anchorPoint) {
       return { textAnchor: 'middle', dominantBaseline: 'alphabetic' }
     case 't':
       return { textAnchor: 'middle', dominantBaseline: 'hanging' }
+    default: {
+      return { textAnchor: 'middle', dominantBaseline: 'middle' }
+    }
   }
 }

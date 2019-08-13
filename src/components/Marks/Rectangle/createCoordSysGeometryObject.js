@@ -13,7 +13,7 @@ export default function (
     scaledGeometryArray, coordinateTransformationContext, indexArray, interpolate
   )
 
-  return { coordSysGeometryObject, indexArray }
+  return coordSysGeometryObject
 }
 
 function scaleCoordinates (coordinateProps, sectionContext) {

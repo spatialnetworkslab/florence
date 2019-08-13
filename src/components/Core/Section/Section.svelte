@@ -36,8 +36,10 @@
   export let onPan = undefined
   
   // Aesthetics
-  export let padding = 3
+  export let contains = "content"
+  export let padding = 10
   export let backgroundColor = undefined
+  export let paddingColor = undefined
   
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -52,6 +54,11 @@
   let scaledCoordinates
   let rangeX
   let rangeY
+
+  // set up padding
+  if (typeof padding === 'number') {
+    padding = {left: padding, right: padding, top: padding, bottom: padding}
+  }
   
   // Set up InteractionManager
   let interactionManager = new InteractionManager()
@@ -59,17 +66,16 @@
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
-  // Keep contexts up to date
+  // Keep SectionContext and InteractionManagerContext up to date
   $: {
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-    rangeX = [scaledCoordinates.x1 + padding, scaledCoordinates.x2 - padding]
-    rangeY = [scaledCoordinates.y1 + padding, scaledCoordinates.y2 - padding]
-
+    rangeX = [scaledCoordinates.x1 + padding.left, scaledCoordinates.x2 - padding.right]
+    rangeY = [scaledCoordinates.y1 + padding.top, scaledCoordinates.y2 - padding.bottom]
     if (flipX) rangeX.reverse()
     if (flipY) rangeY.reverse()
     
     const updatedSectionContext = { 
-      sectionId, rangeX, rangeY, scaleX, scaleY, padding
+      sectionId, rangeX, rangeY, scaleX, scaleY, padding, flipX, flipY
     }
 
     SectionContext.update(
@@ -114,12 +120,34 @@
       height={Math.abs(scaledCoordinates.y2 - scaledCoordinates.y1)}
     />
   </clipPath>
+  <clipPath id={`clip-${sectionId}-data`}>
+    <rect 
+      x={Math.min(...rangeX)}
+      y={Math.min(...rangeY)}
+      width={Math.abs(rangeX[0] - rangeX[1])}
+      height={Math.abs(rangeY[0] - rangeY[1])}
+      fill="white"
+    />
+  </clipPath>
 </defs>
 
 <g class="section" clip-path={`url(#clip-${sectionId})`} >
-  {#if backgroundColor}
-    <rect width="100%" height="100%" fill={backgroundColor}/>
+  {#if paddingColor}
+    <rect class="padding-background"
+      mask={`url(#clip-${sectionId}-data)`}
+      width="100%"
+      height="100%" 
+      fill={paddingColor}
+    />
   {/if}
-  
+  {#if backgroundColor}
+    <rect class="content-background"
+      x={Math.min(...rangeX)}
+      y={Math.min(...rangeY)}
+      width={Math.abs(rangeX[0] - rangeX[1])}
+      height={Math.abs(rangeY[0] - rangeY[1])}
+      fill={backgroundColor}
+    />
+  {/if}
   <slot />
 </g>

@@ -28,15 +28,18 @@
   export let x = undefined
 
   // Aesthetics: other
-  export let strokeWidth = undefined
-  export let stroke = undefined
-  export let opacity = undefined
+  export let strokeWidth = 1
+  export let stroke = 'black'
+  export let opacity = 1
 
   // Transitions and interactions
   export let transition = undefined
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+
+  // Other
+  export let zoomIdentity = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -49,7 +52,7 @@
     { func, x }, 
     $sectionContext,
     $coordinateTransformationContext,
-    $zoomContext
+    ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
   )
 
   // Initiate transitionables
@@ -65,7 +68,7 @@
         { func, x },
         $sectionContext,
         $coordinateTransformationContext,
-        $zoomContext
+        ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
       )
 
       tr_screenGeometry.set(screenGeometry)
@@ -130,7 +133,7 @@
     fill="none"
     stroke-width={$tr_strokeWidth}
     stroke={$tr_stroke}
-    style={`opacity: ${$tr_opacity}`}
+    opacity={$tr_opacity}
   />
 
 {/if}

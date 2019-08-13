@@ -32,17 +32,17 @@ export default class WheelHandler extends SectionInteractionHandler {
     // IE pixels
     if ('wheelDelta' in event && event.wheelDelta !== 0) {
       delta = -event.wheelDelta
-    } 
+    }
 
     // Mozilla
     if ('detail' in event && event.detail !== 0) {
       delta = -event.detail
-    } 
+    }
 
     // Most other cases
     if ('deltaY' in event && event.deltaY !== 0) {
       delta = -event.deltaY
-    } 
+    }
 
     if (!scrollLineHeight) {
       scrollLineHeight = getScrollLineHeight()
@@ -66,17 +66,5 @@ export default class WheelHandler extends SectionInteractionHandler {
     if (this._isInSection(coordinates, sectionBbox)) {
       this._callback(evt)
     }
-  }
-
-  _handlePinchStart (coordinates, event) {
-    console.log('1', coordinates, event)
-  }
-
-  _handlePinchMove (coordinates, event) {
-    console.log('2', coordinates, event)
-  } 
-
-  _handlePinchEnd (coordinates, event) {
-    console.log('3', coordinates, event)
   }
 }
