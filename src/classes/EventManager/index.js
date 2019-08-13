@@ -101,8 +101,8 @@ export default class EventManager {
   }
 
   _getCoordinates (event) {
+    // desktop
     if (event.type.includes('mouse')) {
-      // desktop
       this._getDesktopCoordinates(event)
     } else if (event.type.includes('touch')) {
       // One finger: pan
@@ -155,7 +155,12 @@ class EventTracker {
   addEventListener (listenerId, callback) {
     if (this._numberOfListeners === 0) {
       handler = this._handleEvent.bind(this)
-      this._eventManager._domNode.addEventListener(this._eventName, handler)
+
+      if (listenerId.includes('move')) {
+        window.addEventListener(this._eventName, handler)
+      } else {
+        this._eventManager._domNode.addEventListener(this._eventName, handler)
+      }
     }
 
     this._numberOfListeners++
@@ -166,8 +171,12 @@ class EventTracker {
     this._numberOfListeners--
     delete this._callbacks[listenerId]
 
-    if (this._numberOfListeners === 0) {
-      this._eventManager._domNode.removeEventListener(this._eventName, handler)
+    if (listenerId.includes('move')) {
+      window.removeEventListener(this._eventName, handler)
+    } else {
+      if (this._numberOfListeners === 0) {
+        this._eventManager._domNode.removeEventListener(this._eventName, handler)
+      }
     }
   }
 
