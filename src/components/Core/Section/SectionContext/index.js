@@ -5,13 +5,13 @@ class SectionContext {
   constructor ({ sectionId, rangeX, rangeY, scaleX, scaleY, padding, flipX, flipY }) {
     this._sectionId = sectionId
 
-    this.rangeX = rangeX[1] > rangeX[0] ? rangeX : [rangeX[1], rangeX[0]]
-    this.rangeY = rangeY[1] > rangeY[0] ? rangeY : [rangeY[1], rangeY[0]]
+    this.rangeX = rangeX
+    this.rangeY = rangeY
 
-    this.x1 = this.rangeX[0]
-    this.x2 = this.rangeX[1]
-    this.y1 = this.rangeY[0]
-    this.y2 = this.rangeY[1]
+    this.x1 = rangeX[1] > rangeX[0] ? rangeX[0] : rangeX[1]
+    this.x2 = rangeX[1] > rangeX[0] ? rangeX[1] : rangeX[0]
+    this.y1 = rangeY[1] > rangeY[0] ? rangeY[0] : rangeY[1]
+    this.y2 = rangeY[1] > rangeY[0] ? rangeY[1] : rangeY[0]
 
     this._handleScales(scaleX, scaleY, rangeX, rangeY)
 
@@ -78,6 +78,8 @@ function createInvertMethod (scale) {
     const start = Math.min(lower, upper)
     const stop = Math.max(lower, upper)
 
+    const flipped = upper < lower
+
     const domain = scale.domain()
     const lastIndex = domain.length - 1
 
@@ -100,7 +102,7 @@ function createInvertMethod (scale) {
       if (index > lastIndex) index = lastIndex
     }
 
-    return domain[index]
+    return domain[flipped ? lastIndex - index : index]
   }
 }
 

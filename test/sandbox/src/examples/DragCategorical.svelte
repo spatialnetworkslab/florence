@@ -19,7 +19,6 @@
 		return data
   }
 
-
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scalePoint().domain(data.domain('b').sort())
   
@@ -43,9 +42,7 @@
 
 <div>
 
-	<Graphic 
-    width={500} height={500}
-  >
+	<Graphic width={500} height={500}>
 		
 		<Section
 			x1={50} x2={450}
