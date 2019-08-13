@@ -1,8 +1,8 @@
 import { scaleLinear } from 'd3-scale'
 
 export function createPolarTransformation (rangeX, rangeY) {
-  const toTheta = scaleLinear().domain(rangeX).range([0, 2 * Math.PI])
-  const toRadius = scaleLinear().domain(rangeY).range([0, 1])
+  const toTheta = scaleLinear().domain(rangeX).range([0, 2 * Math.PI]).clamp(true)
+  const toRadius = scaleLinear().domain(rangeY).range([0, 1]).clamp(true)
 
   const fitX = scaleLinear().domain([-1, 1]).range(rangeX)
   const fitY = scaleLinear().domain([-1, 1]).range(rangeY)
@@ -34,11 +34,18 @@ function polarToCartesian (theta, radius) {
   return [x, y]
 }
 
-function cartesianToPolar (x, y) {
-  const theta = Math.PI + arcctg(y / x)
-  const radius = x / Math.sin(theta)
+// function cartesianToPolar (x, y) {
+//   const r = Math.sqrt(y ** 2 + x ** 2)
+//   const theta = Math.atan(x / y)
 
-  return [theta, radius]
-}
+//   return [theta, r]
+// }
 
-const arcctg = x => Math.PI / 2 - Math.atan(x)
+// function cartesianToPolar (x, y) {
+//   const theta = Math.PI + arcctg(y / x)
+//   const radius = x / Math.sin(theta)
+
+//   return [theta, radius]
+// }
+
+// const arcctg = x => Math.PI / 2 - Math.atan(x)

@@ -19,8 +19,10 @@
 		return data
   }
 
+  const domainB = data.domain('b')
+  domainB.sort()
 	const scaleA = scaleLinear().domain(data.domain('a'))
-  const scaleB = scalePoint().domain(data.domain('b').sort())
+  const scaleB = scalePoint().domain(domainB)
   
   let bigPoint = { x: 50, y: 'c' }
   let dragPoint
@@ -50,6 +52,7 @@
 			scaleX={scaleA}
 			scaleY={scaleB}
       backgroundColor="pink"
+      transformation="polar"
 		>
 
 			<PointLayer

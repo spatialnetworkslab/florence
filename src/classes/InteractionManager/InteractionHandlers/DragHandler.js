@@ -84,9 +84,10 @@ export default class DragHandler extends InteractionHandler {
   }
 
   _getLocalCoordinates (pixelCoords) {
-    const section = this._interactionManager._section
-    const coordinateTransformation = this._interactionManager._coordinateTransformation
-    const zoom = this._interactionManager._zoom
+    const im = this._interactionManager
+    const section = im._section
+    const coordinateTransformation = im._coordinateTransformation._transformation
+    const zoom = im._zoom
 
     const scaleX = section.scales().scaleX
     const scaleY = section.scales().scaleY
