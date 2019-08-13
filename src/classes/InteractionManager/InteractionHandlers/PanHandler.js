@@ -1,6 +1,6 @@
 import SectionInteractionHandler from './SectionInteractionHandler.js'
 // repetitive, merge certain function handlers together
-export default class WheelHandler extends SectionInteractionHandler {
+export default class PanHandler extends SectionInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager)
 
@@ -17,14 +17,13 @@ export default class WheelHandler extends SectionInteractionHandler {
     const eventManager = this._interactionManager._eventManager
     const listenerId = this._interactionManager._id + '-pan'
 
-    // if (!eventManager._isTouch) {
-      const eventDownHandler = this._handleStart.bind(this)
-      const eventMoveHandler = this._handleMove.bind(this)
-      const eventUpHandler = this._handleEnd.bind(this)
+    const eventDownHandler = this._handleStart.bind(this)
+    const eventMoveHandler = this._handleMove.bind(this)
+    const eventUpHandler = this._handleEnd.bind(this)
 
-      eventManager.addEventListener('eventstart', listenerId + '-eventstart', eventDownHandler)
-      eventManager.addEventListener('eventmove', listenerId + '-eventmove', eventMoveHandler)
-      eventManager.addEventListener('eventend', listenerId + '-eventend', eventUpHandler)
+    eventManager.addEventListener('eventstart', listenerId + '-eventstart', eventDownHandler)
+    eventManager.addEventListener('eventmove', listenerId + '-eventmove', eventMoveHandler)
+    eventManager.addEventListener('eventend', listenerId + '-eventend', eventUpHandler)
   }
 
   _removeEventListener () {
@@ -54,6 +53,7 @@ export default class WheelHandler extends SectionInteractionHandler {
   // For smooth dragging, perform callback even during drag
   // To bound dragging to only the section, check cursor location and if still in section
   _handleMove (coordinates, event) {
+
     const sectionBbox = this._interactionManager._section
     if (this._panningActive && this._isInSection(coordinates, sectionBbox)) {
       this._panPreviousPosition = this._panCurrentPosition

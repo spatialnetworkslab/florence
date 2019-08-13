@@ -76,7 +76,6 @@ export default class EventManager {
       for (const listenerId in this._listeners) {
         const { eventName, callback } = this._listeners[listenerId]
         const nativeEvent = this._normalisedEvents[eventName]
-        console.log(eventName)
         const tracker = this[getTrackerName(nativeEvent)]
         tracker.addEventListener(listenerId, callback)
       }
@@ -102,10 +101,10 @@ export default class EventManager {
   }
 
   _getCoordinates (event) {
-    if (!this._isTouch || event.type.includes('mouse')) {
+    if (event.type.includes('mouse')) {
       // desktop
       this._getDesktopCoordinates(event)
-    } else if (this._isTouch && event.type.includes('touch')) {
+    } else if (event.type.includes('touch')) {
       // One finger: pan
       // Two fingers: zoom, other gestures
 
