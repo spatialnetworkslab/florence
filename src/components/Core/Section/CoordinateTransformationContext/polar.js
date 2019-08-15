@@ -41,15 +41,15 @@ function cartesianToPolar (x, y) {
   const r = Math.sqrt(y ** 2 + x ** 2)
   let theta = Math.atan(x / y)
 
-  if (quadrant === 'II') {
+  if (quadrant === 2) {
     theta += Math.PI * 2
   }
 
-  if (quadrant === 'III') {
+  if (quadrant === 3) {
     theta += Math.PI
   }
 
-  if (quadrant === 'IV') {
+  if (quadrant === 4) {
     theta += Math.PI
   }
 
@@ -57,8 +57,8 @@ function cartesianToPolar (x, y) {
 }
 
 function getQuadrant (x, y) {
-  if (x >= 0 && y >= 0) return 'I'
-  if (x < 0 && y >= 0) return 'II'
-  if (x < 0 && y < 0) return 'III'
-  if (x >= 0 && y < 0) return 'IV'
+  if (x >= 0 && y >= 0) return 1
+  if (x < 0 && y >= 0) return 2
+  if (x < 0 && y < 0) return 3
+  if (x >= 0 && y < 0) return 4
 }
