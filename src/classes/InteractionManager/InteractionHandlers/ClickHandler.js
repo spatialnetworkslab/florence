@@ -24,9 +24,8 @@ export default class ClickHandler extends InteractionHandler {
 
   _handleEvent (coordinates, mouseEvent) {
     const spatialIndex = this._spatialIndex
-
     const hits = spatialIndex.queryMouseCoordinates(coordinates)
-
+    
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
 

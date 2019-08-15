@@ -28,6 +28,7 @@
   $: geometry = clicked ?
     multiLineString2 :
     multiLineString
+
 </script>
 
 <Graphic width={500} height={500}>
