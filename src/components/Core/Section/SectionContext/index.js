@@ -38,10 +38,6 @@ class SectionContext {
       this.scaleY.invert = y => y
     }
   }
-
-  interactionManager () {
-    return this._interactionManager
-  }
 }
 
 const key = {}
