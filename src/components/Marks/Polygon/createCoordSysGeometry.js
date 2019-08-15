@@ -14,13 +14,12 @@ export default function (
 
 function createScaledGeometry (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps, 'Polygon')
-  const scales = sectionContext.scales()
-
+  
   if (isDefined(geometryProps.geometry)) {
-    return scaleGeometry(geometryProps.geometry, scales)
+    return scaleGeometry(geometryProps.geometry, sectionContext)
   }
 
   if (isUndefined(geometryProps.geometry)) {
-    return createScaledGeometryFromXYProps(geometryProps.x, geometryProps.y, scales, 'Polygon')
+    return createScaledGeometryFromXYProps(geometryProps.x, geometryProps.y, sectionContext, 'Polygon')
   }
 }

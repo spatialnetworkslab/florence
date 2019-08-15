@@ -44,8 +44,8 @@ function generateDataPoints (func, x, sectionContext) {
 function getDomainX (sectionContext) {
   let domainX
 
-  if (isValidScale(sectionContext._scaleX)) {
-    domainX = sectionContext._scaleX.domain()
+  if (isValidScale(sectionContext.scaleX)) {
+    domainX = sectionContext.scaleX.domain()
   } else {
     domainX = sectionContext.rangeX
   }
@@ -85,7 +85,7 @@ function interpolatePointsFromFunc (func, domainX, resolution = 100) {
 }
 
 function createTotalTransformation (sectionContext, coordinateTransformationContext, zoomContext) {
-  const { scaleX, scaleY } = sectionContext.scales()
+  const { scaleX, scaleY } = sectionContext
 
   const sectionTransformation = ([x, y]) => ([scaleX(x), scaleY(y)])
   const coordinateTransformation = createCoordinateTransformation(coordinateTransformationContext)

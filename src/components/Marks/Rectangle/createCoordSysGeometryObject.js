@@ -30,7 +30,7 @@ function scaleCoordinates (coordinateProps, sectionContext) {
 
   const scaledCoordinates = _scaleCoordinates(
     coordinateValues,
-    sectionContext.scales(),
+    sectionContext,
     coordinatesThatNeedScaling,
     coordinatesThatArePrimitive,
     length
@@ -64,13 +64,12 @@ function getMissingCoordinatesFromContext (coordinates, sectionContext) {
 }
 
 function getCoordinateValues (nonMissingCoordinates, sectionContext) {
-  const scales = sectionContext.scales()
   const coordinateValues = {}
 
   for (const coordinateName in nonMissingCoordinates) {
     const coordinateValue = nonMissingCoordinates[coordinateName]
     if (coordinateValue.constructor === Function) {
-      coordinateValues[coordinateName] = coordinateValue(scales)
+      coordinateValues[coordinateName] = coordinateValue(sectionContext)
     } else {
       coordinateValues[coordinateName] = coordinateValue
     }

@@ -35,8 +35,7 @@ export default class SectionInteractionHandler {
       ? createZoomFunction(im._zoom)
       : undefined
 
-    const scaleX = section.scales().scaleX
-    const scaleY = section.scales().scaleY
+    const { scaleX, scaleY } = section
 
     const clampedX = this._clamp(pixelCoords.x, section.x1, section.x2)
     const clampedY = this._clamp(pixelCoords.y, section.y1, section.y2)

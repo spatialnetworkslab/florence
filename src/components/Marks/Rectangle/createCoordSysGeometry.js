@@ -78,12 +78,10 @@ function wereSpecified (a, b) {
 }
 
 function scaleCoordinate (coordinate, coordinateName, sectionContext) {
-  const scales = sectionContext.scales()
-
   if (coordinate.constructor === Function) {
-    return coordinate(scales)
+    return coordinate(sectionContext)
   } else {
-    const scale = ['x1', 'x2'].includes(coordinateName) ? scales.scaleX : scales.scaleY
+    const scale = ['x1', 'x2'].includes(coordinateName) ? sectionContext.scaleX : sectionContext.scaleY
     const scaledCoordinate = scale(coordinate)
     throwErrorIfInvalidScaledCoordinate(coordinate, scaledCoordinate, coordinateName)
 

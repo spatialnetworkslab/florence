@@ -23,26 +23,20 @@ class SectionContext {
 
   _handleScales (scaleX, scaleY, rangeX, rangeY) {
     if (scaleX) {
-      this._scaleX = scaleX.copy().range(rangeX)
-      this._scaleX.invert = createInvertMethod(this._scaleX)
+      this.scaleX = scaleX.copy().range(rangeX)
+      this.scaleX.invert = createInvertMethod(this.scaleX)
     } else {
-      this._scaleX = x => x
-      this._scaleX.invert = x => x
+      this.scaleX = x => x
+      this.scaleX.invert = x => x
     }
 
     if (scaleY) {
-      this._scaleY = scaleY.copy().range(rangeY)
-      this._scaleY.invert = createInvertMethod(this._scaleY)
+      this.scaleY = scaleY.copy().range(rangeY)
+      this.scaleY.invert = createInvertMethod(this.scaleY)
     } else {
-      this._scaleY = y => y
-      this._scaleY.invert = y => y
+      this.scaleY = y => y
+      this.scaleY.invert = y => y
     }
-  }
-
-  scales () {
-    const scaleX = this._scaleX
-    const scaleY = this._scaleY
-    return { scaleX, scaleY }
   }
 
   interactionManager () {

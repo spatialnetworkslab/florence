@@ -86,8 +86,8 @@
   let scaleX
 
   $: {
-    scaleX = (typeof scale === "undefined") ? $sectionContext._scaleX : scale; 
-    ({xCoords, yCoords} = createXAxisCoords(vjust, y, yOffset, scaleX, $sectionContext._scaleY, $sectionContext))
+    scaleX = (typeof scale === "undefined") ? $sectionContext.scaleX : scale; 
+    ({xCoords, yCoords} = createXAxisCoords(vjust, y, yOffset, scaleX, $sectionContext.scaleY, $sectionContext))
   }
   $: {
     if (Array.isArray(tickValues) && tickValues.length > 0) {
@@ -109,8 +109,8 @@
   }
   $: {
     if (title.length > 0) {
-      titleXCoord = createTitleXCoord(titleHjust, xCoords, titleX, scaleX, $sectionContext._scaleY, titleXOffset, axisHeight, flip, titleFontSize, $sectionContext)
-      titleYCoord = createTitleYCoord(titleVjust, yCoords, titleY, scaleX, $sectionContext._scaleY, titleYOffset, axisHeight, flip, titleFontSize, $sectionContext)
+      titleXCoord = createTitleXCoord(titleHjust, xCoords, titleX, scaleX, $sectionContext.scaleY, titleXOffset, axisHeight, flip, titleFontSize, $sectionContext)
+      titleYCoord = createTitleYCoord(titleVjust, yCoords, titleY, scaleX, $sectionContext.scaleY, titleYOffset, axisHeight, flip, titleFontSize, $sectionContext)
     }
   }
 </script>
