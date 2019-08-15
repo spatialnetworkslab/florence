@@ -16,9 +16,11 @@
   }
   
   let threshold = 0
-  $: filteredData = data
+  let filteredData
+  $: {
+    filteredData = data
     .filter(row => row.a > threshold)
-    .done()
+    .done()  }
 
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scaleLinear().domain(data.domain('b'))
@@ -57,9 +59,11 @@
 
   let dragPointLayer
   let dragIndex
-  $: opacityArray = Array(filteredData._length)
-    .fill()
-    .map((_, i) => +(i !== filteredData._indexToRowNumber[dragIndex]))
+  let opacityArray
+  $: {
+    opacityArray = Array(filteredData._length).fill(1)
+    opacityArray[filteredData._indexToRowNumber[dragIndex]] = 0
+  }
 
   function handleLayerDragStart (event) {
     dragIndex = event.hitIndex
@@ -123,9 +127,9 @@
         x={filteredData.column('a')}
         y={filteredData.column('b')}
         opacity={opacityArray}
+        index={filteredData.column('$index')}
         fill={transformation === 'identity' ? 'black' : 'blue'}
         radius={transformation === 'identity' ? 4 : 6}
-        index={filteredData.column('$index')}
         onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
         onMouseout={handleMouseout}
         onDragStart={handleLayerDragStart}
