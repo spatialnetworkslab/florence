@@ -1,6 +1,7 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, CoordinateTransformation, Polygon, PolygonLayer, DataContainer } from '../../../../'
+  import { Graphic, Section, Polygon, PolygonLayer } from '../../../../src/'
+  import DataContainer from '@snlab/florence-datacontainer'
 
   function getRandomValueArray (N, range) {
     return new Array(N).fill(0).map(() => Math.random() * range)
@@ -66,29 +67,26 @@
     y1={50} y2={450}
     scaleX={scaleLinear().domain([0, 10])}
     scaleY={scaleLinear().domain([0, 10])}
+    {transformation}
   >
 
-    <CoordinateTransformation {transformation}>
+    <!-- <Polygon
+      geometry={geometries[chosenGeometry]}
+      interpolate
+      onMouseover={() => isHovering = true}
+      onMouseout={() => isHovering = false}
+      fill={isHovering ? 'blue' : 'yellow'}
+    /> -->
 
-      <!-- <Polygon
-        geometry={geometries[chosenGeometry]}
-        interpolate
-        onMouseover={() => isHovering = true}
-        onMouseout={() => isHovering = false}
-        fill={isHovering ? 'blue' : 'yellow'}
-      /> -->
-
-      <PolygonLayer 
-        geometry={[geometries[chosenGeometry]]}
-        interpolate
-        onMouseover={() => isHovering = true}
-        onMouseout={() => isHovering = false}
-        fill={isHovering ? 'blue' : 'yellow'}
-        index={[0]}
-        transition={2000}
-      />
-    
-    </CoordinateTransformation>
+    <PolygonLayer 
+      geometry={[geometries[chosenGeometry]]}
+      interpolate
+      onMouseover={() => isHovering = true}
+      onMouseout={() => isHovering = false}
+      fill={isHovering ? 'blue' : 'yellow'}
+      index={[0]}
+      transition={2000}
+    />
   
   </Section>
 

@@ -9,6 +9,10 @@
   // Aesthetics: other
   export let radius = undefined
   export let fill = undefined
+  export let stroke = undefined
+  export let strokeWidth = undefined
+  export let strokeOpacity = undefined
+  export let fillOpacity = undefined
   export let opacity = undefined
 
   // Transitions and interactions
@@ -16,12 +20,16 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+
+  // Other
+  export let zoomIdentity = undefined
 </script>
 
 <Mark
   type="Point"
   {x} {y} {geometry} {radius} 
-  {fill} {opacity} 
+  {fill} {stroke} {strokeWidth}
+  {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  _asPolygon={false}
+  {zoomIdentity} _asPolygon={false}
 />

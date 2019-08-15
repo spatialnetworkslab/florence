@@ -2,7 +2,8 @@ import { writable } from 'svelte/store'
 import { tweened } from 'svelte/motion'
 import { cubicOut } from 'svelte/easing'
 import { interpolate } from 'd3-interpolate'
-import { transitionGeometries } from 'geometryUtils'
+import { transitionGeometries } from '../../../../utils/geometryUtils/index.js'
+import { isUndefined } from '../../../../utils/equals.js'
 
 /**
  * Like createTransitionable, returns either a Svelte store, or a Svelte 'tweened' store,
@@ -16,7 +17,7 @@ import { transitionGeometries } from 'geometryUtils'
  * @returns {writable|tweened}
  */
 export function createTransitionableLayer (aestheticName, aestheticValue, transitionOptions) {
-  if (transitionOptions === undefined) {
+  if (isUndefined(transitionOptions) || isUndefined(aestheticValue)) {
     return writable(aestheticValue)
   }
 
@@ -45,22 +46,18 @@ export function createTransitionableLayer (aestheticName, aestheticValue, transi
 }
 
 function createOptionsFromDuration (aestheticName, duration) {
-  switch (aestheticName) {
-    case 'geometry':
-      return { duration, easing: cubicOut, interpolate: transitionGeometries }
-
-    default:
-      return { duration, easing: cubicOut, interpolate: interpolateLayer }
+  if (aestheticName === 'geometry') {
+    return { duration, easing: cubicOut, interpolate: transitionGeometries }
+  } else {
+    return { duration, easing: cubicOut, interpolate: interpolateLayer }
   }
 }
 
 function createOptionsFromOptions (aestheticName, transitionOptions) {
-  switch (aestheticName) {
-    case 'geometry':
-      return Object.assign({ interpolate: transitionGeometries }, transitionOptions)
-
-    default:
-      return Object.assign({ interpolate: interpolateLayer }, transitionOptions)
+  if (aestheticName === 'geometry') {
+    return Object.assign({ interpolate: transitionGeometries }, transitionOptions)
+  } else {
+    return Object.assign({ interpolate: interpolateLayer }, transitionOptions)
   }
 }
 

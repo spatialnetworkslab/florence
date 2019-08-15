@@ -5,6 +5,7 @@
   import * as SectionContext from '../Section/SectionContext'
   import * as EventManagerContext from './EventManagerContext'
   import * as InteractionManagerContext from '../Section/InteractionManagerContext'
+  import * as CoordinateTransformationContext from '../Section/CoordinateTransformationContext'
   import * as ZoomContext from '../Section/ZoomContext'
 
   import EventManager from '../../../classes/EventManager'
@@ -12,24 +13,35 @@
 
   export let width
   export let height
+  export let padding = 0
   export let scaleX = undefined
   export let scaleY = undefined
+  export let flipX = false
+  export let flipY = false
   export let renderer = undefined
 
   const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
   const eventManagerContext = EventManagerContext.init()
   const interactionManagerContext = InteractionManagerContext.init()
+  CoordinateTransformationContext.init()
   ZoomContext.init()
+
+  // set up padding
+  if (typeof padding === 'number') {
+    padding = {left: padding, right: padding, top: padding, bottom: padding}
+  }
 
   $: {
     GraphicContext.update(graphicContext, { renderer })
   }
 
   $: {
-    let rangeX = [0, width]
-    let rangeY = [0, height]
-    SectionContext.update(sectionContext, { rangeX, rangeY, scaleX, scaleY })
+    let rangeX = [0 + padding.left, width - padding.right]
+    let rangeY = [0 + padding.top, height - padding.bottom]
+    if (flipX) rangeX.reverse()
+    if (flipY) rangeY.reverse()
+    SectionContext.update(sectionContext, { rangeX, rangeY, scaleX, scaleY, padding })
   }
 
   let rootNode

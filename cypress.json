@@ -1,5 +1,8 @@
 {
     "baseUrl": "http://localhost:3009",
     "integrationFolder": "test/integration/tests",
-	"video": false
+    "video": false,
+    "testFiles": "**/*.spec.js",
+    "useRelativeSnapshots": true,
+    "snapshotFileName": "cy_snapshots.js"
 }

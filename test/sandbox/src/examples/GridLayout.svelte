@@ -1,6 +1,7 @@
 <script>
 	import { scaleLinear, scaleBand } from 'd3-scale'
-	import { Graphic, Section, Point, Rectangle, DataContainer, Grid } from '../../../../'
+	import { Graphic, Section, Point, Rectangle, Grid } from '../../../../src/'
+	import DataContainer from '@snlab/florence-datacontainer'
 
 	let cols = 2
 
