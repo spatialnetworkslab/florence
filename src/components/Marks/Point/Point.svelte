@@ -23,6 +23,9 @@
   export let onDragStart = undefined
   export let onDrag = undefined
   export let onDragEnd = undefined
+
+  // Other
+  export let zoomIdentity = undefined
 </script>
 
 <Mark
@@ -32,5 +35,5 @@
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
   {onDragStart} {onDrag} {onDragEnd}
-  _asPolygon={false}
+  {zoomIdentity} _asPolygon={false}
 />

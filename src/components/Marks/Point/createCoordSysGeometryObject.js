@@ -13,7 +13,7 @@ export default function (geometryProps, sectionContext, coordinateTransformation
     scaledGeometryArray, coordinateTransformationContext, indexArray
   )
 
-  return { coordSysGeometryObject, indexArray }
+  return coordSysGeometryObject
 }
 
 function createScaledGeometryArray (geometryProps, sectionContext) {

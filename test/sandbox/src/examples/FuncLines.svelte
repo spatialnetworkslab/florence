@@ -13,7 +13,7 @@
 
   $: func = funcs[funcName]
 
-  let zoomIdentity = { x: 0, y: 0, k: 1 }
+  let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
   let step = 1
 
   const pan = createPanHandler(zoomIdentity, {
