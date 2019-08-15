@@ -76,8 +76,8 @@
   }
 
   function handleLayerDragEnd (event) {
-    data._data.a[event.hitIndex] = dragPointLayer.x
-    data._data.b[event.hitIndex] = dragPointLayer.y
+    data.updateRow(event.hitIndex, { a: dragPointLayer.x, b: dragPointLayer.y })
+    data = data
     dragPointLayer = undefined
     dragIndex = undefined
   }
