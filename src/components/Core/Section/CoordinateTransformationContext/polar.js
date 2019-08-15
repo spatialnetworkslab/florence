@@ -1,19 +1,30 @@
 import { scaleLinear } from 'd3-scale'
 
 export function createPolarTransformation (rangeX, rangeY) {
-  const toTheta = scaleLinear().domain(rangeX).range([0, 2 * Math.PI])
-  const toRadius = scaleLinear().domain(rangeY).range([0, 1])
+  const toTheta = scaleLinear().domain(rangeX).range([0, 2 * Math.PI]).clamp(true)
+  const toRadius = scaleLinear().domain(rangeY).range([0, 1]).clamp(true)
 
   const fitX = scaleLinear().domain([-1, 1]).range(rangeX)
   const fitY = scaleLinear().domain([-1, 1]).range(rangeY)
 
-  return function transform ([x, y]) {
+  const transform = function transform ([x, y]) {
     const theta = toTheta(x)
     const radius = toRadius(y)
     const coords = polarToCartesian(theta, radius)
 
     return [fitX(coords[0]), fitY(coords[1])]
   }
+
+  const invert = function invert ([x, y]) {
+    const smallCoords = [fitX.invert(x), fitY.invert(y)]
+    const [theta, radius] = cartesianToPolar(...smallCoords)
+
+    return [toTheta.invert(theta), toRadius.invert(radius)]
+  }
+
+  transform.invert = invert
+
+  return transform
 }
 
 function polarToCartesian (theta, radius) {
@@ -21,4 +32,33 @@ function polarToCartesian (theta, radius) {
   const y = radius * Math.cos(theta)
 
   return [x, y]
+}
+
+// https://www.mathsisfun.com/polar-cartesian-coordinates.html
+function cartesianToPolar (x, y) {
+  const quadrant = getQuadrant(x, y)
+
+  const r = Math.sqrt(y ** 2 + x ** 2)
+  let theta = Math.atan(x / y)
+
+  if (quadrant === 'II') {
+    theta += Math.PI * 2
+  }
+
+  if (quadrant === 'III') {
+    theta += Math.PI
+  }
+
+  if (quadrant === 'IV') {
+    theta += Math.PI
+  }
+
+  return [theta, r]
+}
+
+function getQuadrant (x, y) {
+  if (x >= 0 && y >= 0) return 'I'
+  if (x < 0 && y >= 0) return 'II'
+  if (x < 0 && y < 0) return 'III'
+  if (x >= 0 && y < 0) return 'IV'
 }

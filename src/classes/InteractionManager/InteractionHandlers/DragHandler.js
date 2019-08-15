@@ -83,25 +83,6 @@ export default class DragHandler extends InteractionHandler {
     }
   }
 
-  _getLocalCoordinates (pixelCoords) {
-    const section = this._interactionManager._section
-
-    const scaleX = section.scales().scaleX
-    const scaleY = section.scales().scaleY
-
-    const clampedX = this._clamp(pixelCoords.x, section.x1, section.x2)
-    const clampedY = this._clamp(pixelCoords.y, section.y1, section.y2)
-
-    const localX = scaleX.invert(clampedX)
-    const localY = scaleY.invert(clampedY)
-
-    return { x: localX, y: localY }
-  }
-
-  _clamp (coord, min, max) {
-    return Math.max(min, Math.min(coord, max))
-  }
-
   /**
    * Checks whether a hit is in a layer or is a mark.
    * @param {Object} mouseDragEvent - The augmented MouseEvent passed to each handler

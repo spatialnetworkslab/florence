@@ -121,13 +121,13 @@ function geometryCompletelyOffScreen (geometry, totalTransformation, sectionCont
 
   for (let i = 0; i < transformedGeometry.coordinates.length; i++) {
     const point = transformedGeometry.coordinates[i]
-    if (pointIsInRange(point, sectionContext.rangeX, sectionContext.rangeY)) return false
+    if (pointIsInRange(point, sectionContext)) return false
   }
 
   return true
 }
 
-function pointIsInRange (point, rangeX, rangeY) {
-  return point[0] >= rangeX[0] && point[0] <= rangeX[1] &&
-    point[1] >= rangeY[0] && point[1] <= rangeY[1]
+function pointIsInRange (point, { x1, x2, y1, y2 }) {
+  return point[0] >= x1 && point[0] <= x2 &&
+    point[1] >= y1 && point[1] <= y2
 }
