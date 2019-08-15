@@ -60,6 +60,12 @@ export function update (sectionContext, options) {
 /**
  * Taken from react-vis:
  * https://github.com/uber/react-vis/blob/master/src/utils/scales-utils.js#L161
+ *
+ * By default, d3.scaleBand and d3.scalePoint do not have an .invert method, which is why
+ * we are doing this. There are some PRs open for this, though, so hopefully we can
+ * get rid of this in the future:
+ * - https://github.com/d3/d3-scale/pull/151
+ * - https://github.com/d3/d3-scale/pull/60
  */
 function createInvertMethod (scale) {
   if (scale.invert) {
