@@ -104,6 +104,7 @@ export default class EventManager {
     // desktop
     if (event.type.includes('pointer') || event.type.includes('mouse') || event.type === 'click') {
       this._getDesktopCoordinates(event)
+      
     } else if (event.type.includes('touch')) {
       // One finger: pan
       // Two fingers: zoom, other gestures
