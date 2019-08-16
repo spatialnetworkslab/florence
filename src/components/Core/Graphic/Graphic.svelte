@@ -59,6 +59,7 @@
   onMount(() => {
     // only on mount can we bind the svg root node and attach actual event listeners
     eventManager.addRootNode(rootNode)
+    eventManager.detectDeviceType()
     eventManager.attachEventListeners()
   })
 </script>

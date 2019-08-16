@@ -21,9 +21,9 @@ export default class PanHandler extends SectionInteractionHandler {
     const eventMoveHandler = this._handleMove.bind(this)
     const eventUpHandler = this._handleEnd.bind(this)
 
-    eventManager.addEventListener('eventstart', listenerId + '-eventstart', eventDownHandler)
+    eventManager.addEventListener('eventup', listenerId + '-eventup', eventDownHandler)
     eventManager.addEventListener('eventmove', listenerId + '-eventmove', eventMoveHandler)
-    eventManager.addEventListener('eventend', listenerId + '-eventend', eventUpHandler)
+    eventManager.addEventListener('eventdown', listenerId + '-eventdown', eventUpHandler)
   }
 
   _removeEventListener () {
@@ -31,9 +31,9 @@ export default class PanHandler extends SectionInteractionHandler {
       const eventManager = this._interactionManager._eventManager
       const listenerId = this._interactionManager._id + '-pan'
 
-      eventManager.removeEventListener('eventstart', listenerId + '-eventstart')
+      eventManager.removeEventListener('eventup', listenerId + '-eventup')
       eventManager.removeEventListener('eventmove', listenerId + '-eventmove')
-      eventManager.removeEventListener('eventend', listenerId + '-eventend')
+      eventManager.removeEventListener('eventdown', listenerId + '-eventdown')
     }
   }
 
