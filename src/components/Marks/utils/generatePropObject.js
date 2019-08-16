@@ -19,7 +19,7 @@ import { isDefined } from '../../../utils/equals.js'
  // update to deal with functions
 export function generatePropObject (propValue, indexArray) {
   const propObj = {}
-  console.log(indexArray)
+  
   if (isDefined(propValue)) {
     if (propValue.constructor === Array) {
       for (let i = 0; i < indexArray.length; i++) {
@@ -35,6 +35,6 @@ export function generatePropObject (propValue, indexArray) {
       }
     }
   }
-
+  
   return propObj
 }

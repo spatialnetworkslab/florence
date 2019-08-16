@@ -1,8 +1,7 @@
 <script>
   // d3
-  import { scaleOrdinal, scaleLinear } from 'd3-scale'
+  import { scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
   import * as d3 from 'd3-scale-chromatic'
-  import { scaleDiverging, scaleSequential } from 'd3-scale'
   import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
 
   // florence
@@ -45,23 +44,37 @@
     hoverPoints = hoverPoints
   }
 
-  const xMean = (data.domain('a')[0]+data.domain('a')[1])/2
-  const yMean = data.domain('b')[1]
- 
-  // open question: how do we evalute fill functions against the domains for marks? x or y?
-  const colors = scaleLinear()
-    .domain(data.domain('a'))
-    .range(["steelblue", "orange"])
+  const xLoc = (data.domain('a')[0]+data.domain('a')[1])/2
+  const yLoc = data.domain('b')[1]
 
+  // open question: how do we evalute fill functions against the domains for marks? x or y?
+  // takes crae of tickmarks, color scale spec
+  // maybe convenience function would be helpful
+  console.log(d3)
+  const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
+  const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateViridis);
+  const alphaScale = scaleLinear().domain(data.domain('b')).range([0, 1])
+   
+  // check if opacity works
+  
 </script>
 
 <div>
 
 	<Graphic 
-    width={500} {height}
-    scaleX={scaleLinear().domain([0, 500])}
+    width={700} {height}
+    scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
-  >
+  > 
+    <Label 
+        x={xLoc}
+        y={100}
+        text={'Legends'}
+        fontFamily="Helvetica"
+        fontSize="16"
+        fontWeight="bold"
+        rotation={0}
+    />
 		
 		<Section
 			x1={50} x2={450}
@@ -71,20 +84,12 @@
       flipY
       {transformation}
 		>
-      <Label 
-        x={xMean}
-        y={yMean}
-        text={'Color scale'}
-        fontFamily="Helvetica"
-        fontSize="12"
-        fontWeight="bold"
-        rotation={0}
-     />
       >
 			<PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}
-        fill={colors}
+        fill={data.map('a', linearColorScale)}
+        fillOpacity={data.map('a', linearColorScale)}
         radius={transformation === 'identity' ? 3 : 6}
         index={filteredData.column('$index')}
         onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
@@ -106,7 +111,7 @@
 			<PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}
-        fill={transformation === 'identity' ? 'black' : 'blue'}
+        fill={data.map('b', seqScale)}
         radius={transformation === 'identity' ? 3 : 6}
         index={filteredData.column('$index')}
         onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
@@ -128,8 +133,9 @@
 			<PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}
-        fill={transformation === 'identity' ? 'black' : 'blue'}
+        fill={'red'}
         radius={transformation === 'identity' ? 3 : 6}
+        fillOpacity={data.map('a', alphaScale)}
         index={filteredData.column('$index')}
         onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
         onMouseout={handleMouseout}
