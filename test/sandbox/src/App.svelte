@@ -12,6 +12,7 @@
   import Line from './examples/Line.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
   import FuncLines from './examples/FuncLines.svelte'
+  import DragCategorical from './examples/DragCategorical.svelte'
 
   // and add them to this component array
   let components = [
@@ -64,6 +65,11 @@
       name: 'FuncLines',
       url: 'funclines',
       component: FuncLines
+    },
+    {
+      name: 'DragCategorical',
+      url: 'dragcategorical',
+      component: DragCategorical
     }
   ]
 </script>
