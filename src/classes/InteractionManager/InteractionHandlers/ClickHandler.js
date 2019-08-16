@@ -36,8 +36,11 @@ export default class ClickHandler extends InteractionHandler {
     // Touch measures first then if it is less than 250ms, then goes into callback
     if (eventManager._detectIt.deviceType.includes('mouse') && eventManager._detectIt.primaryInput === 'mouse') {
       this._callStoredCallback(coordinates, event)
-    } else if (eventManager._detectIt.deviceType.includes('touch') && eventManager._detectIt.primaryInput === 'touch') {
-      if (event.type === 'touchstart') {
+    } else if (
+      (eventManager._detectIt.deviceType.includes('touch') && eventManager._detectIt.primaryInput === 'touch') ||
+      window.navigator.pointerEnabled || window.navigator.msPointerEnabled
+    ) {
+      if (event.type.includes('start') || event.type.includes('down')) {
         this._startTime = event.timeStamp
       } else {
         this._endTime = event.timeStamp
@@ -47,7 +50,6 @@ export default class ClickHandler extends InteractionHandler {
         if (timeDiff <= 250) {
           this._callStoredCallback(coordinates, event)
         }
-  
       }
     }
   }

@@ -27,6 +27,7 @@ export default class EventManager {
 
     this._listeners = {}
     this._detectIt = detectIt
+    this._passive = ['wheel', 'mousemove', 'pointermove', 'touchmove', 'MSPointerMove']
   }
 
   detectDeviceType () {
@@ -96,6 +97,7 @@ export default class EventManager {
   attachEventListeners () {
     if (this._mounted) {
       for (const listenerId in this._listeners) {
+        console.log(this._listeners)
         const { eventName, callback } = this._listeners[listenerId]
         const nativeEvents = this._normalisedEvents[eventName]
 
@@ -107,7 +109,7 @@ export default class EventManager {
         } else {
           const tracker = this[getTrackerName(nativeEvents)]
           // fix passive event violation problem
-          tracker.addEventListener(listenerId, callback, detectIt.passiveEvents ? { passive: true } : false)
+          tracker.addEventListener(listenerId, callback)
         }
       }
     } else {
@@ -127,7 +129,7 @@ export default class EventManager {
         }
       } else {
         const tracker = this[getTrackerName(nativeEvents)]
-        tracker.addEventListener(listenerId, callback, detectIt.passiveEvents ? { passive: true } : false)
+        tracker.addEventListener(listenerId, callback)
       }
     }
   }
