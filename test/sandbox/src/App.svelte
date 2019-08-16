@@ -12,7 +12,7 @@
   import Line from './examples/Line.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
   import FuncLines from './examples/FuncLines.svelte'
-  import ColorScales from './examples/ColorScales.svelte'
+  import Legends from './examples/Legends.svelte'
 
   // and add them to this component array
   let components = [
@@ -67,9 +67,9 @@
       component: FuncLines
     },
     {
-      name: 'ColorScales',
-      url: '/colorscales',
-      component: ColorScales
+      name: 'Legends',
+      url: '/legends',
+      component: Legends
     }
   ]
 </script>

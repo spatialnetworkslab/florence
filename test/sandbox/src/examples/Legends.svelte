@@ -54,6 +54,7 @@
   const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
   const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateViridis);
   const alphaScale = scaleLinear().domain(data.domain('b')).range([0, 1])
+  const radiusScale = scaleLinear().domain(data.domain('b')).range([10, 0])
    
   // check if opacity works
   
@@ -90,7 +91,7 @@
         y={filteredData.column('b')}
         fill={data.map('a', linearColorScale)}
         fillOpacity={data.map('a', linearColorScale)}
-        radius={transformation === 'identity' ? 3 : 6}
+        radius={data.map('a', radiusScale)}
         index={filteredData.column('$index')}
         onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
         onMouseout={handleMouseout}
