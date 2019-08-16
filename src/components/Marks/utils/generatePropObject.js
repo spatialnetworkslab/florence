@@ -15,9 +15,11 @@ import { isDefined } from '../../../utils/equals.js'
  * @param {*} indexArray The array of indices to be used as keys
  * @returns {Object.<Number, *>} The 'prop Object'
  */
+
+ // update to deal with functions
 export function generatePropObject (propValue, indexArray) {
   const propObj = {}
-
+  console.log(indexArray)
   if (isDefined(propValue)) {
     if (propValue.constructor === Array) {
       for (let i = 0; i < indexArray.length; i++) {

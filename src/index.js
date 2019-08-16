@@ -23,3 +23,5 @@ export { default as YAxis } from './components/Guides/Axes/YAxis.svelte'
 export { default as createGeoScales } from './helpers/createGeoScales.js'
 export { default as createPanHandler } from './helpers/createPanHandler'
 export { default as createZoomHandler } from './helpers/createZoomHandler'
+
+export { default as GradientLegend } from './components/Guides/Legends/GradientLegend.svelte'

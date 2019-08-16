@@ -68,7 +68,7 @@
   export let interpolate = undefined
   export let _asPolygon = true
   export let zoomIdentity = undefined
-
+ 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
     type,
@@ -143,7 +143,7 @@
   let fontWeightObject = generatePropObject(aesthetics.fontWeight, indexArray)
   let rotationObject = generatePropObject(aesthetics.rotation, indexArray)
   let anchorPointObject = generatePropObject(aesthetics.anchorPoint, indexArray)
-
+ 
 
   // This uses the radiusObject/strokeWidthObject in some cases, so must be done after the prop objects
   updateScreenGeometryObject()
