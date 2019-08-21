@@ -1,7 +1,12 @@
 <script context="module">
-  import { csv } from 'd3-fetch'
+  import { csvParse, autoType } from 'd3-dsv'
   export async function preload() {
-    const data = csv('/stocks.csv')
+    // instead of dealing with promises we await async functions here
+    // this.fetch works on both client and server (as opposed to d3-fetch)
+    const response = await this.fetch('/stocks.csv')
+    const text = await response.text()
+
+    const data = csvParse(text, autoType) // auto-infer type if possible
     return { data }
   }
 </script>
@@ -16,33 +21,20 @@
   let duration = 2000
 
   export let data
-  let loadedData
-  data.then(d => {
-    loadedData = new DataContainer(d)
+
+  // set up data container, force string date to Date
+  const loadedData = new DataContainer(data)
       .mutate({ realDate: row => new Date(row.date) })
       .select(['symbol', 'realDate', 'price'])
       .rename({ realDate: 'date' })
-      .groupBy('symbol')
       .done()
-  })
 
-  const log = console.log
+  // set scales based on ungrouped data
+  const scaleX = scaleTime().domain(loadedData.domain('date')).nice()
+  const scaleY = scaleLinear().domain(loadedData.domain('price')).nice()
 
-  // let data = [
-  //   { symbol: "MSFT", date: "Jan 1 2000", price: "39.81" },
-  //   { symbol: "MSFT", date: "Feb 1 2000", price: "36.35" },
-  //   { symbol: "MSFT", date: "Mar 1 2000", price: "43.22" }
-  // ]
-  // log('data', data)
-  // log('dates', data.map(d => new Date(d.date)))
-  // log('prices', data.map(d => +d.price))
-
-  const scaleX = scaleTime().domain([new Date("2000-01-01 00:00:00"), new Date("2010-03-01 00:00:00")]).range([50, 250])
-  // $: {
-  //   if (loadedData) {
-  //     log(loadedData.map(d => scaleX(new Date(d.date))))
-  //   }
-  // }
+  // group data by symbol so we can plot one line per group
+  const groupedData = loadedData.groupBy('symbol').done()
 
 </script>
 
@@ -70,20 +62,14 @@
 >
 
   <Section
-    x1={50} x2={450}
-    y1={50} y2={450}
-    scaleX={scaleTime().domain([new Date("2000-01-01 00:00:00"), new Date("2010-03-01 00:00:00")])}
-    scaleY={scaleLinear().domain([0, 800])}
+    {scaleX}
+    {scaleY}
   >
-
-    {#if loadedData}
-      
+    
       <LineLayer
-        x={loadedData.map('$grouped', group => group.column('date'))}
-        y={loadedData.map('$grouped', group => group.column('price'))}
+        x={groupedData.map('$grouped', group => group.column('date'))}
+        y={groupedData.map('$grouped', group => group.column('price'))}
       />
-
-    {/if}
 
   </Section>
 

@@ -27,7 +27,7 @@
     "@snlab/florence-datacontainer": "^0.1.1",
     "@sveltejs/svelte-repl": "^0.1.8",
     "d3-scale": "^3.0.0",
-    "d3-fetch": "^1.1.2",
+    "d3-dsv": "^1.1.2",
     "npm-run-all": "^4.1.5",
     "rollup": "^1.12.0",
     "rollup-plugin-babel": "^4.0.2",
