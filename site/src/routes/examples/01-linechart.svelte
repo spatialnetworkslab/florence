@@ -1,16 +1,24 @@
-<script>
-  import { scaleLinear } from 'd3-scale'
+<script context="module">
   import { csv } from 'd3-fetch'
-  import { Graphic, Section, LineLayer } from '../../../../src/'
-  import DataContainer from '@snlab/florence-datacontainer'
+  export async function preload() {
+    const data = csv('/stocks.csv')
+    return { data }
+  }
+</script>
+
+<script>
+  import { scaleLinear, scaleTime } from 'd3-scale'
+  import { Graphic, Section, Line } from '../../../../src/'
   
   let height = 500
   let transformation = 'identity'
   let duration = 2000
 
+  export let data
+  let loadedData
+  data.then(d => loadedData = d)
+
   const log = console.log
-  let data
-  csv('/stocks.csv').then((d) => data = d)
 
   // let data = [
   //   { symbol: "MSFT", date: "Jan 1 2000", price: "39.81" },
@@ -21,7 +29,12 @@
   // log('dates', data.map(d => new Date(d.date)))
   // log('prices', data.map(d => +d.price))
 
-  $: log('data', data)
+  const scaleX = scaleTime().domain([new Date("2000-01-01 00:00:00"), new Date("2010-03-01 00:00:00")]).range([50, 250])
+  // $: {
+  //   if (loadedData) {
+  //     log(loadedData.map(d => scaleX(new Date(d.date))))
+  //   }
+  // }
 
 </script>
 
@@ -46,8 +59,8 @@
 
 <Graphic 
   width={500} {height}
-  scaleX={scaleLinear().domain([0, 500])}
-  scaleY={scaleLinear().domain([0, 500])}
+  scaleX={scaleTime().domain([new Date("2000-01-01 00:00:00"), new Date("2010-03-01 00:00:00")])}
+  scaleY={scaleLinear().domain([0, 800])}
 >
 
   <Section
@@ -55,12 +68,13 @@
     y1={50} y2={450}
   >
 
-    <LineLayer
-      x={data.map(d => new Date(d.date))}
-      y={data.map(d => +d.price)}
-      stroke={'black'}
-      strokeWidth={10}
-    />
+    {#if loadedData}
+      <Line
+        x={loadedData.map(d => new Date(d.date))}
+        y={loadedData.map(d => +d.price)}
+        stroke={'black'}
+      />
+    {/if}
 
   </Section>
 
