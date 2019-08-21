@@ -8,7 +8,8 @@
 
 <script>
   import { scaleLinear, scaleTime } from 'd3-scale'
-  import { Graphic, Section, Line } from '../../../../src/'
+  import { Graphic, Section, LineLayer } from '../../../../src/'
+  import DataContainer from '@snlab/florence-datacontainer'
   
   let height = 500
   let transformation = 'identity'
@@ -16,7 +17,14 @@
 
   export let data
   let loadedData
-  data.then(d => loadedData = d)
+  data.then(d => {
+    loadedData = new DataContainer(d)
+      .mutate({ realDate: row => new Date(row.date) })
+      .select(['symbol', 'realDate', 'price'])
+      .rename({ realDate: 'date' })
+      .groupBy('symbol')
+      .done()
+  })
 
   const log = console.log
 
@@ -59,21 +67,22 @@
 
 <Graphic 
   width={500} {height}
-  scaleX={scaleTime().domain([new Date("2000-01-01 00:00:00"), new Date("2010-03-01 00:00:00")])}
-  scaleY={scaleLinear().domain([0, 800])}
 >
 
   <Section
     x1={50} x2={450}
     y1={50} y2={450}
+    scaleX={scaleTime().domain([new Date("2000-01-01 00:00:00"), new Date("2010-03-01 00:00:00")])}
+    scaleY={scaleLinear().domain([0, 800])}
   >
 
     {#if loadedData}
-      <Line
-        x={loadedData.map(d => new Date(d.date))}
-        y={loadedData.map(d => +d.price)}
-        stroke={'black'}
+      
+      <LineLayer
+        x={loadedData.map('$grouped', group => group.column('date'))}
+        y={loadedData.map('$grouped', group => group.column('price'))}
       />
+
     {/if}
 
   </Section>
