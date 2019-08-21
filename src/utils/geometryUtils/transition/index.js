@@ -22,12 +22,18 @@ export function transitionGeometries (fromLayer, toLayer) {
   const firstToGeometry = getFirstGeometry(toLayer)
 
   if (pointTransition(firstFromGeometry, firstToGeometry)) {
-    return interpolate(fromLayer, toLayer)
+    return transitionLayer(fromLayer, toLayer, interpolate)
   }
 
   if (polygonTransition(firstFromGeometry, firstToGeometry)) {
-    return transshape.transshapeLayer(fromLayer, toLayer)
+    return transitionLayer(fromLayer, toLayer, transshape.transshape)
   }
+
+  if (lineStringTransition(firstFromGeometry, firstToGeometry)) {
+    return transitionLayer(fromLayer, toLayer, transshape.transshape)
+  }
+
+  throw new Error('Invalid input')
 }
 
 function pointTransition (fromGeometry, toGeometry) {
@@ -50,4 +56,28 @@ function lineStringTransition (fromGeometry, toGeometry) {
 
 function getFirstGeometry (layer) {
   return layer[Object.keys(layer)[0]]
+}
+
+function transitionLayer (fromLayer, toLayer, interpolationMethod) {
+  const interpolatorObject = {}
+
+  for (const key in toLayer) {
+    if (key in fromLayer) {
+      interpolatorObject[key] = interpolationMethod(fromLayer[key], toLayer[key])
+    } else {
+      interpolatorObject[key] = () => toLayer[key]
+    }
+  }
+
+  return function interpolator (t) {
+    if (t === 0) return fromLayer
+    if (t === 1) return toLayer
+
+    const layer = {}
+    for (const key in interpolatorObject) {
+      layer[key] = interpolatorObject[key](t)
+    }
+
+    return layer
+  }
 }

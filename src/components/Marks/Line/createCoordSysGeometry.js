@@ -13,13 +13,11 @@ export default function (geometryProps, sectionContext, coordinateTransformation
 
 function createScaledGeometry (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps, 'Line')
-  const scales = sectionContext.scales()
-
   if (isDefined(geometryProps.geometry)) {
-    return scaleGeometry(geometryProps.geometry, scales)
+    return scaleGeometry(geometryProps.geometry, sectionContext)
   }
 
   if (isUndefined(geometryProps.geometry)) {
-    return createScaledGeometryFromXYProps(geometryProps.x, geometryProps.y, scales, 'Line')
+    return createScaledGeometryFromXYProps(geometryProps.x, geometryProps.y, sectionContext, 'Line')
   }
 }

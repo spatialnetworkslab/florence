@@ -63,10 +63,14 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onDragStart = undefined
+  export let onDrag = undefined
+  export let onDragEnd = undefined
 
   // Other
   export let interpolate = false
   export let _asPolygon = true
+  export let zoomIdentity = undefined
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
@@ -190,11 +194,8 @@
   $: { if (initDone()) tr_rotation.set(aesthetics.rotation) }
 
   // non-transitionable aesthetics that need additional calculation
-  let rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`
-  let parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint)
-  $: { if (initDone()) rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`}
-  $: { if (initDone()) parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint)}
-
+  let rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`;
+  let parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint);
 
   let previousTransition
 
@@ -202,11 +203,33 @@
   let pixelGeometryRecalculationNecessary = false
   let screenGeometryRecalculationNecessary = false
 
+  $: {
+    if (initDone()) {
+      if (coordSysGeometryRecalculationNecessary) updateCoordSysGeometry()
+
+      if (pixelGeometryRecalculationNecessary) updatePixelGeometry()
+
+      if (screenGeometryRecalculationNecessary) {
+        updateScreenGeometry()
+        tr_screenGeometry.set(screenGeometry)
+        
+        updateInteractionManagerIfNecessary()
+      }
+
+      coordSysGeometryRecalculationNecessary = false
+      pixelGeometryRecalculationNecessary = false
+      screenGeometryRecalculationNecessary = false
+    }
+  }
+
+  $: { if (initDone()) rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`};
+  $: { if (initDone()) parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint)}
+
+
   // Update transitionables when transition settings change
   beforeUpdate(() => {
     if (!transitionsEqual(previousTransition, transition)) {
       previousTransition = transition
-
       tr_screenGeometry = createTransitionable('geometry', $tr_screenGeometry, transition)
       tr_radius = createTransitionable('radius', $tr_radius, transition)
       tr_fill = createTransitionable('fill', $tr_fill, transition)
@@ -221,21 +244,6 @@
       tr_rotation = createTransitionable('rotation', $tr_rotation, transition)
 
     }
-
-     if (coordSysGeometryRecalculationNecessary) updateCoordSysGeometry()
-
-     if (pixelGeometryRecalculationNecessary) updatePixelGeometry()
-
-     if (screenGeometryRecalculationNecessary) {
-       updateScreenGeometry()
-       tr_screenGeometry.set(screenGeometry)
-       
-       updateInteractionManagerIfNecessary()
-     }
-
-     coordSysGeometryRecalculationNecessary = false
-     pixelGeometryRecalculationNecessary = false
-     screenGeometryRecalculationNecessary = false
   })
 
   afterUpdate(() => {
@@ -244,6 +252,7 @@
 
   // Interactivity
   $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
+  || onDragStart !== undefined || onDrag !== undefined || onDragEnd !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -275,8 +284,10 @@
   }
 
   function updatePixelGeometry () {
-    if ($zoomContext) {
-      pixelGeometry = transformGeometry(coordSysGeometry, $zoomContext)
+    const zoomTransformation = ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
+
+    if (zoomTransformation) {
+      pixelGeometry = transformGeometry(coordSysGeometry, zoomTransformation)
     } else {
       pixelGeometry = coordSysGeometry
     }
@@ -303,6 +314,7 @@
       if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
       if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
       if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
+      if (onDragStart) $interactionManagerContext.addMarkInteraction('drag', markId, { onDragStart, onDrag, onDragEnd })
     }
   }
 
@@ -367,7 +379,7 @@
       fill="none"
       stroke-width={$tr_strokeWidth}
       stroke={$tr_stroke}
-      style={`opacity: ${$tr_opacity}`}
+      opacity={$tr_opacity}
     />
   
   {/if}
@@ -386,7 +398,7 @@
       opacity={$tr_opacity}
       transform={rotateTransform}
       font-family={fontFamily}
-      font-size={$tr_fontSize + ' px'}
+      font-size={$tr_fontSize + 'px'}
       font-weight={$tr_fontWeight}
       text-anchor={parsedTextAnchorPoint.textAnchor}
       dominant-baseline={parsedTextAnchorPoint.dominantBaseline}

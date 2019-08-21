@@ -13,7 +13,7 @@ export default function (geometryProps, sectionContext, coordinateTransformation
     scaledGeometryArray, coordinateTransformationContext, indexArray
   )
 
-  return { coordSysGeometryObject, indexArray }
+  return coordSysGeometryObject
 }
 
 function createScaledGeometryArray (geometryProps, sectionContext) {
@@ -31,28 +31,26 @@ function createScaledGeometryArray (geometryProps, sectionContext) {
 }
 
 function scaleGeometryProp (geometry, sectionContext) {
-  const scaledGeometryArray = scaleGeometries(geometry, sectionContext.scales())
+  const scaledGeometryArray = scaleGeometries(geometry, sectionContext)
   const length = scaledGeometryArray.length
 
   return { scaledGeometryArray, length }
 }
 
 function createScaledGeometryArrayFromCoordinates (x, y, sectionContext) {
-  const scales = sectionContext.scales()
-
   const xNeedsScaling = x.constructor !== Function
   const yNeedsScaling = y.constructor !== Function
 
-  const xValue = x.constructor === Function ? x(scales) : x
-  const yValue = y.constructor === Function ? y(scales) : y
+  const xValue = x.constructor === Function ? x(sectionContext) : x
+  const yValue = y.constructor === Function ? y(sectionContext) : y
 
   const length = getNumberOfMarks(xValue, yValue, 'Point')
 
   const xIsPrimitive = xValue.constructor !== Array
   const yIsPrimitive = yValue.constructor !== Array
 
-  const scaledX = scaleCoordinate(xValue, scales.scaleX, xNeedsScaling, xIsPrimitive, length)
-  const scaledY = scaleCoordinate(yValue, scales.scaleY, yNeedsScaling, yIsPrimitive, length)
+  const scaledX = scaleCoordinate(xValue, sectionContext.scaleX, xNeedsScaling, xIsPrimitive, length)
+  const scaledY = scaleCoordinate(yValue, sectionContext.scaleY, yNeedsScaling, yIsPrimitive, length)
 
   const scaledGeometryArray = createGeometryArrayFromScaledCoordinates(scaledX, scaledY, length)
 

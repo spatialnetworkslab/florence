@@ -62,11 +62,15 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onDragStart = undefined
+  export let onDrag = undefined
+  export let onDragEnd = undefined
 
   // Other
   export let index = undefined
   export let interpolate = undefined
   export let _asPolygon = true
+  export let zoomIdentity = undefined
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
@@ -119,13 +123,14 @@
   const zoomContext = ZoomContext.subscribe()
 
   // Initiate geometry objects and index array
-  let indexArray
   let coordSysGeometryObject
   let pixelGeometryObject
   let screenGeometryObject
 
   updateCoordSysGeometryObject()
   updatePixelGeometryObject()
+  
+  let indexArray = Object.keys(coordSysGeometryObject)
 
   // Generate other prop objects
   let radiusObject = generatePropObject(aesthetics.radius, indexArray)
@@ -143,7 +148,7 @@
   let anchorPointObject = generatePropObject(aesthetics.anchorPoint, indexArray)
 
 
-  // This one uses the radiusObject/strokeWidthObject in some cases, so must be done after the prop objects
+  // This uses the radiusObject/strokeWidthObject in some cases, so must be done after the prop objects
   updateScreenGeometryObject()
 
   // Initiate transitionables
@@ -185,15 +190,8 @@
   $: {
     if (initDone()) {
       if (!_asPolygon) {
-        radiusObject = generatePropObject(aesthetics.radius, indexArray)
-        tr_radiusObject.set(radiusObject)
-
-        strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
-        tr_strokeWidthObject.set(strokeWidthObject)
-      }
-
-      if (_asPolygon) {
-        scheduleUpdateScreenGeometryObject()
+        tr_radiusObject.set(generatePropObject(aesthetics.radius, indexArray))
+        tr_strokeWidthObject.set(generatePropObject(aesthetics.strokeWidth, indexArray))
       }
     }
   }
@@ -215,23 +213,39 @@
   $: { if (initDone()) fontFamilyObject = generatePropObject(aesthetics.fontFamily, indexArray)}
   $: { if (initDone()) anchorPointObject = generatePropObject(aesthetics.anchorPoint, indexArray)}
 
-  let rotateTransformObject = createRotationObject()
-  let parsedTextAnchorPointObject = createTextAnchorObject()
-  $: { if (initDone()) rotateTransform = createRotationObject()}
-  $: { if (initDone()) parsedTextAnchorPoint = createTextAnchorObject()}
-
-
   let previousTransition
 
   let coordSysGeometryObjectRecalculationNecessary = false
   let pixelGeometryObjectRecalculationNecessary = false
   let screenGeometryObjectRecalculationNecessary = false
 
+  $: {
+    if (coordSysGeometryObjectRecalculationNecessary) {
+      updateCoordSysGeometryObject()
+      indexArray = Object.keys(coordSysGeometryObject)
+
+      if (_asPolygon) {
+        updateRadiusAndStrokeWidth()
+      }
+    }
+    
+    if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
+
+    if (screenGeometryObjectRecalculationNecessary) {
+      updateScreenGeometryObject()
+      updateScreenGeometryObjectTransitionable()
+
+      updateInteractionManagerIfNecessary()
+    }
+
+    coordSysGeometryObjectRecalculationNecessary = false
+    pixelGeometryObjectRecalculationNecessary = false
+    screenGeometryObjectRecalculationNecessary = false
+  }
+
   beforeUpdate(() => {
     // Update transitionables
-    if (!transitionsEqual(previousTransition, transition)) {
-      previousTransition = transition
-
+    if (!transitionsEqual(previousTransition, transition) && initDone()) {
       tr_screenGeometryObject = createTransitionableLayer('geometry', $tr_screenGeometryObject, transition)
       tr_radiusObject = createTransitionableLayer('radius', $tr_radiusObject, transition)
       tr_fillObject = createTransitionableLayer('fill', $tr_fillObject, transition)
@@ -246,20 +260,7 @@
       tr_rotationObject = createTransitionableLayer('rotation', $tr_rotationObject, transition)
     }
 
-    if (coordSysGeometryObjectRecalculationNecessary) updateCoordSysGeometryObject()
-
-    if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
-
-    if (screenGeometryObjectRecalculationNecessary) {
-      updateScreenGeometryObject()
-      tr_screenGeometryObject.set(screenGeometryObject)
-
-      updateInteractionManagerIfNecessary()
-    }
-
-    coordSysGeometryObjectRecalculationNecessary = false
-    pixelGeometryObjectRecalculationNecessary = false
-    screenGeometryObjectRecalculationNecessary = false
+    previousTransition = transition
   })
 
   afterUpdate(() => {
@@ -268,6 +269,7 @@
 
   // Interactivity
   $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
+  || onDragStart !== undefined || onDrag !== undefined || onDragEnd !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -278,24 +280,6 @@
   })
 
   // Helpers
-  function createRotationObject() {
-    const propObj = {}
-    for (let i = 0; i < indexArray.length; i++) {
-        const index = indexArray[i]
-        propObj[index] = `rotate(${$tr_rotationObject[index]}, ${$tr_screenGeometryObject[index].coordinates[0]}, ${$tr_screenGeometryObject[index].coordinates[1]})`
-    }
-    return propObj
-  }
-
-  function createTextAnchorObject() {
-    const propObj = {}
-    for (let i = 0; i < indexArray.length; i++) {
-        const index = indexArray[i]
-        propObj[index] = textAnchorPoint(anchorPointObject[index])
-    }
-    return propObj
-  }
-
   function scheduleUpdateCoordSysGeometryObject () {
     coordSysGeometryObjectRecalculationNecessary = true
     pixelGeometryObjectRecalculationNecessary = true
@@ -303,16 +287,13 @@
   }
 
   function updateCoordSysGeometryObject () {
-    let _ = createCoordSysGeometryObject(
+    coordSysGeometryObject = createCoordSysGeometryObject(
       positioningAesthetics, 
       $sectionContext,
       $coordinateTransformationContext,
       index,
       interpolate
     )
-
-    indexArray = _.indexArray
-    coordSysGeometryObject = _.coordSysGeometryObject
   }
 
   function scheduleUpdatePixelGeometryObject () {
@@ -321,8 +302,10 @@
   }
 
   function updatePixelGeometryObject () {
-    if ($zoomContext) {
-      pixelGeometryObject = transformGeometries(coordSysGeometryObject, $zoomContext)
+    const zoomTransformation = ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
+
+    if (zoomTransformation) {
+      pixelGeometryObject = transformGeometries(coordSysGeometryObject, zoomTransformation)
     } else {
       pixelGeometryObject = coordSysGeometryObject
     }
@@ -340,6 +323,15 @@
     }
   }
 
+  function updateScreenGeometryObjectTransitionable () {
+    tr_screenGeometryObject.set(screenGeometryObject)
+  }
+
+  function updateRadiusAndStrokeWidth () {
+    radiusObject = generatePropObject(aesthetics.radius, indexArray)
+    strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
+  }
+
   function updateInteractionManagerIfNecessary () {
     removeLayerFromSpatialIndexIfNecessary()
 
@@ -349,6 +341,7 @@
       if (onClick) $interactionManagerContext.addLayerInteraction('click', layerId, onClick)
       if (onMouseover) $interactionManagerContext.addLayerInteraction('mouseover', layerId, onMouseover)
       if (onMouseout) $interactionManagerContext.addLayerInteraction('mouseout', layerId, onMouseout)
+      if (onDragStart) $interactionManagerContext.addLayerInteraction('drag', layerId, { onDragStart, onDrag, onDragEnd })
     }
   }
 
@@ -374,65 +367,68 @@
 {#if $graphicContext.output() === 'svg'}
 
   {#if renderPolygon}
+    <g class={`${type.toLowerCase()}-layer`}>
+      {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
 
-    {#each indexArray as $index ($index)}
+        <path
+          class={type.toLowerCase()}
+          d={generatePath($tr_screenGeometryObject[$index])}
+          fill={$tr_fillObject[$index]}
+          stroke={$tr_strokeObject[$index]}
+          stroke-width={$tr_strokeWidthObject[$index]}
+          fill-opacity={$tr_fillOpacityObject[$index]}
+          stroke-opacity={$tr_strokeOpacityObject[$index]}
+          opacity={$tr_opacityObject[$index]}
+        />
 
-      <path
-        class={type.toLowerCase()}
-        d={generatePath($tr_screenGeometryObject[$index])}
-        fill={$tr_fillObject[$index]}
-        stroke={$tr_strokeObject[$index]}
-        stroke-width={$tr_strokeWidthObject[$index]}
-        fill-opacity={$tr_fillOpacityObject[$index]}
-        stroke-opacity={$tr_strokeOpacityObject[$index]}
-        opacity={$tr_opacityObject[$index]}
-      />
-
-    {/each}
+      {/each}
+    </g>
 
   {/if}
 
   {#if renderCircle}
+    <g class="point-layer">
+      {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
 
-    {#each indexArray as $index ($index)}
+        <circle
+          class="point"
+          cx={$tr_screenGeometryObject[$index].coordinates[0]}
+          cy={$tr_screenGeometryObject[$index].coordinates[1]}
+          r={$tr_radiusObject[$index]}
+          fill={$tr_fillObject[$index]}
+          stroke={$tr_strokeObject[$index]}
+          stroke-width={$tr_strokeWidthObject[$index]}
+          fill-opacity={$tr_fillOpacityObject[$index]}
+          stroke-opacity={$tr_strokeOpacityObject[$index]}
+          opacity={$tr_opacityObject[$index]}
+        />
 
-      <circle
-        class="point"
-        cx={$tr_screenGeometryObject[$index].coordinates[0]}
-        cy={$tr_screenGeometryObject[$index].coordinates[1]}
-        r={$tr_radiusObject[$index]}
-        fill={$tr_fillObject[$index]}
-        stroke={$tr_strokeObject[$index]}
-        stroke-width={$tr_strokeWidthObject[$index]}
-        fill-opacity={$tr_fillOpacityObject[$index]}
-        stroke-opacity={$tr_strokeOpacityObject[$index]}
-        opacity={$tr_opacityObject[$index]}
-      />
-
-    {/each}
-
+      {/each}
+    </g>
   {/if}
 
   {#if renderLine}
+    <g class="line-layer">
+      {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
 
-    {#each indexArray as $index ($index)}
+        <path
+          class="line"
+          d={generatePath($tr_screenGeometryObject[$index])}
+          fill="none"
+          stroke-width={$tr_strokeWidthObject[$index]}
+          stroke={$tr_strokeObject[$index]}
+          style={`opacity: ${$tr_opacityObject[$index]}`}
+        />
 
-      <path
-        class="line"
-        d={generatePath($tr_screenGeometryObject[$index])}
-        fill="none"
-        stroke-width={$tr_strokeWidthObject[$index]}
-        stroke={$tr_strokeObject[$index]}
-        style={`opacity: ${$tr_opacityObject[$index]}`}
-      />
-
-    {/each}
-  
+      {/each}
+    </g>
   {/if}
 
-  {#if renderLabel}
+{/if}
 
-    {#each indexArray as $index ($index)}
+{#if renderLabel}
+  <g class="label-layer">
+    {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
 
       <text 
         class="label"
@@ -444,18 +440,21 @@
         fill-opacity={$tr_fillOpacityObject[$index]}
         stroke-opacity={$tr_strokeOpacityObject[$index]}
         opacity={$tr_opacityObject[$index]}
-        transform={rotateTransformObject[$index]}
+        transform={`
+          rotate(${$tr_rotationObject[$index]}, 
+          ${$tr_screenGeometryObject[$index].coordinates[0]}, 
+          ${$tr_screenGeometryObject[$index].coordinates[1]})
+        `}
         font-family={fontFamilyObject[$index]}
-        font-size={$tr_fontSizeObject[$index] + ' px'}
+        font-size={$tr_fontSizeObject[$index] + 'px'}
         font-weight={$tr_fontWeightObject[$index]}
-        text-anchor={parsedTextAnchorPointObject[$index].textAnchor}
-        dominant-baseline={parsedTextAnchorPointObject[$index].dominantBaseline}
+        text-anchor={textAnchorPoint(anchorPointObject[$index]).textAnchor}
+        dominant-baseline={textAnchorPoint(anchorPointObject[$index]).dominantBaseline}
       >
         {textObject[$index]}
       </text>
-    
+      
     {/each}
-
-  {/if}
+  </g>
 
 {/if}

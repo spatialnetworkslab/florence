@@ -1,3 +1,4 @@
+import { isDefined } from '../../../utils/equals.js'
 /**
  * This function is only used when dealing with layers.
  * For layers, most 'aesthetic' props can be specified in two ways:
@@ -17,14 +18,14 @@
 export function generatePropObject (propValue, indexArray) {
   const propObj = {}
 
-  if (propValue) {
+  if (isDefined(propValue)) {
     if (propValue.constructor === Array) {
       for (let i = 0; i < indexArray.length; i++) {
         const index = indexArray[i]
         propObj[index] = propValue[i]
       }
     }
-  
+
     if (propValue.constructor !== Array) {
       for (let i = 0; i < indexArray.length; i++) {
         const index = indexArray[i]

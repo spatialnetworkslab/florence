@@ -13,7 +13,7 @@ export default function (
     scaledGeometryArray, coordinateTransformationContext, indexArray, interpolate
   )
 
-  return { coordSysGeometryObject, indexArray }
+  return coordSysGeometryObject
 }
 
 function scaleCoordinates (coordinateProps, sectionContext) {
@@ -30,7 +30,7 @@ function scaleCoordinates (coordinateProps, sectionContext) {
 
   const scaledCoordinates = _scaleCoordinates(
     coordinateValues,
-    sectionContext.scales(),
+    sectionContext,
     coordinatesThatNeedScaling,
     coordinatesThatArePrimitive,
     length
@@ -57,20 +57,19 @@ function getMissingCoordinatesFromContext (coordinates, sectionContext) {
 
   for (const coordinateName of coordinateNames) {
     const coordinateValue = coordinates[coordinateName]
-    nonMissingCoordinates[coordinateName] = coordinateValue || sectionContext[coordinateName]()
+    nonMissingCoordinates[coordinateName] = coordinateValue || sectionContext[coordinateName]
   }
 
   return nonMissingCoordinates
 }
 
 function getCoordinateValues (nonMissingCoordinates, sectionContext) {
-  const scales = sectionContext.scales()
   const coordinateValues = {}
 
   for (const coordinateName in nonMissingCoordinates) {
     const coordinateValue = nonMissingCoordinates[coordinateName]
     if (coordinateValue.constructor === Function) {
-      coordinateValues[coordinateName] = coordinateValue(scales)
+      coordinateValues[coordinateName] = coordinateValue(sectionContext)
     } else {
       coordinateValues[coordinateName] = coordinateValue
     }

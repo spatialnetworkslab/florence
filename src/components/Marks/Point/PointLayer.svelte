@@ -20,9 +20,13 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onDragStart = undefined
+  export let onDrag = undefined
+  export let onDragEnd = undefined
 
   // Other
   export let index = undefined
+  export let zoomIdentity = undefined
 </script>
 
 <Layer 
@@ -31,5 +35,6 @@
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {index} _asPolygon={false}
+  {onDragStart} {onDrag} {onDragEnd}
+  {index} {zoomIdentity} _asPolygon={false}
 />
