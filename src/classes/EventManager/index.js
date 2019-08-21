@@ -97,7 +97,6 @@ export default class EventManager {
   attachEventListeners () {
     if (this._mounted) {
       for (const listenerId in this._listeners) {
-        console.log(this._listeners)
         const { eventName, callback } = this._listeners[listenerId]
         const nativeEvents = this._normalisedEvents[eventName]
 
@@ -108,8 +107,8 @@ export default class EventManager {
           }
         } else {
           const tracker = this[getTrackerName(nativeEvents)]
-          // fix passive event violation problem
-          tracker.addEventListener(listenerId, callback)
+          // For better scrolling performance
+          tracker.addEventListener(listenerId, callback, detectIt.passiveEvents ? { passive: true } : false)
         }
       }
     } else {
@@ -129,7 +128,8 @@ export default class EventManager {
         }
       } else {
         const tracker = this[getTrackerName(nativeEvents)]
-        tracker.addEventListener(listenerId, callback)
+        // For better scrolling performance
+        tracker.addEventListener(listenerId, callback, detectIt.passiveEvents ? { passive: true } : false)
       }
     }
   }
@@ -172,7 +172,6 @@ export default class EventManager {
   }
 
   _getMobileCoordinates (event) {
- 
     const targetTouches = event.targetTouches
     const changedTouches = event.changedTouches
     if (targetTouches.length === 1 || changedTouches.length === 1) {

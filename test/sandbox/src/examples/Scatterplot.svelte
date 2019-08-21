@@ -87,7 +87,7 @@
         fill={transformation === 'identity' ? 'black' : 'blue'}
         radius={transformation === 'identity' ? 3 : 6}
         index={filteredData.column('$index')}
-        onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
+        onHover={ix => hoverPoints[ix] = filteredData.row(ix)}
         onMouseout={handleMouseout}
         transition={duration}
       />
@@ -99,7 +99,7 @@
           y={row.b}
           fill={transformation === 'identity' ? 'black' : 'blue'}
           radius={transformation === 'identity' ? 3 : 6}
-          onMouseover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
+          onHover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
           onMouseout={() => handleMouseout(row.$index)}
         />
 
@@ -111,7 +111,7 @@
         fill={big ? 'blue' : 'red'}
         radius={big ? 50 : 10}
         onClick={() => log('BOOM')}
-        onMouseover={() => big = true}
+        onHover={() => big = true}
         onMouseout={() => big = false}
       />
 

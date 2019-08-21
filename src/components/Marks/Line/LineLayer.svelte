@@ -14,7 +14,7 @@
   // Transitions and interactions
   export let transition = undefined
   export let onClick = undefined
-  export let onMouseover = undefined
+  export let onHover = undefined
   export let onMouseout = undefined
 
   // Other
@@ -27,6 +27,6 @@
   type="Line"
   {x} {y} {geometry}
   {strokeWidth} {stroke} {opacity}
-  {transition} {onClick} {onMouseover} {onMouseout}
+  {transition} {onClick} {onHover} {onMouseout}
   {interpolate} {zoomIdentity} {index} _asPolygon={false}
 />

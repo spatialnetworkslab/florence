@@ -1,11 +1,11 @@
 import InteractionHandler from './InteractionHandler.js'
 
-export default class MouseoverHandler extends InteractionHandler {
+export default class HoverHandler extends InteractionHandler {
   constructor (interactionManager) {
     super(interactionManager)
 
-    this._previousMouseoverIds = {}
-    this._currentMouseoverIds = {}
+    this._previousHoverIds = {}
+    this._currentHoverIds = {}
     this._startTime = undefined
     this._endTime = undefined
   }
@@ -16,7 +16,7 @@ export default class MouseoverHandler extends InteractionHandler {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-hover'
-      
+
       eventManager.addEventListener('eventmove', listenerId, handler)
     }
   }
@@ -26,7 +26,7 @@ export default class MouseoverHandler extends InteractionHandler {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-hover'
-      console.log('@@@@')
+
       eventManager.removeEventListener('eventmove', listenerId)
     }
   }
@@ -42,23 +42,31 @@ export default class MouseoverHandler extends InteractionHandler {
       (eventManager._detectIt.deviceType.includes('touch') && eventManager._detectIt.primaryInput === 'touch') ||
       window.navigator.pointerEnabled || window.navigator.msPointerEnabled
     ) {
-      console.log(event.type)
-      if (event.type.includes('start') || event.type.includes('down')) {
-        this._startTime = event.timeStamp
-      } else {
-        this._endTime = event.timeStamp
-        const timeDiff = this._endTime - this._startTime
+      const self = this
+      this._pressTimer = window.setTimeout(function () {
+        self._handleIndexing(coordinates, event)
+      }, 250)
 
-        // Considered as click if event lasts less than 250 ms
-        if (timeDiff <= 250) {
-          this._handleIndexing(coordinates, event)
-        }
-      }
+      if (event.type.includes('start') || event.type.includes('down')) {
+        this._pressTimer
+      } 
+      
+      // if (event.type.includes('start') || event.type.includes('down')) {
+      //   this._startTime = event.timeStamp
+      // } else {
+      //   this._endTime = event.timeStamp
+      //   const timeDiff = this._endTime - this._startTime
+
+      //   // Considered as click if event lasts less than 250 ms
+      //   if (timeDiff >= 250) {
+      //     this._handleIndexing(coordinates, event)
+      //   }
+      // }
     }
   }
 
   _handleIndexing (coordinates, event) {
-    this._currentMouseoverIds = {}
+    this._currentHoverIds = {}
 
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(coordinates)
@@ -73,7 +81,7 @@ export default class MouseoverHandler extends InteractionHandler {
       const hitId = this._getHitId(hit)
 
       if (!this._mouseAlreadyOver(hitId)) {
-        this._previousMouseoverIds[hitId] = true
+        this._previousHoverIds[hitId] = true
 
         if (this._isInLayer(hit)) {
           this._layerCallbacks[hit.layerId](hit.$index, event)
@@ -84,14 +92,14 @@ export default class MouseoverHandler extends InteractionHandler {
         }
       }
 
-      this._currentMouseoverIds[hitId] = true
+      this._currentHoverIds[hitId] = true
     }
   }
 
   _cleanupPreviousHits () {
-    for (const hitId in this._previousMouseoverIds) {
-      if (!(hitId in this._currentMouseoverIds)) {
-        delete this._previousMouseoverIds[hitId]
+    for (const hitId in this._previousHoverIds) {
+      if (!(hitId in this._currentHoverIds)) {
+        delete this._previousHoverIds[hitId]
       }
     }
   }
@@ -105,6 +113,6 @@ export default class MouseoverHandler extends InteractionHandler {
   }
 
   _mouseAlreadyOver (hitId) {
-    return hitId in this._previousMouseoverIds
+    return hitId in this._previousHoverIds
   }
 }

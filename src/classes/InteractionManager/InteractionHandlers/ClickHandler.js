@@ -14,7 +14,6 @@ export default class ClickHandler extends InteractionHandler {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-click'
-      
       eventManager.addEventListener('eventclick', listenerId, handler)
     }
   }
@@ -24,14 +23,12 @@ export default class ClickHandler extends InteractionHandler {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-click'
-
       eventManager.removeEventListener('eventclick', listenerId)
     }
   }
 
   _handleEvent (coordinates, event) {
     const eventManager = this._interactionManager._eventManager
-
     // Mouse goes into callback directly
     // Touch measures first then if it is less than 250ms, then goes into callback
     if (eventManager._detectIt.deviceType.includes('mouse') && eventManager._detectIt.primaryInput === 'mouse') {
@@ -57,7 +54,6 @@ export default class ClickHandler extends InteractionHandler {
   _callStoredCallback (coordinates, event) {
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(coordinates)
-    
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
 

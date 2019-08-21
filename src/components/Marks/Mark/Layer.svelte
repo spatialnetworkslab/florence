@@ -60,7 +60,7 @@
   // Transitions and interactions
   export let transition = undefined
   export let onClick = undefined
-  export let onMouseover = undefined
+  export let onHover = undefined
   export let onMouseout = undefined
 
   // Other
@@ -265,7 +265,7 @@
   })
 
   // Interactivity
-  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
+  $: isInteractive = onClick !== undefined || onHover !== undefined || onMouseout !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -335,7 +335,7 @@
       $interactionManagerContext.loadLayer(type, createDataNecessaryForIndexing())
 
       if (onClick) $interactionManagerContext.addLayerInteraction('click', layerId, onClick)
-      if (onMouseover) $interactionManagerContext.addLayerInteraction('mouseover', layerId, onMouseover)
+      if (onHover) $interactionManagerContext.addLayerInteraction('hover', layerId, onHover)
       if (onMouseout) $interactionManagerContext.addLayerInteraction('mouseout', layerId, onMouseout)
     }
   }

@@ -18,7 +18,7 @@
   // Transitions and interactions
   export let transition = undefined
   export let onClick = undefined
-  export let onMouseover = undefined
+  export let onHover = undefined
   export let onMouseout = undefined
 
   // Other
@@ -30,6 +30,6 @@
   {x} {y} {geometry} {radius} 
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
-  {transition} {onClick} {onMouseover} {onMouseout}
+  {transition} {onClick} {onHover} {onMouseout}
   {zoomIdentity} _asPolygon={false}
 />

@@ -73,7 +73,7 @@
     <!-- <Polygon
       geometry={geometries[chosenGeometry]}
       interpolate
-      onMouseover={() => isHovering = true}
+      onHover={() => isHovering = true}
       onMouseout={() => isHovering = false}
       fill={isHovering ? 'blue' : 'yellow'}
     /> -->
@@ -81,7 +81,7 @@
     <PolygonLayer 
       geometry={[geometries[chosenGeometry]]}
       interpolate
-      onMouseover={() => isHovering = true}
+      onHover={() => isHovering = true}
       onMouseout={() => isHovering = false}
       fill={isHovering ? 'blue' : 'yellow'}
       index={[0]}
