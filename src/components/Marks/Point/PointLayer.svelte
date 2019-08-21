@@ -20,6 +20,9 @@
   export let onClick = undefined
   export let onHover = undefined
   export let onMouseout = undefined
+  export let onDragStart = undefined
+  export let onDrag = undefined
+  export let onDragEnd = undefined
 
   // Other
   export let index = undefined
@@ -32,5 +35,6 @@
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onHover} {onMouseout}
+  {onDragStart} {onDrag} {onDragEnd}
   {index} {zoomIdentity} _asPolygon={false}
 />

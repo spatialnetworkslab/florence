@@ -20,15 +20,13 @@ export default function (
 
 function createScaledGeometryArray (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps)
-  const scales = sectionContext.scales()
-
   if (isDefined(geometryProps.geometry)) {
-    return scaleGeometryProp(geometryProps.geometry, scales)
+    return scaleGeometryProp(geometryProps.geometry, sectionContext)
   }
 
   if (isUndefined(geometryProps.geometry)) {
     return createScaledGeometryArrayFromXYProps(
-      geometryProps.x, geometryProps.y, scales, 'Line'
+      geometryProps.x, geometryProps.y, sectionContext, 'Line'
     )
   }
 }

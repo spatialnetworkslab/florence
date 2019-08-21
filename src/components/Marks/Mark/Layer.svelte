@@ -62,6 +62,9 @@
   export let onClick = undefined
   export let onHover = undefined
   export let onMouseout = undefined
+  export let onDragStart = undefined
+  export let onDrag = undefined
+  export let onDragEnd = undefined
 
   // Other
   export let index = undefined
@@ -266,6 +269,7 @@
 
   // Interactivity
   $: isInteractive = onClick !== undefined || onHover !== undefined || onMouseout !== undefined
+  || onDragStart !== undefined || onDrag !== undefined || onDragEnd !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -337,6 +341,7 @@
       if (onClick) $interactionManagerContext.addLayerInteraction('click', layerId, onClick)
       if (onHover) $interactionManagerContext.addLayerInteraction('hover', layerId, onHover)
       if (onMouseout) $interactionManagerContext.addLayerInteraction('mouseout', layerId, onMouseout)
+      if (onDragStart) $interactionManagerContext.addLayerInteraction('drag', layerId, { onDragStart, onDrag, onDragEnd })
     }
   }
 
