@@ -6,8 +6,6 @@ export default class HoverHandler extends InteractionHandler {
 
     this._previousHoverIds = {}
     this._currentHoverIds = {}
-    this._startTime = undefined
-    this._endTime = undefined
   }
 
   _addEventListenerIfNecessary () {
@@ -33,9 +31,9 @@ export default class HoverHandler extends InteractionHandler {
 
   _handleEvent (coordinates, event) {
     const eventManager = this._interactionManager._eventManager
-
     // Mouse goes into callback directly
     // Touch measures first then if it is less than 250ms, then goes into callback
+   
     if (eventManager._detectIt.deviceType.includes('mouse') && eventManager._detectIt.primaryInput === 'mouse') {
       this._handleIndexing(coordinates, event)
     } else if (
@@ -48,20 +46,8 @@ export default class HoverHandler extends InteractionHandler {
       }, 250)
 
       if (event.type.includes('start') || event.type.includes('down')) {
-        this._pressTimer
+        this._pressTimer ()
       } 
-      
-      // if (event.type.includes('start') || event.type.includes('down')) {
-      //   this._startTime = event.timeStamp
-      // } else {
-      //   this._endTime = event.timeStamp
-      //   const timeDiff = this._endTime - this._startTime
-
-      //   // Considered as click if event lasts less than 250 ms
-      //   if (timeDiff >= 250) {
-      //     this._handleIndexing(coordinates, event)
-      //   }
-      // }
     }
   }
 
@@ -70,6 +56,7 @@ export default class HoverHandler extends InteractionHandler {
 
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(coordinates)
+
     this._handleHits(hits, event)
 
     this._cleanupPreviousHits()

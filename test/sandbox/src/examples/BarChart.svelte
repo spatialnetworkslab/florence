@@ -93,6 +93,7 @@
         fill={transformation === 'identity' ? 'green' : 'blue'}
         transition={2000}
         onClick={handler}
+        onHover={ () => transformation = 'identity' }
       />
 
     {/each}
