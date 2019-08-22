@@ -12,7 +12,7 @@
 </script>
 
 <script>
-  import { scaleLinear, scaleTime } from 'd3-scale'
+  import { scaleLinear, scaleTime, scaleOrdinal } from 'd3-scale'
   import { Graphic, Section, Label, LineLayer, XAxis, YAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
   
@@ -28,6 +28,9 @@
   // set scales based on ungrouped data
   const scaleX = scaleTime().domain(loadedData.domain('date')).nice()
   const scaleY = scaleLinear().domain(loadedData.domain('price')).nice()
+  const scaleColour = scaleOrdinal()
+    .domain(loadedData.domain('symbol'))
+    .range(['#54a24b', '#f58518', '#72b7b2', '#e45756', '#4c78a8'])
 
   // group data by symbol so we can plot one line per group
   const groupedData = loadedData.groupBy('symbol').done()
@@ -94,7 +97,7 @@
     <LineLayer
       x={groupedData.map('$grouped', group => group.column('date'))}
       y={groupedData.map('$grouped', group => group.column('price'))}
-      stroke={[['#54a24b'], ['#f58518'], ['#72b7b2'], ['#e45756'], ['#4c78a8']]}
+      stroke={groupedData.map('$grouped', group => scaleColour(group.column('symbol')))}
     />
 
     <XAxis
