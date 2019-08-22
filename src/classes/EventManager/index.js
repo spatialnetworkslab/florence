@@ -26,6 +26,12 @@ export default class EventManager {
     this._pointerendTracker = new EventTracker(this, 'pointerup')
     this._pointercancelTracker = new EventTracker(this, 'pointercancel')
 
+    // MSPointer
+    this._MSPointerStartTracker = new EventTracker(this, 'MSPointerDown')
+    this._MSPointerMoveTracker = new EventTracker(this, 'MSPointerMove')
+    this._MSPointerEndTracker = new EventTracker(this, 'MSPointerUp')
+    this._MSPointerCancelTracker = new EventTracker(this, 'MSPointerCancel')
+
     this._listeners = {}
     this._detectIt = detectIt
     this._passive = ['wheel', 'mousemove', 'pointermove', 'touchmove', 'MSPointerMove']
@@ -33,17 +39,12 @@ export default class EventManager {
     // Additional events that need to be tracked
     // in case of disrupted touch events
     this._exceptions = {
-      mouseout: ['touchcancel', 'touchend', 'pointercancel', 'pointerup']
+      mouseout: ['touchcancel', 'touchend', 'pointercancel', 'pointerup', 'MSPointerUp', 'MSPointerCancel'],
+      mouseover: ['touchend']
     }
   }
 
   detectDeviceType () {
-    // for passive events
-    // elem.addEventListener('touchstart', fn,
-    // detectIt.passiveEvents ? {passive:true} : false);
-
-    // TODO: Add in MSPOINTER events 
-
     // Update device type
     this._detectIt.updateOnlyOwnProperties()
 
@@ -120,9 +121,10 @@ export default class EventManager {
       for (const listenerId in this._listeners) {
         const { eventName, callback } = this._listeners[listenerId]
         const nativeEvents = this.addExceptions(listenerId, this._normalisedEvents[eventName])
-        console.log(Array.isArray(nativeEvents), nativeEvents)
+        
         if (Array.isArray(nativeEvents)) {
           for (let i = 0; i < nativeEvents.length; i++) {
+
             const tracker = this[getTrackerName(nativeEvents[i])]
             tracker.addEventListener(listenerId, callback)
           }
@@ -281,5 +283,9 @@ const eventNameToTrackerNameMap = {
   pointerdown: '_pointerdownTracker',
   pointerup: '_pointerendTracker',
   pointermove: '_pointermoveTracker',
-  pointercancel: '_pointercancelTracker'
+  pointercancel: '_pointercancelTracker',
+  MSPointerDown: '_MSPointerDownTracker',
+  MSPointerUp: '_MSPointerEndTracker',
+  MSPointerMove: '_MSPointerMoveTracker',
+  MSPointerCancel: '_MSPointerCancelTracker'
 }

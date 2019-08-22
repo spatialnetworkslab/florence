@@ -54,11 +54,8 @@ export default class MouseoutHandler extends InteractionHandler {
   }
 
   _fireForMouseOutHits (mouseEvent) {
-    // add something for specific event types like touchcancel, touchup where it fires
-    // despite being inside mark
-    //ended here
-    //console.log(this._previousHits, mouseEvent.type)
     for (const hitId in this._previousHits) {
+      console.log('out', mouseEvent.type)
       if (!(hitId in this._currentMouseoverIds) || this._interruptedTouch.includes(mouseEvent.type)) {
         const hit = this._previousHits[hitId]
 

@@ -15,7 +15,10 @@ export default class MouseoverHandler extends InteractionHandler {
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-mouseover'
 
-      eventManager.addEventListener('eventmove', listenerId, handler)
+      eventManager.addEventListener('eventmove', listenerId + '-move', handler)
+      if (eventManager._detectIt.deviceType.includes('touch')) {
+        eventManager.addEventListener('eventcancel', listenerId + '-end', handler)
+      }
     }
   }
 
@@ -32,16 +35,16 @@ export default class MouseoverHandler extends InteractionHandler {
   _nopropagation (event) {
     event.preventDefault() // Cancel the event from affecting the whole window
   }
-  
-  // add handler for touchcancel
+
   _handleEvent (coordinates, event) {
     // this._nopropagation(event)
     const eventManager = this._interactionManager._eventManager
 
     // Mouse goes into callback directly
-    // Touch measures first then if it is less than 250ms, then goes into callback
     if (eventManager._detectIt.deviceType.includes('mouse') && eventManager._detectIt.primaryInput === 'mouse') {
       this._handleIndexing(coordinates, event)
+
+    // Touch measures first then if it is less than 250ms, then goes into callback
     } else if (
       (eventManager._detectIt.deviceType.includes('touch') && eventManager._detectIt.primaryInput === 'touch') ||
       window.navigator.pointerEnabled || window.navigator.msPointerEnabled
@@ -50,10 +53,6 @@ export default class MouseoverHandler extends InteractionHandler {
       this._pressTimer = window.setTimeout(function () {
         self._handleIndexing(coordinates, event)
       }, 250)
-
-      if (event.type.includes('start') || event.type.includes('down')) {
-        this._pressTimer()
-      }
     }
   }
 
@@ -72,8 +71,9 @@ export default class MouseoverHandler extends InteractionHandler {
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
       const hitId = this._getHitId(hit)
-
-      if (!this._mouseAlreadyOver(hitId)) {
+      console.log('over', event.type)
+      console.log(!this._mouseAlreadyOver(hitId),(this._mouseAlreadyOver(hitId) && event.type.includes('move')))
+      if (!this._mouseAlreadyOver(hitId) || (this._mouseAlreadyOver(hitId) && event.type.includes('move'))) {
         this._previousMouseoverIds[hitId] = true
 
         if (this._isInLayer(hit)) {
