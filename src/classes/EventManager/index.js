@@ -42,6 +42,7 @@ export default class EventManager {
       mouseout: ['touchcancel', 'touchend', 'pointercancel', 'pointerup', 'MSPointerUp', 'MSPointerCancel'],
       mouseover: ['touchend']
     }
+
   }
 
   detectDeviceType () {

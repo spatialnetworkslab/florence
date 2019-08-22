@@ -49,10 +49,12 @@ export default class MouseoverHandler extends InteractionHandler {
       (eventManager._detectIt.deviceType.includes('touch') && eventManager._detectIt.primaryInput === 'touch') ||
       window.navigator.pointerEnabled || window.navigator.msPointerEnabled
     ) {
+      
       const self = this
       this._pressTimer = window.setTimeout(function () {
         self._handleIndexing(coordinates, event)
       }, 250)
+      event.preventDefault()
     }
   }
 
@@ -73,10 +75,11 @@ export default class MouseoverHandler extends InteractionHandler {
       const hitId = this._getHitId(hit)
       console.log('over', event.type)
       console.log(!this._mouseAlreadyOver(hitId),(this._mouseAlreadyOver(hitId) && event.type.includes('move')))
-      if (!this._mouseAlreadyOver(hitId) || (this._mouseAlreadyOver(hitId) && event.type.includes('move'))) {
+      if (!this._mouseAlreadyOver(hitId) || (this._mouseAlreadyOver(hitId) && event.type === 'touchmove')) {
         this._previousMouseoverIds[hitId] = true
 
         if (this._isInLayer(hit)) {
+          console.log(hit)
           this._layerCallbacks[hit.layerId](hit.$index, event)
         }
 
