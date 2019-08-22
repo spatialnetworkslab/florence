@@ -1,5 +1,5 @@
 import ClickHandler from './InteractionHandlers/ClickHandler.js'
-import HoverHandler from './InteractionHandlers/HoverHandler.js'
+import MouseoverHandler from './InteractionHandlers/MouseoverHandler.js'
 import MouseoutHandler from './InteractionHandlers/MouseoutHandler.js'
 import WheelHandler from './InteractionHandlers/WheelHandler.js'
 import PanHandler from './InteractionHandlers/PanHandler.js'
@@ -19,7 +19,7 @@ export default class InteractionManager {
     this._eventManager = undefined
 
     this._clickHandler = new ClickHandler(this)
-    this._hoverHandler = new HoverHandler(this)
+    this._mouseoverHandler = new MouseoverHandler(this)
     this._mouseoutHandler = new MouseoutHandler(this)
     this._wheelHandler = new WheelHandler(this)
     this._panHandler = new PanHandler(this)
@@ -96,14 +96,14 @@ export default class InteractionManager {
   // Add/remove layer interactions
   addLayerInteraction (interactionName, layerId, callback) {
     if (interactionName === 'click') this._clickHandler.addLayerInteraction(layerId, callback)
-    if (interactionName === 'hover') this._hoverHandler.addLayerInteraction(layerId, callback)
+    if (interactionName === 'mouseover') this._mouseoverHandler.addLayerInteraction(layerId, callback)
     if (interactionName === 'mouseout') this._mouseoutHandler.addLayerInteraction(layerId, callback)
     if (interactionName === 'drag') this._dragHandler.addLayerInteraction(layerId, callback)
   }
 
   removeAllLayerInteractions (layerId) {
     this._clickHandler.removeLayerInteraction(layerId)
-    this._hoverHandler.removeLayerInteraction(layerId)
+    this._mouseoverHandler.removeLayerInteraction(layerId)
     this._mouseoutHandler.removeLayerInteraction(layerId)
     this._dragHandler.removeLayerInteraction(layerId)
   }
@@ -111,14 +111,14 @@ export default class InteractionManager {
   // Add/remove mark interactions
   addMarkInteraction (interactionName, markId, callback) {
     if (interactionName === 'click') this._clickHandler.addMarkInteraction(markId, callback)
-    if (interactionName === 'hover') this._hoverHandler.addMarkInteraction(markId, callback)
+    if (interactionName === 'mouseover') this._mouseoverHandler.addMarkInteraction(markId, callback)
     if (interactionName === 'mouseout') this._mouseoutHandler.addMarkInteraction(markId, callback)
     if (interactionName === 'drag') this._dragHandler.addMarkInteraction(markId, callback)
   }
 
   removeAllMarkInteractions (markId) {
     this._clickHandler.removeMarkInteraction(markId)
-    this._hoverHandler.removeMarkInteraction(markId)
+    this._mouseoverHandler.removeMarkInteraction(markId)
     this._mouseoutHandler.removeMarkInteraction(markId)
     this._dragHandler.removeMarkInteraction(markId)
   }

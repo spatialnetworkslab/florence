@@ -48,7 +48,7 @@
       strokeWidth={hovered ? 9: 2}
       stroke={clicked ? 'green' : 'red'}
       onClick={() => { clicked = !clicked }} 
-      onHover={() => { hovered = !hovered }} 
+      onMouseover={() => { hovered = !hovered }} 
       transition={2000}
     />
 
@@ -58,7 +58,7 @@
       strokeWidth={hovered ? 2: 10}
       stroke={clicked ? 'green' : 'red'}
       onClick={() => { clicked = !clicked }} 
-      onHover={() => { hovered = !hovered }} 
+      onMouseover={() => { hovered = !hovered }} 
     />
 
   </Section>

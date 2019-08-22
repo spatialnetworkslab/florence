@@ -14,6 +14,7 @@ export default class MouseoutHandler extends InteractionHandler {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-mouseout'
+      this._interruptedTouch = eventManager._exceptions['mouseout']
 
       eventManager.addEventListener('eventmove', listenerId, handler)
     }
@@ -53,8 +54,12 @@ export default class MouseoutHandler extends InteractionHandler {
   }
 
   _fireForMouseOutHits (mouseEvent) {
+    // add something for specific event types like touchcancel, touchup where it fires
+    // despite being inside mark
+    //ended here
+    //console.log(this._previousHits, mouseEvent.type)
     for (const hitId in this._previousHits) {
-      if (!(hitId in this._currentMouseoverIds)) {
+      if (!(hitId in this._currentMouseoverIds) || this._interruptedTouch.includes(mouseEvent.type)) {
         const hit = this._previousHits[hitId]
 
         if (this._isInLayer(hit)) {
@@ -66,7 +71,7 @@ export default class MouseoutHandler extends InteractionHandler {
         }
 
         delete this._previousHits[hitId]
-      }
+      } 
     }
   }
 

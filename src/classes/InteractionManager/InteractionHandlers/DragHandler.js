@@ -18,9 +18,9 @@ export default class DragHandler extends InteractionHandler {
       const mousemoveHandler = this._mousemoveHandler.bind(this)
       const mouseupHandler = this._mouseupHandler.bind(this)
 
-      eventManager.addEventListener('mousedown', `${listenerId}-mousedown`, mousedownHandler)
-      eventManager.addEventListener('mousemove', `${listenerId}-mousemove`, mousemoveHandler)
-      eventManager.addEventListener('mouseup', `${listenerId}-mouseup`, mouseupHandler)
+      eventManager.addEventListener('eventdown', `${listenerId}-eventdown`, mousedownHandler)
+      eventManager.addEventListener('eventmove', `${listenerId}-eventmove`, mousemoveHandler)
+      eventManager.addEventListener('eventup', `${listenerId}-eventup`, mouseupHandler)
     }
   }
 
@@ -29,10 +29,10 @@ export default class DragHandler extends InteractionHandler {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id
-
-      eventManager.removeEventListener('mousedown', `${listenerId}-mousedown`)
-      eventManager.removeEventListener('mousemove', `${listenerId}-mousemove`)
-      eventManager.removeEventListener('mouseup', `${listenerId}-mouseup`)
+      
+      eventManager.removeEventListener('eventdown', `${listenerId}-eventdown`)
+      eventManager.removeEventListener('eventmove', `${listenerId}-eventmove`)
+      eventManager.removeEventListener('eventup', `${listenerId}-eventup`)
     }
   }
 

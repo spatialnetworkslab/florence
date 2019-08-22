@@ -23,7 +23,7 @@
   // Transitions and interactions
   export let transition = undefined
   export let onClick = undefined
-  export let onHover = undefined
+  export let onMouseover = undefined
   export let onMouseout = undefined
 
   // Other
@@ -37,6 +37,6 @@
   {strokeOpacity} {fillOpacity} {opacity}
   {text}
   {fontFamily} {fontSize} {fontWeight} {rotation} {anchorPoint}
-  {transition} {onClick} {onHover} {onMouseout}
+  {transition} {onClick} {onMouseover} {onMouseout}
   {zoomIdentity} _asPolygon={false}
 />

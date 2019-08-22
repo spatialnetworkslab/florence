@@ -11,6 +11,7 @@ export default class EventManager {
     this._mousemoveTracker = new EventTracker(this, 'mousemove')
     this._mousedownTracker = new EventTracker(this, 'mousedown')
     this._mouseupTracker = new EventTracker(this, 'mouseup')
+    this._mouseoutTracker = new EventTracker(this, 'mouseout')
     this._wheelTracker = new EventTracker(this, 'wheel')
 
     // Touch
@@ -28,12 +29,20 @@ export default class EventManager {
     this._listeners = {}
     this._detectIt = detectIt
     this._passive = ['wheel', 'mousemove', 'pointermove', 'touchmove', 'MSPointerMove']
+
+    // Additional events that need to be tracked
+    // in case of disrupted touch events
+    this._exceptions = {
+      mouseout: ['touchcancel', 'touchend', 'pointercancel', 'pointerup']
+    }
   }
 
   detectDeviceType () {
     // for passive events
     // elem.addEventListener('touchstart', fn,
     // detectIt.passiveEvents ? {passive:true} : false);
+
+    // TODO: Add in MSPOINTER events 
 
     // Update device type
     this._detectIt.updateOnlyOwnProperties()
@@ -94,12 +103,24 @@ export default class EventManager {
     this._mounted = true
   }
 
+  // stopped here in adding exceptions
+  addExceptions (id, events) {
+    for (let eventType in this._exceptions) {
+      if (id.includes(eventType)) {
+        const newEvents = this._exceptions[eventType]
+        events = events.concat(newEvents)
+      }
+    }
+
+    return events
+  }
+
   attachEventListeners () {
     if (this._mounted) {
       for (const listenerId in this._listeners) {
         const { eventName, callback } = this._listeners[listenerId]
-        const nativeEvents = this._normalisedEvents[eventName]
-
+        const nativeEvents = this.addExceptions(listenerId, this._normalisedEvents[eventName])
+        console.log(Array.isArray(nativeEvents), nativeEvents)
         if (Array.isArray(nativeEvents)) {
           for (let i = 0; i < nativeEvents.length; i++) {
             const tracker = this[getTrackerName(nativeEvents[i])]
@@ -133,12 +154,12 @@ export default class EventManager {
       }
     }
   }
- 
-  // fix bug here
+
+
   removeEventListener (eventName, listenerId) {
     delete this._listeners[listenerId]
     const nativeEvents = this._normalisedEvents[eventName]
-    
+
     if (Array.isArray(nativeEvents)) {
       for (let i = 0; i < nativeEvents.length; i++) {
         const tracker = this[getTrackerName(nativeEvents[i])]
@@ -174,6 +195,7 @@ export default class EventManager {
   _getMobileCoordinates (event) {
     const targetTouches = event.targetTouches
     const changedTouches = event.changedTouches
+
     if (targetTouches.length === 1 || changedTouches.length === 1) {
       if (targetTouches[0]) {
         const targetTouch = targetTouches[0]
@@ -250,13 +272,14 @@ const eventNameToTrackerNameMap = {
   mousemove: '_mousemoveTracker',
   mousedown: '_mousedownTracker',
   mouseup: '_mouseupTracker',
+  mouseout: '_mouseoutTracker',
   wheel: '_wheelTracker',
   touchstart: '_touchstartTracker',
   touchmove: '_touchmoveTracker',
   touchend: '_touchendTracker',
   touchcancel: '_touchcancelTracker',
   pointerdown: '_pointerdownTracker',
-  pointerup: '_pointerupTracker',
+  pointerup: '_pointerendTracker',
   pointermove: '_pointermoveTracker',
   pointercancel: '_pointercancelTracker'
 }

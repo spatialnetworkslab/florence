@@ -18,7 +18,7 @@
   // Transitions and interactions
   export let transition = undefined
   export let onClick = undefined
-  export let onHover = undefined
+  export let onMouseover = undefined
   export let onMouseout = undefined
 
   // Other
@@ -32,6 +32,6 @@
   {x1} {x2} {y1} {y2}
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
-  {transition} {onClick} {onHover} {onMouseout}
+  {transition} {onClick} {onMouseover} {onMouseout}
   {index} {zoomIdentity} {interpolate}
 />

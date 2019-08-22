@@ -131,7 +131,7 @@
         index={filteredData.column('$index')}
         fill={transformation === 'identity' ? 'black' : 'blue'}
         radius={transformation === 'identity' ? 4 : 6}
-        onHover={ix => hoverPoints[ix] = filteredData.row(ix)}
+        onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
         onMouseout={handleMouseout}
         onDragStart={handleLayerDragStart}
         onDrag={handleLayerDrag}
@@ -155,7 +155,7 @@
           y={row.b}
           fill={transformation === 'identity' ? 'black' : 'blue'}
           radius={transformation === 'identity' ? 3 : 6}
-          onHover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
+          onMouseover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
           onMouseout={() => handleMouseout(row.$index)}
         />
 
@@ -168,7 +168,7 @@
         opacity={dragPoint ? 0 : 1}
         radius={big ? 50 : 10}
         onClick={() => log('BOOM')}
-        onHover={() => big = true}
+        onMouseover={() => big = true}
         onMouseout={() => big = false}
         onDragStart={handleDragStart}
         onDrag={handleDrag}

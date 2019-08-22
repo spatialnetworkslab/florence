@@ -1,11 +1,11 @@
 import InteractionHandler from './InteractionHandler.js'
 
-export default class HoverHandler extends InteractionHandler {
+export default class MouseoverHandler extends InteractionHandler {
   constructor (interactionManager) {
     super(interactionManager)
 
-    this._previousHoverIds = {}
-    this._currentHoverIds = {}
+    this._previousMouseoverIds = {}
+    this._currentMouseoverIds = {}
   }
 
   _addEventListenerIfNecessary () {
@@ -13,7 +13,7 @@ export default class HoverHandler extends InteractionHandler {
       const handler = this._handleEvent.bind(this)
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
-      const listenerId = interactionManager._id + '-hover'
+      const listenerId = interactionManager._id + '-mouseover'
 
       eventManager.addEventListener('eventmove', listenerId, handler)
     }
@@ -23,17 +23,23 @@ export default class HoverHandler extends InteractionHandler {
     if (this._numberOfInteractions === 0) {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
-      const listenerId = interactionManager._id + '-hover'
+      const listenerId = interactionManager._id + '-mouseover'
 
       eventManager.removeEventListener('eventmove', listenerId)
     }
   }
 
+  _nopropagation (event) {
+    event.preventDefault() // Cancel the event from affecting the whole window
+  }
+  
+  // add handler for touchcancel
   _handleEvent (coordinates, event) {
+    // this._nopropagation(event)
     const eventManager = this._interactionManager._eventManager
+
     // Mouse goes into callback directly
     // Touch measures first then if it is less than 250ms, then goes into callback
-   
     if (eventManager._detectIt.deviceType.includes('mouse') && eventManager._detectIt.primaryInput === 'mouse') {
       this._handleIndexing(coordinates, event)
     } else if (
@@ -46,13 +52,13 @@ export default class HoverHandler extends InteractionHandler {
       }, 250)
 
       if (event.type.includes('start') || event.type.includes('down')) {
-        this._pressTimer ()
-      } 
+        this._pressTimer()
+      }
     }
   }
 
   _handleIndexing (coordinates, event) {
-    this._currentHoverIds = {}
+    this._currentMouseoverIds = {}
 
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(coordinates)
@@ -68,7 +74,7 @@ export default class HoverHandler extends InteractionHandler {
       const hitId = this._getHitId(hit)
 
       if (!this._mouseAlreadyOver(hitId)) {
-        this._previousHoverIds[hitId] = true
+        this._previousMouseoverIds[hitId] = true
 
         if (this._isInLayer(hit)) {
           this._layerCallbacks[hit.layerId](hit.$index, event)
@@ -79,14 +85,14 @@ export default class HoverHandler extends InteractionHandler {
         }
       }
 
-      this._currentHoverIds[hitId] = true
+      this._currentMouseoverIds[hitId] = true
     }
   }
 
   _cleanupPreviousHits () {
-    for (const hitId in this._previousHoverIds) {
-      if (!(hitId in this._currentHoverIds)) {
-        delete this._previousHoverIds[hitId]
+    for (const hitId in this._previousMouseoverIds) {
+      if (!(hitId in this._currentMouseoverIds)) {
+        delete this._previousMouseoverIds[hitId]
       }
     }
   }
@@ -100,6 +106,6 @@ export default class HoverHandler extends InteractionHandler {
   }
 
   _mouseAlreadyOver (hitId) {
-    return hitId in this._previousHoverIds
+    return hitId in this._previousMouseoverIds
   }
 }
