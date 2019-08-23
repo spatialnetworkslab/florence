@@ -52,7 +52,7 @@ export default class MouseoverHandler extends InteractionHandler {
     if (eventManager._detectIt.deviceType.includes('mouse') && eventManager._detectIt.primaryInput === 'mouse') {
       this._handleIndexing(coordinates, event)
 
-    // Touch measures first then if it is less than 250ms, then goes into callback
+    // Touch measures first then if it is greater than 250ms, then goes into callback
     } else if (
       (eventManager._detectIt.deviceType.includes('touch') && eventManager._detectIt.primaryInput === 'touch') ||
       window.navigator.pointerEnabled || window.navigator.msPointerEnabled
