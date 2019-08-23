@@ -36,7 +36,6 @@
   export let onPan = undefined
   
   // Aesthetics
-  export let contains = "content"
   export let padding = 10
   export let backgroundColor = undefined
   export let paddingColor = undefined
