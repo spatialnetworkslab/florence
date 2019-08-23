@@ -33,7 +33,7 @@ it as a supercharged `svg` root element.
 | flipY   | `Boolean`          | no       | `false`     |               |
 
 The `width` and `height` props are self-explanatory. 
-`padding` can be either a `Number`, or an `Object` with the following structure:
+`padding` can be either a `Number` or an `Object` with the following structure:
 
 ```js
 {
@@ -55,13 +55,22 @@ inside of the `Graphic`:
 
 <Graphic
   width={200} height={200}
+  scaleX={scaleLinear().domain([0, 1])}
+  scaleY={scaleLinear().domain([0, 1])}
 >
 
-
+  <!-- This point will be in the center of the graphic -->
+  <Point x={0.5} y={0.5} />
 
 </Graphic>
-
 ```
 
-## Usage
+`flipX` and `flipY` can be used to invert the `Graphic`'s coordinate system"
 
+```html
+<Graphic width={200} height={200} flipY>
+
+  
+
+</Graphic>
+```
