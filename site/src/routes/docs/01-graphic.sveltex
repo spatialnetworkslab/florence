@@ -1,0 +1,67 @@
+# Graphic
+
+```html
+<Graphic width={500} height={500}>
+
+  ...
+
+</Graphic>
+```
+
+___
+
+## Description
+
+Every `florence` graphic starts with the `Graphic` component. Think of
+it as a supercharged `svg` root element.
+
+## Rules
+
+- `florence` components cannot be used outside of a `Graphic` component
+- `Graphic` components cannot be nested
+
+## Props
+
+|  Prop   |      Type(s)       | Required |   Default   |     Units     |
+| ------- | ------------------ | -------- | ----------- | ------------- |
+| width   | `Number`           | yes      |             | screen pixels |
+| height  | `Number`           | yes      |             | screen pixels |
+| padding | `Number`, `Object` | no       | `0`         | screen pixels |
+| scaleX  | `Function`         | no       | `undefined` |               |
+| scaleY  | `Function`         | no       | `undefined` |               |
+| flipX   | `Boolean`          | no       | `false`     |               |
+| flipY   | `Boolean`          | no       | `false`     |               |
+
+The `width` and `height` props are self-explanatory. 
+`padding` can be either a `Number`, or an `Object` with the following structure:
+
+```js
+{
+  left: <Number>,
+  right: <Number>,
+  bottom: <Number>,
+  top: <Number>
+}
+```
+
+`scaleX` and `scaleY` can be used to create a local coordinate system
+inside of the `Graphic`:
+
+```html
+<script>
+  import { scaleLinear } from 'd3-scale'
+  import { Graphic, Point } from 'florence'
+</script>
+
+<Graphic
+  width={200} height={200}
+>
+
+
+
+</Graphic>
+
+```
+
+## Usage
+
