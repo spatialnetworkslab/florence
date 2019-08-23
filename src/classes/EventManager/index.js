@@ -40,7 +40,6 @@ export default class EventManager {
     // in case of disrupted touch events
     this._exceptions = {
       mouseout: ['touchcancel', 'touchend', 'pointercancel', 'pointerup', 'MSPointerUp', 'MSPointerCancel'],
-      mouseover: ['touchend']
     }
 
   }
@@ -59,8 +58,8 @@ export default class EventManager {
 
     // Mouse events for desktop:
     if (this._detectIt.deviceType.includes('mouse') && detectIt.primaryInput === 'mouse') {
-      eventup.push('mousedown')
-      eventdown.push('mouseup')
+      eventup.push('mouseup')
+      eventdown.push('mousedown')
       eventmove.push('mousemove')
       eventcancel.push('mouseout')
       eventclick.push('click')
@@ -68,8 +67,8 @@ export default class EventManager {
 
     // Touch events for iOS & Android:
     if (this._detectIt.deviceType.includes('touch') && detectIt.primaryInput === 'touch') {
-      eventup.push('touchstart')
-      eventdown.push('touchend')
+      eventup.push('touchend')
+      eventdown.push('touchstart')
       eventmove.push('touchmove')
       eventcancel.push('touchcancel')
       eventclick.push('touchstart')
@@ -78,8 +77,8 @@ export default class EventManager {
 
     // Pointer events for IE11 and MSEdge:
     if (window.navigator.pointerEnabled) {
-      eventup.push('pointerdown')
-      eventdown.push('pointerup')
+      eventup.push('pointerup')
+      eventdown.push('pointerdown')
       eventmove.push('pointermove')
       eventcancel.push('pointercancel')
       eventclick.push('pointerdown')
@@ -88,8 +87,8 @@ export default class EventManager {
 
     // Pointer events for IE10 and WP8:
     if (window.navigator.msPointerEnabled) {
-      eventup.push('MSPointerDown')
-      eventdown.push('MSPointerUp')
+      eventup.push('MSPointerUp')
+      eventdown.push('MSPointerDown')
       eventmove.push('MSPointerMove')
       eventcancel.push('MSPointerCancel')
       eventclick.push('MSPointerDown')
@@ -122,7 +121,7 @@ export default class EventManager {
       for (const listenerId in this._listeners) {
         const { eventName, callback } = this._listeners[listenerId]
         const nativeEvents = this.addExceptions(listenerId, this._normalisedEvents[eventName])
-        
+
         if (Array.isArray(nativeEvents)) {
           for (let i = 0; i < nativeEvents.length; i++) {
 

@@ -16,7 +16,17 @@ export default class MouseoutHandler extends InteractionHandler {
       const listenerId = interactionManager._id + '-mouseout'
       this._interruptedTouch = eventManager._exceptions['mouseout']
 
-      eventManager.addEventListener('eventmove', listenerId, handler)
+      // Mouse
+      if (eventManager._detectIt.deviceType.includes('mouse')) {
+        eventManager.addEventListener('eventmove', listenerId + '-mouse', handler)
+      }
+
+      // Touch
+      if (eventManager._detectIt.deviceType.includes('touch')) {
+        eventManager.addEventListener('eventup', listenerId + '-eventup', handler)
+        eventManager.addEventListener('eventcancel', listenerId + '-eventcancel', handler)
+      }
+     
     }
   }
 
@@ -36,11 +46,11 @@ export default class MouseoutHandler extends InteractionHandler {
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(coordinates)
 
-    this._storeHits(hits)
+    this._storeHits(hits, mouseEvent)
     this._fireForMouseOutHits(mouseEvent)
   }
 
-  _storeHits (hits) {
+  _storeHits (hits, mouseEvent) {
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
       const hitId = this._getHitId(hit)
@@ -55,7 +65,6 @@ export default class MouseoutHandler extends InteractionHandler {
 
   _fireForMouseOutHits (mouseEvent) {
     for (const hitId in this._previousHits) {
-      console.log('out', mouseEvent.type)
       if (!(hitId in this._currentMouseoverIds) || this._interruptedTouch.includes(mouseEvent.type)) {
         const hit = this._previousHits[hitId]
 

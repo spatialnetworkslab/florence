@@ -31,9 +31,9 @@ export default class PanHandler extends SectionInteractionHandler {
       const eventManager = this._interactionManager._eventManager
       const listenerId = this._interactionManager._id + '-pan'
 
-      eventManager.removeEventListener('eventup', listenerId + '-eventup')
-      eventManager.removeEventListener('eventmove', listenerId + '-eventmove')
       eventManager.removeEventListener('eventdown', listenerId + '-eventdown')
+      eventManager.removeEventListener('eventmove', listenerId + '-eventmove')  
+      eventManager.removeEventListener('eventup', listenerId + '-eventup') 
     }
   }
 

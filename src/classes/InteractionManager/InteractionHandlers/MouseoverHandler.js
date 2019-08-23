@@ -15,9 +15,14 @@ export default class MouseoverHandler extends InteractionHandler {
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-mouseover'
 
-      eventManager.addEventListener('eventmove', listenerId + '-move', handler)
+      // Mouse
+      if (eventManager._detectIt.deviceType.includes('mouse')) {
+        eventManager.addEventListener('eventmove', listenerId + '-mouseover-mouse', handler)
+      }
+
+      // Touch
       if (eventManager._detectIt.deviceType.includes('touch')) {
-        eventManager.addEventListener('eventcancel', listenerId + '-end', handler)
+        eventManager.addEventListener('eventdown', listenerId + '-mouseover-touch', handler)
       }
     }
   }
@@ -28,16 +33,19 @@ export default class MouseoverHandler extends InteractionHandler {
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-mouseover'
 
-      eventManager.removeEventListener('eventmove', listenerId)
+      // Mouse
+      if (eventManager._detectIt.deviceType.includes('mouse')) {
+        eventManager.removeEventListener('eventmove', listenerId)
+      }
+
+      // Touch
+      if (eventManager._detectIt.deviceType.includes('touch')) {
+        eventManager.removeEventListener('eventdown', listenerId)
+      }
     }
   }
 
-  _nopropagation (event) {
-    event.preventDefault() // Cancel the event from affecting the whole window
-  }
-
   _handleEvent (coordinates, event) {
-    // this._nopropagation(event)
     const eventManager = this._interactionManager._eventManager
 
     // Mouse goes into callback directly
@@ -49,12 +57,10 @@ export default class MouseoverHandler extends InteractionHandler {
       (eventManager._detectIt.deviceType.includes('touch') && eventManager._detectIt.primaryInput === 'touch') ||
       window.navigator.pointerEnabled || window.navigator.msPointerEnabled
     ) {
-      
       const self = this
       this._pressTimer = window.setTimeout(function () {
         self._handleIndexing(coordinates, event)
       }, 250)
-      event.preventDefault()
     }
   }
 
@@ -73,13 +79,13 @@ export default class MouseoverHandler extends InteractionHandler {
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
       const hitId = this._getHitId(hit)
-      console.log('over', event.type)
-      console.log(!this._mouseAlreadyOver(hitId),(this._mouseAlreadyOver(hitId) && event.type.includes('move')))
-      if (!this._mouseAlreadyOver(hitId) || (this._mouseAlreadyOver(hitId) && event.type === 'touchmove')) {
+      
+      // 1. First condition is for mouse/desktop, where cursor always present
+      // 2. Second condition is for 
+      if (!this._mouseAlreadyOver(hitId) || (this._mouseAlreadyOver(hitId) && event.type.includes('touch'))) {
         this._previousMouseoverIds[hitId] = true
 
         if (this._isInLayer(hit)) {
-          console.log(hit)
           this._layerCallbacks[hit.layerId](hit.$index, event)
         }
 
