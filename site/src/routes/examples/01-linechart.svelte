@@ -43,7 +43,7 @@
 >
   <Label
     x={250}
-    y={15}
+    y={10}
     text={'Stock prices of 5 tech companies over time'}
   />
 

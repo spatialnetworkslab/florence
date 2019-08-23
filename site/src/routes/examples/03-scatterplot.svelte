@@ -18,6 +18,12 @@
 
   // set up data container 
   const dataContainer = new DataContainer(data)
+    .dropNA()
+    .done()
+  const domainX = dataContainer.domain('Horsepower')
+  domainX[0] = 0
+  const domainY = dataContainer.domain('Miles_per_Gallon')
+  domainY[0] = 0
 
   const scaleX = scaleLinear().domain(dataContainer.domain('Horsepower'))
   const scaleY = scaleLinear().domain(dataContainer.domain('Miles_per_Gallon'))
@@ -33,7 +39,7 @@
 >
   <Label
     x={250}
-    y={15}
+    y={10}
     text={'Miles per gallon vs horsepower'}
   />
 
