@@ -33,45 +33,5 @@ it as a supercharged `svg` root element.
 | flipY   | `Boolean`          | no       | `false`     |               |
 
 The `width` and `height` props are self-explanatory. 
-`padding` can be either a `Number` or an `Object` with the following structure:
-
-```js
-{
-  left: <Number>,
-  right: <Number>,
-  bottom: <Number>,
-  top: <Number>
-}
-```
-
-`scaleX` and `scaleY` can be used to create a local coordinate system
-inside of the `Graphic`:
-
-```html
-<script>
-  import { scaleLinear } from 'd3-scale'
-  import { Graphic, Point } from 'florence'
-</script>
-
-<Graphic
-  width={200} height={200}
-  scaleX={scaleLinear().domain([0, 1])}
-  scaleY={scaleLinear().domain([0, 1])}
->
-
-  <!-- This point will be in the center of the graphic -->
-  <Point x={0.5} y={0.5} />
-
-</Graphic>
-```
-
-`flipX` and `flipY` can be used to invert the `Graphic`'s coordinate system"
-
-```html
-<Graphic width={200} height={200} flipY>
-
-  <!-- This point will be at the bottom of the graphic -->
-  <Point x={100} y={0} />
-
-</Graphic>
-```
+For more information on the other props, see the [local coordinates](/docs/03-local-coordinates) 
+documentation.

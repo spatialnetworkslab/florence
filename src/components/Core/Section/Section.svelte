@@ -24,6 +24,7 @@
   export let x2 = undefined
   export let y1 = undefined
   export let y2 = undefined
+  export let padding = 10
   export let scaleX = undefined
   export let scaleY = undefined
   export let flipX = false
@@ -36,7 +37,6 @@
   export let onPan = undefined
   
   // Aesthetics
-  export let padding = 10
   export let backgroundColor = undefined
   export let paddingColor = undefined
   
