@@ -100,7 +100,10 @@ local coordinate systems.
 
 ### Other aesthetic props
 
-TODO
+|      Prop      |      Type(s)       | Required |   Default   |     Units     |
+| -------------- | ------------------ | -------- | ----------- | ------------- |
+| backgroundColor | `String` | no | `undefined` | Color value |
+| paddingColor | `String` | no | `undefined` | Color value |
 
 ### Local coordinate specification
 

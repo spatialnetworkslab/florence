@@ -32,13 +32,13 @@
   export let zoomIdentity = undefined
   export let transformation = undefined
 
-  // Interactivity
-  export let onWheel = undefined
-  export let onPan = undefined
-  
   // Aesthetics
   export let backgroundColor = undefined
   export let paddingColor = undefined
+
+  // Interactivity
+  export let onWheel = undefined
+  export let onPan = undefined
   
   // Contexts
   const graphicContext = GraphicContext.subscribe()
