@@ -2,6 +2,30 @@
 
 ## Description
 
+Understanding how local coordinates work is key to understanding `florence`.
+The `Graphic` and `Section` components can create local coordinate systems,
+while all other components are affected by local coordinate systems.
+
+## Creating local coordinate systems
+
+As stated above, local coordinate systems are created with the `Graphic` and `Section`
+components. The following props are used to create local coordinate systems:
+
+|      Prop      | Component |      Type(s)       | Required |   Default   |     Units     |
+| -------------- | --------- | ------------------ | -------- | ----------- | ------------- |
+| padding        | Both      | `Number`, `Object` | no       | `0`         | screen pixels |
+| scaleX         | Both      | `Function`         | no       | `undefined` |               |
+| scaleY         | Both      | `Function`         | no       | `undefined` |               |
+| flipX          | Both      | `Boolean`          | no       | `false`     |               |
+| flipY          | Both      | `Boolean`          | no       | `false`     |               |
+| zoomIdentity   | `Section` | `Object`           | no       | `undefined` |               |
+| transformation | `Section` | `String`           | no       | `undefined` |               |
+
+As you can see, the `Section` has a few options that the `Graphic` does not have.
+All these props will now be discussed in detail.
+
+### Padding
+
 ...
 
 `padding` can be either a `Number` or an `Object` with the following structure:
@@ -15,8 +39,10 @@
 }
 ```
 
+### scaleX and scaleY
+
 `scaleX` and `scaleY` can be used to create a local coordinate system
-inside of the `Graphic`:
+inside of the `Graphic` or `Section`:
 
 ```html
 <script>
@@ -50,11 +76,13 @@ your scale:
   myCustomScale.invert = x => x / 2
 </script>
 
-<Graphic scaleX={myCustomScale}>
+<Section scaleX={myCustomScale}>
   ...
 ```
 
-`flipX` and `flipY` can be used to invert the `Graphic`'s coordinate system:
+### flipX and flipY
+
+`flipX` and `flipY` can be used to invert the coordinate system:
 
 ```html
 <Graphic width={200} height={200} flipY>
@@ -64,5 +92,23 @@ your scale:
 
 </Graphic>
 ```
+
+### zoomIdentity
+
+TODO
+
+### transformation
+
+TODO
+
+## Inside a local coordinate system
+
+### Nesting coordinate systems
+
+TODO
+
+### Function syntax
+
+TODO
 
 ## Examples
