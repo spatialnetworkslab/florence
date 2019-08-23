@@ -15,7 +15,7 @@ ___
 Every `florence` graphic starts with the `Graphic` component. Think of
 it as a supercharged `svg` root element.
 
-## Rules
+## Caveats
 
 - `florence` components cannot be used outside of a `Graphic` component
 - `Graphic` components cannot be nested
@@ -70,7 +70,8 @@ inside of the `Graphic`:
 ```html
 <Graphic width={200} height={200} flipY>
 
-  
+  <!-- This point will be at the bottom of the graphic -->
+  <Point x={100} y={0} />
 
 </Graphic>
 ```
