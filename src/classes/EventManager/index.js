@@ -39,9 +39,8 @@ export default class EventManager {
     // Additional events that need to be tracked
     // in case of disrupted touch events
     this._exceptions = {
-      mouseout: ['touchcancel', 'touchend', 'pointercancel', 'pointerup', 'MSPointerUp', 'MSPointerCancel'],
+      mouseout: ['touchcancel', 'touchend', 'pointercancel', 'pointerup', 'MSPointerUp', 'MSPointerCancel']
     }
-
   }
 
   detectDeviceType () {
@@ -104,23 +103,11 @@ export default class EventManager {
     this._mounted = true
   }
 
-  // stopped here in adding exceptions
-  addExceptions (id, events) {
-    for (let eventType in this._exceptions) {
-      if (id.includes(eventType)) {
-        const newEvents = this._exceptions[eventType]
-        events = events.concat(newEvents)
-      }
-    }
-
-    return events
-  }
-
   attachEventListeners () {
     if (this._mounted) {
       for (const listenerId in this._listeners) {
         const { eventName, callback } = this._listeners[listenerId]
-        const nativeEvents = this.addExceptions(listenerId, this._normalisedEvents[eventName])
+        const nativeEvents = this._normalisedEvents[eventName]
 
         if (Array.isArray(nativeEvents)) {
           for (let i = 0; i < nativeEvents.length; i++) {
