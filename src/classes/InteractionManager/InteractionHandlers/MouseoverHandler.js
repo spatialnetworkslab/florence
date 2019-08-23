@@ -81,7 +81,7 @@ export default class MouseoverHandler extends InteractionHandler {
       const hitId = this._getHitId(hit)
       
       // 1. First condition is for mouse/desktop, where cursor always present
-      // 2. Second condition is for 
+      // 2. Second condition is for touch cases, where cursor leaves screen
       if (!this._mouseAlreadyOver(hitId) || (this._mouseAlreadyOver(hitId) && event.type.includes('touch'))) {
         this._previousMouseoverIds[hitId] = true
 

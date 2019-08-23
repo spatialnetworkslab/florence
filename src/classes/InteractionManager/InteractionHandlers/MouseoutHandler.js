@@ -36,7 +36,15 @@ export default class MouseoutHandler extends InteractionHandler {
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-mouseout'
 
-      eventManager.removeEventListener('eventmove', listenerId)
+      if (eventManager._detectIt.deviceType.includes('mouse')) {
+        eventManager.removeEventListener('eventmove', listenerId)
+      }
+
+      // Touch
+      if (eventManager._detectIt.deviceType.includes('touch')) {
+        eventManager.removeEventListener('eventup', listenerId)
+        eventManager.removeEventListener('eventcancel', listenerId)
+      }
     }
   }
 

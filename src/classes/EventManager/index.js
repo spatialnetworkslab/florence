@@ -37,7 +37,7 @@ export default class EventManager {
     this._passive = ['wheel', 'mousemove', 'pointermove', 'touchmove', 'MSPointerMove']
 
     // Additional events that need to be tracked
-    // in case of disrupted touch events
+    // in case of disrupted/cancelled touch events
     this._exceptions = {
       mouseout: ['touchcancel', 'touchend', 'pointercancel', 'pointerup', 'MSPointerUp', 'MSPointerCancel']
     }
@@ -111,7 +111,6 @@ export default class EventManager {
 
         if (Array.isArray(nativeEvents)) {
           for (let i = 0; i < nativeEvents.length; i++) {
-
             const tracker = this[getTrackerName(nativeEvents[i])]
             tracker.addEventListener(listenerId, callback)
           }
