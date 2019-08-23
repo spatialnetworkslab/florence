@@ -16,10 +16,14 @@ The `Section` is one of the corner stones of `florence`. It can be used to:
 
 - define local coordinate systems
 - apply coordinate transformations
-- enable zooming and panning
+- specify zooming and panning behavior
 - enable interactions
 
 ## Caveats
 
 - `Section`s can be nested, but
 - a `Section` with a coordinate transformation can only contain marks, layers and axes
+
+## Props
+
+
