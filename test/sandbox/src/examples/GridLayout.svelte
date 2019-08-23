@@ -25,7 +25,7 @@
   const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scaleLinear().domain(data.domain('b'))
 
-  const groupedData = data.groupBy('color').done()
+  const groupedData = data.groupBy('color')
 
   $: rows = Math.ceil(4/cols)
 </script>

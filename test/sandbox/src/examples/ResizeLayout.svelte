@@ -19,7 +19,7 @@
   }
 
   let data = new DataContainer(generateData(50))
-  const groupedData = data.groupBy('fruit').done()
+  const groupedData = data.groupBy('fruit')
 
   // Grid layout specs
   let height = 420
