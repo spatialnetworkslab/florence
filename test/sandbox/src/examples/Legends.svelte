@@ -5,7 +5,7 @@
   import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
 
   // florence
-	import { Graphic, Grid, Section, PointLayer, Point, Label } from '../../../../src/'
+	import { Graphic, Grid, Section, PointLayer, Point, Label, GradientLegend } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
@@ -48,7 +48,7 @@
   const yLoc = data.domain('b')[1]
 
   // open question: how do we evalute fill functions against the domains for marks? x or y?
-  // takes crae of tickmarks, color scale spec
+  // takes care of tickmarks, color scale spec
   // maybe convenience function would be helpful
   console.log(d3)
   const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
@@ -67,7 +67,14 @@
     scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
   > 
-    <Label 
+    <GradientLegend
+      x1={50} x2={150}
+      y1={50} y2={450}
+      background={'pink'}
+      fill={data.map('a', linearColorScale)}
+    />
+
+    <!-- <Label 
         x={xLoc}
         y={100}
         text={'Legends'}
@@ -75,16 +82,17 @@
         fontSize="16"
         fontWeight="bold"
         rotation={0}
-    />
+    /> -->
 		
 		<Section
-			x1={50} x2={450}
+			x1={150} x2={450}
 			y1={50} y2={350}
 			scaleX={scaleA}
 			scaleY={scaleB}
       flipY
       {transformation}
-		>
+		> 
+    
       >
 			<PointLayer
         x={filteredData.column('a')}
