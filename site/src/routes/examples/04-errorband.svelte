@@ -33,7 +33,10 @@
     .done()
 
   const calcMean = arr => arr.reduce((acc, curr) => acc + curr) / stats.column('count_miles')
-  const variance = calcMean(dataContainer.map('Miles_per_Gallon', el => Math.pow(el - stats.column('mean_miles'), 2)))
+  const variance = calcMean( dataContainer.map('Miles_per_Gallon'
+                           , el => Math.pow(el - stats.column('mean_miles') 
+                           , 2
+                           )))
   const stdDev = Math.sqrt(variance)
 
   const scaleX = scaleLinear().domain(dataContainer.domain('Horsepower'))
