@@ -29,11 +29,11 @@
   // )
   // const binned = dataContainer.bin({ groupBy: 'a', method: 'EqualInterval', numClasses: 3 }).done()
 
-  const dataContainer = new DataContainer(reformattedData)
-  const binned = dataContainer
-    .dropNA()
-    .bin({ groupBy: 'IMDB_Rating', method: 'EqualInterval', numClasses: 3 })
-    .done()
+  // const dataContainer = new DataContainer(reformattedData)
+  // const binned = dataContainer
+  //   .dropNA()
+  //   .bin({ groupBy: 'IMDB_Rating', method: 'EqualInterval', numClasses: 3 })
+  //   .done()
 
   // set scales based on ungrouped data
 

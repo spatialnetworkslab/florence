@@ -10,7 +10,7 @@
 </script>
 
 <script>
-  import { scaleLinear, scaleTime, scaleOrdinal } from 'd3-scale'
+  import { scaleLinear, scaleOrdinal } from 'd3-scale'
   import { Graphic, Section, Label, XAxis, YAxis, PointLayer } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
   

@@ -10,7 +10,7 @@
 </script>
 
 <script>
-  import { scaleLinear, scaleTime, scaleOrdinal } from 'd3-scale'
+  import { scaleLinear } from 'd3-scale'
   import { Graphic, Section, Label, XAxis, YAxis, PointLayer, Rectangle, Line } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
   
@@ -41,9 +41,6 @@
 
   const scaleX = scaleLinear().domain(dataContainer.domain('Horsepower'))
   const scaleY = scaleLinear().domain(dataContainer.domain('Miles_per_Gallon'))
-  const scaleColour = scaleOrdinal()
-    .domain(dataContainer.domain('Origin'))
-    .range(['#e45756', '#f58518', '#4c78a8'])
 
 </script>
 
