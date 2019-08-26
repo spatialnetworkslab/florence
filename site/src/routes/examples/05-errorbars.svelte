@@ -50,7 +50,7 @@
 
   // set scales based on ungrouped sample stats
   const scaleMeanYield = scaleLinear().domain(domainX)
-  const scaleVariety = scalePoint().domain(sampleStats.domain('variety'))
+  const scaleVariety = scalePoint().domain(sampleStats.domain('variety')).padding(0.4)
 
   // group sample stats by variety so as to plot one line per group
   const groupedSampleStats = sampleStats.groupBy('variety')
@@ -71,7 +71,7 @@
   <Section
     scaleX={scaleMeanYield} 
 		scaleY={scaleVariety}
-    padding={{left: 40, right: 25, top: 25, bottom: 40}}
+    padding={{left: 90, right: 25, top: 25, bottom: 40}}
   >  
 
     <PointLayer
@@ -93,10 +93,10 @@
       titleFontWeight={'bold'}
     />
 
-    <!-- <YAxis
+    <YAxis
       title='Variety'
       titleFontWeight={'bold'}
-    /> -->
+    />
 
   </Section>
 

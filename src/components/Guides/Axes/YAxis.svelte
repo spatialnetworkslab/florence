@@ -75,7 +75,6 @@
   let tickYCoords
   let tickLabelXCoords
   let tickLabelYCoords
-  let format
   let tickLabelText
   let titleXCoord
   let titleYCoord
@@ -90,16 +89,24 @@
   $: {
     if (Array.isArray(tickValues) && tickValues.length > 0) {
       tickPositions = tickValues
-    } else {
+    } else if (scaleY.ticks) {
       tickPositions = scaleY.ticks(tickCount)
+    } else {
+      tickPositions = scaleY.domain()
     }
+    
     if (tickExtra && tickPositions[0] !== scaleY.domain()[0]) {
       tickPositions.unshift(scaleY.domain()[0])
     }
+    
     ({tickXCoords, tickYCoords} = createYTickGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, flip));
-    ({tickLabelXCoords, tickLabelYCoords} = createYLabelGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, labelOffset, flip))
-    format = (labelFormat) ? labelFormat : scaleY.tickFormat(tickPositions.length)
-    tickLabelText = tickPositions.map(format)
+    ({tickLabelXCoords, tickLabelYCoords} = createYLabelGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, labelOffset, flip));
+    
+    if (scaleY.tickFormat) {
+      tickLabelText = tickPositions.map(labelFormat ? labelFormat : scaleY.tickFormat(tickPositions.length)) 
+    } else {
+      tickLabelText = tickPositions
+    }
     axisWidth = baseLineWidth + tickSize + labelOffset + labelFontSize
     labelAnchorPoint = flip ? 'l' : 'r'
   }
