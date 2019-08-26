@@ -56,15 +56,25 @@
     // const zoomContext = ZoomContext.subscribe()
 
     const composeGradient = function () {
-      let specs = {}
-      if (this.orientation === 'vertical') {
-        specs.endX = '0%'
-        specs.endY = '100%'
-      } else {
-        specs.endX = '100%'
-        specs.endY = '0%'
-      }
-      return specs
+        let endX
+        let endY
+        if (this.orientation === 'vertical') {
+        endX = '0%'
+        endY = '100%'
+        } else {
+        endX = '100%'
+        endY = '0%'
+        }
+
+    //   if (typeof fill === 'Array'){
+
+    //   }
+
+    //   if (typeof fillOpacity === 'Array'){
+          
+    //   }
+      
+      return {endX, endY}
     }
 
     function isValid (x1, x2, y1, y2){
@@ -86,18 +96,18 @@
 <!-- Gradient definition -->
     <defs>
       <linearGradient
-        :id="uuid"
-        :x2="composeGradient.endX"
-        :y2="composeGradient.endY"
-        x1="0%"
-        y1="0%">
-        {#each fill as c}
+        id={'grad1'}
+        x1={'0%'}
+        y1={'0%'}
+        x2={composeGradient.endX}
+        y2={composeGradient.endY}
+        >
+        {#each fill as c, i}
             <stop
-            :key="i"
-            :offset="`${100 + '%'}`"
-            :style="`stop-color:${c};stop-opacity:${1}`" />
+            key={i}
+            offset={'50%'}
+            style={'stop-color:${c};stop-opacity:${0.5}'} />
         {/each}
-        
       </linearGradient>
     </defs>
 
@@ -131,7 +141,7 @@
                 x2 = {1}
                 y1 = {0.125}
                 y2 = {1}
-                fill={`url(#uuid)`}
+                fill={'url(#grad1)'}
             />
     
         </Section>

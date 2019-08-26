@@ -22,3 +22,4 @@ export { interpolateGeometry } from './interpolate'
 export { transitionGeometry, transitionGeometries } from './transition'
 
 export { linearRingArea, linearRingIsClockwise } from './calculateArea.js'
+

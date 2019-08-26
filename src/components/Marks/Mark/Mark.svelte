@@ -92,7 +92,7 @@
       )
     }
   }
-  
+
   // Create 'positioning' aesthetics object
   let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
   $: {
@@ -137,7 +137,7 @@
   let tr_fillOpacity = createTransitionable('fillOpacity', aesthetics.fillOpacity, transition)
   let tr_strokeOpacity = createTransitionable('strokeOpacity', aesthetics.strokeOpacity, transition)
   let tr_opacity = createTransitionable('opacity', aesthetics.opacity, transition)
-
+  
   // text transtitionables
   let tr_fontSize = createTransitionable('fontSize', aesthetics.fontSize, transition)
   let tr_fontWeight = createTransitionable('fontWeight', aesthetics.fontWeight, transition)
@@ -183,9 +183,8 @@
   $: { if (initDone()) tr_fillOpacity.set(aesthetics.fillOpacity) }
   $: { if (initDone()) tr_strokeOpacity.set(aesthetics.strokeOpacity) }
   $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
-
+  
   // text aes changes
-
   $: { if (initDone()) tr_fontSize.set(aesthetics.fontSize) }
   $: { if (initDone()) tr_fontWeight.set(aesthetics.fontWeight) }
   $: { if (initDone()) tr_rotation.set(aesthetics.rotation) }
