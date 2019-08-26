@@ -16,10 +16,10 @@
   
   export let data
 
-  // set up data container 
+  // set up data container
   const dataContainer = new DataContainer(data)
     .dropNA()
-    .done()
+
   const domainX = dataContainer.domain('Horsepower')
   domainX[0] = 0
   const domainY = dataContainer.domain('Miles_per_Gallon')
@@ -30,7 +30,6 @@
       mean_miles: { Miles_per_Gallon: 'mean' },
       count_miles: { Miles_per_Gallon: 'count' }
     })
-    .done()
 
   const calcMean = arr => arr.reduce((acc, curr) => acc + curr) / stats.column('count_miles')
   const variance = calcMean( dataContainer.map('Miles_per_Gallon'
@@ -39,8 +38,8 @@
                            )))
   const stdDev = Math.sqrt(variance)
 
-  const scaleX = scaleLinear().domain(dataContainer.domain('Horsepower'))
-  const scaleY = scaleLinear().domain(dataContainer.domain('Miles_per_Gallon'))
+  const scaleX = scaleLinear().domain(domainX)
+  const scaleY = scaleLinear().domain(domainY)
 
 </script>
 

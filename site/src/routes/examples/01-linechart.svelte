@@ -23,7 +23,6 @@
       .mutate({ realDate: row => new Date(row.date) })
       .select(['symbol', 'realDate', 'price'])
       .rename({ realDate: 'date' })
-      .done()
 
   // set scales based on ungrouped data
   const scaleX = scaleTime().domain(loadedData.domain('date')).nice()
@@ -33,7 +32,7 @@
     .range(['#54a24b', '#f58518', '#72b7b2', '#e45756', '#4c78a8'])
 
   // group data by symbol so we can plot one line per group
-  const groupedData = loadedData.groupBy('symbol').done()
+  const groupedData = loadedData.groupBy('symbol')
 
 </script>
 

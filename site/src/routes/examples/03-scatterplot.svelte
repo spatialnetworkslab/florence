@@ -19,14 +19,15 @@
   // set up data container 
   const dataContainer = new DataContainer(data)
     .dropNA()
-    .done()
+  
+  // set domains to 0
   const domainX = dataContainer.domain('Horsepower')
   domainX[0] = 0
   const domainY = dataContainer.domain('Miles_per_Gallon')
   domainY[0] = 0
 
-  const scaleX = scaleLinear().domain(dataContainer.domain('Horsepower'))
-  const scaleY = scaleLinear().domain(dataContainer.domain('Miles_per_Gallon'))
+  const scaleX = scaleLinear().domain(domainX)
+  const scaleY = scaleLinear().domain(domainY)
   const scaleColour = scaleOrdinal()
     .domain(dataContainer.domain('Origin'))
     .range(['#e45756', '#f58518', '#4c78a8'])

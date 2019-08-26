@@ -25,7 +25,6 @@
       pop_mean_yield: { yield: 'mean' },
       pop_count_yield: { yield: 'count' }
     })
-    .done()
   const calcMean = arr => arr.reduce((acc, curr) => acc + curr) / popStats.column('pop_count_yield')
   const popVar = calcMean( dataContainer.map('yield'
                             , el => Math.pow(el - popStats.column('pop_mean_yield') 
@@ -40,7 +39,6 @@
       mean_yield: { yield: 'mean' },
       count_per_variety: { yield: 'count' }
     })
-    .done()
 
   // calculate error margin for 95% confidence level
   const err = sampleStats.map('count_per_variety', el => 1.96 * popStdDev / Math.sqrt(el))
@@ -51,11 +49,11 @@
   domainX[1] = 50
 
   // set scales based on ungrouped sample stats
-  const scaleMeanYield = scaleLinear().domain(sampleStats.domain('mean_yield'))
+  const scaleMeanYield = scaleLinear().domain(domainX)
   const scaleVariety = scalePoint().domain(sampleStats.domain('variety'))
 
   // group sample stats by variety so as to plot one line per group
-  const groupedSampleStats = sampleStats.groupBy('variety').done()
+  const groupedSampleStats = sampleStats.groupBy('variety')
 
 </script>
 
