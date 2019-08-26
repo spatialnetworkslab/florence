@@ -44,10 +44,10 @@ function generateDataPoints (func, x, sectionContext) {
 function getDomainX (sectionContext) {
   let domainX
 
-  if (isValidScale(sectionContext._scaleX)) {
-    domainX = sectionContext._scaleX.domain()
+  if (isValidScale(sectionContext.scaleX)) {
+    domainX = sectionContext.scaleX.domain()
   } else {
-    domainX = sectionContext._rangeX
+    domainX = sectionContext.rangeX
   }
 
   return domainX
@@ -85,7 +85,7 @@ function interpolatePointsFromFunc (func, domainX, resolution = 100) {
 }
 
 function createTotalTransformation (sectionContext, coordinateTransformationContext, zoomContext) {
-  const { scaleX, scaleY } = sectionContext.scales()
+  const { scaleX, scaleY } = sectionContext
 
   const sectionTransformation = ([x, y]) => ([scaleX(x), scaleY(y)])
   const coordinateTransformation = createCoordinateTransformation(coordinateTransformationContext)
@@ -119,18 +119,15 @@ function createZoomTransformation (zoomContext) {
 function geometryCompletelyOffScreen (geometry, totalTransformation, sectionContext) {
   const transformedGeometry = transformGeometry(geometry, totalTransformation)
 
-  const rangeX = [sectionContext.x1(), sectionContext.x2()].sort((a, b) => a - b)
-  const rangeY = [sectionContext.y1(), sectionContext.y2()].sort((a, b) => a - b)
-
   for (let i = 0; i < transformedGeometry.coordinates.length; i++) {
     const point = transformedGeometry.coordinates[i]
-    if (pointIsInRange(point, rangeX, rangeY)) return false
+    if (pointIsInRange(point, sectionContext)) return false
   }
 
   return true
 }
 
-function pointIsInRange (point, rangeX, rangeY) {
-  return point[0] >= rangeX[0] && point[0] <= rangeX[1] &&
-    point[1] >= rangeY[0] && point[1] <= rangeY[1]
+function pointIsInRange (point, { x1, x2, y1, y2 }) {
+  return point[0] >= x1 && point[0] <= x2 &&
+    point[1] >= y1 && point[1] <= y2
 }

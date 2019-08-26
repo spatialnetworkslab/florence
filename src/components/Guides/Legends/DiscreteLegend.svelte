@@ -123,18 +123,18 @@
         // d3 scale
         if (getDataType(scale) === 'function') {
             locScale = scale.range(locRange)
-        } else if (getDataType(scale) === 'interval:quantitative') {
+        } else if (getDataType(scale[0]) === 'interval:quantitative') {
             let tickDomain = [Math.min(...tickLabelText), Math.max(...tickLabelText)]
             console.log(tickDomain, locRange)
             locScale = scaleLinear().domain(tickDomain).range(locRange)
-        } else if (getDataType(scale) === 'temporal') {
+        } else if (getDataType(scale[0]) === 'temporal') {
             // pass
-        } else if (getDataType(scale) === 'quantitative') {
-            // pass
-        } else if (getDataType(scale) === 'categorical') {
+        } else if (getDataType(scale[0]) === 'quantitative') {
+            locScale = 0.85/tickLabelText.length
+        } else if (getDataType(scale[0]) === 'categorical') {
             // pass
         }
-
+        console.log(getDataType(scale))
         if (orientation === 'vertical') {
             tickLabelXCoords = tickLabelText.map((value, i) => {
                 return labelOffset
@@ -142,10 +142,10 @@
 
             tickLabelYCoords = tickLabelText.map((value, i) => {
                 if (flip) {
-                    return 1 - locScale(value)
+                    return 1 - locScale * i//1 - locScale(value)
                 } 
 
-                return locScale(value)
+                return locScale * (i +0.5)// locScale(value)
             })
 
             colorBarStartXCoords = tickLabelText.map((value, i) => {
@@ -166,7 +166,7 @@
                 if (i === 0) {
                     return 0
                 }
-                return locScale(value)
+                return locScale * i //locScale(value)
             })
 
             colorBarEndYCoords = tickLabelText.map((value, i) => {
@@ -174,7 +174,7 @@
                     return colorBarLength
                 }
 
-                return locScale(tickLabelText[i+1])
+                return locScale * (i+1)// locScale(tickLabelText[i+1])
             })
         } else {
             tickLabelYCoords = tickLabelText.map((value, i) => {
@@ -204,6 +204,9 @@
                 return fill[i]
             })
         }
+        console.log(fill)
+        console.log(scale)
+        console.log(tickLabelText)
         console.log(tickLabelYCoords)
         console.log(colorBarStartYCoords)
         console.log(colorBarEndYCoords)

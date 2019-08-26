@@ -43,7 +43,7 @@ function validateAesthetics (passedAesthetics, allowedAesthetics) {
     if (isUndefined(aestheticValue)) {
       if (aestheticName in allowedAesthetics) {
         if (aestheticRequirements.required) throw aestheticRequiredError(aestheticName)
-        if (aestheticRequirements.default) {
+        if (isDefined(aestheticRequirements.default)) {
           aesthetics[aestheticName] = aestheticRequirements.default
         } else {
           aesthetics[aestheticName] = aestheticValue

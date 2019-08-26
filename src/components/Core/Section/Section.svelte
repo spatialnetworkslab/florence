@@ -66,7 +66,7 @@
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
-  // Keep SectionContext and InteractionManagerContext up to date
+  // Keep SectionContext and CoordinateTransformationContext up to date
   $: {
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
     rangeX = [scaledCoordinates.x1 + padding.left, scaledCoordinates.x2 - padding.right]
@@ -87,6 +87,7 @@
     )
 
     $interactionManagerContext.loadSection($newSectionContext)
+    $interactionManagerContext.loadCoordinateTransformation($newCoordinateTransformationContext)
   }
 
   // Change callbacks if necessary
@@ -97,6 +98,7 @@
   // Update zooming and panning
   $: {
     ZoomContext.update(zoomContext, zoomIdentity)
+    $interactionManagerContext.loadZoom($zoomContext)
   }
 
   beforeUpdate(() => {

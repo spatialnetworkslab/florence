@@ -13,6 +13,9 @@
   import GeoPolygons from './examples/GeoPolygons.svelte'
   import FuncLines from './examples/FuncLines.svelte'
   import Legends from './examples/Legends.svelte'
+  import DragCategorical from './examples/DragCategorical.svelte'
+  import FunctionAPI from './examples/FunctionAPI.svelte'
+  import FlipTest from './examples/FlipTest.svelte'
 
   // and add them to this component array
   let components = [
@@ -70,6 +73,19 @@
       name: 'Legends',
       url: '/legends',
       component: Legends
+      name: 'DragCategorical',
+      url: 'dragcategorical',
+      component: DragCategorical
+    },
+    {
+      name: 'Function API',
+      url: 'functionapi',
+      component: FunctionAPI
+    },
+    {
+      name: 'Flip test',
+      url: 'fliptest',
+      component: FlipTest
     }
   ]
 </script>

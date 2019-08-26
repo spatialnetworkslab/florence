@@ -4,7 +4,7 @@
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
-	const data = new DataContainer(generateData(N, 0.25))
+	let data = new DataContainer(generateData(N, 0.25))
 	function generateData (N, error) {
 		const getError = () => -error + (Math.random() * (2 * error)) * N
 		let data = { a: [], b: [] }
@@ -15,10 +15,12 @@
 		return data
   }
   
-  let treshold = 0
-  $: filteredData = data
-    .filter(row => row.a > treshold)
-    .done()
+  let threshold = 0
+  let filteredData
+  $: {
+    filteredData = data
+    .filter(row => row.a > threshold)
+  }
 
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scaleLinear().domain(data.domain('b'))
@@ -37,6 +39,46 @@
   function handleMouseout (ix) {
     delete hoverPoints[ix]
     hoverPoints = hoverPoints
+  }
+  
+  let bigPoint = { x: 50, y: 50 }
+  let dragPoint
+
+  function handleDragStart (event) {
+    dragPoint = event.localCoords
+  }
+
+  function handleDrag (event) {
+    dragPoint = event.localCoords
+  }
+
+  function handleDragEnd (event) {
+    bigPoint = dragPoint
+    dragPoint = undefined
+  }
+
+  let dragPointLayer
+  let dragIndex
+  let opacityArray
+  $: {
+    opacityArray = Array(filteredData._length).fill(1)
+    opacityArray[filteredData._indexToRowNumber[dragIndex]] = 0
+  }
+
+  function handleLayerDragStart (event) {
+    dragIndex = event.hitIndex
+    dragPointLayer = event.localCoords
+  }
+
+  function handleLayerDrag (event) {
+    dragPointLayer = event.localCoords
+  }
+
+  function handleLayerDragEnd (event) {
+    data.updateRow(event.hitIndex, { a: dragPointLayer.x, b: dragPointLayer.y })
+    data = data
+    dragPointLayer = undefined
+    dragIndex = undefined
   }
 
 </script>
@@ -60,7 +102,7 @@
 </div>
 
 <div>
-  <button on:click={() => treshold = 40}>Filter: x > 40</button>
+  <button on:click={() => threshold = 40}>Filter: x > 40</button>
 </div>
 
 <div>
@@ -84,13 +126,26 @@
 			<PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}
-        fill={transformation === 'identity' ? 'black' : 'blue'}
-        radius={transformation === 'identity' ? 3 : 6}
+        opacity={opacityArray}
         index={filteredData.column('$index')}
+        fill={transformation === 'identity' ? 'black' : 'blue'}
+        radius={transformation === 'identity' ? 4 : 6}
         onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
         onMouseout={handleMouseout}
-        transition={duration}
+        onDragStart={handleLayerDragStart}
+        onDrag={handleLayerDrag}
+        onDragEnd={handleLayerDragEnd}
       />
+        <!-- transition={duration} -->
+
+      {#if dragPointLayer}
+        <Point
+          x={dragPointLayer.x}
+          y={dragPointLayer.y}
+          radius={5}
+          fill={'black'}
+        />
+      {/if}
 
       <!-- {#each filteredData.rows() as row (row.$index)}
 
@@ -106,16 +161,29 @@
       {/each} -->
 
       <Point
-        x={50}
-        y={50}
+        x={bigPoint.x}
+        y={bigPoint.y}
         fill={big ? 'blue' : 'red'}
+        opacity={dragPoint ? 0 : 1}
         radius={big ? 50 : 10}
         onClick={() => log('BOOM')}
         onMouseover={() => big = true}
         onMouseout={() => big = false}
+        onDragStart={handleDragStart}
+        onDrag={handleDrag}
+        onDragEnd={handleDragEnd}
       />
 
-      {#each hoverPointKeys as key (key)}
+      {#if dragPoint}
+        <Point
+          x={dragPoint.x}
+          y={dragPoint.y}
+          radius={10}
+          fill={'red'}
+        />
+      {/if}
+
+      <!-- {#each hoverPointKeys as key (key)}
 
         <Point
           x={hoverPoints[key].a}
@@ -124,8 +192,8 @@
           fill={'green'}
         />
 
-      {/each}
-		
+      {/each} -->
+
 		</Section>
 
 	</Graphic>
