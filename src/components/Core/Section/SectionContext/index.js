@@ -27,14 +27,16 @@ class SectionContext {
       this.scaleX = scaleX.copy().range(this.rangeX)
       this.scaleX.invert = createInvertMethod(this.scaleX)
     } else {
-      this.scaleX = scaleLinear().domain([this.x1, this.x2]).range(this.rangeX)
+      const domainX = [this.x1 - this.padding.left, this.x2 + this.padding.right]
+      this.scaleX = scaleLinear().domain(domainX).range(this.rangeX)
     }
 
     if (scaleY) {
       this.scaleY = scaleY.copy().range(this.rangeY)
       this.scaleY.invert = createInvertMethod(this.scaleY)
     } else {
-      this.scaleY = scaleLinear().domain([this.y1, this.y2]).range(this.rangeY)
+      const domainY = [this.y1 - this.padding.top, this.y2 + this.padding.bottom]
+      this.scaleY = scaleLinear().domain(domainY).range(this.rangeY)
     }
   }
 }
