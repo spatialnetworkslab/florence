@@ -14,6 +14,7 @@
   import FuncLines from './examples/FuncLines.svelte'
   import DragCategorical from './examples/DragCategorical.svelte'
   import FunctionAPI from './examples/FunctionAPI.svelte'
+  import FlipTest from './examples/FlipTest.svelte'
 
   // and add them to this component array
   let components = [
@@ -76,6 +77,11 @@
       name: 'Function API',
       url: 'functionapi',
       component: FunctionAPI
+    },
+    {
+      name: 'Flip test',
+      url: 'fliptest',
+      component: FlipTest
     }
   ]
 </script>
