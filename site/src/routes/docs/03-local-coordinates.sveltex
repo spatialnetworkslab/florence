@@ -72,7 +72,9 @@ import Padding from './doc-examples/Padding.svelte'
 ### scaleX and scaleY
 
 `scaleX` and `scaleY` can be used to create a local coordinate system
-inside of the `Graphic` or `Section`:
+inside of the `Graphic` or `Section`. Concretely this means that the
+positioning props of the direct children of the `Graphic` or `Section` 
+will behave differently. For example:
 
 ```html
 <script>
@@ -144,7 +146,7 @@ your scale:
   ...
 ```
 
-Note that using `XAxis` and `YAxis` without providing any props, like in the non-numeric domain example 
+Also note that using `XAxis` and `YAxis` without providing any props, like in the non-numeric domain example 
 above, is only possible if your scale either has a `.ticks` or a `.domain` method. If your scale doesn't, 
 make sure to provide an `Array` of `tickValues` to the axis (see [Axes documentation](/docs/06-axes)).
 
@@ -184,12 +186,12 @@ With `zoomIdentity` it is possible to zoom/pan programmatically, or on user inte
 
 ### transformation
 
-The `transformation` prop can only accept two values right now:
+The `transformation` prop only accepts two values right now:
 - `'identity'`
 - `'polar'`
 
 where `'identity'` does nothing, and `'polar'` results in a polar transformation.
-`transformation` can be freely used in combination with `zoomIdentity`, `scaleX` and `scaleY`.
+`transformation` can be used freely in combination with `zoomIdentity`, `scaleX` and `scaleY`.
 The only caveat is that inside of a `Section` that has a `transformation`, it is not allowed
 to use anything other than marks, layers and axes. An example:
 
@@ -229,8 +231,44 @@ TODO
 
 ### Function syntax
 
-TODO
+As explained above under [scaleX and scaleY](#scalex-and-scaley), positioning
+props of children of the `Graphic` or `Section` that uses the scales will expect
+values of the type of domain that the `scaleX` or `scaleY` is expecting.
+However, in some cases it is desirable to be able to override this behavior and
+provide unscaled screen coordinates directly. This can be done using the so-called
+'Function syntax'. For example:
 
-## Examples
+```html
+<script>
+  import { scaleLinear } from 'd3-scale'
+  import { Graphic, Point } from 'florence'
+</script>
 
+<Graphic
+  width={200} height={200}
+  scaleX={scaleLinear().domain([0, 1])}
+  scaleY={scaleLinear().domain([0, 1])}
+>
+
+  <!-- This point will be in the center of the graphic -->
+  <Point x={() => 100} y={() => 100} />
+
+</Graphic>
+```
+
+In fact, the `Function` passed to a positioning props receives an `Object` containing
+all kinds of data related to the parent `Section`, including the `scaleX` and `scaleY`.
+This is convenient when working with `d3`'s `scaleBand`, that uses a `.bandwidth` method
+that returns a pixel value:
+
+```html
 TODO
+```
+
+The full list of available `Section`-related attributes is
+
+```js
+({
+  
+}) => { ... }
+```
