@@ -106,7 +106,7 @@
       $interactionManagerContext.loadMark('Line', createDataNecessaryForIndexing())
 
       if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
-      if (onMouseover) $interactionManagerContext.addMarkInteraction('hover', markId, onMouseover)
+      if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
       if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
     }
   }
