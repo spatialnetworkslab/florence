@@ -14,7 +14,6 @@
     .groupBy('fruit')
     .summarise({ meanQuantity: { quantity: 'mean' } })
     .arrange({ meanQuantity: 'descending' })
-    .done()
 
 
   const scaleFruit = scaleBand().domain(data.domain('fruit')).padding(0.2)

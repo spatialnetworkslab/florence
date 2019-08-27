@@ -24,9 +24,12 @@ export function generatePropObject (propValue, indexArray) {
         const index = indexArray[i]
         propObj[index] = propValue[i]
       }
-    }
-
-    if (propValue.constructor !== Array) {
+    } else if (propValue.constructor === Function) {
+      for (let i = 0; i < indexArray.length; i++) {
+        const index = indexArray[i]
+        propObj[index] = propValue(index, i)
+      }
+    } else {
       for (let i = 0; i < indexArray.length; i++) {
         const index = indexArray[i]
         propObj[index] = propValue

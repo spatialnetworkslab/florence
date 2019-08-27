@@ -20,7 +20,6 @@
   $: {
     filteredData = data
     .filter(row => row.a > threshold)
-    .done()
   }
 
 	const scaleA = scaleLinear().domain(data.domain('a'))
