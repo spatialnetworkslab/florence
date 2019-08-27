@@ -18,3 +18,10 @@ export function getTickPositions (tickValuesArray, scale, tickCount, tickExtra) 
 
   return tickPositions
 }
+
+export function getFormat (labelFormat, scale, numberOfTicks) {
+  if (labelFormat) return labelFormat
+  if ('tickFormat' in scale) return scale.tickFormat(numberOfTicks)
+
+  return x => x
+}
