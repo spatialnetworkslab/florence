@@ -1,10 +1,11 @@
 <script>
   import { Graphic, Section, Point } from '../../../../../src'
-  let padding = 30
+  let padding = 0
 </script>
 
 <label for="padding-slider">Padding: {padding}</label>
 <input type="range" min="0" max="50" bind:value={padding} name="padding-slider" />
+<br />
 
 <Graphic width={300} height={300}>
 

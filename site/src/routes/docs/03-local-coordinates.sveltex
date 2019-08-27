@@ -48,6 +48,7 @@ Note that `Section` components clip everything outside of their boundaries.
 
 <label for="padding-slider">Padding: {padding}</label>
 <input type="range" min="0" max="50" bind:value={padding} name="padding-slider" />
+<br />
 
 <Graphic width={300} height={300}>
 
@@ -91,13 +92,36 @@ inside of the `Graphic` or `Section`:
 </Graphic>
 ```
 
-TODO example
+It is also possible to use non-numeric values:
 
-TODO non numeric-scales with example
+```html
+<script>
+  import { scaleBand, scaleLinear } from 'd3-scale'
+  import { Graphic, Section, Rectangle } from 'florence'
+</script>
 
-```js
+<Graphic width={200} height={200} padding={10}>
 
+  <Section
+    scaleX={scaleBand().domain(['a', 'b', 'c'])}
+    scaleY={scaleLinear().domain([0, 1])}
+  >
+
+    <Rectangle 
+      x1={'a'} x2={'c'}
+      y1={0} y2={0.5}
+    />
+  
+  </Section>
+
+</Graphic>
 ```
+
+```js exec
+import NonNumericDomains from './doc-examples/NonNumericDomains.svelte'
+```
+
+<NonNumericDomains />
 
 Throughout the documentation, [d3 scales](https://github.com/d3/d3-scale) like `scaleLinear`,
 `scaleBand` and `scalePoint` will be passed to `scaleX` and `scaleY`. It is also possible 
@@ -116,6 +140,8 @@ your scale:
 <Section scaleX={myCustomScale}>
   ...
 ```
+
+TODO explain that `XAxis` and shit will also not work this way
 
 ### flipX and flipY
 
