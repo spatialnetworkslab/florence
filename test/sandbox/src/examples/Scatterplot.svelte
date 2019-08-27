@@ -31,7 +31,7 @@
 
   const log = console.log
 
-  let background = "pink"
+  let background = "white"
   let big = false
   let hoverPoints = {}
 
@@ -165,7 +165,7 @@
         y={bigPoint.y}
         fill={big ? 'blue' : 'red'}
         opacity={dragPoint ? 0 : 1}
-        radius={big ? 50 : 10}
+        radius={big ? 50 : 30}
         onClick={() => log('BOOM')}
         onMouseover={() => big = true}
         onMouseout={() => big = false}
