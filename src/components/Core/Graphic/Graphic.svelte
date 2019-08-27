@@ -11,6 +11,8 @@
   import EventManager from '../../../classes/EventManager'
   import InteractionManager from '../../../classes/InteractionManager'
 
+  import parsePadding from '../utils/parsePadding.js'
+
   export let width
   export let height
   export let padding = 0
@@ -27,21 +29,19 @@
   CoordinateTransformationContext.init()
   ZoomContext.init()
 
-  // set up padding
-  if (typeof padding === 'number') {
-    padding = {left: padding, right: padding, top: padding, bottom: padding}
-  }
-
   $: {
     GraphicContext.update(graphicContext, { renderer })
   }
 
+  let _padding
+
   $: {
-    let rangeX = [0 + padding.left, width - padding.right]
-    let rangeY = [0 + padding.top, height - padding.bottom]
+    _padding = parsePadding(padding)
+    let rangeX = [0 + _padding.left, width - _padding.right]
+    let rangeY = [0 + _padding.top, height - _padding.bottom]
     if (flipX) rangeX.reverse()
     if (flipY) rangeY.reverse()
-    SectionContext.update(sectionContext, { rangeX, rangeY, scaleX, scaleY, padding })
+    SectionContext.update(sectionContext, { rangeX, rangeY, scaleX, scaleY, padding: _padding })
   }
 
   let rootNode
