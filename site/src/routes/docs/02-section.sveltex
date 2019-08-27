@@ -100,10 +100,10 @@ local coordinate systems.
 
 ### Other aesthetic props
 
-|      Prop      |      Type(s)       | Required |   Default   |     Units     |
-| -------------- | ------------------ | -------- | ----------- | ------------- |
-| backgroundColor | `String` | no | `undefined` | Color value |
-| paddingColor | `String` | no | `undefined` | Color value |
+|      Prop       | Type(s)  | Required |   Default   |    Units    |
+| --------------- | -------- | -------- | ----------- | ----------- |
+| backgroundColor | `String` | no       | `undefined` | Color value |
+| paddingColor    | `String` | no       | `undefined` | Color value |
 
 ### Local coordinate specification
 
@@ -122,4 +122,10 @@ documentation.
 
 ### Interactivity
 
- TODO
+|  Prop   |  Type(s)   |                          Description                          |
+| ------- | ---------- | ------------------------------------------------------------- |
+| onWheel | `Function` | Fired on mousewheel or two finger scroll inside the `Section` |
+| onPan   | `Function` | Fired when dragging around the area inside the `Section`      |
+
+See the [zooming and panning](/docs/05-zooming-panning) documentation for more information
+on how to use these props.
