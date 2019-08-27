@@ -13,13 +13,13 @@ class SectionContext {
     this.x2 = rangeX[1] > rangeX[0] ? rangeX[1] : rangeX[0]
     this.y1 = rangeY[1] > rangeY[0] ? rangeY[0] : rangeY[1]
     this.y2 = rangeY[1] > rangeY[0] ? rangeY[1] : rangeY[0]
+    
+    this.padding = padding
 
     this._handleScales(scaleX, scaleY)
 
     this.flipX = flipX
     this.flipY = flipY
-
-    this.padding = padding
   }
 
   _handleScales (scaleX, scaleY) {
