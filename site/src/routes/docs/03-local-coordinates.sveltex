@@ -163,7 +163,24 @@ make sure to provide an `Array` of `tickValues` to the axis (see [Axes documenta
 
 ### zoomIdentity
 
-TODO explain with example
+The `zoomIdentity` prop takes an `Object` with the following structure:
+
+```js
+{
+  x: <Number>,
+  y: <Number>,
+  kx: <Number>,
+  ky: <Number>
+}
+```
+
+where `x` is the translation to the right in screen pixels, `y` the translation down in screen pixels,
+`kx` the magnification factor in the x dimension and `ky` the magnification factor in the y dimension.
+The identity transformation is `{ x: 0, y: 0, kx: 1, ky: 1 }`. Using `zoomIdentity` will zoom and/or pan
+everything inside of the `Section`.
+
+With `zoomIdentity` it is possible to zoom/pan programmatically, or on user interaction- see the
+[zooming and panning documentation](/docs/05-zooming-panning) for more information.
 
 ### transformation
 
