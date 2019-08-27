@@ -58,15 +58,10 @@
   }
 
   let dragPointLayer
-  let dragIndex
-  let opacityArray
-  $: {
-    opacityArray = Array(filteredData._length).fill(1)
-    opacityArray[filteredData._indexToRowNumber[dragIndex]] = 0
-  }
+  let dragKey
 
   function handleLayerDragStart (event) {
-    dragIndex = event.hitIndex
+    dragKey = event.hitKey
     dragPointLayer = event.localCoords
   }
 

@@ -37,10 +37,10 @@
 
   function handleDragEnd (event) {
     dragPoint = undefined
-    const hitIndex = Number(event.hitIndex)
+    const hitKey = Number(event.hitKey)
     const position = event.localCoords
 
-    data.updateRow(hitIndex, { a: position.x, b: position.y })
+    data.updateRow(hitKey, { a: position.x, b: position.y })
     data = data
   }
 
@@ -63,7 +63,7 @@
 			<PointLayer
         x={data.column('a')}
         y={data.column('b')}
-        index={data.column('$key')}
+        key={data.column('$key')}
         onDragStart={handleDragStart}
         onDrag={handleDrag}
         onDragEnd={handleDragEnd}

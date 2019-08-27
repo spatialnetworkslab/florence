@@ -58,7 +58,7 @@ export default class ClickHandler extends InteractionHandler {
       const hit = hits[i]
 
       if (this._isInLayer(hit)) {
-        this._layerCallbacks[hit.layerId](hit.$index, event)
+        this._layerCallbacks[hit.layerId](hit.key, event)
       }
 
       if (this._isMark(hit)) {

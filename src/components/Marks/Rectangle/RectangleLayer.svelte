@@ -22,7 +22,7 @@
   export let onMouseout = undefined
 
   // Other
-  export let index = undefined
+  export let key = undefined
   export let interpolate = true
   export let zoomIdentity = undefined
 </script>
@@ -33,5 +33,5 @@
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {index} {zoomIdentity} {interpolate}
+  {key} {zoomIdentity} {interpolate}
 />

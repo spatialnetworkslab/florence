@@ -14,17 +14,17 @@ export function indexPolygon (markData) {
   return item
 }
 
-export function indexPolygonLayer ({ layerAttributes, indexArray, layerId }) {
+export function indexPolygonLayer ({ layerAttributes, keyArray, layerId }) {
   const items = []
 
-  for (let i = 0; i < indexArray.length; i++) {
-    const $index = indexArray[i]
+  for (let i = 0; i < keyArray.length; i++) {
+    const key = keyArray[i]
 
-    const polygonAttributes = getPolygonAttributes(layerAttributes, $index)
+    const polygonAttributes = getPolygonAttributes(layerAttributes, key)
     const bbox = calculateBBoxGeometry(polygonAttributes.screenGeometry)
     const item = createItemFromBBox(bbox)
 
-    item.$index = $index
+    item.key = key
     item.attributes = polygonAttributes
     item.markType = 'Polygon'
     item.layerId = layerId
@@ -35,6 +35,6 @@ export function indexPolygonLayer ({ layerAttributes, indexArray, layerId }) {
   return items
 }
 
-function getPolygonAttributes (layerAttributes, $index) {
-  return { screenGeometry: layerAttributes.screenGeometryObject[$index] }
+function getPolygonAttributes (layerAttributes, key) {
+  return { screenGeometry: layerAttributes.screenGeometryObject[key] }
 }

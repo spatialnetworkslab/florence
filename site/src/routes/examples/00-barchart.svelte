@@ -74,7 +74,7 @@
       y1={0}
       y2={filteredData.column('meanQuantity')}
       fill={transformation === 'identity' ? 'green' : 'blue'}
-      index={filteredData.column('$key')}
+      key={filteredData.column('$key')}
       onClick={ix => log(ix)}
     />
 

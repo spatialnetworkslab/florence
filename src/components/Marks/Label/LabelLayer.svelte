@@ -27,7 +27,7 @@
   export let onMouseout = undefined
 
   // Other
-  export let index = undefined
+  export let key = undefined
   export let zoomIdentity = undefined
 </script>
 
@@ -39,5 +39,5 @@
   {text}
   {fontFamily} {fontSize} {fontWeight} {rotation} {anchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {index} {zoomIdentity} _asPolygon={false}
+  {key} {zoomIdentity} _asPolygon={false}
 />

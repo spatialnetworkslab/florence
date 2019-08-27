@@ -62,13 +62,13 @@ function createOptionsFromOptions (aestheticName, transitionOptions) {
 }
 
 function interpolateLayer (a, b) {
-  const aWithoutObsoleteIndices = {}
+  const aWithoutObsoleteKeys = {}
 
-  for (const index in a) {
-    if (index in b) {
-      aWithoutObsoleteIndices[index] = a[index]
+  for (const key in a) {
+    if (key in b) {
+      aWithoutObsoleteKeys[key] = a[key]
     }
   }
 
-  return interpolate(aWithoutObsoleteIndices, b)
+  return interpolate(aWithoutObsoleteKeys, b)
 }

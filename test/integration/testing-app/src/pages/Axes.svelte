@@ -126,7 +126,7 @@
         <!-- <PointLayer
           x={data.column('a')}
           y={data.column('b')}
-          index={data.column('$key')}
+          key={data.column('$key')}
           transition={2000}
         /> -->
 		
