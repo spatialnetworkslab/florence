@@ -5,7 +5,7 @@
   import * as ZoomContext from '../../Core/Section/ZoomContext'
 
   import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord} from './createXAxisCoords.js'
-  import { getTickPositions } from './utils.js'
+  import { getTickPositions, getFormat } from './utils.js'
 
   // global properties
   export let scale = undefined
@@ -91,11 +91,11 @@
     ({xCoords, yCoords} = createXAxisCoords(vjust, y, yOffset, scaleX, $sectionContext.scaleY, $sectionContext))
   }
   $: {
-    tickPositions = getTickPositions(tickValues, scaleX, tickCount, tickExtra)
+    tickPositions = getTickPositions(tickValues, scaleX, tickCount, tickExtra);
     ({tickXCoords, tickYCoords} = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
     ({tickLabelXCoords, tickLabelYCoords} = createXLabelGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, labelOffset, flip))
 
-    format = (labelFormat) ? labelFormat : scaleX.tickFormat(tickPositions.length)
+    format = getFormat(labelFormat, scaleX, tickPositions.length)
     tickLabelText = tickPositions.map(format)
     axisHeight = baseLineWidth + tickSize + labelOffset + labelFontSize
     labelAnchorPoint = flip ? 'b' : 't'
