@@ -1,13 +1,14 @@
 <script>
-  import { scaleBand, scaleLinear } from 'd3-scale'
-  import { Graphic, Section, Rectangle, XAxis } from '../../../../../src'
+  import { scalePoint, scaleLinear } from 'd3-scale'
+  import { Graphic, Section, Rectangle, XAxis, YAxis } from '../../../../../src'
 </script>
 
-<Graphic width={200} height={200} padding={10}>
+<Graphic width={300} height={300}>
 
   <Section
-    scaleX={scaleBand().domain(['a', 'b', 'c'])}
+    scaleX={scalePoint().domain(['a', 'b', 'c'])}
     scaleY={scaleLinear().domain([0, 1])}
+    padding={30}
   >
 
     <Rectangle 
@@ -15,7 +16,8 @@
       y1={0} y2={0.5}
     />
 
-    <!-- <XAxis /> -->
+    <XAxis />
+    <YAxis />
   
   </Section>
 

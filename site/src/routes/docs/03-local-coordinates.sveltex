@@ -92,7 +92,7 @@ inside of the `Graphic` or `Section`:
 </Graphic>
 ```
 
-It is also possible to use non-numeric values:
+It is also possible to use non-numeric domains, as long as your scale can handle them:
 
 ```html
 <script>
@@ -111,6 +111,9 @@ It is also possible to use non-numeric values:
       x1={'a'} x2={'c'}
       y1={0} y2={0.5}
     />
+
+    <XAxis />
+    <YAxis />
   
   </Section>
 
