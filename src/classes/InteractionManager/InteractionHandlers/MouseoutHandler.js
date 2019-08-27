@@ -77,7 +77,7 @@ export default class MouseoutHandler extends InteractionHandler {
         const hit = this._previousHits[hitId]
 
         if (this._isInLayer(hit)) {
-          this._layerCallbacks[hit.layerId](hit.$index, mouseEvent)
+          this._layerCallbacks[hit.layerId](hit.key, mouseEvent)
         }
 
         if (this._isMark(hit)) {
@@ -91,7 +91,7 @@ export default class MouseoutHandler extends InteractionHandler {
 
   _getHitId (hit) {
     let id
-    if (this._isInLayer(hit)) id = hit.layerId + '-' + hit.$index
+    if (this._isInLayer(hit)) id = hit.layerId + '-' + hit.key
     if (this._isMark(hit)) id = hit.markId
     return id
   }

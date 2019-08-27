@@ -94,7 +94,7 @@ export default class DragHandler extends InteractionHandler {
    */
   _handleHits (mouseDragEvent) {
     if (this._isInLayer(this._hit)) {
-      mouseDragEvent.hitIndex = this._hit.$index
+      mouseDragEvent.hitKey = this._hit.key
       this._executeCallback('layer', mouseDragEvent)
     }
 

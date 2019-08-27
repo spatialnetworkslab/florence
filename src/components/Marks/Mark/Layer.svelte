@@ -67,7 +67,7 @@
   export let onDragEnd = undefined
 
   // Other
-  export let index = undefined
+  export let key = undefined
   export let interpolate = undefined
   export let _asPolygon = true
   export let zoomIdentity = undefined
@@ -122,7 +122,7 @@
   const interactionManagerContext = InteractionManagerContext.subscribe()
   const zoomContext = ZoomContext.subscribe()
 
-  // Initiate geometry objects and index array
+  // Initiate geometry objects and key array
   let coordSysGeometryObject
   let pixelGeometryObject
   let screenGeometryObject
@@ -130,22 +130,22 @@
   updateCoordSysGeometryObject()
   updatePixelGeometryObject()
   
-  let indexArray = Object.keys(coordSysGeometryObject)
+  let keyArray = Object.keys(coordSysGeometryObject)
 
   // Generate other prop objects
-  let radiusObject = generatePropObject(aesthetics.radius, indexArray)
-  let fillObject = generatePropObject(aesthetics.fill, indexArray)
-  let strokeObject = generatePropObject(aesthetics.stroke, indexArray)
-  let strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
-  let strokeOpacityObject = generatePropObject(aesthetics.strokeOpacity, indexArray)
-  let fillOpacityObject = generatePropObject(aesthetics.fillOpacity, indexArray)
-  let opacityObject = generatePropObject(aesthetics.opacity, indexArray)
-  let textObject = generatePropObject(aesthetics.text, indexArray)
-  let fontFamilyObject = generatePropObject(aesthetics.fontFamily, indexArray)
-  let fontSizeObject = generatePropObject(aesthetics.fontSize, indexArray)
-  let fontWeightObject = generatePropObject(aesthetics.fontWeight, indexArray)
-  let rotationObject = generatePropObject(aesthetics.rotation, indexArray)
-  let anchorPointObject = generatePropObject(aesthetics.anchorPoint, indexArray)
+  let radiusObject = generatePropObject(aesthetics.radius, keyArray)
+  let fillObject = generatePropObject(aesthetics.fill, keyArray)
+  let strokeObject = generatePropObject(aesthetics.stroke, keyArray)
+  let strokeWidthObject = generatePropObject(aesthetics.strokeWidth, keyArray)
+  let strokeOpacityObject = generatePropObject(aesthetics.strokeOpacity, keyArray)
+  let fillOpacityObject = generatePropObject(aesthetics.fillOpacity, keyArray)
+  let opacityObject = generatePropObject(aesthetics.opacity, keyArray)
+  let textObject = generatePropObject(aesthetics.text, keyArray)
+  let fontFamilyObject = generatePropObject(aesthetics.fontFamily, keyArray)
+  let fontSizeObject = generatePropObject(aesthetics.fontSize, keyArray)
+  let fontWeightObject = generatePropObject(aesthetics.fontWeight, keyArray)
+  let rotationObject = generatePropObject(aesthetics.rotation, keyArray)
+  let anchorPointObject = generatePropObject(aesthetics.anchorPoint, keyArray)
 
 
   // This uses the radiusObject/strokeWidthObject in some cases, so must be done after the prop objects
@@ -173,7 +173,7 @@
         positioningAesthetics, 
         $sectionContext,
         $coordinateTransformationContext,
-        index,
+        key,
         interpolate
       )
     }
@@ -190,28 +190,28 @@
   $: {
     if (initDone()) {
       if (!_asPolygon) {
-        tr_radiusObject.set(generatePropObject(aesthetics.radius, indexArray))
-        tr_strokeWidthObject.set(generatePropObject(aesthetics.strokeWidth, indexArray))
+        tr_radiusObject.set(generatePropObject(aesthetics.radius, keyArray))
+        tr_strokeWidthObject.set(generatePropObject(aesthetics.strokeWidth, keyArray))
       }
     }
   }
 
   // Handle other changes
-  $: { if (initDone()) tr_fillObject.set(generatePropObject(aesthetics.fill, indexArray)) }
-  $: { if (initDone()) tr_strokeObject.set(generatePropObject(aesthetics.stroke, indexArray)) }
-  $: { if (initDone()) tr_strokeOpacityObject.set(generatePropObject(aesthetics.strokeOpacity, indexArray)) }
-  $: { if (initDone()) tr_fillOpacityObject.set(generatePropObject(aesthetics.fillOpacity, indexArray)) }
-  $: { if (initDone()) tr_opacityObject.set(generatePropObject(aesthetics.opacity, indexArray)) }
+  $: { if (initDone()) tr_fillObject.set(generatePropObject(aesthetics.fill, keyArray)) }
+  $: { if (initDone()) tr_strokeObject.set(generatePropObject(aesthetics.stroke, keyArray)) }
+  $: { if (initDone()) tr_strokeOpacityObject.set(generatePropObject(aesthetics.strokeOpacity, keyArray)) }
+  $: { if (initDone()) tr_fillOpacityObject.set(generatePropObject(aesthetics.fillOpacity, keyArray)) }
+  $: { if (initDone()) tr_opacityObject.set(generatePropObject(aesthetics.opacity, keyArray)) }
 
   // text aes changes
-  $: { if (initDone()) tr_fontSizeObject.set(generatePropObject(aesthetics.fontSize, indexArray)) }
-  $: { if (initDone()) tr_fontWeightObject.set(generatePropObject(aesthetics.fontWeight, indexArray)) }
-  $: { if (initDone()) tr_rotationObject.set(generatePropObject(aesthetics.rotation, indexArray)) }
+  $: { if (initDone()) tr_fontSizeObject.set(generatePropObject(aesthetics.fontSize, keyArray)) }
+  $: { if (initDone()) tr_fontWeightObject.set(generatePropObject(aesthetics.fontWeight, keyArray)) }
+  $: { if (initDone()) tr_rotationObject.set(generatePropObject(aesthetics.rotation, keyArray)) }
 
   // non-transitionable aesthetics
-  $: { if (initDone()) textObject = generatePropObject(aesthetics.text, indexArray)}
-  $: { if (initDone()) fontFamilyObject = generatePropObject(aesthetics.fontFamily, indexArray)}
-  $: { if (initDone()) anchorPointObject = generatePropObject(aesthetics.anchorPoint, indexArray)}
+  $: { if (initDone()) textObject = generatePropObject(aesthetics.text, keyArray)}
+  $: { if (initDone()) fontFamilyObject = generatePropObject(aesthetics.fontFamily, keyArray)}
+  $: { if (initDone()) anchorPointObject = generatePropObject(aesthetics.anchorPoint, keyArray)}
 
   let previousTransition
 
@@ -222,7 +222,7 @@
   $: {
     if (coordSysGeometryObjectRecalculationNecessary) {
       updateCoordSysGeometryObject()
-      indexArray = Object.keys(coordSysGeometryObject)
+      keyArray = Object.keys(coordSysGeometryObject)
 
       if (_asPolygon) {
         updateRadiusAndStrokeWidth()
@@ -291,7 +291,7 @@
       positioningAesthetics, 
       $sectionContext,
       $coordinateTransformationContext,
-      index,
+      key,
       interpolate
     )
   }
@@ -328,8 +328,8 @@
   }
 
   function updateRadiusAndStrokeWidth () {
-    radiusObject = generatePropObject(aesthetics.radius, indexArray)
-    strokeWidthObject = generatePropObject(aesthetics.strokeWidth, indexArray)
+    radiusObject = generatePropObject(aesthetics.radius, keyArray)
+    strokeWidthObject = generatePropObject(aesthetics.strokeWidth, keyArray)
   }
 
   function updateInteractionManagerIfNecessary () {
@@ -354,7 +354,7 @@
 
   function createDataNecessaryForIndexing () {
     return createDataNecessaryForIndexingLayer(
-      type, layerId, indexArray, { pixelGeometryObject, screenGeometryObject }, { radiusObject, strokeWidthObject }
+      type, layerId, keyArray, { pixelGeometryObject, screenGeometryObject }, { radiusObject, strokeWidthObject }
     )
   }
 
@@ -368,17 +368,17 @@
 
   {#if renderPolygon}
     <g class={`${type.toLowerCase()}-layer`}>
-      {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
+      {#each Object.keys($tr_screenGeometryObject) as $key ($key)}
 
         <path
           class={type.toLowerCase()}
-          d={generatePath($tr_screenGeometryObject[$index])}
-          fill={$tr_fillObject[$index]}
-          stroke={$tr_strokeObject[$index]}
-          stroke-width={$tr_strokeWidthObject[$index]}
-          fill-opacity={$tr_fillOpacityObject[$index]}
-          stroke-opacity={$tr_strokeOpacityObject[$index]}
-          opacity={$tr_opacityObject[$index]}
+          d={generatePath($tr_screenGeometryObject[$key])}
+          fill={$tr_fillObject[$key]}
+          stroke={$tr_strokeObject[$key]}
+          stroke-width={$tr_strokeWidthObject[$key]}
+          fill-opacity={$tr_fillOpacityObject[$key]}
+          stroke-opacity={$tr_strokeOpacityObject[$key]}
+          opacity={$tr_opacityObject[$key]}
         />
 
       {/each}
@@ -388,19 +388,19 @@
 
   {#if renderCircle}
     <g class="point-layer">
-      {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
+      {#each Object.keys($tr_screenGeometryObject) as $key ($key)}
 
         <circle
           class="point"
-          cx={$tr_screenGeometryObject[$index].coordinates[0]}
-          cy={$tr_screenGeometryObject[$index].coordinates[1]}
-          r={$tr_radiusObject[$index]}
-          fill={$tr_fillObject[$index]}
-          stroke={$tr_strokeObject[$index]}
-          stroke-width={$tr_strokeWidthObject[$index]}
-          fill-opacity={$tr_fillOpacityObject[$index]}
-          stroke-opacity={$tr_strokeOpacityObject[$index]}
-          opacity={$tr_opacityObject[$index]}
+          cx={$tr_screenGeometryObject[$key].coordinates[0]}
+          cy={$tr_screenGeometryObject[$key].coordinates[1]}
+          r={$tr_radiusObject[$key]}
+          fill={$tr_fillObject[$key]}
+          stroke={$tr_strokeObject[$key]}
+          stroke-width={$tr_strokeWidthObject[$key]}
+          fill-opacity={$tr_fillOpacityObject[$key]}
+          stroke-opacity={$tr_strokeOpacityObject[$key]}
+          opacity={$tr_opacityObject[$key]}
         />
 
       {/each}
@@ -409,15 +409,15 @@
 
   {#if renderLine}
     <g class="line-layer">
-      {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
+      {#each Object.keys($tr_screenGeometryObject) as $key ($key)}
 
         <path
           class="line"
-          d={generatePath($tr_screenGeometryObject[$index])}
+          d={generatePath($tr_screenGeometryObject[$key])}
           fill="none"
-          stroke-width={$tr_strokeWidthObject[$index]}
-          stroke={$tr_strokeObject[$index]}
-          style={`opacity: ${$tr_opacityObject[$index]}`}
+          stroke-width={$tr_strokeWidthObject[$key]}
+          stroke={$tr_strokeObject[$key]}
+          style={`opacity: ${$tr_opacityObject[$key]}`}
         />
 
       {/each}
@@ -428,30 +428,30 @@
 
 {#if renderLabel}
   <g class="label-layer">
-    {#each Object.keys($tr_screenGeometryObject) as $index ($index)}
+    {#each Object.keys($tr_screenGeometryObject) as $key ($key)}
 
       <text 
         class="label"
-        x={$tr_screenGeometryObject[$index].coordinates[0]}
-        y={$tr_screenGeometryObject[$index].coordinates[1]}
-        fill={$tr_fillObject[$index]}
-        stroke={$tr_strokeObject[$index]}
-        stroke-width={$tr_strokeWidthObject[$index]}
-        fill-opacity={$tr_fillOpacityObject[$index]}
-        stroke-opacity={$tr_strokeOpacityObject[$index]}
-        opacity={$tr_opacityObject[$index]}
+        x={$tr_screenGeometryObject[$key].coordinates[0]}
+        y={$tr_screenGeometryObject[$key].coordinates[1]}
+        fill={$tr_fillObject[$key]}
+        stroke={$tr_strokeObject[$key]}
+        stroke-width={$tr_strokeWidthObject[$key]}
+        fill-opacity={$tr_fillOpacityObject[$key]}
+        stroke-opacity={$tr_strokeOpacityObject[$key]}
+        opacity={$tr_opacityObject[$key]}
         transform={`
-          rotate(${$tr_rotationObject[$index]}, 
-          ${$tr_screenGeometryObject[$index].coordinates[0]}, 
-          ${$tr_screenGeometryObject[$index].coordinates[1]})
+          rotate(${$tr_rotationObject[$key]}, 
+          ${$tr_screenGeometryObject[$key].coordinates[0]}, 
+          ${$tr_screenGeometryObject[$key].coordinates[1]})
         `}
-        font-family={fontFamilyObject[$index]}
-        font-size={$tr_fontSizeObject[$index] + 'px'}
-        font-weight={$tr_fontWeightObject[$index]}
-        text-anchor={textAnchorPoint(anchorPointObject[$index]).textAnchor}
-        dominant-baseline={textAnchorPoint(anchorPointObject[$index]).dominantBaseline}
+        font-family={fontFamilyObject[$key]}
+        font-size={$tr_fontSizeObject[$key] + 'px'}
+        font-weight={$tr_fontWeightObject[$key]}
+        text-anchor={textAnchorPoint(anchorPointObject[$key]).textAnchor}
+        dominant-baseline={textAnchorPoint(anchorPointObject[$key]).dominantBaseline}
       >
-        {textObject[$index]}
+        {textObject[$key]}
       </text>
       
     {/each}

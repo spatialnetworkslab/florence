@@ -86,7 +86,7 @@ export default class MouseoverHandler extends InteractionHandler {
         this._previousMouseoverIds[hitId] = true
 
         if (this._isInLayer(hit)) {
-          this._layerCallbacks[hit.layerId](hit.$index, event)
+          this._layerCallbacks[hit.layerId](hit.key, event)
         }
 
         if (this._isMark(hit)) {
@@ -108,7 +108,7 @@ export default class MouseoverHandler extends InteractionHandler {
 
   _getHitId (hit) {
     let id
-    if (this._isInLayer(hit)) id = hit.layerId + '-' + hit.$index
+    if (this._isInLayer(hit)) id = hit.layerId + '-' + hit.key
     if (this._isMark(hit)) id = hit.markId
 
     return id
