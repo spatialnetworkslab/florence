@@ -9,11 +9,11 @@ class SectionContext {
     this.rangeX = rangeX
     this.rangeY = rangeY
 
-    this.x1 = rangeX[1] > rangeX[0] ? rangeX[0] : rangeX[1]
-    this.x2 = rangeX[1] > rangeX[0] ? rangeX[1] : rangeX[0]
-    this.y1 = rangeY[1] > rangeY[0] ? rangeY[0] : rangeY[1]
-    this.y2 = rangeY[1] > rangeY[0] ? rangeY[1] : rangeY[0]
-    
+    this.xMin = rangeX[1] > rangeX[0] ? rangeX[0] : rangeX[1]
+    this.xMax = rangeX[1] > rangeX[0] ? rangeX[1] : rangeX[0]
+    this.yMin = rangeY[1] > rangeY[0] ? rangeY[0] : rangeY[1]
+    this.yMax = rangeY[1] > rangeY[0] ? rangeY[1] : rangeY[0]
+
     this.padding = padding
 
     this._handleScales(scaleX, scaleY)

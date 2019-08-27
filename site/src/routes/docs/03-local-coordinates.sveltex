@@ -94,6 +94,7 @@ will behave differently. For example:
 </Graphic>
 ```
 
+Setting the `.range` is not necessary- `florence` will set it for you.
 It is also possible to use non-numeric domains, as long as your scale can handle them:
 
 ```html
@@ -129,26 +130,9 @@ import NonNumericDomains from './doc-examples/NonNumericDomains.svelte'
 <NonNumericDomains />
 
 Throughout the documentation, [d3 scales](https://github.com/d3/d3-scale) like `scaleLinear`,
-`scaleBand` and `scalePoint` will be passed to `scaleX` and `scaleY`. It is also possible 
-to use your own scale functions. But note that some functionalities (like interactions) 
-require the function to have an `invert` method. (`scaleBand` and `scalePoint` do not have 
-`invert` methods, but `florence` will add them internally). So, if you want to use
-arbitrary scale functions without breaking `florence`, make sure to add an `.invert` method to
-your scale:
-
-```html
-<script>
-  const myCustomScale = x => x * 2
-  myCustomScale.invert = x => x / 2
-</script>
-
-<Section scaleX={myCustomScale}>
-  ...
-```
-
-Also note that using `XAxis` and `YAxis` without providing any props, like in the non-numeric domain example 
-above, is only possible if your scale either has a `.ticks` or a `.domain` method. If your scale doesn't, 
-make sure to provide an `Array` of `tickValues` to the axis (see [Axes documentation](/docs/06-axes)).
+`scaleBand` and `scalePoint` will be passed to `scaleX` and `scaleY`. It is possible to use
+your own scales, but there are a lot of caveats, so for now we only recommend using
+`d3` scales. In the future we will add a guide explaining how to use your own scales.
 
 ### flipX and flipY
 
@@ -257,7 +241,7 @@ provide unscaled screen coordinates directly. This can be done using the so-call
 ```
 
 In fact, the `Function` passed to a positioning props receives an `Object` containing
-all kinds of data related to the parent `Section`, including the `scaleX` and `scaleY`.
+all kinds of data related to the parent `Graphic` or `Section`, including the `scaleX` and `scaleY`.
 This is convenient when working with `d3`'s `scaleBand`, that uses a `.bandwidth` method
 that returns a pixel value:
 
@@ -269,6 +253,16 @@ The full list of available `Section`-related attributes is
 
 ```js
 ({
-  
+  scaleX, // what was passed to scaleX with the rangeX set
+  scaleY, // what was passed to scaleY with the rangeY set
+  x1, // 
+  x2,
+  y1,
+  y2,
+  rangeX,
+  rangeY,
+  padding,
+  flipX,
+  flipY
 }) => { ... }
 ```

@@ -26,16 +26,16 @@ export function scaleCoordinates (coordinateProps, sectionContext) {
     scaledCoordinates.x1 = scaleCoordinate(x1, 'x1', sectionContext)
     scaledCoordinates.x2 = scaleCoordinate(x2, 'x2', sectionContext)
   } else {
-    scaledCoordinates.x1 = sectionContext.x1
-    scaledCoordinates.x2 = sectionContext.x2
+    scaledCoordinates.x1 = sectionContext.rangeX[0]
+    scaledCoordinates.x2 = sectionContext.rangeX[1]
   }
 
   if (wereSpecified(y1, y2)) {
     scaledCoordinates.y1 = scaleCoordinate(y1, 'y1', sectionContext)
     scaledCoordinates.y2 = scaleCoordinate(y2, 'y2', sectionContext)
   } else {
-    scaledCoordinates.y1 = sectionContext.y1
-    scaledCoordinates.y2 = sectionContext.y2
+    scaledCoordinates.y1 = sectionContext.rangeY[0]
+    scaledCoordinates.y2 = sectionContext.rangeY[1]
   }
 
   return scaledCoordinates
