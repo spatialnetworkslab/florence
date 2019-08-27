@@ -36,6 +36,10 @@ export default class DragHandler extends InteractionHandler {
     }
   }
 
+  _nopropagation (event) {
+    event.preventDefault() // Cancel the event from affecting the whole window
+  }
+
   /**
    * These handlers extend the MouseEvent with extra props which
    * we call a mouseDragEvent in the following functions:
@@ -49,6 +53,7 @@ export default class DragHandler extends InteractionHandler {
    * @param {Object} mouseEvent - The original MouseEvent
    */
   _mousedownHandler (coordinates, mouseEvent) {
+    this._nopropagation(event)
     mouseEvent.SVGPoint = coordinates
     mouseEvent.localCoords = this._getLocalCoordinates(coordinates)
     mouseEvent.dragType = 'onDragStart'

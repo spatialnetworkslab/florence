@@ -215,6 +215,8 @@ class EventTracker {
     if (this._numberOfListeners === 0) {
       handler = this._handleEvent.bind(this)
 
+      // add passive event listeners
+
       if (listenerId.includes('move')) {
         window.addEventListener(this._eventName, handler)
       } else {
