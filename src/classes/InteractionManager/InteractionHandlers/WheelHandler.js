@@ -5,9 +5,10 @@ let scrollLineHeight
 
 export default class WheelHandler extends SectionInteractionHandler {
   _addEventListener () {
-    const handler = this._handleEvent.bind(this)
     const eventManager = this._interactionManager._eventManager
     const listenerId = this._interactionManager._id + '-wheel'
+
+    const handler = this._handleEvent.bind(this)
     eventManager.addEventListener('wheel', listenerId, handler)
   }
 
@@ -31,17 +32,17 @@ export default class WheelHandler extends SectionInteractionHandler {
     // IE pixels
     if ('wheelDelta' in event && event.wheelDelta !== 0) {
       delta = -event.wheelDelta
-    } 
+    }
 
     // Mozilla
     if ('detail' in event && event.detail !== 0) {
       delta = -event.detail
-    } 
+    }
 
     // Most other cases
     if ('deltaY' in event && event.deltaY !== 0) {
       delta = -event.deltaY
-    } 
+    }
 
     if (!scrollLineHeight) {
       scrollLineHeight = getScrollLineHeight()
@@ -55,15 +56,15 @@ export default class WheelHandler extends SectionInteractionHandler {
     event.stopPropagation() // Don't bubble
   }
 
-  _handleEvent (coordinates, mouseEvent) {
-    this._nopropagation(mouseEvent)
+  _handleEvent (coordinates, event) {
+    this._nopropagation(event)
 
-    const wheelDelta = this._defaultWheelDelta(mouseEvent)
-    const event = { wheelDelta, coordinates: coordinates, originalEvent: mouseEvent }
+    const wheelDelta = this._defaultWheelDelta(event)
+    const evt = { wheelDelta, coordinates: coordinates, originalEvent: event }
     const sectionBbox = this._interactionManager._section
 
     if (this._isInSection(coordinates, sectionBbox)) {
-      this._callback(event)
+      this._callback(evt)
     }
   }
 }

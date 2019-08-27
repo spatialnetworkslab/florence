@@ -4,6 +4,7 @@
   import * as SectionContext from "../../Core/Section/SectionContext"
 
   import { createYAxisCoords, createYTickGeoms, createYLabelGeoms, createTitleXCoord, createTitleYCoord} from "./createYAxisCoords.js"
+  import { getTickPositions } from './utils.js'
 
   // global properties
   export let scale = undefined
@@ -88,14 +89,7 @@
     ({xCoords, yCoords} = createYAxisCoords(hjust, x, xOffset, $sectionContext.scaleX, scaleY, $sectionContext));
   }
   $: {
-    if (Array.isArray(tickValues) && tickValues.length > 0) {
-      tickPositions = tickValues
-    } else {
-      tickPositions = scaleY.ticks(tickCount)
-    }
-    if (tickExtra && tickPositions[0] !== scaleY.domain()[0]) {
-      tickPositions.unshift(scaleY.domain()[0])
-    }
+    tickPositions = getTickPositions(tickValues, scaleY, tickCount, tickExtra)
     ({tickXCoords, tickYCoords} = createYTickGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, flip));
     ({tickLabelXCoords, tickLabelYCoords} = createYLabelGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, labelOffset, flip))
     format = (labelFormat) ? labelFormat : scaleY.tickFormat(tickPositions.length)
