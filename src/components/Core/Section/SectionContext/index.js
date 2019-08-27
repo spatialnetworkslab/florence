@@ -1,3 +1,4 @@
+import { scaleLinear } from 'd3-scale'
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
 
@@ -12,30 +13,30 @@ class SectionContext {
     this.x2 = rangeX[1] > rangeX[0] ? rangeX[1] : rangeX[0]
     this.y1 = rangeY[1] > rangeY[0] ? rangeY[0] : rangeY[1]
     this.y2 = rangeY[1] > rangeY[0] ? rangeY[1] : rangeY[0]
+    
+    this.padding = padding
 
-    this._handleScales(scaleX, scaleY, rangeX, rangeY)
+    this._handleScales(scaleX, scaleY)
 
     this.flipX = flipX
     this.flipY = flipY
-
-    this.padding = padding
   }
 
-  _handleScales (scaleX, scaleY, rangeX, rangeY) {
+  _handleScales (scaleX, scaleY) {
     if (scaleX) {
-      this.scaleX = scaleX.copy().range(rangeX)
+      this.scaleX = scaleX.copy().range(this.rangeX)
       this.scaleX.invert = createInvertMethod(this.scaleX)
     } else {
-      this.scaleX = x => x
-      this.scaleX.invert = x => x
+      const domainX = [this.x1 - this.padding.left, this.x2 + this.padding.right]
+      this.scaleX = scaleLinear().domain(domainX).range(this.rangeX)
     }
 
     if (scaleY) {
-      this.scaleY = scaleY.copy().range(rangeY)
+      this.scaleY = scaleY.copy().range(this.rangeY)
       this.scaleY.invert = createInvertMethod(this.scaleY)
     } else {
-      this.scaleY = y => y
-      this.scaleY.invert = y => y
+      const domainY = [this.y1 - this.padding.top, this.y2 + this.padding.bottom]
+      this.scaleY = scaleLinear().domain(domainY).range(this.rangeY)
     }
   }
 }

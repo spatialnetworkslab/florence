@@ -14,14 +14,12 @@
     .groupBy('fruit')
     .summarise({ meanQuantity: { quantity: 'mean' } })
     .arrange({ meanQuantity: 'descending' })
-    .done()
 
   
   let notAllowedfruit = ''
 
   $: filteredData = data
     .filter(row => row.fruit !== notAllowedfruit)
-    .done() 
 
   const scaleFruit = scaleBand().domain(data.domain('fruit')).padding(0.2)
 	let meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
@@ -93,6 +91,7 @@
         fill={transformation === 'identity' ? 'green' : 'blue'}
         transition={2000}
         onClick={handler}
+        onMouseover={ () => transformation = 'identity' }
       />
 
     {/each}
