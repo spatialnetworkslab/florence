@@ -63,7 +63,7 @@
 			<PointLayer
         x={data.column('a')}
         y={data.column('b')}
-        index={data.column('$index')}
+        index={data.column('$key')}
         onDragStart={handleDragStart}
         onDrag={handleDrag}
         onDragEnd={handleDragEnd}

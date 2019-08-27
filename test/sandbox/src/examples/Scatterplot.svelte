@@ -127,7 +127,7 @@
         x={filteredData.column('a')}
         y={filteredData.column('b')}
         opacity={opacityArray}
-        index={filteredData.column('$index')}
+        index={filteredData.column('$key')}
         fill={transformation === 'identity' ? 'black' : 'blue'}
         radius={transformation === 'identity' ? 4 : 6}
         onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
@@ -147,15 +147,15 @@
         />
       {/if}
 
-      <!-- {#each filteredData.rows() as row (row.$index)}
+      <!-- {#each filteredData.rows() as row (row.$key)}
 
         <Point 
           x={row.a}
           y={row.b}
           fill={transformation === 'identity' ? 'black' : 'blue'}
           radius={transformation === 'identity' ? 3 : 6}
-          onMouseover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
-          onMouseout={() => handleMouseout(row.$index)}
+          onMouseover={() => hoverPoints[row.$key] = filteredData.row(row.$key)}
+          onMouseout={() => handleMouseout(row.$key)}
         />
 
       {/each} -->
