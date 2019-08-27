@@ -96,14 +96,14 @@ It is also possible to use non-numeric domains, as long as your scale can handle
 
 ```html
 <script>
-  import { scaleBand, scaleLinear } from 'd3-scale'
+  import { scalePoint, scaleLinear } from 'd3-scale'
   import { Graphic, Section, Rectangle } from 'florence'
 </script>
 
 <Graphic width={200} height={200} padding={10}>
 
   <Section
-    scaleX={scaleBand().domain(['a', 'b', 'c'])}
+    scaleX={scalePoint().domain(['a', 'b', 'c'])}
     scaleY={scaleLinear().domain([0, 1])}
   >
 
@@ -144,7 +144,9 @@ your scale:
   ...
 ```
 
-TODO explain that `XAxis` and shit will also not work this way
+Note that using `XAxis` and `YAxis` without providing any props, like in the non-numeric domain example 
+above, is only possible if your scale either has a `.ticks` or a `.domain` method. If your scale doesn't, 
+make sure to provide an `Array` of `tickValues` to the axis (see [Axes documentation](/docs/06-axes)).
 
 ### flipX and flipY
 
@@ -165,7 +167,42 @@ TODO explain with example
 
 ### transformation
 
-TODO
+The `transformation` prop can only accept two values right now:
+- `'identity'`
+- `'polar'`
+
+where `'identity'` does nothing, and `'polar'` results in a polar transformation.
+`transformation` can be freely used in combination with `zoomIdentity`, `scaleX` and `scaleY`.
+The only caveat is that inside of a `Section` that has a `transformation`, it is not allowed
+to use anything other than marks, layers and axes. An example:
+
+```html
+<script>
+  import { scalePoint, scaleLinear } from 'd3-scale'
+  import { Graphic, Section, Rectangle, XAxis, YAxis } from '../../../../../src'
+</script>
+
+<Graphic width={500} height={500}>
+
+  <Section
+    scaleX={scalePoint().domain(['a', 'b', 'c'])}
+    scaleY={scaleLinear().domain([0, 1])}
+    transformation="polar"
+  >
+
+    <Rectangle x1={'a'} x2={'b'} y1={0} y2={0.75} fill="blue" />
+    <Rectangle x1={'b'} x2={'c'} y1={0.25} y2={1} fill="red" />
+  
+  </Section>
+
+</Graphic>
+```
+
+```js exec
+import Polar from './doc-examples/Polar.svelte'
+```
+
+<Polar />
 
 ## Inside a local coordinate system
 
