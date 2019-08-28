@@ -8,3 +8,20 @@
 </Grid>
 ```
 
+___
+
+## Description
+
+## Props
+
+### Positioning
+
+| Prop |     Type(s)     |    Required     |   Default   |       Units       |
+| ---- | --------------- | --------------- | ----------- | ----------------- |
+| x1   | see explanation | see explanation | `undefined` | local coordinates |
+| x2   | see explanation | see explanation | `undefined` | local coordinates |
+| y1   | see explanation | see explanation | `undefined` | local coordinates |
+| y2   | see explanation | see explanation | `undefined` | local coordinates |
+
+The `Grid` positioning props work the same way as the [Section](/docs/02-section#positioning)
+positioning props.
