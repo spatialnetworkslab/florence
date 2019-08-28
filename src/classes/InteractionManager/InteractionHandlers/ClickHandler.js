@@ -46,7 +46,7 @@ export default class ClickHandler extends InteractionHandler {
         this._endTime = event.timeStamp
         this._endLoc = coordinates
         const timeDiff = this._endTime - this._startTime
-        console.log(this._startLoc, this._endLoc, event)
+
         // Considered as click if event lasts less than 250 ms
         if (timeDiff <= 250 && (this._startLoc.x === this._endLoc.x && this._startLoc.y === this._endLoc.y)) {
           this._callStoredCallback(coordinates, event)

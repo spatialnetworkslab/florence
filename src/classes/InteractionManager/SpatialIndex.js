@@ -50,7 +50,6 @@ export default class SpatialIndex {
   queryMouseCoordinates (mouseCoordinates, radius) {
     const searchArea = searchAreaFromCoordinates(mouseCoordinates, radius)
     const indexQueryResults = this._rbush.search(searchArea)
-
     return this._getHits(mouseCoordinates, indexQueryResults)
   }
 

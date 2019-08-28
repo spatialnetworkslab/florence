@@ -42,8 +42,8 @@ export default class MouseoutHandler extends InteractionHandler {
 
       // Touch
       if (eventManager._detectIt.deviceType.includes('touch')) {
-        eventManager.removeEventListener('eventup', listenerId)
-        eventManager.removeEventListener('eventcancel', listenerId)
+        eventManager.removeEventListener('eventup', listenerId + '-eventup')
+        eventManager.removeEventListener('eventcancel', listenerId + '-eventcancel')
       }
     }
   }
@@ -73,7 +73,6 @@ export default class MouseoutHandler extends InteractionHandler {
 
   _fireForMouseOutHits (event) {
     for (const hitId in this._previousHits) {
-      console.log(this._interruptedTouch.includes(event.type))
       if (!(hitId in this._currentMouseoverIds) || this._interruptedTouch.includes(event.type)) {
         const hit = this._previousHits[hitId]
         console.log('mouseout', this._isMark(hit))

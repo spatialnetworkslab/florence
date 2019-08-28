@@ -17,12 +17,12 @@ export default class MouseoverHandler extends InteractionHandler {
 
       // Mouse
       if (eventManager._detectIt.deviceType.includes('mouse')) {
-        eventManager.addEventListener('eventmove', listenerId + '-mouseover-mouse', handler)
+        eventManager.addEventListener('eventmove', listenerId + '-mouse', handler)
       }
 
       // Touch
       if (eventManager._detectIt.deviceType.includes('touch')) {
-        eventManager.addEventListener('eventdown', listenerId + '-mouseover-touch', handler)
+        eventManager.addEventListener('eventdown', listenerId + '-touch', handler)
       }
     }
   }
@@ -35,12 +35,12 @@ export default class MouseoverHandler extends InteractionHandler {
 
       // Mouse
       if (eventManager._detectIt.deviceType.includes('mouse')) {
-        eventManager.removeEventListener('eventmove', listenerId)
+        eventManager.removeEventListener('eventmove', listenerId + '-mouse')
       }
 
       // Touch
       if (eventManager._detectIt.deviceType.includes('touch')) {
-        eventManager.removeEventListener('eventdown', listenerId)
+        eventManager.removeEventListener('eventdown', listenerId + '-touch')
       }
     }
   }
@@ -84,7 +84,7 @@ export default class MouseoverHandler extends InteractionHandler {
       // 2. Second condition is for touch cases, where cursor leaves screen
       if (!this._mouseAlreadyOver(hitId) || (this._mouseAlreadyOver(hitId) && event.type.includes('touch'))) {
         this._previousMouseoverIds[hitId] = true
-        console.log('mouseover', this._isMark(hit))
+        console.log('mouseover', this._isMark(hit), event.type)
         if (this._isInLayer(hit)) {
           this._layerCallbacks[hit.layerId](hit.key, event)
         }

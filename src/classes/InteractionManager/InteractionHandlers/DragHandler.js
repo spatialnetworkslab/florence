@@ -12,7 +12,7 @@ export default class DragHandler extends InteractionHandler {
     if (this._numberOfInteractions === 0) {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
-      const listenerId = interactionManager._id
+      const listenerId = interactionManager._id + '-drag'
 
       const mousedownHandler = this._mousedownHandler.bind(this)
       const mousemoveHandler = this._mousemoveHandler.bind(this)

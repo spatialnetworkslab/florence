@@ -107,7 +107,7 @@ export default class EventManager {
       for (const listenerId in this._listeners) {
         const { eventName, callback } = this._listeners[listenerId]
         const nativeEvents = this._normalisedEvents[eventName]
-
+        console.log(eventName, nativeEvents, listenerId)
         if (Array.isArray(nativeEvents)) {
           for (let i = 0; i < nativeEvents.length; i++) {
             const tracker = this[getTrackerName(nativeEvents[i])]
