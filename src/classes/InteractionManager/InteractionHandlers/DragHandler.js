@@ -29,7 +29,7 @@ export default class DragHandler extends InteractionHandler {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id
-      
+
       eventManager.removeEventListener('eventdown', `${listenerId}-eventdown`)
       eventManager.removeEventListener('eventmove', `${listenerId}-eventmove`)
       eventManager.removeEventListener('eventup', `${listenerId}-eventup`)
