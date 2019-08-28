@@ -5,6 +5,7 @@
   import * as ZoomContext from '../../Core/Section/ZoomContext'
 
   import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord} from './createXAxisCoords.js'
+  import { getTickPositions, getFormat } from './utils.js'
 
   // global properties
   export let scale = undefined
@@ -90,27 +91,12 @@
     ({xCoords, yCoords} = createXAxisCoords(vjust, y, yOffset, scaleX, $sectionContext.scaleY, $sectionContext))
   }
   $: {
-    if (Array.isArray(tickValues) && tickValues.length > 0) {
-      tickPositions = tickValues
-    } else if (scaleX.ticks) {
-      tickPositions = scaleX.ticks(tickCount)
-    } else {
-      tickPositions = scaleX.domain()
-    }
-
-    if (tickExtra && tickPositions[0] !== scaleX.domain()[0]) {
-      tickPositions.unshift(scaleX.domain()[0])
-    }
-
+    tickPositions = getTickPositions(tickValues, scaleX, tickCount, tickExtra);
     ({tickXCoords, tickYCoords} = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
     ({tickLabelXCoords, tickLabelYCoords} = createXLabelGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, labelOffset, flip))
 
-    if (scaleX.tickFormat) {
-      tickLabelText = tickPositions.map(labelFormat ? labelFormat : scaleX.tickFormat(tickPositions.length))
-    } else {
-      ticklabelText = tickPositions
-    }
-
+    format = getFormat(labelFormat, scaleX, tickPositions.length)
+    tickLabelText = tickPositions.map(format)
     axisHeight = baseLineWidth + tickSize + labelOffset + labelFontSize
     labelAnchorPoint = flip ? 'b' : 't'
   }

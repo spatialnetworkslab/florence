@@ -50,7 +50,7 @@
 			let:cells
 		>
 
-			{#each groupedData.rows() as facet (facet.$index)}
+			{#each groupedData.rows() as facet (facet.$key)}
 
 				<Section
 					{...cells[facet.color]}
@@ -60,7 +60,7 @@
 
           <Rectangle fill={facet.color} opacity={0.4} />
 
-					{#each facet.$grouped.rows() as row (row.$index)}
+					{#each facet.$grouped.rows() as row (row.$key)}
 
 						<Point 
 							x={row.a}

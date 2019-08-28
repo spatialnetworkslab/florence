@@ -1,16 +1,16 @@
 import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
 import { createScaledGeometry, ensureValidCombination } from './createCoordSysGeometry.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
-import getIndexArray from '../utils/getIndexArray.js'
+import getKeyArray from '../utils/getKeyArray.js'
 
 export default function (
-  coordinateProps, sectionContext, coordinateTransformationContext, indexProp, interpolate
+  coordinateProps, sectionContext, coordinateTransformationContext, keyProp, interpolate
 ) {
   const { scaledCoordinates, length } = scaleCoordinates(coordinateProps, sectionContext)
-  const indexArray = getIndexArray(indexProp, length)
+  const keyArray = getKeyArray(keyProp, length)
   const scaledGeometryArray = createScaledGeometryArray(scaledCoordinates, length)
   const coordSysGeometryObject = createCoordSysGeometryObject(
-    scaledGeometryArray, coordinateTransformationContext, indexArray, interpolate
+    scaledGeometryArray, coordinateTransformationContext, keyArray, interpolate
   )
 
   return coordSysGeometryObject

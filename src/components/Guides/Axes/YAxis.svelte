@@ -4,6 +4,7 @@
   import * as SectionContext from "../../Core/Section/SectionContext"
 
   import { createYAxisCoords, createYTickGeoms, createYLabelGeoms, createTitleXCoord, createTitleYCoord} from "./createYAxisCoords.js"
+  import { getTickPositions, getFormat } from './utils.js'
 
   // global properties
   export let scale = undefined
@@ -75,6 +76,7 @@
   let tickYCoords
   let tickLabelXCoords
   let tickLabelYCoords
+  let format
   let tickLabelText
   let titleXCoord
   let titleYCoord
@@ -87,26 +89,12 @@
     ({xCoords, yCoords} = createYAxisCoords(hjust, x, xOffset, $sectionContext.scaleX, scaleY, $sectionContext));
   }
   $: {
-    if (Array.isArray(tickValues) && tickValues.length > 0) {
-      tickPositions = tickValues
-    } else if (scaleY.ticks) {
-      tickPositions = scaleY.ticks(tickCount)
-    } else {
-      tickPositions = scaleY.domain()
-    }
-    
-    if (tickExtra && tickPositions[0] !== scaleY.domain()[0]) {
-      tickPositions.unshift(scaleY.domain()[0])
-    }
-    
+    tickPositions = getTickPositions(tickValues, scaleY, tickCount, tickExtra);
     ({tickXCoords, tickYCoords} = createYTickGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, flip));
-    ({tickLabelXCoords, tickLabelYCoords} = createYLabelGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, labelOffset, flip));
-    
-    if (scaleY.tickFormat) {
-      tickLabelText = tickPositions.map(labelFormat ? labelFormat : scaleY.tickFormat(tickPositions.length)) 
-    } else {
-      tickLabelText = tickPositions
-    }
+    ({tickLabelXCoords, tickLabelYCoords} = createYLabelGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, labelOffset, flip))
+
+    format = getFormat(labelFormat, scaleY, tickPositions.length)
+    tickLabelText = tickPositions.map(format)
     axisWidth = baseLineWidth + tickSize + labelOffset + labelFontSize
     labelAnchorPoint = flip ? 'l' : 'r'
   }

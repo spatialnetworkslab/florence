@@ -18,9 +18,9 @@ export default class DragHandler extends InteractionHandler {
       const mousemoveHandler = this._mousemoveHandler.bind(this)
       const mouseupHandler = this._mouseupHandler.bind(this)
 
-      eventManager.addEventListener('mousedown', `${listenerId}-mousedown`, mousedownHandler)
-      eventManager.addEventListener('mousemove', `${listenerId}-mousemove`, mousemoveHandler)
-      eventManager.addEventListener('mouseup', `${listenerId}-mouseup`, mouseupHandler)
+      eventManager.addEventListener('eventdown', `${listenerId}-eventdown`, mousedownHandler)
+      eventManager.addEventListener('eventmove', `${listenerId}-eventmove`, mousemoveHandler)
+      eventManager.addEventListener('eventup', `${listenerId}-eventup`, mouseupHandler)
     }
   }
 
@@ -29,11 +29,15 @@ export default class DragHandler extends InteractionHandler {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id
-
-      eventManager.removeEventListener('mousedown', `${listenerId}-mousedown`)
-      eventManager.removeEventListener('mousemove', `${listenerId}-mousemove`)
-      eventManager.removeEventListener('mouseup', `${listenerId}-mouseup`)
+      
+      eventManager.removeEventListener('eventdown', `${listenerId}-eventdown`)
+      eventManager.removeEventListener('eventmove', `${listenerId}-eventmove`)
+      eventManager.removeEventListener('eventup', `${listenerId}-eventup`)
     }
+  }
+
+  _nopropagation (event) {
+    event.preventDefault() // Cancel the event from affecting the whole window
   }
 
   /**
@@ -49,6 +53,7 @@ export default class DragHandler extends InteractionHandler {
    * @param {Object} mouseEvent - The original MouseEvent
    */
   _mousedownHandler (coordinates, mouseEvent) {
+    this._nopropagation(event)
     mouseEvent.SVGPoint = coordinates
     mouseEvent.localCoords = this._getLocalCoordinates(coordinates)
     mouseEvent.dragType = 'onDragStart'
@@ -89,7 +94,7 @@ export default class DragHandler extends InteractionHandler {
    */
   _handleHits (mouseDragEvent) {
     if (this._isInLayer(this._hit)) {
-      mouseDragEvent.hitIndex = this._hit.$index
+      mouseDragEvent.hitKey = this._hit.key
       this._executeCallback('layer', mouseDragEvent)
     }
 
