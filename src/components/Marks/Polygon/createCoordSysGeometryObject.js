@@ -3,16 +3,16 @@ import { scaleGeometries } from '../../../utils/geometryUtils'
 import {
   ensureValidCombination, createScaledGeometryArrayFromXYProps
 } from '../utils/createScaledGeometryFromXYProps.js'
-import getIndexArray from '../utils/getIndexArray.js'
+import getKeyArray from '../utils/getKeyArray.js'
 import { isDefined, isUndefined } from '../../../utils/equals.js'
 
 export default function (
-  geometryProps, sectionContext, coordinateTransformationContext, indexProp, interpolate
+  geometryProps, sectionContext, coordinateTransformationContext, keyProp, interpolate
 ) {
   const { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
-  const indexArray = getIndexArray(indexProp, length)
+  const keyArray = getKeyArray(keyProp, length)
   const coordSysGeometryObject = createCoordSysGeometryObject(
-    scaledGeometryArray, coordinateTransformationContext, indexArray, interpolate
+    scaledGeometryArray, coordinateTransformationContext, keyArray, interpolate
   )
 
   return coordSysGeometryObject
@@ -20,15 +20,14 @@ export default function (
 
 function createScaledGeometryArray (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps)
-  const scales = sectionContext.scales()
 
   if (isDefined(geometryProps.geometry)) {
-    return scaleGeometryProp(geometryProps.geometry, scales)
+    return scaleGeometryProp(geometryProps.geometry, sectionContext)
   }
 
   if (isUndefined(geometryProps.geometry)) {
     return createScaledGeometryArrayFromXYProps(
-      geometryProps.x, geometryProps.y, scales, 'Polygon'
+      geometryProps.x, geometryProps.y, sectionContext, 'Polygon'
     )
   }
 }

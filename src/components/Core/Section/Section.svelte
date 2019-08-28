@@ -16,6 +16,7 @@
 
   import InteractionManager from '../../../classes/InteractionManager'
   import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
+  import parsePadding from '../utils/parsePadding.js'
 
   let sectionId = getId()
   
@@ -54,11 +55,6 @@
   let scaledCoordinates
   let rangeX
   let rangeY
-
-  // set up padding
-  if (typeof padding === 'number') {
-    padding = {left: padding, right: padding, top: padding, bottom: padding}
-  }
   
   // Set up InteractionManager
   let interactionManager = new InteractionManager()
@@ -66,16 +62,19 @@
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
-  // Keep SectionContext and InteractionManagerContext up to date
+  // Keep SectionContext and CoordinateTransformationContext up to date
+  let _padding
+
   $: {
+    _padding = parsePadding(padding)
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-    rangeX = [scaledCoordinates.x1 + padding.left, scaledCoordinates.x2 - padding.right]
-    rangeY = [scaledCoordinates.y1 + padding.top, scaledCoordinates.y2 - padding.bottom]
+    rangeX = [scaledCoordinates.x1 + _padding.left, scaledCoordinates.x2 - _padding.right]
+    rangeY = [scaledCoordinates.y1 + _padding.top, scaledCoordinates.y2 - _padding.bottom]
     if (flipX) rangeX.reverse()
     if (flipY) rangeY.reverse()
     
     const updatedSectionContext = { 
-      sectionId, rangeX, rangeY, scaleX, scaleY, padding, flipX, flipY
+      sectionId, rangeX, rangeY, scaleX, scaleY, padding: _padding, flipX, flipY
     }
 
     SectionContext.update(
@@ -87,6 +86,7 @@
     )
 
     $interactionManagerContext.loadSection($newSectionContext)
+    $interactionManagerContext.loadCoordinateTransformation($newCoordinateTransformationContext)
   }
 
   // Change callbacks if necessary
@@ -97,6 +97,7 @@
   // Update zooming and panning
   $: {
     ZoomContext.update(zoomContext, zoomIdentity)
+    $interactionManagerContext.loadZoom($zoomContext)
   }
 
   beforeUpdate(() => {

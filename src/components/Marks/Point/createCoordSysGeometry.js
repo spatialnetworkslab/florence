@@ -32,15 +32,14 @@ export function ensureValidCombination (geometryProps) {
 const invalidCombinationError = new Error(`Point: invalid combination of props 'x', 'y' and 'geometry'`)
 
 function scaleGeometryProp (geometry, sectionContext) {
-  return scaleGeometry(geometry, sectionContext.scales())
+  return scaleGeometry(geometry, sectionContext)
 }
 
 function createScaledGeometryFromCoordinates (x, y, sectionContext) {
-  const scales = sectionContext.scales()
-  const { scaleX, scaleY } = scales
+  const { scaleX, scaleY } = sectionContext
 
-  const scaledX = x.constructor === Function ? x(scales) : scaleX(x)
-  const scaledY = y.constructor === Function ? y(scales) : scaleY(y)
+  const scaledX = x.constructor === Function ? x(sectionContext) : scaleX(x)
+  const scaledY = y.constructor === Function ? y(sectionContext) : scaleY(y)
 
   return {
     type: 'Point',

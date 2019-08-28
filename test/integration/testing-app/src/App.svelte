@@ -8,6 +8,7 @@
   import Zoom from './pages/Zoom.svelte'
   import Line from './pages/Line.svelte'
   import Axes from './pages/Axes.svelte'
+  import Drag from './pages/Drag.svelte'
 
   // and add them to this component array
   let components = [
@@ -32,10 +33,15 @@
       url: '/line',
       component: Line
     },
-     {
+    {
       name: 'Axes',
       url: '/axes',
       component: Axes
+    },
+    {
+      name: 'Drag',
+      url: '/drag',
+      component: Drag
     }
   ]
 </script>

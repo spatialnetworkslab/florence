@@ -12,6 +12,10 @@
   import Line from './examples/Line.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
   import FuncLines from './examples/FuncLines.svelte'
+  import DragCategorical from './examples/DragCategorical.svelte'
+  import FunctionAPI from './examples/FunctionAPI.svelte'
+  import FlipTest from './examples/FlipTest.svelte'
+  import NonNumericAxis from './examples/NonNumericAxis.svelte'
 
   // and add them to this component array
   let components = [
@@ -64,6 +68,26 @@
       name: 'FuncLines',
       url: 'funclines',
       component: FuncLines
+    },
+    {
+      name: 'DragCategorical',
+      url: 'dragcategorical',
+      component: DragCategorical
+    },
+    {
+      name: 'Function API',
+      url: 'functionapi',
+      component: FunctionAPI
+    },
+    {
+      name: 'Flip test',
+      url: 'fliptest',
+      component: FlipTest
+    },
+    {
+      name: 'Non numeric axis',
+      url: 'nonnumericaxis',
+      component: NonNumericAxis
     }
   ]
 </script>

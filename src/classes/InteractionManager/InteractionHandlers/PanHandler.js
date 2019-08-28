@@ -1,5 +1,4 @@
 import SectionInteractionHandler from './SectionInteractionHandler.js'
-// repetitive, merge certain function handlers together
 export default class PanHandler extends SectionInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager)
@@ -21,9 +20,10 @@ export default class PanHandler extends SectionInteractionHandler {
     const eventMoveHandler = this._handleMove.bind(this)
     const eventUpHandler = this._handleEnd.bind(this)
 
-    eventManager.addEventListener('eventstart', listenerId + '-eventstart', eventDownHandler)
+    eventManager.addEventListener('eventdown', listenerId + '-eventdown', eventDownHandler)
     eventManager.addEventListener('eventmove', listenerId + '-eventmove', eventMoveHandler)
-    eventManager.addEventListener('eventend', listenerId + '-eventend', eventUpHandler)
+    eventManager.addEventListener('eventup', listenerId + '-eventup', eventUpHandler)
+    
   }
 
   _removeEventListener () {
@@ -31,9 +31,9 @@ export default class PanHandler extends SectionInteractionHandler {
       const eventManager = this._interactionManager._eventManager
       const listenerId = this._interactionManager._id + '-pan'
 
-      eventManager.removeEventListener('eventstart', listenerId + '-eventstart')
+      eventManager.removeEventListener('eventdown', listenerId + '-eventdown')
       eventManager.removeEventListener('eventmove', listenerId + '-eventmove')
-      eventManager.removeEventListener('eventend', listenerId + '-eventend')
+      eventManager.removeEventListener('eventup', listenerId + '-eventup')
     }
   }
 
@@ -63,7 +63,7 @@ export default class PanHandler extends SectionInteractionHandler {
     }
   }
 
-  // Record mouseup, touchend
+  // Record eventup events (when cursor leaves area of mark/layer/screen)
   _handleEnd (coordinates, event) {
     if (this._panningActive) {
       this._panningActive = false

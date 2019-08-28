@@ -1,53 +1,17 @@
+// device detection
+import detectIt from 'detect-it'
 let handler
 
 export default class EventManager {
   constructor () {
     this._mounted = false
 
-    let eventstart
-    let eventend
-    let eventmove
-    let eventcancel
-    let eventclick
-    const wheel = 'wheel'
-
-    // Pointer events for IE11 and MSEdge:
-    if (window.navigator.pointerEnabled) {
-      eventstart = 'pointerdown'
-      eventend = 'pointerup'
-      eventmove = 'pointermove'
-      eventcancel = 'pointercancel'
-      eventclick = 'click'
-    // Pointer events for IE10 and WP8:
-    } else if (window.navigator.msPointerEnabled) {
-      eventstart = 'MSPointerDown'
-      eventend = 'MSPointerUp'
-      eventmove = 'MSPointerMove'
-      eventcancel = 'MSPointerCancel'
-      eventclick = ['MSPointerDown', 'MSPointerUp']
-    // Touch events for iOS & Android:
-    } else if ('ontouchstart' in window) {
-      eventstart = 'touchstart'
-      eventend = 'touchend'
-      eventmove = 'touchmove'
-      eventcancel = 'touchcancel'
-      eventclick = 'click'
-    // Mouse events for desktop:
-    } else {
-      eventstart = 'mousedown'
-      eventend = 'mouseup'
-      eventmove = 'mousemove'
-      eventcancel = 'mouseout'
-      eventclick = 'click'
-    }
-
-    this._normalisedEvents = { eventstart, eventend, eventmove, eventcancel, eventclick, wheel }
-
     // Desktop
     this._clickTracker = new EventTracker(this, 'click')
     this._mousemoveTracker = new EventTracker(this, 'mousemove')
     this._mousedownTracker = new EventTracker(this, 'mousedown')
     this._mouseupTracker = new EventTracker(this, 'mouseup')
+    this._mouseoutTracker = new EventTracker(this, 'mouseout')
     this._wheelTracker = new EventTracker(this, 'wheel')
 
     // Touch
@@ -62,7 +26,75 @@ export default class EventManager {
     this._pointerendTracker = new EventTracker(this, 'pointerup')
     this._pointercancelTracker = new EventTracker(this, 'pointercancel')
 
+    // MSPointer
+    this._MSPointerStartTracker = new EventTracker(this, 'MSPointerDown')
+    this._MSPointerMoveTracker = new EventTracker(this, 'MSPointerMove')
+    this._MSPointerEndTracker = new EventTracker(this, 'MSPointerUp')
+    this._MSPointerCancelTracker = new EventTracker(this, 'MSPointerCancel')
+
     this._listeners = {}
+    this._detectIt = detectIt
+    this._passive = ['wheel', 'mousemove', 'pointermove', 'touchmove', 'MSPointerMove']
+
+    // Additional events that need to be tracked
+    // in case of disrupted/cancelled touch events
+    this._exceptions = {
+      mouseout: ['touchcancel', 'touchend', 'pointercancel', 'pointerup', 'MSPointerUp', 'MSPointerCancel']
+    }
+  }
+
+  detectDeviceType () {
+    // Update device type
+    this._detectIt.updateOnlyOwnProperties()
+
+    // We use array as we may need to add x > 1 events for hybrid devices
+    const eventup = []
+    const eventdown = []
+    const eventmove = []
+    const eventcancel = []
+    const eventclick = []
+    const wheel = 'wheel'
+
+    // Mouse events for desktop:
+    if (this._detectIt.deviceType.includes('mouse') && detectIt.primaryInput === 'mouse') {
+      eventup.push('mouseup')
+      eventdown.push('mousedown')
+      eventmove.push('mousemove')
+      eventcancel.push('mouseout')
+      eventclick.push('click')
+    }
+
+    // Touch events for iOS & Android:
+    if (this._detectIt.deviceType.includes('touch') && detectIt.primaryInput === 'touch') {
+      eventup.push('touchend')
+      eventdown.push('touchstart')
+      eventmove.push('touchmove')
+      eventcancel.push('touchcancel')
+      eventclick.push('touchstart')
+      eventclick.push('touchend')
+    }
+
+    // Pointer events for IE11 and MSEdge:
+    if (window.navigator.pointerEnabled) {
+      eventup.push('pointerup')
+      eventdown.push('pointerdown')
+      eventmove.push('pointermove')
+      eventcancel.push('pointercancel')
+      eventclick.push('pointerdown')
+      eventclick.push('pointerup')
+    }
+
+    // Pointer events for IE10 and WP8:
+    if (window.navigator.msPointerEnabled) {
+      eventup.push('MSPointerUp')
+      eventdown.push('MSPointerDown')
+      eventmove.push('MSPointerMove')
+      eventcancel.push('MSPointerCancel')
+      eventclick.push('MSPointerDown')
+      eventclick.push('MSPointerUp')
+    }
+
+    this._normalisedEvents = { eventup, eventdown, eventmove, eventcancel, eventclick, wheel }
   }
 
   addRootNode (domNode) {
@@ -75,9 +107,18 @@ export default class EventManager {
     if (this._mounted) {
       for (const listenerId in this._listeners) {
         const { eventName, callback } = this._listeners[listenerId]
-        const nativeEvent = this._normalisedEvents[eventName]
-        const tracker = this[getTrackerName(nativeEvent)]
-        tracker.addEventListener(listenerId, callback)
+        const nativeEvents = this._normalisedEvents[eventName]
+
+        if (Array.isArray(nativeEvents)) {
+          for (let i = 0; i < nativeEvents.length; i++) {
+            const tracker = this[getTrackerName(nativeEvents[i])]
+            tracker.addEventListener(listenerId, callback)
+          }
+        } else {
+          const tracker = this[getTrackerName(nativeEvents)]
+          // For better scrolling performance
+          tracker.addEventListener(listenerId, callback, detectIt.passiveEvents ? { passive: true } : false)
+        }
       }
     } else {
       // you should really only call this when mounted
@@ -87,29 +128,46 @@ export default class EventManager {
   addEventListener (eventName, listenerId, callback) {
     this._listeners[listenerId] = Object.assign({}, { eventName, callback })
     if (this._mounted) {
-      const nativeEvent = this._normalisedEvents[eventName]
-      const tracker = this[getTrackerName(nativeEvent)]
-      tracker.addEventListener(listenerId, callback)
+      const nativeEvents = this._normalisedEvents[eventName]
+
+      if (Array.isArray(nativeEvents)) {
+        for (let i = 0; i < nativeEvents.length; i++) {
+          const tracker = this[getTrackerName(nativeEvents[i])]
+          tracker.addEventListener(listenerId, callback)
+        }
+      } else {
+        const tracker = this[getTrackerName(nativeEvents)]
+        // For better scrolling performance
+        tracker.addEventListener(listenerId, callback, detectIt.passiveEvents ? { passive: true } : false)
+      }
     }
   }
 
+
   removeEventListener (eventName, listenerId) {
     delete this._listeners[listenerId]
-    const nativeEvent = this._normalisedEvents[eventName]
-    const tracker = this[getTrackerName(nativeEvent)]
-    tracker.removeEventListener(listenerId)
+    const nativeEvents = this._normalisedEvents[eventName]
+
+    if (Array.isArray(nativeEvents)) {
+      for (let i = 0; i < nativeEvents.length; i++) {
+        const tracker = this[getTrackerName(nativeEvents[i])]
+        tracker.removeEventListener(listenerId)
+      }
+    } else {
+      const tracker = this[getTrackerName(nativeEvents)]
+      tracker.removeEventListener(listenerId)
+    }
   }
 
   _getCoordinates (event) {
     // desktop
     if (event.type.includes('pointer') || event.type.includes('mouse') || event.type === 'click') {
       this._getDesktopCoordinates(event)
-      
     } else if (event.type.includes('touch')) {
       // One finger: pan
       // Two fingers: zoom, other gestures
 
-      // Note: For multi touch events need to acess both targetTouches and changedTouches
+      // Note: For multi touch events, we need to acess both targetTouches and changedTouches
       // to create gestures
       this._getMobileCoordinates(event)
     }
@@ -156,6 +214,8 @@ class EventTracker {
     if (this._numberOfListeners === 0) {
       handler = this._handleEvent.bind(this)
 
+      // add passive event listeners
+
       if (listenerId.includes('move')) {
         window.addEventListener(this._eventName, handler)
       } else {
@@ -201,13 +261,18 @@ const eventNameToTrackerNameMap = {
   mousemove: '_mousemoveTracker',
   mousedown: '_mousedownTracker',
   mouseup: '_mouseupTracker',
+  mouseout: '_mouseoutTracker',
   wheel: '_wheelTracker',
   touchstart: '_touchstartTracker',
   touchmove: '_touchmoveTracker',
   touchend: '_touchendTracker',
   touchcancel: '_touchcancelTracker',
-  pointerdown: '_pointerdown',
-  pointerup: '_pointerup',
-  pointermove: '_pointermove',
-  pointercancel: '_pointercancel'
+  pointerdown: '_pointerdownTracker',
+  pointerup: '_pointerendTracker',
+  pointermove: '_pointermoveTracker',
+  pointercancel: '_pointercancelTracker',
+  MSPointerDown: '_MSPointerDownTracker',
+  MSPointerUp: '_MSPointerEndTracker',
+  MSPointerMove: '_MSPointerMoveTracker',
+  MSPointerCancel: '_MSPointerCancelTracker'
 }

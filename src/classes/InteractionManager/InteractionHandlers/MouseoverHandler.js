@@ -15,7 +15,15 @@ export default class MouseoverHandler extends InteractionHandler {
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-mouseover'
 
-      eventManager.addEventListener('eventmove', listenerId, handler)
+      // Mouse
+      if (eventManager._detectIt.deviceType.includes('mouse')) {
+        eventManager.addEventListener('eventmove', listenerId + '-mouseover-mouse', handler)
+      }
+
+      // Touch
+      if (eventManager._detectIt.deviceType.includes('touch')) {
+        eventManager.addEventListener('eventdown', listenerId + '-mouseover-touch', handler)
+      }
     }
   }
 
@@ -25,34 +33,64 @@ export default class MouseoverHandler extends InteractionHandler {
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-mouseover'
 
-      eventManager.removeEventListener('eventmove', listenerId)
+      // Mouse
+      if (eventManager._detectIt.deviceType.includes('mouse')) {
+        eventManager.removeEventListener('eventmove', listenerId)
+      }
+
+      // Touch
+      if (eventManager._detectIt.deviceType.includes('touch')) {
+        eventManager.removeEventListener('eventdown', listenerId)
+      }
     }
   }
 
-  _handleEvent (coordinates, mouseEvent) {
+  _handleEvent (coordinates, event) {
+    const eventManager = this._interactionManager._eventManager
+
+    // Mouse goes into callback directly
+    if (eventManager._detectIt.deviceType.includes('mouse') && eventManager._detectIt.primaryInput === 'mouse') {
+      this._handleIndexing(coordinates, event)
+
+    // Touch measures first then if it is greater than 250ms, then goes into callback
+    } else if (
+      (eventManager._detectIt.deviceType.includes('touch') && eventManager._detectIt.primaryInput === 'touch') ||
+      window.navigator.pointerEnabled || window.navigator.msPointerEnabled
+    ) {
+      const self = this
+      this._pressTimer = window.setTimeout(function () {
+        self._handleIndexing(coordinates, event)
+      }, 250)
+    }
+  }
+
+  _handleIndexing (coordinates, event) {
     this._currentMouseoverIds = {}
 
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(coordinates)
-    this._handleHits(hits, mouseEvent)
+
+    this._handleHits(hits, event)
 
     this._cleanupPreviousHits()
   }
 
-  _handleHits (hits, mouseEvent) {
+  _handleHits (hits, event) {
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
       const hitId = this._getHitId(hit)
-
-      if (!this._mouseAlreadyOver(hitId)) {
+      
+      // 1. First condition is for mouse/desktop, where cursor always present
+      // 2. Second condition is for touch cases, where cursor leaves screen
+      if (!this._mouseAlreadyOver(hitId) || (this._mouseAlreadyOver(hitId) && event.type.includes('touch'))) {
         this._previousMouseoverIds[hitId] = true
 
         if (this._isInLayer(hit)) {
-          this._layerCallbacks[hit.layerId](hit.$index, mouseEvent)
+          this._layerCallbacks[hit.layerId](hit.key, event)
         }
 
         if (this._isMark(hit)) {
-          this._markCallbacks[hit.markId](mouseEvent)
+          this._markCallbacks[hit.markId](event)
         }
       }
 
@@ -70,7 +108,7 @@ export default class MouseoverHandler extends InteractionHandler {
 
   _getHitId (hit) {
     let id
-    if (this._isInLayer(hit)) id = hit.layerId + '-' + hit.$index
+    if (this._isInLayer(hit)) id = hit.layerId + '-' + hit.key
     if (this._isMark(hit)) id = hit.markId
 
     return id

@@ -15,6 +15,7 @@ class CoordinateTransformationContext {
       switch (transformation) {
         case 'identity':
           this._transformation = c => c
+          this._transformation.invert = c => c
           break
 
         case 'polar':

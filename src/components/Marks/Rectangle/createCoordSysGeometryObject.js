@@ -1,16 +1,16 @@
 import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
 import { createScaledGeometry, ensureValidCombination } from './createCoordSysGeometry.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
-import getIndexArray from '../utils/getIndexArray.js'
+import getKeyArray from '../utils/getKeyArray.js'
 
 export default function (
-  coordinateProps, sectionContext, coordinateTransformationContext, indexProp, interpolate
+  coordinateProps, sectionContext, coordinateTransformationContext, keyProp, interpolate
 ) {
   const { scaledCoordinates, length } = scaleCoordinates(coordinateProps, sectionContext)
-  const indexArray = getIndexArray(indexProp, length)
+  const keyArray = getKeyArray(keyProp, length)
   const scaledGeometryArray = createScaledGeometryArray(scaledCoordinates, length)
   const coordSysGeometryObject = createCoordSysGeometryObject(
-    scaledGeometryArray, coordinateTransformationContext, indexArray, interpolate
+    scaledGeometryArray, coordinateTransformationContext, keyArray, interpolate
   )
 
   return coordSysGeometryObject
@@ -30,7 +30,7 @@ function scaleCoordinates (coordinateProps, sectionContext) {
 
   const scaledCoordinates = _scaleCoordinates(
     coordinateValues,
-    sectionContext.scales(),
+    sectionContext,
     coordinatesThatNeedScaling,
     coordinatesThatArePrimitive,
     length
@@ -57,20 +57,19 @@ function getMissingCoordinatesFromContext (coordinates, sectionContext) {
 
   for (const coordinateName of coordinateNames) {
     const coordinateValue = coordinates[coordinateName]
-    nonMissingCoordinates[coordinateName] = coordinateValue || sectionContext[coordinateName]()
+    nonMissingCoordinates[coordinateName] = coordinateValue || sectionContext[coordinateName]
   }
 
   return nonMissingCoordinates
 }
 
 function getCoordinateValues (nonMissingCoordinates, sectionContext) {
-  const scales = sectionContext.scales()
   const coordinateValues = {}
 
   for (const coordinateName in nonMissingCoordinates) {
     const coordinateValue = nonMissingCoordinates[coordinateName]
     if (coordinateValue.constructor === Function) {
-      coordinateValues[coordinateName] = coordinateValue(scales)
+      coordinateValues[coordinateName] = coordinateValue(sectionContext)
     } else {
       coordinateValues[coordinateName] = coordinateValue
     }

@@ -26,16 +26,16 @@ export function scaleCoordinates (coordinateProps, sectionContext) {
     scaledCoordinates.x1 = scaleCoordinate(x1, 'x1', sectionContext)
     scaledCoordinates.x2 = scaleCoordinate(x2, 'x2', sectionContext)
   } else {
-    scaledCoordinates.x1 = sectionContext.x1()
-    scaledCoordinates.x2 = sectionContext.x2()
+    scaledCoordinates.x1 = sectionContext.x1
+    scaledCoordinates.x2 = sectionContext.x2
   }
 
   if (wereSpecified(y1, y2)) {
     scaledCoordinates.y1 = scaleCoordinate(y1, 'y1', sectionContext)
     scaledCoordinates.y2 = scaleCoordinate(y2, 'y2', sectionContext)
   } else {
-    scaledCoordinates.y1 = sectionContext.y1()
-    scaledCoordinates.y2 = sectionContext.y2()
+    scaledCoordinates.y1 = sectionContext.y1
+    scaledCoordinates.y2 = sectionContext.y2
   }
 
   return scaledCoordinates
@@ -78,12 +78,10 @@ function wereSpecified (a, b) {
 }
 
 function scaleCoordinate (coordinate, coordinateName, sectionContext) {
-  const scales = sectionContext.scales()
-
   if (coordinate.constructor === Function) {
-    return coordinate(scales)
+    return coordinate(sectionContext)
   } else {
-    const scale = ['x1', 'x2'].includes(coordinateName) ? scales.scaleX : scales.scaleY
+    const scale = ['x1', 'x2'].includes(coordinateName) ? sectionContext.scaleX : sectionContext.scaleY
     const scaledCoordinate = scale(coordinate)
     throwErrorIfInvalidScaledCoordinate(coordinate, scaledCoordinate, coordinateName)
 

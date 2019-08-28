@@ -4,6 +4,7 @@
   import * as SectionContext from "../../Core/Section/SectionContext"
 
   import { createYAxisCoords, createYTickGeoms, createYLabelGeoms, createTitleXCoord, createTitleYCoord} from "./createYAxisCoords.js"
+  import { getTickPositions, getFormat } from './utils.js'
 
   // global properties
   export let scale = undefined
@@ -84,29 +85,23 @@
   let scaleY
 
   $: {
-    scaleY = (typeof scale === "undefined") ? $sectionContext._scaleY : scale;
-    ({xCoords, yCoords} = createYAxisCoords(hjust, x, xOffset, $sectionContext._scaleX, scaleY, $sectionContext));
+    scaleY = (typeof scale === "undefined") ? $sectionContext.scaleY : scale;
+    ({xCoords, yCoords} = createYAxisCoords(hjust, x, xOffset, $sectionContext.scaleX, scaleY, $sectionContext));
   }
   $: {
-    if (Array.isArray(tickValues) && tickValues.length > 0) {
-      tickPositions = tickValues
-    } else {
-      tickPositions = scaleY.ticks(tickCount)
-    }
-    if (tickExtra && tickPositions[0] !== scaleY.domain()[0]) {
-      tickPositions.unshift(scaleY.domain()[0])
-    }
+    tickPositions = getTickPositions(tickValues, scaleY, tickCount, tickExtra);
     ({tickXCoords, tickYCoords} = createYTickGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, flip));
     ({tickLabelXCoords, tickLabelYCoords} = createYLabelGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, labelOffset, flip))
-    format = (labelFormat) ? labelFormat : scaleY.tickFormat(tickPositions.length)
+
+    format = getFormat(labelFormat, scaleY, tickPositions.length)
     tickLabelText = tickPositions.map(format)
     axisWidth = baseLineWidth + tickSize + labelOffset + labelFontSize
     labelAnchorPoint = flip ? 'l' : 'r'
   }
   $: {
     if (title.length > 0) {
-      titleXCoord = createTitleXCoord(titleHjust, xCoords, titleX, $sectionContext._scaleX, scaleY, titleXOffset, axisWidth, flip, titleFontSize, $sectionContext)
-      titleYCoord = createTitleYCoord(titleVjust, yCoords, titleY, $sectionContext._scaleX, scaleY, titleYOffset, axisWidth, flip, titleFontSize, $sectionContext)
+      titleXCoord = createTitleXCoord(titleHjust, xCoords, titleX, $sectionContext.scaleX, scaleY, titleXOffset, axisWidth, flip, titleFontSize, $sectionContext)
+      titleYCoord = createTitleYCoord(titleVjust, yCoords, titleY, $sectionContext.scaleX, scaleY, titleYOffset, axisWidth, flip, titleFontSize, $sectionContext)
     }
   }
 </script>
