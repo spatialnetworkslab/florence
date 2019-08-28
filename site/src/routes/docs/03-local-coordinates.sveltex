@@ -74,7 +74,7 @@ import Padding from './doc-examples/Padding.svelte'
 `scaleX` and `scaleY` can be used to create a local coordinate system
 inside of the `Graphic` or `Section`. Concretely this means that the
 positioning props of the direct children of the `Graphic` or `Section` 
-will behave differently. For example:
+will behave differently depending on `scaleX` and `scaleY`. For example:
 
 ```html
 <script>
@@ -94,7 +94,7 @@ will behave differently. For example:
 </Graphic>
 ```
 
-It is also possible to use non-numeric domains, as long as your scale can handle them:
+It is also possible to use non-numeric domains:
 
 ```html
 <script>
