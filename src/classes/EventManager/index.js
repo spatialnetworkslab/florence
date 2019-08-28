@@ -34,7 +34,6 @@ export default class EventManager {
 
     this._listeners = {}
     this._detectIt = detectIt
-    this._passive = ['wheel', 'mousemove', 'pointermove', 'touchmove', 'MSPointerMove']
 
     // Additional events that need to be tracked
     // in case of disrupted/cancelled touch events
@@ -143,7 +142,6 @@ export default class EventManager {
     }
   }
 
-
   removeEventListener (eventName, listenerId) {
     delete this._listeners[listenerId]
     const nativeEvents = this._normalisedEvents[eventName]
@@ -195,8 +193,6 @@ export default class EventManager {
         this._svgPoint.x = changedTouch.clientX
         this._svgPoint.y = changedTouch.clientY
       }
-    } else if (targetTouches.length > 1 || changedTouches.length > 1) {
-      // to handle pinch and other multi touch gestures
     }
   }
 }
@@ -208,18 +204,20 @@ class EventTracker {
 
     this._numberOfListeners = 0
     this._callbacks = {}
+
+    // Add events here as necessary to mark as `passive` across all browsers/devices
+    // Move events cause significant lag, so they are marked as `passive` by default
+    this._passive = ['mousemove', 'pointermove', 'touchmove', 'MSPointerMove']
   }
 
   addEventListener (listenerId, callback) {
     if (this._numberOfListeners === 0) {
       handler = this._handleEvent.bind(this)
-
-      // add passive event listeners
-
       if (listenerId.includes('move')) {
-        window.addEventListener(this._eventName, handler)
+        window.addEventListener(this._eventName, handler, detectIt.passiveEvents ? { passive: true } : false)
       } else {
-        this._eventManager._domNode.addEventListener(this._eventName, handler)
+        this._eventManager._domNode.addEventListener(this._eventName, handler,
+          detectIt.passiveEvents && this._passive.includes(this._eventName) ? { passive: true } : false)
       }
     }
 

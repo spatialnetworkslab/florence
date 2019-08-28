@@ -84,7 +84,7 @@ export default class MouseoverHandler extends InteractionHandler {
       // 2. Second condition is for touch cases, where cursor leaves screen
       if (!this._mouseAlreadyOver(hitId) || (this._mouseAlreadyOver(hitId) && event.type.includes('touch'))) {
         this._previousMouseoverIds[hitId] = true
-
+        console.log('mouseover', this._isMark(hit))
         if (this._isInLayer(hit)) {
           this._layerCallbacks[hit.layerId](hit.key, event)
         }
