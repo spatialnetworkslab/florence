@@ -36,8 +36,8 @@
   let _padding
 
   $: {
-    let rangeX = [0 + _padding.left, width - _padding.right]
-    let rangeY = [0 + _padding.top, height - _padding.bottom]    
+    let rangeX = [0, width]
+    let rangeY = [0, height]    
 
     if (flipX) rangeX.reverse()
     if (flipY) rangeY.reverse()
