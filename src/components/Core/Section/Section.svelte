@@ -16,7 +16,7 @@
 
   import InteractionManager from '../../../classes/InteractionManager'
   import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
-  import parsePadding from '../utils/parsePadding.js'
+  import { parsePadding, applyPadding } from '../utils/padding.js'
 
   let sectionId = getId()
   
@@ -65,12 +65,16 @@
   let _padding
 
   $: {
-    _padding = parsePadding(padding)
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-    rangeX = [scaledCoordinates.x1 + _padding.left, scaledCoordinates.x2 - _padding.right]
-    rangeY = [scaledCoordinates.y1 + _padding.top, scaledCoordinates.y2 - _padding.bottom]
+    rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
+    rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
+    
     if (flipX) rangeX.reverse()
     if (flipY) rangeY.reverse()
+
+    _padding = parsePadding(padding)
+    rangeX = applyPadding(rangeX, _padding.left, _padding.right)
+    rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
     
     const updatedSectionContext = { 
       sectionId, rangeX, rangeY, scaleX, scaleY, padding: _padding, flipX, flipY
