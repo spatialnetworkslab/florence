@@ -79,8 +79,8 @@ export default class InteractionHandler {
 
     const { scaleX, scaleY } = section
 
-    const clampedX = this._clamp(pixelCoords.x, section.x1, section.x2)
-    const clampedY = this._clamp(pixelCoords.y, section.y1, section.y2)
+    const clampedX = this._clamp(pixelCoords.x, section.minX, section.maxX)
+    const clampedY = this._clamp(pixelCoords.y, section.minY, section.maxY)
 
     let localX = clampedX
     let localY = clampedY
