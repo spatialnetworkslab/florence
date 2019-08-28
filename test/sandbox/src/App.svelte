@@ -16,6 +16,7 @@
   import DragCategorical from './examples/DragCategorical.svelte'
   import FunctionAPI from './examples/FunctionAPI.svelte'
   import FlipTest from './examples/FlipTest.svelte'
+  import NonNumericAxis from './examples/NonNumericAxis.svelte'
 
   // and add them to this component array
   let components = [
@@ -86,6 +87,11 @@
       name: 'Flip test',
       url: 'fliptest',
       component: FlipTest
+    },
+    {
+      name: 'Non numeric axis',
+      url: 'nonnumericaxis',
+      component: NonNumericAxis
     }
   ]
 </script>

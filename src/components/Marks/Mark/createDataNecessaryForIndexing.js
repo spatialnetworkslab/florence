@@ -37,9 +37,9 @@ export function createDataNecessaryForIndexingMark (type, markId, geometryTypes,
 }
 
 export function createDataNecessaryForIndexingLayer (
-  type, layerId, indexArray, geometryObjects, aestheticsObjects
+  type, layerId, keyArray, geometryObjects, aestheticsObjects
 ) {
-  const layerData = { layerId, indexArray }
+  const layerData = { layerId, keyArray }
   let layerAttributes
 
   if (type === 'Point') {

@@ -25,9 +25,11 @@
   }
 
   let clicked = false
+  let hovered = false
   $: geometry = clicked ?
     multiLineString2 :
     multiLineString
+
 </script>
 
 <Graphic width={500} height={500}>
@@ -43,18 +45,20 @@
 
     <Line
       {geometry}
-      strokeWidth={2}
+      strokeWidth={hovered ? 9: 2}
       stroke={clicked ? 'green' : 'red'}
       onClick={() => { clicked = !clicked }} 
+      onMouseover={() => { hovered = !hovered }} 
       transition={2000}
     />
 
     <LineLayer
       x={[data.column('x')]}
       y={[data.column('y')]}
-      strokeWidth={10}
+      strokeWidth={hovered ? 2: 10}
       stroke={clicked ? 'green' : 'red'}
       onClick={() => { clicked = !clicked }} 
+      onMouseover={() => { hovered = !hovered }} 
     />
 
   </Section>

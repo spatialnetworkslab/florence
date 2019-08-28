@@ -22,7 +22,7 @@
 
   // Other
   export let interpolate = false
-  export let index = undefined
+  export let key = undefined
   export let zoomIdentity = undefined
 </script>
 
@@ -32,5 +32,5 @@
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {index} {zoomIdentity} {interpolate}
+  {key} {zoomIdentity} {interpolate}
 />

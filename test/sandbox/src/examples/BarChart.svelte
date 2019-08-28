@@ -77,11 +77,11 @@
         y1={0}
         y2={filteredData.column('meanQuantity')}
         fill={transformation === 'identity' ? 'green' : 'blue'}
-        index={filteredData.column('$index')}
+        key={filteredData.column('$key')}
         onClick={ix => log(ix)}
     /> -->
 
-    {#each filteredData.rows() as row (row.$index)}
+    {#each filteredData.rows() as row (row.$key)}
 
       <Rectangle 
         x1={row.fruit}
@@ -91,6 +91,7 @@
         fill={transformation === 'identity' ? 'green' : 'blue'}
         transition={2000}
         onClick={handler}
+        onMouseover={ () => transformation = 'identity' }
       />
 
     {/each}

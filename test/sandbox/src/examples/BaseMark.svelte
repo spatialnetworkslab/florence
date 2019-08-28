@@ -87,15 +87,6 @@
     padding={10}
   >
 
-    <!-- {#each indices as index (index)}
-
-      <Mark
-        {...marks[index]}
-        transition={2000}
-      />
-
-    {/each} -->
-
     <Layer 
       {...layer}
       transition={2000}
