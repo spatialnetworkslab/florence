@@ -25,7 +25,7 @@
   export let onDragEnd = undefined
 
   // Other
-  export let index = undefined
+  export let key = undefined
   export let zoomIdentity = undefined
 </script>
 
@@ -36,5 +36,5 @@
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
   {onDragStart} {onDrag} {onDragEnd}
-  {index} {zoomIdentity} _asPolygon={false}
+  {key} {zoomIdentity} _asPolygon={false}
 />

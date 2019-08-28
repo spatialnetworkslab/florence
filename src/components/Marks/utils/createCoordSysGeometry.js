@@ -26,7 +26,7 @@ function transformationNecessary (coordinateTransformationContext) {
 }
 
 export function createCoordSysGeometryObject (
-  scaledGeometryArray, coordinateTransformationContext, indexArray, interpolate, visibilityTreshold = 1
+  scaledGeometryArray, coordinateTransformationContext, keyArray, interpolate, visibilityTreshold = 1
 ) {
   const screenGeometryObject = {}
 
@@ -36,9 +36,9 @@ export function createCoordSysGeometryObject (
       scaledGeometry, coordinateTransformationContext, interpolate, visibilityTreshold
     )
 
-    const index = indexArray[i]
+    const key = keyArray[i]
 
-    screenGeometryObject[index] = screenGeometry
+    screenGeometryObject[key] = screenGeometry
   }
 
   return screenGeometryObject

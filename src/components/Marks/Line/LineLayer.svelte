@@ -18,7 +18,7 @@
   export let onMouseout = undefined
 
   // Other
-  export let index = undefined
+  export let key = undefined
   export let interpolate = true
   export let zoomIdentity = undefined
 </script>
@@ -28,5 +28,5 @@
   {x} {y} {geometry}
   {strokeWidth} {stroke} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {interpolate} {zoomIdentity} {index} _asPolygon={false}
+  {interpolate} {zoomIdentity} {key} _asPolygon={false}
 />
