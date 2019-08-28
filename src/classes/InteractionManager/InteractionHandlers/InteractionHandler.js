@@ -50,11 +50,12 @@ export default class InteractionHandler {
     this._spatialIndex.unindexMark(markId)
   }
 
-  _isInSection (hit, geometry) {
-    return (hit.x >= geometry.x1 &&
-            hit.x <= geometry.x2 &&
-            hit.y >= geometry.y1 &&
-            hit.y <= geometry.y2)
+  _isInSection (hit) {
+    const section = this._interactionManager._section
+    return (hit.x >= section.minX &&
+            hit.x <= section.maxX &&
+            hit.y >= section.minY &&
+            hit.y <= section.maxY)
   }
 
   _isInLayer (hit) {
