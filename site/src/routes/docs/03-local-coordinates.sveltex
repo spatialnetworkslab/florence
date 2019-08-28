@@ -128,6 +128,25 @@ import NonNumericDomains from './doc-examples/NonNumericDomains.svelte'
 
 <NonNumericDomains />
 
+Note that you should not provide the `.range` of the scales. `florence` determines this
+automatically by looking at what was provided to the positioning props, `padding`, and `flipX`
+and `flipY`. So for example
+
+```html
+<Section
+  x1={50} x2={450}
+  flipX
+  padding={20}
+  scaleX={scaleLinear().domain([0, 1])}
+>
+```
+
+is equivalent to 
+
+```js
+scaleLinear().domain([0, 1]).range([430, 70])
+```
+
 Throughout the documentation, [d3 scales](https://github.com/d3/d3-scale) like `scaleLinear`,
 `scaleBand` and `scalePoint` will be passed to `scaleX` and `scaleY`. It is also possible 
 to use your own scale functions, but there are currently too many caveats, so a guide for
@@ -210,13 +229,7 @@ import Polar from './doc-examples/Polar.svelte'
 
 <Polar />
 
-## Inside a local coordinate system
-
-### Nesting coordinate systems
-
-TODO
-
-### Function syntax
+## Function syntax
 
 As explained above under [scaleX and scaleY](#scalex-and-scaley), positioning
 props of children of the `Graphic` or `Section` that uses the scales will expect
@@ -249,13 +262,30 @@ This is convenient when working with `d3`'s `scaleBand`, that uses a `.bandwidth
 that returns a pixel value:
 
 ```html
-TODO
+<Section scaleX={scaleBand().domain(['a', 'b', 'c'])}>
+  
+  <Rectangle
+    x1={'a'}
+    x2={({ scaleX }) => scaleX('a') + scaleX.bandwidth()}
+  />
+
+</Section>
 ```
 
 The full list of available `Section`-related attributes is
 
 ```js
 ({
-  
+  scaleX, // what was passed to scaleX with the rangeX applied
+  scaleY, // what was passed to scaleY with the rangeY apllied
+  rangeX, // [x1, x2], flipped if flipX === true, with padding applied
+  rangeY, // [y1, y2], flipped if flipY === true, with padding applied
+  minX, // Math.min(...rangeX)
+  maxX, // Math.max(...rangeX)
+  minY, // Math.min(...rangeY)
+  maxY, // Math.max(...rangeY)
+  padding, // An object with the specified padding for each side
+  flipX, // what was passed to flipX
+  flipY // what was passed to flipY
 }) => { ... }
 ```
