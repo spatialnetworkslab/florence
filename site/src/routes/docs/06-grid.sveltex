@@ -12,6 +12,8 @@ ___
 
 ## Description
 
+TODO
+
 ## Props
 
 ### Positioning
@@ -28,3 +30,21 @@ positioning props.
 
 ### Grid settings
 
+|   Prop    |            Type(s)             | Required |   Default   |     Units     |
+| --------- | ------------------------------ | -------- | ----------- | ------------- |
+| rows      | `Number`                       | no       | `1`         |               |
+| columns   | `Number`                       | no       | `1`         |               |
+| rowGap    | `Number`                       | no       | `0`         | screen pixels |
+| columnGap | `Number`                       | no       | `0`         | screen pixels |
+| areaNames | `Array` of `String`s/`Number`s | no       | `undefined` |               |
+
+TODO
+
+### Other
+
+|       Prop       |  Type(s)  | Required | Default |
+| ---------------- | --------- | -------- | ------- |
+| viewGridTemplate | `Boolean` | no       | `false` |
+| viewGridShape    | `Boolean` | no       | `false` |
+
+TODO

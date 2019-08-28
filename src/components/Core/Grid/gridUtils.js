@@ -159,7 +159,6 @@ function getFrameStep (specs, range) {
 // Adjacent cells with the same name are merged into a single area
 export function mergeNameSpecs (cellNames, cellSpecs, numCols) {
   const namesLength = cellNames.length
-  console.log(namesLength)
   const specsLength = cellSpecs.length
 
   if (namesLength < specsLength) {
@@ -167,7 +166,7 @@ export function mergeNameSpecs (cellNames, cellSpecs, numCols) {
 
     // Nameless cells are given their index as names
     for (let i = 0; i < specsLength; i++) {
-      if (namesLength[i]) continue
+      if (cellNames[i]) continue
       else { cellNames.push(i) }
     }
   } else if (namesLength > specsLength) {
