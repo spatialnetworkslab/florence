@@ -178,7 +178,11 @@ The `zoomIdentity` prop takes an `Object` with the following structure:
 
 where `x` is the translation to the right in screen pixels, `y` the translation down in screen pixels,
 `kx` the magnification factor in the x dimension and `ky` the magnification factor in the y dimension.
-The identity transformation is `{ x: 0, y: 0, kx: 1, ky: 1 }`. Using `zoomIdentity` will zoom and/or pan
+The identity transformation is 
+```js
+{ x: 0, y: 0, kx: 1, ky: 1 }
+``` 
+Using `zoomIdentity` will zoom and/or pan
 everything inside of the `Section`.
 
 With `zoomIdentity` it is possible to zoom/pan programmatically, or on user interaction- see the
