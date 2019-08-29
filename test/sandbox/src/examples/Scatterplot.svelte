@@ -44,7 +44,7 @@
   let bigPoint = { x: 50, y: 50 }
   let dragPoint
 
-  function handleDragStart (event) {
+  function handleDragstart (event) {
     dragPoint = event.localCoordinates
   }
 
@@ -52,7 +52,7 @@
     dragPoint = event.localCoordinates
   }
 
-  function handleDragEnd (event) {
+  function handleDragend (event) {
     bigPoint = dragPoint
     dragPoint = undefined
   }
@@ -60,7 +60,7 @@
   let dragPointLayer
   let dragKey
 
-  function handleLayerDragStart (event) {
+  function handleLayerDragstart (event) {
     dragKey = event.key
     dragPointLayer = event.localCoordinates
   }
@@ -69,7 +69,7 @@
     dragPointLayer = event.localCoordinates
   }
 
-  function handleLayerDragEnd (event) {
+  function handleLayerDragend (event) {
     data.updateRow(event.key, { a: dragPointLayer.x, b: dragPointLayer.y })
     data = data
     dragPointLayer = undefined
@@ -127,9 +127,9 @@
         radius={transformation === 'identity' ? 4 : 6}
         onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
         onMouseout={handleMouseout}
-        onDragStart={handleLayerDragStart}
+        onDragstart={handleLayerDragstart}
         onDrag={handleLayerDrag}
-        onDragEnd={handleLayerDragEnd}
+        onDragend={handleLayerDragend}
       />
 
       {#if dragPointLayer}
@@ -150,9 +150,9 @@
         onClick={() => log('BOOM')}
         onMouseover={() => big = true}
         onMouseout={() => big = false}
-        onDragStart={handleDragStart}
+        onDragstart={handleDragstart}
         onDrag={handleDrag}
-        onDragEnd={handleDragEnd}
+        onDragend={handleDragend}
       />
 
       {#if dragPoint}

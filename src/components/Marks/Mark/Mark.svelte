@@ -63,9 +63,9 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
-  export let onDragStart = undefined
+  export let onDragstart = undefined
   export let onDrag = undefined
-  export let onDragEnd = undefined
+  export let onDragend = undefined
 
   // Other
   export let interpolate = false
@@ -252,7 +252,7 @@
 
   // Interactivity
   $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
-  || onDragStart !== undefined || onDrag !== undefined || onDragEnd !== undefined
+  || onDragstart !== undefined || onDrag !== undefined || onDragend !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -314,8 +314,8 @@
       if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
       if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
       if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
-      if (onDragStart || onDrag || onDragEnd) {
-        $interactionManagerContext.addMarkInteraction('drag', markId, { onDragStart, onDrag, onDragEnd })
+      if (onDragstart || onDrag || onDragend) {
+        $interactionManagerContext.addMarkInteraction('drag', markId, { onDragstart, onDrag, onDragend })
       }
     }
   }

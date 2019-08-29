@@ -129,4 +129,4 @@ export default class DragHandler extends InteractionHandler {
   }
 }
 
-const dragCallbackMap = { dragstart: 'onDragStart', drag: 'onDrag', dragend: 'onDragEnd' }
+const dragCallbackMap = { dragstart: 'onDragstart', drag: 'onDrag', dragend: 'onDragend' }
