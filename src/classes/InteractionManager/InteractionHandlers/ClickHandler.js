@@ -59,25 +59,18 @@ export default class ClickHandler extends InteractionHandler {
       const hit = hits[i]
 
       const localCoordinates = this._getLocalCoordinates(screenCoordinates)
+      const clickEvent = createEvent('click', {
+        screenCoordinates,
+        localCoordinates
+      }, nativeEvent)
 
       if (this._isInLayer(hit)) {
-        this._layerCallbacks[hit.layerId](
-          createEvent('click', {
-            key: hit.key,
-            screenCoordinates,
-            localCoordinates
-          }, nativeEvent)
-        )
+        clickEvent.key = hit.key
+        this._layerCallbacks[hit.layerId](clickEvent)
       }
 
       if (this._isMark(hit)) {
-        this._markCallbacks[hit.markId](
-          createEvent('click', {
-            key: hit.key,
-            screenCoordinates,
-            localCoordinates
-          }, nativeEvent)
-        )
+        this._markCallbacks[hit.markId](clickEvent)
       }
     }
   }
