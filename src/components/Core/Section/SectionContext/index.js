@@ -9,11 +9,11 @@ class SectionContext {
     this.rangeX = rangeX
     this.rangeY = rangeY
 
-    this.x1 = rangeX[1] > rangeX[0] ? rangeX[0] : rangeX[1]
-    this.x2 = rangeX[1] > rangeX[0] ? rangeX[1] : rangeX[0]
-    this.y1 = rangeY[1] > rangeY[0] ? rangeY[0] : rangeY[1]
-    this.y2 = rangeY[1] > rangeY[0] ? rangeY[1] : rangeY[0]
-    
+    this.minX = Math.min(...rangeX)
+    this.maxX = Math.max(...rangeX)
+    this.minY = Math.min(...rangeY)
+    this.maxY = Math.max(...rangeY)
+
     this.padding = padding
 
     this._handleScales(scaleX, scaleY)
@@ -27,7 +27,7 @@ class SectionContext {
       this.scaleX = scaleX.copy().range(this.rangeX)
       this.scaleX.invert = createInvertMethod(this.scaleX)
     } else {
-      const domainX = [this.x1 - this.padding.left, this.x2 + this.padding.right]
+      const domainX = [this.minX - this.padding.left, this.maxX + this.padding.right]
       this.scaleX = scaleLinear().domain(domainX).range(this.rangeX)
     }
 
@@ -35,7 +35,7 @@ class SectionContext {
       this.scaleY = scaleY.copy().range(this.rangeY)
       this.scaleY.invert = createInvertMethod(this.scaleY)
     } else {
-      const domainY = [this.y1 - this.padding.top, this.y2 + this.padding.bottom]
+      const domainY = [this.minY - this.padding.top, this.maxY + this.padding.bottom]
       this.scaleY = scaleLinear().domain(domainY).range(this.rangeY)
     }
   }
