@@ -2,6 +2,7 @@ import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js
 import { createScaledGeometry, ensureValidCombination } from './createCoordSysGeometry.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getKeyArray from '../utils/getKeyArray.js'
+import { isUndefined } from '../../../utils/equals.js'
 
 export default function (
   coordinateProps, sectionContext, coordinateTransformationContext, keyProp, interpolate
@@ -57,10 +58,18 @@ function getMissingCoordinatesFromContext (coordinates, sectionContext) {
 
   for (const coordinateName of coordinateNames) {
     const coordinateValue = coordinates[coordinateName]
-    nonMissingCoordinates[coordinateName] = coordinateValue || sectionContext[coordinateName]
+    nonMissingCoordinates[coordinateName] = isUndefined(coordinateValue)
+      ? getMissingCoordinateFromContext(coordinateName, sectionContext)
+      : coordinateValue
   }
 
   return nonMissingCoordinates
+}
+
+const coordMap = { x1: 'minX', x2: 'maxX', y1: 'minY', y2: 'maxY' }
+
+function getMissingCoordinateFromContext (coordinateName, sectionContext) {
+  return sectionContext[coordMap[coordinateName]]
 }
 
 function getCoordinateValues (nonMissingCoordinates, sectionContext) {
