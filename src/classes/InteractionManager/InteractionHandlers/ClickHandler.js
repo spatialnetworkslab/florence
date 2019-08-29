@@ -1,4 +1,5 @@
 import InteractionHandler from './InteractionHandler.js'
+import { createClickEvent } from './utils/createEvent.js'
 
 export default class ClickHandler extends InteractionHandler {
   constructor (interactionManager) {
@@ -27,12 +28,12 @@ export default class ClickHandler extends InteractionHandler {
     }
   }
 
-  _handleEvent (coordinates, event) {
+  _handleEvent (screenCoordinates, event) {
     const eventManager = this._interactionManager._eventManager
     // Mouse goes into callback directly
     // Touch measures first then if it is less than 250ms, then goes into callback
     if (eventManager._detectIt.deviceType.includes('mouse') && eventManager._detectIt.primaryInput === 'mouse') {
-      this._callStoredCallback(coordinates, event)
+      this._callStoredCallback(screenCoordinates, event)
     } else if (
       (eventManager._detectIt.deviceType.includes('touch') && eventManager._detectIt.primaryInput === 'touch') ||
       window.navigator.pointerEnabled || window.navigator.msPointerEnabled
@@ -45,24 +46,38 @@ export default class ClickHandler extends InteractionHandler {
 
         // Considered as click if event lasts less than 250 ms
         if (timeDiff <= 250) {
-          this._callStoredCallback(coordinates, event)
+          this._callStoredCallback(screenCoordinates, event)
         }
       }
     }
   }
 
-  _callStoredCallback (coordinates, event) {
+  _callStoredCallback (screenCoordinates, nativeEvent) {
     const spatialIndex = this._spatialIndex
-    const hits = spatialIndex.queryMouseCoordinates(coordinates)
+    const hits = spatialIndex.queryMouseCoordinates(screenCoordinates)
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
 
+      const localCoordinates = this._getLocalCoordinates(screenCoordinates)
+
       if (this._isInLayer(hit)) {
-        this._layerCallbacks[hit.layerId](hit.key, event)
+        this._layerCallbacks[hit.layerId](
+          createClickEvent({
+            key: hit.key,
+            screenCoordinates,
+            localCoordinates
+          })
+        )
       }
 
       if (this._isMark(hit)) {
-        this._markCallbacks[hit.markId](event)
+        this._markCallbacks[hit.markId](
+          createClickEvent({
+            key: hit.key,
+            screenCoordinates,
+            localCoordinates
+          })
+        )
       }
     }
   }
