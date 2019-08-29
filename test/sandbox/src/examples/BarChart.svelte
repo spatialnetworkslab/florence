@@ -46,10 +46,6 @@
   <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
 </div>
 
-<div>
-  <button on:click={() => notAllowedfruit = 'durian'}>Filter: fruit !== durian</button>
-</div>
-
 <Graphic 
   width={500} {height}
   scaleX={scaleLinear().domain([0, 500])}

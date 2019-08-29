@@ -66,7 +66,7 @@ export default class ClickHandler extends InteractionHandler {
             key: hit.key,
             screenCoordinates,
             localCoordinates
-          })
+          }, nativeEvent)
         )
       }
 
@@ -76,7 +76,7 @@ export default class ClickHandler extends InteractionHandler {
             key: hit.key,
             screenCoordinates,
             localCoordinates
-          })
+          }, nativeEvent)
         )
       }
     }
