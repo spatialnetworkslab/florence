@@ -36,8 +36,8 @@
   let hoverPoints = {}
 
   $: hoverPointKeys = Object.keys(hoverPoints)
-  function handleMouseout (ix) {
-    delete hoverPoints[ix]
+  function handleMouseout ({ key }) {
+    delete hoverPoints[key]
     hoverPoints = hoverPoints
   }
   
