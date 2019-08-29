@@ -341,7 +341,9 @@
       if (onClick) $interactionManagerContext.addLayerInteraction('click', layerId, onClick)
       if (onMouseover) $interactionManagerContext.addLayerInteraction('mouseover', layerId, onMouseover)
       if (onMouseout) $interactionManagerContext.addLayerInteraction('mouseout', layerId, onMouseout)
-      if (onDragStart) $interactionManagerContext.addLayerInteraction('drag', layerId, { onDragStart, onDrag, onDragEnd })
+      if (onDragStart || onDrag || onDragEnd) {
+        $interactionManagerContext.addLayerInteraction('drag', layerId, { onDragStart, onDrag, onDragEnd })
+      }
     }
   }
 

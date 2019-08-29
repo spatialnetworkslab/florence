@@ -314,7 +314,9 @@
       if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
       if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
       if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
-      if (onDragStart) $interactionManagerContext.addMarkInteraction('drag', markId, { onDragStart, onDrag, onDragEnd })
+      if (onDragStart || onDrag || onDragEnd) {
+        $interactionManagerContext.addMarkInteraction('drag', markId, { onDragStart, onDrag, onDragEnd })
+      }
     }
   }
 
