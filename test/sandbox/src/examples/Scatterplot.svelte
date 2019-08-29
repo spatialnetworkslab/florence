@@ -125,7 +125,7 @@
         key={filteredData.column('$key')}
         fill={transformation === 'identity' ? 'black' : 'blue'}
         radius={transformation === 'identity' ? 4 : 6}
-        onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
+        onMouseover={({ key }) => hoverPoints[key] = filteredData.row(key)}
         onMouseout={handleMouseout}
         onDragstart={handleLayerDragstart}
         onDrag={handleLayerDrag}
