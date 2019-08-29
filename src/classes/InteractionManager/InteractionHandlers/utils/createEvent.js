@@ -6,10 +6,10 @@ const INTERESTING_NATIVE_KEYS = [
   'timeStamp'
 ]
 
-export function createClickEvent (eventOptions, nativeEvent) {
+export default function createEvent (eventType, eventOptions, nativeEvent) {
   const event = eventOptions
 
-  event.type = 'click'
+  event.type = eventType
   event.nativeType = nativeEvent.type
 
   for (const key of INTERESTING_NATIVE_KEYS) {

@@ -1,5 +1,5 @@
 import InteractionHandler from './InteractionHandler.js'
-import { createClickEvent } from './utils/createEvent.js'
+import createEvent from './utils/createEvent.js'
 
 export default class ClickHandler extends InteractionHandler {
   constructor (interactionManager) {
@@ -62,7 +62,7 @@ export default class ClickHandler extends InteractionHandler {
 
       if (this._isInLayer(hit)) {
         this._layerCallbacks[hit.layerId](
-          createClickEvent({
+          createEvent('click', {
             key: hit.key,
             screenCoordinates,
             localCoordinates
@@ -72,7 +72,7 @@ export default class ClickHandler extends InteractionHandler {
 
       if (this._isMark(hit)) {
         this._markCallbacks[hit.markId](
-          createClickEvent({
+          createEvent('click', {
             key: hit.key,
             screenCoordinates,
             localCoordinates
