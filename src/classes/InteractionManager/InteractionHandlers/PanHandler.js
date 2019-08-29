@@ -1,4 +1,5 @@
 import SectionInteractionHandler from './SectionInteractionHandler.js'
+import createEvent from './utils/createEvent.js'
 
 export default class PanHandler extends SectionInteractionHandler {
   constructor (interactionManager) {
@@ -37,51 +38,52 @@ export default class PanHandler extends SectionInteractionHandler {
     }
   }
 
-  _nopropagation (event) {
-    event.preventDefault() // Cancel the event from affecting the whole window
+  _nopropagation (nativeEvent) {
+    nativeEvent.preventDefault() // Cancel the event from affecting the whole window
   }
 
   // Record initial mousedown, touchstart
-  _handleStart (coordinates, event) {
+  _handleStart (screenCoordinates, event) {
     this._nopropagation(event)
     this._panningActive = true
-    this._panStartPosition = coordinates
-    this._panCurrentPosition = coordinates
+    this._panStartPosition = screenCoordinates
+    this._panCurrentPosition = screenCoordinates
     this._startEvent = event
   }
 
   // For smooth dragging, perform callback even during drag
   // To bound dragging to only the section, check cursor location and if still in section
-  _handleMove (coordinates, event) {
-    if (this._panningActive && this._isInSection(coordinates)) {
+  _handleMove (screenCoordinates, nativeEvent) {
+    if (this._panningActive && this._isInSection(screenCoordinates)) {
       this._panPreviousPosition = this._panCurrentPosition
-      this._panCurrentPosition = coordinates
-      this._callStoredCallback(coordinates, event, this._panPreviousPosition, this._panCurrentPosition)
+      this._panCurrentPosition = screenCoordinates
+      this._callStoredCallback(
+        screenCoordinates, nativeEvent, this._panPreviousPosition, this._panCurrentPosition
+      )
     } else {
-      this._handleEnd(coordinates, event)
+      this._handleEnd(screenCoordinates, nativeEvent)
     }
   }
 
   // Record eventup events (when cursor leaves area of mark/layer/screen)
-  _handleEnd (coordinates, event) {
+  _handleEnd (screenCoordinates, nativeEvent) {
     if (this._panningActive) {
       this._panningActive = false
       this._panEndCoordinates = this._panCurrentPosition
-      this._endEvent = event
+      this._endEvent = nativeEvent
     }
   }
 
-  _callStoredCallback (coordinates, evt, start, end) {
+  _callStoredCallback (screenCoordinates, nativeEvent, start, end) {
     const delta = { x: start.x - end.x, y: start.y - end.y }
-    const event = {
-      delta,
-      x: coordinates.x,
-      y: coordinates.y,
-      originalMouseEvent: evt,
-      startEvent: this._startEvent,
-      endEvent: this._endEvent
-    }
 
-    this._callback(event)
+    const localCoordinates = this._getLocalCoordinates(screenCoordinates)
+    const panEvent = createEvent('pan', {
+      screenCoordinates,
+      localCoordinates,
+      delta
+    }, nativeEvent)
+
+    this._callback(panEvent)
   }
 }
