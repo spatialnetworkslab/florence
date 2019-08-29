@@ -45,11 +45,11 @@
   let dragPoint
 
   function handleDragStart (event) {
-    dragPoint = event.localCoords
+    dragPoint = event.localCoordinates
   }
 
   function handleDrag (event) {
-    dragPoint = event.localCoords
+    dragPoint = event.localCoordinates
   }
 
   function handleDragEnd (event) {
@@ -61,16 +61,16 @@
   let dragKey
 
   function handleLayerDragStart (event) {
-    dragKey = event.hitKey
-    dragPointLayer = event.localCoords
+    dragKey = event.key
+    dragPointLayer = event.localCoordinates
   }
 
   function handleLayerDrag (event) {
-    dragPointLayer = event.localCoords
+    dragPointLayer = event.localCoordinates
   }
 
   function handleLayerDragEnd (event) {
-    data.updateRow(event.hitKey, { a: dragPointLayer.x, b: dragPointLayer.y })
+    data.updateRow(event.key, { a: dragPointLayer.x, b: dragPointLayer.y })
     data = data
     dragPointLayer = undefined
     dragKey = undefined

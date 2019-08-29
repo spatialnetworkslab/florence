@@ -14,11 +14,11 @@
   let dragPoint
 
   function handleDragStart (event) {
-    dragPoint = event.localCoords
+    dragPoint = event.localCoordinates
   }
 
   function handleDrag (event) {
-    dragPoint = event.localCoords
+    dragPoint = event.localCoordinates
   }
 
   function handleDragEnd (event) {

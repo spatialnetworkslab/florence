@@ -28,17 +28,17 @@
   let dragPoint
 
   function handleDragStart (event) {
-    dragPoint = event.localCoords
+    dragPoint = event.localCoordinates
   }
 
   function handleDrag (event) {
-    dragPoint = event.localCoords
+    dragPoint = event.localCoordinates
   }
 
   function handleDragEnd (event) {
     dragPoint = undefined
-    const hitKey = Number(event.hitKey)
-    const position = event.localCoords
+    const hitKey = Number(event.key)
+    const position = event.localCoordinates
 
     data.updateRow(hitKey, { a: position.x, b: position.y })
     data = data
