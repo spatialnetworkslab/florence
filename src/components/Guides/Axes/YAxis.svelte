@@ -92,9 +92,9 @@
     tickPositions = getTickPositions(tickValues, scaleY, tickCount, tickExtra);
     ({tickXCoords, tickYCoords} = createYTickGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, flip));
     ({tickLabelXCoords, tickLabelYCoords} = createYLabelGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, labelOffset, flip))
-
     format = getFormat(labelFormat, scaleY, tickPositions.length)
     tickLabelText = tickPositions.map(format)
+
     axisWidth = baseLineWidth + tickSize + labelOffset + labelFontSize
     labelAnchorPoint = flip ? 'l' : 'r'
   }

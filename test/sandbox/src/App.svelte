@@ -74,6 +74,8 @@
       name: 'Legends',
       url: '/legends',
       component: Legends
+    },
+    {
       name: 'DragCategorical',
       url: 'dragcategorical',
       component: DragCategorical

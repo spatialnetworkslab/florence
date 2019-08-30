@@ -2,7 +2,7 @@
   // d3
   import { scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
   import * as d3 from 'd3-scale-chromatic'
-  import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
+  //import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
 
   // florence
 	import { Graphic, Grid, Section, PointLayer, Point, Label, DiscreteLegend } from '../../../../src/'
@@ -20,10 +20,12 @@
 		return data
   }
   
-  let treshold = 0
-  $: filteredData = data
-    .filter(row => row.a > treshold)
-    .done()
+  let threshold = 0
+  let filteredData
+  $: {
+    filteredData = data
+    .filter(row => row.a > threshold)
+  }
 
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scaleLinear().domain(data.domain('b'))
@@ -65,16 +67,38 @@
     width={700} {height}
     scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
-  > 
+  >       
+  <!-- scale = {data.domain('a')} -->
     <DiscreteLegend
       scale = {data.domain('a')}
-      x1={50} x2={150}
-      y1={50} y2={450}
+      x1={50} x2={120}
+      y1={50} y2={400}
       fill={linearColorScale}
       labelCount={8}
     />
+
+    <DiscreteLegend
+      scale = {[[0, 30], [30, 70], [70, 100], [100, 155], [55, 300]]}
+      x1={170} x2={240}
+      y1={50} y2={400}
+      fill={linearColorScale}
+    />
+
+    <DiscreteLegend
+      scale = {['apple', 'banana', 'orange', 'pomelo']}
+      x1={290} x2={360}
+      y1={50} y2={400}
+      fill={linearColorScale}
+    />
+
+    <DiscreteLegend
+      scale = {scaleLinear().domain(data.domain('b'))}
+      x1={380} x2={450}
+      y1={50} y2={400}
+      fill={linearColorScale}
+    />
 		<!-- data.map('a', linearColorScale)-->
-		<Section
+		<!-- <Section
 			x1={150} x2={450}
 			y1={50} y2={350}
 			scaleX={scaleA}
@@ -90,13 +114,13 @@
         fill={data.map('a', linearColorScale)}
         fillOpacity={data.map('a', linearColorScale)}
         radius={data.map('a', radiusScale)}
-        index={filteredData.column('$index')}
+        index={filteredData.column('$key')}
         onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
         onMouseout={handleMouseout}
         transition={duration}
       />
 		
-		</Section>
+		</Section> -->
 
     <Section
 			x1={50} x2={450}
@@ -110,9 +134,10 @@
 			<PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}
-        fill={data.map('b', seqScale)}
-        radius={transformation === 'identity' ? 3 : 6}
-        index={filteredData.column('$index')}
+        fill={data.map('a', linearColorScale)}
+        fillOpacity={data.map('a', linearColorScale)}
+        radius={data.map('a', radiusScale)}
+        index={filteredData.column('$key')}
         onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
         onMouseout={handleMouseout}
         transition={duration}
@@ -135,7 +160,7 @@
         fill={'red'}
         radius={transformation === 'identity' ? 3 : 6}
         fillOpacity={data.map('a', alphaScale)}
-        index={filteredData.column('$index')}
+        index={filteredData.column('$key')}
         onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
         onMouseout={handleMouseout}
         transition={duration}
