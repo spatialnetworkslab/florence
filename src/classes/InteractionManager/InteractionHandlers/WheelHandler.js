@@ -61,9 +61,8 @@ export default class WheelHandler extends SectionInteractionHandler {
 
     const wheelDelta = this._defaultWheelDelta(event)
     const evt = { wheelDelta, coordinates: coordinates, originalEvent: event }
-    const sectionBbox = this._interactionManager._section
 
-    if (this._isInSection(coordinates, sectionBbox)) {
+    if (this._isInSection(coordinates)) {
       this._callback(evt)
     }
   }

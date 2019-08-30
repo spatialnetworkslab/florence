@@ -17,11 +17,12 @@ export default class SectionInteractionHandler {
     this._callback = undefined
   }
 
-  _isInSection (hit, geometry) {
-    return (hit.x >= geometry.x1 &&
-            hit.x <= geometry.x2 &&
-            hit.y >= geometry.y1 &&
-            hit.y <= geometry.y2)
+  _isInSection (hit) {
+    const section = this._interactionManager._section
+    return (hit.x >= section.minX &&
+            hit.x <= section.maxX &&
+            hit.y >= section.minY &&
+            hit.y <= section.maxY)
   }
 
   _getLocalCoordinates (pixelCoords) {
@@ -37,8 +38,8 @@ export default class SectionInteractionHandler {
 
     const { scaleX, scaleY } = section
 
-    const clampedX = this._clamp(pixelCoords.x, section.x1, section.x2)
-    const clampedY = this._clamp(pixelCoords.y, section.y1, section.y2)
+    const clampedX = this._clamp(pixelCoords.x, section.minX, section.maxX)
+    const clampedY = this._clamp(pixelCoords.y, section.minY, section.maxY)
 
     let localX = clampedX
     let localY = clampedY

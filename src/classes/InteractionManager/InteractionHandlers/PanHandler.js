@@ -24,7 +24,6 @@ export default class PanHandler extends SectionInteractionHandler {
     eventManager.addEventListener('eventdown', listenerId + '-eventdown', eventDownHandler)
     eventManager.addEventListener('eventmove', listenerId + '-eventmove', eventMoveHandler)
     eventManager.addEventListener('eventup', listenerId + '-eventup', eventUpHandler)
-    
   }
 
   _removeEventListener () {
@@ -54,8 +53,7 @@ export default class PanHandler extends SectionInteractionHandler {
   // For smooth dragging, perform callback even during drag
   // To bound dragging to only the section, check cursor location and if still in section
   _handleMove (coordinates, event) {
-    const sectionBbox = this._interactionManager._section
-    if (this._panningActive && this._isInSection(coordinates, sectionBbox)) {
+    if (this._panningActive && this._isInSection(coordinates)) {
       this._panPreviousPosition = this._panCurrentPosition
       this._panCurrentPosition = coordinates
       this._callStoredCallback(coordinates, event, this._panPreviousPosition, this._panCurrentPosition)

@@ -166,7 +166,7 @@ export function mergeNameSpecs (cellNames, cellSpecs, numCols) {
 
     // Nameless cells are given their index as names
     for (let i = 0; i < specsLength; i++) {
-      if (namesLength[i]) continue
+      if (cellNames[i]) continue
       else { cellNames.push(i) }
     }
   } else if (namesLength > specsLength) {
