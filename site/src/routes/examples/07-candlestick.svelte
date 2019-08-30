@@ -1,3 +1,5 @@
+<!-- adapted from https://observablehq.com/@d3/candlestick-chart -->
+
 <script context="module">
   import { csvParse  } from 'd3-dsv'
   import { timeParse } from 'd3-time-format'
@@ -26,11 +28,13 @@
   import { interpolateRound } from 'd3-interpolate'
   import { timeDay, timeMonday } from 'd3-time'
   import { timeFormat } from 'd3-time-format'
-  import { Graphic, Section, Label, PointLayer, LineLayer, XAxis, YAxis } from '../../../../src/'
+  import { Graphic, Section, Label, LineLayer, XAxis, YAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   export let data
   const padding = { top: 20, bottom: 30, left: 40, right: 30 }
+  const width = 800
+  const height = 600
 
   // set up data container 
   const dataContainer = new DataContainer(data)
@@ -53,16 +57,15 @@
   const xTicks = timeMonday
     .every(1)
     .range(domainDate[0], domainDate[1])
-  const scaleYAxis = scaleLinear().domain([domainLow[0], domainHigh[1]]).range([600-padding.bottom, padding.top])
-
-  // group data by symbol so as to plot one line per group
-  const groupedData = dataContainer.groupBy('high')
+  const scaleYAxis = scaleLinear()
+    .domain([domainLow[0], domainHigh[1]])
+    .range([height-padding.bottom, padding.top])
 
 </script>
 
 <Graphic
-  width={800}
-  height={600}
+  {width}
+  {height}
 >
 
   <Label
@@ -72,25 +75,25 @@
   />
 
   <Section
-    scaleX={scaleX} 
-		scaleY={scaleY}
-    padding={{left: 40, right: 30, top: 20, bottom: 30}}
+    {scaleX} 
+		{scaleY}
+    {padding}
     flipY
   >  
 
     <LineLayer
-      x={groupedData.map('$grouped', group => [group.column('date')[0], group.column('date')[0]])}
-      y={groupedData.map('$grouped', group => [group.column('low')[0], group.column('high')[0]])}
+      x={dataContainer.map('date', d => [d, d])}
+      y={dataContainer.rows().map(r => [r.low, r.high])}
       strokeWidth={1}
     />
-    
+
     <LineLayer
-      x={groupedData.map('$grouped', group => [group.column('date'), group.column('date')])}
-      y={groupedData.map('$grouped', group => [group.column('open'), group.column('close')])}
+      x={dataContainer.map('date', d => [d, d])}
+      y={dataContainer.rows().map(r => [r.open, r.close])}
       strokeWidth={4}
-      stroke={groupedData.map('$grouped', group => group.column('open') > group.column('close') ? 'red'
-        : group.column('close') > group.column('open') ? 'green'
-        : 'grey')}
+      stroke={dataContainer.rows().map(r => r.open > r.close ? '#da344d'
+        : r.close > r.open ? '#32936f'
+        : '#32936f')}
     />
 
     <XAxis
