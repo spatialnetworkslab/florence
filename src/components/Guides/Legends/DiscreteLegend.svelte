@@ -11,8 +11,6 @@
     import * as ZoomContext from '../../Core/Section/ZoomContext'
 
     import { getTickPositions, getFormat, getTicks, getColorGeoms } from './utils.js'
-    import { createYAxisCoords, createYTickGeoms, createYLabelGeoms, createTitleXCoord, createTitleYCoord} from "../Axes/createYAxisCoords.js"
-
     // global properties
 
     // Aesthetics: positioning
@@ -46,6 +44,7 @@
     export let labelFormat = undefined
     export let labelOffset = 0.2
     export let labelRotate = 0
+    export let labelAlign = undefined
     export let labelFont = 'Helvetica'
     export let labelFontSize = 10
     export let labelFontWeight = 'normal'
@@ -135,12 +134,18 @@
             locRange = [0, colorBarLength] 
             tickLabelYCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarLength, locRange, orient, flip)
             tickLabelXCoords = flipLabels ? colorBarLength : 1 - colorBarLength
+            if (labelAlign) {
+                tickLabelXCoords = labelAlign
+            }
             format = getFormat(labelFormat, scale, tickLabelYCoords.length)
 
         } else if (orient === 'horizontal'){
             locRange = [0.02, colorBarWidth - 0.02] 
             tickLabelXCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarWidth, locRange, orient, flip)
             tickLabelYCoords = flipLabels ? 0.7 : 0.05
+            if (labelAlign) {
+                tickLabelYCoords = labelAlign
+            }
             format = getFormat(labelFormat, scale, tickLabelXCoords.length)
         } else {
             throw new Error(`Couldn't construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
@@ -232,6 +237,15 @@
             scaleY={scaleLinear().domain([0, 1])}
             flipY
         >   
+            <RectangleLayer
+                x1 = {colorXStartCoords}
+                x2 = {colorXEndCoords}
+                y1 = {colorYStartCoords}
+                y2 = {colorYEndCoords}
+                fill = {tickColors}
+                fillOpacity = {tickOpacities}
+            />
+
             <Label 
                 x={titleX}
                 y={titleY}
@@ -255,16 +269,6 @@
                 {transition} 
                 {zoomIdentity}
             />
-
-            <RectangleLayer
-                x1 = {colorXStartCoords}
-                x2 = {colorXEndCoords}
-                y1 = {colorYStartCoords}
-                y2 = {colorYEndCoords}
-                fill = {tickColors}
-                fillOpacity = {tickOpacities}
-            />
-
         </Section>
 
     {/if}

@@ -83,7 +83,7 @@
       flip
     />
 
-   <!-- <DiscreteLegend
+  <!-- <DiscreteLegend
       scale = {bins}
       x1={250} x2={490}
       y1={50} y2={200}
@@ -100,7 +100,7 @@
       fill={fruitScale}
       colorBarWidth={0.5}
       orient={'horizontal'}
-    /> -->
+    />  -->
 
     <DiscreteLegend
       scale = {scalePow().domain(data.domain('b'))}
@@ -109,8 +109,7 @@
       fillOpacity={scaleLinear().domain(data.domain('b')).range([0, 1])}
       fill={'green'}
       orient={'horizontal'}
-
-    /> 
+    />
 
 		<!-- <Section
 			x1={150} x2={450}
