@@ -22,13 +22,12 @@
     export let y2 = undefined
     export let position = undefined
     export let orient = 'vertical'
-    export let colorBarLength = 0.85
+    export let colorBarLength = 0.9
     export let colorBarWidth = 0.7
 
     // Aesthetics: colors
     export let type = undefined // gradient, discrete, symbol
     export let scale = undefined
-    export let fillOpacity = undefined
     export let flip = false
     export let flipLabels = false
     export let background = 'none'
@@ -36,12 +35,12 @@
 
     // Aesthetics: mappable
     export let fill = undefined
-    export let opacity = undefined
-    export let size = undefined
-    export let shape = undefined
-    export let stroke = undefined
-    export let strokeDash = undefined
-    export let strokeWdith = undefined
+    export let fillOpacity = undefined
+    // export let size = undefined
+    // export let shape = undefined
+    // export let stroke = undefined
+    // export let strokeDash = undefined
+    // export let strokeWdith = undefined
 
     // tick labels
     export let labelFormat = undefined
@@ -62,10 +61,10 @@
     // axis title
     export let titleHjust = 'center'
     export let titleXOffset = 0
-    export let titleX = undefined
+    export let titleX = 0.5
     export let titleVjust = 'axis'
     export let titleYOffset = 'axis'
-    export let titleY = undefined
+    export let titleY = 0.97
     export let title = 'Legend'
     export let titleColor = 'black'
     export let titleFont = 'Helvetica'
@@ -108,15 +107,23 @@
     // CHECK: that scale is provided,
     // that least one of `fill, opacity` has been specified
     $: {
-        if (fill || opacity){
+        if (fill || fillOpacity){
             // continue
-        } else if (typeof scale === 'undefined'  && (!size && !shape && !fill && !stroke && !strokeDash && !strokeWidth && !opacity)) {
-            throw new Error(`Couldn't construct legend. Please provide at least 'fill', 'size', 'shape'
-            'stroke'  or 'strokeDash' with either a 'ticks' or a 'domain' method.`)
+        } else if (typeof scale === 'undefined'  && (fill === undefined && fillOpacity === undefined)) {
+            throw new Error(`Couldn't construct legend. Please provide at least 'fill' or 'fillOpacity'
+            with either an array, or a scale with a 'ticks' or a 'domain' method.`)
         }
 
         if (!scale){
             throw new Error(`Couldn't construct legend. Please provide scale.`)
+        }
+    }
+
+    $: {
+        if (orient === 'horizontal') {
+            colorBarLength = 0.5
+            colorBarWidth  = 1.0
+            titleY = 0.9
         }
     }
 
@@ -125,19 +132,18 @@
         tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
         let locRange
         if (orient === 'vertical') {
-            if (flip) { locRange = [1 - colorBarLength, 1] } else { locRange = [0, colorBarLength] }
-            tickLabelYCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, locRange)
-            tickLabelXCoords = 1 - colorBarLength
+            locRange = [0, colorBarLength] 
+            tickLabelYCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarLength, locRange, orient, flip)
+            tickLabelXCoords = flipLabels ? colorBarLength : 1 - colorBarLength
             format = getFormat(labelFormat, scale, tickLabelYCoords.length)
 
         } else if (orient === 'horizontal'){
-            if (flip) { locRange = [1 - colorBarWidth, 1] } else { locRange = [0, colorBarWidth] }
-            tickLabelXCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, locRange)
-            tickLabelYCoords = 1 - colorBarWidth
+            locRange = [0.02, colorBarWidth - 0.02] 
+            tickLabelXCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarWidth, locRange, orient, flip)
+            tickLabelYCoords = flipLabels ? 0.7 : 0.05
             format = getFormat(labelFormat, scale, tickLabelXCoords.length)
-
         } else {
-            //raise error
+            throw new Error(`Couldn't construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
         }
         
         tickLabelText = tickLabelText.map(format)
@@ -145,39 +151,75 @@
 
     // COLORS
     $: {
-        if (fill) {
-            // d3 scale
-            if (fill.constructor === Function) {
-                tickColors = tickLabelText.map((value, i) => {
-                    if (Array.isArray(scale[0]) && scale.length > 0) {
-                        return fill(i)
-                    } else {
-                        return fill(value)
-                    }
-                    
-                })
-            // aray
-            } else if (fill.constructor === Array) {
-                tickColors = tickLabelText.map((value, i) => {
-                    return fill[i]
-                })
-            }
-
-            if (orient === 'vertical') {
-                const colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelYCoords, colorBarLength, colorBarWidth, flipLabels)
-                console.log(colorGeoms)
-            } else {
-                const colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelXCoords, colorBarLength, colorBarWidth, flipLabels)
-                console.log(colorGeoms)
-            }
+        let colorGeoms; let tickLabelPositions
+        if (fill || fillOpacity) {
+            if (fill && (fill.constructor === Array || fill.constructor === Function)) {
+                // d3 scale
+                if (fill.constructor === Function) {
+                    tickColors = tickLabelText.map((value, i) => {
+                        if (Array.isArray(scale[0]) && scale.length > 0) {
+                            return fill(i)
+                        } else {
+                            return fill(value)
+                        }
+                    })
+                // array
+                } else if (fill.constructor === Array) {
+                    tickColors = tickLabelText.map((value, i) => {
+                        return fill[i]
+                    })
+                }   
+                
+                if (orient === 'vertical') {
+                    tickLabelPositions = tickLabelYCoords
+                } else {
+                    tickLabelPositions = tickLabelXCoords
+                }
+                colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
+                if (!tickOpacities){
+                    tickOpacities = fill
+                }
+            } 
             
+            if (fillOpacity && (fillOpacity.constructor === Array || fillOpacity.constructor === Function)) {
+                // d3 scale
+                if (fillOpacity.constructor === Function) {
+                    tickOpacities = tickLabelText.map((value, i) => {
+                        if (Array.isArray(scale[0]) && scale.length > 0) {
+                            return fillOpacity(i)
+                        } else {
+                            return fillOpacity(value)
+                        }
+                    })
+                // array
+                } else if (fillOpacity.constructor === Array) {
+                    tickOpacities = tickLabelText.map((value, i) => {
+                        return fillOpacity[i]
+                    })
+                }
+
+                if (orient === 'vertical') {
+                    tickLabelPositions = tickLabelYCoords
+                } else {
+                    tickLabelPositions = tickLabelXCoords
+                }
+
+                colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
+                if (!tickColors){
+                    tickColors = fill
+                }
+            }     
         } else {
            throw new Error(`Couldn't construct legend. Please provide 'fill' or a scale with
             either a 'ticks' or a 'domain' method.`)
         }
+        colorXStartCoords = colorGeoms.colorXStartCoords
+        colorXEndCoords = colorGeoms.colorXEndCoords
+        colorYStartCoords = colorGeoms.colorYStartCoords
+        colorYEndCoords = colorGeoms.colorYEndCoords
+
     }
 
-    
 
 </script>
 
@@ -189,11 +231,10 @@
             scaleX={scaleLinear().domain([0, 1])} 
             scaleY={scaleLinear().domain([0, 1])}
             flipY
-            backgroundColor = {'pink'}
         >   
             <Label 
-                x={0.5}
-                y={0.95}
+                x={titleX}
+                y={titleY}
                 text={title}
                 fontFamily={titleFont}
                 fontSize={titleFontSize}
@@ -214,15 +255,15 @@
                 {transition} 
                 {zoomIdentity}
             />
-<!-- 
+
             <RectangleLayer
-                x1 = {0}
-                x2 = {1}
-                y1 = {0}
-                y2 = {1}
+                x1 = {colorXStartCoords}
+                x2 = {colorXEndCoords}
+                y1 = {colorYStartCoords}
+                y2 = {colorYEndCoords}
                 fill = {tickColors}
                 fillOpacity = {tickOpacities}
-            /> -->
+            />
 
         </Section>
 

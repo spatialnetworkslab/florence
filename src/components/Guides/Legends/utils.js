@@ -1,8 +1,6 @@
 import { ticks as arrayTicks } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
 
-// import { default as getDataType } from '../../../utils/getDataType.js'
-
 export function getTicks (scale, labelCount, labelExtra, firstLabel) {
   let tickValues
 
@@ -43,13 +41,18 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
   return tickValues
 }
 
-export function getTickPositions (tickValuesArray, scale, tickCount, tickExtra, locRange) {
+export function getTickPositions (tickValuesArray, scale, tickCount, tickExtra, colorBarDimension, locRange, orient, flip) {
   let tickPositions
 
   // Bins
   if (Array.isArray(scale[0]) && scale.length > 0) {
     const domain = [Math.min(...tickValuesArray), Math.max(...tickValuesArray)]
-    const posScale = scaleLinear().domain(domain).range(locRange)
+    let posScale
+    if (!flip) {
+      posScale = scaleLinear().domain(domain).range(locRange)
+    } else {
+      posScale = scaleLinear().domain(domain).range(locRange.reverse())
+    }
 
     tickPositions = tickValuesArray.map((value, i) => {
       return posScale(value)
@@ -57,24 +60,17 @@ export function getTickPositions (tickValuesArray, scale, tickCount, tickExtra, 
 
   // Arrays
   // equal interval
-  } else if (Array.isArray(scale)) {
-    const interval = locRange[1] / (tickValuesArray.length)
-    tickPositions = tickValuesArray.map((value, i) => {
-      return interval * (i + 0.5)
-    })
-  } else if ('ticks' in scale || 'domain' in scale) {
-    let domain
-    if ('domain' in scale) {
-      domain = scale.domain()
-    } else if ('ticks' in scale) {
-      domain = scale.ticks()
+  } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
+    const interval = orient === 'vertical' ? colorBarDimension / (tickValuesArray.length) : 1 / (tickValuesArray.length)
+    if (!flip) {
+      tickPositions = tickValuesArray.map((value, i) => {
+        return interval * (i + 0.5)
+      })
+    } else {
+      tickPositions = tickValuesArray.map((value, i) => {
+        return colorBarDimension - interval * (i + 0.5)
+      })
     }
-
-    const posScale = scaleLinear().domain(domain).range(locRange)
-
-    tickPositions = tickValuesArray.map((value, i) => {
-      return posScale(value)
-    })
   } else {
     throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
         either a 'ticks' or a 'domain' method.`)
@@ -94,12 +90,12 @@ export function getFormat (labelFormat, scale, numberOfTicks) {
   return x => x
 }
 
-export function getColorGeoms (tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels) {
+export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip) {
   let colorXStartCoords = []
   let colorXEndCoords = []
   let colorYStartCoords = []
   let colorYEndCoords = []
-  console.log(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels)
+
   // 1. one to one
   // 2. bins
   // vertical, horizontal
@@ -123,20 +119,124 @@ export function getColorGeoms (tickColors, orient, scale, tickLabelText, tickLab
 
     // Non-uniform distribution along linear scale
     if (Array.isArray(scale[0]) && scale.length > 0) {
-      colorYStartCoords = tickLabelText.map(i => {
-          return tickLabelPositions[i]
+      colorYStartCoords = tickLabelText.map((value, i) => {
+        return tickLabelPositions[i]
       })
 
-      colorYEndCoords 
+      colorYEndCoords = tickLabelText.map((value, i) => {
+        return tickLabelPositions[i]
+      })
+
+      colorXStartCoords.pop()
+      colorXEndCoords.pop()
+      colorYStartCoords.pop()
+      colorYEndCoords.shift()
+      tickMappable.pop()
+
     // One to one
+    } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
+      const interval = colorBarLength / tickMappable.length
+
+      if (!flip) {
+        let start = 0
+        colorYStartCoords = tickMappable.map((value, i) => {
+          if (i !== 0) {
+            start += interval
+            colorYEndCoords.push(start)
+            return start
+          } else {
+            return start
+          }
+        })
+
+        colorYEndCoords.push(start + interval)
+      } else {
+        let start = colorBarLength
+        colorYStartCoords = tickMappable.map((value, i) => {
+          if (i !== 0) {
+            start -= interval
+            colorYEndCoords.push(start)
+            return start
+          } else {
+            return start
+          }
+        })
+
+        colorYEndCoords.push(start - interval)
       }
-    } else if (Array.isArray(scale)) {
-      // pass
     }
-
   } else if (orient === 'horizontal') {
-    // pass
-  }
+    colorYStartCoords = tickLabelText.map(i => {
+      if (flipLabels) {
+        return 0
+      } else {
+        return 0.125
+      }
+    })
 
+    colorYEndCoords = tickLabelText.map((value, i) => {
+      if (flipLabels) {
+        return 1.125 - colorBarLength
+      } else {
+        return 0.25 + colorBarLength
+      }
+    })
+
+    // Non-uniform distribution along linear scale
+    if (Array.isArray(scale[0]) && scale.length > 0) {
+      colorXStartCoords = tickLabelText.map((value, i) => {
+        if (i === 0) {
+          return tickLabelPositions[i] - 0.02
+        }
+        return tickLabelPositions[i]
+      })
+
+      colorXEndCoords = tickLabelText.map((value, i) => {
+        if (i === tickLabelText.length - 1) {
+          return tickLabelPositions[i] + 0.02
+        }
+        return tickLabelPositions[i]
+      })
+
+      colorYStartCoords.pop()
+      colorYEndCoords.pop()
+      colorXStartCoords.pop()
+      colorXEndCoords.shift()
+      tickMappable.pop()
+
+    // One to one
+    } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
+      const interval = colorBarWidth / tickMappable.length
+
+      if (!flip) {
+        let start = 0
+        colorXStartCoords = tickMappable.map((value, i) => {
+          if (i !== 0) {
+            start += interval
+            colorXEndCoords.push(start)
+            return start
+          } else {
+            return start
+          }
+        })
+
+        colorXEndCoords.push(start + interval)
+      } else {
+        let start = 1
+        colorXStartCoords = tickMappable.map((value, i) => {
+          if (i !== 0) {
+            start -= interval
+            colorXEndCoords.push(start)
+            return start
+          } else {
+            return start
+          }
+        })
+
+        colorXEndCoords.push(start - interval)
+      }
+    }
+  }
+  // console.log(tickLabelText, colorYStartCoords, colorYEndCoords, tickMappable )
   return { colorXStartCoords, colorXEndCoords, colorYStartCoords, colorYEndCoords }
 }

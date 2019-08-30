@@ -2,7 +2,7 @@
   // d3
   import { scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
   import * as d3 from 'd3-scale-chromatic'
-  //import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
+  import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
 
   // florence
 	import { Graphic, Grid, Section, PointLayer, Point, Label, DiscreteLegend } from '../../../../src/'
@@ -54,11 +54,15 @@
   // maybe convenience function would be helpful
   const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
   const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateViridis);
-  const alphaScale = scaleLinear().domain(data.domain('b')).range([0, 1])
+  const alphaScale = scaleLinear().domain(data.domain('a')).range([0, 1])
   const radiusScale = scaleLinear().domain(data.domain('b')).range([10, 0])
    
-  // check if opacity works
-  
+  const bins = [[0, 30], [30, 70], [70, 100], [100, 155], [55, 300]]
+  const binScale = scaleLinear().domain([0, 4]).range(["red", "blue"])
+  const binAlpha = scaleLinear().domain([0, 4]).range([0, 1])
+  const fruits = ['apple', 'banana', 'orange', 'pomelo']
+  const fruitScale = scaleOrdinal().domain(fruits).range(schemeDark2)
+  const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
 </script>
 
 <div>
@@ -71,33 +75,43 @@
   <!-- scale = {data.domain('a')} -->
     <DiscreteLegend
       scale = {data.domain('a')}
-      x1={50} x2={120}
-      y1={50} y2={400}
-      fill={linearColorScale}
+      x1={0} x2={240}
+      y1={50} y2={200}
+      fill={seqScale}
       labelCount={8}
+      orient={'horizontal'}
+      flip
+    />
+
+   <!-- <DiscreteLegend
+      scale = {bins}
+      x1={250} x2={490}
+      y1={50} y2={200}
+      fillOpacity={binAlpha}
+      fill={'red'}
+      orient={'horizontal'}
+      flip
     />
 
     <DiscreteLegend
-      scale = {[[0, 30], [30, 70], [70, 100], [100, 155], [55, 300]]}
-      x1={170} x2={240}
-      y1={50} y2={400}
-      fill={linearColorScale}
-    />
+      scale = {fruits}
+      x1={250} x2={490}
+      y1={50} y2={200}
+      fill={fruitScale}
+      colorBarWidth={0.5}
+      orient={'horizontal'}
+    /> -->
 
     <DiscreteLegend
-      scale = {['apple', 'banana', 'orange', 'pomelo']}
-      x1={290} x2={360}
-      y1={50} y2={400}
-      fill={linearColorScale}
-    />
+      scale = {scalePow().domain(data.domain('b'))}
+      x1={250} x2={490}
+      y1={50} y2={200}
+      fillOpacity={scaleLinear().domain(data.domain('b')).range([0, 1])}
+      fill={'green'}
+      orient={'horizontal'}
 
-    <DiscreteLegend
-      scale = {scaleLinear().domain(data.domain('b'))}
-      x1={380} x2={450}
-      y1={50} y2={400}
-      fill={linearColorScale}
-    />
-		<!-- data.map('a', linearColorScale)-->
+    /> 
+
 		<!-- <Section
 			x1={150} x2={450}
 			y1={50} y2={350}
