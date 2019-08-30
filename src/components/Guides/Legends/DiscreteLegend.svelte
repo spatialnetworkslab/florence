@@ -24,7 +24,6 @@
     export let colorBarWidth = 0.7
 
     // Aesthetics: colors
-    export let type = undefined // gradient, discrete, symbol
     export let scale = undefined
     export let flip = false
     export let flipLabels = false

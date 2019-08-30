@@ -25,3 +25,4 @@ export { default as createPanHandler } from './helpers/createPanHandler'
 export { default as createZoomHandler } from './helpers/createZoomHandler'
 
 export { default as DiscreteLegend } from './components/Guides/Legends/DiscreteLegend.svelte'
+export { default as GradientLegend } from './components/Guides/Legends/GradientLegend.svelte'

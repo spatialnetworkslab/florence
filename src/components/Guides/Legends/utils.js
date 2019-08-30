@@ -96,10 +96,6 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
   let colorYStartCoords = []
   let colorYEndCoords = []
 
-  // 1. one to one
-  // 2. bins
-  // vertical, horizontal
-
   if (orient === 'vertical') {
     colorXStartCoords = tickLabelText.map(i => {
       if (flipLabels) {
@@ -237,6 +233,24 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       }
     }
   }
-  // console.log(tickLabelText, colorYStartCoords, colorYEndCoords, tickMappable )
   return { colorXStartCoords, colorXEndCoords, colorYStartCoords, colorYEndCoords }
+}
+
+export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip) {
+  let offsets 
+  let opacities
+
+  if (Array.isArray(scale[0]) && scale.length > 0) {
+
+  // Array
+  } else if (Array.isArray(scale)) {
+  
+  } else if ('ticks' in scale || 'domain' in scale) {
+  } else {
+    throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
+        either a 'ticks' or a 'domain' method.`)
+  }
+
+
+  return { offsets, opacities }
 }

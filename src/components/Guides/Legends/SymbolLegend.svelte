@@ -24,7 +24,6 @@
     export let colorBarWidth = 0.7
 
     // Aesthetics: colors
-    export let type = undefined // gradient, discrete, symbol
     export let scale = undefined
     export let flip = false
     export let flipLabels = false
@@ -34,11 +33,11 @@
     // Aesthetics: mappable
     export let fill = undefined
     export let fillOpacity = undefined
-    // export let size = undefined
-    // export let shape = undefined
-    // export let stroke = undefined
-    // export let strokeDash = undefined
-    // export let strokeWdith = undefined
+    export let shape = undefined
+    export let size = undefined
+    export let stroke = undefined
+    export let strokeWidth = undefined
+    export let strokeDash = undefined
 
     // tick labels
     export let labelFormat = undefined
@@ -134,12 +133,18 @@
             locRange = [0, colorBarLength] 
             tickLabelYCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarLength, locRange, orient, flip)
             tickLabelXCoords = flipLabels ? colorBarLength : 1 - colorBarLength
+            if (labelAlign) {
+                tickLabelXCoords = labelAlign
+            }
             format = getFormat(labelFormat, scale, tickLabelYCoords.length)
 
         } else if (orient === 'horizontal'){
             locRange = [0.02, colorBarWidth - 0.02] 
             tickLabelXCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarWidth, locRange, orient, flip)
             tickLabelYCoords = flipLabels ? 0.7 : 0.05
+            if (labelAlign) {
+                tickLabelYCoords = labelAlign
+            }
             format = getFormat(labelFormat, scale, tickLabelXCoords.length)
         } else {
             throw new Error(`Couldn't construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
@@ -231,6 +236,15 @@
             scaleY={scaleLinear().domain([0, 1])}
             flipY
         >   
+            <RectangleLayer
+                x1 = {colorXStartCoords}
+                x2 = {colorXEndCoords}
+                y1 = {colorYStartCoords}
+                y2 = {colorYEndCoords}
+                fill = {tickColors}
+                fillOpacity = {tickOpacities}
+            />
+
             <Label 
                 x={titleX}
                 y={titleY}
@@ -240,6 +254,7 @@
                 fontWeight={titleFontWeight}
                 rotation={titleRotation}
             />
+
             <LabelLayer
                 x={tickLabelXCoords} 
                 y={tickLabelYCoords} 
@@ -254,16 +269,6 @@
                 {transition} 
                 {zoomIdentity}
             />
-
-            <RectangleLayer
-                x1 = {colorXStartCoords}
-                x2 = {colorXEndCoords}
-                y1 = {colorYStartCoords}
-                y2 = {colorYEndCoords}
-                fill = {tickColors}
-                fillOpacity = {tickOpacities}
-            />
-
         </Section>
 
     {/if}

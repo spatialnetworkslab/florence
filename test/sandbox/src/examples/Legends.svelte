@@ -5,7 +5,7 @@
   import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
 
   // florence
-	import { Graphic, Grid, Section, PointLayer, Point, Label, DiscreteLegend } from '../../../../src/'
+	import { Graphic, Grid, Section, PointLayer, Point, Label, DiscreteLegend, GradientLegend } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
@@ -73,14 +73,13 @@
     scaleY={scaleLinear().domain([0, 1000])}
   >       
   <!-- scale = {data.domain('a')} -->
-    <DiscreteLegend
+    <GradientLegend
       scale = {data.domain('a')}
       x1={0} x2={240}
       y1={50} y2={200}
       fill={seqScale}
       labelCount={8}
       orient={'horizontal'}
-      flip
     />
 
   <!-- <DiscreteLegend
@@ -91,16 +90,16 @@
       fill={'red'}
       orient={'horizontal'}
       flip
-    />
+    />  -->
 
-    <DiscreteLegend
+    <!-- <DiscreteLegend
       scale = {fruits}
-      x1={250} x2={490}
+      x1={0} x2={240}
       y1={50} y2={200}
       fill={fruitScale}
       colorBarWidth={0.5}
       orient={'horizontal'}
-    />  -->
+    /> -->
 
     <DiscreteLegend
       scale = {scalePow().domain(data.domain('b'))}
