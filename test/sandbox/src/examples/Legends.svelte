@@ -75,14 +75,13 @@
   <!-- scale = {data.domain('a')} -->
     <GradientLegend
       scale = {data.domain('a')}
-      x1={0} x2={240}
-      y1={50} y2={200}
+      x1={150} x2={220}
+      y1={50} y2={400}
       fill={seqScale}
       labelCount={8}
-      orient={'horizontal'}
     />
 
-  <!-- <DiscreteLegend
+    <DiscreteLegend
       scale = {bins}
       x1={250} x2={490}
       y1={50} y2={200}
@@ -90,7 +89,7 @@
       fill={'red'}
       orient={'horizontal'}
       flip
-    />  -->
+    />
 
     <!-- <DiscreteLegend
       scale = {fruits}
@@ -101,14 +100,14 @@
       orient={'horizontal'}
     /> -->
 
-    <DiscreteLegend
+    <!-- <DiscreteLegend
       scale = {scalePow().domain(data.domain('b'))}
       x1={250} x2={490}
       y1={50} y2={200}
       fillOpacity={scaleLinear().domain(data.domain('b')).range([0, 1])}
       fill={'green'}
       orient={'horizontal'}
-    />
+    /> -->
 
 		<!-- <Section
 			x1={150} x2={450}

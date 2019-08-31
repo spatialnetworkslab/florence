@@ -237,20 +237,35 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
 }
 
 export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip) {
-  let offsets 
-  let opacities
+  let offsets
 
+  // if (orient === 'vertical') {
+  // Bins
   if (Array.isArray(scale[0]) && scale.length > 0) {
+    offsets = tickMappable.map((value, i) => {
+      if (i === 0) {
+        return 0
+      } else {
+        return tickLabelPositions[i]
+      }
+    })
 
-  // Array
-  } else if (Array.isArray(scale)) {
-  
-  } else if ('ticks' in scale || 'domain' in scale) {
+    tickLabelPositions.shift()
+  // Array or scale
+  } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
+    const interval = colorBarWidth / tickMappable.length
+
+    offsets = tickMappable.map((value, i) => {
+      return interval * (i + 0.5)
+    })
+
   } else {
     throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
         either a 'ticks' or a 'domain' method.`)
   }
-
-
-  return { offsets, opacities }
+  // } else if (orient === 'horizontal') {
+  //   // test
+  // }
+  console.log(offsets)
+  return offsets
 }

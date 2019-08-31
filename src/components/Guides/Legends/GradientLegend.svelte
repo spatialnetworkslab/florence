@@ -101,6 +101,7 @@
     let colorXEndCoords
     let colorYStartCoords 
     let colorYEndCoords 
+    let colorGeoms
     
     // CHECK: that scale is provided,
     // that least one of `fill, opacity` has been specified
@@ -155,7 +156,6 @@
 
     // COLORS
     $: {
-        let colorGeoms; let tickLabelPositions
         if (fill || fillOpacity) {
             if (fill && (fill.constructor === Array || fill.constructor === Function)) {
                 // d3 scale
@@ -217,6 +217,7 @@
            throw new Error(`Couldn't construct legend. Please provide 'fill' or a scale with
             either a 'ticks' or a 'domain' method.`)
         }
+        console.log(colorGeoms)
         // colorXStartCoords = colorGeoms.colorXStartCoords
         // colorXEndCoords = colorGeoms.colorXEndCoords
         // colorYStartCoords = colorGeoms.colorYStartCoords
@@ -234,21 +235,24 @@
          .offset (end of gradient color, opacity)
          get this from colorGeoms
      -->
-    <!-- <defs>
+    <defs>
       <linearGradient
-        :id="uuid"
-        :x2="composeGradient.endX"
-        :y2="composeGradient.endY"
+        id='gradient'
+        x2="100%"
+        y2="100%"
         x1="0%"
         y1="0%">
-        <stop
-          v-for="(c,i) in colors"
-          :key="i"
-          :offset="`${c.offset + '%'}`"
-          :style="`stop-color:${c.color};stop-opacity:${c.opacity}`" />
+
+        {#each colorGeoms as c, i}
+            <stop
+            key={i}
+            offset={"`${c*100 + '%'}`"}
+            style={"`stop-color:${tickColors[i]};stop-opacity:${tickOpacities[i]}`"}
+            />
+        {/each}
       </linearGradient>
     </defs>
-     -->
+    
     {#if isValid(x1, x2, y1, y2)}
         <Section
             {x1} {y1}
@@ -257,14 +261,13 @@
             scaleY={scaleLinear().domain([0, 1])}
             flipY
         >   
-            <!-- <RectangleLayer
-                x1 = {colorXStartCoords}
-                x2 = {colorXEndCoords}
-                y1 = {colorYStartCoords}
-                y2 = {colorYEndCoords}
-                fill = {tickColors}
-                fillOpacity = {tickOpacities}
-            /> -->
+            <Rectangle
+                x1 = {1-colorBarWidth}
+                x2 = {1}
+                y1 = {0}
+                y2 = {colorBarLength}
+                fill = {"url(#gradient)"}
+            />
 
             <Label 
                 x={titleX}
