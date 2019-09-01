@@ -20,7 +20,7 @@
     export let y2 = undefined
     export let position = undefined
     export let orient = 'vertical'
-    export let colorBarLength = 0.9
+    export let colorBarLength = 0.85
     export let colorBarWidth = 0.7
 
     // Aesthetics: colors
@@ -62,7 +62,7 @@
     export let titleX = 0.5
     export let titleVjust = 'axis'
     export let titleYOffset = 'axis'
-    export let titleY = 0.97
+    export let titleY = 0.96
     export let title = 'Legend'
     export let titleColor = 'black'
     export let titleFont = 'Helvetica'
@@ -130,7 +130,7 @@
         tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
         let locRange
         if (orient === 'vertical') {
-            locRange = [0, colorBarLength] 
+            locRange = [0.02, colorBarLength] 
             tickLabelYCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarLength, locRange, orient, flip)
             tickLabelXCoords = flipLabels ? colorBarLength : 1 - colorBarLength
             if (labelAlign) {
@@ -153,7 +153,7 @@
         tickLabelText = tickLabelText.map(format)
     }   
 
-    // COLORS
+    // COLORS & OPACITY
     $: {
         let colorGeoms; let tickLabelPositions
         if (fill || fillOpacity) {

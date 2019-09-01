@@ -58,8 +58,8 @@
   const radiusScale = scaleLinear().domain(data.domain('b')).range([10, 0])
    
   const bins = [[0, 30], [30, 70], [70, 100], [100, 155], [55, 300]]
-  const binScale = scaleLinear().domain([0, 4]).range(["red", "blue"])
-  const binAlpha = scaleLinear().domain([0, 4]).range([0, 1])
+  //const binScale = scaleLinear().domain([0, 4]).range(["red", "blue"])
+  const binAlpha = scaleLinear().domain([0, 5]).range([0, 1])
   const fruits = ['apple', 'banana', 'orange', 'pomelo']
   const fruitScale = scaleOrdinal().domain(fruits).range(schemeDark2)
   const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
@@ -72,23 +72,31 @@
     scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
   >       
-
-    <GradientLegend
+    <!-- x1={150} x2={220}
+      y1={50} y2={400} -->
+    <!-- <GradientLegend
       scale = {data.domain('a')}
       x1={150} x2={220}
       y1={50} y2={400}
       fill={linearColorScale}
       labelCount={8}
-    />
+    /> -->
 
-    <DiscreteLegend
+    <GradientLegend
       scale = {bins}
-      x1={250} x2={490}
-      y1={50} y2={200}
+      x1={150} x2={220}
+      y1={50} y2={400}
       fillOpacity={binAlpha}
       fill={'red'}
-      orient={'horizontal'}
       flip
+    />
+
+    <GradientLegend
+      scale = {bins}
+      x1={270} x2={340}
+      y1={50} y2={400}
+      fillOpacity={binAlpha}
+      fill={'red'}
     />
 
     <!-- <DiscreteLegend

@@ -238,34 +238,49 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
 
 export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip) {
   let offsets
+  let gradX
+  let gradY
+  let rectCoords
 
-  // if (orient === 'vertical') {
-  // Bins
-  if (Array.isArray(scale[0]) && scale.length > 0) {
-    offsets = tickMappable.map((value, i) => {
-      if (i === 0) {
-        return 0
-      } else {
-        return tickLabelPositions[i]
-      }
-    })
+  if (orient === 'vertical') {
+    // Bins
+    if (flip) {
+      gradX = { x1: '0%', x2: '0%' }
+      gradY = { y1: '100%', y2: '0%' }
+    } else {
+      gradX = { x1: '0%', x2: '0%' }
+      gradY = { y1: '0%', y2: '100%' }
+    }
 
-    tickLabelPositions.shift()
-  // Array or scale
-  } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
-    const interval = colorBarWidth / tickMappable.length
+    if (!flipLabels) {
+      rectCoords = { x1: 1 - colorBarWidth, x2: 1, y1: 0, y2: colorBarLength }
+    } else {
+      rectCoords = { x1: 0, x2: colorBarWidth, y1: 0, y2: colorBarLength }
+    }
 
-    offsets = tickMappable.map((value, i) => {
-      return interval * (i + 0.5)
-    })
+    if (Array.isArray(scale[0]) && scale.length > 0) {
+      offsets = tickMappable.map((value, i) => {
+        if (flip) {
+          return 1 - tickLabelPositions[i]
+        } else {
+          return tickLabelPositions[i]
+        }
+      })
 
-  } else {
-    throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
-        either a 'ticks' or a 'domain' method.`)
+    // Array or scale
+    } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
+      const interval = colorBarWidth / tickMappable.length
+
+      offsets = tickMappable.map((value, i) => {
+        return interval * (i + 0.5)
+      })
+    } else {
+      throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
+          either a 'ticks' or a 'domain' method.`)
+    }
+  } else if (orient === 'horizontal') {
+    // test
   }
-  // } else if (orient === 'horizontal') {
-  //   // test
-  // }
-  console.log(offsets)
-  return offsets
+  console.log(offsets, gradX, gradY, rectCoords)
+  return { offsets, gradX, gradY, rectCoords }
 }

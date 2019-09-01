@@ -20,7 +20,7 @@
     export let y2 = undefined
     export let position = undefined
     export let orient = 'vertical'
-    export let colorBarLength = 0.9
+    export let colorBarLength = 0.85
     export let colorBarWidth = 0.7
 
     // Aesthetics: colors
@@ -97,11 +97,11 @@
     let tickColors
     let tickOpacities
 
-    let colorXStartCoords
-    let colorXEndCoords
-    let colorYStartCoords 
-    let colorYEndCoords 
     let colorGeoms
+    let offsets
+    let gradX
+    let gradY
+    let rectCoords
     
     // CHECK: that scale is provided,
     // that least one of `fill, opacity` has been specified
@@ -131,7 +131,7 @@
         tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
         let locRange
         if (orient === 'vertical') {
-            locRange = [0, colorBarLength] 
+            locRange = [0.02, colorBarLength] 
             tickLabelYCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarLength, locRange, orient, flip)
             tickLabelXCoords = flipLabels ? colorBarLength : 1 - colorBarLength
             if (labelAlign) {
@@ -154,7 +154,7 @@
         tickLabelText = tickLabelText.map(format)
     }   
 
-    // COLORS
+    // COLORS & OPACITY
     $: {
         if (fill || fillOpacity) {
             if (fill && (fill.constructor === Array || fill.constructor === Function)) {
@@ -179,13 +179,13 @@
                 } else {
                     tickLabelPositions = tickLabelXCoords
                 }
-                colorGeoms = getGradientGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
-                console.log(fillOpacity)
+                colorGeoms = getGradientGeoms(tickColors, orient, scale, tickLabelText, flip ? tickLabelPositions.reverse() : tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
+
                 if (!tickOpacities){
                     tickOpacities = fill
                 }
             } 
-            
+
             if (fillOpacity && (fillOpacity.constructor === Array || fillOpacity.constructor === Function)) {
                 // d3 scale
                 if (fillOpacity.constructor === Function) {
@@ -218,12 +218,12 @@
            throw new Error(`Couldn't construct legend. Please provide 'fill' or a scale with
             either a 'ticks' or a 'domain' method.`)
         }
-        console.log(colorGeoms)
-        // colorXStartCoords = colorGeoms.colorXStartCoords
-        // colorXEndCoords = colorGeoms.colorXEndCoords
-        // colorYStartCoords = colorGeoms.colorYStartCoords
-        // colorYEndCoords = colorGeoms.colorYEndCoords
 
+        offsets = colorGeoms.offsets
+        gradX = colorGeoms.gradX
+        gradY = colorGeoms.gradY
+        rectCoords = colorGeoms.rectCoords
+        console.log(offsets, gradX, gradY, rectCoords, tickOpacities)
     }
 
 
@@ -231,24 +231,20 @@
 
 <g class="gradient-legend">
      <!-- Gradient definition -->
-     <!--
-         end of gradient
-         .offset (end of gradient color, opacity)
-         get this from colorGeoms
-     -->
     <defs>
       <linearGradient
         id='gradient'
-        x1="0%"
-        y1="0%"
-        x2="0%"
-        y2="100%">
+        x1={gradX.x1}
+        y1={gradY.y1}
+        x2={gradX.x2}
+        y2={gradY.y2}
+        >
         <!-- add uuid approach -->
-        {#each colorGeoms as c, i}
+        {#each offsets as o, i}
             <stop
             key={i}
-            offset={`${c*100 + '%'}`}
-            style={`stop-color:${tickColors[i]};stop-opacity:${tickOpacities(i)}`}
+            offset={`${o*100 + '%'}`}
+            style={`stop-color:${Array.isArray(tickColors) ? tickColors[i] : tickColors};stop-opacity:${Array.isArray(tickOpacities) ? tickOpacities[i] : tickOpacities}`}
             />
         {/each}
       </linearGradient>
@@ -263,10 +259,10 @@
             flipY
         >   
             <Rectangle
-                x1 = {1-colorBarWidth}
-                x2 = {1}
-                y1 = {0}
-                y2 = {colorBarLength}
+                x1 = {rectCoords.x1}
+                x2 = {rectCoords.x2}
+                y1 = {rectCoords.y1}
+                y2 = {rectCoords.y2}
                 fill = {"url(#gradient)"}
             />
 

@@ -24,7 +24,6 @@
   // Other
   export let interpolate = true
   export let zoomIdentity = undefined
-  console.log(fill)
 </script>
 
 <Mark
