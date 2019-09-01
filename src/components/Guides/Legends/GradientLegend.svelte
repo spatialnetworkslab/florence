@@ -62,7 +62,7 @@
     export let titleX = 0.5
     export let titleVjust = 'axis'
     export let titleYOffset = 'axis'
-    export let titleY = 0.97
+    export let titleY = 0.96
     export let title = 'Legend'
     export let titleColor = 'black'
     export let titleFont = 'Helvetica'
@@ -180,6 +180,7 @@
                     tickLabelPositions = tickLabelXCoords
                 }
                 colorGeoms = getGradientGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
+                console.log(fillOpacity)
                 if (!tickOpacities){
                     tickOpacities = fill
                 }
@@ -238,16 +239,16 @@
     <defs>
       <linearGradient
         id='gradient'
-        x2="100%"
-        y2="100%"
         x1="0%"
-        y1="0%">
-
+        y1="0%"
+        x2="0%"
+        y2="100%">
+        <!-- add uuid approach -->
         {#each colorGeoms as c, i}
             <stop
             key={i}
-            offset={"`${c*100 + '%'}`"}
-            style={"`stop-color:${tickColors[i]};stop-opacity:${tickOpacities[i]}`"}
+            offset={`${c*100 + '%'}`}
+            style={`stop-color:${tickColors[i]};stop-opacity:${tickOpacities(i)}`}
             />
         {/each}
       </linearGradient>

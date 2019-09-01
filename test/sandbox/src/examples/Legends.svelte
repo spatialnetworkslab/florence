@@ -72,12 +72,12 @@
     scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
   >       
-  <!-- scale = {data.domain('a')} -->
+
     <GradientLegend
       scale = {data.domain('a')}
       x1={150} x2={220}
       y1={50} y2={400}
-      fill={seqScale}
+      fill={linearColorScale}
       labelCount={8}
     />
 
