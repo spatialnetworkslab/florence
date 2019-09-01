@@ -242,6 +242,10 @@ export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, ti
   let gradY
   let rectCoords
 
+  if (flip) {
+    tickMappable = tickMappable.reverse()
+  }
+
   if (orient === 'vertical') {
     // Bins
     if (flip) {
@@ -281,6 +285,5 @@ export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, ti
   } else if (orient === 'horizontal') {
     // test
   }
-  console.log(offsets, gradX, gradY, rectCoords)
   return { offsets, gradX, gradY, rectCoords }
 }

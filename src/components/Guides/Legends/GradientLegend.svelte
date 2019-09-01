@@ -187,6 +187,7 @@
             } 
 
             if (fillOpacity && (fillOpacity.constructor === Array || fillOpacity.constructor === Function)) {
+                //let opacityMap = flip ? tickLabelText.reverse()
                 // d3 scale
                 if (fillOpacity.constructor === Function) {
                     tickOpacities = tickLabelText.map((value, i) => {
