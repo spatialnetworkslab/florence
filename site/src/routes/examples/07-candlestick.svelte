@@ -46,7 +46,7 @@
   // set scales
   const scaleX = scaleBand()
     .domain(timeDay
-      .range(domainDate[0], domainDate[1])
+      .range(domainDate[0], +domainDate[1]+1)
       .filter(d => d.getDay() !== 0 && d.getDay() !== 6))
     .padding(0.2)
   const scaleY = scaleLog()
