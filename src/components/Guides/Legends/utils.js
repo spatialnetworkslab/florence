@@ -119,9 +119,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
         return tickLabelPositions[i]
       })
 
-      colorYEndCoords = tickLabelText.map((value, i) => {
-        return tickLabelPositions[i]
-      })
+      colorYEndCoords = JSON.parse(JSON.stringify(colorYStartCoords))
 
       colorXStartCoords.pop()
       colorXEndCoords.pop()
@@ -166,13 +164,13 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       if (flipLabels) {
         return 0
       } else {
-        return 0.12
+        return 0.15
       }
     })
 
     colorYEndCoords = tickLabelText.map((value, i) => {
       if (flipLabels) {
-        return 1.12 - colorBarLength
+        return 1.15 - colorBarLength
       } else {
         return 0.2 + colorBarLength
       }
@@ -282,9 +280,9 @@ export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, ti
     gradY = { y1: '0%', y2: '0%' }
 
     if (!flipLabels) {
-      rectCoords = { x1: 0, x2: 1, y1: 0.12, y2: 0.2 + colorBarLength }
+      rectCoords = { y1: 0.15, y2: 0.2 + colorBarLength }
     } else {
-      rectCoords = { x1: 0, x2: 1, y1: 0, y2: 1.12 - colorBarLength }
+      rectCoords = { y1: 0, y2: 1.15 - colorBarLength }
     }
 
     // Bins
@@ -297,13 +295,19 @@ export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, ti
         }
       })
 
+      rectCoords.x1 = 0.05
+      rectCoords.x2 = 0.95
+
     // Array or scale
     } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
-      const interval = colorBarLength / tickMappable.length
+      const interval = colorBarWidth / tickMappable.length
 
       offsets = tickMappable.map((value, i) => {
         return interval * (i + 0.5)
       })
+
+      rectCoords.x1 = 0
+      rectCoords.x2 = 1
     } else {
       throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
           either a 'ticks' or a 'domain' method.`)

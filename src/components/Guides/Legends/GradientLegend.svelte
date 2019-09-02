@@ -70,7 +70,7 @@
     export let titleX = 0.5
     export let titleVjust = 'axis'
     export let titleYOffset = 'axis'
-    export let titleY = 0.96
+    export let titleY = 0.925
     export let title = 'Legend'
     export let titleColor = 'black'
     export let titleFont = 'Helvetica'
@@ -97,7 +97,6 @@
         return false
     }
 
-    let leadScale
     let tickLabelText 
     let tickLabelPositions
     let tickLabelXCoords
@@ -130,7 +129,6 @@
         if (orient === 'horizontal') {
             colorBarLength = 0.5
             colorBarWidth  = 1.0
-            titleY = 0.9
         }
     }
 
@@ -148,7 +146,7 @@
             format = getFormat(labelFormat, scale, tickLabelYCoords.length)
 
         } else if (orient === 'horizontal'){
-            locRange = [0.02, colorBarWidth - 0.02] 
+            locRange = [0.05, colorBarWidth - 0.05] 
             tickLabelXCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarWidth, locRange, orient, flip)
             tickLabelYCoords = flipLabels ? 0.7 : 0.05
             if (labelAlign) {
@@ -162,76 +160,77 @@
         tickLabelText = tickLabelText.map(format)
     }   
 
-    // COLORS & OPACITY
+    // COLORS
     $: {
-        if (fill || fillOpacity) {
-            if (fill && (fill.constructor === Array || fill.constructor === Function)) {
-                // d3 scale
-                if (fill.constructor === Function) {
-                    tickColors = tickLabelText.map((value, i) => {
-                        if (Array.isArray(scale[0]) && scale.length > 0) {
-                            return fill(i)
-                        } else {
-                            return fill(value)
-                        }
-                    })
-                // array
-                } else if (fill.constructor === Array) {
-                    tickColors = tickLabelText.map((value, i) => {
-                        return fill[i]
-                    })
-                }   
-                
-                if (orient === 'vertical') {
-                    tickLabelPositions = tickLabelYCoords
-                } else {
-                    tickLabelPositions = tickLabelXCoords
-                }
-                colorGeoms = getGradientGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
+        if (fill && (fill.constructor === Array || fill.constructor === Function)) {
+            // d3 scale
+            if (fill.constructor === Function) {
+                tickColors = tickLabelText.map((value, i) => {
+                    if (Array.isArray(scale[0]) && scale.length > 0) {
+                        return fill(i)
+                    } else {
+                        return fill(value)
+                    }
+                })
+            // array
+            } else if (fill.constructor === Array) {
+                tickColors = tickLabelText.map((value, i) => {
+                    return fill[i]
+                })
+            }   
+            
+            if (orient === 'vertical') {
+                tickLabelPositions = tickLabelYCoords
+            } else {
+                tickLabelPositions = tickLabelXCoords
+            }
+            colorGeoms = getGradientGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
 
-                if (!tickOpacities){
-                    tickOpacities = fillOpacity !== undefined ? fillOpacity : 1
-                }
-            } 
-           
-            if (fillOpacity && (fillOpacity.constructor === Array || fillOpacity.constructor === Function)) {
-                // d3 scale
-                if (fillOpacity.constructor === Function) {
-                    tickOpacities = tickLabelText.map((value, i) => {
-                        if (Array.isArray(scale[0]) && scale.length > 0) {
-                            return fillOpacity(i)
-                        } else {
-                            return fillOpacity(value)
-                        }
-                    })
-                // array
-                } else if (fillOpacity.constructor === Array) {
-                    tickOpacities = tickLabelText.map((value, i) => {
-                        return fillOpacity[i]
-                    })
-                }
+            if (!tickOpacities){
+                tickOpacities = fillOpacity !== undefined ? fillOpacity : 1
+            }
+        }    
+    }
 
-                if (orient === 'vertical') {
-                    tickLabelPositions = tickLabelYCoords
-                } else {
-                    tickLabelPositions = tickLabelXCoords
-                }
-                
-                colorGeoms = getGradientGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
-                if (!tickColors){
-                    tickColors = fill !== undefined ? fill : 'black'
-                }
-            }     
-        } else {
-           throw new Error(`Couldn't construct legend. Please provide 'fill' or a scale with
-            either a 'ticks' or a 'domain' method.`)
-        }
 
+    // OPACITY
+    $: {
+        if (fillOpacity && (fillOpacity.constructor === Array || fillOpacity.constructor === Function)) {
+            // d3 scale
+            if (fillOpacity.constructor === Function) {
+                tickOpacities = tickLabelText.map((value, i) => {
+                    if (Array.isArray(scale[0]) && scale.length > 0) {
+                        return fillOpacity(i)
+                    } else {
+                        return fillOpacity(value)
+                    }
+                })
+            // array
+            } else if (fillOpacity.constructor === Array) {
+                tickOpacities = tickLabelText.map((value, i) => {
+                    return fillOpacity[i]
+                })
+            }
+
+            if (orient === 'vertical') {
+                tickLabelPositions = tickLabelYCoords
+            } else {
+                tickLabelPositions = tickLabelXCoords
+            }
+            
+            colorGeoms = getGradientGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
+            if (!tickColors){
+                tickColors = fill !== undefined ? fill : 'black'
+            }
+        }     
+    }
+
+    // Color bar geometry
+    $: {
         offsets = colorGeoms.offsets
         gradX = colorGeoms.gradX
         gradY = colorGeoms.gradY
         rectCoords = colorGeoms.rectCoords
-        console.log(rectCoords)
     }
 
 
@@ -263,6 +262,7 @@
             {x2} {y2}
             scaleX={scaleLinear().domain([0, 1])} 
             scaleY={scaleLinear().domain([0, 1])}
+            {zoomIdentity}
             flipY
         >   
             <Rectangle
@@ -281,6 +281,10 @@
                 fontSize={titleFontSize}
                 fontWeight={titleFontWeight}
                 rotation={titleRotation}
+                anchorPoint={titleAnchorPoint}
+                opacity={titleOpacity} 
+                fill={titleColor}
+                {zoomIdentity}
             />
             <LabelLayer
                 x={tickLabelXCoords} 

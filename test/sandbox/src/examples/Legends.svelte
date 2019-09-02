@@ -72,19 +72,29 @@
     scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
   >       
-    <!-- x1={150} x2={220}
+    <!-- 
+      horizontal
+      x1={0} x2={240}
+      y1={50} y2={200}
+
+      Vertical
+      x1={150} x2={220}
       y1={50} y2={400} -->
-    <!-- <GradientLegend
+    <GradientLegend
       scale = {data.domain('a')}
       x1={0} x2={240}
       y1={50} y2={200}
       fill={linearColorScale}
       labelCount={8}
       orient={'horizontal'}
-      flip
-      flipLabels
-    /> -->
-    <!--x1={270} x2={340}
+    />
+    <!--
+      Horizontal
+      x1=270 x2={510}
+      y1={50} y2={200}
+
+      Vertical
+      x1={270} x2={340}
       y1={50} y2={400}-->
     <DiscreteLegend
       scale = {data.domain('a')}
@@ -93,8 +103,6 @@
       fill={linearColorScale}
       labelCount={8}
       orient={'horizontal'}
-      flip
-      flipLabels
     />
 
     <!-- <DiscreteLegend
@@ -119,14 +127,15 @@
       flipLabels
     /> -->
 
-    <DiscreteLegend
-      scale = {fruits}
+    <!-- <GradientLegend
+      scale = {data.domain('a')}
       x1={0} x2={240}
       y1={50} y2={200}
-      fill={fruitScale}
+      fill={'green'}
+      fillOpacity={alphaScale}
       colorBarWidth={0.5}
       orient={'horizontal'}
-    />
+    /> -->
 
     <!-- <DiscreteLegend
       scale = {scalePow().domain(data.domain('b'))}
@@ -136,30 +145,6 @@
       fill={'green'}
       orient={'horizontal'}
     /> -->
-
-		<!-- <Section
-			x1={150} x2={450}
-			y1={50} y2={350}
-			scaleX={scaleA}
-			scaleY={scaleB}
-      flipY
-      {transformation}
-		> 
-    
-      >
-			<PointLayer
-        x={filteredData.column('a')}
-        y={filteredData.column('b')}
-        fill={data.map('a', linearColorScale)}
-        fillOpacity={data.map('a', linearColorScale)}
-        radius={data.map('a', radiusScale)}
-        index={filteredData.column('$key')}
-        onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
-        onMouseout={handleMouseout}
-        transition={duration}
-      />
-		
-		</Section> -->
 
     <Section
 			x1={50} x2={450}
