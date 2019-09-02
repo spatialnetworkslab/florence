@@ -166,15 +166,15 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       if (flipLabels) {
         return 0
       } else {
-        return 0.125
+        return 0.12
       }
     })
 
     colorYEndCoords = tickLabelText.map((value, i) => {
       if (flipLabels) {
-        return 1.125 - colorBarLength
+        return 1.12 - colorBarLength
       } else {
-        return 0.25 + colorBarLength
+        return 0.2 + colorBarLength
       }
     })
 
@@ -247,15 +247,10 @@ export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, ti
   }
 
   if (orient === 'vertical') {
-    // Bins
-    if (flip) {
-      gradX = { x1: '0%', x2: '0%' }
-      gradY = { y1: '100%', y2: '0%' }
-    } else {
-      gradX = { x1: '0%', x2: '0%' }
-      gradY = { y1: '0%', y2: '100%' }
-    }
+    gradX = { x1: '0%', x2: '0%' }
+    gradY = { y1: '100%', y2: '0%' }
 
+    // Bins
     if (!flipLabels) {
       rectCoords = { x1: 1 - colorBarWidth, x2: 1, y1: 0, y2: colorBarLength }
     } else {
@@ -273,7 +268,7 @@ export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, ti
 
     // Array or scale
     } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
-      const interval = colorBarWidth / tickMappable.length
+      const interval = colorBarLength / tickMappable.length
 
       offsets = tickMappable.map((value, i) => {
         return interval * (i + 0.5)
@@ -283,7 +278,36 @@ export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, ti
           either a 'ticks' or a 'domain' method.`)
     }
   } else if (orient === 'horizontal') {
-    // test
+    gradX = { x1: '0%', x2: '100%' }
+    gradY = { y1: '0%', y2: '0%' }
+
+    if (!flipLabels) {
+      rectCoords = { x1: 0, x2: 1, y1: 0.12, y2: 0.2 + colorBarLength }
+    } else {
+      rectCoords = { x1: 0, x2: 1, y1: 0, y2: 1.12 - colorBarLength }
+    }
+
+    // Bins
+    if (Array.isArray(scale[0]) && scale.length > 0) {
+      offsets = tickMappable.map((value, i) => {
+        if (flip) {
+          return 1 - tickLabelPositions[i]
+        } else {
+          return tickLabelPositions[i]
+        }
+      })
+
+    // Array or scale
+    } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
+      const interval = colorBarLength / tickMappable.length
+
+      offsets = tickMappable.map((value, i) => {
+        return interval * (i + 0.5)
+      })
+    } else {
+      throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
+          either a 'ticks' or a 'domain' method.`)
+    }
   }
   return { offsets, gradX, gradY, rectCoords }
 }

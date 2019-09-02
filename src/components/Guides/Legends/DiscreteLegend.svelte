@@ -33,11 +33,6 @@
     // Aesthetics: mappable
     export let fill = undefined
     export let fillOpacity = undefined
-    // export let size = undefined
-    // export let shape = undefined
-    // export let stroke = undefined
-    // export let strokeDash = undefined
-    // export let strokeWdith = undefined
 
     // tick labels
     export let labelFormat = undefined
@@ -222,6 +217,7 @@
         colorYStartCoords = colorGeoms.colorYStartCoords
         colorYEndCoords = colorGeoms.colorYEndCoords
 
+        console.log(tickOpacities, colorYEndCoords)
     }
 
 

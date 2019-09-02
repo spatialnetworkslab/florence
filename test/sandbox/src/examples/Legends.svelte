@@ -5,7 +5,7 @@
   import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
 
   // florence
-	import { Graphic, Grid, Section, PointLayer, Point, Label, DiscreteLegend, GradientLegend } from '../../../../src/'
+	import { Graphic, Grid, Section, PointLayer, Point, Label, LabelLayer, DiscreteLegend, GradientLegend } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
@@ -76,37 +76,57 @@
       y1={50} y2={400} -->
     <!-- <GradientLegend
       scale = {data.domain('a')}
-      x1={150} x2={220}
-      y1={50} y2={400}
+      x1={0} x2={240}
+      y1={50} y2={200}
       fill={linearColorScale}
       labelCount={8}
-    /> -->
-
-    <GradientLegend
-      scale = {bins}
-      x1={150} x2={220}
-      y1={50} y2={400}
-      fillOpacity={binAlpha}
-      fill={'red'}
+      orient={'horizontal'}
       flip
-    />
-
-    <GradientLegend
-      scale = {bins}
-      x1={270} x2={340}
-      y1={50} y2={400}
-      fillOpacity={binAlpha}
-      fill={'red'}
+      flipLabels
+    /> -->
+    <!--x1={270} x2={340}
+      y1={50} y2={400}-->
+    <DiscreteLegend
+      scale = {data.domain('a')}
+      x1=270 x2={510}
+      y1={50} y2={200}
+      fill={linearColorScale}
+      labelCount={8}
+      orient={'horizontal'}
+      flip
+      flipLabels
     />
 
     <!-- <DiscreteLegend
+      scale = {bins}
+      x1={0} x2={240}
+      y1={50} y2={200}
+      fillOpacity={binAlpha}
+      fill={'red'}
+      orient={'horizontal'}
+      flip
+      flipLabels
+    />
+
+    <GradientLegend
+      scale = {bins}
+      x1=270 x2={510}
+      y1={50} y2={200}
+      fillOpacity={binAlpha}
+      fill={'red'}
+      orient={'horizontal'}
+      flip
+      flipLabels
+    /> -->
+
+    <DiscreteLegend
       scale = {fruits}
       x1={0} x2={240}
       y1={50} y2={200}
       fill={fruitScale}
       colorBarWidth={0.5}
       orient={'horizontal'}
-    /> -->
+    />
 
     <!-- <DiscreteLegend
       scale = {scalePow().domain(data.domain('b'))}
@@ -148,8 +168,7 @@
 			scaleY={scaleB}
       flipY
       {transformation}
-		>
-
+		> 
 			<PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}

@@ -1,3 +1,10 @@
+<script context="module">
+  let idCounter = 0
+  function getId () {
+    return 'gradient' + idCounter++
+  }
+</script>
+
 <script>
     import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from "../../../"
     import { scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
@@ -12,6 +19,7 @@
 
     import { getTickPositions, getFormat, getTicks, getGradientGeoms } from './utils.js'
     // global properties
+    let gradientId = getId()
 
     // Aesthetics: positioning
     export let x1 = undefined
@@ -179,15 +187,14 @@
                 } else {
                     tickLabelPositions = tickLabelXCoords
                 }
-                colorGeoms = getGradientGeoms(tickColors, orient, scale, tickLabelText, flip ? tickLabelPositions.reverse() : tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
+                colorGeoms = getGradientGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
 
                 if (!tickOpacities){
-                    tickOpacities = fill
+                    tickOpacities = fillOpacity !== undefined ? fillOpacity : 1
                 }
             } 
-
+           
             if (fillOpacity && (fillOpacity.constructor === Array || fillOpacity.constructor === Function)) {
-                //let opacityMap = flip ? tickLabelText.reverse()
                 // d3 scale
                 if (fillOpacity.constructor === Function) {
                     tickOpacities = tickLabelText.map((value, i) => {
@@ -209,10 +216,10 @@
                 } else {
                     tickLabelPositions = tickLabelXCoords
                 }
-
+                
                 colorGeoms = getGradientGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
                 if (!tickColors){
-                    tickColors = fill
+                    tickColors = fill !== undefined ? fill : 'black'
                 }
             }     
         } else {
@@ -224,7 +231,7 @@
         gradX = colorGeoms.gradX
         gradY = colorGeoms.gradY
         rectCoords = colorGeoms.rectCoords
-        console.log(offsets, gradX, gradY, rectCoords, tickOpacities)
+        console.log(rectCoords)
     }
 
 
@@ -234,13 +241,12 @@
      <!-- Gradient definition -->
     <defs>
       <linearGradient
-        id='gradient'
+        id={gradientId}
         x1={gradX.x1}
         y1={gradY.y1}
         x2={gradX.x2}
         y2={gradY.y2}
         >
-        <!-- add uuid approach -->
         {#each offsets as o, i}
             <stop
             key={i}
@@ -264,7 +270,7 @@
                 x2 = {rectCoords.x2}
                 y1 = {rectCoords.y1}
                 y2 = {rectCoords.y2}
-                fill = {"url(#gradient)"}
+                fill={`url(#${gradientId})`}
             />
 
             <Label 
