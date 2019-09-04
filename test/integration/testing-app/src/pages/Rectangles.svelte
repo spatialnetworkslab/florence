@@ -15,7 +15,6 @@
     .summarise({ meanQuantity: { quantity: 'mean' } })
     .arrange({ meanQuantity: 'descending' })
 
-
   const scaleFruit = scaleBand().domain(data.domain('fruit')).padding(0.2)
 	let meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
   const scaleMeanQuantity = scaleLinear().domain(meanQuantityDomain)
