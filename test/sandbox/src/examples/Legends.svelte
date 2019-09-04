@@ -87,6 +87,7 @@
       fill={linearColorScale}
       labelCount={8}
       orient={'horizontal'}
+      labelExtra
     />
     <!--
       Horizontal
@@ -103,6 +104,8 @@
       fill={linearColorScale}
       labelCount={8}
       orient={'horizontal'}
+      firstLabel={10}
+      labelExtra
     />
 
     <!-- <DiscreteLegend

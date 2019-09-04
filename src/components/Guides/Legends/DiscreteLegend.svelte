@@ -38,15 +38,16 @@
     export let labelFormat = undefined
     export let labelOffset = 0.2
     export let labelRotate = 0
-    export let labelAlign = undefined
+    export let labelX = undefined
+    export let labelY = undefined
     export let labelFont = 'Helvetica'
     export let labelFontSize = 10
     export let labelFontWeight = 'normal'
     export let labelOpacity = 1
     export let labelColor = 'black'
+    export let labelAnchorPoint = 'center'
     export let labelCount = 10
     export let labelExtra = false
-    export let labelAnchorPoint = 'center'
     export let firstLabel = undefined
     export let nice = false
     export let format = undefined
@@ -127,8 +128,8 @@
             locRange = [0.02, colorBarLength] 
             tickLabelYCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarLength, locRange, orient, flip)
             tickLabelXCoords = flipLabels ? colorBarLength : 1 - colorBarLength
-            if (labelAlign) {
-                tickLabelXCoords = labelAlign
+            if (labelX) {
+                tickLabelXCoords = labelX
             }
             format = getFormat(labelFormat, scale, tickLabelYCoords.length)
 
@@ -136,8 +137,8 @@
             locRange = [0.05, colorBarWidth - 0.05] 
             tickLabelXCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarWidth, locRange, orient, flip)
             tickLabelYCoords = flipLabels ? 0.7 : 0.05
-            if (labelAlign) {
-                tickLabelYCoords = labelAlign
+            if (labelY) {
+                tickLabelYCoords = labelY
             }
             format = getFormat(labelFormat, scale, tickLabelXCoords.length)
         } else {
@@ -238,6 +239,7 @@
                 y2 = {colorYEndCoords}
                 fill = {tickColors}
                 fillOpacity = {tickOpacities}
+                {transition} 
             />
 
             <Label 
@@ -251,7 +253,7 @@
                 anchorPoint={titleAnchorPoint}
                 opacity={titleOpacity} 
                 fill={titleColor}
-                {zoomIdentity}
+                {transition} 
             />
             <LabelLayer
                 x={tickLabelXCoords} 
@@ -265,7 +267,6 @@
                 opacity={labelOpacity} 
                 fill={labelColor}
                 {transition} 
-                {zoomIdentity}
             />
         </Section>
 
