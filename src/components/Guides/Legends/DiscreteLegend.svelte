@@ -10,7 +10,7 @@
     import * as SectionContext from '../../Core/Section/SectionContext'
     import * as ZoomContext from '../../Core/Section/ZoomContext'
 
-    import { getTickPositions, getFormat, getTicks, getColorGeoms } from './utils.js'
+    import { getTickPositions, getFormat, getTicks, getColorGeoms, isValid } from './utils.js'
     // global properties
 
     // Aesthetics: positioning
@@ -18,7 +18,6 @@
     export let x2 = undefined
     export let y1 = undefined
     export let y2 = undefined
-    export let position = undefined
     export let orient = 'vertical'
     export let colorBarLength = 0.85
     export let colorBarWidth = 0.7
@@ -49,7 +48,6 @@
     export let labelCount = 10
     export let labelExtra = false
     export let firstLabel = undefined
-    export let nice = false
     export let format = undefined
 
     // axis title
@@ -77,14 +75,6 @@
     const graphicContext = GraphicContext.subscribe()
     const zoomContext = ZoomContext.subscribe()
 
-    function isValid (x1, x2, y1, y2){
-        if (!isNaN(x1) && !isNaN(x2) && !isNaN(y1) && !isNaN(y2)){
-            return true
-        }
-
-        return false
-    }
-
     let tickLabelText 
     let tickLabelPositions
     let tickLabelXCoords
@@ -97,7 +87,7 @@
     let colorYStartCoords 
     let colorYEndCoords 
     let colorGeoms
-    
+
     // CHECK: that scale is provided,
     // that least one of `fill, opacity` has been specified
     $: {

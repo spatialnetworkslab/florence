@@ -1,6 +1,13 @@
 import { ticks as arrayTicks } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
 
+export function isValid (x1, x2, y1, y2) {
+  if (!isNaN(x1) && !isNaN(x2) && !isNaN(y1) && !isNaN(y2)) {
+    return true
+  }
+  return false
+}
+
 export function getTicks (scale, labelCount, labelExtra, firstLabel) {
   let tickValues
 
