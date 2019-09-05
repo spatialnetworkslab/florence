@@ -42,31 +42,38 @@ export default class PanHandler extends SectionInteractionHandler {
 
   // Record initial mousedown, touchstart
   _handleStart (coordinates, event) {
-    this._nopropagation(event)
-    this._panningActive = true
-    this._panStartPosition = coordinates
-    this._panCurrentPosition = coordinates
-    this._startEvent = event
+    console.log(coordinates)
+    if (coordinates.length === 1) {
+      this._nopropagation(event)
+      this._panningActive = true
+      this._panStartPosition = coordinates
+      this._panCurrentPosition = coordinates
+      this._startEvent = event
+    }
   }
 
   // For smooth dragging, perform callback even during drag
   // To bound dragging to only the section, check cursor location and if still in section
   _handleMove (coordinates, event) {
-    if (this._panningActive && this._isInSection(coordinates)) {
-      this._panPreviousPosition = this._panCurrentPosition
-      this._panCurrentPosition = coordinates
-      this._callStoredCallback(coordinates, event, this._panPreviousPosition, this._panCurrentPosition)
-    } else {
-      this._handleEnd(coordinates, event)
+    if (coordinates.length === 1) {
+      if (this._panningActive && this._isInSection(coordinates)) {
+        this._panPreviousPosition = this._panCurrentPosition
+        this._panCurrentPosition = coordinates
+        this._callStoredCallback(coordinates, event, this._panPreviousPosition, this._panCurrentPosition)
+      } else {
+        this._handleEnd(coordinates, event)
+      }
     }
   }
 
   // Record eventup events (when cursor leaves area of mark/layer/screen)
   _handleEnd (coordinates, event) {
-    if (this._panningActive) {
-      this._panningActive = false
-      this._panEndCoordinates = this._panCurrentPosition
-      this._endEvent = event
+    if (coordinates.length === 1) {
+      if (this._panningActive) {
+        this._panningActive = false
+        this._panEndCoordinates = this._panCurrentPosition
+        this._endEvent = event
+      }
     }
   }
 

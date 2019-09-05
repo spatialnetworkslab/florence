@@ -99,6 +99,7 @@ export default class EventManager {
   addRootNode (domNode) {
     this._domNode = domNode
     this._svgPoint = this._domNode.createSVGPoint()
+    this._multiTouch = undefined
     this._mounted = true
   }
 
@@ -107,7 +108,6 @@ export default class EventManager {
       for (const listenerId in this._listeners) {
         const { eventName, callback } = this._listeners[listenerId]
         const nativeEvents = this._normalisedEvents[eventName]
-        console.log(eventName, nativeEvents, listenerId)
         if (Array.isArray(nativeEvents)) {
           for (let i = 0; i < nativeEvents.length; i++) {
             const tracker = this[getTrackerName(nativeEvents[i])]
@@ -158,6 +158,7 @@ export default class EventManager {
   }
 
   _getCoordinates (event) {
+    console.log(event.type)
     // desktop
     if (event.type.includes('pointer') || event.type.includes('mouse') || event.type === 'click') {
       this._getDesktopCoordinates(event)
@@ -169,8 +170,18 @@ export default class EventManager {
       // to create gestures
       this._getMobileCoordinates(event)
     }
-
-    return this._svgPoint.matrixTransform(this._domNode.getScreenCTM().inverse())
+    console.log(this._svgPoint, this._multiTouch)
+    if (this._multiTouch) {
+      const svgTransforms = []
+      for (const index in this._multiTouch) {
+        this._svgPoint.x = this._multiTouch[index][0]
+        this._svgPoint.y = this._multiTouch[index][1]
+        svgTransforms.push(this._svgPoint.matrixTransform(this._domNode.getScreenCTM().inverse()))
+      }
+      return svgTransforms
+    } else {
+      return this._svgPoint.matrixTransform(this._domNode.getScreenCTM().inverse())
+    }
   }
 
   _getDesktopCoordinates (event) {
@@ -178,9 +189,14 @@ export default class EventManager {
     this._svgPoint.y = event.clientY
   }
 
+  // Notes on touch types
+  // touches: A collection list of all touchpoints on the current screen
+  // targetTouches: A collection list of touchpoints at that node of the binding event
+  // changedTouches: A collection of touchpoints that change when triggering an event
   _getMobileCoordinates (event) {
     const targetTouches = event.targetTouches
     const changedTouches = event.changedTouches
+
     if (targetTouches.length === 1 || changedTouches.length === 1) {
       if (targetTouches[0]) {
         const targetTouch = targetTouches[0]
@@ -193,6 +209,16 @@ export default class EventManager {
         this._svgPoint.x = changedTouch.clientX
         this._svgPoint.y = changedTouch.clientY
       }
+    } else if (targetTouches.length > 1 || changedTouches.length > 1) {
+      let touches
+      if (targetTouches.length > 1) {
+        touches = [targetTouches[0], targetTouches[1]]
+      } else if (changedTouches > 1) {
+        touches = [changedTouches[0], changedTouches[1]]
+      }
+      this._multiTouch = touches.map(touch => {
+        return [touch.clientX, touch.clientY]
+      })
     }
   }
 }
