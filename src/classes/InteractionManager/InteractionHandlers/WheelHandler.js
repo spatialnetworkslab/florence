@@ -76,7 +76,7 @@ export default class WheelHandler extends SectionInteractionHandler {
   _touchProps (events) {
     const ev1 = events[0]
     const ev2 = events[1]
-    const touchDelta = Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2)
+    const touchDelta = Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) // how to compute correct delta????
     const touchCenter = { x: (ev2.x + ev1.x) / 2, y: (ev2.y + ev1.y) / 2 }
     return { touchDelta, touchCenter }
   }
@@ -89,8 +89,8 @@ export default class WheelHandler extends SectionInteractionHandler {
   _handleEvent (coordinates, event) {
     this._nopropagation(event)
 
-    const wheelDelta = this._defaultWheelDelta(event)
-    const evt = { wheelDelta, coordinates: coordinates, originalEvent: event }
+    const delta = this._defaultWheelDelta(event)
+    const evt = { delta, coordinates: coordinates, originalEvent: event, type: 'mouse' }
 
     if (this._isInSection(coordinates)) {
       this._callback(evt)
@@ -102,10 +102,9 @@ export default class WheelHandler extends SectionInteractionHandler {
       this._nopropagation(event)
 
       const touchProps = this._touchProps(coordinates)
-      const evt = { touchDelta: touchProps.touchDelta, touchCenter: touchProps.touchCenter, coordinates: coordinates, originalEvent: event }
+      const evt = { delta: touchProps.touchDelta, touchCenter: touchProps.touchCenter, coordinates: coordinates, originalEvent: event, type: 'touch' }
       const sectionBbox = this._interactionManager._section
-
-      if (this._isInSection(coordinates, sectionBbox)) {
+      if (this._isInSection(coordinates[0], sectionBbox) && this._isInSection(coordinates[1], sectionBbox)) {
         this._callback(evt)
       }
     }

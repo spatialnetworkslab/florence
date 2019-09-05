@@ -178,7 +178,7 @@ export default class EventManager {
         svgTransforms.push(this._svgPoint.matrixTransform(this._domNode.getScreenCTM().inverse()))
       }
       // To clear out multiTouch data
-      this._multiTouch = undefined 
+      this._multiTouch = undefined
       return svgTransforms
     } else {
       return this._svgPoint.matrixTransform(this._domNode.getScreenCTM().inverse())
@@ -195,17 +195,15 @@ export default class EventManager {
   // targetTouches: A collection list of touchpoints at that node of the binding event
   // changedTouches: A collection of touchpoints that change when triggering an event
   _getMobileCoordinates (event) {
-    const touches = event.touches
-    console.log(event.touches, event.touches.length)
-    if (touches.length === 1) {
-      this._svgPoint.x = touches[0].clientX
-      this._svgPoint.y = touches[0].clientY
-    } else if (touches.length > 1) {
-      console.log(touches)
-      this._multiTouch = touches.map(touch => {
-        return [touch.clientX, touch.clientY]
-      })
-      console.log(this._multiTouch)
+    if (event.touches.length === 1) {
+      this._svgPoint.x = event.touches[0].clientX
+      this._svgPoint.y = event.touches[0].clientY
+    } else if (event.touches.length > 1) {
+      this._multiTouch = []
+      for (let i = 0; i < 2; i++) {
+        const touch = event.touches[i]
+        this._multiTouch.push([touch.clientX, touch.clientY])
+      }
     }
   }
 }
@@ -253,7 +251,7 @@ class EventTracker {
 
   _handleEvent (event) {
     const coordinates = this._eventManager._getCoordinates(event)
-    
+
     for (const listenerId in this._callbacks) {
       this._callbacks[listenerId](coordinates, event)
     }
