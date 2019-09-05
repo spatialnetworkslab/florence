@@ -158,7 +158,6 @@ export default class EventManager {
   }
 
   _getCoordinates (event) {
-    console.log(event.type)
     // desktop
     if (event.type.includes('pointer') || event.type.includes('mouse') || event.type === 'click') {
       this._getDesktopCoordinates(event)
@@ -178,6 +177,8 @@ export default class EventManager {
         this._svgPoint.y = this._multiTouch[index][1]
         svgTransforms.push(this._svgPoint.matrixTransform(this._domNode.getScreenCTM().inverse()))
       }
+
+      this._multiTouch = undefined
       return svgTransforms
     } else {
       return this._svgPoint.matrixTransform(this._domNode.getScreenCTM().inverse())
