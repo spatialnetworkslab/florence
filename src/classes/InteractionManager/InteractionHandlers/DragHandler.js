@@ -29,7 +29,7 @@ export default class DragHandler extends InteractionHandler {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id
-      
+
       eventManager.removeEventListener('eventdown', `${listenerId}-eventdown`)
       eventManager.removeEventListener('eventmove', `${listenerId}-eventmove`)
       eventManager.removeEventListener('eventup', `${listenerId}-eventup`)
@@ -53,7 +53,7 @@ export default class DragHandler extends InteractionHandler {
    * @param {Object} mouseEvent - The original MouseEvent
    */
   _mousedownHandler (coordinates, mouseEvent) {
-    this._nopropagation(event)
+    this._nopropagation(mouseEvent)
     mouseEvent.SVGPoint = coordinates
     mouseEvent.localCoords = this._getLocalCoordinates(coordinates)
     mouseEvent.dragType = 'onDragStart'

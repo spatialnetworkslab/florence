@@ -1,0 +1,131 @@
+# Section
+
+```html
+<Section>
+
+    ...
+
+</Section>
+```
+
+___
+
+## Description
+
+The `Section` is one of the corner stones of `florence`. It can be used to:
+
+- define local coordinate systems
+- apply coordinate transformations
+- specify zooming and panning behavior
+- enable interactions
+
+## Caveats
+
+- `Section`s can be nested, but
+- a `Section` with a coordinate transformation can only contain marks, layers and axes
+
+## Props
+
+### Positioning
+
+| Prop |     Type(s)     |    Required     |   Default   |       Units       |
+| ---- | --------------- | --------------- | ----------- | ----------------- |
+| x1   | see explanation | see explanation | `undefined` | local coordinates |
+| x2   | see explanation | see explanation | `undefined` | local coordinates |
+| y1   | see explanation | see explanation | `undefined` | local coordinates |
+| y2   | see explanation | see explanation | `undefined` | local coordinates |
+
+It is possible to use the `Section` without providing any of the positioning props.
+This will result in the `Section` inheriting the extents of the parent `Section` or
+`Graphic`, taking padding into account. For example,
+
+```html
+<Graphic width={500} height={500}>
+  
+  <Section padding={20}>
+    
+    <Section>
+
+      ...
+
+    </Section>
+
+  </Section>
+
+</Graphic>
+```
+
+is equivalent to
+
+```html
+<Graphic width={500} height={500}>
+  
+  <Section
+    x1={0}
+    x2={500}
+    y1={0}
+    y2={500}
+    padding={20}
+  >
+    
+    <Section
+      x1={20}
+      x2={480}
+      y1={20}
+      y2={480}
+    >
+
+      ...
+
+    </Section>
+
+  </Section>
+
+</Graphic>
+```
+
+It is also allowed to provide just the `x1` and `x2`, or just the `y1` and `y2` props.
+But providing only `x1` and `x2`, for example, is not allowed:
+
+```html
+<Section x1={50} x2={450}></Section> <!-- Fine -->
+<Section x1={50}></Section> <!-- Not allowed -->
+```
+
+In the examples above, no local coordinate systems are being used, so everything is in
+screen pixels. If the parent `Graphic` or `Section` has specified a local coordinate system,
+the positioning props would have to be defined in local coordinates. See the 
+[local coordinates](/docs/03-local-coordinates) documentation for an in-depth explanation of 
+local coordinate systems.
+
+### Other aesthetic props
+
+|      Prop       | Type(s)  | Required |   Default   |    Units    |
+| --------------- | -------- | -------- | ----------- | ----------- |
+| backgroundColor | `String` | no       | `undefined` | Color value |
+| paddingColor    | `String` | no       | `undefined` | Color value |
+
+### Local coordinate specification
+
+|      Prop      |      Type(s)       | Required |   Default   |     Units     |
+| -------------- | ------------------ | -------- | ----------- | ------------- |
+| padding        | `Number`, `Object` | no       | `0`         | screen pixels |
+| scaleX         | `Function`         | no       | `undefined` |               |
+| scaleY         | `Function`         | no       | `undefined` |               |
+| flipX          | `Boolean`          | no       | `false`     |               |
+| flipY          | `Boolean`          | no       | `false`     |               |
+| zoomIdentity   | `Object`           | no       | `undefined` |               |
+| transformation | `String`           | no       | `undefined` |               |
+
+For more information on these props, see the [local coordinates](/docs/03-local-coordinates) 
+documentation.
+
+### Interactivity
+
+|  Prop   |  Type(s)   |                          Description                          |
+| ------- | ---------- | ------------------------------------------------------------- |
+| onWheel | `Function` | Fired on mousewheel or two finger scroll inside the `Section` |
+| onPan   | `Function` | Fired when dragging around the area inside the `Section`      |
+
+See the [zooming and panning](/docs/05-zooming-panning) documentation for more information
+on how to use these props.
