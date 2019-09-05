@@ -42,7 +42,6 @@ export default class PanHandler extends SectionInteractionHandler {
 
   // Record initial mousedown, touchstart
   _handleStart (coordinates, event) {
-    console.log(coordinates)
     if (coordinates.constructor !== Array) {
       this._nopropagation(event)
       this._panningActive = true
@@ -55,7 +54,6 @@ export default class PanHandler extends SectionInteractionHandler {
   // For smooth dragging, perform callback even during drag
   // To bound dragging to only the section, check cursor location and if still in section
   _handleMove (coordinates, event) {
-    console.log(coordinates)
     if (coordinates.constructor !== Array) {
       if (this._panningActive && this._isInSection(coordinates)) {
         this._panPreviousPosition = this._panCurrentPosition
@@ -69,7 +67,6 @@ export default class PanHandler extends SectionInteractionHandler {
 
   // Record eventup events (when cursor leaves area of mark/layer/screen)
   _handleEnd (coordinates, event) {
-    console.log(coordinates, event)
     if (coordinates.constructor !== Array) {
       if (this._panningActive) {
         this._panningActive = false

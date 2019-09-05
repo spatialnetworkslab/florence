@@ -63,10 +63,10 @@ k:
     scaleY={scaleLinear().domain([0, 4])}
     {zoomIdentity}
     onWheel={e => handle(zoom(e))}
-    onPan={e => handle(pan(e))}
+    
     padding={30}
   >
-
+  <!-- onPan={e => handle(pan(e))} -->
     <Rectangle fill="blue" opacity={0.3} />
 
     <PolygonLayer

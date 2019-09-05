@@ -2,6 +2,7 @@
 export default function createZoomHandler (
   zoomId, { minZoom, maxZoom, extentX, extentY, step, center: centerPt, dimension = 'both' }
 ) {
+  console.log(event)
   const handler = function (event) {
     // Calculate new zoom factor based on step
     const delta = event.wheelDelta * step
