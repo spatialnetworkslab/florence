@@ -59,6 +59,7 @@ export function update (coordinateTransformationContext, options) {
 }
 
 export function ensureNotParent (ctx) {
+  console.log(ctx)
   if (ctx) {
     throw new Error(
       'Sections with a coordinate transformation cannot contain anything other than Marks or Layers'

@@ -157,6 +157,16 @@
       flipY
       {transformation}
 		> 
+      <GradientLegend
+        scale = {data.domain('a')}
+        x1={0} x2={200}
+        y1={50} y2={100}
+        fill={linearColorScale}
+        labelCount={8}
+        orient={'horizontal'}
+        labelExtra
+      />
+
 			<PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}
