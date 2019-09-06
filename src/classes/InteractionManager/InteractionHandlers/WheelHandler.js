@@ -14,6 +14,8 @@ export default class WheelHandler extends SectionInteractionHandler {
     }
 
     if (eventManager._detectIt.deviceType.includes('touch')) {
+      this._prevDelta = undefined
+      this._prevCenter = undefined
       const listenerId = this._interactionManager._id + '-touch'
       const startHandler = this._handleEventStart.bind(this)
       const moveHandler = this._handleEventMove.bind(this)
@@ -48,6 +50,7 @@ export default class WheelHandler extends SectionInteractionHandler {
   // and normalize-wheel: https://github.com/basilfx/normalize-wheel/blob/master/src/normalizeWheel.js
   // Enables normal scrolling motion + legacy delta tracking
   _defaultWheelDelta (event) {
+    console.log('event')
     let delta
 
     // Legacy
@@ -73,12 +76,31 @@ export default class WheelHandler extends SectionInteractionHandler {
     return delta * (event.deltaMode ? scrollLineHeight : 1) / 500
   }
 
+  /* 
+  Based on approach from hammer.js: 
+  https://github.com/hammerjs/hammer.js/blob/master/src/inputjs/get-scale.js
+
+  Resulting delta must be close to 1 or -1
+  */
   _touchProps (events) {
+    const clientHeight = this._interactionManager._eventManager._domNode.clientHeight
     const ev1 = events[0]
     const ev2 = events[1]
-    const touchDelta = Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) // how to compute correct delta????
-    const touchCenter = { x: (ev2.x + ev1.x) / 2, y: (ev2.y + ev1.y) / 2 }
-    return { touchDelta, touchCenter }
+
+    let delta = Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / clientHeight
+    console.log(delta)
+    console.log(this._prevDelta, this._prevDelta >= delta)
+    if (this._prevDelta && this._prevCenter) {
+      if (this._prevDelta >= Math.abs(delta)) {
+        delta = delta / this._prevDelta
+      } else {
+        delta = -delta / this._prevDelta
+      }
+      this._prevDelta = Math.abs(delta)
+    }
+    console.log('result', delta, this._prevDelta)
+    const center = { x: (ev2.x + ev1.x) / 2, y: (ev2.y + ev1.y) / 2 }
+    return { delta, center }
   }
 
   _nopropagation (event) {
@@ -91,47 +113,47 @@ export default class WheelHandler extends SectionInteractionHandler {
 
     const delta = this._defaultWheelDelta(event)
     const evt = { delta, coordinates: coordinates, originalEvent: event, type: 'mouse' }
-
+    console.log(this._isInSection(coordinates), coordinates)
     if (this._isInSection(coordinates)) {
       this._callback(evt)
     }
   }
 
+  // stores first reference coordinates for zooming
   _handleEventStart (coordinates, event) {
     if (coordinates.constructor === Array) {
       this._nopropagation(event)
 
       const touchProps = this._touchProps(coordinates)
-      const evt = { delta: touchProps.touchDelta, touchCenter: touchProps.touchCenter, coordinates: coordinates, originalEvent: event, type: 'touch' }
-      const sectionBbox = this._interactionManager._section
-      if (this._isInSection(coordinates[0], sectionBbox) && this._isInSection(coordinates[1], sectionBbox)) {
-        this._callback(evt)
-      }
+      this._prevDelta = touchProps.delta
+      this._prevCenter = touchProps.center
     }
   }
 
+  // Computes delta
+  // Triggers callback
   _handleEventMove (coordinates, event) {
     if (coordinates.constructor === Array) {
       this._nopropagation(event)
 
       const touchProps = this._touchProps(coordinates)
-      const evt = { touchDelta: touchProps.touchDelta, touchCenter: touchProps.touchCenter, coordinates: coordinates, originalEvent: event }
+      const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: event }
       const sectionBbox = this._interactionManager._section
-
+      console.log(this._isInSection(coordinates, sectionBbox), coordinates, sectionBbox)
       if (this._isInSection(coordinates, sectionBbox)) {
         this._callback(evt)
       }
     }
   }
 
+  // Clean up
   _handleEventEnd (coordinates, event) {
     if (coordinates.constructor === Array) {
       this._nopropagation(event)
 
       const touchProps = this._touchProps(coordinates)
-      const evt = { touchDelta: touchProps.touchDelta, touchCenter: touchProps.touchCenter, coordinates: coordinates, originalEvent: event }
+      const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: event }
       const sectionBbox = this._interactionManager._section
-
       if (this._isInSection(coordinates, sectionBbox)) {
         this._callback(evt)
       }
