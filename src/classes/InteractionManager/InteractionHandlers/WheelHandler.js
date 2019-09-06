@@ -89,14 +89,14 @@ export default class WheelHandler extends SectionInteractionHandler {
 
     let delta = Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / sectionHeight
 
-    if (this._prevDelta && this._prevCenter) {
-      if (this._prevDelta >= Math.abs(delta)) {
-        delta = delta / this._prevDelta
-      } else {
-        delta = -delta / this._prevDelta
-      }
-      this._prevDelta = Math.abs(delta)
-    }
+    // if (this._prevDelta && this._prevCenter) {
+    //   if (this._prevDelta >= Math.abs(delta)) {
+    //     delta = delta / this._prevDelta
+    //   } else {
+    //     delta = -delta / this._prevDelta
+    //   }
+    //   this._prevDelta = Math.abs(delta)
+    // }
 
     const center = { x: (ev2.x + ev1.x) / 2, y: (ev2.y + ev1.y) / 2 }
     return { delta, center }
