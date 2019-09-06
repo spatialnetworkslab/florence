@@ -24,9 +24,16 @@ export default function createZoomHandler (
         zoomId.ky -= delta
       }
 
+      let offsetX
+      let offsetY
       // stops zooming if past extents X and Y
-      const offsetX = -(event.coordinates.x * delta)
-      const offsetY = -(event.coordinates.y * delta)
+      if (event.type === 'mouse') {
+        offsetX = -(event.coordinates.x * delta)
+        offsetY = -(event.coordinates.y * delta)
+      } else if (event.type === 'touch') {
+        offsetX = -(event.center.x * delta)
+        offsetY = -(event.center.y * delta)
+      }
 
       const tempX = zoomId.x - offsetX
       const tempY = zoomId.y - offsetY

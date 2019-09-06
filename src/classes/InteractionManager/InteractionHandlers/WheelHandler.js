@@ -82,13 +82,13 @@ export default class WheelHandler extends SectionInteractionHandler {
   Resulting delta must be close to 1 or -1
   */
   _touchProps (events) {
-    const clientHeight = this._interactionManager._eventManager._domNode.clientHeight
+    const sectionBBox = this._interactionManager._section
+    const sectionHeight = sectionBBox.maxY - sectionBBox.minY
     const ev1 = events[0]
     const ev2 = events[1]
 
-    let delta = Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / clientHeight
-    console.log(delta)
-    console.log(this._prevDelta, this._prevDelta >= delta)
+    let delta = Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / sectionHeight
+
     if (this._prevDelta && this._prevCenter) {
       if (this._prevDelta >= Math.abs(delta)) {
         delta = delta / this._prevDelta
@@ -97,7 +97,7 @@ export default class WheelHandler extends SectionInteractionHandler {
       }
       this._prevDelta = Math.abs(delta)
     }
-    console.log('result', delta, this._prevDelta)
+
     const center = { x: (ev2.x + ev1.x) / 2, y: (ev2.y + ev1.y) / 2 }
     return { delta, center }
   }
@@ -135,10 +135,9 @@ export default class WheelHandler extends SectionInteractionHandler {
       this._nopropagation(event)
 
       const touchProps = this._touchProps(coordinates)
-      const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: event }
-      const sectionBbox = this._interactionManager._section
-      console.log(this._isInSection(coordinates, sectionBbox), coordinates, sectionBbox)
-      if (this._isInSection(coordinates, sectionBbox)) {
+      const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: event, type: 'touch' }
+      
+      if (this._isInSection(coordinates[0]) && this._isInSection(coordinates[1]) && this._isInSection(evt.center)) {
         this._callback(evt)
       }
     }
@@ -150,9 +149,9 @@ export default class WheelHandler extends SectionInteractionHandler {
       this._nopropagation(event)
 
       const touchProps = this._touchProps(coordinates)
-      const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: event }
-      const sectionBbox = this._interactionManager._section
-      if (this._isInSection(coordinates, sectionBbox)) {
+      const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: event, type: 'touch' }
+      
+      if (this._isInSection(coordinates[0]) && this._isInSection(coordinates[1]) && this._isInSection(evt.center)) {
         this._callback(evt)
       }
     }
