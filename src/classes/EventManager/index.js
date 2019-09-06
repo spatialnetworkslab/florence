@@ -159,7 +159,7 @@ export default class EventManager {
 
   _getCoordinates (event) {
     // desktop
-    if (event.type.includes('pointer') || event.type.includes('mouse') || event.type === 'click') {
+    if (event.type.includes('pointer') || event.type.includes('mouse') || event.type === 'click' || event.type ==='wheel') {
       this._getDesktopCoordinates(event)
     } else if (event.type.includes('touch')) {
       // One finger: pan

@@ -50,7 +50,6 @@ export default class WheelHandler extends SectionInteractionHandler {
   // and normalize-wheel: https://github.com/basilfx/normalize-wheel/blob/master/src/normalizeWheel.js
   // Enables normal scrolling motion + legacy delta tracking
   _defaultWheelDelta (event) {
-    console.log('event')
     let delta
 
     // Legacy
@@ -72,7 +71,7 @@ export default class WheelHandler extends SectionInteractionHandler {
     if (!scrollLineHeight) {
       scrollLineHeight = getScrollLineHeight()
     }
-
+    
     return delta * (event.deltaMode ? scrollLineHeight : 1) / 500
   }
 
@@ -110,10 +109,9 @@ export default class WheelHandler extends SectionInteractionHandler {
 
   _handleEvent (coordinates, event) {
     this._nopropagation(event)
-
     const delta = this._defaultWheelDelta(event)
     const evt = { delta, coordinates: coordinates, originalEvent: event, type: 'mouse' }
-    console.log(this._isInSection(coordinates), coordinates)
+
     if (this._isInSection(coordinates)) {
       this._callback(evt)
     }

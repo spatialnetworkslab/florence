@@ -2,10 +2,9 @@
 export default function createZoomHandler (
   zoomId, { minZoom, maxZoom, extentX, extentY, step, center: centerPt, dimension = 'both' }
 ) {
-
   const handler = function (event) {
     // Calculate new zoom factor based on step
-    const delta = event.wheelDelta * step
+    const delta = event.delta * step
     const tempK = zoomId.kx - delta
 
     // Offsetting only takes effect when k is within range to prevent jitter
@@ -40,7 +39,7 @@ export default function createZoomHandler (
         zoomId.x += dimension !== 'y' ? offsetX : 0
         zoomId.y += dimension !== 'x' ? offsetY : 0
       }
-    }
+    } 
 
     return zoomId
   }
