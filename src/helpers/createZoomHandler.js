@@ -32,8 +32,6 @@ export default function createZoomHandler (
         offsetX = -(event.coordinates.x * delta)
         offsetY = -(event.coordinates.y * delta)
       } else if (event.type === 'touch') {
-        // set to correct neg/pos sign
-        //console.log(delta)
         offsetX = -(event.center.x * delta)
         offsetY = -(event.center.y * delta)
       }

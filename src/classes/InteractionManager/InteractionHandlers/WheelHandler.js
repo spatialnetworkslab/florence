@@ -86,13 +86,12 @@ export default class WheelHandler extends SectionInteractionHandler {
     const sectionHeight = sectionBBox.maxY - sectionBBox.minY
     const ev1 = events[0]
     const ev2 = events[1]
-    let delta = -Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / (sectionHeight * 100)
-    console.log(this._prevDelta > delta, this._prevDelta, delta)
+    let delta = -Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / (sectionHeight * 50)
     if (this._prevDelta) {
-      if (this._prevDelta < delta) {
+      if (this._prevDelta > Math.abs(delta)) {
         delta = -delta
-        this._prevDelta = Math.abs(deltar)
       }
+      this._prevDelta = Math.abs(delta)
     }
 
     const center = { x: (ev2.x + ev1.x) / 2, y: (ev2.y + ev1.y) / 2 }
