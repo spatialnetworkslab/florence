@@ -6,7 +6,7 @@ export default function createZoomHandler (
     // Calculate new zoom factor based on step
     const delta = event.delta * step
     const tempK = zoomId.kx - delta
-    console.log(delta)
+
     // Offsetting only takes effect when k is within range to prevent jitter
     if (tempK >= minZoom && tempK <= maxZoom) {
       if (dimension === 'both') {
@@ -26,13 +26,14 @@ export default function createZoomHandler (
 
       let offsetX
       let offsetY
-
+      
       // stops zooming if past extents X and Y
       if (event.type === 'mouse') {
         offsetX = -(event.coordinates.x * delta)
         offsetY = -(event.coordinates.y * delta)
       } else if (event.type === 'touch') {
-        // jittery
+        // set to correct neg/pos sign
+        //console.log(delta)
         offsetX = -(event.center.x * delta)
         offsetY = -(event.center.y * delta)
       }

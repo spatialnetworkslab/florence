@@ -71,12 +71,12 @@ export default class WheelHandler extends SectionInteractionHandler {
     if (!scrollLineHeight) {
       scrollLineHeight = getScrollLineHeight()
     }
-    
+
     return delta * (event.deltaMode ? scrollLineHeight : 1) / 500
   }
 
-  /* 
-  Based on approach from hammer.js: 
+  /*
+  Based on approach from hammer.js:
   https://github.com/hammerjs/hammer.js/blob/master/src/inputjs/get-scale.js
 
   Resulting delta must be close to 1 or -1
@@ -86,17 +86,14 @@ export default class WheelHandler extends SectionInteractionHandler {
     const sectionHeight = sectionBBox.maxY - sectionBBox.minY
     const ev1 = events[0]
     const ev2 = events[1]
-
-    let delta = Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / sectionHeight
-
-    // if (this._prevDelta && this._prevCenter) {
-    //   if (this._prevDelta >= Math.abs(delta)) {
-    //     delta = delta / this._prevDelta
-    //   } else {
-    //     delta = -delta / this._prevDelta
-    //   }
-    //   this._prevDelta = Math.abs(delta)
-    // }
+    let delta = -Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / (sectionHeight * 100)
+    console.log(this._prevDelta > delta, this._prevDelta, delta)
+    if (this._prevDelta) {
+      if (this._prevDelta < delta) {
+        delta = -delta
+        this._prevDelta = Math.abs(deltar)
+      }
+    }
 
     const center = { x: (ev2.x + ev1.x) / 2, y: (ev2.y + ev1.y) / 2 }
     return { delta, center }
@@ -136,7 +133,7 @@ export default class WheelHandler extends SectionInteractionHandler {
 
       const touchProps = this._touchProps(coordinates)
       const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: event, type: 'touch' }
-      
+
       if (this._isInSection(coordinates[0]) && this._isInSection(coordinates[1]) && this._isInSection(evt.center)) {
         this._callback(evt)
       }
@@ -150,7 +147,7 @@ export default class WheelHandler extends SectionInteractionHandler {
 
       const touchProps = this._touchProps(coordinates)
       const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: event, type: 'touch' }
-      
+
       if (this._isInSection(coordinates[0]) && this._isInSection(coordinates[1]) && this._isInSection(evt.center)) {
         this._callback(evt)
       }
