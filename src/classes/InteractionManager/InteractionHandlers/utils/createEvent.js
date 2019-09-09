@@ -1,6 +1,6 @@
 const INTERESTING_NATIVE_KEYS = [
   'altKey', 'ctrlKey', 'shiftKey',
-  'clientX', 'clientX',
+  'clientX', 'clientY',
   'pageX', 'pageY',
   'screenX', 'screenY',
   'timeStamp'
