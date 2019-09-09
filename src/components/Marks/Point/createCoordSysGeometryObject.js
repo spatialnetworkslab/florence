@@ -31,9 +31,15 @@ function createScaledGeometryArray (geometryProps, sectionContext) {
 }
 
 function scaleGeometryProp (geometry, sectionContext) {
-  const scaledGeometryArray = scaleGeometries(geometry, sectionContext)
-  const length = scaledGeometryArray.length
+  let scaledGeometryArray
 
+  if (geometry.constructor === Function) {
+    scaledGeometryArray = geometry(sectionContext)
+  } else {
+    scaledGeometryArray = scaleGeometries(geometry, sectionContext)
+  }
+
+  const length = scaledGeometryArray.length
   return { scaledGeometryArray, length }
 }
 

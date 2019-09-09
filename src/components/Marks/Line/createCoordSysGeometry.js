@@ -14,7 +14,11 @@ export default function (geometryProps, sectionContext, coordinateTransformation
 function createScaledGeometry (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps, 'Line')
   if (isDefined(geometryProps.geometry)) {
-    return scaleGeometry(geometryProps.geometry, sectionContext)
+    if (geometryProps.geometry.constructor === Function) {
+      return geometryProps.geometry(sectionContext)
+    } else {
+      return scaleGeometry(geometryProps.geometry, sectionContext)
+    }
   }
 
   if (isUndefined(geometryProps.geometry)) {
