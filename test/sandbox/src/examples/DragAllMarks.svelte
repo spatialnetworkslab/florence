@@ -1,7 +1,8 @@
 <script>
-  import { Graphic, Section, Rectangle } from '../../../../src'
+  import { Graphic, Section, Rectangle, Line, FuncLine } from '../../../../src'
   import { scaleLinear } from 'd3-scale'
 
+  // Rectangle
   let rectanglePosition = { x: 1, y: 1 }
   let rectangleWH = { w: 2, h: 2 }
 
@@ -12,24 +13,63 @@
     y2: rectanglePosition.y + rectangleWH.h
   }
 
-  let startDelta
+  let rectStartDelta
 
-  function handleStart (event) {
-    // console.log(event)
-    let localCoordinates = event.localCoordinates
-    startDelta = { 
+  function handleStartRectangle ({ localCoordinates }) {
+    rectStartDelta = { 
       x: localCoordinates.x - rectanglePosition.x,
       y: localCoordinates.y - rectanglePosition.y
     }
   }
 
-  function handleDrag (event) {
-    console.log(event)
-    let localCoordinates = event.localCoordinates
+  function handleDragRectangle ({ localCoordinates }) {
     rectanglePosition = {
-      x: localCoordinates.x - startDelta.x,
-      y: localCoordinates.y - startDelta.y
+      x: localCoordinates.x - rectStartDelta.x,
+      y: localCoordinates.y - rectStartDelta.y
     }
+  }
+
+  // Line
+  let lineBaseX = new Array(10).fill(0).map(_ => Math.round(Math.random() * 10))
+  let lineBaseY = new Array(10).fill(0).map(_ => Math.round(Math.random() * 10))
+
+  let previousLinePosition
+  let currentLinePosition
+  let lineOffset = { x: 0, y: 0 }
+
+  function handleStartLine ({ localCoordinates }) {
+    currentLinePosition = localCoordinates
+  }
+
+  function handleDragLine ({ localCoordinates }) {
+    previousLinePosition = currentLinePosition
+    currentLinePosition = localCoordinates
+    lineOffset = {
+      x: lineOffset.x + (currentLinePosition.x - previousLinePosition.x),
+      y: lineOffset.y + (currentLinePosition.y - previousLinePosition.y)
+    }
+  }
+
+  $: lineCoords = {
+    x: lineBaseX.map(x => x + lineOffset.x),
+    y: lineBaseY.map(y => y + lineOffset.y)
+  }
+
+  // FuncLine
+  let baseA = 1
+  $: func = x => Math.sin(x) * 2 + baseA
+
+  let previousY
+  let currentY
+
+  function handleStartFuncLine ({ localCoordinates }) {
+    currentY = localCoordinates.y
+  }
+
+  function handleDragFuncLine ({ localCoordinates }) {
+    previousY = currentY
+    currentY = localCoordinates.y
+    baseA = baseA + (currentY - previousY)
   }
 </script>
 
@@ -43,8 +83,22 @@
     <Rectangle 
       {...rectangleCoords} 
       fill="green"
-      onDragstart={handleStart}
-      onDrag={handleDrag}
+      onDragstart={handleStartRectangle}
+      onDrag={handleDragRectangle}
+    />
+
+    <Line
+      {...lineCoords}
+      strokeWidth={6}
+      stroke="red"
+      onDragstart={handleStartLine}
+      onDrag={handleDragLine}
+    />
+    
+    <FuncLine
+      {func}
+      stroke="blue"
+      strokeWidth={5}
     />
 
   </Section>

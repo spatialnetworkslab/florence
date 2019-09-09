@@ -37,6 +37,9 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onDragstart = undefined
+  export let onDrag = undefined
+  export let onDragend = undefined
 
   // Other
   export let zoomIdentity = undefined
@@ -98,6 +101,10 @@
     initPhase = false
   })
 
+  // Interactivity
+  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
+    || onDragstart !== undefined || onDrag !== undefined || onDragend !== undefined
+
   // Helpers
   function updateInteractionManagerIfNecessary () {
     removeMarkFromSpatialIndexIfNecessary()
@@ -108,6 +115,9 @@
       if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
       if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
       if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
+      if (onDragstart || onDrag || onDragend) {
+        $interactionManagerContext.addMarkInteraction('drag', markId, { onDragstart, onDrag, onDragend })
+      }
     }
   }
 
