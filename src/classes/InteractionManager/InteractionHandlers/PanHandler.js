@@ -6,10 +6,9 @@ export default class PanHandler extends SectionInteractionHandler {
     super(interactionManager)
 
     this._panningActive = undefined
-    this._panStartPosition = undefined
     this._panPreviousPosition = undefined
     this._panCurrentPosition = undefined
-    this._panEndPosition = undefined
+    this._startEvent = undefined
   }
 
   // Normalised for desktop: mousedown, mousemove, mouseup
@@ -43,12 +42,13 @@ export default class PanHandler extends SectionInteractionHandler {
   }
 
   // Record initial mousedown, touchstart
-  _handleStart (screenCoordinates, event) {
-    this._nopropagation(event)
+  _handleStart (screenCoordinates, nativeEvent) {
+    this._nopropagation(nativeEvent)
     this._panningActive = true
-    this._panStartPosition = screenCoordinates
     this._panCurrentPosition = screenCoordinates
-    this._startEvent = event
+
+    const startEvent = this._createEvent(screenCoordinates, screenCoordinates, nativeEvent)
+    this._startEvent = startEvent
   }
 
   // For smooth dragging, perform callback even during drag
@@ -57,9 +57,7 @@ export default class PanHandler extends SectionInteractionHandler {
     if (this._panningActive && this._isInSection(screenCoordinates)) {
       this._panPreviousPosition = this._panCurrentPosition
       this._panCurrentPosition = screenCoordinates
-      this._callStoredCallback(
-        screenCoordinates, nativeEvent, this._panPreviousPosition, this._panCurrentPosition
-      )
+      this._callStoredCallback(screenCoordinates, this._panPreviousPosition, nativeEvent)
     } else {
       this._handleEnd(screenCoordinates, nativeEvent)
     }
@@ -69,13 +67,24 @@ export default class PanHandler extends SectionInteractionHandler {
   _handleEnd (screenCoordinates, nativeEvent) {
     if (this._panningActive) {
       this._panningActive = false
-      this._panEndCoordinates = this._panCurrentPosition
-      this._endEvent = nativeEvent
+      this._panPreviousPosition = undefined
+      this._panCurrentPosition = undefined
+      this._startEvent = undefined
     }
   }
 
-  _callStoredCallback (screenCoordinates, nativeEvent, start, end) {
-    const delta = { x: start.x - end.x, y: start.y - end.y }
+  _callStoredCallback (screenCoordinates, previousScreenCoordinates, nativeEvent) {
+    const panEvent = this._createEvent(
+      screenCoordinates, previousScreenCoordinates, nativeEvent, this._startEvent
+    )
+    this._callback(panEvent)
+  }
+
+  _createEvent (screenCoordinates, previousScreenCoordinates, nativeEvent, startEvent) {
+    const delta = {
+      x: previousScreenCoordinates.x - screenCoordinates.x,
+      y: previousScreenCoordinates.y - screenCoordinates.y
+    }
 
     const localCoordinates = this._getLocalCoordinates(screenCoordinates)
     const panEvent = createEvent('pan', {
@@ -84,6 +93,8 @@ export default class PanHandler extends SectionInteractionHandler {
       delta
     }, nativeEvent)
 
-    this._callback(panEvent)
+    if (startEvent) panEvent.startEvent = startEvent
+
+    return panEvent
   }
 }
