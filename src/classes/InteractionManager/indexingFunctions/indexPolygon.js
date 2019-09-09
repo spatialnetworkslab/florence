@@ -25,6 +25,7 @@ export function indexPolygonLayer ({ layerAttributes, keyArray, layerId }) {
     const item = createItemFromBBox(bbox)
 
     item.key = key
+    item.index = i
     item.attributes = polygonAttributes
     item.markType = 'Polygon'
     item.layerId = layerId

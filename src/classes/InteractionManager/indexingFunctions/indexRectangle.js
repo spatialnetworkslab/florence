@@ -25,6 +25,7 @@ export function indexRectangleLayer ({ layerAttributes, keyArray, layerId }) {
     const item = createItemFromBBox(bbox)
 
     item.key = key
+    item.index = i
     item.attributes = rectangleAttributes
     item.markType = 'Rectangle'
     item.layerId = layerId
