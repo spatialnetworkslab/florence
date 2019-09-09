@@ -48,7 +48,7 @@
 
 <div>
 
-	<Graphic width={500} height={500}>
+	<!-- <Graphic width={500} height={500}>
 		
 		<Section
 			x1={50} x2={450}
@@ -81,6 +81,34 @@
       {/if}
 
 		</Section>
+
+	</Graphic> -->
+
+  <Graphic 
+    width={500} height={500}
+    scaleX={scaleA}
+		scaleY={scaleB}
+  >
+
+    <PointLayer
+        x={data.column('a')}
+        y={data.column('b')}
+        key={data.column('$key')}
+        onDragstart={handleDragstart}
+        onDrag={handleDrag}
+        onDragend={handleDragend}
+      />
+
+      {#if dragPoint}
+
+        <Point
+          x={dragPoint.x}
+          y={dragPoint.y}
+          fill="red"
+          radius={10}
+        />
+
+      {/if}
 
 	</Graphic>
 

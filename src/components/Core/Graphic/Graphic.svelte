@@ -33,6 +33,18 @@
     GraphicContext.update(graphicContext, { renderer })
   }
 
+  let rootNode
+ 
+  // set up event and interaction manager
+  let eventManager = new EventManager()
+  EventManagerContext.update(eventManagerContext, eventManager)
+
+  let interactionManager = new InteractionManager()
+  interactionManager.setId('graphic')
+  interactionManager.linkEventManager(eventManager)
+
+  InteractionManagerContext.update(interactionManagerContext, interactionManager)
+
   let _padding
 
   $: {
@@ -46,20 +58,12 @@
     rangeX = applyPadding(rangeX, _padding.left, _padding.right)
     rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
 
-    SectionContext.update(sectionContext, { rangeX, rangeY, scaleX, scaleY, padding: _padding })
+    SectionContext.update(sectionContext, 
+      { sectionId: 'graphic', rangeX, rangeY, scaleX, scaleY, padding: _padding }
+    )
+
+    $interactionManagerContext.loadSection($sectionContext)
   }
-
-  let rootNode
- 
-  // set up event and interaction manager
-  let eventManager = new EventManager()
-  EventManagerContext.update(eventManagerContext, eventManager)
-
-  let interactionManager = new InteractionManager()
-  interactionManager.setId('graphic')
-  interactionManager.linkEventManager(eventManager)
-
-  InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
   onMount(() => {
     // only on mount can we bind the svg root node and attach actual event listeners
