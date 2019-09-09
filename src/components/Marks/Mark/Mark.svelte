@@ -22,8 +22,8 @@
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
 
   import generatePath from '../utils/generatePath.js'
-
   import textAnchorPoint from '../utils/textAnchorPoint.js'
+  import createRotation from '../utils/createRotation.js'
 
   let markId = getId()
 
@@ -222,7 +222,7 @@
     }
   }
 
-  $: { if (initDone()) rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`};
+  $: { if (initDone()) rotateTransform = createRotation($tr_rotation, $tr_screenGeometry.coordinates)}
   $: { if (initDone()) parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint)}
 
 

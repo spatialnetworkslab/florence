@@ -23,6 +23,7 @@
   import { createDataNecessaryForIndexingLayer } from './createDataNecessaryForIndexing.js'
   import generatePath from '../utils/generatePath.js'
   import textAnchorPoint from '../utils/textAnchorPoint.js'
+  import createRotation from '../utils/createRotation.js'
 
   let layerId = getId()
 
@@ -440,11 +441,7 @@
         fill-opacity={$tr_fillOpacityObject[$key]}
         stroke-opacity={$tr_strokeOpacityObject[$key]}
         opacity={$tr_opacityObject[$key]}
-        transform={`
-          rotate(${$tr_rotationObject[$key]}, 
-          ${$tr_screenGeometryObject[$key].coordinates[0]}, 
-          ${$tr_screenGeometryObject[$key].coordinates[1]})
-        `}
+        transform={createRotation($tr_rotationObject[$key], $tr_screenGeometryObject[$key].coordinates)}
         font-family={fontFamilyObject[$key]}
         font-size={$tr_fontSizeObject[$key] + 'px'}
         font-weight={$tr_fontWeightObject[$key]}
