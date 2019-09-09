@@ -98,7 +98,9 @@
     <FuncLine
       {func}
       stroke="blue"
-      strokeWidth={5}
+      strokeWidth={8}
+      onDragstart={handleStartFuncLine}
+      onDrag={handleDragFuncLine}
     />
 
   </Section>

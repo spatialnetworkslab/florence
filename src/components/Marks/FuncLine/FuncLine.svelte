@@ -6,7 +6,7 @@
 </script>
 
 <script>
-  import { beforeUpdate, afterUpdate } from 'svelte'
+  import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -17,6 +17,7 @@
   import createScreenGeometry from './createScreenGeometry.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
+  import { createDataNecessaryForIndexingMark } from '../Mark/createDataNecessaryForIndexing.js'
 
   let markId = getId()
 
@@ -75,6 +76,8 @@
       )
 
       tr_screenGeometry.set(screenGeometry)
+
+      updateInteractionManagerIfNecessary()
     }
   }
 
@@ -105,6 +108,14 @@
   $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
     || onDragstart !== undefined || onDrag !== undefined || onDragend !== undefined
 
+  onMount(() => {
+    updateInteractionManagerIfNecessary()
+  })
+
+  onDestroy(() => {
+    removeMarkFromSpatialIndexIfNecessary()
+  })
+
   // Helpers
   function updateInteractionManagerIfNecessary () {
     removeMarkFromSpatialIndexIfNecessary()
@@ -130,7 +141,7 @@
 
   function createDataNecessaryForIndexing () {
     return createDataNecessaryForIndexingMark(
-      'Line', markId, { screenGeometry }, aesthetics
+      'Line', markId, { pixelGeometry: screenGeometry }, { strokeWidth }
     )
   }
 </script>
