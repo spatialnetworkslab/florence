@@ -84,6 +84,7 @@ export default class MouseoutHandler extends InteractionHandler {
 
         if (this._isInLayer(hit)) {
           mouseoutEvent.key = hit.key
+          mouseoutEvent.index = hit.index
           this._layerCallbacks[hit.layerId](mouseoutEvent)
         }
 

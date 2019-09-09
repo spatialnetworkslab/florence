@@ -66,6 +66,7 @@ export default class ClickHandler extends InteractionHandler {
 
       if (this._isInLayer(hit)) {
         clickEvent.key = hit.key
+        clickEvent.index = hit.index
         this._layerCallbacks[hit.layerId](clickEvent)
       }
 

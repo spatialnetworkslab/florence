@@ -94,6 +94,7 @@ export default class MouseoverHandler extends InteractionHandler {
 
         if (this._isInLayer(hit)) {
           mouseoverEvent.key = hit.key
+          mouseoverEvent.index = hit.index
           this._layerCallbacks[hit.layerId](mouseoverEvent)
         }
 
