@@ -20,9 +20,9 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
-  export let onDragStart = undefined
+  export let onDragstart = undefined
   export let onDrag = undefined
-  export let onDragEnd = undefined
+  export let onDragend = undefined
 
   // Other
   export let zoomIdentity = undefined
@@ -34,6 +34,6 @@
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {onDragStart} {onDrag} {onDragEnd}
+  {onDragstart} {onDrag} {onDragend}
   {zoomIdentity} _asPolygon={false}
 />

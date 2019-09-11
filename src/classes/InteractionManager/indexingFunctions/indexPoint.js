@@ -20,6 +20,7 @@ export function indexPointLayer ({ layerAttributes, keyArray, layerId }) {
     const item = calculateBBoxPoint(pointAttributes)
 
     item.key = key
+    item.index = i
     item.attributes = pointAttributes
     item.markType = 'Point'
     item.layerId = layerId
