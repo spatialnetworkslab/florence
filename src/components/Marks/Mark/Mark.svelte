@@ -252,7 +252,7 @@
 
   // Interactivity
   $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
-  || onDragstart !== undefined || onDrag !== undefined || onDragend !== undefined
+    || onDragstart !== undefined || onDrag !== undefined || onDragend !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
