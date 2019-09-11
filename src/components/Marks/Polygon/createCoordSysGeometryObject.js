@@ -22,7 +22,11 @@ function createScaledGeometryArray (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps)
 
   if (isDefined(geometryProps.geometry)) {
-    return scaleGeometryProp(geometryProps.geometry, sectionContext)
+    if (geometryProps.geometry.constructor === Function) {
+      return geometryProps.geometry(sectionContext)
+    } else {
+      return scaleGeometryProp(geometryProps.geometry, sectionContext)
+    }
   }
 
   if (isUndefined(geometryProps.geometry)) {
