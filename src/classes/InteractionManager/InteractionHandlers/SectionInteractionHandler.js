@@ -25,7 +25,7 @@ export default class SectionInteractionHandler {
             hit.y <= section.maxY)
   }
 
-  _getLocalCoordinates (pixelCoords) {
+  _getLocalCoordinates (screenCoordinates) {
     const im = this._interactionManager
     const section = im._section
 
@@ -38,8 +38,8 @@ export default class SectionInteractionHandler {
 
     const { scaleX, scaleY } = section
 
-    const clampedX = this._clamp(pixelCoords.x, section.minX, section.maxX)
-    const clampedY = this._clamp(pixelCoords.y, section.minY, section.maxY)
+    const clampedX = this._clamp(screenCoordinates.x, section.minX, section.maxX)
+    const clampedY = this._clamp(screenCoordinates.y, section.minY, section.maxY)
 
     let localX = clampedX
     let localY = clampedY

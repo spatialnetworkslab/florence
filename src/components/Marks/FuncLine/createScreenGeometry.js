@@ -127,7 +127,7 @@ function geometryCompletelyOffScreen (geometry, totalTransformation, sectionCont
   return true
 }
 
-function pointIsInRange (point, { x1, x2, y1, y2 }) {
-  return point[0] >= x1 && point[0] <= x2 &&
-    point[1] >= y1 && point[1] <= y2
+function pointIsInRange (point, s) {
+  return point[0] >= s.minX && point[0] <= s.maxX &&
+    point[1] >= s.minY && point[1] <= s.maxY
 }

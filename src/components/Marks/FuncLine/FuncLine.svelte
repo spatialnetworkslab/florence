@@ -6,7 +6,7 @@
 </script>
 
 <script>
-  import { beforeUpdate, afterUpdate } from 'svelte'
+  import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -17,6 +17,7 @@
   import createScreenGeometry from './createScreenGeometry.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
+  import { createDataNecessaryForIndexingMark } from '../Mark/createDataNecessaryForIndexing.js'
 
   let markId = getId()
 
@@ -37,6 +38,9 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onDragstart = undefined
+  export let onDrag = undefined
+  export let onDragend = undefined
 
   // Other
   export let zoomIdentity = undefined
@@ -72,6 +76,8 @@
       )
 
       tr_screenGeometry.set(screenGeometry)
+
+      updateInteractionManagerIfNecessary()
     }
   }
 
@@ -98,6 +104,18 @@
     initPhase = false
   })
 
+  // Interactivity
+  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
+    || onDragstart !== undefined || onDrag !== undefined || onDragend !== undefined
+
+  onMount(() => {
+    updateInteractionManagerIfNecessary()
+  })
+
+  onDestroy(() => {
+    removeMarkFromSpatialIndexIfNecessary()
+  })
+
   // Helpers
   function updateInteractionManagerIfNecessary () {
     removeMarkFromSpatialIndexIfNecessary()
@@ -108,6 +126,9 @@
       if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
       if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
       if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
+      if (onDragstart || onDrag || onDragend) {
+        $interactionManagerContext.addMarkInteraction('drag', markId, { onDragstart, onDrag, onDragend })
+      }
     }
   }
 
@@ -120,7 +141,7 @@
 
   function createDataNecessaryForIndexing () {
     return createDataNecessaryForIndexingMark(
-      'Line', markId, { screenGeometry }, aesthetics
+      'Line', markId, { pixelGeometry: screenGeometry }, { strokeWidth }
     )
   }
 </script>
