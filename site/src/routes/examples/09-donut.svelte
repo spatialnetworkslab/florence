@@ -41,6 +41,7 @@
     text={'Donut Chart'}
   />
 
+ <!-- apply a polar transformation on the data -->
   <Section
     {scaleX}
     {scaleY}
@@ -49,7 +50,7 @@
   >  
 
     {#each cumsum.rows() as row, i}
-      <Rectangle 
+      <Rectangle
         x1={i === 0 ? 0 : cumsum.prevRow(row.$key).cumsum}
         x2={row.cumsum}
         y1={10}
@@ -59,7 +60,7 @@
         strokeWidth={1}
       />
 
-      <Label 
+      <Label
         x={i === 0 ? 0 + row.value/2 : cumsum.prevRow(row.$key).cumsum + row.value/2}
         y={12.5}
         text={row.name}
@@ -68,7 +69,7 @@
       />
       
       {#if row.value >= 14547446}
-        <Label 
+        <Label
           x={i === 0 ? 0 + row.value/2 : cumsum.prevRow(row.$key).cumsum + row.value/2}
           y={12.5}
           text={row.value.toLocaleString()}
@@ -77,7 +78,6 @@
           zoomIdentity={ { x: 0, y: 15, kx: 1, ky: 1 } }
         />
       {/if}
-
     {/each}
 
   </Section>

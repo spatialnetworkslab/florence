@@ -14,7 +14,12 @@ const mode = process.env.NODE_ENV
 const dev = mode === 'development'
 const legacy = !!process.env.SAPPER_LEGACY_BUILD
 
-const onwarn = (warning, onwarn) => (warning.code === 'CIRCULAR_DEPENDENCY' && /[/\\]@sapper[/\\]/.test(warning.message)) || onwarn(warning)
+const onwarn = (warning, onwarn) => {
+  warning.message === 'Unused CSS selector' ||
+  (warning.code === 'CIRCULAR_DEPENDENCY' && /[/\\]@sapper[/\\]/.test(warning.message)) ||
+  onwarn(warning)
+}
+
 const dedupe = importee => importee === 'svelte' || importee.startsWith('svelte/')
 
 export default {
@@ -83,8 +88,8 @@ export default {
       resolve({
         dedupe
       }),
-	  commonjs(),
-	  json({
+      commonjs(),
+      json({
         include: '../node_modules/proj4/**',
         compact: true
       })
