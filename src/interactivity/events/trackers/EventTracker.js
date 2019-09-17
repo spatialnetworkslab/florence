@@ -1,10 +1,11 @@
 let handler
 
 export default class MouseEventTracker {
-  constructor (eventManager, eventName, getNativeEventName) {
+  constructor (eventManager, eventName, getNativeEventName, useWindow) {
     this._eventManager = eventManager
     this._eventName = eventName
     this._nativeEventName = getNativeEventName(eventName)
+    this._useWindow = useWindow
 
     this._numberOfActiveListeners = 0
     this._callbacks = {}

@@ -3,9 +3,8 @@ import { getNativeTouchEventName } from '../utils/getNativeEventName.js'
 
 export class MouseEventTracker extends EventTracker {
   constructor (eventManager, eventName) {
-    super(eventManager, eventName, getNativeTouchEventName)
-
-    this._useWindow = eventName === 'touchmove'
+    const useWindow = eventName === 'touchmove'
+    super(eventManager, eventName, getNativeTouchEventName, useWindow)
   }
 
   _getScreenCoordinates (nativeEvent) {
