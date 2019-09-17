@@ -31,9 +31,6 @@ export function getNativeMouseEventName (exposedEventName) {
 }
 
 export function getNativeTouchEventName (exposedEventName) {
-  // TODO
-  if (exposedEventName === 'pinch') return [/* TODO */]
-
   // In this non-mobile browser type, events are called 'pointerup' etc
   if (BROWSER_TYPE === 'IE11 / MSEdge') {
     const lastPart = sliceOffTouch(exposedEventName)
