@@ -36,23 +36,23 @@
   let hoverPoints = {}
 
   $: hoverPointKeys = Object.keys(hoverPoints)
-  function handleMouseout (ix) {
-    delete hoverPoints[ix]
+  function handleMouseout ({ key }) {
+    delete hoverPoints[key]
     hoverPoints = hoverPoints
   }
   
   let bigPoint = { x: 50, y: 50 }
   let dragPoint
 
-  function handleDragStart (event) {
-    dragPoint = event.localCoords
+  function handleDragstart (event) {
+    dragPoint = event.localCoordinates
   }
 
   function handleDrag (event) {
-    dragPoint = event.localCoords
+    dragPoint = event.localCoordinates
   }
 
-  function handleDragEnd (event) {
+  function handleDragend (event) {
     bigPoint = dragPoint
     dragPoint = undefined
   }
@@ -60,17 +60,17 @@
   let dragPointLayer
   let dragKey
 
-  function handleLayerDragStart (event) {
-    dragKey = event.hitKey
-    dragPointLayer = event.localCoords
+  function handleLayerDragstart (event) {
+    dragKey = event.key
+    dragPointLayer = event.localCoordinates
   }
 
   function handleLayerDrag (event) {
-    dragPointLayer = event.localCoords
+    dragPointLayer = event.localCoordinates
   }
 
-  function handleLayerDragEnd (event) {
-    data.updateRow(event.hitKey, { a: dragPointLayer.x, b: dragPointLayer.y })
+  function handleLayerDragend (event) {
+    data.updateRow(event.key, { a: dragPointLayer.x, b: dragPointLayer.y })
     data = data
     dragPointLayer = undefined
     dragKey = undefined
@@ -125,11 +125,11 @@
         key={filteredData.column('$key')}
         fill={transformation === 'identity' ? 'black' : 'blue'}
         radius={transformation === 'identity' ? 4 : 6}
-        onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
+        onMouseover={({ key }) => hoverPoints[key] = filteredData.row(key)}
         onMouseout={handleMouseout}
-        onDragStart={handleLayerDragStart}
+        onDragstart={handleLayerDragstart}
         onDrag={handleLayerDrag}
-        onDragEnd={handleLayerDragEnd}
+        onDragend={handleLayerDragend}
       />
 
       {#if dragPointLayer}
@@ -150,9 +150,9 @@
         onClick={() => log('BOOM')}
         onMouseover={() => big = true}
         onMouseout={() => big = false}
-        onDragStart={handleDragStart}
+        onDragstart={handleDragstart}
         onDrag={handleDrag}
-        onDragEnd={handleDragEnd}
+        onDragend={handleDragend}
       />
 
       {#if dragPoint}

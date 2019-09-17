@@ -49,30 +49,30 @@ export default class WheelHandler extends SectionInteractionHandler {
   // based on openstreemtmaps: https://github.com/openstreetmap/iD/blob/f61c482188b1b747fdf528ac2992f6ed9e8a2b6a/modules/renderer/map.js#L376-L396
   // and normalize-wheel: https://github.com/basilfx/normalize-wheel/blob/master/src/normalizeWheel.js
   // Enables normal scrolling motion + legacy delta tracking
-  _defaultWheelDelta (event) {
+  _defaultWheelDelta (nativeEvent) {
     let delta
 
     // Legacy
     // IE pixels
-    if ('wheelDelta' in event && event.wheelDelta !== 0) {
-      delta = -event.wheelDelta
+    if ('wheelDelta' in nativeEvent && nativeEvent.wheelDelta !== 0) {
+      delta = -nativeEvent.wheelDelta
     }
 
     // Mozilla
-    if ('detail' in event && event.detail !== 0) {
-      delta = -event.detail
+    if ('detail' in nativeEvent && nativeEvent.detail !== 0) {
+      delta = -nativeEvent.detail
     }
 
     // Most other cases
-    if ('deltaY' in event && event.deltaY !== 0) {
-      delta = -event.deltaY
+    if ('deltaY' in nativeEvent && nativeEvent.deltaY !== 0) {
+      delta = -nativeEvent.deltaY
     }
 
     if (!scrollLineHeight) {
       scrollLineHeight = getScrollLineHeight()
     }
 
-    return delta * (event.deltaMode ? scrollLineHeight : 1) / 500
+    return delta * (nativeEvent.deltaMode ? scrollLineHeight : 1) / 500
   }
 
   /*
@@ -86,8 +86,7 @@ export default class WheelHandler extends SectionInteractionHandler {
     const sectionHeight = sectionBBox.maxY - sectionBBox.minY
     const ev1 = events[0]
     const ev2 = events[1]
-    let delta = -Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / (sectionHeight * 40)
-    
+    let delta = -Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / (sectionHeight * 50)
     if (this._prevDelta) {
       if (this._prevDelta > Math.abs(delta)) {
         delta = -delta
@@ -99,15 +98,15 @@ export default class WheelHandler extends SectionInteractionHandler {
     return { delta, center }
   }
 
-  _nopropagation (event) {
-    event.preventDefault() // Cancel the event to prevent the whole page from scrolling
-    event.stopPropagation() // Don't bubble
+  _nopropagation (nativeEvent) {
+    nativeEvent.preventDefault() // Cancel the nativeEvent
+    nativeEvent.stopPropagation() // Don't bubble
   }
 
-  _handleEvent (coordinates, event) {
-    this._nopropagation(event)
-    const delta = this._defaultWheelDelta(event)
-    const evt = { delta, coordinates: coordinates, originalEvent: event, type: 'mouse' }
+  _handleEvent (coordinates, nativeEvent) {
+    this._nopropagation(nativeEvent)
+    const delta = this._defaultWheelDelta(nativeEvent)
+    const evt = { delta, coordinates: coordinates, originalEvent: nativeEvent, type: 'mouse' }
 
     if (this._isInSection(coordinates)) {
       this._callback(evt)
@@ -115,9 +114,9 @@ export default class WheelHandler extends SectionInteractionHandler {
   }
 
   // stores first reference coordinates for zooming
-  _handleEventStart (coordinates, event) {
+  _handleEventStart (coordinates, nativeEvent) {
     if (coordinates.constructor === Array) {
-      this._nopropagation(event)
+      this._nopropagation(nativeEvent)
 
       const touchProps = this._touchProps(coordinates)
       this._prevDelta = touchProps.delta
@@ -127,12 +126,12 @@ export default class WheelHandler extends SectionInteractionHandler {
 
   // Computes delta
   // Triggers callback
-  _handleEventMove (coordinates, event) {
+  _handleEventMove (coordinates, nativeEvent) {
     if (coordinates.constructor === Array) {
-      this._nopropagation(event)
+      this._nopropagation(nativeEvent)
 
       const touchProps = this._touchProps(coordinates)
-      const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: event, type: 'touch' }
+      const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: nativeEvent, type: 'touch' }
 
       if (this._isInSection(coordinates[0]) && this._isInSection(coordinates[1]) && this._isInSection(evt.center)) {
         this._callback(evt)
@@ -141,12 +140,12 @@ export default class WheelHandler extends SectionInteractionHandler {
   }
 
   // Clean up
-  _handleEventEnd (coordinates, event) {
+  _handleEventEnd (coordinates, nativeEvent) {
     if (coordinates.constructor === Array) {
-      this._nopropagation(event)
+      this._nopropagation(nativeEvent)
 
       const touchProps = this._touchProps(coordinates)
-      const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: event, type: 'touch' }
+      const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: nativeEvent, type: 'touch' }
 
       if (this._isInSection(coordinates[0]) && this._isInSection(coordinates[1]) && this._isInSection(evt.center)) {
         this._callback(evt)

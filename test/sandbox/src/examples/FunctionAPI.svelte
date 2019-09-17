@@ -21,7 +21,7 @@
 
   let hoverKey
 
-  function onMouseover (key) {
+  function onMouseover ({ key }) {
     hoverKey = key
   }
 </script>

@@ -13,15 +13,15 @@
   let bigPoint = { x: 250, y: 250 }
   let dragPoint
 
-  function handleDragStart (event) {
-    dragPoint = event.localCoords
+  function handleDragstart (event) {
+    dragPoint = event.localCoordinates
   }
 
   function handleDrag (event) {
-    dragPoint = event.localCoords
+    dragPoint = event.localCoordinates
   }
 
-  function handleDragEnd (event) {
+  function handleDragend (event) {
     bigPoint = dragPoint
     dragPoint = undefined
   }
@@ -64,9 +64,9 @@
         fill={'red'}
         opacity={dragPoint ? 0 : 1}
         radius={10}
-        onDragStart={handleDragStart}
+        onDragstart={handleDragstart}
         onDrag={handleDrag}
-        onDragEnd={handleDragEnd}
+        onDragend={handleDragend}
       />
 
       {#if dragPoint}

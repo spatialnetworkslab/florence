@@ -16,6 +16,9 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onDragstart = undefined
+  export let onDrag = undefined
+  export let onDragend = undefined
 
   // Other
   export let interpolate = true
@@ -27,5 +30,6 @@
   {x} {y} {geometry}
   {strokeWidth} {stroke} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
+  {onDragstart} {onDrag} {onDragend}
   {interpolate} {zoomIdentity} _asPolygon={false}
 />

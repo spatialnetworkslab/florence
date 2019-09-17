@@ -14,7 +14,7 @@ export default class MouseoutHandler extends InteractionHandler {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-mouseout'
-      this._interruptedTouch = eventManager._exceptions['mouseout']
+      this._interruptedTouch = ['touchend', 'touchcancel', 'MSPointerCancel', 'MSPointerUp', 'pointercancel', 'pointerup']
 
       // Mouse
       if (eventManager._detectIt.deviceType.includes('mouse')) {
@@ -75,7 +75,6 @@ export default class MouseoutHandler extends InteractionHandler {
     for (const hitId in this._previousHits) {
       if (!(hitId in this._currentMouseoverIds) || this._interruptedTouch.includes(event.type)) {
         const hit = this._previousHits[hitId]
-        console.log('mouseout', this._isMark(hit))
         if (this._isInLayer(hit)) {
           this._layerCallbacks[hit.layerId](hit.key, event)
         }
