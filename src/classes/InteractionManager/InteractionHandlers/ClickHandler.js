@@ -37,8 +37,7 @@ export default class ClickHandler extends InteractionHandler {
     if (eventManager._detectIt.deviceType.includes('mouse') && eventManager._detectIt.primaryInput === 'mouse') {
       this._callStoredCallback(screenCoordinates, nativeEvent)
     } else if (
-      (eventManager._detectIt.deviceType.includes('touch') && eventManager._detectIt.primaryInput === 'touch') ||
-      window.navigator.pointerEnabled || window.navigator.msPointerEnabled
+      (eventManager._detectIt.deviceType.includes('touch') && eventManager._detectIt.primaryInput === 'touch')
     ) {
       if (nativeEvent.type.includes('start') || nativeEvent.type.includes('down')) {
         this._startTime = nativeEvent.timeStamp

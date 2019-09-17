@@ -73,7 +73,8 @@ export default class EventManager {
       eventdown.push('pointerdown')
       eventmove.push('pointermove')
       eventcancel.push('pointercancel')
-      eventclick.push('pointerclick')
+      eventclick.push('pointerdown')
+      eventclick.push('pointerup')
     }
 
     // Pointer events for IE10 and WP8:
