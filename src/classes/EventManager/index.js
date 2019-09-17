@@ -34,12 +34,6 @@ export default class EventManager {
 
     this._listeners = {}
     this._detectIt = detectIt
-
-    // Additional events that need to be tracked
-    // in case of disrupted/cancelled touch events
-    this._exceptions = {
-      mouseout: ['touchcancel', 'touchend', 'pointercancel', 'pointerup', 'MSPointerUp', 'MSPointerCancel']
-    }
   }
 
   detectDeviceType () {

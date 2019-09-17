@@ -86,7 +86,8 @@ export default class WheelHandler extends SectionInteractionHandler {
     const sectionHeight = sectionBBox.maxY - sectionBBox.minY
     const ev1 = events[0]
     const ev2 = events[1]
-    let delta = -Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / (sectionHeight * 50)
+    let delta = -Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / (sectionHeight * 40)
+    
     if (this._prevDelta) {
       if (this._prevDelta > Math.abs(delta)) {
         delta = -delta
@@ -99,7 +100,7 @@ export default class WheelHandler extends SectionInteractionHandler {
   }
 
   _nopropagation (event) {
-    event.preventDefault() // Cancel the event
+    event.preventDefault() // Cancel the event to prevent the whole page from scrolling
     event.stopPropagation() // Don't bubble
   }
 
