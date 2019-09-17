@@ -143,7 +143,6 @@ export default class EventManager {
     }
   }
 
-
   removeEventListener (eventName, listenerId) {
     delete this._listeners[listenerId]
     const nativeEvents = this._normalisedEvents[eventName]
