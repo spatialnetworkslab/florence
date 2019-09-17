@@ -30,5 +30,28 @@ export function getNativeMouseEventName (exposedEventName) {
   }
 }
 
+export function getNativeTouchEventName (exposedEventName) {
+  // TODO
+  if (exposedEventName === 'pinch') return [/* TODO */]
+
+  // In this non-mobile browser type, events are called 'pointerup' etc
+  if (BROWSER_TYPE === 'IE11 / MSEdge') {
+    const lastPart = sliceOffTouch(exposedEventName)
+    return 'pointer' + lastPart
+  }
+
+  // In this non-mobile browser type, events are called 'MSPointerUp' etc
+  if (BROWSER_TYPE === 'IE10 / WP8') {
+    const lastPart = sliceOffTouch(exposedEventName)
+    return 'MSPointer' + capitalize(lastPart)
+  }
+
+  // In other non-mobile browsers, events are called like the exposed ones
+  if (BROWSER_TYPE === 'other') {
+    return exposedEventName
+  }
+}
+
 const sliceOffMouse = str => str.slice(5, str.length)
+const sliceOffTouch = sliceOffMouse
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1)

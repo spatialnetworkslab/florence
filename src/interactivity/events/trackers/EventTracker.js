@@ -1,12 +1,10 @@
-import { getNativeMouseEventName } from '../utils/getNativeEventName.js'
-
 let handler
 
 export default class MouseEventTracker {
-  constructor (eventManager, eventName) {
+  constructor (eventManager, eventName, getNativeEventName) {
     this._eventManager = eventManager
     this._eventName = eventName
-    this._nativeEventName = getNativeMouseEventName(eventName)
+    this._nativeEventName = getNativeEventName(eventName)
 
     this._numberOfActiveListeners = 0
     this._callbacks = {}
@@ -42,14 +40,13 @@ export default class MouseEventTracker {
   _attachNativeListenerIfNecessary () {
     if (this._numberOfActiveListeners === 0) {
       handler = this._handleEvent.bind(this)
-      const eventName = this._eventName
       const nativeEventName = this._nativeEventName
 
-      if (eventName === 'mousemove') {
+      if (this._useWindow) {
         window.addEventListener(nativeEventName, handler)
       }
 
-      if (eventName !== 'mousemove') {
+      if (!this._useWindow) {
         this._eventManager._domNode.addEventListener(nativeEventName, handler)
       }
     }
@@ -61,14 +58,13 @@ export default class MouseEventTracker {
     this._numberOfActiveListeners--
 
     if (this._numberOfActiveListeners === 0) {
-      const eventName = this._eventName
       const nativeEventName = this._nativeEventName
 
-      if (eventName === 'mousemove') {
+      if (this._useWindow) {
         window.removeEventListener(nativeEventName, handler)
       }
 
-      if (eventName !== 'mousemove') {
+      if (!this._useWindow) {
         this._eventManager._domNode.removeEventListener(nativeEventName, handler)
       }
     }
@@ -80,15 +76,5 @@ export default class MouseEventTracker {
     for (const listenerId in this._callbacks) {
       this._callbacks[listenerId](screenCoordinates, nativeEvent)
     }
-  }
-
-  _getScreenCoordinates (nativeEvent) {
-    const svgPoint = this._eventManager._svgPoint
-    const domNode = this._eventManager._domNode
-
-    svgPoint.x = nativeEvent.clientX
-    svgPoint.y = nativeEvent.clientY
-
-    return svgPoint.matrixTransform(domNode.getScreenCTM().inverse())
   }
 }
