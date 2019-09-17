@@ -121,7 +121,7 @@ export default class DragHandler extends InteractionHandler {
     if (dragEvent.type === 'dragstart') {
       this._draggingId = this._hit[`${primitive}Id`]
     }
-
+    
     const callback = this[`_${primitive}Callbacks`][this._draggingId][dragCallbackMap[dragEvent.type]]
 
     if (callback) {
