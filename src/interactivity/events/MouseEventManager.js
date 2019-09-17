@@ -1,5 +1,5 @@
 import EventManager from './EventManager.js'
-import MouseEventTracker from './MouseEventTracker.js'
+import MouseEventTracker from './trackers/MouseEventTracker.js/index.js'
 
 const EXPOSED_EVENTS = [
   'mousedown', 'mouseup', 'mousemove', 'mouseout', 'click', 'zoom'
