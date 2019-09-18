@@ -1,4 +1,5 @@
 import { markIndexing, layerIndexing } from './createIndexableData'
+import * as InteractionHandlers from './InteractionHandlers'
 
 export default class MarkInteractionManager {
   constructor (interactionManager) {
@@ -6,6 +7,8 @@ export default class MarkInteractionManager {
 
     this._indexableMarks = {}
     this._indexableLayers = {}
+
+    this._handlers = InteractionHandlers
   }
 
   // Mark loading and removing
@@ -44,19 +47,34 @@ export default class MarkInteractionManager {
 
   // Add/remove mark interactions
   addMarkInteraction (interactionName, markId, callback) {
-    // TODO
+    this._getHandler(interactionName).addMarkInteraction(markId, callback)
   }
 
   removeAllMarkInteractions (markId) {
-    // TODO
+    for (const handlerName in this._handlers) {
+      this._handlers[handlerName].removeMarkInteraction(markId)
+    }
   }
 
   // Add/remove layer interactions
   addLayerInteraction (interactionName, layerId, callback) {
-    // TODO
+    this._getHandler(interactionName).addLayerInteraction(layerId, callback)
   }
 
   removeAllLayerInteractions (layerId) {
-    // TODO
+    for (const handlerName in this._handlers) {
+      this._handlers[handlerName].removeLayerInteraction(layerId)
+    }
+  }
+
+  _getHandler (interactionName) {
+    const handlerName = interactionNameToHandlerName(interactionName)
+    return this._handlers[handlerName]
   }
 }
+
+const interactionNameToHandlerName = interactionName => {
+  return capitalize(interactionName) + 'Handler'
+}
+
+const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1)
