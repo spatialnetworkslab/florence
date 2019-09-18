@@ -6,9 +6,7 @@ export default class MouseEventManager extends EventManager {
   }
 }
 
-const EVENT_NAMES = [
-  'touchstart', 'touchend', 'touchmove', 'touchcancel'
-]
+const EVENT_NAMES = ['touchstart', 'touchend', 'touchmove', 'touchcancel']
 
 const EXPOSED_EVENTS = EVENT_NAMES.map(eventName => ({
   eventName,
@@ -23,19 +21,19 @@ const BROWSER_TYPE = window.navigator.pointerEnabled
     : 'other'
 
 function getNativeTouchEventName (exposedEventName) {
-  // In this non-mobile browser type, events are called 'pointerup' etc
+  // In this mobile browser type, events are called 'pointerup' etc
   if (BROWSER_TYPE === 'IE11 / MSEdge') {
     const lastPart = sliceOffTouch(exposedEventName)
     return 'pointer' + lastPart
   }
 
-  // In this non-mobile browser type, events are called 'MSPointerUp' etc
+  // In this mobile browser type, events are called 'MSPointerUp' etc
   if (BROWSER_TYPE === 'IE10 / WP8') {
     const lastPart = sliceOffTouch(exposedEventName)
     return 'MSPointer' + capitalize(lastPart)
   }
 
-  // In other non-mobile browsers, events are called like the exposed ones
+  // In other mobile browsers, events are called like the exposed ones
   if (BROWSER_TYPE === 'other') {
     return exposedEventName
   }
