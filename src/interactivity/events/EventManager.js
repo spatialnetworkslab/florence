@@ -1,12 +1,14 @@
+import EventTracker from './EventTracker.js'
+
 export default class MouseEventManager {
-  constructor (EXPOSED_EVENTS, EventTracker) {
+  constructor (EXPOSED_EVENTS) {
     this._domNode = undefined
     this._svgPoint = undefined
     this._mounted = false
     this._trackers = {}
 
-    for (const eventName of EXPOSED_EVENTS) {
-      this._trackers[eventName] = new EventTracker(this, eventName)
+    for (const event of EXPOSED_EVENTS) {
+      this._trackers[event.eventName] = new EventTracker(this, event)
     }
   }
 
