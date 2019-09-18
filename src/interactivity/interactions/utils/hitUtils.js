@@ -1,4 +1,4 @@
-export function hitIsInsideSection (hit, section) {
+export function coordinatesAreInsideSection (hit, section) {
   return (
     hit.x >= section.minX &&
     hit.x <= section.maxX &&

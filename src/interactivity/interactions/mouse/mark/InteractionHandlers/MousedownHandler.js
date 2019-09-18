@@ -4,16 +4,16 @@ import createEvent from '../../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../../utils/getLocalCoordinates.js'
 import { coordinatesAreInsideSection, hitIsMark, hitIsInLayer } from '../../../utils/hitUtils.js'
 
-export default class ClickHandler extends InteractionHandler {
+export default class MousedownHandler extends InteractionHandler {
   _addEventListenerIfNecessary () {
     if (this._numberOfInteractions === 0) {
       const handler = this._handleEvent.bind(this)
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
-      const listenerId = interactionManager._id + '-click'
+      const listenerId = interactionManager._id + '-mousedown'
 
       eventManager
-        .eventTracker('click')
+        .eventTracker('mousedown')
         .addListener(listenerId, handler)
     }
   }
@@ -22,10 +22,10 @@ export default class ClickHandler extends InteractionHandler {
     if (this._numberOfInteractions === 0) {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
-      const listenerId = interactionManager._id + '-click'
+      const listenerId = interactionManager._id + '-mousedown'
 
       eventManager
-        .eventTracker('click')
+        .eventTracker('mousedown')
         .removeListener(listenerId)
     }
   }
@@ -42,7 +42,7 @@ export default class ClickHandler extends InteractionHandler {
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
 
-      const clickEvent = createEvent('click', {
+      const clickEvent = createEvent('mousedown', {
         screenCoordinates,
         localCoordinates
       }, nativeEvent)

@@ -7,11 +7,12 @@ export default class MouseEventManager extends EventManager {
 }
 
 const EVENT_NAMES = ['mousedown', 'mouseup', 'mousemove', 'mouseout', 'click', 'zoom']
+const WINDOW_EVENTS = ['mousemove', 'mouseup']
 
 const EXPOSED_EVENTS = EVENT_NAMES.map(eventName => ({
   eventName,
   nativeEventName: getNativeMouseEventName(eventName),
-  useWindow: eventName === 'mousemove'
+  useWindow: WINDOW_EVENTS.includes(eventName)
 }))
 
 const BROWSER_TYPE = window.navigator.pointerEnabled
