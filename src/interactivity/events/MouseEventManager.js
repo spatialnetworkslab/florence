@@ -1,4 +1,5 @@
 import EventManager from './EventManager.js'
+import capitalize from '../../utils/capitalize.js'
 
 export default class MouseEventManager extends EventManager {
   constructor () {
@@ -48,4 +49,3 @@ export function getNativeMouseEventName (exposedEventName) {
 }
 
 const sliceOffMouse = str => str.slice(5, str.length)
-const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1)

@@ -1,5 +1,6 @@
 import { markIndexing, layerIndexing } from './createIndexableData'
 import * as InteractionHandlers from './InteractionHandlers'
+import capitalize from '../../../../utils/capitalize.js'
 
 export default class MarkInteractionManager {
   constructor (interactionManager) {
@@ -76,5 +77,3 @@ export default class MarkInteractionManager {
 const interactionNameToHandlerName = interactionName => {
   return capitalize(interactionName) + 'Handler'
 }
-
-const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1)
