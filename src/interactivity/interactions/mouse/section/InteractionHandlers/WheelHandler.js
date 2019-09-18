@@ -3,4 +3,8 @@ export default class WheelHandler {
     this._interactionManager = interactionManager
     this._callback = undefined
   }
+
+  addInteraction () {}
+
+  removeInteraction () {}
 }
