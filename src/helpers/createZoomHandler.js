@@ -26,14 +26,14 @@ export default function createZoomHandler (
 
       let offsetX
       let offsetY
-      console.log(event.type)
+
       // stops zooming if past extents X and Y
       if (event.type.includes('wheel')) {
         offsetX = -(event.screenCoordinates.x * delta)
         offsetY = -(event.screenCoordinates.y * delta)
       } else if (event.type.includes('pinch')) {
-        offsetX = -(event.center.x * delta)
-        offsetY = -(event.center.y * delta)
+        offsetX = -(event.screenCenter.x * delta)
+        offsetY = -(event.screenCenter.y * delta)
       }
 
       const tempX = zoomId.x - offsetX

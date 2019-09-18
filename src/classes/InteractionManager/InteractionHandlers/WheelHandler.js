@@ -46,27 +46,9 @@ export default class WheelHandler extends SectionInteractionHandler {
     }
   }
 
-  /*
-  Based on approach from hammer.js:
-  https://github.com/hammerjs/hammer.js/blob/master/src/inputjs/get-scale.js
-
-  Resulting delta must be close to 1 or -1
-  */
-  _touchProps (events) {
-    const sectionBBox = this._interactionManager._section
-    const sectionHeight = sectionBBox.maxY - sectionBBox.minY
-    const ev1 = events[0]
-    const ev2 = events[1]
-    let delta = -Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / (sectionHeight * 50)
-    if (this._prevDelta) {
-      if (this._prevDelta > Math.abs(delta)) {
-        delta = -delta
-      }
-      this._prevDelta = Math.abs(delta)
-    }
-
-    const center = { x: (ev2.x + ev1.x) / 2, y: (ev2.y + ev1.y) / 2 }
-    return { delta, center }
+  _nopropagation (nativeEvent) {
+    nativeEvent.preventDefault() // Cancel the event
+    nativeEvent.stopPropagation() // Don't bubble
   }
 
   // normalised for most browsers, trackpads and mouses
@@ -99,13 +81,30 @@ export default class WheelHandler extends SectionInteractionHandler {
     return delta * (event.deltaMode ? scrollLineHeight : 1) / 500
   }
 
-  _nopropagation (nativeEvent) {
-    nativeEvent.preventDefault() // Cancel the event
-    nativeEvent.stopPropagation() // Don't bubble
+  /*
+  Based on approach from hammer.js:
+  https://github.com/hammerjs/hammer.js/blob/master/src/inputjs/get-scale.js
+
+  Resulting delta must be close to 1 or -1
+  */
+  _touchProps (events) {
+    const sectionBBox = this._interactionManager._section
+    const sectionHeight = sectionBBox.maxY - sectionBBox.minY
+    const ev1 = events[0]
+    const ev2 = events[1]
+    let delta = -Math.sqrt((ev2.x - ev1.x) ** 2 + (ev2.y - ev1.y) ** 2) / (sectionHeight * 50)
+    if (this._prevDelta) {
+      if (this._prevDelta > Math.abs(delta)) {
+        delta = -delta
+      }
+      this._prevDelta = Math.abs(delta)
+    }
+
+    const center = { x: (ev2.x + ev1.x) / 2, y: (ev2.y + ev1.y) / 2 }
+    return { delta, center }
   }
 
   _handleEvent (screenCoordinates, nativeEvent) {
-
     this._nopropagation(nativeEvent)
 
     if (this._isInSection(screenCoordinates)) {
@@ -142,26 +141,24 @@ export default class WheelHandler extends SectionInteractionHandler {
       const touchProps = this._touchProps(coordinates)
       const screenCenter = touchProps.center
       const localCenter = this._getLocalCoordinates(screenCenter)
-      const screenCoords1 = touchProps.coordinates[0]
-      const screenCoords2 = touchProps.coordinates[1]
-
-      const delta = this._defaultWheelDelta(nativeEvent)
+      const screenCoords0 = coordinates[0]
+      const localCoords0 = this._getLocalCoordinates(screenCoords0)
+      const screenCoords1 = coordinates[1]
+      const localCoords1 = this._getLocalCoordinates(screenCoords1)
+      const screenTouchCoords = [screenCoords0, screenCoords1]
+      const localTouchCoords = [localCoords0, localCoords1]
+      const delta = touchProps.delta
 
       const pinchEvent = createEvent('pinch', {
         screenCenter,
         localCenter,
-        screenCoords1,
-        localCoords1,
-        screenCoords2,
-        localCoords2
+        screenTouchCoords,
+        localTouchCoords,
         delta
       }, nativeEvent)
 
-      console.log(pinchEvent)
-      const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: nativeEvent, type: 'touch' }
-
-      if (this._isInSection(coordinates[0]) && this._isInSection(coordinates[1]) && this._isInSection(evt.center)) {
-        this._callback(evt)
+      if (this._isInSection(coordinates[0]) && this._isInSection(coordinates[1]) && this._isInSection(pinchEvent.screenCenter)) {
+        this._callback(pinchEvent)
       }
     }
   }
@@ -173,7 +170,7 @@ export default class WheelHandler extends SectionInteractionHandler {
 
       const touchProps = this._touchProps(coordinates)
       const evt = { delta: touchProps.delta, center: touchProps.center, coordinates: coordinates, originalEvent: nativeEvent, type: 'touch' }
-
+ 
       if (this._isInSection(coordinates[0]) && this._isInSection(coordinates[1]) && this._isInSection(evt.center)) {
         this._callback(evt)
       }
