@@ -1,5 +1,5 @@
-import MarkInteractionManager from './mouse/mark/MarkInteractionManager.js.js'
-import SectionInteractionManager from './mouse/section/SectionInteractionManager.js'
+import MarkInteractionManager from './mark/MarkInteractionManager.js.js'
+import SectionInteractionManager from './section/SectionInteractionManager.js'
 
 export default class MouseInteractionManager {
   constructor () {

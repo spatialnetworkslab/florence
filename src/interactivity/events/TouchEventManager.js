@@ -1,6 +1,6 @@
 import EventManager from './EventManager.js'
 
-export default class MouseEventManager extends EventManager {
+export default class TouchEventManager extends EventManager {
   constructor () {
     super(EXPOSED_EVENTS)
   }
