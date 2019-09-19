@@ -19,12 +19,12 @@ export default class ClickHandler extends SectionInteractionHandler {
     if (coordinatesAreInsideSection(screenCoordinates, section)) {
       const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
 
-      const wheelEvent = createEvent('click', {
+      const clickEvent = createEvent('click', {
         screenCoordinates,
         localCoordinates
       }, nativeEvent)
 
-      this._callback(wheelEvent)
+      this._callback(clickEvent)
     }
   }
 }

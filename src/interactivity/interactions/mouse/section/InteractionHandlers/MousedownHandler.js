@@ -19,12 +19,12 @@ export default class MousedownHandler extends SectionInteractionHandler {
     if (coordinatesAreInsideSection(screenCoordinates, section)) {
       const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
 
-      const wheelEvent = createEvent('mousedown', {
+      const mousedownEvent = createEvent('mousedown', {
         screenCoordinates,
         localCoordinates
       }, nativeEvent)
 
-      this._callback(wheelEvent)
+      this._callback(mousedownEvent)
     }
   }
 }

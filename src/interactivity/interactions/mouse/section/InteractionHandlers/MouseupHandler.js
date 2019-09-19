@@ -19,12 +19,12 @@ export default class MouseupHandler extends SectionInteractionHandler {
     if (coordinatesAreInsideSection(screenCoordinates, section)) {
       const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
 
-      const wheelEvent = createEvent('mousedown', {
+      const mouseupEvent = createEvent('mouseup', {
         screenCoordinates,
         localCoordinates
       }, nativeEvent)
 
-      this._callback(wheelEvent)
+      this._callback(mouseupEvent)
     }
   }
 }
