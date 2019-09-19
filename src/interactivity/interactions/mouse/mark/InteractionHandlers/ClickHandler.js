@@ -1,6 +1,6 @@
 import MarkInteractionHandler from '../../../_base/MarkInteractionHandler.js'
 
-import createEvent from '../../../utils/createEvent.js'
+import { createMarkEvent, createLayerEvent } from '../../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../../utils/getLocalCoordinates.js'
 import { coordinatesAreInsideSection, hitIsMark, hitIsInLayer } from '../../../utils/hitUtils.js'
 
@@ -24,18 +24,21 @@ export default class ClickHandler extends MarkInteractionHandler {
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
 
-      const clickEvent = createEvent('click', {
-        screenCoordinates,
-        localCoordinates
-      }, nativeEvent)
-
       if (hitIsMark(hit)) {
+        const clickEvent = createMarkEvent('click', {
+          screenCoordinates,
+          localCoordinates
+        }, hit, nativeEvent)
+
         this._markCallbacks[hit.markId](clickEvent)
       }
 
       if (hitIsInLayer(hit)) {
-        clickEvent.key = hit.key
-        clickEvent.index = hit.index
+        const clickEvent = createLayerEvent('click', {
+          screenCoordinates,
+          localCoordinates
+        }, hit, nativeEvent)
+
         this._layerCallbacks[hit.layerId](clickEvent)
       }
     }

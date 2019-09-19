@@ -1,10 +1,10 @@
 import MarkInteractionHandler from '../../../_base/MarkInteractionHandler.js'
 
-import createEvent from '../../../utils/createEvent.js'
+import { createMarkEvent, createLayerEvent } from '../../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../../utils/getLocalCoordinates.js'
 import { coordinatesAreInsideSection, hitIsMark, hitIsInLayer } from '../../../utils/hitUtils.js'
 
-export default class ClickHandler extends MarkInteractionHandler {
+export default class MouseoutHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager, {
       interactionName: 'mouseout',
@@ -44,19 +44,22 @@ export default class ClickHandler extends MarkInteractionHandler {
   _fireCallback (hit, screenCoordinates, nativeEvent) {
     const localCoordinates = getLocalCoordinates(screenCoordinates, this.interactionManager())
 
-    const clickEvent = createEvent('mouseout', {
-      screenCoordinates,
-      localCoordinates
-    }, nativeEvent)
-
     if (hitIsMark(hit)) {
-      this._markCallbacks[hit.markId](clickEvent)
+      const mouseoutEvent = createMarkEvent('mouseout', {
+        screenCoordinates,
+        localCoordinates
+      }, hit, nativeEvent)
+
+      this._markCallbacks[hit.markId](mouseoutEvent)
     }
 
     if (hitIsInLayer(hit)) {
-      clickEvent.key = hit.key
-      clickEvent.index = hit.index
-      this._layerCallbacks[hit.layerId](clickEvent)
+      const mouseoutEvent = createLayerEvent('mouseout', {
+        screenCoordinates,
+        localCoordinates
+      }, hit, nativeEvent)
+
+      this._layerCallbacks[hit.layerId](mouseoutEvent)
     }
   }
 }

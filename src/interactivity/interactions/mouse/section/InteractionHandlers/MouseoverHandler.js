@@ -1,6 +1,6 @@
 import SectionInteractionHandler from '../../../_base/SectionInteractionHandler.js'
 
-import createEvent from '../../../utils/createEvent.js'
+import { createSectionEvent } from '../../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../../utils/getLocalCoordinates.js'
 import { coordinatesAreInsideSection } from '../../../utils/hitUtils.js'
 
@@ -22,7 +22,7 @@ export default class MouseoverHandler extends SectionInteractionHandler {
       if (!this._mouseCurrentlyOverSection) {
         const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
 
-        const wheelEvent = createEvent('mousedown', {
+        const wheelEvent = createSectionEvent('mousedown', {
           screenCoordinates,
           localCoordinates
         }, nativeEvent)

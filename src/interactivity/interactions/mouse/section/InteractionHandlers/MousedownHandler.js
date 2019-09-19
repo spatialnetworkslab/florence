@@ -1,6 +1,6 @@
 import SectionInteractionHandler from '../../../_base/SectionInteractionHandler.js'
 
-import createEvent from '../../../utils/createEvent.js'
+import { createSectionEvent } from '../../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../../utils/getLocalCoordinates.js'
 import { coordinatesAreInsideSection } from '../../../utils/hitUtils.js'
 
@@ -19,7 +19,7 @@ export default class MousedownHandler extends SectionInteractionHandler {
     if (coordinatesAreInsideSection(screenCoordinates, section)) {
       const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
 
-      const mousedownEvent = createEvent('mousedown', {
+      const mousedownEvent = createSectionEvent('mousedown', {
         screenCoordinates,
         localCoordinates
       }, nativeEvent)

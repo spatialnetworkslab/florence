@@ -1,6 +1,6 @@
 import SectionInteractionHandler from '../../../_base/SectionInteractionHandler.js'
 
-import createEvent from '../../../utils/createEvent.js'
+import { createSectionEvent } from '../../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../../utils/getLocalCoordinates.js'
 import { coordinatesAreInsideSection } from '../../../utils/hitUtils.js'
 import getScrollLineHeight from '../../../utils/getScrollLineHeight.js'
@@ -24,7 +24,7 @@ export default class WheelHandler extends SectionInteractionHandler {
       const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
       const wheelDelta = getWheelDelta(nativeEvent)
 
-      const wheelEvent = createEvent('wheel', {
+      const wheelEvent = createSectionEvent('wheel', {
         screenCoordinates,
         localCoordinates,
         wheelDelta
