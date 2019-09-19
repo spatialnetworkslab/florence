@@ -7,7 +7,7 @@ export default class MouseEventManager extends EventManager {
   }
 }
 
-const EVENT_NAMES = ['mousedown', 'mouseup', 'mousemove', 'mouseout', 'click', 'zoom']
+const EVENT_NAMES = ['mousedown', 'mouseup', 'mousemove', 'mouseout', 'click', 'wheel']
 const WINDOW_EVENTS = ['mousemove', 'mouseup']
 
 const EXPOSED_EVENTS = EVENT_NAMES.map(eventName => ({
@@ -26,9 +26,8 @@ export function getNativeMouseEventName (exposedEventName) {
   // 'click' has the same name in every non-mobile browser
   if (exposedEventName === 'click') return 'click'
 
-  // 'zoom' is called 'wheel' in all non-mobile browsers,
-  // even for trackpad two-finger scroll
-  if (exposedEventName === 'zoom') return 'wheel'
+  // 'wheel' has the same name in every non-mobile browser
+  if (exposedEventName === 'wheel') return 'wheel'
 
   // In this non-mobile browser type, events are called 'pointerup' etc
   if (BROWSER_TYPE === 'IE11 / MSEdge') {

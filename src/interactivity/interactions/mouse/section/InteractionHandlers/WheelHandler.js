@@ -6,6 +6,13 @@ import { coordinatesAreInsideSection } from '../../../utils/hitUtils.js'
 import getScrollLineHeight from '../../../utils/getScrollLineHeight.js'
 
 export default class WheelHandler extends SectionInteractionHandler {
+  constructor (interactionManager) {
+    super(interactionManager, {
+      interactionName: 'wheel',
+      eventName: 'wheel'
+    })
+  }
+
   _handleEvent (screenCoordinates, nativeEvent) {
     nativeEvent.preventDefault()
     nativeEvent.stopPropagation()
