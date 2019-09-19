@@ -7,6 +7,7 @@
 
 <script>
   import { beforeUpdate } from 'svelte'
+  import detectIt from 'detect-it'
   import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from './SectionContext'
   import * as CoordinateTransformationContext from './CoordinateTransformationContext'
@@ -14,7 +15,7 @@
   import * as InteractionManagerContext from './InteractionManagerContext'
   import * as ZoomContext from './ZoomContext'
 
-  import InteractionManager from '../../../classes/InteractionManager'
+  import InteractionManager from '../../../interactivity/interactions/InteractionManager'
   import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
   import { parsePadding, applyPadding } from '../utils/padding.js'
 
@@ -37,10 +38,17 @@
   export let backgroundColor = undefined
   export let paddingColor = undefined
 
-  // Interactivity
+  // Mouse interactions
   export let onWheel = undefined
-  export let onPan = undefined
+  export let onClick = undefined
+  export let onMousedown = undefined
+  export let onMouseup = undefined
+  export let onMouseover = undefined
+  export let onMouseout = undefined
   
+  // Touch interactions
+  // TODO
+
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
@@ -94,7 +102,9 @@
 
   // Change callbacks if necessary
   $: {
-    removeSectionInteractionsIfNecessary(onWheel, onPan)
+    removeSectionInteractionsIfNecessary(
+      onWheel, onClick, onMousedown, onMouseup, onMouseover, onMouseout
+    )
   }
 
   // Update zooming and panning
@@ -108,10 +118,21 @@
   })
 
   function removeSectionInteractionsIfNecessary () {
-    $interactionManagerContext.removeAllSectionInteractions()
+    if (detectIt.hasMouse) {
+      const sectionInterface = $interactionManagerContext.mouse().section()
+      sectionInterface.removeAllInteractions()
 
-    if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', onWheel)
-    if (onPan) $interactionManagerContext.addSectionInteraction('pan', onPan)
+      if (onWheel) sectionInterface.addInteraction('wheel', onWheel)
+      if (onClick) sectionInterface.addInteraction('click', onClick)
+      if (onMousedown) sectionInterface.addInteraction('mousedown', onMousedown)
+      if (onMouseup) sectionInterface.addInteraction('mouseup', onMouseup)
+      if (onMouseover) sectionInterface.addInteraction('mouseover', onMouseover)
+      if (onMouseout) sectionInterface.addInteraction('mouseout', onMouseout)
+    }
+
+    if (detectIt.hasTouch) {
+      // TODO
+    }
   }
 </script>
 
