@@ -8,8 +8,9 @@ export default class MousedownHandler extends InteractionHandler {
   _addEventListenerIfNecessary () {
     if (this._numberOfInteractions === 0) {
       const handler = this._handleEvent.bind(this)
-      const interactionManager = this._interactionManager
-      const eventManager = interactionManager._eventManager
+
+      const interactionManager = this.interactionManager()
+      const eventManager = this.eventManager()
       const listenerId = interactionManager._id + '-mousedown'
 
       eventManager
@@ -20,8 +21,8 @@ export default class MousedownHandler extends InteractionHandler {
 
   _removeEventListenerIfNecessary () {
     if (this._numberOfInteractions === 0) {
-      const interactionManager = this._interactionManager
-      const eventManager = interactionManager._eventManager
+      const interactionManager = this.interactionManager()
+      const eventManager = this.eventManager()
       const listenerId = interactionManager._id + '-mousedown'
 
       eventManager
@@ -31,13 +32,13 @@ export default class MousedownHandler extends InteractionHandler {
   }
 
   _handleEvent (screenCoordinates, nativeEvent) {
-    if (!coordinatesAreInsideSection(screenCoordinates)) {
+    if (!coordinatesAreInsideSection(screenCoordinates, this.section())) {
       return
     }
 
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(screenCoordinates)
-    const localCoordinates = getLocalCoordinates(screenCoordinates, this._interactionManager)
+    const localCoordinates = getLocalCoordinates(screenCoordinates, this.interactionManager())
 
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]

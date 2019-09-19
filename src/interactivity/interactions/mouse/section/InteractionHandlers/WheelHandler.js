@@ -11,8 +11,8 @@ export default class WheelHandler {
 
   addInteraction (callback) {
     if (!this._callback) {
-      const eventManager = this._interactionManager._eventManager
-      const listenerId = this._interactionManager._id + '-wheel'
+      const eventManager = this.eventManager()
+      const listenerId = this.interactionManager()._id + '-wheel'
 
       const handler = this._handleEvent.bind(this)
 
@@ -26,8 +26,8 @@ export default class WheelHandler {
 
   removeInteraction () {
     if (this._callback) {
-      const eventManager = this._interactionManager._eventManager
-      const listenerId = this._interactionManager._id + '-wheel'
+      const eventManager = this.eventManager()
+      const listenerId = this.interactionManager()._id + '-wheel'
 
       eventManager
         .eventTracker('wheel')
@@ -41,8 +41,8 @@ export default class WheelHandler {
     nativeEvent.preventDefault()
     nativeEvent.stopPropagation()
 
-    const interactionManager = this._interactionManager
-    const section = interactionManager._section
+    const interactionManager = this.interactionManager()
+    const section = this.section()
 
     if (coordinatesAreInsideSection(screenCoordinates, section)) {
       const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
@@ -56,6 +56,18 @@ export default class WheelHandler {
 
       this._callback(wheelEvent)
     }
+  }
+
+  interactionManager () {
+    return this._interactionManager
+  }
+
+  eventManager () {
+    return this._interactionManager._eventManager
+  }
+
+  section () {
+    return this._interactionManager._section
   }
 }
 

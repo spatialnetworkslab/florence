@@ -15,8 +15,9 @@ export default class ClickHandler extends InteractionHandler {
   _addEventListenerIfNecessary () {
     if (this._numberOfInteractions === 0) {
       const handler = this._handleEvent.bind(this)
-      const interactionManager = this._interactionManager
-      const eventManager = interactionManager._eventManager
+      
+      const interactionManager = this.interactionManager()
+      const eventManager = this.eventManager()
       const listenerId = interactionManager._id + '-mouseout'
 
       eventManager
@@ -27,8 +28,8 @@ export default class ClickHandler extends InteractionHandler {
 
   _removeEventListenerIfNecessary () {
     if (this._numberOfInteractions === 0) {
-      const interactionManager = this._interactionManager
-      const eventManager = interactionManager._eventManager
+      const interactionManager = this.interactionManager()
+      const eventManager = this.eventManager()
       const listenerId = interactionManager._id + '-mouseout'
 
       eventManager
@@ -38,7 +39,7 @@ export default class ClickHandler extends InteractionHandler {
   }
 
   _handleEvent (screenCoordinates, nativeEvent) {
-    if (!coordinatesAreInsideSection(screenCoordinates)) {
+    if (!coordinatesAreInsideSection(screenCoordinates, this.section())) {
       return
     }
 
@@ -64,7 +65,7 @@ export default class ClickHandler extends InteractionHandler {
   }
 
   _fireCallback (hit, screenCoordinates, nativeEvent) {
-    const localCoordinates = getLocalCoordinates(screenCoordinates, this._interactionManager)
+    const localCoordinates = getLocalCoordinates(screenCoordinates, this.interactionManager())
 
     const clickEvent = createEvent('mouseout', {
       screenCoordinates,

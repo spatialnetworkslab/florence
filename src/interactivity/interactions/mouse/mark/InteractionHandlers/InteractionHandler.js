@@ -48,4 +48,16 @@ export default class InteractionHandler {
       this._spatialIndex.unindexLayer(layerId)
     }
   }
+
+  interactionManager () {
+    return this._interactionManager
+  }
+
+  eventManager () {
+    return this._interactionManager._eventManager
+  }
+
+  section () {
+    return this._interactionManager._section
+  }
 }
