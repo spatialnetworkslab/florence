@@ -1,34 +1,16 @@
-import InteractionHandler from './InteractionHandler.js'
+import MarkInteractionHandler from '../../../_base/MarkInteractionHandler.js'
 
 import createEvent from '../../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../../utils/getLocalCoordinates.js'
 import { coordinatesAreInsideSection, hitIsMark, hitIsInLayer } from '../../../utils/hitUtils.js'
 
-export default class MousedownHandler extends InteractionHandler {
-  _addEventListenerIfNecessary () {
-    if (this._numberOfInteractions === 0) {
-      const handler = this._handleEvent.bind(this)
-
-      const interactionManager = this.interactionManager()
-      const eventManager = this.eventManager()
-      const listenerId = interactionManager._id + '-mouseup'
-
-      eventManager
-        .eventTracker('mouseup')
-        .addListener(listenerId, handler)
-    }
-  }
-
-  _removeEventListenerIfNecessary () {
-    if (this._numberOfInteractions === 0) {
-      const interactionManager = this.interactionManager()
-      const eventManager = this.eventManager()
-      const listenerId = interactionManager._id + '-mouseup'
-
-      eventManager
-        .eventTracker('mouseup')
-        .removeListener(listenerId)
-    }
+export default class MousedownHandler extends MarkInteractionHandler {
+  constructor (interactionManager) {
+    super(interactionManager, {
+      interactionName: 'mouseup',
+      eventName: 'mouseup',
+      inputDevice: 'mouse'
+    })
   }
 
   _handleEvent (screenCoordinates, nativeEvent) {

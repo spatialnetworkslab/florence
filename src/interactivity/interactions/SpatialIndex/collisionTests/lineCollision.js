@@ -1,4 +1,4 @@
-import { pointIntersectsLineSegment } from '../../../../../../utils/geometryUtils'
+import { pointIntersectsLineSegment } from '../../../../utils/geometryUtils'
 
 export default function lineCollision (coordinates, lineAttributes) {
   const mouseCoordinates = [coordinates.x, coordinates.y]

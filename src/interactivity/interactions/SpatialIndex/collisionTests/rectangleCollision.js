@@ -1,4 +1,4 @@
-import { pointInPolygon } from '../../../../../../utils/geometryUtils'
+import { pointInPolygon } from '../../../../utils/geometryUtils'
 
 export default function rectangleCollision (coordinates, rectangleAttributes) {
   const point = [coordinates.x, coordinates.y]

@@ -1,8 +1,10 @@
-import SpatialIndex from '../SpatialIndex/SpatialIndex.js'
+import BaseInteractionHandler from './BaseInteractionHandler.js'
+import SpatialIndex from '../SpatialIndex'
 
-export default class InteractionHandler {
-  constructor (interactionManager) {
-    this._interactionManager = interactionManager
+export default class MarkInteractionHandler extends BaseInteractionHandler {
+  constructor (interactionManager, options) {
+    super(interactionManager, options)
+
     this._spatialIndex = new SpatialIndex(interactionManager)
 
     this._numberOfInteractions = 0
@@ -49,15 +51,19 @@ export default class InteractionHandler {
     }
   }
 
-  interactionManager () {
-    return this._interactionManager
+  _addEventListenerIfNecessary () {
+    if (this._numberOfInteractions === 0) {
+      this._addEventListener()
+    }
   }
 
-  eventManager () {
-    return this._interactionManager._eventManager
+  _removeEventListenerIfNecessary () {
+    if (this._numberOfInteractions === 0) {
+      this._removeEventListener()
+    }
   }
 
-  section () {
-    return this._interactionManager._section
+  getId () {
+    return `${this.id()}-${this._inputDevice}-mark-${this._interactionName}`
   }
 }
