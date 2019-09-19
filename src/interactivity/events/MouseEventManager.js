@@ -1,7 +1,7 @@
-import EventManager from './EventManager.js'
+import BaseEventManager from './BaseEventManager.js'
 import capitalize from '../../utils/capitalize.js'
 
-export default class MouseEventManager extends EventManager {
+export default class MouseEventManager extends BaseEventManager {
   constructor () {
     super(EXPOSED_EVENTS)
   }

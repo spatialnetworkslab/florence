@@ -1,7 +1,7 @@
-import EventManager from './EventManager.js'
+import BaseEventManager from './BaseEventManager.js'
 import capitalize from '../../utils/capitalize.js'
 
-export default class TouchEventManager extends EventManager {
+export default class TouchEventManager extends BaseEventManager {
   constructor () {
     super(EXPOSED_EVENTS)
   }

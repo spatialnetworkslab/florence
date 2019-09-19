@@ -1,33 +1,24 @@
-import EventTracker from './EventTracker.js'
+import detectIt from 'detect-it'
 
-export default class MouseEventManager {
-  constructor (EXPOSED_EVENTS) {
-    this._domNode = undefined
-    this._svgPoint = undefined
-    this._mounted = false
-    this._trackers = {}
+import MouseEventManager from './MouseEventManager.js'
+import TouchEventManager from './TouchEventManager.js'
 
-    for (const event of EXPOSED_EVENTS) {
-      this._trackers[event.eventName] = new EventTracker(this, event)
+export default class EventManager {
+  constructor () {
+    if (detectIt.hasMouse) {
+      this._mouseEventManager = new MouseEventManager()
+    }
+
+    if (detectIt.hasTouch) {
+      this._touchEventManager = new TouchEventManager()
     }
   }
 
-  // Svelte can only bind to DOM nodes after initialization
-  addRootNode (domNode) {
-    this._domNode = domNode
-    this._svgPoint = this._domNode.createSVGPoint()
-    this._mounted = true
+  mouse () {
+    return this._mouseEventManager
   }
 
-  attachEventListeners () {
-    if (this._mounted === false) throw new Error('root node must be added first')
-
-    for (const eventName in this._trackers) {
-      this._trackers[eventName].attachAllListeners()
-    }
-  }
-
-  eventTracker (eventName) {
-    return this._trackers[eventName]
+  touch () {
+    return this._touchEventManager
   }
 }
