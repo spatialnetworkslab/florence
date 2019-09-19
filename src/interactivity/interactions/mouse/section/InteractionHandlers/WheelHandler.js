@@ -1,42 +1,11 @@
+import SectionInteractionHandler from '../../../_base/SectionInteractionHandler.js'
+
 import createEvent from '../../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../../utils/getLocalCoordinates.js'
 import { coordinatesAreInsideSection } from '../../../utils/hitUtils.js'
 import getScrollLineHeight from '../../../utils/getScrollLineHeight.js'
 
-export default class WheelHandler {
-  constructor (interactionManager) {
-    this._interactionManager = interactionManager
-    this._callback = undefined
-  }
-
-  addInteraction (callback) {
-    if (!this._callback) {
-      const eventManager = this.eventManager()
-      const listenerId = this.interactionManager()._id + '-wheel'
-
-      const handler = this._handleEvent.bind(this)
-
-      eventManager
-        .eventTracker('wheel')
-        .addListener(listenerId, handler)
-
-      this._callback = callback
-    }
-  }
-
-  removeInteraction () {
-    if (this._callback) {
-      const eventManager = this.eventManager()
-      const listenerId = this.interactionManager()._id + '-wheel'
-
-      eventManager
-        .eventTracker('wheel')
-        .removeListener(listenerId)
-
-      delete this._callback
-    }
-  }
-
+export default class WheelHandler extends SectionInteractionHandler {
   _handleEvent (screenCoordinates, nativeEvent) {
     nativeEvent.preventDefault()
     nativeEvent.stopPropagation()
@@ -56,18 +25,6 @@ export default class WheelHandler {
 
       this._callback(wheelEvent)
     }
-  }
-
-  interactionManager () {
-    return this._interactionManager
-  }
-
-  eventManager () {
-    return this._interactionManager._eventManager
-  }
-
-  section () {
-    return this._interactionManager._section
   }
 }
 

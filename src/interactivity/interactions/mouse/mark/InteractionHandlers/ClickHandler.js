@@ -8,8 +8,7 @@ export default class ClickHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager, {
       interactionName: 'click',
-      eventName: 'click',
-      inputDevice: 'mouse'
+      eventName: 'click'
     })
   }
 

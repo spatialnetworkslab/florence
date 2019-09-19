@@ -64,6 +64,6 @@ export default class MarkInteractionHandler extends BaseInteractionHandler {
   }
 
   getId () {
-    return `${this.id()}-${this._inputDevice}-mark-${this._interactionName}`
+    return `${this.id()}-mark-${this._interactionName}`
   }
 }

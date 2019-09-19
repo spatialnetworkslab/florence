@@ -8,8 +8,7 @@ export default class MousedownHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager, {
       interactionName: 'mouseup',
-      eventName: 'mouseup',
-      inputDevice: 'mouse'
+      eventName: 'mouseup'
     })
   }
 

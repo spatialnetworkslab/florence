@@ -1,9 +1,8 @@
 export default class BaseInteractionHandler {
-  constructor (interactionManager, { eventName, interactionName, inputDevice }) {
+  constructor (interactionManager, { eventName, interactionName }) {
     this._interactionManager = interactionManager
     this._eventName = eventName
     this._interactionName = interactionName
-    this._inputDevice = inputDevice
   }
 
   interactionManager () {

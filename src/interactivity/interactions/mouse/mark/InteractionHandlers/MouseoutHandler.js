@@ -8,8 +8,7 @@ export default class ClickHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager, {
       interactionName: 'mouseout',
-      eventName: 'mousemove',
-      inputDevice: 'mouse'
+      eventName: 'mousemove'
     })
 
     this._previousMouseoverHits = {}
