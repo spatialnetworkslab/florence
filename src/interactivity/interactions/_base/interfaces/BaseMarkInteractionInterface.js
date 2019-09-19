@@ -1,10 +1,9 @@
+import BaseInteractionInterface from './BaseInteractionInterface.js'
 import { markIndexing, layerIndexing } from './createIndexableData'
-import * as InteractionHandlers from './InteractionHandlers'
-import capitalize from '../../../../utils/capitalize.js'
 
-export default class MarkInteractionManager {
-  constructor (interactionManager) {
-    this._interactionManager = interactionManager
+export default class BaseMarkInteractionInterface extends BaseInteractionInterface {
+  constructor (interactionManager, InteractionHandlers) {
+    super(interactionManager)
 
     this._indexableMarks = {}
     this._indexableLayers = {}
@@ -67,13 +66,4 @@ export default class MarkInteractionManager {
       this._handlers[handlerName].removeLayerInteraction(layerId)
     }
   }
-
-  _getHandler (interactionName) {
-    const handlerName = interactionNameToHandlerName(interactionName)
-    return this._handlers[handlerName]
-  }
-}
-
-const interactionNameToHandlerName = interactionName => {
-  return capitalize(interactionName) + 'Handler'
 }

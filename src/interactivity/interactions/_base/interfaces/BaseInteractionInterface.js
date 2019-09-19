@@ -1,20 +1,9 @@
-import * as InteractionHandlers from './InteractionHandlers'
 import capitalize from '../../../../utils/capitalize.js'
 
-export default class SectionInteractionManager {
+export default class BaseInteractionInterface {
   constructor (interactionManager) {
     this._interactionManager = interactionManager
-    this._handlers = InteractionHandlers
-  }
-
-  addInteraction (interactionName, callback) {
-    this._getHandler(interactionName).addInteraction(callback)
-  }
-
-  removeAllInteractions () {
-    for (const handlerName in this._handlers) {
-      this._handlers[handlerName].removeInteraction()
-    }
+    this._handlers = {}
   }
 
   _getHandler (interactionName) {

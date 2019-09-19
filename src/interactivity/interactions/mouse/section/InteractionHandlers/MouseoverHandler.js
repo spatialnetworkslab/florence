@@ -1,4 +1,4 @@
-import SectionInteractionHandler from '../../../_base/SectionInteractionHandler.js'
+import SectionInteractionHandler from '../../../_base/handlers/SectionInteractionHandler.js'
 
 import { createSectionEvent } from '../../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../../utils/getLocalCoordinates.js'

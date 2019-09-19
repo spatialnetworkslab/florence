@@ -1,5 +1,5 @@
 import BaseInteractionHandler from './BaseInteractionHandler.js'
-import SpatialIndex from '../SpatialIndex'
+import SpatialIndex from '../../SpatialIndex'
 
 export default class MarkInteractionHandler extends BaseInteractionHandler {
   constructor (interactionManager, options) {
