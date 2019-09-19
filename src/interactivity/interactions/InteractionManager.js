@@ -14,11 +14,38 @@ export default class InteractionManager {
     }
   }
 
+  // Initialization
+  setId (id) {
+    this._forEachManager(manager => { manager.setId(id) })
+  }
+
+  linkEventManager (eventManager) {
+    this._forEachManager(manager => { manager.linkEventManager(eventManager) })
+  }
+
+  // Section context loading
+  loadSection (sectionData) {
+    this._forEachManager(manager => { manager.loadSection(sectionData) })
+  }
+
+  loadCoordinateTransformation (coordinateTransformation) {
+    this._forEachManager(manager => { manager.loadCoordinateTransformation(coordinateTransformation) })
+  }
+
+  loadZoom (zoom) {
+    this._forEachManager(manager => { manager.loadZoom(zoom) })
+  }
+
   mouse () {
     return this._mouseInteractionManager
   }
 
   touch () {
     return this._touchInteractionManager
+  }
+
+  _forEachManager (callback) {
+    if (this._mouseInteractionManager) callback(this._mouseInteractionManager)
+    if (this._touchInteractionManager) callback(this._touchInteractionManager)
   }
 }
