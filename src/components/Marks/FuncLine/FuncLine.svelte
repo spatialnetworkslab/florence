@@ -7,6 +7,7 @@
 
 <script>
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
+  import detectIt from 'detect-it'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -36,11 +37,10 @@
   // Transitions and interactions
   export let transition = undefined
   export let onClick = undefined
+  export let onMousedown = undefined
+  export let onMouseup = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
-  export let onDragstart = undefined
-  export let onDrag = undefined
-  export let onDragend = undefined
 
   // Other
   export let zoomIdentity = undefined
@@ -105,8 +105,11 @@
   })
 
   // Interactivity
-  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
-    || onDragstart !== undefined || onDrag !== undefined || onDragend !== undefined
+  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined || 
+    onMousedown !== undefined || onMouseup !== undefined ||
+    onMouseover !== undefined || onMouseout !== undefined)
+
+  $: isInteractiveTouch = detectIt.hasTouch // TODO
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -120,22 +123,29 @@
   function updateInteractionManagerIfNecessary () {
     removeMarkFromSpatialIndexIfNecessary()
 
-    if (isInteractive) {
-      $interactionManagerContext.loadMark('Line', createDataNecessaryForIndexing())
+    if (isInteractiveMouse) {
+      const markInterface = $interactionManagerContext.mouse().marks()
 
-      if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
-      if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
-      if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
-      if (onDragstart || onDrag || onDragend) {
-        $interactionManagerContext.addMarkInteraction('drag', markId, { onDragstart, onDrag, onDragend })
-      }
+      markInterface.loadMark('Line', createDataNecessaryForIndexing())
+
+      if (onClick) markInterface.addMarkInteraction('click', markId, onClick)
+      if (onMousedown) markInterface.addMarkInteraction('mousedown', markId, onMousedown)
+      if (onMouseup) markInterface.addMarkInteraction('mouseoup', markId, onMouseup)
+      if (onMouseover) markInterface.addMarkInteraction('mouseover', markId, onMouseover)
+      if (onMouseout) markInterface.addMarkInteraction('mouseout', markId, onMouseout)
+    }
+
+    if (isInteractiveTouch) {
+      // TODO
     }
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
-    if ($interactionManagerContext.markIsLoaded(markId)) {
-      $interactionManagerContext.removeAllMarkInteractions(markId)
-      $interactionManagerContext.removeMark(markId)
+    const markInterface = $interactionManagerContext.mouse().marks()
+
+    if (markInterface.markIsLoaded(markId)) {
+      markInterface.removeAllMarkInteractions(markId)
+      markInterface.removeMark(markId)
     }
   }
 

@@ -18,11 +18,10 @@
   // Transitions and interactions
   export let transition = undefined
   export let onClick = undefined
+  export let onMousedown = undefined
+  export let onMouseup = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
-  export let onDragstart = undefined
-  export let onDrag = undefined
-  export let onDragend = undefined
 
   // Other
   export let key = undefined
@@ -35,7 +34,7 @@
   {x1} {x2} {y1} {y2}
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
-  {transition} {onClick} {onMouseover} {onMouseout}
-  {onDragstart} {onDrag} {onDragend}
+  {transition} 
+  {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout}
   {key} {zoomIdentity} {interpolate}
 />
