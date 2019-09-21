@@ -1,4 +1,4 @@
-import MarkInteractionHandler from '../../../_base/MarkInteractionHandler.js'
+import MarkInteractionHandler from '../../../_base/handlers/MarkInteractionHandler.js'
 
 import { createMarkEvent, createLayerEvent } from '../../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../../utils/getLocalCoordinates.js'

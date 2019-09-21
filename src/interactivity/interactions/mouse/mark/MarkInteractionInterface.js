@@ -1,4 +1,4 @@
-import BaseMarkInteractionInterface from '../../_base/interfaces/BaseInteractionInterface.js/index.js'
+import BaseMarkInteractionInterface from '../../_base/interfaces/BaseMarkInteractionInterface.js'
 import * as InteractionHandlers from './InteractionHandlers'
 
 export default class MarkInteractionInterface extends BaseMarkInteractionInterface {

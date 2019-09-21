@@ -1,6 +1,6 @@
 import BaseInteractionHandler from './BaseInteractionHandler.js'
 
-export class SectionInteractionHandler extends BaseInteractionHandler {
+export default class SectionInteractionHandler extends BaseInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager)
     this._callback = undefined
