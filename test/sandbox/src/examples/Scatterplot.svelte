@@ -33,49 +33,6 @@
 
   let background = "white"
   let big = false
-  let hoverPoints = {}
-
-  $: hoverPointKeys = Object.keys(hoverPoints)
-  function handleMouseout ({ key }) {
-    delete hoverPoints[key]
-    hoverPoints = hoverPoints
-  }
-  
-  let bigPoint = { x: 50, y: 50 }
-  let dragPoint
-
-  function handleDragstart (event) {
-    dragPoint = event.localCoordinates
-  }
-
-  function handleDrag (event) {
-    dragPoint = event.localCoordinates
-  }
-
-  function handleDragend (event) {
-    bigPoint = dragPoint
-    dragPoint = undefined
-  }
-
-  let dragPointLayer
-  let dragKey
-
-  function handleLayerDragstart (event) {
-    dragKey = event.key
-    dragPointLayer = event.localCoordinates
-  }
-
-  function handleLayerDrag (event) {
-    dragPointLayer = event.localCoordinates
-  }
-
-  function handleLayerDragend (event) {
-    data.updateRow(event.key, { a: dragPointLayer.x, b: dragPointLayer.y })
-    data = data
-    dragPointLayer = undefined
-    dragKey = undefined
-  }
-
 </script>
 
 <div>
@@ -121,48 +78,10 @@
 			<PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}
-        opacity={key => dragKey === key ? 0 : 1}
         key={filteredData.column('$key')}
         fill={transformation === 'identity' ? 'black' : 'blue'}
         radius={transformation === 'identity' ? 4 : 6}
-        onMouseover={({ key }) => hoverPoints[key] = filteredData.row(key)}
-        onMouseout={handleMouseout}
-        onDragstart={handleLayerDragstart}
-        onDrag={handleLayerDrag}
-        onDragend={handleLayerDragend}
       />
-
-      {#if dragPointLayer}
-        <Point
-          x={dragPointLayer.x}
-          y={dragPointLayer.y}
-          radius={5}
-          fill={'black'}
-        />
-      {/if}
-
-      <Point
-        x={bigPoint.x}
-        y={bigPoint.y}
-        fill={big ? 'blue' : 'red'}
-        opacity={dragPoint ? 0 : 1}
-        radius={big ? 50 : 30}
-        onClick={() => log('BOOM')}
-        onMouseover={() => big = true}
-        onMouseout={() => big = false}
-        onDragstart={handleDragstart}
-        onDrag={handleDrag}
-        onDragend={handleDragend}
-      />
-
-      {#if dragPoint}
-        <Point
-          x={dragPoint.x}
-          y={dragPoint.y}
-          radius={10}
-          fill={'red'}
-        />
-      {/if}
 
 		</Section>
 

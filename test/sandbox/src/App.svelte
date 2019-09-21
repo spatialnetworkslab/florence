@@ -7,16 +7,16 @@
   import GridLayout from './examples/GridLayout.svelte'
   import ResizeLayout from './examples/ResizeLayout.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
-  import ZoomPan from './examples/ZoomPan.svelte'
+  // import ZoomPan from './examples/ZoomPan.svelte'
   import BaseMark from './examples/BaseMark.svelte'
   import Line from './examples/Line.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
-  import FuncLines from './examples/FuncLines.svelte'
-  import DragCategorical from './examples/DragCategorical.svelte'
+  // import FuncLines from './examples/FuncLines.svelte'
+  // import DragCategorical from './examples/DragCategorical.svelte'
   import FunctionAPI from './examples/FunctionAPI.svelte'
   import FlipTest from './examples/FlipTest.svelte'
   import NonNumericAxis from './examples/NonNumericAxis.svelte'
-  import DragAllMarks from './examples/DragAllMarks.svelte'
+  // import DragAllMarks from './examples/DragAllMarks.svelte'
   import StackedBarChart from './examples/StackedBarChart.svelte'
 
   // and add them to this component array
@@ -46,11 +46,11 @@
       url: '/scatterplot',
       component: Scatterplot
     },
-    {
-      name: 'ZoomPan',
-      url: '/zoompan',
-      component: ZoomPan
-    },
+    // {
+    //   name: 'ZoomPan',
+    //   url: '/zoompan',
+    //   component: ZoomPan
+    // },
     {
       name: 'Base mark',
       url: '/basemark',
@@ -66,16 +66,16 @@
       url: '/geopolygons',
       component: GeoPolygons
     },
-    {
-      name: 'FuncLines',
-      url: 'funclines',
-      component: FuncLines
-    },
-    {
-      name: 'DragCategorical',
-      url: 'dragcategorical',
-      component: DragCategorical
-    },
+    // {
+    //   name: 'FuncLines',
+    //   url: 'funclines',
+    //   component: FuncLines
+    // },
+    // {
+    //   name: 'DragCategorical',
+    //   url: 'dragcategorical',
+    //   component: DragCategorical
+    // },
     {
       name: 'Function API',
       url: 'functionapi',
@@ -91,11 +91,11 @@
       url: 'nonnumericaxis',
       component: NonNumericAxis
     },
-    {
-      name: 'Drag all marks',
-      url: 'dragallmarks',
-      component: DragAllMarks
-    },
+    // {
+    //   name: 'Drag all marks',
+    //   url: 'dragallmarks',
+    //   component: DragAllMarks
+    // },
     {
       name: 'Stacked bar chart',
       url: 'stackedbarchart',
