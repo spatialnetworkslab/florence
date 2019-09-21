@@ -20,7 +20,13 @@ export default class InteractionManager {
   }
 
   linkEventManager (eventManager) {
-    this._forEachManager(manager => { manager.linkEventManager(eventManager) })
+    if (this._mouseInteractionManager) {
+      this._mouseInteractionManager.linkEventManager(eventManager.mouse())
+    }
+
+    if (this._touchInteractionManager) {
+      this._touchInteractionManager.linkEventManager(eventManager.touch())
+    }
   }
 
   // Section context loading

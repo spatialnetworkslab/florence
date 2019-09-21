@@ -9,12 +9,12 @@ export default class SpatialIndex {
 
   // Layer indexing and unindexing
   indexLayer (layerId) {
-    const indexableData = this._interactionHandler._layers[layerId]
-    this._rbush.load(indexableData)
+    const layer = this._getLayer(layerId)
+    this._rbush.load(layer)
   }
 
   unindexLayer (layerId) {
-    const layer = this._interactionHandler._layers[layerId]
+    const layer = this._getLayer(layerId)
 
     for (let i = 0; i < layer.length; i++) {
       const item = layer[i]
@@ -24,25 +24,25 @@ export default class SpatialIndex {
 
   // Mark loading and removing
   indexMark (markId) {
-    const indexableItem = this._interactionHandler._marks[markId]
+    const mark = this._getMark(markId)
 
-    if (multipleSegments(indexableItem)) {
-      this._rbush.load(indexableItem)
+    if (multipleSegments(mark)) {
+      this._rbush.load(mark)
     } else {
-      this._rbush.insert(indexableItem)
+      this._rbush.insert(mark)
     }
   }
 
   unindexMark (markId) {
-    const indexableItem = this._interactionHandler._marks[markId]
+    const mark = this._getMark(markId)
 
-    if (multipleSegments(indexableItem)) {
-      for (let i = 0; i < indexableItem.length; i++) {
-        const item = indexableItem[i]
+    if (multipleSegments(mark)) {
+      for (let i = 0; i < mark.length; i++) {
+        const item = mark[i]
         this._rbush.remove(item)
       }
     } else {
-      this._rbush.remove(indexableItem)
+      this._rbush.remove(mark)
     }
   }
 
@@ -67,6 +67,14 @@ export default class SpatialIndex {
     }
 
     return hits
+  }
+
+  _getMark (markId) {
+    return this._interactionHandler._interactionManager.marks()._indexableMarks[markId]
+  }
+
+  _getLayer (layerId) {
+    return this._interactionHandler._interactionManager.marks()._indexableLayers[layerId]
   }
 }
 

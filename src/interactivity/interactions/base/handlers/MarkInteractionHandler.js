@@ -5,7 +5,7 @@ export default class MarkInteractionHandler extends BaseInteractionHandler {
   constructor (interactionManager, options) {
     super(interactionManager, options)
 
-    this._spatialIndex = new SpatialIndex(interactionManager)
+    this._spatialIndex = new SpatialIndex(this)
 
     this._numberOfInteractions = 0
 
