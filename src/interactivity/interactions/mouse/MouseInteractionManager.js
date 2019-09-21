@@ -1,13 +1,15 @@
-import BaseInteractionManager from '../_base/managers/BaseInteractionManager.js'
+import BaseInteractionManager from '../base/managers/BaseInteractionManager.js'
+import MarkInteractionInterface from '../base/MarkInteractionInterface.js'
+import SectionInteractionInterface from '../base/SectionInteractionInterface.js'
 
-import MarkInteractionInterface from './mark/MarkInteractionInterface.js'
-import SectionInteractionInterface from './section/SectionInteractionInterface.js'
+import * as MarkInteractionHandlers from './mark'
+import * as SectionInteractionHandlers from './section'
 
 export default class MouseInteractionManager extends BaseInteractionManager {
   constructor () {
     super()
 
-    this._markInteractionInterface = new MarkInteractionInterface(this)
-    this._sectionInteractionInterface = new SectionInteractionInterface(this)
+    this._markInteractionInterface = new MarkInteractionInterface(this, MarkInteractionHandlers)
+    this._sectionInteractionInterface = new SectionInteractionInterface(this, SectionInteractionHandlers)
   }
 }
