@@ -1,6 +1,6 @@
 import BaseInteractionManager from '../base/managers/BaseInteractionManager.js'
-import MarkInteractionInterface from '../base/MarkInteractionInterface.js'
-import SectionInteractionInterface from '../base/SectionInteractionInterface.js'
+import MarkInteractionInterface from '../base/interfaces/MarkInteractionInterface.js'
+import SectionInteractionInterface from '../base/interfaces/SectionInteractionInterface.js'
 
 import * as MarkInteractionHandlers from './mark'
 import * as SectionInteractionHandlers from './section'
