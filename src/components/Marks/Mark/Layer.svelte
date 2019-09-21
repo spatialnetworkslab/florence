@@ -7,6 +7,7 @@
 
 <script>
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
+  import detectIt from 'detect-it'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -268,8 +269,12 @@
   })
 
   // Interactivity
-  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
-  || onDragstart !== undefined || onDrag !== undefined || onDragend !== undefined
+  // Interactivity
+  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined || 
+    onMousedown !== undefined || onMouseup !== undefined ||
+    onMouseover !== undefined || onMouseout !== undefined)
+
+  $: isInteractiveTouch = detectIt.hasTouch // TODO
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -335,22 +340,29 @@
   function updateInteractionManagerIfNecessary () {
     removeLayerFromSpatialIndexIfNecessary()
 
-    if (isInteractive) {
-      $interactionManagerContext.loadLayer(type, createDataNecessaryForIndexing())
+    if (isInteractiveMouse) {
+      const markInterface = $interactionManagerContext.mouse().marks()
+      
+      markInterface.loadLayer(type, createDataNecessaryForIndexing())
 
-      if (onClick) $interactionManagerContext.addLayerInteraction('click', layerId, onClick)
-      if (onMouseover) $interactionManagerContext.addLayerInteraction('mouseover', layerId, onMouseover)
-      if (onMouseout) $interactionManagerContext.addLayerInteraction('mouseout', layerId, onMouseout)
-      if (onDragstart || onDrag || onDragend) {
-        $interactionManagerContext.addLayerInteraction('drag', layerId, { onDragstart, onDrag, onDragend })
-      }
+      if (onClick) markInterface.addLayerInteraction('click', layerId, onClick)
+      if (onMousedown) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
+      if (onMouseup) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
+      if (onMouseover) markInterface.addLayerInteraction('mouseover', layerId, onMouseover)
+      if (onMouseout) markInterface.addLayerInteraction('mouseout', layerId, onMouseout)
+    }
+
+    if (isInteractiveTouch) {
+      // TODO
     }
   }
 
   function removeLayerFromSpatialIndexIfNecessary () {
-    if ($interactionManagerContext.layerIsLoaded(layerId)) {
-      $interactionManagerContext.removeAllLayerInteractions(layerId)
-      $interactionManagerContext.removeLayer(layerId)
+    const markInterface = $interactionManagerContext.mouse().marks()
+
+    if (markInterface.layerIsLoaded(layerId)) {
+      markInterface.removeAllLayerInteractions(layerId)
+      markInterface.removeLayer(layerId)
     }
   }
 

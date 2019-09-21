@@ -334,9 +334,11 @@
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
-    if ($interactionManagerContext.markIsLoaded(markId)) {
-      $interactionManagerContext.removeAllMarkInteractions(markId)
-      $interactionManagerContext.removeMark(markId)
+    const markInterface = $interactionManagerContext.mouse().marks()
+
+    if (markInterface.markIsLoaded(markId)) {
+      markInterface.removeAllMarkInteractions(markId)
+      markInterface.removeMark(markId)
     }
   }
 
