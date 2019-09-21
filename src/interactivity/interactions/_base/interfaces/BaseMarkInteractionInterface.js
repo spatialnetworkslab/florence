@@ -3,12 +3,10 @@ import { markIndexing, layerIndexing } from './createIndexableData'
 
 export default class BaseMarkInteractionInterface extends BaseInteractionInterface {
   constructor (interactionManager, InteractionHandlers) {
-    super(interactionManager)
+    super(interactionManager, InteractionHandlers)
 
     this._indexableMarks = {}
     this._indexableLayers = {}
-
-    this._handlers = InteractionHandlers
   }
 
   // Mark loading and removing

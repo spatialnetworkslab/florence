@@ -7,6 +7,12 @@ export default class TouchEventManager extends BaseEventManager {
   }
 }
 
+const BROWSER_TYPE = window.navigator.pointerEnabled
+  ? 'IE11 / MSEdge'
+  : window.navigator.msPointerEnabled
+    ? 'IE10 / WP8'
+    : 'other'
+
 const EVENT_NAMES = ['touchstart', 'touchend', 'touchmove', 'touchcancel']
 
 const EXPOSED_EVENTS = EVENT_NAMES.map(eventName => ({
@@ -14,12 +20,6 @@ const EXPOSED_EVENTS = EVENT_NAMES.map(eventName => ({
   nativeEventName: getNativeTouchEventName(eventName),
   useWindow: eventName === 'touchmove'
 }))
-
-const BROWSER_TYPE = window.navigator.pointerEnabled
-  ? 'IE11 / MSEdge'
-  : window.navigator.msPointerEnabled
-    ? 'IE10 / WP8'
-    : 'other'
 
 function getNativeTouchEventName (exposedEventName) {
   // In this mobile browser type, events are called 'pointerup' etc

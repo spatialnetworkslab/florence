@@ -7,6 +7,12 @@ export default class MouseEventManager extends BaseEventManager {
   }
 }
 
+const BROWSER_TYPE = window.navigator.pointerEnabled
+  ? 'IE11 / MSEdge'
+  : window.navigator.msPointerEnabled
+    ? 'IE10 / WP8'
+    : 'other'
+
 const EVENT_NAMES = ['mousedown', 'mouseup', 'mousemove', 'mouseout', 'click', 'wheel']
 const WINDOW_EVENTS = ['mousemove', 'mouseup']
 
@@ -15,12 +21,6 @@ const EXPOSED_EVENTS = EVENT_NAMES.map(eventName => ({
   nativeEventName: getNativeMouseEventName(eventName),
   useWindow: WINDOW_EVENTS.includes(eventName)
 }))
-
-const BROWSER_TYPE = window.navigator.pointerEnabled
-  ? 'IE11 / MSEdge'
-  : window.navigator.msPointerEnabled
-    ? 'IE10 / WP8'
-    : 'other'
 
 export function getNativeMouseEventName (exposedEventName) {
   // 'click' has the same name in every non-mobile browser
