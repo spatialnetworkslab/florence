@@ -5,6 +5,13 @@ export default class MouseEventManager extends BaseEventManager {
   constructor () {
     super(EXPOSED_EVENTS)
   }
+
+  _getScreenCoordinates (nativeEvent) {
+    this._svgPoint.x = nativeEvent.clientX
+    this._svgPoint.y = nativeEvent.clientY
+
+    return this._svgPoint.matrixTransform(this._domNode.getScreenCTM().inverse())
+  }
 }
 
 const BROWSER_TYPE = window.navigator.pointerEnabled

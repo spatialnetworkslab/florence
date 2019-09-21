@@ -78,4 +78,8 @@ export default class MouseEventTracker {
       this._callbacks[listenerId](screenCoordinates, nativeEvent)
     }
   }
+
+  _getScreenCoordinates (nativeEvent) {
+    return this._eventManager._getScreenCoordinates(nativeEvent)
+  }
 }

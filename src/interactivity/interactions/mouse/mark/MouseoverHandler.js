@@ -2,7 +2,7 @@ import MarkInteractionHandler from '../../base/handlers/MarkInteractionHandler.j
 
 import { createMarkEvent, createLayerEvent } from '../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../utils/getLocalCoordinates.js'
-import { coordinatesAreInsideSection, hitIsMark, hitIsInLayer } from '../../utils/hitUtils.js'
+import { hitIsMark, hitIsInLayer } from '../../utils/hitUtils.js'
 
 export default class MouseoverHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
@@ -16,10 +16,6 @@ export default class MouseoverHandler extends MarkInteractionHandler {
   }
 
   _handleEvent (screenCoordinates, nativeEvent) {
-    if (!coordinatesAreInsideSection(screenCoordinates, this.section())) {
-      return
-    }
-
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(screenCoordinates)
 
@@ -29,7 +25,7 @@ export default class MouseoverHandler extends MarkInteractionHandler {
 
       this._currentMouseoverIds[hitId] = true
 
-      if (!(hitId in this._previousMouseoverHits)) {
+      if (!(hitId in this._previousMouseoverIds)) {
         this._fireCallback(hit, screenCoordinates, nativeEvent)
       }
     }

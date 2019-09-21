@@ -1,6 +1,6 @@
 export function createMarkEvent (eventType, eventOptions, hit, nativeEvent) {
   eventOptions.markType = hit.markType
-  eventOptions.bbox = extractBBox(hit)
+  eventOptions.hitBBox = extractBBox(hit)
   eventOptions.hitSource = 'mark'
 
   return createEvent(eventType, eventOptions, nativeEvent)
@@ -8,7 +8,7 @@ export function createMarkEvent (eventType, eventOptions, hit, nativeEvent) {
 
 export function createLayerEvent (eventType, eventOptions, hit, nativeEvent) {
   eventOptions.markType = hit.markType
-  eventOptions.bbox = extractBBox(hit)
+  eventOptions.hitBBox = extractBBox(hit)
   eventOptions.key = hit.key
   eventOptions.index = hit.index
   eventOptions.hitSource = 'layer'

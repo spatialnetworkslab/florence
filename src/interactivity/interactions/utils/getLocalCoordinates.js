@@ -13,8 +13,8 @@ export function getLocalCoordinates (screenCoordinates, interactionManager) {
 
   const { scaleX, scaleY } = section
 
-  const clampedX = this._clamp(screenCoordinates.x, section.minX, section.maxX)
-  const clampedY = this._clamp(screenCoordinates.y, section.minY, section.maxY)
+  const clampedX = clamp(screenCoordinates.x, section.minX, section.maxX)
+  const clampedY = clamp(screenCoordinates.y, section.minY, section.maxY)
 
   let localX = clampedX
   let localY = clampedY
