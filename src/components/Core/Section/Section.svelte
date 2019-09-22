@@ -45,6 +45,7 @@
   export let onMouseup = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onMousemove = undefined
   
   // Touch interactions
   // TODO
@@ -128,6 +129,7 @@
       if (onMouseup) sectionInterface.addInteraction('mouseup', onMouseup)
       if (onMouseover) sectionInterface.addInteraction('mouseover', onMouseover)
       if (onMouseout) sectionInterface.addInteraction('mouseout', onMouseout)
+      if (onMousemove) sectionInterface.addInteraction('mousemove', onMousemove)
     }
 
     if (detectIt.hasTouch) {
