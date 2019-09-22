@@ -33,6 +33,7 @@
   export let flipY = false
   export let zoomIdentity = undefined
   export let transformation = undefined
+  export let blockReindexing = false
 
   // Aesthetics
   export let backgroundColor = undefined
@@ -86,7 +87,7 @@
     rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
     
     const updatedSectionContext = { 
-      sectionId, rangeX, rangeY, scaleX, scaleY, padding: _padding, flipX, flipY
+      sectionId, rangeX, rangeY, scaleX, scaleY, padding: _padding, flipX, flipY, blockReindexing
     }
 
     SectionContext.update(

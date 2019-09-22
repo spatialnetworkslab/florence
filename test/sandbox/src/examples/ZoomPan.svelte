@@ -17,12 +17,9 @@
 
   let step = 1
 
-  const handle = zoomId => {
-    console.log(zoomId)
-    zoomIdentity = zoomId
-  }
+  const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
 
-  const pan = createPanHandler(zoomIdentity, handle, {
+  const pan = createPanHandler(zoomIdentity, setZoomIdentity, {
     extentX: [-500, 500],
     extentY: [-500, 500]
     // dimension: 'x'
@@ -66,7 +63,7 @@ k:
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
     {zoomIdentity}
-    onWheel={e => handle(zoom(e))}
+    onWheel={e => setZoomIdentity(zoom(e))}
     {...pan.apply}
   >
 

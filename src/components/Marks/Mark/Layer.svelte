@@ -269,12 +269,13 @@
   })
 
   // Interactivity
-  // Interactivity
   $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined || 
     onMousedown !== undefined || onMouseup !== undefined ||
     onMouseover !== undefined || onMouseout !== undefined)
 
   $: isInteractiveTouch = detectIt.hasTouch // TODO
+
+  $: _blockReindexing = blockReindexing || $sectionContext.blockReindexing
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -338,7 +339,7 @@
   }
 
   function updateInteractionManagerIfNecessary () {
-    if (initPhase || !blockReindexing) {
+    if (initPhase || !_blockReindexing) {
       removeLayerFromSpatialIndexIfNecessary()
 
       if (isInteractiveMouse) {

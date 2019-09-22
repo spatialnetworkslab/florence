@@ -1,4 +1,4 @@
-export default function createPanHandler (zoomIdentity, setter, options) {
+export default function createPanHandler (zoomIdentity, setZoomIdentity, options) {
   const dimension = options.dimension || 'both'
 
   let panning = false
@@ -29,11 +29,10 @@ export default function createPanHandler (zoomIdentity, setter, options) {
     if (dimension === 'x') zoomIdentity.y = 0
     if (dimension === 'y') zoomIdentity.x = 0
 
-    setter(zoomIdentity)
+    setZoomIdentity(zoomIdentity)
   }
 
   const start = function (event) {
-    console.log('start!')
     panning = true
     previousCoordinates = event.screenCoordinates
   }
@@ -47,7 +46,7 @@ export default function createPanHandler (zoomIdentity, setter, options) {
     zoomIdentity.x = 0
     zoomIdentity.y = 0
 
-    setter(zoomIdentity)
+    setZoomIdentity(zoomIdentity)
   }
 
   handler.start = start

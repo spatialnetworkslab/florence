@@ -21,6 +21,7 @@
   export let flipX = false
   export let flipY = false
   export let renderer = undefined
+  export let blockReindexing = false
 
   const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
@@ -59,7 +60,7 @@
     rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
 
     SectionContext.update(sectionContext, 
-      { sectionId: 'graphic', rangeX, rangeY, scaleX, scaleY, padding: _padding }
+      { sectionId: 'graphic', rangeX, rangeY, scaleX, scaleY, padding: _padding, blockReindexing }
     )
 
     $interactionManagerContext.loadSection($sectionContext)
