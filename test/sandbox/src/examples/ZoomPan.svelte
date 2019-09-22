@@ -17,11 +17,11 @@
 
   let step = 1
 
-  const pan = createPanHandler(zoomIdentity, {
-    extentX: [-500, 500],
-    extentY: [-500, 500]
-    // dimension: 'x'
-  })
+  // const pan = createPanHandler(zoomIdentity, {
+  //   extentX: [-500, 500],
+  //   extentY: [-500, 500]
+  //   // dimension: 'x'
+  // })
 
   const zoom = createZoomHandler(zoomIdentity, {
     minZoom: 0.2,
@@ -45,7 +45,7 @@ k:
 
 <div>
   <!-- Resets zoomId to pan origin { x: 0, y: 0, kx: <present k value>, ky: <present k value> } -->
-  <button on:click={e => zoomIdentity = pan.reset() }> Reset pan </button>
+  <!-- <button on:click={e => zoomIdentity = pan.reset() }> Reset pan </button> -->
   <!-- Resets zoomId to zoom origin { x: 0, y: 0, kx: 1, ky: 1 } -->
   <button on:click={e => zoomIdentity = zoom.reset() }> Reset zoom </button>
   <!-- Brings viewport back to specified view point -->
@@ -63,7 +63,6 @@ k:
     scaleY={scaleLinear().domain([0, 4])}
     {zoomIdentity}
     onWheel={e => handle(zoom(e))}
-    onPan={e => handle(pan(e))}
     padding={30}
   >
 

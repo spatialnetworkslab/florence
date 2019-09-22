@@ -7,7 +7,7 @@
   import GridLayout from './examples/GridLayout.svelte'
   import ResizeLayout from './examples/ResizeLayout.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
-  // import ZoomPan from './examples/ZoomPan.svelte'
+  import ZoomPan from './examples/ZoomPan.svelte'
   import BaseMark from './examples/BaseMark.svelte'
   import Line from './examples/Line.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
@@ -46,11 +46,11 @@
       url: '/scatterplot',
       component: Scatterplot
     },
-    // {
-    //   name: 'ZoomPan',
-    //   url: '/zoompan',
-    //   component: ZoomPan
-    // },
+    {
+      name: 'ZoomPan',
+      url: '/zoompan',
+      component: ZoomPan
+    },
     {
       name: 'Base mark',
       url: '/basemark',
