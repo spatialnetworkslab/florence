@@ -6,15 +6,7 @@
     createPanHandler, createZoomHandler
   } from '../../../../src'
 
-  let x = 0
-  let y = 0
-  let k = 1
-  let zoomIdentity = { x, y, kx: k, ky: k }
-
-  $: {
-    zoomIdentity = { x, y, kx: k, ky: k }
-  }
-
+  let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
   let blockReindexing = false
 
   const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
@@ -42,22 +34,6 @@
   })
 </script>
 
-x:
-<input type="range" min={-300} max={300} bind:value={x} /> {x} <br />
-y:
-<input type="range" min={-300} max={300} bind:value={y} />  {y} <br />
-k:
-<input type="range" min={0} max={3} step={0.1} bind:value={k} /> {k} <br />
-
-<div>
-  <!-- Resets zoomId to pan origin { x: 0, y: 0, kx: <present k value>, ky: <present k value> } -->
-  <!-- <button on:click={e => zoomIdentity = pan.reset() }> Reset pan </button> -->
-  <!-- Resets zoomId to zoom origin { x: 0, y: 0, kx: 1, ky: 1 } -->
-  <button on:click={e => zoomIdentity = zoom.reset() }> Reset zoom </button>
-  <!-- Brings viewport back to specified view point -->
-  <button on:click={e => zoomIdentity = zoom.center() }> Center from Zoom </button>
-</div>
-
 <Graphic width={500} height={500}>
 
   <!-- <Rectangle fill="blue" opacity={0.3} /> -->
@@ -70,7 +46,7 @@ k:
     scaleY={scaleLinear().domain([0, 4])}
     {zoomIdentity}
     onWheel={e => setZoomIdentity(zoom(e))}
-    {...pan.apply}
+    {...pan.applyHandlers()}
     {blockReindexing}
   >
 

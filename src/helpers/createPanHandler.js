@@ -53,16 +53,17 @@ export default function createPanHandler (
     setZoomIdentity(zoomIdentity)
   }
 
-  handler.start = start
-  handler.end = end
-  handler.reset = reset
-  handler.apply = {
-    onMousedown: start,
-    onMousemove: handler,
-    onMouseup: end
-  }
+  return {
+    applyHandlers () {
+      return {
+        onMousedown: start,
+        onMousemove: handler,
+        onMouseup: end
+      }
+    },
 
-  return handler
+    reset
+  }
 }
 
 function calculateDelta (previousCoordinates, currentCoordinates) {
