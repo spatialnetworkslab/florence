@@ -6,6 +6,12 @@ export default function createPanHandler (
   let panning = false
   let previousCoordinates
 
+  const start = function (event) {
+    setBlockReindexing(true)
+    panning = true
+    previousCoordinates = event.screenCoordinates
+  }
+
   const handler = function (event) {
     if (!panning) return
 
@@ -32,12 +38,6 @@ export default function createPanHandler (
     if (dimension === 'y') zoomIdentity.x = 0
 
     setZoomIdentity(zoomIdentity)
-  }
-
-  const start = function (event) {
-    setBlockReindexing(true)
-    panning = true
-    previousCoordinates = event.screenCoordinates
   }
 
   const end = function (event) {
