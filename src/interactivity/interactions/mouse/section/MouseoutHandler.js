@@ -26,12 +26,12 @@ export default class MouseoutHandler extends SectionInteractionHandler {
       if (this._mouseCurrentlyOverSection) {
         const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
 
-        const wheelEvent = createSectionEvent('mousedown', {
+        const mouseoutEvent = createSectionEvent('mouseout', {
           screenCoordinates,
           localCoordinates
         }, nativeEvent)
 
-        this._callback(wheelEvent)
+        this._callback(mouseoutEvent)
         this._mouseCurrentlyOverSection = false
       }
     }

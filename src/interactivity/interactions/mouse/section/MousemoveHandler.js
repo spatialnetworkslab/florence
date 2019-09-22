@@ -4,14 +4,12 @@ import { createSectionEvent } from '../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../utils/getLocalCoordinates.js'
 import { coordinatesAreInsideSection } from '../../utils/hitUtils.js'
 
-export default class MouseoverHandler extends SectionInteractionHandler {
+export default class MousemoveHandler extends SectionInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager, {
       interactionName: 'mouseover',
       eventName: 'mousemove'
     })
-
-    this._mouseCurrentlyOverSection = false
   }
 
   _handleEvent (screenCoordinates, nativeEvent) {
@@ -19,21 +17,14 @@ export default class MouseoverHandler extends SectionInteractionHandler {
     const section = this.section()
 
     if (coordinatesAreInsideSection(screenCoordinates, section)) {
-      if (!this._mouseCurrentlyOverSection) {
-        const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
+      const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
 
-        const mousedownEvent = createSectionEvent('mousedown', {
-          screenCoordinates,
-          localCoordinates
-        }, nativeEvent)
+      const mousemoveEvent = createSectionEvent('mousemove', {
+        screenCoordinates,
+        localCoordinates
+      }, nativeEvent)
 
-        this._callback(mousedownEvent)
-        this._mouseCurrentlyOverSection = true
-      }
-    } else {
-      if (this._mouseCurrentlyOverSection) {
-        this._mouseCurrentlyOverSection = false
-      }
+      this._callback(mousemoveEvent)
     }
   }
 }
