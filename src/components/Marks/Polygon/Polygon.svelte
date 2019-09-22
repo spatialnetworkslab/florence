@@ -25,6 +25,7 @@
   // Other
   export let interpolate = false
   export let zoomIdentity = undefined
+  export let blockReindexing = false
 </script>
 
 <Mark
@@ -34,5 +35,5 @@
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} 
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout}
-  {interpolate} {zoomIdentity}
+  {interpolate} {zoomIdentity} {blockReindexing}
 />

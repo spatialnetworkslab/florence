@@ -26,6 +26,7 @@
 
   // Other
   export let zoomIdentity = undefined
+  export let blockReindexing = false
 </script>
 
 <Mark
@@ -35,5 +36,5 @@
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} 
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout}
-  {zoomIdentity} _asPolygon={false}
+  {zoomIdentity} _asPolygon={false} {blockReindexing}
 />

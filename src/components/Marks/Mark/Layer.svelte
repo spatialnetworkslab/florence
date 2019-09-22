@@ -71,6 +71,7 @@
   export let interpolate = undefined
   export let _asPolygon = true
   export let zoomIdentity = undefined
+  export let blockReindexing = false
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
@@ -337,22 +338,24 @@
   }
 
   function updateInteractionManagerIfNecessary () {
-    removeLayerFromSpatialIndexIfNecessary()
+    if (initPhase || !blockReindexing) {
+      removeLayerFromSpatialIndexIfNecessary()
 
-    if (isInteractiveMouse) {
-      const markInterface = $interactionManagerContext.mouse().marks()
+      if (isInteractiveMouse) {
+        const markInterface = $interactionManagerContext.mouse().marks()
       
-      markInterface.loadLayer(type, createDataNecessaryForIndexing())
+        markInterface.loadLayer(type, createDataNecessaryForIndexing())
 
-      if (onClick) markInterface.addLayerInteraction('click', layerId, onClick)
-      if (onMousedown) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
-      if (onMouseup) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
-      if (onMouseover) markInterface.addLayerInteraction('mouseover', layerId, onMouseover)
-      if (onMouseout) markInterface.addLayerInteraction('mouseout', layerId, onMouseout)
-    }
+        if (onClick) markInterface.addLayerInteraction('click', layerId, onClick)
+        if (onMousedown) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
+        if (onMouseup) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
+        if (onMouseover) markInterface.addLayerInteraction('mouseover', layerId, onMouseover)
+        if (onMouseout) markInterface.addLayerInteraction('mouseout', layerId, onMouseout)
+      }
 
-    if (isInteractiveTouch) {
-      // TODO
+      if (isInteractiveTouch) {
+        // TODO
+      }
     }
   }
 

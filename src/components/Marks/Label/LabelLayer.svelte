@@ -31,6 +31,7 @@
   // Other
   export let key = undefined
   export let zoomIdentity = undefined
+  export let blockReindexing = false
 </script>
 
 <Layer 
@@ -42,5 +43,5 @@
   {fontFamily} {fontSize} {fontWeight} {rotation} {anchorPoint}
   {transition} 
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout}
-  {key} {zoomIdentity} _asPolygon={false}
+  {key} {zoomIdentity} _asPolygon={false} {blockReindexing}
 />

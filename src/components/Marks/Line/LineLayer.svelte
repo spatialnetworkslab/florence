@@ -23,6 +23,7 @@
   export let key = undefined
   export let interpolate = true
   export let zoomIdentity = undefined
+  export let blockReindexing = false
 </script>
 
 <Layer 
@@ -31,5 +32,5 @@
   {strokeWidth} {stroke} {opacity}
   {transition} 
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout}
-  {interpolate} {zoomIdentity} {key} _asPolygon={false}
+  {interpolate} {zoomIdentity} {key} _asPolygon={false} {blockReindexing}
 />

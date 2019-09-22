@@ -26,6 +26,7 @@
   // Other
   export let key = undefined
   export let zoomIdentity = undefined
+  export let blockReindexing = false
 </script>
 
 <Layer 
@@ -35,5 +36,5 @@
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} 
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout}
-  {key} {zoomIdentity} _asPolygon={false}
+  {key} {zoomIdentity} _asPolygon={false} {blockReindexing}
 />

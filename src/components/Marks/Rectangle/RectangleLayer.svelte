@@ -27,6 +27,7 @@
   export let key = undefined
   export let interpolate = true
   export let zoomIdentity = undefined
+  export let blockReindexing = false
 </script>
 
 <Layer 
@@ -36,5 +37,5 @@
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} 
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout}
-  {key} {zoomIdentity} {interpolate}
+  {key} {zoomIdentity} {interpolate} {blockReindexing}
 />

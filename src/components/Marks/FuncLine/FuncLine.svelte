@@ -44,6 +44,7 @@
 
   // Other
   export let zoomIdentity = undefined
+  export let blockReindexing = false
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -121,22 +122,24 @@
 
   // Helpers
   function updateInteractionManagerIfNecessary () {
-    removeMarkFromSpatialIndexIfNecessary()
+    if (initPhase || !blockReindexing) {
+      removeMarkFromSpatialIndexIfNecessary()
 
-    if (isInteractiveMouse) {
-      const markInterface = $interactionManagerContext.mouse().marks()
+      if (isInteractiveMouse) {
+        const markInterface = $interactionManagerContext.mouse().marks()
 
-      markInterface.loadMark('Line', createDataNecessaryForIndexing())
+        markInterface.loadMark('Line', createDataNecessaryForIndexing())
 
-      if (onClick) markInterface.addMarkInteraction('click', markId, onClick)
-      if (onMousedown) markInterface.addMarkInteraction('mousedown', markId, onMousedown)
-      if (onMouseup) markInterface.addMarkInteraction('mouseoup', markId, onMouseup)
-      if (onMouseover) markInterface.addMarkInteraction('mouseover', markId, onMouseover)
-      if (onMouseout) markInterface.addMarkInteraction('mouseout', markId, onMouseout)
-    }
+        if (onClick) markInterface.addMarkInteraction('click', markId, onClick)
+        if (onMousedown) markInterface.addMarkInteraction('mousedown', markId, onMousedown)
+        if (onMouseup) markInterface.addMarkInteraction('mouseoup', markId, onMouseup)
+        if (onMouseover) markInterface.addMarkInteraction('mouseover', markId, onMouseover)
+        if (onMouseout) markInterface.addMarkInteraction('mouseout', markId, onMouseout)
+      }
 
-    if (isInteractiveTouch) {
-      // TODO
+      if (isInteractiveTouch) {
+        // TODO
+      }
     }
   }
 
