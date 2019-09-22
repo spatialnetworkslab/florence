@@ -1,4 +1,6 @@
-export default function createPanHandler (zoomIdentity, setZoomIdentity, options) {
+export default function createPanHandler (
+  zoomIdentity, setZoomIdentity, setBlockReindexing, options
+) {
   const dimension = options.dimension || 'both'
 
   let panning = false
@@ -33,11 +35,13 @@ export default function createPanHandler (zoomIdentity, setZoomIdentity, options
   }
 
   const start = function (event) {
+    setBlockReindexing(true)
     panning = true
     previousCoordinates = event.screenCoordinates
   }
 
   const end = function (event) {
+    setBlockReindexing(false)
     panning = false
   }
 

@@ -15,22 +15,28 @@
     zoomIdentity = { x, y, kx: k, ky: k }
   }
 
-  let step = 1
+  let blockReindexing = false
 
   const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
+  const setBlockReindexing = bool => { blockReindexing = bool }
 
-  const pan = createPanHandler(zoomIdentity, setZoomIdentity, {
-    extentX: [-500, 500],
-    extentY: [-500, 500]
+  const pan = createPanHandler(
+    zoomIdentity, 
+    setZoomIdentity,
+    setBlockReindexing,
+    {
+      extentX: [-500, 500],
+      extentY: [-500, 500]
     // dimension: 'x'
-  })
+    }
+  )
 
   const zoom = createZoomHandler(zoomIdentity, {
     minZoom: 0.2,
     maxZoom: 3,
     extentX: [-500, 500],
     extentY: [-500, 500],
-    step,
+    step: 1,
     center: { x: 0, y: 0 }
     // dimension: 'x'
   })
@@ -65,6 +71,7 @@ k:
     {zoomIdentity}
     onWheel={e => setZoomIdentity(zoom(e))}
     {...pan.apply}
+    {blockReindexing}
   >
 
     <Rectangle fill="blue" opacity={0.3} />
