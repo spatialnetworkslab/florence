@@ -1,3 +1,5 @@
+<!-- adapted from https://observablehq.com/@mbostock/global-temperature-trends -->
+
 <script context="module">
   import { csvParse  } from 'd3-dsv'
   export async function preload() {

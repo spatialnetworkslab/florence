@@ -1,3 +1,5 @@
+<!-- adapted from https://vega.github.io/vega-lite/examples/layer_scatter_errorband_1D_stdev_global_mean.html -->
+
 <script context="module">
   export async function preload() {
     // instead of dealing with promises we await async functions here

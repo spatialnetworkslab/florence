@@ -1,4 +1,5 @@
 <!-- adapted from https://observablehq.com/@d3/stacked-horizontal-bar-chart -->
+
 <script context="module">  
   export async function preload() {
     const response = await this.fetch('https://gist.githubusercontent.com/mbostock/5429c74d6aba68c52c7b39642c98deed/raw/50a5157a1d920191b0a7f636796ee721047cbb92/us-population-state-age.csv')

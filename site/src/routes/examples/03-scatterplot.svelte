@@ -1,3 +1,5 @@
+<!-- adapted from https://vega.github.io/vega-lite/examples/point_color_with_shape.html -->
+
 <script context="module">
   export async function preload() {
     // instead of dealing with promises we await async functions here

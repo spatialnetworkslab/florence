@@ -1,3 +1,5 @@
+<!-- adapted from https://vega.github.io/vega-lite/examples/line_color.html -->
+
 <script context="module">
   import { csvParse, autoType } from 'd3-dsv'
   export async function preload() {

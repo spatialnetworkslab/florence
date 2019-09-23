@@ -27,6 +27,7 @@
     "@snlab/florence-datacontainer": "^0.1.3",
     "@sveltejs/svelte-repl": "^0.1.9",
     "d3-array": "^2.3.1",
+    "d3-contour": "^1.3.2",
     "d3-dsv": "^1.1.1",
     "d3-interpolate": "^1.3.2",
     "d3-scale": "^3.1.0",
@@ -35,7 +36,7 @@
     "d3-time": "^1.0.11",
     "d3-time-format": "^2.1.3",
     "npm-run-all": "^4.1.5",
-    "rollup": "^1.21.2",
+    "rollup": "^1.21.4",
     "rollup-plugin-babel": "^4.0.2",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
@@ -45,7 +46,7 @@
     "rollup-plugin-svelte": "^5.0.1",
     "rollup-plugin-terser": "^5.1.2",
     "sapper": "^0.27.0",
-    "svelte": "^3.9.1",
+    "svelte": "^3.12.1",
     "sveltex": "git+https://f3da89bc07d42fe52516ff9eefe08975c112c2a5:x-oauth-basic@github.com/spatialnetworkslab/sveltex.git"
   }
 }
