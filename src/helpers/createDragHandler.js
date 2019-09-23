@@ -1,26 +1,38 @@
-export default function createDragHandler (onDrag, setBlockReindexing) {
+export default function createDragHandler (
+  { onDragstart = () => {}, onDrag = () => {}, onDragend = () => {} },
+  setBlockReindexing
+) {
   let dragging = false
 
   const start = function (event) {
     setBlockReindexing(true)
     dragging = true
+    onDragstart(event)
   }
 
   const handler = function (event) {
     if (!dragging) return
 
-    // TODO
+    onDrag(event)
   }
 
   const end = function (event) {
+    if (!dragging) return
+
     setBlockReindexing(false)
     dragging = false
+    onDragend(event)
   }
 
   return {
-    applyHandlers () {
+    applyMarkHandlers () {
       return {
-        onMousedown: start,
+        onMousedown: start
+      }
+    },
+
+    applySectionHandlers () {
+      return {
         onMousemove: handler,
         onMouseup: end
       }

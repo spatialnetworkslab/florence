@@ -7,7 +7,11 @@ export default class SectionInteractionInterface extends BaseInteractionInterfac
 
   removeAllInteractions () {
     for (const handlerName in this._handlers) {
-      this._handlers[handlerName].removeInteraction()
+      const handler = this._handlers[handlerName]
+
+      if (handler.hasInteraction()) {
+        handler.removeInteraction()
+      }
     }
   }
 }

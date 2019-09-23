@@ -22,6 +22,10 @@ export default class MarkInteractionHandler extends BaseInteractionHandler {
     this._spatialIndex.indexMark(markId)
   }
 
+  hasMark (markId) {
+    return markId in this._markCallbacks
+  }
+
   removeMarkInteraction (markId) {
     this._removeEventListenerIfNecessary()
     delete this._markCallbacks[markId]
@@ -39,6 +43,10 @@ export default class MarkInteractionHandler extends BaseInteractionHandler {
 
       this._spatialIndex.indexLayer(layerId)
     }
+  }
+
+  hasLayer (layerId) {
+    return layerId in this._layerCallbacks
   }
 
   removeLayerInteraction (layerId) {

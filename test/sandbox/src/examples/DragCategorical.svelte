@@ -1,6 +1,6 @@
 <script>
 	import { scaleLinear, scalePoint, scaleBand } from 'd3-scale'
-	import { Graphic, Grid, Section, PointLayer, Point } from '../../../../src/'
+	import { Graphic, Grid, Section, PointLayer, Point, createDragHandler } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
@@ -24,25 +24,32 @@
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scalePoint().domain(domainB)
   
-  let bigPoint = { x: 50, y: 'c' }
   let dragPoint
+  let hitKey
+  let blockReindexing = false
 
-  function handleDragstart (event) {
+  const setBlockReindexing = bool => { blockReindexing = bool }
+
+  function onDragstart (event) {
+    dragPoint = event.localCoordinates
+    hitKey = event.key
+  }
+
+  function onDrag (event) {
     dragPoint = event.localCoordinates
   }
 
-  function handleDrag (event) {
-    dragPoint = event.localCoordinates
-  }
-
-  function handleDragend (event) {
+  function onDragend (event) {
     dragPoint = undefined
-    const hitKey = Number(event.key)
     const position = event.localCoordinates
 
     data.updateRow(hitKey, { a: position.x, b: position.y })
     data = data
   }
+
+  const drag = createDragHandler({
+    onDragstart, onDrag, onDragend
+  }, setBlockReindexing)
 
 </script>
 
@@ -58,15 +65,15 @@
       backgroundColor="pink"
       transformation="polar"
       zoomIdentity={{x: 0, y: 0, kx: 1.2, ky: 1.2}}
+      {...drag.applySectionHandlers()}
+      {blockReindexing}
 		>
 
 			<PointLayer
         x={data.column('a')}
         y={data.column('b')}
         key={data.column('$key')}
-        onDragstart={handleDragstart}
-        onDrag={handleDrag}
-        onDragend={handleDragend}
+        {...drag.applyMarkHandlers()}
       />
 
       {#if dragPoint}

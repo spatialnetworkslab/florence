@@ -2,6 +2,20 @@
   import { Graphic, Section, Rectangle, Line, FuncLine } from '../../../../src'
   import { scaleLinear } from 'd3-scale'
 
+  let currentDragShape = null
+  let blockReindexing = false
+
+  function onMousemove (event) {
+    if (currentDragShape === 'rectangle') handleDragRectangle(event)
+    if (currentDragShape === 'line') handleDragLine(event)
+    if (currentDragShape === 'funcline') handleDragFuncLine(event)
+  }
+
+  function onMouseup () {
+    currentDragShape = null
+    blockReindexing = false 
+  }
+
   // Rectangle
   let rectanglePosition = { x: 1, y: 1 }
   let rectangleWH = { w: 2, h: 2 }
@@ -16,7 +30,10 @@
   let rectStartDelta
 
   function handleStartRectangle ({ localCoordinates }) {
-    rectStartDelta = { 
+    currentDragShape = 'rectangle'
+    blockReindexing = true
+
+    rectStartDelta = {
       x: localCoordinates.x - rectanglePosition.x,
       y: localCoordinates.y - rectanglePosition.y
     }
@@ -38,6 +55,8 @@
   let lineOffset = { x: 0, y: 0 }
 
   function handleStartLine ({ localCoordinates }) {
+    currentDragShape = 'line'
+    blockReindexing = true
     currentLinePosition = localCoordinates
   }
 
@@ -63,6 +82,8 @@
   let currentY
 
   function handleStartFuncLine ({ localCoordinates }) {
+    currentDragShape = 'funcline'
+    blockReindexing = true
     currentY = localCoordinates.y
   }
 
@@ -78,29 +99,29 @@
   <Section 
     scaleX={scaleLinear().domain([0, 10])}
     scaleY={scaleLinear().domain([0, 10])}
+    {blockReindexing}
+    {onMousemove}
+    {onMouseup}
   >
   
     <Rectangle 
       {...rectangleCoords} 
       fill="green"
-      onDragstart={handleStartRectangle}
-      onDrag={handleDragRectangle}
+      onMousedown={handleStartRectangle}
     />
 
     <Line
       {...lineCoords}
       strokeWidth={6}
       stroke="red"
-      onDragstart={handleStartLine}
-      onDrag={handleDragLine}
+      onMousedown={handleStartLine}
     />
     
     <FuncLine
       {func}
       stroke="blue"
       strokeWidth={8}
-      onDragstart={handleStartFuncLine}
-      onDrag={handleDragFuncLine}
+      onMousedown={handleStartFuncLine}
     />
 
   </Section>

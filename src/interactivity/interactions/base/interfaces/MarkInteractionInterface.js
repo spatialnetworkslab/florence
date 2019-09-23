@@ -50,7 +50,11 @@ export default class MarkInteractionInterface extends BaseInteractionInterface {
 
   removeAllMarkInteractions (markId) {
     for (const handlerName in this._handlers) {
-      this._handlers[handlerName].removeMarkInteraction(markId)
+      const handler = this._handlers[handlerName]
+
+      if (handler.hasMark(markId)) {
+        handler.removeMarkInteraction(markId)
+      }
     }
   }
 
@@ -61,7 +65,11 @@ export default class MarkInteractionInterface extends BaseInteractionInterface {
 
   removeAllLayerInteractions (layerId) {
     for (const handlerName in this._handlers) {
-      this._handlers[handlerName].removeLayerInteraction(layerId)
+      const handler = this._handlers[handlerName]
+
+      if (handler.hasLayer(layerId)) {
+        handler.removeLayerInteraction(layerId)
+      }
     }
   }
 }

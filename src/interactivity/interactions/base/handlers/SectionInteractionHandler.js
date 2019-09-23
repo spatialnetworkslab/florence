@@ -11,6 +11,10 @@ export default class SectionInteractionHandler extends BaseInteractionHandler {
     this._callback = callback
   }
 
+  hasInteraction () {
+    return this._callback !== undefined
+  }
+
   removeInteraction () {
     if (this._callback) {
       this._callback = undefined
