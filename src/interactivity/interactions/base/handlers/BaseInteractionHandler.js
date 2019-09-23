@@ -27,17 +27,29 @@ export default class BaseInteractionHandler {
     const eventManager = this.eventManager()
     const listenerId = this.getId()
 
-    eventManager
-      .eventTracker(this._eventName)
-      .addListener(listenerId, handler)
+    const events = isArray(this._eventName) ? this._eventName : [this._eventName]
+
+    for (const event of events) {
+      eventManager
+        .eventTracker(event)
+        .addListener(listenerId, handler)
+    }
   }
 
   _removeEventListener () {
     const eventManager = this.eventManager()
     const listenerId = this.getId()
 
-    eventManager
-      .eventTracker(this._eventName)
-      .removeListener(listenerId)
+    const events = isArray(this._eventName) ? this._eventName : [this._eventName]
+
+    for (const event of events) {
+      eventManager
+        .eventTracker(event)
+        .removeListener(listenerId)
+    }
   }
+}
+
+function isArray (value) {
+  return value.constructor === Array
 }
