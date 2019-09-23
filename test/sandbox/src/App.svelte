@@ -11,7 +11,7 @@
   import BaseMark from './examples/BaseMark.svelte'
   import Line from './examples/Line.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
-  // import FuncLines from './examples/FuncLines.svelte'
+  import FuncLines from './examples/FuncLines.svelte'
   import DragCategorical from './examples/DragCategorical.svelte'
   import FunctionAPI from './examples/FunctionAPI.svelte'
   import FlipTest from './examples/FlipTest.svelte'
@@ -66,11 +66,11 @@
       url: '/geopolygons',
       component: GeoPolygons
     },
-    // {
-    //   name: 'FuncLines',
-    //   url: 'funclines',
-    //   component: FuncLines
-    // },
+    {
+      name: 'FuncLines',
+      url: 'funclines',
+      component: FuncLines
+    },
     {
       name: 'DragCategorical',
       url: 'dragcategorical',

@@ -14,23 +14,29 @@
   $: func = funcs[funcName]
 
   let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
-  let step = 1
+  let blockReindexing = false
 
-  const pan = createPanHandler(zoomIdentity, {
-    extentX: [-500, 500],
-    extentY: [-500, 500]
-  })
+  const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
+  const setBlockReindexing = bool => { blockReindexing = bool }
+
+  const pan = createPanHandler(
+    zoomIdentity,
+    setZoomIdentity,
+    setBlockReindexing, 
+    {
+      extentX: [-500, 500],
+      extentY: [-500, 500]
+    }
+  )
 
   const zoom = createZoomHandler(zoomIdentity, {
     minZoom: 0.2,
     maxZoom: 3,
     extentX: [-500, 500],
     extentY: [-500, 500],
-    step,
+    step: 1,
     center: { x: 0, y: 0 }
   })
-
-  const handle = zoomId => { zoomIdentity = zoomId }
 </script>
 
 <div>
@@ -55,8 +61,9 @@
     flipY
     backgroundColor="#d3d3d3"
     {zoomIdentity}
-    onWheel={e => handle(zoom(e))}
-    onPan={e => handle(pan(e))}
+    onWheel={e => setZoomIdentity(zoom(e))}
+    {...pan.applyHandlers()}
+    {blockReindexing}
   >
 
     <FuncLine
