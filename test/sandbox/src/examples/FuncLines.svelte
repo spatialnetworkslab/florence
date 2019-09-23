@@ -19,28 +19,22 @@
   const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
   const setBlockReindexing = bool => { blockReindexing = bool }
 
-  const pan = createPanHandler(
-    zoomIdentity,
+  const pan = createPanHandler(zoomIdentity, {
     setZoomIdentity,
-    setBlockReindexing, 
-    {
-      extentX: [-500, 500],
-      extentY: [-500, 500]
-    }
-  )
+    setBlockReindexing,
+    extentX: [-500, 500],
+    extentY: [-500, 500]
+  })
 
-  const zoom = createZoomHandler(
-    zoomIdentity,
+  const zoom = createZoomHandler(zoomIdentity, {
     setZoomIdentity,
-    {
-      minZoom: 0.2,
-      maxZoom: 3,
-      extentX: [-500, 500],
-      extentY: [-500, 500],
-      step: 1,
-      center: { x: 0, y: 0 }
-    }
-  )
+    minZoom: 0.2,
+    maxZoom: 3,
+    extentX: [-500, 500],
+    extentY: [-500, 500],
+    step: 1,
+    center: { x: 0, y: 0 }
+  })
 </script>
 
 <div>

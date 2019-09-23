@@ -1,8 +1,13 @@
 // export default function createZoomHandler (zoomId, minZoom, maxZoom, extents, step, centerPt) {
 export default function createZoomHandler (
   zoomIdentity,
-  setZoomIdentity,
-  { minZoom, maxZoom, extentX, extentY, step, center: centerPt, dimension = 'both' }
+  {
+    setZoomIdentity = () => {},
+    minZoom, maxZoom,
+    extentX, extentY,
+    step, center: centerPt,
+    dimension = 'both'
+  }
 ) {
   const zoom = function (event) {
     // Calculate new zoom factor based on step

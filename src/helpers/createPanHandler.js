@@ -1,7 +1,7 @@
-export default function createPanHandler (
-  zoomIdentity, setZoomIdentity, setBlockReindexing, options
-) {
+export default function createPanHandler (zoomIdentity, options) {
   const dimension = options.dimension || 'both'
+  const setZoomIdentity = options.setZoomIdentity || emptyFunc
+  const setBlockReindexing = options.setBlockReindexing || emptyFunc
 
   let panning = false
   let previousCoordinates
@@ -70,3 +70,5 @@ function calculateDelta (previousCoordinates, currentCoordinates) {
     y: previousCoordinates.y - currentCoordinates.y
   }
 }
+
+const emptyFunc = () => {}

@@ -12,30 +12,24 @@
   const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
   const setBlockReindexing = bool => { blockReindexing = bool }
 
-  const pan = createPanHandler(
-    zoomIdentity, 
+  const pan = createPanHandler(zoomIdentity, {
     setZoomIdentity,
     setBlockReindexing,
-    {
-      extentX: [-500, 500],
-      extentY: [-500, 500]
+    extentX: [-500, 500],
+    extentY: [-500, 500]
       // dimension: 'x'
-    }
-  )
+  })
 
-  const zoom = createZoomHandler(
-    zoomIdentity,
-    setZoomIdentity, 
-    {
-      minZoom: 0.2,
-      maxZoom: 3,
-      extentX: [-500, 500],
-      extentY: [-500, 500],
-      step: 1,
-      center: { x: 0, y: 0 }
-      // dimension: 'x'
-    }
-  )
+  const zoom = createZoomHandler(zoomIdentity, {
+    setZoomIdentity,
+    minZoom: 0.2,
+    maxZoom: 3,
+    extentX: [-500, 500],
+    extentY: [-500, 500],
+    step: 1,
+    center: { x: 0, y: 0 }
+    // dimension: 'x'
+  })
 </script>
 
 <Graphic width={500} height={500}>
