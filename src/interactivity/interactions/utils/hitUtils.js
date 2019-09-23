@@ -14,3 +14,8 @@ export function hitIsMark (hit) {
 export function hitIsInLayer (hit) {
   return 'layerId' in hit
 }
+
+export function getHitId (hit) {
+  if (hitIsMark(hit)) return hit.markId
+  if (hitIsInLayer(hit)) return hit.layerId + '-' + hit.key
+}

@@ -2,7 +2,7 @@ import MarkInteractionHandler from '../../base/handlers/MarkInteractionHandler.j
 
 import { createMarkEvent, createLayerEvent } from '../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../utils/getLocalCoordinates.js'
-import { hitIsMark, hitIsInLayer } from '../../utils/hitUtils.js'
+import { hitIsMark, hitIsInLayer, getHitId } from '../../utils/hitUtils.js'
 
 export default class MouseoutHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
@@ -58,9 +58,4 @@ export default class MouseoutHandler extends MarkInteractionHandler {
       this._layerCallbacks[hit.layerId](mouseoutEvent)
     }
   }
-}
-
-function getHitId (hit) {
-  if (hitIsMark(hit)) return hit.markId
-  if (hitIsInLayer(hit)) return hit.layerId + '-' + hit.key
 }
