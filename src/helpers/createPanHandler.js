@@ -54,12 +54,10 @@ export default function createPanHandler (
   }
 
   return {
-    applyHandlers () {
-      return {
-        onMousedown: start,
-        onMousemove: handler,
-        onMouseup: end
-      }
+    handlers: {
+      onMousedown: start,
+      onMousemove: handler,
+      onMouseup: end
     },
 
     reset

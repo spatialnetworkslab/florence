@@ -25,17 +25,13 @@ export default function createDragHandler (
   }
 
   return {
-    applyMarkHandlers () {
-      return {
-        onMousedown: start
-      }
+    markHandlers: {
+      onMousedown: start
     },
 
-    applySectionHandlers () {
-      return {
-        onMousemove: handler,
-        onMouseup: end
-      }
+    sectionHandlers: {
+      onMousemove: handler,
+      onMouseup: end
     }
   }
 }

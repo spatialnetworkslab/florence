@@ -19,19 +19,23 @@
     {
       extentX: [-500, 500],
       extentY: [-500, 500]
-    // dimension: 'x'
+      // dimension: 'x'
     }
   )
 
-  const zoom = createZoomHandler(zoomIdentity, {
-    minZoom: 0.2,
-    maxZoom: 3,
-    extentX: [-500, 500],
-    extentY: [-500, 500],
-    step: 1,
-    center: { x: 0, y: 0 }
-    // dimension: 'x'
-  })
+  const zoom = createZoomHandler(
+    zoomIdentity,
+    setZoomIdentity, 
+    {
+      minZoom: 0.2,
+      maxZoom: 3,
+      extentX: [-500, 500],
+      extentY: [-500, 500],
+      step: 1,
+      center: { x: 0, y: 0 }
+      // dimension: 'x'
+    }
+  )
 </script>
 
 <Graphic width={500} height={500}>
@@ -45,8 +49,8 @@
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
     {zoomIdentity}
-    onWheel={e => setZoomIdentity(zoom(e))}
-    {...pan.applyHandlers()}
+    {...pan.handlers}
+    {...zoom.handlers}
     {blockReindexing}
   >
 

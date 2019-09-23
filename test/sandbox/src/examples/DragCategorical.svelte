@@ -65,7 +65,7 @@
       backgroundColor="pink"
       transformation="polar"
       zoomIdentity={{x: 0, y: 0, kx: 1.2, ky: 1.2}}
-      {...drag.applySectionHandlers()}
+      {...drag.sectionHandlers}
       {blockReindexing}
 		>
 
@@ -73,7 +73,7 @@
         x={data.column('a')}
         y={data.column('b')}
         key={data.column('$key')}
-        {...drag.applyMarkHandlers()}
+        {...drag.markHandlers}
       />
 
       {#if dragPoint}

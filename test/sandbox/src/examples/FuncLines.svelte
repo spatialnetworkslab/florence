@@ -29,14 +29,18 @@
     }
   )
 
-  const zoom = createZoomHandler(zoomIdentity, {
-    minZoom: 0.2,
-    maxZoom: 3,
-    extentX: [-500, 500],
-    extentY: [-500, 500],
-    step: 1,
-    center: { x: 0, y: 0 }
-  })
+  const zoom = createZoomHandler(
+    zoomIdentity,
+    setZoomIdentity,
+    {
+      minZoom: 0.2,
+      maxZoom: 3,
+      extentX: [-500, 500],
+      extentY: [-500, 500],
+      step: 1,
+      center: { x: 0, y: 0 }
+    }
+  )
 </script>
 
 <div>
@@ -61,8 +65,8 @@
     flipY
     backgroundColor="#d3d3d3"
     {zoomIdentity}
-    onWheel={e => setZoomIdentity(zoom(e))}
-    {...pan.applyHandlers()}
+    {...pan.handlers}
+    {...zoom.handlers}
     {blockReindexing}
   >
 
