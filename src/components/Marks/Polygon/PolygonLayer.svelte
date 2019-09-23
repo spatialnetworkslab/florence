@@ -21,6 +21,7 @@
   export let onMouseup = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onMousedrag = undefined
 
   // Other
   export let interpolate = false
@@ -35,6 +36,6 @@
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} 
-  {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout}
+  {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
   {key} {zoomIdentity} {interpolate} {blockReindexing}
 />

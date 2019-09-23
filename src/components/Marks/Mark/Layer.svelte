@@ -277,8 +277,9 @@
   // Interactivity
   $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined || 
     onMousedown !== undefined || onMouseup !== undefined ||
-    onMouseover !== undefined || onMouseout !== undefined) ||
+    onMouseover !== undefined || onMouseout !== undefined ||
     onMousedrag !== undefined
+  )
 
   $: isInteractiveTouch = detectIt.hasTouch // TODO
 

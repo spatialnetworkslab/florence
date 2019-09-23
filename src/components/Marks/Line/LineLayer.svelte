@@ -18,6 +18,7 @@
   export let onMouseup = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onMousedrag = undefined
 
   // Other
   export let key = undefined
@@ -31,6 +32,6 @@
   {x} {y} {geometry}
   {strokeWidth} {stroke} {opacity}
   {transition} 
-  {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout}
+  {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
   {interpolate} {zoomIdentity} {key} _asPolygon={false} {blockReindexing}
 />

@@ -41,6 +41,7 @@
   export let onMouseup = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onMousedrag = undefined
 
   // Other
   export let zoomIdentity = undefined
@@ -108,7 +109,9 @@
   // Interactivity
   $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined || 
     onMousedown !== undefined || onMouseup !== undefined ||
-    onMouseover !== undefined || onMouseout !== undefined)
+    onMouseover !== undefined || onMouseout !== undefined ||
+    onMousedrag !== undefined
+  )
 
   $: isInteractiveTouch = detectIt.hasTouch // TODO
 
@@ -135,6 +138,7 @@
         if (onMouseup) markInterface.addMarkInteraction('mouseoup', markId, onMouseup)
         if (onMouseover) markInterface.addMarkInteraction('mouseover', markId, onMouseover)
         if (onMouseout) markInterface.addMarkInteraction('mouseout', markId, onMouseout)
+        if (onMousedrag) markInterface.addMarkInteraction('mousedrag', markId, onMousedrag)
       }
 
       if (isInteractiveTouch) {
