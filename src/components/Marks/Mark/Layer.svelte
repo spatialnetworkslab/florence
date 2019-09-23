@@ -58,13 +58,19 @@
   export let rotation = undefined
   export let anchorPoint = undefined
 
-  // Transitions and interactions
+  // Transitions
   export let transition = undefined
+
+  // Mouse interactions
   export let onClick = undefined
   export let onMousedown = undefined
   export let onMouseup = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onMousedrag = undefined
+
+  // Touch interactions
+  // TODO
 
   // Other
   export let key = undefined
@@ -271,7 +277,8 @@
   // Interactivity
   $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined || 
     onMousedown !== undefined || onMouseup !== undefined ||
-    onMouseover !== undefined || onMouseout !== undefined)
+    onMouseover !== undefined || onMouseout !== undefined) ||
+    onMousedrag !== undefined
 
   $: isInteractiveTouch = detectIt.hasTouch // TODO
 
@@ -352,6 +359,7 @@
         if (onMouseup) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
         if (onMouseover) markInterface.addLayerInteraction('mouseover', layerId, onMouseover)
         if (onMouseout) markInterface.addLayerInteraction('mouseout', layerId, onMouseout)
+        if (onMousedrag) markInterface.addLayerInteraction('mousedrag', layerId, onMousedrag)
       }
 
       if (isInteractiveTouch) {

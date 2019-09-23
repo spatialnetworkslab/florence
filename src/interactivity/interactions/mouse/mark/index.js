@@ -6,4 +6,4 @@ export { default as MouseoutHandler } from './MouseoutHandler.js'
 export { default as MousedownHandler } from './MousedownHandler.js'
 export { default as MouseupHandler } from './MouseupHandler.js'
 
-export { default as MousedragHandler } from './MousedragHandler'
+export { default as MousedragHandler } from './MousedragHandler.js'

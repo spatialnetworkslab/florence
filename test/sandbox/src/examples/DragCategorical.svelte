@@ -1,6 +1,6 @@
 <script>
 	import { scaleLinear, scalePoint, scaleBand } from 'd3-scale'
-	import { Graphic, Grid, Section, PointLayer, Point, createDragHandler } from '../../../../src/'
+	import { Graphic, Grid, Section, PointLayer, Point } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
@@ -24,32 +24,29 @@
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scalePoint().domain(domainB)
   
-  let dragPoint
   let hitKey
+  let dragPoint
   let blockReindexing = false
 
-  const setBlockReindexing = bool => { blockReindexing = bool }
+  function onMousedrag (event) {
+    if (event.dragType === 'start') {
+      hitKey = event.key
+      blockReindexing = true
+    }
 
-  function onDragstart (event) {
-    dragPoint = event.localCoordinates
-    hitKey = event.key
+    if (event.dragType === 'drag') {
+      dragPoint = event.localCoordinates
+    }
+
+    if (event.dragType === 'end') {
+      data.updateRow(hitKey, { a: dragPoint.x, b: dragPoint.y })
+      data = data
+
+      hitKey = undefined
+      dragPoint = undefined
+      blockReindexing = false
+    }
   }
-
-  function onDrag (event) {
-    dragPoint = event.localCoordinates
-  }
-
-  function onDragend (event) {
-    dragPoint = undefined
-    const position = event.localCoordinates
-
-    data.updateRow(hitKey, { a: position.x, b: position.y })
-    data = data
-  }
-
-  const drag = createDragHandler({
-    onDragstart, onDrag, onDragend
-  }, setBlockReindexing)
 
 </script>
 
@@ -65,7 +62,6 @@
       backgroundColor="pink"
       transformation="polar"
       zoomIdentity={{x: 0, y: 0, kx: 1.2, ky: 1.2}}
-      {...drag.sectionHandlers}
       {blockReindexing}
 		>
 
@@ -73,7 +69,7 @@
         x={data.column('a')}
         y={data.column('b')}
         key={data.column('$key')}
-        {...drag.markHandlers}
+        {onMousedrag}
       />
 
       {#if dragPoint}
