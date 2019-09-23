@@ -125,7 +125,7 @@
 
   // Helpers
   function updateInteractionManagerIfNecessary () {
-    if (initPhase || !blockReindexing) {
+    if (initPhase || !(blockReindexing || $sectionContext.blockReindexing)) {
       removeMarkFromSpatialIndexIfNecessary()
 
       if (isInteractiveMouse) {

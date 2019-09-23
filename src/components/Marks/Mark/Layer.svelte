@@ -283,8 +283,6 @@
 
   $: isInteractiveTouch = detectIt.hasTouch // TODO
 
-  $: _blockReindexing = blockReindexing || $sectionContext.blockReindexing
-
   onMount(() => {
     updateInteractionManagerIfNecessary()
   })
@@ -347,7 +345,7 @@
   }
 
   function updateInteractionManagerIfNecessary () {
-    if (initPhase || !_blockReindexing) {
+    if (initPhase || !(blockReindexing || $sectionContext.blockReindexing)) {
       removeLayerFromSpatialIndexIfNecessary()
 
       if (isInteractiveMouse) {
