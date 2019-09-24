@@ -5,7 +5,15 @@ export default class MarkInteractionHandler extends BaseInteractionHandler {
   constructor (interactionManager, options) {
     super(interactionManager, options)
 
-    this._spatialIndex = new SpatialIndex(this)
+    const getMark = function (markId) {
+      return this._interactionManager.marks()._indexableMarks[markId]
+    }
+
+    const getLayer = function (layerId) {
+      return this._interactionManager.marks()._indexableLayers[layerId]
+    }
+
+    this._spatialIndex = new SpatialIndex(this, getMark, getLayer)
 
     this._numberOfInteractions = 0
 

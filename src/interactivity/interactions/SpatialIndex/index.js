@@ -2,9 +2,12 @@ import RBush from 'rbush'
 import collisionTests from './collisionTests'
 
 export default class SpatialIndex {
-  constructor (interactionHandler) {
+  constructor (interactionHandler, getMark, getLayer) {
     this._rbush = new RBush()
     this._interactionHandler = interactionHandler
+
+    this._getMark = getMark.bind(interactionHandler)
+    this._getLayer = getMark.bind(interactionHandler)
   }
 
   // Layer indexing and unindexing
@@ -67,14 +70,6 @@ export default class SpatialIndex {
     }
 
     return hits
-  }
-
-  _getMark (markId) {
-    return this._interactionHandler._interactionManager.marks()._indexableMarks[markId]
-  }
-
-  _getLayer (layerId) {
-    return this._interactionHandler._interactionManager.marks()._indexableLayers[layerId]
   }
 }
 
