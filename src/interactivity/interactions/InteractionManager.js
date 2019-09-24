@@ -2,6 +2,7 @@ import detectIt from 'detect-it'
 
 import MouseInteractionManager from './mouse/MouseInteractionManager.js'
 import TouchInteractionManager from './touch/TouchInteractionManager.js'
+import SelectManager from './select/SelectManager.js'
 
 export default class InteractionManager {
   constructor () {
@@ -12,6 +13,8 @@ export default class InteractionManager {
     if (detectIt.hasTouch) {
       this._touchInteractionManager = new TouchInteractionManager()
     }
+
+    this._selectManager = new SelectManager()
   }
 
   // Initialization
@@ -48,6 +51,10 @@ export default class InteractionManager {
 
   touch () {
     return this._touchInteractionManager
+  }
+
+  select () {
+    return this._selectManager
   }
 
   _forEachManager (callback) {

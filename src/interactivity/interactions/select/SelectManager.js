@@ -3,10 +3,8 @@ import { markIndexing, layerIndexing } from './createIndexableData'
 import { hitIsMark, hitIsInLayer, getHitId } from '../utils/hitUtils.js'
 import { createSelectMarkEvent, createSelectLayerEvent } from '../utils/createEvent.js'
 
-export default class SelectInterface {
-  constructor (interactionManager) {
-    this._interactionManager = interactionManager
-
+export default class SelectManager {
+  constructor () {
     this._selectableMarks = {}
     this._selectableLayers = {}
 
