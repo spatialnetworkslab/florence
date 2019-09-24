@@ -7,7 +7,7 @@ export default class SpatialIndex {
     this._interactionHandler = interactionHandler
 
     this._getMark = getMark.bind(interactionHandler)
-    this._getLayer = getMark.bind(interactionHandler)
+    this._getLayer = getLayer.bind(interactionHandler)
   }
 
   // Layer indexing and unindexing

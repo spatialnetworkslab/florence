@@ -139,7 +139,7 @@
   }
 
   // Selection API
-  const selectManager = $interactionManager.select()
+  const selectManager = $interactionManagerContext.select()
 
   export function selectRectangle (rectangle) {
     selectManager.selectRectangle(rectangle)

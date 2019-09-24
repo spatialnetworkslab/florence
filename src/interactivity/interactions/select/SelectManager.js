@@ -34,6 +34,8 @@ export default class SelectManager {
 
     this._selectableMarks[markId] = indexableMark
     this._markCallbacks[markId] = callbacks
+
+    this._spatialIndex.indexMark(markId)
   }
 
   markIsLoaded (markId) {
@@ -41,6 +43,8 @@ export default class SelectManager {
   }
 
   removeMark (markId) {
+    this._spatialIndex.unindexMark(markId)
+
     delete this._selectableMarks[markId]
     delete this._markCallbacks[markId]
   }
@@ -53,6 +57,8 @@ export default class SelectManager {
 
     this._selectableLayers[layerId] = indexableLayer
     this._layerCallbacks[layerId] = callbacks
+
+    this._spatialIndex.indexLayer(layerId)
   }
 
   layerIsLoaded (layerId) {
@@ -60,6 +66,8 @@ export default class SelectManager {
   }
 
   removeLayer (layerId) {
+    this._spatialIndex.unindexLayer(layerId)
+
     delete this._selectableLayers[layerId]
     delete this._layerCallbacks[layerId]
   }
@@ -69,7 +77,7 @@ export default class SelectManager {
     this._previousSelection = {}
     this._currentSelection = {}
 
-    const hits = this._spatialIndex(rectangleToRBushBBox(rectangle))
+    const hits = this._spatialIndex.queryBoundingBox(rectangleToRBushBBox(rectangle))
 
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
@@ -84,7 +92,7 @@ export default class SelectManager {
   updateSelectRectangle (rectangle) {
     this._previousSelection = this._currentSelection
 
-    const hits = this._spatialIndex(rectangleToRBushBBox(rectangle))
+    const hits = this._spatialIndex.queryBoundingBox(rectangleToRBushBBox(rectangle))
 
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]

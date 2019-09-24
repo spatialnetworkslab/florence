@@ -4,7 +4,8 @@
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
-	let data = new DataContainer(generateData(N, 0.25))
+  let data = new DataContainer(generateData(N, 0.25))
+
 	function generateData (N, error) {
 		const getError = () => -error + (Math.random() * (2 * error)) * N
 		let data = { a: [], b: [] }
@@ -33,6 +34,24 @@
 
   let background = "white"
   let big = false
+
+  let section
+
+  function onSelect (event) {
+    console.log(event)
+  }
+
+  function onDeselect (event) {
+    console.log(event)
+  }
+
+  function select () {
+    section.selectRectangle({ x1: 50, x2: 200, y1: 50, y2: 450 })
+  }
+
+  function deselect () {
+    section.resetSelection()
+  }
 </script>
 
 <div>
@@ -58,6 +77,11 @@
 </div>
 
 <div>
+  <button on:click={() => select()}>Select</button><br />
+  <button on:click={() => deselect()}>Deselect</button>
+</div>
+
+<div>
 
 	<Graphic 
     width={500} {height}
@@ -66,6 +90,7 @@
   >
 		
 		<Section
+      bind:this={section}
 			x1={50} x2={450}
 			y1={50} y2={450}
 			scaleX={scaleA}
@@ -81,6 +106,8 @@
         key={filteredData.column('$key')}
         fill={transformation === 'identity' ? 'black' : 'blue'}
         radius={transformation === 'identity' ? 4 : 6}
+        {onSelect}
+        {onDeselect}
       />
 
 		</Section>
