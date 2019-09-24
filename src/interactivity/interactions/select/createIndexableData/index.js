@@ -1,4 +1,4 @@
-import { indexPoint, indexPointLayer } from '../../base/interfaces/createIndexableData'
+import { indexPoint, indexPointLayer } from './indexPoint.js'
 import { indexRectangle, indexRectangleLayer } from './indexRectangle.js'
 import { indexPolygon, indexPolygonLayer } from './indexPolygon.js'
 import { indexLine, indexLineLayer } from './indexLine.js'

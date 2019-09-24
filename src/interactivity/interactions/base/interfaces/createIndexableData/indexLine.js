@@ -1,5 +1,5 @@
 import { calculateBBoxGeometry } from '../../../../../utils/geometryUtils'
-import createItemFromBBox from './utils/createItemFromBBox.js'
+import createItemFromBBox from '../../../utils/createItemFromBBox.js'
 
 export function indexLine (markData) {
   const lineAttributes = markData.attributes

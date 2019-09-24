@@ -1,5 +1,5 @@
 import { calculateBBoxGeometry } from '../../../../../utils/geometryUtils'
-import createItemFromBBox from './utils/createItemFromBBox.js'
+import createItemFromBBox from '../../../utils/createItemFromBBox.js'
 
 export function indexPolygon (markData) {
   const polygonAttributes = markData.attributes
