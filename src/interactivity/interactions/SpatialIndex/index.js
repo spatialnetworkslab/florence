@@ -57,6 +57,11 @@ export default class SpatialIndex {
     return this._getHits(mouseCoordinates, indexQueryResults)
   }
 
+  queryBoundingBox (boundingBox) {
+    return this._rbush.search(boundingBox)
+  }
+
+  // Internal
   _getHits (coordinates, indexQueryResults) {
     const hits = []
 
