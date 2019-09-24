@@ -1,5 +1,7 @@
 export { calculateBBoxGeometries, calculateBBoxGeometry } from './calculateBBox.js'
 
+export { default as calculateCentroid } from './calculateCentroid.js'
+
 export {
   pointIntersectsLineSegment,
   distanceClosestPointOnLineSegment,

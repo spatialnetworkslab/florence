@@ -1,5 +1,5 @@
 import bboxPoint from './utils/bboxPoint.js'
-import createItemFromBBox from '../../../../utils/createItemFromBBox.js'
+import createItemFromBBox from '../../utils/createItemFromBBox.js'
 
 export function indexPoint (markData) {
   const pointAttributes = markData.attributes

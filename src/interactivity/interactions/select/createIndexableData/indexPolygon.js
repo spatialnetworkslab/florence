@@ -1,6 +1,6 @@
 import { calculateCentroid } from '../../../../utils/geometryUtils'
 import bboxPoint from './utils/bboxPoint.js'
-import createItemFromBBox from '../../../../utils/createItemFromBBox.js'
+import createItemFromBBox from '../../utils/createItemFromBBox.js'
 
 export function indexPolygon (markData) {
   const polygonAttributes = markData.attributes

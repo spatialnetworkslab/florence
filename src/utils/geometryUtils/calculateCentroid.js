@@ -1,8 +1,8 @@
 import {
   isLinearRing, isPolygon, isMultiPolygon, isLineString, isMultiLineString
 } from './geometryDetectors.js'
-import polygonArea from './polygonArea.js'
-import { linearRingLength } from '../utils/distance.js'
+import { polygonArea } from './polygonArea.js'
+import { linearRingLength } from './distance.js'
 
 export default function calculateCentroid (geometry) {
   if (isLinearRing(geometry)) {
