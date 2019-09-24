@@ -1,5 +1,7 @@
 import SpatialIndex from '../SpatialIndex'
 import { markIndexing, layerIndexing } from './createIndexableData'
+import { hitIsMark, hitIsInLayer, getHitId } from '../utils/hitUtils.js'
+import { createSelectMarkEvent, createSelectLayerEvent } from '../utils/createEvent.js'
 
 export default class SelectInterface {
   constructor (interactionManager) {
@@ -10,6 +12,9 @@ export default class SelectInterface {
 
     this._markCallbacks = {}
     this._layerCallbacks = {}
+
+    this._previousSelection = {}
+    this._currentSelection = {}
 
     const getMark = function (markId) {
       return this._selectableMarks[markId]
@@ -23,14 +28,14 @@ export default class SelectInterface {
   }
 
   // Loading/indexing
-  loadMark (markType, markData, callback) {
+  loadMark (markType, markData, callbacks) {
     const indexingFunction = markIndexing[markType]
     const indexableMark = indexingFunction(markData)
 
     const markId = markData.markId
 
     this._selectableMarks[markId] = indexableMark
-    this._markCallbacks[markId] = callback
+    this._markCallbacks[markId] = callbacks
   }
 
   markIsLoaded (markId) {
@@ -42,14 +47,14 @@ export default class SelectInterface {
     delete this._markCallbacks[markId]
   }
 
-  loadLayer (layerType, layerData, callback) {
+  loadLayer (layerType, layerData, callbacks) {
     const indexingFunction = layerIndexing[layerType]
     const indexableLayer = indexingFunction(layerData)
 
     const layerId = layerData.layerId
 
     this._selectableLayers[layerId] = indexableLayer
-    this._layerCallbacks[layerId] = callback
+    this._layerCallbacks[layerId] = callbacks
   }
 
   layerIsLoaded (layerId) {
@@ -62,5 +67,96 @@ export default class SelectInterface {
   }
 
   // Queries
-    
+  selectRectangle (rectangle) {
+    this._previousSelection = {}
+    this._currentSelection = {}
+
+    const hits = this._spatialIndex(rectangleToRBushBBox(rectangle))
+
+    for (let i = 0; i < hits.length; i++) {
+      const hit = hits[i]
+      const hitId = getHitId(hit)
+
+      this._currentSelection[hitId] = hit
+
+      this._fireSelectCallback(hit)
+    }
+  }
+
+  updateSelectRectangle (rectangle) {
+    this._previousSelection = this._currentSelection
+
+    const hits = this._spatialIndex(rectangleToRBushBBox(rectangle))
+
+    for (let i = 0; i < hits.length; i++) {
+      const hit = hits[i]
+      const hitId = getHitId(hit)
+
+      this._currentSelection[hitId] = hit
+
+      if (!(hitId in this._previousSelection)) {
+        this._fireSelectCallback(hit)
+      }
+    }
+
+    for (const hitId in this._previousSelection) {
+      if (!(hitId in this._currentSelection)) {
+        const hit = this._previousSelection[hitId]
+
+        this._fireDeselectCallback(hit)
+      }
+    }
+  }
+
+  resetSelection () {
+    for (const hitId in this._currentSelection) {
+      const hit = this._currentSelection[hitId]
+
+      this._fireDeselectCallback(hit)
+    }
+
+    this._previousSelection = {}
+    this._currentSelection = {}
+  }
+
+  _fireSelectCallback (hit) {
+    if (hitIsMark(hit)) {
+      const selectEvent = createSelectMarkEvent('select', hit)
+      const callback = this._markCallbacks[hit.markId].onSelect
+
+      callback(selectEvent)
+    }
+
+    if (hitIsInLayer(hit)) {
+      const selectEvent = createSelectLayerEvent('select', hit)
+      const callback = this._layerCallbacks[hit.layerId].onSelect
+
+      callback(selectEvent)
+    }
+  }
+
+  _fireDeselectCallback (hit) {
+    if (hitIsMark(hit)) {
+      const deselectEvent = createSelectMarkEvent('deselect', hit)
+      const callback = this._markCallbacks[hit.markId].onDeselect
+
+      callback(deselectEvent)
+    }
+
+    if (hitIsInLayer(hit)) {
+      const deselectEvent = createSelectLayerEvent('deselect', hit)
+      const callback = this._layerCallbacks[hit.layerId].onDeselect
+
+      callback(deselectEvent)
+    }
+  }
+}
+
+function rectangleToRBushBBox (rectangle) {
+  return {
+    minX: Math.min(rectangle.x1, rectangle.x2),
+    maxX: Math.max(rectangle.x1, rectangle.x2),
+    minY: Math.min(rectangle.y1, rectangle.y2),
+    maxY: Math.max(rectangle.y1, rectangle.y2)
+  }
 }

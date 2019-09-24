@@ -46,3 +46,25 @@ const INTERESTING_NATIVE_KEYS = [
   'screenX', 'screenY',
   'timeStamp'
 ]
+
+export function createSelectMarkEvent (eventType, hit) {
+  const event = {
+    type: eventType,
+    markType: hit.markType,
+    hitSource: 'mark'
+  }
+
+  return event
+}
+
+export function createSelectLayerEvent (eventType, hit) {
+  const event = {
+    type: eventType,
+    markType: hit.markType,
+    key: hit.key,
+    index: hit.index,
+    hitSource: 'layer'
+  }
+
+  return event
+}
