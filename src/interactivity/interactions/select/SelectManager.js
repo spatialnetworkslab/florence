@@ -122,14 +122,14 @@ export default class SelectManager {
       const selectEvent = createSelectMarkEvent('select', hit)
       const callback = this._markCallbacks[hit.markId].onSelect
 
-      callback(selectEvent)
+      if (callback) callback(selectEvent)
     }
 
     if (hitIsInLayer(hit)) {
       const selectEvent = createSelectLayerEvent('select', hit)
       const callback = this._layerCallbacks[hit.layerId].onSelect
 
-      callback(selectEvent)
+      if (callback) callback(selectEvent)
     }
   }
 
@@ -138,14 +138,14 @@ export default class SelectManager {
       const deselectEvent = createSelectMarkEvent('deselect', hit)
       const callback = this._markCallbacks[hit.markId].onDeselect
 
-      callback(deselectEvent)
+      if (callback) callback(deselectEvent)
     }
 
     if (hitIsInLayer(hit)) {
       const deselectEvent = createSelectLayerEvent('deselect', hit)
       const callback = this._layerCallbacks[hit.layerId].onDeselect
 
-      callback(deselectEvent)
+      if (callback) callback(deselectEvent)
     }
   }
 }

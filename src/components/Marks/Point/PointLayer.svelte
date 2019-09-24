@@ -23,6 +23,9 @@
   export let onMouseover = undefined
   export let onMouseout = undefined
   export let onMousedrag = undefined
+  
+  export let onSelect = undefined
+  export let onDeselect = undefined
 
   // Other
   export let key = undefined
@@ -37,5 +40,6 @@
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} 
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
+  {onSelect} {onDeselect}
   {key} {zoomIdentity} _asPolygon={false} {blockReindexing}
 />
