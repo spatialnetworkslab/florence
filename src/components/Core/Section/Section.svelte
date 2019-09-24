@@ -137,6 +137,21 @@
       // TODO
     }
   }
+
+  // Selection API
+  const selectManager = $interactionManager.select()
+
+  export function selectRectangle (rectangle) {
+    selectManager.selectRectangle(rectangle)
+  }
+
+  export function updateSelectRectangle (rectangle) {
+    selectManager.updateSelectRectangle(rectangle)
+  }
+
+  export function resetSelection () {
+    selectManager.resetSelection()
+  }
 </script>
 
 <defs>
