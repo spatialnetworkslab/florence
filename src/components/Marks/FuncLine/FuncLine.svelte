@@ -180,8 +180,8 @@
   function removeMarkFromSelectIfNecessary () {
     const selectManager = $interactionManagerContext.select()
 
-    if (selectManager.markIsLoaded(layerId)) {
-      selectManager.removeMark(layerId)
+    if (selectManager.markIsLoaded(markId)) {
+      selectManager.removeMark(markId)
     }
   }
 

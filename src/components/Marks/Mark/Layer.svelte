@@ -378,7 +378,7 @@
       const selectManager = $interactionManagerContext.select()
 
       selectManager.loadLayer(
-        'Point', createDataNecessaryForIndexing(), { onSelect, onDeselect }
+        type, createDataNecessaryForIndexing(), { onSelect, onDeselect }
       )
     }
   }

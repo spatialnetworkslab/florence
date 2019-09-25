@@ -91,6 +91,7 @@ export default class SelectManager {
 
   updateSelectRectangle (rectangle) {
     this._previousSelection = this._currentSelection
+    this._currentSelection = {}
 
     const hits = this._spatialIndex.queryBoundingBox(rectangleToRBushBBox(rectangle))
 

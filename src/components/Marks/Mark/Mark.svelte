@@ -351,7 +351,7 @@
       const selectManager = $interactionManagerContext.select()
 
       selectManager.loadMark(
-        'Point', createDataNecessaryForIndexing(), { onSelect, onDeselect }
+        type, createDataNecessaryForIndexing(), { onSelect, onDeselect }
       )
     }
   }
@@ -368,8 +368,8 @@
   function removeMarkFromSelectIfNecessary () {
     const selectManager = $interactionManagerContext.select()
 
-    if (selectManager.markIsLoaded(layerId)) {
-      selectManager.removeMark(layerId)
+    if (selectManager.markIsLoaded(markId)) {
+      selectManager.removeMark(markId)
     }
   }
 
