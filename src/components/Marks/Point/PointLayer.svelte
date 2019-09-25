@@ -15,15 +15,21 @@
   export let fillOpacity = undefined
   export let opacity = undefined
 
-  // Transitions and interactions
+  // Transitions
   export let transition = undefined
+
+  // Mouse interactions
   export let onClick = undefined
   export let onMousedown = undefined
   export let onMouseup = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
   export let onMousedrag = undefined
-  
+
+  // Touch interactions
+  // TODO
+
+  // Select interactions
   export let onSelect = undefined
   export let onDeselect = undefined
 

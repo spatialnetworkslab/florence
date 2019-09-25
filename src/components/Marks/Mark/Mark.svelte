@@ -73,6 +73,10 @@
   // Touch interactions
   // TODO
 
+  // Select interactions
+  export let onSelect = undefined
+  export let onDeselect = undefined
+
   // Other
   export let interpolate = false
   export let _asPolygon = true
@@ -266,6 +270,8 @@
 
   $: isInteractiveTouch = detectIt.hasTouch // TODO
 
+  $: isSelectable = onSelect !== undefined || onDeselect !== undefined
+
   onMount(() => {
     updateInteractionManagerIfNecessary()
   })
@@ -338,6 +344,16 @@
         // TODO
       }
     }
+
+    removeMarkFromSelectIfNecessary()
+    
+    if (isSelectable) {
+      const selectManager = $interactionManagerContext.select()
+
+      selectManager.loadMark(
+        'Point', createDataNecessaryForIndexing(), { onSelect, onDeselect }
+      )
+    }
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
@@ -346,6 +362,14 @@
     if (markInterface.markIsLoaded(markId)) {
       markInterface.removeAllMarkInteractions(markId)
       markInterface.removeMark(markId)
+    }
+  }
+
+  function removeMarkFromSelectIfNecessary () {
+    const selectManager = $interactionManagerContext.select()
+
+    if (selectManager.markIsLoaded(layerId)) {
+      selectManager.removeMark(layerId)
     }
   }
 

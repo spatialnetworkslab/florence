@@ -34,14 +34,23 @@
   export let stroke = 'black'
   export let opacity = 1
 
-  // Transitions and interactions
+  // Transitions
   export let transition = undefined
+
+  // Mouse interactions
   export let onClick = undefined
   export let onMousedown = undefined
   export let onMouseup = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
   export let onMousedrag = undefined
+
+  // Touch interactions
+  // TODO
+
+  // Select interactions
+  export let onSelect = undefined
+  export let onDeselect = undefined
 
   // Other
   export let zoomIdentity = undefined
@@ -115,6 +124,8 @@
 
   $: isInteractiveTouch = detectIt.hasTouch // TODO
 
+  $: isSelectable = onSelect !== undefined || onDeselect !== undefined
+
   onMount(() => {
     updateInteractionManagerIfNecessary()
   })
@@ -145,6 +156,16 @@
         // TODO
       }
     }
+
+    removeMarkFromSelectIfNecessary()
+
+    if (isSelectable) {
+      const selectManager = $interactionManagerContext.select()
+
+      selectManager.loadMark(
+        'Line', createDataNecessaryForIndexing(), { onSelect, onDeselect }
+      )
+    }
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
@@ -153,6 +174,14 @@
     if (markInterface.markIsLoaded(markId)) {
       markInterface.removeAllMarkInteractions(markId)
       markInterface.removeMark(markId)
+    }
+  }
+
+  function removeMarkFromSelectIfNecessary () {
+    const selectManager = $interactionManagerContext.select()
+
+    if (selectManager.markIsLoaded(layerId)) {
+      selectManager.removeMark(layerId)
     }
   }
 
