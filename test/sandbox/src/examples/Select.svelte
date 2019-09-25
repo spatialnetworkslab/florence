@@ -1,33 +1,78 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-	import { Graphic, Section, Point, Rectangle, Line, Polygon, XAxis, YAxis } from '../../../../src/'
+	import { 
+    Graphic, Section, Point, Rectangle, Line, Polygon, XAxis, YAxis, nextTick
+  } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   let section
   let makingSelection = false
   let selectionRectangle
 
+  let rectStartDelta
+  let brushing = false
+  let blockReindexing = false
+
   const onMousedown = ({ screenCoordinates }) => {
-    section.resetSelection()
+    nextTick(() => {
+      if (!brushing) {
+        section.resetSelection()
 
-    makingSelection = true
-    const { x, y } = screenCoordinates
-    selectionRectangle = { x1: x, x2: x, y1: y, y2: y }
+        makingSelection = true
+        const { x, y } = screenCoordinates
+        selectionRectangle = { x1: x, x2: x, y1: y, y2: y }
 
-    section.selectRectangle(selectionRectangle)
+        section.selectRectangle(selectionRectangle)
+      }
+    })
   }
 
   const onMousemove = ({ screenCoordinates }) => {
-    if (makingSelection) {
-      const { x, y } = screenCoordinates
-      selectionRectangle.x2 = x
-      selectionRectangle.y2 = y
+    nextTick(() => {
+        if (makingSelection && !brushing) {
+        const { x, y } = screenCoordinates
+        selectionRectangle.x2 = x
+        selectionRectangle.y2 = y
+
+        section.updateSelectRectangle(selectionRectangle)
+      }
+    })
+  }
+
+  const onMouseup = () => { nextTick(() => {
+    if (!brushing) makingSelection = false
+  }) }
+
+  const onDragSelectionRectangle = event => {
+    const localCoordinates = event.localCoordinates
+
+    if (event.dragType === 'start') {
+      brushing = true
+      blockReindexing = true
+      rectStartDelta = {
+        x1: localCoordinates.x - selectionRectangle.x1,
+        x2: localCoordinates.x - selectionRectangle.x2,
+        y1: localCoordinates.y - selectionRectangle.y1,
+        y2: localCoordinates.y - selectionRectangle.y2
+      }
+    }
+
+    if (event.dragType === 'drag') {
+      selectionRectangle = {
+        x1: localCoordinates.x - rectStartDelta.x1,
+        x2: localCoordinates.x - rectStartDelta.x2,
+        y1: localCoordinates.y - rectStartDelta.y1,
+        y2: localCoordinates.y - rectStartDelta.y2
+      }
 
       section.updateSelectRectangle(selectionRectangle)
     }
-  }
 
-  const onMouseup = () => { makingSelection = false }
+    if (event.dragType === 'end') {
+      brushing = false
+      blockReindexing = false
+    }
+  }
 
   let highlightPoint
   let highlightRect
@@ -87,7 +132,12 @@
   <!-- Selection rectangle -->
   {#if selectionRectangle}
 
-    <Rectangle {...selectionRectangle} fill="green" opacity={0.2} />
+    <Rectangle 
+      {...selectionRectangle} 
+      fill="green" opacity={0.2}
+      onMousedrag={onDragSelectionRectangle}
+      {blockReindexing}
+    />
 
   {/if}
 
