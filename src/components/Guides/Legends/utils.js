@@ -50,7 +50,7 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
 
 export function getTickPositions (tickValuesArray, scale, tickCount, tickExtra, colorBarDimension, locRange, orient, flip) {
   let tickPositions
-
+  console.log('+++', locRange)
   // Bins
   if (Array.isArray(scale[0]) && scale.length > 0) {
     const domain = [Math.min(...tickValuesArray), Math.max(...tickValuesArray)]
@@ -60,7 +60,7 @@ export function getTickPositions (tickValuesArray, scale, tickCount, tickExtra, 
     } else {
       posScale = scaleLinear().domain(domain).range(locRange.reverse())
     }
-
+  
     tickPositions = tickValuesArray.map((value, i) => {
       return posScale(value)
     })
@@ -68,7 +68,10 @@ export function getTickPositions (tickValuesArray, scale, tickCount, tickExtra, 
   // Arrays
   // equal interval
   } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
-    const interval = orient === 'vertical' ? colorBarDimension / (tickValuesArray.length) : 1 / (tickValuesArray.length)
+    // const interval = orient === 'vertical' ? colorBarDimension / (tickValuesArray.length) : 1 / (tickValuesArray.length)
+    const interval = (locRange[1] - locRange[0]) / (tickValuesArray.length)
+
+    console.log(tickValuesArray, interval)
     if (!flip) {
       tickPositions = tickValuesArray.map((value, i) => {
         return interval * (i + 0.5)
@@ -97,18 +100,19 @@ export function getFormat (labelFormat, scale, numberOfTicks) {
   return x => x
 }
 
-export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip) {
+export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords) {
   let colorXStartCoords = []
   let colorXEndCoords = []
   let colorYStartCoords = []
   let colorYEndCoords = []
-
+  
   if (orient === 'vertical') {
     colorXStartCoords = tickLabelText.map(i => {
       if (flipLabels) {
         return 0
       } else {
         return 1 - colorBarWidth
+        //return xCoords[0]
       }
     })
 
@@ -117,6 +121,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
         return colorBarWidth
       } else {
         return 1
+       //return xCoords[1]
       }
     })
 

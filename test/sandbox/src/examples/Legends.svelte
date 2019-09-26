@@ -5,7 +5,7 @@
   import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
 
   // florence
-	import { Graphic, Grid, Section, PointLayer, Point, Label, LabelLayer, DiscreteLegend, GradientLegend } from '../../../../src/'
+	import { Graphic, Grid, Section, PointLayer, Point, Label, LabelLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
@@ -39,6 +39,11 @@
   let background = "pink"
   let big = false
   let hoverPoints = {}
+
+  let x = 0
+  let y = 0
+  let k = 1
+  let zoomIdentity = { x, y, kx: k, ky: k }
 
   $: hoverPointKeys = Object.keys(hoverPoints)
   function handleMouseout (ix) {
@@ -80,7 +85,7 @@
       Vertical
       x1={150} x2={220}
       y1={50} y2={400} -->
-    <GradientLegend
+    <!-- <GradientLegend
       scale = {data.domain('a')}
       x1={0} x2={240}
       y1={50} y2={200}
@@ -88,7 +93,7 @@
       labelCount={8}
       orient={'horizontal'}
       labelExtra
-    />
+    /> -->
     <!--
       Horizontal
       x1=270 x2={510}
@@ -97,7 +102,7 @@
       Vertical
       x1={270} x2={340}
       y1={50} y2={400}-->
-    <DiscreteLegend
+    <!-- <DiscreteLegend
       scale = {data.domain('a')}
       x1=270 x2={510}
       y1={50} y2={200}
@@ -106,7 +111,7 @@
       orient={'horizontal'}
       firstLabel={10}
       labelExtra
-    />
+    /> -->
 
     <!-- <DiscreteLegend
       scale = {bins}
@@ -149,15 +154,53 @@
       orient={'horizontal'}
     /> -->
 
-    <Section
-			x1={50} x2={450}
-			y1={350} y2={650}
+    <Section 
+      x1={50} x2={450}
+			y1={200} y2={800}
 			scaleX={scaleA}
 			scaleY={scaleB}
-      flipY
+      {zoomIdentity}
+      onWheel={e => handle(zoom(e))}
+      onPan={e => handle(pan(e))}
+      padding={50}
+    > 
+    <!--        x1=270 x2={510}
+        y1={50} y2={200}-->
+      <DiscreteLegend
+        scale = {data.domain('a')}
+        fill={linearColorScale}
+        labelCount={8}
+        firstLabel={10}
+      />
+      <PointLayer
+        x={filteredData.column('a')}
+        y={filteredData.column('b')}
+        fill={data.map('a', linearColorScale)}
+        fillOpacity={data.map('a', linearColorScale)}
+        radius={data.map('a', radiusScale)}
+        index={filteredData.column('$key')}
+        onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
+        onMouseout={handleMouseout}
+        transition={duration}
+      />
+
+      <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
+      <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
+    
+    </Section>
+
+    <!-- <Section
+			x1={50} x2={450}
+			y1={350} y2={800}
+			scaleX={scaleA}
+			scaleY={scaleB}
+      {zoomIdentity}
 		> 
+
+      <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
+      <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
     <!--      {transformation}-->
-      <GradientLegend
+      <!-- <GradientLegend
         scale = {data.domain('a')}
         x1={0} x2={100}
         y1={50} y2={150}
@@ -166,9 +209,9 @@
         orient={'horizontal'}
         labelExtra
         titleY={0.7}
-      />
+      /> -->
 
-			<PointLayer
+	 <!-- <PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}
         fill={data.map('a', linearColorScale)}
@@ -180,9 +223,9 @@
         transition={duration}
       />
 		
-		</Section>
+		</Section> -->
 
-    <Section
+    <!-- <Section
 			x1={50} x2={450}
 			y1={650} y2={950}
 			scaleX={scaleA}
@@ -203,7 +246,7 @@
         transition={duration}
       />
 		
-		</Section>
+		</Section> -->
 
 	</Graphic>
 

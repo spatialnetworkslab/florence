@@ -83,7 +83,7 @@
   let axisWidth
   let labelAnchorPoint = 'r'
   let scaleY
-
+  
   $: {
     scaleY = (typeof scale === "undefined") ? $sectionContext.scaleY : scale;
     ({xCoords, yCoords} = createYAxisCoords(hjust, x, xOffset, $sectionContext.scaleX, scaleY, $sectionContext));
