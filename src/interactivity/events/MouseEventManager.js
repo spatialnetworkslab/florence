@@ -22,11 +22,13 @@ const BROWSER_TYPE = window.navigator.pointerEnabled
 
 const EVENT_NAMES = ['mousedown', 'mouseup', 'mousemove', 'mouseout', 'click', 'wheel']
 const WINDOW_EVENTS = ['mousemove', 'mouseup']
+const PREVENT_DEFAULT = ['mousedown']
 
 const EXPOSED_EVENTS = EVENT_NAMES.map(eventName => ({
   eventName,
   nativeEventName: getNativeMouseEventName(eventName),
-  useWindow: WINDOW_EVENTS.includes(eventName)
+  useWindow: WINDOW_EVENTS.includes(eventName),
+  preventDefault: PREVENT_DEFAULT.includes(eventName)
 }))
 
 export function getNativeMouseEventName (exposedEventName) {
