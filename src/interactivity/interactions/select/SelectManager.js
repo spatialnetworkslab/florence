@@ -2,6 +2,8 @@ import SpatialIndex from '../SpatialIndex'
 import { markIndexing, layerIndexing } from './createIndexableData'
 import { hitIsMark, hitIsInLayer, getHitId } from '../utils/hitUtils.js'
 import { createSelectMarkEvent, createSelectLayerEvent } from '../utils/createEvent.js'
+import { calculateBBoxGeometry, pointInPolygon } from '../../../utils/geometryUtils'
+import { isArray } from 'util';
 
 export default class SelectManager {
   constructor () {
@@ -23,6 +25,8 @@ export default class SelectManager {
     }
 
     this._spatialIndex = new SpatialIndex(this, getMark, getLayer)
+    
+    this._selectPolygon = { start: undefined, points: [] }
   }
 
   // Loading/indexing
@@ -72,11 +76,8 @@ export default class SelectManager {
     delete this._layerCallbacks[layerId]
   }
 
-  // Queries
+  // Rectangle
   selectRectangle (rectangle) {
-    this._previousSelection = {}
-    this._currentSelection = {}
-
     const hits = this._spatialIndex.queryBoundingBox(rectangleToRBushBBox(rectangle))
 
     for (let i = 0; i < hits.length; i++) {
@@ -115,7 +116,7 @@ export default class SelectManager {
     }
   }
 
-  resetSelection () {
+  resetSelectRectangle () {
     for (const hitId in this._currentSelection) {
       const hit = this._currentSelection[hitId]
 
@@ -123,6 +124,63 @@ export default class SelectManager {
     }
 
     this._previousSelection = {}
+    this._currentSelection = {}
+  }
+
+  // Polygon
+  startSelectPolygon (startCoordinates) {
+    this._selectPolygon.start = parseCoordinates(startCoordinates)
+  }
+
+  addPointToSelectPolygon (coordinates) {
+    this._selectPolygon.points.push(parseCoordinates(coordinates))
+
+    if (this._selectPolygon.points.length > 1) {
+      const lastThreePointsPolygon = this._getLastThreePointsPolygon()
+      const bbox = calculateBBoxGeometry(lastThreePointsPolygon)
+
+      const hits = this._spatialIndex.queryBoundingBox(bboxToRBushBBox(bbox))
+
+      for (let i = 0; i < hits.length; i++) {
+        const hit = hits[i]
+        const hitCentroid = [hit.minX, hit.minY]
+
+        if (pointInPolygon(hitCentroid, lastThreePointsPolygon)) {
+          const hitId = getHitId(hit)
+
+          if (hitId in this._currentSelection) {
+            this._fireDeselectCallback(hit)
+            delete this._currentSelection[hitId]
+          } else {
+            this._fireSelectCallback(hit)
+            this._currentSelection[hitId] = hit
+          }
+        }
+      }
+    }
+  }
+
+  getSelectPolygon () {
+    if (this._selectPolygon.start) {
+      return {
+        type: 'Polygon',
+        coordinates: [[
+          this._selectionPolygon.start,
+          ...this._selectionPolygon.points,
+          this._selectionPolygon.start
+        ]]
+      }
+    }
+  }
+
+  resetSelectPolygon () {
+    for (const hitId in this._currentSelection) {
+      const hit = this._currentSelection[hitId]
+
+      this._fireDeselectCallback(hit)
+    }
+
+    this._selectPolygon = { start: undefined, points: [] }
     this._currentSelection = {}
   }
 
@@ -157,6 +215,19 @@ export default class SelectManager {
       if (callback) callback(deselectEvent)
     }
   }
+
+  _getLastThreePointsPolygon () {
+    const points = this._selectPolygon.points
+    const lastPointIndex = points.length - 1
+    const start  = this._selectPolygon.start
+    
+    return {
+      type: 'Polygon',
+      coordinates: [
+        [points[lastPointIndex - 1], points[lastPointIndex], start]
+      ]
+    }
+  }
 }
 
 function rectangleToRBushBBox (rectangle) {
@@ -165,5 +236,33 @@ function rectangleToRBushBBox (rectangle) {
     maxX: Math.max(rectangle.x1, rectangle.x2),
     minY: Math.min(rectangle.y1, rectangle.y2),
     maxY: Math.max(rectangle.y1, rectangle.y2)
+  }
+}
+
+function parseCoordinates (coordinates) {
+  if (is2dArray(coordinates)) return coordinates
+  if (isXYObject(coordinates)) return [coordinates.x, coordinates.y]
+
+  throw new Error(`Invalid input: ${coordinates}`)
+}
+
+function is2dArray (coordinates) {
+  return coordinates.constructor === Array &&
+    coordinates.length === 2 &&
+    coordinates.every(c => c && c.constructor === Number)
+}
+
+function isXYObject (coordinates) {
+  return 'x' in coordinates && 'y' in coordinates &&
+    coordinates.x.constructor === Number &&
+    coordinates.y.constructor === Number
+}
+
+function bboxToRBushBBox (bbox) {
+  return {
+    minX: Math.min(...bbox.x),
+    maxX: Math.max(...bbox.x),
+    minY: Math.min(...bbox.y),
+    maxY: Math.max(...bbox.y)
   }
 }

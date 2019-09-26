@@ -16,7 +16,7 @@
   const onMousedown = ({ screenCoordinates }) => {
     nextTick(() => {
       if (!brushing) {
-        section.resetSelection()
+        section.resetSelectRectangle()
 
         makingSelection = true
         const { x, y } = screenCoordinates
