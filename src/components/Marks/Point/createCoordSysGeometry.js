@@ -29,10 +29,14 @@ export function ensureValidCombination (geometryProps) {
   }
 }
 
-const invalidCombinationError = new Error(`Point: invalid combination of props 'x', 'y' and 'geometry'`)
+const invalidCombinationError = new Error('Point: invalid combination of props \'x\', \'y\' and \'geometry\'')
 
 function scaleGeometryProp (geometry, sectionContext) {
-  return scaleGeometry(geometry, sectionContext)
+  if (geometry.constructor === Function) {
+    return geometry(sectionContext)
+  } else {
+    return scaleGeometry(geometry, sectionContext)
+  }
 }
 
 function createScaledGeometryFromCoordinates (x, y, sectionContext) {

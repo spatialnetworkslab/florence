@@ -129,11 +129,16 @@ export function createTitleYCoord (vjust, axisYCoords, y, scaleX, scaleY, offset
 export function createYTickGeoms (tickPositions, xCoords, scale, baseLineWidth, tickSize, flip) {
   const x = []
   const y = []
+
   const xStart = xCoords()[0] - baseLineWidth / 2
+
   let offset = baseLineWidth + tickSize
   if (!flip) offset = -offset
+
+  const bandOffset = scale.bandwidth ? scale.bandwidth() / 2 : 0
+
   for (let index = 0; index < tickPositions.length; index++) {
-    const tick = scale(tickPositions[index])
+    const tick = scale(tickPositions[index]) + bandOffset
     x.push([xStart, xStart + offset])
     y.push([tick, tick])
   }
@@ -143,11 +148,16 @@ export function createYTickGeoms (tickPositions, xCoords, scale, baseLineWidth, 
 export function createYLabelGeoms (tickPositions, xCoords, scale, baseLineWidth, tickSize, labelOffset, flip) {
   const x = []
   const y = []
+
   const xStart = xCoords()[0]
+
   let offset = baseLineWidth + tickSize + labelOffset
   if (!flip) offset = -offset
+
+  const bandOffset = scale.bandwidth ? scale.bandwidth() / 2 : 0
+
   for (let index = 0; index < tickPositions.length; index++) {
-    const tick = scale(tickPositions[index])
+    const tick = scale(tickPositions[index]) + bandOffset
     x.push(xStart + offset)
     y.push(tick)
   }

@@ -98,7 +98,7 @@ export function indexLineLayer ({ layerAttributes, keyArray, layerId }) {
         lineStringCoords, lineAttributes, key
       )
 
-      segments = modifyForLayer(segments, layerId)
+      segments = modifyForLayer(segments, layerId, key, i)
       items = items.concat(segments)
     }
   }
@@ -113,12 +113,14 @@ function createLineAttributes (attributes, key) {
   }
 }
 
-function modifyForLayer (segments, layerId) {
+function modifyForLayer (segments, layerId, key, index) {
   for (let i = 0; i < segments.length; i++) {
     const segmentItem = segments[i]
-    segmentItem.$index = segmentItem.markId
     delete segmentItem.markId
+
     segmentItem.layerId = layerId
+    segmentItem.key = key
+    segmentItem.index = index
   }
 
   return segments

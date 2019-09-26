@@ -17,6 +17,8 @@
   import FunctionAPI from './examples/FunctionAPI.svelte'
   import FlipTest from './examples/FlipTest.svelte'
   import NonNumericAxis from './examples/NonNumericAxis.svelte'
+  import DragAllMarks from './examples/DragAllMarks.svelte'
+  import StackedBarChart from './examples/StackedBarChart.svelte'
 
   // and add them to this component array
   let components = [
@@ -94,6 +96,16 @@
       name: 'Non numeric axis',
       url: 'nonnumericaxis',
       component: NonNumericAxis
+    },
+    {
+      name: 'Drag all marks',
+      url: 'dragallmarks',
+      component: DragAllMarks
+    },
+    {
+      name: 'Stacked bar chart',
+      url: 'stackedbarchart',
+      component: StackedBarChart
     }
   ]
 </script>
