@@ -155,16 +155,17 @@
 			scaleX={scaleA}
 			scaleY={scaleB}
       flipY
-      {transformation}
 		> 
+    <!--      {transformation}-->
       <GradientLegend
         scale = {data.domain('a')}
-        x1={0} x2={200}
-        y1={50} y2={100}
+        x1={0} x2={100}
+        y1={50} y2={150}
         fill={linearColorScale}
         labelCount={8}
         orient={'horizontal'}
         labelExtra
+        titleY={0.7}
       />
 
 			<PointLayer
