@@ -6,15 +6,35 @@
   import DataContainer from '@snlab/florence-datacontainer'
 
   let section
-  let makingSelection = false
+  let selecting
   let selectionPolygon
-
-  let brushing = false
-  let blockReindexing = false
+  
 
   const onMousedown = ({ screenCoordinates }) => {
+    section.resetSelectPolygon()
+    selectionPolygon = undefined
 
-  }  
+    section.startSelectPolygon(screenCoordinates)
+    selecting = true
+  }
+
+  const onMousemove = ({ screenCoordinates }) => {
+    if (selecting) {
+      section.addPointToSelectPolygon(screenCoordinates)
+      selectionPolygon = section.getSelectPolygon()
+    }
+  }
+
+  const onMouseup = ({ screenCoordinates }) => {
+    if (selecting) {
+      selecting = false
+    }
+  }
+
+  let highlightPoint
+  let highlightRect
+  let highlightPolygon
+  let highlightLine
 </script>
 
 <Graphic width={500} height={500}>
@@ -67,13 +87,11 @@
   </Section>
 
   <!-- Selection polygon -->
-  {#if selectionRectangle}
+  {#if selectionPolygon}
 
     <Polygon 
-      geometry={polygonGeometry} 
+      geometry={selectionPolygon} 
       fill="green" opacity={0.2}
-      onMousedrag={onDragSelectionRectangle}
-      {blockReindexing}
     />
 
   {/if}

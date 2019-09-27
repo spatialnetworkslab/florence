@@ -164,9 +164,9 @@ export default class SelectManager {
       return {
         type: 'Polygon',
         coordinates: [[
-          this._selectionPolygon.start,
-          ...this._selectionPolygon.points,
-          this._selectionPolygon.start
+          this._selectPolygon.start,
+          ...this._selectPolygon.points,
+          this._selectPolygon.start
         ]]
       }
     }
@@ -223,7 +223,7 @@ export default class SelectManager {
     return {
       type: 'Polygon',
       coordinates: [
-        [points[lastPointIndex - 1], points[lastPointIndex], start]
+        [start, points[lastPointIndex - 1], points[lastPointIndex], start]
       ]
     }
   }
