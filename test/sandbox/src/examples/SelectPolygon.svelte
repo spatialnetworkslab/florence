@@ -6,16 +6,24 @@
   import DataContainer from '@snlab/florence-datacontainer'
 
   let section
-  let selecting
+  let selecting = false
   let selectionPolygon
-  
+
+  let previousMousePosition
+  let currentMousePosition
+  let brushing = false
+  let blockReindexing = false
 
   const onMousedown = ({ screenCoordinates }) => {
-    section.resetSelectPolygon()
-    selectionPolygon = undefined
+    nextTick(() => {
+      if (!brushing) {
+        section.resetSelectPolygon()
+        selectionPolygon = undefined
 
-    section.startSelectPolygon(screenCoordinates)
-    selecting = true
+        section.startSelectPolygon(screenCoordinates)
+        selecting = true
+      }
+    })
   }
 
   const onMousemove = ({ screenCoordinates }) => {
@@ -28,6 +36,34 @@
   const onMouseup = ({ screenCoordinates }) => {
     if (selecting) {
       selecting = false
+    }
+  }
+
+  const onDragSelectionPolygon = event => {
+    const screenCoordinates = event.screenCoordinates
+
+    if (event.dragType === 'start') {
+      brushing = true
+      blockReindexing = true
+      currentMousePosition = screenCoordinates
+    }
+
+    if (event.dragType === 'drag') {
+      previousMousePosition = currentMousePosition
+      currentMousePosition = screenCoordinates
+
+      let delta = {
+        x: currentMousePosition.x - previousMousePosition.x,
+        y: currentMousePosition.y - previousMousePosition.y
+      }
+
+      section.moveSelectPolygon(delta)
+      selectionPolygon = section.getSelectPolygon()
+    }
+
+    if (event.dragType === 'end') {
+      brushing = false
+      blockReindexing = false
     }
   }
 
@@ -92,6 +128,8 @@
     <Polygon 
       geometry={selectionPolygon} 
       fill="green" opacity={0.2}
+      onMousedrag={onDragSelectionPolygon}
+      {blockReindexing}
     />
 
   {/if}

@@ -161,6 +161,10 @@
     selectManager.addPointToSelectPolygon(pointCoordinates)
   }
 
+  export function moveSelectPolygon (delta) {
+    selectManager.moveSelectPolygon(delta)
+  }
+
   export function getSelectPolygon () {
     return selectManager.getSelectPolygon()
   }

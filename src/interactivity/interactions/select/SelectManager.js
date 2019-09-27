@@ -159,6 +159,47 @@ export default class SelectManager {
     }
   }
 
+  moveSelectPolygon (_delta) {
+    this._previousSelection = this._currentSelection
+    this._currentSelection = {}
+
+    const delta = parseCoordinates(_delta)
+
+    const start = this._selectPolygon.start
+    const points = this._selectPolygon.points
+
+    this._selectPolygon.start = [start[0] + delta[0], start[1] + delta[1]]
+    this._selectPolygon.points = points.map(point => [point[0] + delta[0], point[1] + delta[1]])
+
+    const polygon = this.getSelectPolygon()
+    const bbox = calculateBBoxGeometry(polygon)
+
+    const hits = this._spatialIndex.queryBoundingBox(bboxToRBushBBox(bbox))
+
+    for (let i = 0; i < hits.length; i++) {
+      const hit = hits[i]
+      const hitCentroid = [hit.minX, hit.minY]
+
+      if (pointInPolygon(hitCentroid, polygon)) {
+        const hitId = getHitId(hit)
+
+        this._currentSelection[hitId] = hit
+
+        if (!(hitId in this._previousSelection)) {
+          this._fireSelectCallback(hit)
+        }
+      }
+    }
+
+    for (const hitId in this._previousSelection) {
+      if (!(hitId in this._currentSelection)) {
+        const hit = this._previousSelection[hitId]
+
+        this._fireDeselectCallback(hit)
+      }
+    }
+  }
+
   getSelectPolygon () {
     if (this._selectPolygon.start) {
       return {

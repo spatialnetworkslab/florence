@@ -28,19 +28,17 @@
   }
 
   const onMousemove = ({ screenCoordinates }) => {
-    nextTick(() => {
-        if (makingSelection && !brushing) {
-        const { x, y } = screenCoordinates
-        selectionRectangle.x2 = x
-        selectionRectangle.y2 = y
+    if (makingSelection) {
+      const { x, y } = screenCoordinates
+      selectionRectangle.x2 = x
+      selectionRectangle.y2 = y
 
-        section.updateSelectRectangle(selectionRectangle)
-      }
-    })
+      section.updateSelectRectangle(selectionRectangle)
+    }
   }
 
   const onMouseup = () => { nextTick(() => {
-    if (!brushing) makingSelection = false
+    if (makingSelection) makingSelection = false
   }) }
 
   const onDragSelectionRectangle = event => {
