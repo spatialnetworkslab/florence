@@ -3,7 +3,6 @@ import { markIndexing, layerIndexing } from './createIndexableData'
 import { hitIsMark, hitIsInLayer, getHitId } from '../utils/hitUtils.js'
 import { createSelectMarkEvent, createSelectLayerEvent } from '../utils/createEvent.js'
 import { calculateBBoxGeometry, pointInPolygon } from '../../../utils/geometryUtils'
-import { isArray } from 'util';
 
 export default class SelectManager {
   constructor () {
@@ -25,7 +24,7 @@ export default class SelectManager {
     }
 
     this._spatialIndex = new SpatialIndex(this, getMark, getLayer)
-    
+
     this._selectPolygon = { start: undefined, points: [] }
   }
 
@@ -219,8 +218,8 @@ export default class SelectManager {
   _getLastThreePointsPolygon () {
     const points = this._selectPolygon.points
     const lastPointIndex = points.length - 1
-    const start  = this._selectPolygon.start
-    
+    const start = this._selectPolygon.start
+
     return {
       type: 'Polygon',
       coordinates: [

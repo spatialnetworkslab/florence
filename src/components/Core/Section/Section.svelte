@@ -149,8 +149,24 @@
     selectManager.updateSelectRectangle(rectangle)
   }
 
-  export function resetSelection () {
-    selectManager.resetSelection()
+  export function resetSelectRectangle () {
+    selectManager.resetSelectRectangle()
+  }
+
+  export function startSelectPolygon (startCoordinates) {
+    selectManager.startSelectPolygon(startCoordinates)
+  }
+
+  export function addPointToSelectPolygon (pointCoordinates) {
+    selectManager.addPointToSelectPolygon(pointCoordinates)
+  }
+
+  export function getSelectPolygon () {
+    return selectManager.getSelectPolygon()
+  }
+
+  export function resetSelectPolygon () {
+    selectManager.resetSelectPolygon()
   }
 </script>
 
