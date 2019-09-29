@@ -47,7 +47,7 @@ function whichCoordinatesNeedScaling (coordinates) {
 
   for (const coordinateName of coordinateNames) {
     const coordinateValue = coordinates[coordinateName]
-    coordinatesThatNeedScaling[coordinateName] = coordinateValue && coordinateValue.constructor !== Function
+    coordinatesThatNeedScaling[coordinateName] = coordinateValue !== undefined && coordinateValue.constructor !== Function
   }
 
   return coordinatesThatNeedScaling
