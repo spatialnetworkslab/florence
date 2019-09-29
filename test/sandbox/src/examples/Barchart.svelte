@@ -18,6 +18,7 @@
     {scaleX}
     {scaleY}
     padding={30}
+    flipY
   >
 
     <RectangleLayer

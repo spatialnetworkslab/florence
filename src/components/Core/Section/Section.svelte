@@ -85,8 +85,6 @@
     _padding = parsePadding(padding)
     rangeX = applyPadding(rangeX, _padding.left, _padding.right)
     rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
-    
-    console.log(rangeY)
 
     const updatedSectionContext = { 
       sectionId, rangeX, rangeY, scaleX, scaleY, padding: _padding, flipX, flipY, blockReindexing
