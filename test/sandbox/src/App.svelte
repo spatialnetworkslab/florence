@@ -4,7 +4,7 @@
   
   // import all playground examples here
   import Barchart from './examples/Barchart.svelte'
-  import ZoomableScatterplot from './examples/ZoomableScatterplot.svelte'
+  import Tradeoff from './examples/Tradeoff.svelte'
   import MeetupExample from './examples/MeetupExample.svelte'
 
   // and add them to this component array
@@ -15,9 +15,9 @@
       component: Barchart
     },
     {
-      name: 'Zoomable scatterplot',
-      url: 'zoomablescatterplot',
-      component: ZoomableScatterplot
+      name: 'Trade-off',
+      url: 'tradeoff',
+      component: Tradeoff
     },
     {
       name: 'Meetup example',
