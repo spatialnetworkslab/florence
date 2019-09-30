@@ -14,6 +14,8 @@
   import * as CoordinateTransformationContext from '../../Core/Section/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   import * as ZoomContext from '../../Core/Section/ZoomContext'
+
+  import nextTick from '../../../helpers/nextTick.js'
   
   import validateAesthetics from './validateAesthetics.js'
   import { transformGeometries } from '../../../utils/geometryUtils/index.js'
@@ -231,27 +233,29 @@
   let screenGeometryObjectRecalculationNecessary = false
 
   $: {
-    if (coordSysGeometryObjectRecalculationNecessary) {
-      updateCoordSysGeometryObject()
-      keyArray = Object.keys(coordSysGeometryObject)
+    nextTick(() => {
+      if (coordSysGeometryObjectRecalculationNecessary) {
+        updateCoordSysGeometryObject()
+        keyArray = Object.keys(coordSysGeometryObject)
 
-      if (_asPolygon) {
-        updateRadiusAndStrokeWidth()
+        if (_asPolygon) {
+          updateRadiusAndStrokeWidth()
+        }
       }
-    }
     
-    if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
+      if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
 
-    if (screenGeometryObjectRecalculationNecessary) {
-      updateScreenGeometryObject()
-      updateScreenGeometryObjectTransitionable()
+      if (screenGeometryObjectRecalculationNecessary) {
+        updateScreenGeometryObject()
+        updateScreenGeometryObjectTransitionable()
 
-      updateInteractionManagerIfNecessary()
-    }
+        updateInteractionManagerIfNecessary()
+      }
 
-    coordSysGeometryObjectRecalculationNecessary = false
-    pixelGeometryObjectRecalculationNecessary = false
-    screenGeometryObjectRecalculationNecessary = false
+      coordSysGeometryObjectRecalculationNecessary = false
+      pixelGeometryObjectRecalculationNecessary = false
+      screenGeometryObjectRecalculationNecessary = false
+    })
   }
 
   beforeUpdate(() => {
