@@ -5,24 +5,30 @@
   // import all playground examples here
   import Barchart from './examples/Barchart.svelte'
   import Tradeoff from './examples/Tradeoff.svelte'
-  import MeetupExample from './examples/MeetupExample.svelte'
+  import ComponentBasics from './examples/ComponentBasics.svelte'
+  import LiveDemonstration from './examples/LiveDemonstration.svelte'
 
   // and add them to this component array
   let components = [
     {
       name: 'Bar chart',
-      url: 'barchart',
+      url: 'bar-chart',
       component: Barchart
     },
     {
       name: 'Trade-off',
-      url: 'tradeoff',
+      url: 'trade-off',
       component: Tradeoff
     },
     {
-      name: 'Meetup example',
-      url: 'meetup',
-      component: MeetupExample
+      name: 'Component basics',
+      url: 'component-basics',
+      component: ComponentBasics
+    },
+    {
+      name: 'Live demonstration',
+      url: 'live-demonstration',
+      component: LiveDemonstration
     }
   ]
 </script>
