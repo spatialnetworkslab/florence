@@ -1,10 +1,12 @@
 <script>
   import { 
-    Graphic, Section, PointLayer, PolygonLayer, XAxis, YAxis, createGeoScales,
-    Label
+    Graphic, Section, 
+    PointLayer, PolygonLayer, Line, Label,
+    XAxis, YAxis, createGeoScales,
   } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
-  import { scaleLinear } from 'd3-scale'
+  import { scaleLinear, scaleTime } from 'd3-scale'
+  import { format } from 'd3-format'
 
   import avocado from '../data/avocado-data.csv'
   import cities from '../data/city-centroids.csv'
@@ -12,7 +14,7 @@
 
   // Data prepapration
   // Load avocado data
-  let avocadoPricePerCity = new DataContainer(avocado)
+  const avocadoGrouped = new DataContainer(avocado)
     .rename({ 
       AveragePrice: 'averagePrice', 
       'Total Volume': 'totalVolume',
@@ -24,6 +26,8 @@
       date: row => new Date(row.date)
     })
     .groupBy('city')
+
+  let avocadoPricePerCity = avocadoGrouped
     .summarise({ 
       avgPriceEntirePeriod: { averagePrice: 'mean' },
       avgVolumeEntirePeriod: { totalVolume: 'mean' }
@@ -68,14 +72,34 @@
   $: scales = currentVisualization === 'scatterplot'
     ? { scaleX: scalePopulation, scaleY: scaleVolume }
     : geoScales
+
+  $: currentLineData = currentKey
+    ? avocadoGrouped.row(currentKey).$grouped.arrange({ date: (a, b) => a - b })
+    : undefined
+
+  $: lineScaleX = currentLineData
+    ? scaleTime().domain(currentLineData.domain('date'))
+    : undefined
+
+  $: lineScaleY = currentLineData
+    ? scaleLinear().domain(currentLineData.domain('averagePrice'))
+    : undefined
 </script>
 
-<Graphic width={800} height={800}>
+<select bind:value={currentVisualization}>
+  <option value="scatterplot">Scatterplot</option>
+  <option value="map">Map</option>
+</select>
+
+<br />
+
+<Graphic width={1200} height={600}>
 
   <Section
+    x1={0} x2={600}
     padding={70}
     {...scales}
-    flipY={currentVisualization === 'scatterplot' ? true : false}
+    flipY
   >
 
     {#if currentVisualization === 'map'}
@@ -94,12 +118,14 @@
       onMouseover={event => { setCity(event) }}
       onMouseout={() => { setCity(undefined) }}
       fill={key => key === currentKey ? 'red' : 'steelblue'}
-      transition={2000}
+      transition={{ geometry: 3000 }}
     />
 
     {#if currentVisualization === 'scatterplot'}
-      <XAxis title="Population" />
-      <YAxis title="Average sales" />
+      
+      <XAxis title="Population" labelFormat={format('.2s')} titleYOffset={30} />
+      <YAxis title="Average sales" labelFormat={format('.2s')} titleXOffset={50} />
+
     {/if}
   
   </Section>
@@ -111,11 +137,22 @@
     />
   {/if}
 
+  {#if currentLineData}
+
+    <Section
+      x1={600} x2={1200}
+      padding={70}
+      scaleX={lineScaleX}
+      scaleY={lineScaleY}
+    >
+
+      <Line
+        x={currentLineData.column('date')}
+        y={currentLineData.column('averagePrice')}
+      />
+  
+  </Section>
+
+  {/if}
+
 </Graphic>
-
-<br />
-
-<select bind:value={currentVisualization}>
-  <option value="scatterplot">Scatterplot</option>
-  <option value="map">Map</option>
-</select>

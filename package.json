@@ -19,6 +19,7 @@
     "@snlab/florence-datacontainer": "^0.1.4",
     "babel-jest": "^24.9.0",
     "cypress": "^3.4.1",
+    "d3-format": "^1.4.1",
     "d3-scale-chromatic": "^1.5.0",
     "eslint": "^6.2.2",
     "eslint-config-standard": "^14.0.1",

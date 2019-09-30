@@ -26,6 +26,7 @@ export default function (bbox) {
     if (rangeX && rangeY) {
       const rangeDeltaX = Math.abs(rangeX[1] - rangeX[0])
       const rangeDeltaY = Math.abs(rangeY[1] - rangeY[0])
+
       const midX = (rangeX[0] + rangeX[1]) / 2
       const midY = (rangeY[0] + rangeY[1]) / 2
 
@@ -35,6 +36,8 @@ export default function (bbox) {
       if (scalingFactorX < scalingFactorY) {
         const fromMidY = (domainY[1] - domainY[0]) / 2 * scalingFactorX
         const newRangeY = [midY - fromMidY, midY + fromMidY]
+
+        if (rangeY[0] > rangeY[1]) newRangeY.reverse()
 
         scaleX.range(rangeX)
         scaleY.range(newRangeY)
