@@ -9,6 +9,7 @@
   import Line from './pages/Line.svelte'
   import Axes from './pages/Axes.svelte'
   import Drag from './pages/Drag.svelte'
+  import ScaleBandAxes from './pages/ScaleBandAxes.svelte'
 
   // and add them to this component array
   let components = [
@@ -42,6 +43,11 @@
       name: 'Drag',
       url: '/drag',
       component: Drag
+    },
+    {
+      name: 'ScaleBand Axes',
+      url: '/scale-band-axes',
+      component: ScaleBandAxes
     }
   ]
 </script>

@@ -27,20 +27,20 @@
   let bigPoint = { x: 50, y: 'c' }
   let dragPoint
 
-  function handleDragStart (event) {
-    dragPoint = event.localCoords
+  function handleDragstart (event) {
+    dragPoint = event.localCoordinates
   }
 
   function handleDrag (event) {
-    dragPoint = event.localCoords
+    dragPoint = event.localCoordinates
   }
 
-  function handleDragEnd (event) {
+  function handleDragend (event) {
     dragPoint = undefined
-    const hitIndex = Number(event.hitIndex)
-    const position = event.localCoords
+    const hitKey = Number(event.key)
+    const position = event.localCoordinates
 
-    data.updateRow(hitIndex, { a: position.x, b: position.y })
+    data.updateRow(hitKey, { a: position.x, b: position.y })
     data = data
   }
 
@@ -63,10 +63,10 @@
 			<PointLayer
         x={data.column('a')}
         y={data.column('b')}
-        index={data.column('$index')}
-        onDragStart={handleDragStart}
+        key={data.column('$key')}
+        onDragstart={handleDragstart}
         onDrag={handleDrag}
-        onDragEnd={handleDragEnd}
+        onDragend={handleDragend}
       />
 
       {#if dragPoint}

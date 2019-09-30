@@ -1,16 +1,16 @@
 import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
 import { scaleGeometries } from '../../../utils/geometryUtils/index.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
-import getIndexArray from '../utils/getIndexArray.js'
+import getKeyArray from '../utils/getKeyArray.js'
 import { ensureValidCombination } from './createCoordSysGeometry.js'
 import { isDefined, isUndefined } from '../../../utils/equals.js'
 import getNumberOfMarks from '../utils/getNumberOfMarks.js'
 
-export default function (geometryProps, sectionContext, coordinateTransformationContext, indexProp) {
+export default function (geometryProps, sectionContext, coordinateTransformationContext, keyProp) {
   const { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
-  const indexArray = getIndexArray(indexProp, length)
+  const keyArray = getKeyArray(keyProp, length)
   const coordSysGeometryObject = createCoordSysGeometryObject(
-    scaledGeometryArray, coordinateTransformationContext, indexArray
+    scaledGeometryArray, coordinateTransformationContext, keyArray
   )
 
   return coordSysGeometryObject
@@ -31,9 +31,15 @@ function createScaledGeometryArray (geometryProps, sectionContext) {
 }
 
 function scaleGeometryProp (geometry, sectionContext) {
-  const scaledGeometryArray = scaleGeometries(geometry, sectionContext)
-  const length = scaledGeometryArray.length
+  let scaledGeometryArray
 
+  if (geometry.constructor === Function) {
+    scaledGeometryArray = geometry(sectionContext)
+  } else {
+    scaledGeometryArray = scaleGeometries(geometry, sectionContext)
+  }
+
+  const length = scaledGeometryArray.length
   return { scaledGeometryArray, length }
 }
 

@@ -75,18 +75,18 @@ function takeIntoAccountStrokeWidth (item, strokeWidth) {
   return Object.assign(item, newBbox)
 }
 
-export function indexLineLayer ({ layerAttributes, indexArray, layerId }) {
+export function indexLineLayer ({ layerAttributes, keyArray, layerId }) {
   let items = []
 
-  for (let i = 0; i < indexArray.length; i++) {
-    const $index = indexArray[i]
-    const lineAttributes = createLineAttributes(layerAttributes, $index)
+  for (let i = 0; i < keyArray.length; i++) {
+    const key = keyArray[i]
+    const lineAttributes = createLineAttributes(layerAttributes, key)
     const pixelGeometry = lineAttributes.pixelGeometry
     const lineStringCoords = pixelGeometry.coordinates
 
     if (pixelGeometry.type === 'LineString') {
       let segments = indexLineString(
-        lineStringCoords, lineAttributes, $index
+        lineStringCoords, lineAttributes, key
       )
 
       segments = modifyForLayer(segments, layerId)
@@ -95,10 +95,10 @@ export function indexLineLayer ({ layerAttributes, indexArray, layerId }) {
 
     if (pixelGeometry.type === 'MultiLineString') {
       let segments = indexMultiLineString(
-        lineStringCoords, lineAttributes, $index
+        lineStringCoords, lineAttributes, key
       )
 
-      segments = modifyForLayer(segments, layerId)
+      segments = modifyForLayer(segments, layerId, key, i)
       items = items.concat(segments)
     }
   }
@@ -106,19 +106,21 @@ export function indexLineLayer ({ layerAttributes, indexArray, layerId }) {
   return items
 }
 
-function createLineAttributes (attributes, $index) {
+function createLineAttributes (attributes, key) {
   return {
-    pixelGeometry: attributes.pixelGeometryObject[$index],
-    strokeWidth: attributes.strokeWidthObject[$index]
+    pixelGeometry: attributes.pixelGeometryObject[key],
+    strokeWidth: attributes.strokeWidthObject[key]
   }
 }
 
-function modifyForLayer (segments, layerId) {
+function modifyForLayer (segments, layerId, key, index) {
   for (let i = 0; i < segments.length; i++) {
     const segmentItem = segments[i]
-    segmentItem.$index = segmentItem.markId
     delete segmentItem.markId
+
     segmentItem.layerId = layerId
+    segmentItem.key = key
+    segmentItem.index = index
   }
 
   return segments

@@ -14,9 +14,13 @@ export default function (
 
 function createScaledGeometry (geometryProps, sectionContext) {
   ensureValidCombination(geometryProps, 'Polygon')
-  
+
   if (isDefined(geometryProps.geometry)) {
-    return scaleGeometry(geometryProps.geometry, sectionContext)
+    if (geometryProps.geometry.constructor === Function) {
+      return geometryProps.geometry(sectionContext)
+    } else {
+      return scaleGeometry(geometryProps.geometry, sectionContext)
+    }
   }
 
   if (isUndefined(geometryProps.geometry)) {

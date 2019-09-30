@@ -1,4 +1,5 @@
 import InteractionHandler from './InteractionHandler.js'
+import createEvent from './utils/createEvent.js'
 
 export default class MouseoutHandler extends InteractionHandler {
   constructor (interactionManager) {
@@ -14,7 +15,7 @@ export default class MouseoutHandler extends InteractionHandler {
       const interactionManager = this._interactionManager
       const eventManager = interactionManager._eventManager
       const listenerId = interactionManager._id + '-mouseout'
-      this._interruptedTouch = eventManager._exceptions['mouseout']
+      this._interruptedTouch = eventManager._exceptions.mouseout
 
       // Mouse
       if (eventManager._detectIt.deviceType.includes('mouse')) {
@@ -26,7 +27,6 @@ export default class MouseoutHandler extends InteractionHandler {
         eventManager.addEventListener('eventup', listenerId + '-eventup', handler)
         eventManager.addEventListener('eventcancel', listenerId + '-eventcancel', handler)
       }
-     
     }
   }
 
@@ -48,17 +48,17 @@ export default class MouseoutHandler extends InteractionHandler {
     }
   }
 
-  _handleEvent (coordinates, mouseEvent) {
+  _handleEvent (screenCoordinates, nativeEvent) {
     this._currentMouseoverIds = {}
 
     const spatialIndex = this._spatialIndex
-    const hits = spatialIndex.queryMouseCoordinates(coordinates)
+    const hits = spatialIndex.queryMouseCoordinates(screenCoordinates)
 
-    this._storeHits(hits, mouseEvent)
-    this._fireForMouseOutHits(mouseEvent)
+    this._storeHits(hits, nativeEvent)
+    this._fireForMouseOutHits(screenCoordinates, nativeEvent)
   }
 
-  _storeHits (hits, mouseEvent) {
+  _storeHits (hits, nativeEvent) {
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
       const hitId = this._getHitId(hit)
@@ -71,27 +71,35 @@ export default class MouseoutHandler extends InteractionHandler {
     }
   }
 
-  _fireForMouseOutHits (mouseEvent) {
+  _fireForMouseOutHits (screenCoordinates, nativeEvent) {
     for (const hitId in this._previousHits) {
-      if (!(hitId in this._currentMouseoverIds) || this._interruptedTouch.includes(mouseEvent.type)) {
+      if (!(hitId in this._currentMouseoverIds) || this._interruptedTouch.includes(nativeEvent.type)) {
         const hit = this._previousHits[hitId]
 
+        const localCoordinates = this._getLocalCoordinates(screenCoordinates)
+        const mouseoutEvent = createEvent('mouseout', {
+          screenCoordinates,
+          localCoordinates
+        }, nativeEvent)
+
         if (this._isInLayer(hit)) {
-          this._layerCallbacks[hit.layerId](hit.$index, mouseEvent)
+          mouseoutEvent.key = hit.key
+          mouseoutEvent.index = hit.index
+          this._layerCallbacks[hit.layerId](mouseoutEvent)
         }
 
         if (this._isMark(hit)) {
-          this._markCallbacks[hit.markId](mouseEvent)
+          this._markCallbacks[hit.markId](mouseoutEvent)
         }
 
         delete this._previousHits[hitId]
-      } 
+      }
     }
   }
 
   _getHitId (hit) {
     let id
-    if (this._isInLayer(hit)) id = hit.layerId + '-' + hit.$index
+    if (this._isInLayer(hit)) id = hit.layerId + '-' + hit.key
     if (this._isMark(hit)) id = hit.markId
     return id
   }

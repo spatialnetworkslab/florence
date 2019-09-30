@@ -14,17 +14,18 @@ export function indexRectangle (markData) {
   return item
 }
 
-export function indexRectangleLayer ({ layerAttributes, indexArray, layerId }) {
+export function indexRectangleLayer ({ layerAttributes, keyArray, layerId }) {
   const items = []
 
-  for (let i = 0; i < indexArray.length; i++) {
-    const $index = indexArray[i]
+  for (let i = 0; i < keyArray.length; i++) {
+    const key = keyArray[i]
 
-    const rectangleAttributes = getRectangleAttributes(layerAttributes, $index)
+    const rectangleAttributes = getRectangleAttributes(layerAttributes, key)
     const bbox = calculateBBoxGeometry(rectangleAttributes.screenGeometry)
     const item = createItemFromBBox(bbox)
 
-    item.$index = $index
+    item.key = key
+    item.index = i
     item.attributes = rectangleAttributes
     item.markType = 'Rectangle'
     item.layerId = layerId
@@ -35,6 +36,6 @@ export function indexRectangleLayer ({ layerAttributes, indexArray, layerId }) {
   return items
 }
 
-function getRectangleAttributes (layerAttributes, $index) {
-  return { screenGeometry: layerAttributes.screenGeometryObject[$index] }
+function getRectangleAttributes (layerAttributes, key) {
+  return { screenGeometry: layerAttributes.screenGeometryObject[key] }
 }

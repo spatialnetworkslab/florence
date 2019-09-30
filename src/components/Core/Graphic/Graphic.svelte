@@ -11,7 +11,7 @@
   import EventManager from '../../../classes/EventManager'
   import InteractionManager from '../../../classes/InteractionManager'
 
-  import parsePadding from '../utils/parsePadding.js'
+  import { parsePadding, applyPadding } from '../utils/padding.js'
 
   export let width
   export let height
@@ -33,17 +33,6 @@
     GraphicContext.update(graphicContext, { renderer })
   }
 
-  let _padding
-
-  $: {
-    _padding = parsePadding(padding)
-    let rangeX = [0 + _padding.left, width - _padding.right]
-    let rangeY = [0 + _padding.top, height - _padding.bottom]
-    if (flipX) rangeX.reverse()
-    if (flipY) rangeY.reverse()
-    SectionContext.update(sectionContext, { rangeX, rangeY, scaleX, scaleY, padding: _padding })
-  }
-
   let rootNode
  
   // set up event and interaction manager
@@ -55,6 +44,26 @@
   interactionManager.linkEventManager(eventManager)
 
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
+
+  let _padding
+
+  $: {
+    let rangeX = [0, width]
+    let rangeY = [0, height]    
+
+    if (flipX) rangeX.reverse()
+    if (flipY) rangeY.reverse()
+
+    _padding = parsePadding(padding)
+    rangeX = applyPadding(rangeX, _padding.left, _padding.right)
+    rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
+
+    SectionContext.update(sectionContext, 
+      { sectionId: 'graphic', rangeX, rangeY, scaleX, scaleY, padding: _padding }
+    )
+
+    $interactionManagerContext.loadSection($sectionContext)
+  }
 
   onMount(() => {
     // only on mount can we bind the svg root node and attach actual event listeners

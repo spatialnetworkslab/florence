@@ -15,12 +15,6 @@
     .summarise({ meanQuantity: { quantity: 'mean' } })
     .arrange({ meanQuantity: 'descending' })
 
-  
-  let notAllowedfruit = ''
-
-  $: filteredData = data
-    .filter(row => row.fruit !== notAllowedfruit)
-
   const scaleFruit = scaleBand().domain(data.domain('fruit')).padding(0.2)
 	let meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
   const scaleMeanQuantity = scaleLinear().domain(meanQuantityDomain)
@@ -52,10 +46,6 @@
   <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
 </div>
 
-<div>
-  <button on:click={() => notAllowedfruit = 'durian'}>Filter: fruit !== durian</button>
-</div>
-
 <Graphic 
   width={500} {height}
   scaleX={scaleLinear().domain([0, 500])}
@@ -71,17 +61,7 @@
     {transformation}
   >
 
-    <!-- <RectangleLayer 
-        x1={filteredData.column('fruit')}
-        x2={({ scaleX }) => filteredData.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
-        y1={0}
-        y2={filteredData.column('meanQuantity')}
-        fill={transformation === 'identity' ? 'green' : 'blue'}
-        index={filteredData.column('$index')}
-        onClick={ix => log(ix)}
-    /> -->
-
-    {#each filteredData.rows() as row (row.$index)}
+    {#each data.rows() as row (row.$key)}
 
       <Rectangle 
         x1={row.fruit}
@@ -91,7 +71,6 @@
         fill={transformation === 'identity' ? 'green' : 'blue'}
         transition={2000}
         onClick={handler}
-        onMouseover={ () => transformation = 'identity' }
       />
 
     {/each}

@@ -25,8 +25,8 @@ export default function createZoomHandler (
       }
 
       // stops zooming if past extents X and Y
-      const offsetX = -(event.coordinates.x * delta)
-      const offsetY = -(event.coordinates.y * delta)
+      const offsetX = -(event.screenCoordinates.x * delta)
+      const offsetY = -(event.screenCoordinates.y * delta)
 
       const tempX = zoomId.x - offsetX
       const tempY = zoomId.y - offsetY

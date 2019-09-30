@@ -1,5 +1,6 @@
 import SectionInteractionHandler from './SectionInteractionHandler.js'
 import getScrollLineHeight from './utils/getScrollLineHeight.js'
+import createEvent from './utils/createEvent.js'
 
 let scrollLineHeight
 
@@ -51,20 +52,25 @@ export default class WheelHandler extends SectionInteractionHandler {
     return delta * (event.deltaMode ? scrollLineHeight : 1) / 500
   }
 
-  _nopropagation (event) {
-    event.preventDefault() // Cancel the event
-    event.stopPropagation() // Don't bubble
+  _nopropagation (nativeEvent) {
+    nativeEvent.preventDefault() // Cancel the event
+    nativeEvent.stopPropagation() // Don't bubble
   }
 
-  _handleEvent (coordinates, event) {
-    this._nopropagation(event)
+  _handleEvent (screenCoordinates, nativeEvent) {
+    this._nopropagation(nativeEvent)
 
-    const wheelDelta = this._defaultWheelDelta(event)
-    const evt = { wheelDelta, coordinates: coordinates, originalEvent: event }
-    const sectionBbox = this._interactionManager._section
+    if (this._isInSection(screenCoordinates)) {
+      const localCoordinates = this._getLocalCoordinates(screenCoordinates)
+      const wheelDelta = this._defaultWheelDelta(nativeEvent)
 
-    if (this._isInSection(coordinates, sectionBbox)) {
-      this._callback(evt)
+      const wheelEvent = createEvent('wheel', {
+        screenCoordinates,
+        localCoordinates,
+        wheelDelta
+      }, nativeEvent)
+
+      this._callback(wheelEvent)
     }
   }
 }

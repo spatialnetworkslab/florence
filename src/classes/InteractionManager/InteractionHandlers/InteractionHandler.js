@@ -50,11 +50,12 @@ export default class InteractionHandler {
     this._spatialIndex.unindexMark(markId)
   }
 
-  _isInSection (hit, geometry) {
-    return (hit.x >= geometry.x1 &&
-            hit.x <= geometry.x2 &&
-            hit.y >= geometry.y1 &&
-            hit.y <= geometry.y2)
+  _isInSection (hit) {
+    const section = this._interactionManager._section
+    return (hit.x >= section.minX &&
+            hit.x <= section.maxX &&
+            hit.y >= section.minY &&
+            hit.y <= section.maxY)
   }
 
   _isInLayer (hit) {
@@ -65,7 +66,7 @@ export default class InteractionHandler {
     return 'markId' in hit
   }
 
-  _getLocalCoordinates (pixelCoords) {
+  _getLocalCoordinates (screenCoordinates) {
     const im = this._interactionManager
     const section = im._section
 
@@ -78,8 +79,8 @@ export default class InteractionHandler {
 
     const { scaleX, scaleY } = section
 
-    const clampedX = this._clamp(pixelCoords.x, section.x1, section.x2)
-    const clampedY = this._clamp(pixelCoords.y, section.y1, section.y2)
+    const clampedX = this._clamp(screenCoordinates.x, section.minX, section.maxX)
+    const clampedY = this._clamp(screenCoordinates.y, section.minY, section.maxY)
 
     let localX = clampedX
     let localY = clampedY

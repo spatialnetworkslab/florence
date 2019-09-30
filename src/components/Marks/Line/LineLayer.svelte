@@ -16,9 +16,12 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onDragstart = undefined
+  export let onDrag = undefined
+  export let onDragend = undefined
 
   // Other
-  export let index = undefined
+  export let key = undefined
   export let interpolate = true
   export let zoomIdentity = undefined
 </script>
@@ -28,5 +31,6 @@
   {x} {y} {geometry}
   {strokeWidth} {stroke} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {interpolate} {zoomIdentity} {index} _asPolygon={false}
+  {onDragstart} {onDrag} {onDragend}
+  {interpolate} {zoomIdentity} {key} _asPolygon={false}
 />

@@ -25,9 +25,12 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onDragstart = undefined
+  export let onDrag = undefined
+  export let onDragend = undefined
 
   // Other
-  export let index = undefined
+  export let key = undefined
   export let zoomIdentity = undefined
 </script>
 
@@ -39,5 +42,6 @@
   {text}
   {fontFamily} {fontSize} {fontWeight} {rotation} {anchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {index} {zoomIdentity} _asPolygon={false}
+  {onDragstart} {onDrag} {onDragend}
+  {key} {zoomIdentity} _asPolygon={false}
 />

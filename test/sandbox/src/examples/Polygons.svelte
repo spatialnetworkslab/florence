@@ -84,7 +84,7 @@
       onMouseover={() => isHovering = true}
       onMouseout={() => isHovering = false}
       fill={isHovering ? 'blue' : 'yellow'}
-      index={[0]}
+      key={[0]}
       transition={2000}
     />
   

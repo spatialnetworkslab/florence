@@ -20,9 +20,12 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
+  export let onDragstart = undefined
+  export let onDrag = undefined
+  export let onDragend = undefined
 
   // Other
-  export let index = undefined
+  export let key = undefined
   export let interpolate = true
   export let zoomIdentity = undefined
 </script>
@@ -33,5 +36,6 @@
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {index} {zoomIdentity} {interpolate}
+  {onDragstart} {onDrag} {onDragend}
+  {key} {zoomIdentity} {interpolate}
 />

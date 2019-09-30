@@ -36,49 +36,44 @@
   let hoverPoints = {}
 
   $: hoverPointKeys = Object.keys(hoverPoints)
-  function handleMouseout (ix) {
-    delete hoverPoints[ix]
+  function handleMouseout ({ key }) {
+    delete hoverPoints[key]
     hoverPoints = hoverPoints
   }
   
   let bigPoint = { x: 50, y: 50 }
   let dragPoint
 
-  function handleDragStart (event) {
-    dragPoint = event.localCoords
+  function handleDragstart (event) {
+    dragPoint = event.localCoordinates
   }
 
   function handleDrag (event) {
-    dragPoint = event.localCoords
+    dragPoint = event.localCoordinates
   }
 
-  function handleDragEnd (event) {
+  function handleDragend (event) {
     bigPoint = dragPoint
     dragPoint = undefined
   }
 
   let dragPointLayer
-  let dragIndex
-  let opacityArray
-  $: {
-    opacityArray = Array(filteredData._length).fill(1)
-    opacityArray[filteredData._indexToRowNumber[dragIndex]] = 0
-  }
+  let dragKey
 
-  function handleLayerDragStart (event) {
-    dragIndex = event.hitIndex
-    dragPointLayer = event.localCoords
+  function handleLayerDragstart (event) {
+    dragKey = event.key
+    dragPointLayer = event.localCoordinates
   }
 
   function handleLayerDrag (event) {
-    dragPointLayer = event.localCoords
+    dragPointLayer = event.localCoordinates
   }
 
-  function handleLayerDragEnd (event) {
-    data.updateRow(event.hitIndex, { a: dragPointLayer.x, b: dragPointLayer.y })
+  function handleLayerDragend (event) {
+    data.updateRow(event.key, { a: dragPointLayer.x, b: dragPointLayer.y })
     data = data
     dragPointLayer = undefined
-    dragIndex = undefined
+    dragKey = undefined
   }
 
 </script>
@@ -126,17 +121,16 @@
 			<PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}
-        opacity={opacityArray}
-        index={filteredData.column('$index')}
+        opacity={key => dragKey === key ? 0 : 1}
+        key={filteredData.column('$key')}
         fill={transformation === 'identity' ? 'black' : 'blue'}
         radius={transformation === 'identity' ? 4 : 6}
-        onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
+        onMouseover={({ key }) => hoverPoints[key] = filteredData.row(key)}
         onMouseout={handleMouseout}
-        onDragStart={handleLayerDragStart}
+        onDragstart={handleLayerDragstart}
         onDrag={handleLayerDrag}
-        onDragEnd={handleLayerDragEnd}
+        onDragend={handleLayerDragend}
       />
-        <!-- transition={duration} -->
 
       {#if dragPointLayer}
         <Point
@@ -147,19 +141,6 @@
         />
       {/if}
 
-      <!-- {#each filteredData.rows() as row (row.$index)}
-
-        <Point 
-          x={row.a}
-          y={row.b}
-          fill={transformation === 'identity' ? 'black' : 'blue'}
-          radius={transformation === 'identity' ? 3 : 6}
-          onMouseover={() => hoverPoints[row.$index] = filteredData.row(row.$index)}
-          onMouseout={() => handleMouseout(row.$index)}
-        />
-
-      {/each} -->
-
       <Point
         x={bigPoint.x}
         y={bigPoint.y}
@@ -169,9 +150,9 @@
         onClick={() => log('BOOM')}
         onMouseover={() => big = true}
         onMouseout={() => big = false}
-        onDragStart={handleDragStart}
+        onDragstart={handleDragstart}
         onDrag={handleDrag}
-        onDragEnd={handleDragEnd}
+        onDragend={handleDragend}
       />
 
       {#if dragPoint}
@@ -182,17 +163,6 @@
           fill={'red'}
         />
       {/if}
-
-      <!-- {#each hoverPointKeys as key (key)}
-
-        <Point
-          x={hoverPoints[key].a}
-          y={hoverPoints[key].b}
-          radius={10}
-          fill={'green'}
-        />
-
-      {/each} -->
 
 		</Section>
 
