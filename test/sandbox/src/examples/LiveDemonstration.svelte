@@ -76,7 +76,7 @@
   $: currentLineData = currentKey
     ? avocadoGrouped.row(currentKey).$grouped.arrange({ date: (a, b) => a - b })
     : undefined
-
+  
   $: lineScaleX = currentLineData
     ? scaleTime().domain(currentLineData.domain('date'))
     : undefined
