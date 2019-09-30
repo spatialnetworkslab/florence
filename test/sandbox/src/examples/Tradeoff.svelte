@@ -58,7 +58,7 @@
     <FuncLine 
       func={lineFunc}
       strokeWidth={2}
-      stroke="blue"
+      stroke="steelblue"
       transition={5000}
     />
 
