@@ -309,6 +309,7 @@
         colorXEndCoords = colorGeoms.colorXEndCoords
         colorYStartCoords = colorGeoms.colorYStartCoords
         colorYEndCoords = colorGeoms.colorYEndCoords
+        console.log(colorXStartCoords, colorXEndCoords, colorYStartCoords, colorYEndCoords)
     }
 
 </script>
