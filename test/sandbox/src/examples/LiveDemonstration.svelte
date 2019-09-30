@@ -2,7 +2,7 @@
   import { 
     Graphic, Section, 
     PointLayer, PolygonLayer, Line, Label,
-    XAxis, YAxis, createGeoScales,
+    XAxis, YAxis, createGeoScales
   } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
   import { scaleLinear, scaleTime } from 'd3-scale'
@@ -25,6 +25,7 @@
       totalVolume: row => parseInt(row.totalVolume),
       date: row => new Date(row.date)
     })
+    .filter(row => row.date > new Date('2017-03-25'))
     .groupBy('city')
 
   let avocadoPricePerCity = avocadoGrouped
@@ -76,9 +77,9 @@
   $: currentLineData = currentKey
     ? avocadoGrouped.row(currentKey).$grouped.arrange({ date: (a, b) => a - b })
     : undefined
-  
+
   $: lineScaleX = currentLineData
-    ? scaleTime().domain(currentLineData.domain('date'))
+    ? scaleTime().domain(currentLineData.domain('date')).nice()
     : undefined
 
   $: lineScaleY = currentLineData
@@ -144,12 +145,18 @@
       padding={70}
       scaleX={lineScaleX}
       scaleY={lineScaleY}
+      flipY
     >
 
       <Line
         x={currentLineData.column('date')}
         y={currentLineData.column('averagePrice')}
+        strokeWidth={0.5}
+        color="#32CD32"
       />
+
+      <XAxis labelRotate={-30} labelOffset={10} />
+      <YAxis />
   
   </Section>
 

@@ -7,7 +7,6 @@
   import Tradeoff from './examples/Tradeoff.svelte'
   import ComponentBasics from './examples/ComponentBasics.svelte'
   import LiveDemonstration from './examples/LiveDemonstration.svelte'
-  import ZoomTest from './examples/ZoomTest.svelte'
 
   // and add them to this component array
   let components = [
@@ -30,11 +29,6 @@
       name: 'Live demonstration',
       url: 'live-demonstration',
       component: LiveDemonstration
-    },
-    {
-      name: 'Zoom test',
-      url: 'zoom-test',
-      component: ZoomTest
     }
   ]
 </script>
