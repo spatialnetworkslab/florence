@@ -8,6 +8,7 @@
   import ComponentBasics from './examples/ComponentBasics.svelte'
   import Dashboard from './examples/Dashboard.svelte'
   import SelectBrush from './examples/SelectBrush.svelte'
+  import LayerTransition from './examples/LayerTransition.svelte'
 
   // and add them to this component array
   let components = [
@@ -35,6 +36,11 @@
       name: 'Select / brush',
       url: 'select-brush',
       component: SelectBrush
+    },
+    {
+      name: 'Layer transition',
+      url: 'layer-transition',
+      component: LayerTransition
     }
   ]
 </script>
