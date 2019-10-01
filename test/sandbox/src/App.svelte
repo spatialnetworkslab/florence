@@ -6,7 +6,8 @@
   import Barchart from './examples/Barchart.svelte'
   import Tradeoff from './examples/Tradeoff.svelte'
   import ComponentBasics from './examples/ComponentBasics.svelte'
-  import LiveDemonstration from './examples/LiveDemonstration.svelte'
+  import Dashboard from './examples/Dashboard.svelte'
+  import SelectBrush from './examples/SelectBrush.svelte'
 
   // and add them to this component array
   let components = [
@@ -26,9 +27,14 @@
       component: ComponentBasics
     },
     {
-      name: 'Live demonstration',
-      url: 'live-demonstration',
-      component: LiveDemonstration
+      name: 'Dashboard',
+      url: 'dashboard',
+      component: Dashboard
+    },
+    {
+      name: 'Select / brush',
+      url: 'select-brush',
+      component: SelectBrush
     }
   ]
 </script>
