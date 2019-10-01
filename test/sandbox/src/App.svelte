@@ -9,6 +9,7 @@
   import Dashboard from './examples/Dashboard.svelte'
   import SelectBrush from './examples/SelectBrush.svelte'
   import LayerTransition from './examples/LayerTransition.svelte'
+  import Polar from './examples/Polar.svelte'
 
   // and add them to this component array
   let components = [
@@ -41,6 +42,11 @@
       name: 'Layer transition',
       url: 'layer-transition',
       component: LayerTransition
+    },
+    {
+      name: 'Polar',
+      url: 'polar',
+      component: Polar
     }
   ]
 </script>
