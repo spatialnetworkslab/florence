@@ -50,7 +50,6 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
 
 export function getTickPositions (tickValuesArray, scale, tickCount, tickExtra, colorBarDimension, locRange, orient, flip) {
   let tickPositions
-  console.log('+++', locRange)
   // Bins
   if (Array.isArray(scale[0]) && scale.length > 0) {
     const domain = [Math.min(...tickValuesArray), Math.max(...tickValuesArray)]
@@ -70,17 +69,20 @@ export function getTickPositions (tickValuesArray, scale, tickCount, tickExtra, 
   } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
     // const interval = orient === 'vertical' ? colorBarDimension / (tickValuesArray.length) : 1 / (tickValuesArray.length)
     const interval = (locRange[1] - locRange[0]) / (tickValuesArray.length)
-
-    console.log(tickValuesArray, interval)
-    if (!flip) {
-      tickPositions = tickValuesArray.map((value, i) => {
-        return interval * (i + 0.5)
-      })
-    } else {
-      tickPositions = tickValuesArray.map((value, i) => {
-        return colorBarDimension - interval * (i + 0.5)
-      })
-    }
+    console.log(interval, locRange)
+    if (flip) tickValuesArray.reverse()
+    tickPositions = tickValuesArray.map((value, i) => {
+          return locRange[1] - interval * (i + 0.5)
+    })
+    // if (!flip) {
+    //   tickPositions = tickValuesArray.map((value, i) => {
+    //     return locRange[1] - interval * (i + 0.5)
+    //   })
+    // } else {
+    //   tickPositions = tickValuesArray.map((value, i) => {
+    //     return locRange[0] + interval * (i + 0.5)
+    //   })
+    // }
   } else {
     throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
         either a 'ticks' or a 'domain' method.`)
