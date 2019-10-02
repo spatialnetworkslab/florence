@@ -153,14 +153,14 @@
       fill={'green'}
       orient={'horizontal'}
     /> -->
+    
     <DiscreteLegend
       scale = {data.domain('a')}
       fill={linearColorScale}
       labelCount={8}
       firstLabel={10}
-      orient={'horizontal'}
-      hjust={'center'}
     />
+
     <Section 
       x1={50} x2={450}
 			y1={200} y2={800}
@@ -169,6 +169,7 @@
       {zoomIdentity}
       padding={50}
     > 
+
     <!--        x1=270 x2={510}
         y1={50} y2={200}-->
 

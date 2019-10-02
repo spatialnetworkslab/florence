@@ -59,10 +59,10 @@
     // axis title
     export let titleHjust = 'center'
     export let titleXOffset = 0
-    export let titleX = 0.5
+    export let titleX = undefined
     export let titleVjust = 'axis'
     export let titleYOffset = 'axis'
-    export let titleY = 0.925
+    export let titleY = undefined
     export let title = 'Legend'
     export let titleColor = 'black'
     export let titleFont = 'Helvetica'
@@ -74,10 +74,9 @@
 
     // transition
     export let transition = undefined
-    export let zoomIdentity = undefined
+    // export let zoomIdentity = undefined
 
     // Contexts
-    // Test
     const sectionContext = SectionContext.subscribe()
     const graphicContext = GraphicContext.subscribe()
 
@@ -101,26 +100,35 @@
     let xCoords
     let yCoords
 
-    // TEST: absolute positioning with no scale transforms
+    // Absolute positioning wrt section/graphic context
     $: {
-        const xRange = $sectionContext.scaleX.domain()
-        if (sectionContext.flipX) xRange.reverse()
+        if (!isValid(x1, x2, y1, y2)) {
+            const xRange = $sectionContext.scaleX.domain()
+            if (sectionContext.flipX) xRange.reverse()
 
-        xCoords = createPosXCoords(hjust, xRange, orient, xOffset)
-        x1 = xCoords.x1
-        x2 = xCoords.x2
+            xCoords = createPosXCoords(hjust, xRange, orient, xOffset)
+            x1 = xCoords.x1
+            x2 = xCoords.x2
+
+            const yRange = $sectionContext.scaleY.domain()
+            if (sectionContext.flipY) yRange.reverse()
+            yCoords = createPosYCoords(vjust, yRange, orient, yOffset)
+            y1 = yCoords.y1
+            y2 = yCoords.y2
+        } else {
+            xCoords = { x1, x2 }
+            yCoords = { y1, y2 }
+        }
+        
+        if (!titleX && !titleY){
+            titleX = (x1 + x2)/2
+            titleY = y2 -(y2 -y1)/2 
+        }
     }
 
-    $: {
-        const yRange = $sectionContext.scaleY.domain()
-        if (sectionContext.flipY) yRange.reverse()
-        yCoords = createPosYCoords(vjust, yRange, orient, yOffset)
-        y1 = yCoords.y1
-        y2 = yCoords.y2
-    }
-
-    // CHECK: that scale is provided,
-    // that least one of `fill, opacity` has been specified
+    // CHECK: 
+    // 1. that scale is provided,
+    // 2. that least one of `fill, opacity` has been specified
     $: {
         if (fill || fillOpacity){
             // continue
@@ -136,19 +144,19 @@
 
     $: {
         if (orient === 'horizontal') {
-            colorBarLength = 0.5
-            colorBarWidth  = 1.0
+            colorBarLength = 0.75
+            colorBarWidth  = 0.1
         }
     }
 
-    // LABELS
+    // TICK LABELS and POSITIONING
     $: {
         tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
         let locRange
         if (orient === 'vertical') {
             locRange = [y1, y2]
-            tickLabelYCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarLength, locRange, orient, flip)
-            tickLabelXCoords = flipLabels ? colorBarLength * (x1 - x2) : 1 - colorBarLength * (x1 - x2) 
+            tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, locRange, flip)
+            tickLabelXCoords = flipLabels ? x1 + colorBarLength * (x2 - x1) : x1 + (1 - colorBarLength) * (x2 - x1) 
             
             if (labelX) {
                 tickLabelXCoords = labelX
@@ -156,10 +164,9 @@
 
             format = getFormat(labelFormat, scale, tickLabelYCoords.length)
         } else if (orient === 'horizontal'){
-            // locRange = [0.05, colorBarWidth - 0.05] 
             locRange = [x1, x2]
-            tickLabelXCoords = getTickPositions(tickLabelText, scale, labelCount, labelExtra, colorBarWidth, locRange, orient, flip)
-            tickLabelYCoords = flipLabels ? colorBarWidth * (y1 - y2) : 1 - colorBarWidth * (y1 - y2) 
+            tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, locRange, flip)
+            tickLabelYCoords = flipLabels ? y2 - (1 - colorBarWidth) * (y2 - y1) : y2 - colorBarWidth * (y2 - y1) 
             
             if (labelY) {
                 tickLabelYCoords = labelY
@@ -169,7 +176,6 @@
         } else {
             throw new Error(`Couldn't construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
         }
- 
         tickLabelText = tickLabelText.map(format)
     }   
 
@@ -195,9 +201,9 @@
             if (orient === 'vertical') {
                 tickLabelPositions = tickLabelYCoords
             } else {
-                tickLabelPositions = tickLabelXCoords
+                tickLabelPositions = tickLabelXCoords.reverse()
             }
-            colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
+            colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
             if (!tickOpacities){
                 tickOpacities = fill
             }
@@ -242,7 +248,6 @@
         colorXEndCoords = colorGeoms.colorXEndCoords
         colorYStartCoords = colorGeoms.colorYStartCoords
         colorYEndCoords = colorGeoms.colorYEndCoords
-        console.log(colorXStartCoords, colorXEndCoords, colorYStartCoords, colorYEndCoords)
     }
 
 </script>
@@ -257,17 +262,7 @@
             {zoomIdentity}
             flipY
         >    -->
-           <!-- <RectangleLayer
-                x1 = {colorXStartCoords}
-                x2 = {colorXEndCoords}
-                y1 = {colorYStartCoords}
-                y2 = {colorYEndCoords}
-                fill = {tickColors}
-                fillOpacity = {tickOpacities}
-                {transition} 
-            /> -->
-
-             <!-- <Label 
+             <Label 
                 x={titleX}
                 y={titleY}
                 text={title}
@@ -279,7 +274,18 @@
                 opacity={titleOpacity} 
                 fill={titleColor}
                 {transition} 
-            /> -->
+            />
+
+            <RectangleLayer
+                x1 = {colorXStartCoords}
+                x2 = {colorXEndCoords}
+                y1 = {colorYStartCoords}
+                y2 = {colorYEndCoords}
+                fill = {tickColors}
+                fillOpacity = {tickOpacities}
+                {transition} 
+            />
+
             <LabelLayer
                 x={tickLabelXCoords} 
                 y={tickLabelYCoords} 
