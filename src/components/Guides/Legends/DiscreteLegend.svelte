@@ -102,28 +102,30 @@
 
     // Absolute positioning wrt section/graphic context
     $: {
+        console.log(x1, x2, y1, y2, !isValid(x1, x2, y1, y2))
         if (!isValid(x1, x2, y1, y2)) {
             const xRange = $sectionContext.scaleX.domain()
             if (sectionContext.flipX) xRange.reverse()
-
             xCoords = createPosXCoords(hjust, xRange, orient, xOffset)
             x1 = xCoords.x1
             x2 = xCoords.x2
 
             const yRange = $sectionContext.scaleY.domain()
+           
             if (sectionContext.flipY) yRange.reverse()
             yCoords = createPosYCoords(vjust, yRange, orient, yOffset)
-            y1 = yCoords.y1
+            y1 = yCoords.y1 + titleFontSize
             y2 = yCoords.y2
-        } else {
+        } else { 
             xCoords = { x1, x2 }
             yCoords = { y1, y2 }
         }
         
         if (!titleX && !titleY){
             titleX = (x1 + x2)/2
-            titleY = y2 -(y2 -y1)/2 
+            titleY = y2
         }
+        console.log(title, titleY)
     }
 
     // CHECK: 
@@ -177,6 +179,7 @@
             throw new Error(`Couldn't construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
         }
         tickLabelText = tickLabelText.map(format)
+        console.log(tickLabelYCoords, tickLabelXCoords)
     }   
 
     // COLORS

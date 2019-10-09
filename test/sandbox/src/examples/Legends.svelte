@@ -161,6 +161,15 @@
       firstLabel={10}
     />
 
+    <!-- <DiscreteLegend
+      x1={270} x2={340}
+      y1={50} y2={400}
+      scale = {data.domain('a')}
+      fill={linearColorScale}
+      labelCount={8}
+      firstLabel={10}
+    /> -->
+
     <Section 
       x1={50} x2={450}
 			y1={200} y2={800}
