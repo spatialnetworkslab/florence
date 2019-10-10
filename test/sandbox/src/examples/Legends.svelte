@@ -159,6 +159,10 @@
       fill={linearColorScale}
       labelCount={8}
       firstLabel={10}
+      vjust={'bottom'}
+      stroke={'white'}
+      orient={'horizontal'}
+      strokeWidth={5}
     />
 
     <!-- <DiscreteLegend

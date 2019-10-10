@@ -70,6 +70,7 @@ export function createPosXCoords (hjust, xRange, orient, xOffset) {
       return [xCoord - xOffset / 2, xCoord + xOffset / 2]
     }
   }
+  
   if (hjust === 'right') {
     xCoords = () => {
       return [x2Range - xOffset, x2Range]

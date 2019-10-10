@@ -34,6 +34,8 @@
     export let flipLabels = false
     export let background = 'none'
     export let backgroundOpacity = 0.3
+    export let stroke = 'none'
+    export let strokeWidth = 2
 
     // Aesthetics: mappable
     export let fill = undefined
@@ -125,7 +127,7 @@
             titleX = (x1 + x2)/2
             titleY = y2
         }
-        console.log(title, titleY)
+        console.log('___', titleX, titleY, yCoords)
     }
 
     // CHECK: 
@@ -156,7 +158,7 @@
         tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
         let locRange
         if (orient === 'vertical') {
-            locRange = [y1, y2]
+            locRange = [yCoords.y1, yCoords.y2]
             tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, locRange, flip)
             tickLabelXCoords = flipLabels ? x1 + colorBarLength * (x2 - x1) : x1 + (1 - colorBarLength) * (x2 - x1) 
             
@@ -166,10 +168,10 @@
 
             format = getFormat(labelFormat, scale, tickLabelYCoords.length)
         } else if (orient === 'horizontal'){
-            locRange = [x1, x2]
+            locRange = [xCoords.x1, xCoords.x2]
             tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, locRange, flip)
-            tickLabelYCoords = flipLabels ? y2 - (1 - colorBarWidth) * (y2 - y1) : y2 - colorBarWidth * (y2 - y1) 
-            
+            tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * (yCoords.y2 - yCoords.y1) : yCoords.y2 - colorBarWidth * (yCoords.y2 - yCoords.y1) 
+            console.log(tickLabelYCoords)
             if (labelY) {
                 tickLabelYCoords = labelY
             }
@@ -179,7 +181,6 @@
             throw new Error(`Couldn't construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
         }
         tickLabelText = tickLabelText.map(format)
-        console.log(tickLabelYCoords, tickLabelXCoords)
     }   
 
     // COLORS
@@ -287,6 +288,8 @@
                 fill = {tickColors}
                 fillOpacity = {tickOpacities}
                 {transition} 
+                {stroke}
+                {strokeWidth}
             />
 
             <LabelLayer

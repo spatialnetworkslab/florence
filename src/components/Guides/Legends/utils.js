@@ -66,10 +66,9 @@ export function getTickPositions (tickValuesArray, scale, tickExtra, locRange, f
     })
 
   // Arrays
-  // equal interval
+  // equal interval: works on both vertical and horizontal orientations
   } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
     const interval = (locRange[1] - locRange[0]) / (tickValuesArray.length)
-    
     if (flip) tickValuesArray.reverse()
     tickPositions = tickValuesArray.map((value, i) => {
       return locRange[1] - interval * (i + 0.5)
@@ -108,9 +107,9 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
         return xCoords.x1
       } else {
         if (colorBarWidth <= 1) {
-          return (1 - colorBarWidth) * coordsWidth
+          return xCoords.x2 - colorBarWidth * coordsWidth
         } else {
-          return colorBarWidth
+          return xCoords.x2 - colorBarWidth
         }
       }
     })
@@ -118,15 +117,15 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
     colorXEndCoords = tickLabelText.map((value, i) => {
       if (flipLabels) {
         if (colorBarWidth <= 1) {
-          return colorBarWidth * coordsWidth
+          return xCoords.x2 - (1 - colorBarWidth) * coordsWidth
         } else {
-          return colorBarWidth
+          return xCoords.x2 - colorBarWidth
         }
       } else {
         return xCoords.x2
       }
     })
-
+    console.log('+++', colorXStartCoords)
     // y coords
     // Non-uniform distribution along linear scale
     if (Array.isArray(scale[0]) && scale.length > 0) {
