@@ -159,10 +159,10 @@
       fill={linearColorScale}
       labelCount={8}
       firstLabel={10}
-      vjust={'bottom'}
-      stroke={'white'}
-      orient={'horizontal'}
-      strokeWidth={5}
+      title={'Title'}
+      hjust={'right'}
+      titleX={200}
+      titleY={600}
     />
 
     <!-- <DiscreteLegend
@@ -198,7 +198,7 @@
         transition={duration}
       />
 
-      <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
+      <XAxis title={'Test'} zoomIdentity={{ y: 0, ky: 1 }} />
       <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
     
     </Section>

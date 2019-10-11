@@ -3,7 +3,7 @@
     import { scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
     import { default as getDataType } from '../../../utils/getDataType.js'
 
-    import { createPosYCoords, createPosXCoords } from "./createLegendCoords.js"
+    import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from "./createLegendCoordinates.js"
 
     // Test
     import * as GraphicContext from '../../Core/Graphic/GraphicContext'
@@ -62,8 +62,8 @@
     export let titleHjust = 'center'
     export let titleXOffset = 0
     export let titleX = undefined
-    export let titleVjust = 'axis'
-    export let titleYOffset = 'axis'
+    export let titleVjust = 'center'
+    export let titleYOffset = 'center'
     export let titleY = undefined
     export let title = 'Legend'
     export let titleColor = 'black'
@@ -102,32 +102,46 @@
     let xCoords
     let yCoords
 
-    // Absolute positioning wrt section/graphic context
+    // Section positioning wrt section/graphic context
     $: {
-        console.log(x1, x2, y1, y2, !isValid(x1, x2, y1, y2))
         if (!isValid(x1, x2, y1, y2)) {
             const xRange = $sectionContext.scaleX.domain()
+            const yRange = $sectionContext.scaleY.domain()
+
             if (sectionContext.flipX) xRange.reverse()
             xCoords = createPosXCoords(hjust, xRange, orient, xOffset)
             x1 = xCoords.x1
             x2 = xCoords.x2
-
-            const yRange = $sectionContext.scaleY.domain()
            
             if (sectionContext.flipY) yRange.reverse()
             yCoords = createPosYCoords(vjust, yRange, orient, yOffset)
-            y1 = yCoords.y1 + titleFontSize
+            y1 = yCoords.y1 + titleFontSize * 3
             y2 = yCoords.y2
         } else { 
             xCoords = { x1, x2 }
             yCoords = { y1, y2 }
         }
-        
-        if (!titleX && !titleY){
-            titleX = (x1 + x2)/2
-            titleY = y2
+    }
+
+    // Title positioning wrt section/graphic context
+    $: {
+        if (title.length > 0) {
+            if (!titleX && titleX !== 0) {
+                const xRange = $sectionContext.scaleX.range()
+                if (sectionContext.flipX) xRange.reverse()
+                titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, xOffset, titleFontSize)
+                //titleX = (xCoords.x1 + xCoords.x2)/2
+            }
+
+            if (!titleY && titleY !== 0) {
+                const yRange = $sectionContext.scaleY.range()
+                if (sectionContext.flipY) yRange.reverse()
+                                (hjust, xCoords, x, offset, width, fontSize, xRange) 
+                titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, yOffset, titleFontSize)
+               // titleY = yCoords.y1 - titleFontSize * 3
+            }
         }
-        console.log('___', titleX, titleY, yCoords)
+        console.log(titleY, titleX)
     }
 
     // CHECK: 
@@ -171,7 +185,6 @@
             locRange = [xCoords.x1, xCoords.x2]
             tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, locRange, flip)
             tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * (yCoords.y2 - yCoords.y1) : yCoords.y2 - colorBarWidth * (yCoords.y2 - yCoords.y1) 
-            console.log(tickLabelYCoords)
             if (labelY) {
                 tickLabelYCoords = labelY
             }
@@ -258,55 +271,45 @@
 
 <g class="discrete-legend">
     {#if isValid(x1, x2, y1, y2)}
-        <!-- <Section
-            {x1} {y1}
-            {x2} {y2}
-            scaleX={scaleLinear().domain([0, 1])} 
-            scaleY={scaleLinear().domain([0, 1])}
-            {zoomIdentity}
-            flipY
-        >    -->
-             <Label 
-                x={titleX}
-                y={titleY}
-                text={title}
-                fontFamily={titleFont}
-                fontSize={titleFontSize}
-                fontWeight={titleFontWeight}
-                rotation={titleRotation}
-                anchorPoint={titleAnchorPoint}
-                opacity={titleOpacity} 
-                fill={titleColor}
-                {transition} 
-            />
+        <Label 
+            x={titleX}
+            y={titleY}
+            text={title}
+            fontFamily={titleFont}
+            fontSize={titleFontSize}
+            fontWeight={titleFontWeight}
+            rotation={titleRotation}
+            anchorPoint={titleAnchorPoint}
+            opacity={titleOpacity} 
+            fill={titleColor}
+            {transition} 
+        />
 
-            <RectangleLayer
-                x1 = {colorXStartCoords}
-                x2 = {colorXEndCoords}
-                y1 = {colorYStartCoords}
-                y2 = {colorYEndCoords}
-                fill = {tickColors}
-                fillOpacity = {tickOpacities}
-                {transition} 
-                {stroke}
-                {strokeWidth}
-            />
+        <RectangleLayer
+            x1 = {colorXStartCoords}
+            x2 = {colorXEndCoords}
+            y1 = {colorYStartCoords}
+            y2 = {colorYEndCoords}
+            fill = {tickColors}
+            fillOpacity = {tickOpacities}
+            {transition} 
+            {stroke}
+            {strokeWidth}
+        />
 
-            <LabelLayer
-                x={tickLabelXCoords} 
-                y={tickLabelYCoords} 
-                text={tickLabelText} 
-                anchorPoint={labelAnchorPoint}
-                rotation={labelRotate} 
-                fontFamily={labelFont} 
-                fontSize={labelFontSize}
-                fontWeight={labelFontWeight} 
-                opacity={labelOpacity} 
-                fill={labelColor}
-                {transition} 
-            />
-        <!-- </Section> -->
-
+        <LabelLayer
+            x={tickLabelXCoords} 
+            y={tickLabelYCoords} 
+            text={tickLabelText} 
+            anchorPoint={labelAnchorPoint}
+            rotation={labelRotate} 
+            fontFamily={labelFont} 
+            fontSize={labelFontSize}
+            fontWeight={labelFontWeight} 
+            opacity={labelOpacity} 
+            fill={labelColor}
+            {transition} 
+        />
     {/if}
 
 </g>
