@@ -2,7 +2,7 @@ import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js
 import { createScaledGeometry, ensureValidCombination } from './createCoordSysGeometry.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import getKeyArray from '../utils/getKeyArray.js'
-import { isUndefined } from '../../../utils/equals.js'
+import { isDefined, isUndefined } from '../../../utils/equals.js'
 
 export default function (
   coordinateProps, sectionContext, coordinateTransformationContext, keyProp, interpolate
@@ -47,7 +47,7 @@ function whichCoordinatesNeedScaling (coordinates) {
 
   for (const coordinateName of coordinateNames) {
     const coordinateValue = coordinates[coordinateName]
-    coordinatesThatNeedScaling[coordinateName] = coordinateValue && coordinateValue.constructor !== Function
+    coordinatesThatNeedScaling[coordinateName] = isDefined(coordinateValue) && coordinateValue.constructor !== Function
   }
 
   return coordinatesThatNeedScaling
