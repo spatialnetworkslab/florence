@@ -1,5 +1,6 @@
 <script>
-  import { Graphic, Section, PointLayer, XAxis, YAxis, Rectangle, nextTick } from '../../../../src/'
+  import { tick } from 'svelte'
+  import { Graphic, Section, PointLayer, XAxis, YAxis, Rectangle } from '../../../../src/'
   import { scaleLinear } from 'd3-scale'
   import DataContainer from '@snlab/florence-datacontainer'
 
@@ -20,7 +21,7 @@
   let startDelta
 
   const onMousedown = ({ screenCoordinates }) => {
-    nextTick(() => {
+    tick().then(() => {
       if (!brushing) {
         section.resetSelectRectangle()
 

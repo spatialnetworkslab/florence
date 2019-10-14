@@ -6,7 +6,7 @@
 </script>
 
 <script>
-  import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
+  import { beforeUpdate, afterUpdate, onMount, onDestroy, tick } from 'svelte'
   import detectIt from 'detect-it'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
@@ -14,8 +14,6 @@
   import * as CoordinateTransformationContext from '../../Core/Section/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
   import * as ZoomContext from '../../Core/Section/ZoomContext'
-
-  import nextTick from '../../../helpers/nextTick.js'
   
   import validateAesthetics from './validateAesthetics.js'
   import { transformGeometries } from '../../../utils/geometryUtils/index.js'
@@ -233,7 +231,7 @@
   let screenGeometryObjectRecalculationNecessary = false
 
   $: {
-    nextTick(() => {
+    tick().then(() => {
       if (coordSysGeometryObjectRecalculationNecessary) {
         updateCoordSysGeometryObject()
         keyArray = Object.keys(coordSysGeometryObject)
