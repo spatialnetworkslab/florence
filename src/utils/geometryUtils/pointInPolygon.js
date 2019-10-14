@@ -39,5 +39,5 @@ function pointInMultiPolygon (point, geometry) {
 }
 
 function pointInRing (point, coordinates) {
-  return robustPointInPolygon(coordinates, point) !== 1
+  return robustPointInPolygon(coordinates, point) === -1
 }
