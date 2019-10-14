@@ -8,7 +8,7 @@ export default class MouseupHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager, {
       interactionName: 'touchend',
-      eventName: 'touchend'
+      eventName: ['touchend', 'touchcancel']
     })
   }
 
