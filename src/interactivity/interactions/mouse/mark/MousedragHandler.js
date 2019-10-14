@@ -15,15 +15,15 @@ export default class MousedragHandler extends MarkInteractionHandler {
   }
 
   _handleEvent (screenCoordinates, nativeEvent) {
-    if (nativeEvent.type === 'mousedown') {
+    if (nativeEvent.eventName === 'mousedown') {
       this._handleMousedown(screenCoordinates, nativeEvent)
     }
 
-    if (nativeEvent.type === 'mousemove') {
+    if (nativeEvent.eventName === 'mousemove') {
       this._handleMousemove(screenCoordinates, nativeEvent)
     }
 
-    if (nativeEvent.type === 'mouseup') {
+    if (nativeEvent.eventName === 'mouseup') {
       this._handleMouseup(screenCoordinates, nativeEvent)
     }
   }

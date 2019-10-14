@@ -76,6 +76,7 @@ export default class MouseEventTracker {
     if (this._preventDefault) nativeEvent.preventDefault()
 
     const screenCoordinates = this._getScreenCoordinates(nativeEvent)
+    nativeEvent.eventName = this._eventName
 
     for (const listenerId in this._callbacks) {
       this._callbacks[listenerId](screenCoordinates, nativeEvent)
