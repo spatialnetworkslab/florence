@@ -5,6 +5,10 @@ export default class TouchEventManager extends BaseEventManager {
   constructor () {
     super(EXPOSED_EVENTS)
   }
+
+  _getScreenCoordinates (nativeEvent) {
+    
+  }
 }
 
 const BROWSER_TYPE = window.navigator.pointerEnabled
