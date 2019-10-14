@@ -335,8 +335,8 @@
         if (onClick) markInterface.addMarkInteraction('click', markId, onClick)
         if (onMousedown) markInterface.addMarkInteraction('mousedown', markId, onMousedown)
         if (onMouseup) markInterface.addMarkInteraction('mousedown', markId, onMousedown)
-        if (onMouseover) markInterface.addMarkInteraction('mouseover', markId, onMouseover)
         if (onMouseout) markInterface.addMarkInteraction('mouseout', markId, onMouseout)
+        if (onMouseover) markInterface.addMarkInteraction('mouseover', markId, onMouseover)
         if (onMousedrag) markInterface.addMarkInteraction('mousedrag', markId, onMousedrag)
       }
 

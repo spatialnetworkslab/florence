@@ -364,8 +364,8 @@
         if (onClick) markInterface.addLayerInteraction('click', layerId, onClick)
         if (onMousedown) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
         if (onMouseup) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
-        if (onMouseover) markInterface.addLayerInteraction('mouseover', layerId, onMouseover)
         if (onMouseout) markInterface.addLayerInteraction('mouseout', layerId, onMouseout)
+        if (onMouseover) markInterface.addLayerInteraction('mouseover', layerId, onMouseover)
         if (onMousedrag) markInterface.addLayerInteraction('mousedrag', layerId, onMousedrag)
       }
 
