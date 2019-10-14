@@ -11,14 +11,18 @@
     zoomIdentity = { x, y, kx: k, ky: k }
   }
 
+  const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
+
   let step = 1
 
   const pan = createPanHandler(zoomIdentity, {
+    setZoomIdentity,
     extentX: [-500, 500],
     extentY: [-500, 500]
   })
 
   const zoom = createZoomHandler(zoomIdentity, {
+    setZoomIdentity,
     minZoom: 0.2,
     maxZoom: 3,
     extentX: [-500, 500],
@@ -49,8 +53,8 @@ k:
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
     {zoomIdentity}
-    onWheel={e =>  handle(zoom(e))}
-    onPan={e => handle(pan(e))}
+    {...zoom.handlers}
+    {...pan.handlers}
   >
 
     <Rectangle fill="blue" opacity={0.3} />

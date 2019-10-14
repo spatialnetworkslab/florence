@@ -24,6 +24,10 @@
   function onMouseover ({ key }) {
     hoverKey = key
   }
+
+  function onMouseout ({ key }) {
+    if (hoverKey === key) hoverKey = undefined
+  }
 </script>
 
 <Graphic width={500} height={500}>
@@ -36,6 +40,7 @@
       fill={key => key === hoverKey ? 'red' : 'black'}
       radius={7}
       {onMouseover}
+      {onMouseout}
     />
 
   </Section>

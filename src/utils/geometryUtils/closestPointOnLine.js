@@ -1,4 +1,4 @@
-import pointDistance from './pointDistance.js'
+import { pointDistance } from './distance.js'
 
 export function pointIntersectsLineSegment (point, lineSegment, lineWidth) {
   const distance = distanceClosestPointOnLineSegment(point, lineSegment)

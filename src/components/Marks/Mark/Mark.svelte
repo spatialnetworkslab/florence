@@ -7,6 +7,7 @@
 
 <script>
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
+  import detectIt from 'detect-it'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -58,19 +59,29 @@
   export let rotation = undefined
   export let anchorPoint = undefined
 
-  // Transitions and interactions
+  // Transitions
   export let transition = undefined
+
+  // Mouse interactions
   export let onClick = undefined
+  export let onMousedown = undefined
+  export let onMouseup = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
-  export let onDragstart = undefined
-  export let onDrag = undefined
-  export let onDragend = undefined
+  export let onMousedrag = undefined
+
+  // Touch interactions
+  // TODO
+
+  // Select interactions
+  export let onSelect = undefined
+  export let onDeselect = undefined
 
   // Other
   export let interpolate = false
   export let _asPolygon = true
   export let zoomIdentity = undefined
+  export let blockReindexing = false
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
@@ -251,8 +262,15 @@
   })
 
   // Interactivity
-  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
-    || onDragstart !== undefined || onDrag !== undefined || onDragend !== undefined
+  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined || 
+    onMousedown !== undefined || onMouseup !== undefined ||
+    onMouseover !== undefined || onMouseout !== undefined ||
+    onMousedrag !== undefined
+  )
+
+  $: isInteractiveTouch = detectIt.hasTouch // TODO
+
+  $: isSelectable = onSelect !== undefined || onDeselect !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -306,24 +324,52 @@
   }
 
   function updateInteractionManagerIfNecessary () {
-    removeMarkFromSpatialIndexIfNecessary()
+    if (initPhase || !(blockReindexing || $sectionContext.blockReindexing)) {
+      removeMarkFromSpatialIndexIfNecessary()
 
-    if (isInteractive) {
-      $interactionManagerContext.loadMark(type, createDataNecessaryForIndexing())
+      if (isInteractiveMouse) {
+        const markInterface = $interactionManagerContext.mouse().marks()
 
-      if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
-      if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
-      if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
-      if (onDragstart || onDrag || onDragend) {
-        $interactionManagerContext.addMarkInteraction('drag', markId, { onDragstart, onDrag, onDragend })
+        markInterface.loadMark(type, createDataNecessaryForIndexing())
+
+        if (onClick) markInterface.addMarkInteraction('click', markId, onClick)
+        if (onMousedown) markInterface.addMarkInteraction('mousedown', markId, onMousedown)
+        if (onMouseup) markInterface.addMarkInteraction('mousedown', markId, onMousedown)
+        if (onMouseout) markInterface.addMarkInteraction('mouseout', markId, onMouseout)
+        if (onMouseover) markInterface.addMarkInteraction('mouseover', markId, onMouseover)
+        if (onMousedrag) markInterface.addMarkInteraction('mousedrag', markId, onMousedrag)
       }
+
+      if (isInteractiveTouch) {
+        // TODO
+      }
+    }
+
+    removeMarkFromSelectIfNecessary()
+    
+    if (isSelectable) {
+      const selectManager = $interactionManagerContext.select()
+
+      selectManager.loadMark(
+        type, createDataNecessaryForIndexing(), { onSelect, onDeselect }
+      )
     }
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
-    if ($interactionManagerContext.markIsLoaded(markId)) {
-      $interactionManagerContext.removeAllMarkInteractions(markId)
-      $interactionManagerContext.removeMark(markId)
+    const markInterface = $interactionManagerContext.mouse().marks()
+
+    if (markInterface.markIsLoaded(markId)) {
+      markInterface.removeAllMarkInteractions(markId)
+      markInterface.removeMark(markId)
+    }
+  }
+
+  function removeMarkFromSelectIfNecessary () {
+    const selectManager = $interactionManagerContext.select()
+
+    if (selectManager.markIsLoaded(markId)) {
+      selectManager.removeMark(markId)
     }
   }
 
