@@ -11,9 +11,7 @@
     
     // Permanent
     import * as ZoomContext from '../../Core/Section/ZoomContext'
-
     import { getTickPositions, getFormat, getTicks, getColorGeoms, isValid } from './utils.js'
-    // global properties
 
     // Aesthetics: positioning
     export let x1 = undefined
@@ -24,9 +22,11 @@
     export let colorBarLength = 0.85
     export let colorBarWidth = 0.7
     export let vjust = 'center'
-    export let yOffset = undefined
+    export let height = undefined
     export let hjust = 'left'
+    export let width = 0
     export let xOffset = 0
+    export let yOffset = 0
 
     // Aesthetics: colors
     export let scale = undefined
@@ -57,18 +57,19 @@
     export let labelExtra = false
     export let firstLabel = undefined
     export let format = undefined
+    export let labelPadding = undefined
 
-    // axis title
+    // legend title
     export let titleHjust = 'center'
     export let titleXOffset = 0
     export let titleX = undefined
-    export let titleVjust = 'center'
-    export let titleYOffset = 'center'
+    export let titleVjust = 'top'
+    export let titleYOffset = 0
     export let titleY = undefined
     export let title = 'Legend'
     export let titleColor = 'black'
     export let titleFont = 'Helvetica'
-    export let titleFontSize = '14'
+    export let titleFontSize = 14
     export let titleFontWeight = 'bold'
     export let titleOpacity = 1
     export let titleRotation = 0
@@ -109,14 +110,17 @@
             const yRange = $sectionContext.scaleY.domain()
 
             if (sectionContext.flipX) xRange.reverse()
-            xCoords = createPosXCoords(hjust, xRange, orient, xOffset)
+            xCoords = createPosXCoords(hjust, xRange, orient, width, xOffset)
             x1 = xCoords.x1
             x2 = xCoords.x2
+            width = xCoords.width
            
             if (sectionContext.flipY) yRange.reverse()
-            yCoords = createPosYCoords(vjust, yRange, orient, yOffset)
-            y1 = yCoords.y1 + titleFontSize * 3
+            yCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, titleFontSize)
+            yCoords.y1 = yCoords.y1
+            y1 = yCoords.y1
             y2 = yCoords.y2
+            height = yCoords.height
         } else { 
             xCoords = { x1, x2 }
             yCoords = { y1, y2 }
@@ -129,19 +133,15 @@
             if (!titleX && titleX !== 0) {
                 const xRange = $sectionContext.scaleX.range()
                 if (sectionContext.flipX) xRange.reverse()
-                titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, xOffset, titleFontSize)
-                //titleX = (xCoords.x1 + xCoords.x2)/2
+                titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, titleFontSize)
             }
 
             if (!titleY && titleY !== 0) {
                 const yRange = $sectionContext.scaleY.range()
                 if (sectionContext.flipY) yRange.reverse()
-                                (hjust, xCoords, x, offset, width, fontSize, xRange) 
-                titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, yOffset, titleFontSize)
-               // titleY = yCoords.y1 - titleFontSize * 3
+                titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, titleFontSize, orient)
             }
         }
-        console.log(titleY, titleX)
     }
 
     // CHECK: 
@@ -175,9 +175,13 @@
             locRange = [yCoords.y1, yCoords.y2]
             tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, locRange, flip)
             tickLabelXCoords = flipLabels ? x1 + colorBarLength * (x2 - x1) : x1 + (1 - colorBarLength) * (x2 - x1) 
-            
+
             if (labelX) {
                 tickLabelXCoords = labelX
+            }
+            
+            if (labelPadding !== undefined) { 
+                tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPadding : tickLabelXCoords - labelPadding
             }
 
             format = getFormat(labelFormat, scale, tickLabelYCoords.length)
@@ -187,6 +191,10 @@
             tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * (yCoords.y2 - yCoords.y1) : yCoords.y2 - colorBarWidth * (yCoords.y2 - yCoords.y1) 
             if (labelY) {
                 tickLabelYCoords = labelY
+            }
+
+            if (labelPadding !== undefined) { 
+                tickLabelYCoords = flipLabels ? tickLabelYCoords - labelPadding : tickLabelYCoords + labelPadding
             }
 
             format = getFormat(labelFormat, scale, tickLabelXCoords.length)
@@ -251,8 +259,9 @@
             } else {
                 tickLabelPositions = tickLabelXCoords
             }
-            
-            colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip)
+
+            // something's wrong with the fillOpacity function
+            colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
             if (!tickColors){
                 tickColors = fill
             }
@@ -271,20 +280,6 @@
 
 <g class="discrete-legend">
     {#if isValid(x1, x2, y1, y2)}
-        <Label 
-            x={titleX}
-            y={titleY}
-            text={title}
-            fontFamily={titleFont}
-            fontSize={titleFontSize}
-            fontWeight={titleFontWeight}
-            rotation={titleRotation}
-            anchorPoint={titleAnchorPoint}
-            opacity={titleOpacity} 
-            fill={titleColor}
-            {transition} 
-        />
-
         <RectangleLayer
             x1 = {colorXStartCoords}
             x2 = {colorXEndCoords}
@@ -308,6 +303,20 @@
             fontWeight={labelFontWeight} 
             opacity={labelOpacity} 
             fill={labelColor}
+            {transition} 
+        />
+
+        <Label 
+            x={titleX}
+            y={titleY}
+            text={title}
+            fontFamily={titleFont}
+            fontSize={titleFontSize}
+            fontWeight={titleFontWeight}
+            rotation={titleRotation}
+            anchorPoint={titleAnchorPoint}
+            opacity={titleOpacity} 
+            fill={titleColor}
             {transition} 
         />
     {/if}
