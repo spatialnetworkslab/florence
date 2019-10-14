@@ -70,7 +70,9 @@
   export let onMousedrag = undefined
 
   // Touch interactions
-  // TODO
+  export let onTouchstart = undefined
+  export let onTouchend = undefined
+  export let onTouchdrag = undefined
 
   // Select interactions
   export let onSelect = undefined
@@ -287,7 +289,10 @@
     onMousedrag !== undefined
   )
 
-  $: isInteractiveTouch = detectIt.hasTouch // TODO
+  $: isInteractiveTouch = detectIt.hasTouch && (
+    onTouchstart !== undefined || onTouchend !== undefined ||
+    onTouchdrag !== undefined
+  )
 
   $: isSelectable = onSelect !== undefined || onDeselect !== undefined
 
@@ -370,7 +375,13 @@
       }
 
       if (isInteractiveTouch) {
-        // TODO
+        const markInterface = $interactionManagerContext.touch().marks()
+
+        markInterface.loadLayer(type, createDataNecessaryForIndexing())
+
+        if (onTouchstart) markInterface.addLayerInteraction('touchstart', layerId, onTouchstart)
+        if (onTouchend) markInterface.addLayerInteraction('touchend', layerId, onTouchend)
+        if (onTouchdrag) markInterface.addLayerInteraction('touchdrag', layerId, onTouchdrag)
       }
     }
 
@@ -386,11 +397,18 @@
   }
 
   function removeLayerFromSpatialIndexIfNecessary () {
-    const markInterface = $interactionManagerContext.mouse().marks()
+    const markMouseInterface = $interactionManagerContext.mouse().marks()
 
-    if (markInterface.layerIsLoaded(layerId)) {
-      markInterface.removeAllLayerInteractions(layerId)
-      markInterface.removeLayer(layerId)
+    if (markMouseInterface.layerIsLoaded(layerId)) {
+      markMouseInterface.removeAllLayerInteractions(layerId)
+      markMouseInterface.removeLayer(layerId)
+    }
+
+    const markTouchInterface = $interactionManagerContext.touch().marks()
+
+    if (markTouchInterface.layerIsLoaded(layerId)) {
+      markTouchInterface.removeAllLayerInteractions(layerId)
+      markTouchInterface.removeLayer(layerId)
     }
   }
 

@@ -71,7 +71,9 @@
   export let onMousedrag = undefined
 
   // Touch interactions
-  // TODO
+  export let onTouchstart = undefined
+  export let onTouchend = undefined
+  export let onTouchdrag = undefined
 
   // Select interactions
   export let onSelect = undefined
@@ -268,7 +270,10 @@
     onMousedrag !== undefined
   )
 
-  $: isInteractiveTouch = detectIt.hasTouch // TODO
+  $: isInteractiveTouch = detectIt.hasTouch && (
+    onTouchstart !== undefined || onTouchend !== undefined ||
+    onTouchdrag !== undefined
+  )
 
   $: isSelectable = onSelect !== undefined || onDeselect !== undefined
 
@@ -341,7 +346,13 @@
       }
 
       if (isInteractiveTouch) {
-        // TODO
+        const markInterface = $interactionManagerContext.touch().marks()
+
+        markInterface.loadMark(type, createDataNecessaryForIndexing())
+
+        if (onTouchstart) markInterface.addMarkInteraction('touchstart', markId, onTouchstart)
+        if (onTouchend) markInterface.addMarkInteraction('touchend', markId, onTouchend)
+        if (onTouchdrag) markInterface.addMarkInteraction('touchdrag', markId, onTouchdrag)
       }
     }
 
@@ -357,11 +368,18 @@
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
-    const markInterface = $interactionManagerContext.mouse().marks()
+    const markMouseInterface = $interactionManagerContext.mouse().marks()
 
-    if (markInterface.markIsLoaded(markId)) {
-      markInterface.removeAllMarkInteractions(markId)
-      markInterface.removeMark(markId)
+    if (markMouseInterface.markIsLoaded(markId)) {
+      markMouseInterface.removeAllMarkInteractions(markId)
+      markMouseInterface.removeMark(markId)
+    }
+
+    const markTouchInterface = $interactionManagerContext.touch().marks()
+
+    if (markTouchInterface.markIsLoaded(markId)) {
+      markTouchInterface.removeAllMarkInteractions(markId)
+      markTouchInterface.removeMark(markId)
     }
   }
 
