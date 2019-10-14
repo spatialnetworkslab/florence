@@ -27,7 +27,9 @@
   export let onMousedrag = undefined
 
   // Touch interactions
-  // TODO
+  export let onTouchstart = undefined
+  export let onTouchend = undefined
+  export let onTouchdrag = undefined
 
   // Select interactions
   export let onSelect = undefined
@@ -45,6 +47,7 @@
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} 
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
+  {onTouchstart} {onTouchend} {onTouchdrag}
   {onSelect} {onDeselect}
   {zoomIdentity} _asPolygon={false} {blockReindexing}
 />
