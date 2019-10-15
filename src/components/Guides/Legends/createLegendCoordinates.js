@@ -132,7 +132,7 @@ export function createTitleYCoord (vjust, yCoords, y, offset, fontSize, orient, 
     addFontSize = fontSize
   }
   if (vjust === 'top') {
-    justification = -0.075
+    justification = -0.05
     addFontSize = -fontSize
   }
 

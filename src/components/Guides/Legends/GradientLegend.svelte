@@ -84,7 +84,7 @@
     export let titleRotation = 0
     export let titleAnchorPoint = 't'
     export let titlePaddingX = 0
-    export let titlePaddingY = 0
+    export let titlePaddingY = titleVjust === 'bottom' ? 5 : titleVjust === 'top' ? -5 : 0
 
     // transition
     export let transition = undefined

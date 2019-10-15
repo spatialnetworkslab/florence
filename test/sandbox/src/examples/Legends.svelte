@@ -94,44 +94,38 @@
       orient={'vertical'}
       firstLabel={10}
       labelExtra
+      titleVjust={'bottom'}
     />
 
 
-    <!-- <DiscreteLegend
-      scale = {bins}
-      x1={0} x2={240}
-      y1={50} y2={200}
-      fillOpacity={binAlpha}
-      fill={'red'}
+    <DiscreteLegend
+      scale = {data.domain('a')}
+      fill={seqScale}
       orient={'horizontal'}
-      flip
-      flipLabels
+      hjust={'right'}
+      vjust={'bottom'}
+      height={120}
     />
 
     <GradientLegend
-      scale = {bins}
-      x1=270 x2={510}
-      y1={50} y2={200}
-      fillOpacity={binAlpha}
-      fill={'red'}
-      orient={'horizontal'}
-      flip
-      flipLabels
-    /> -->
-
-    <!-- <GradientLegend
       scale = {data.domain('a')}
-      x1={0} x2={240}
-      y1={50} y2={200}
-      fill={'green'}
+      x1={450} x2={600}
+      y1={350} y2={500}
+      fill={'purple'}
       fillOpacity={alphaScale}
       colorBarWidth={0.5}
       orient={'horizontal'}
-    /> -->
+      labelCount={5}
+      title={'Longer title than usual test'}
+      titleVjust={'center'}
+      titleHjust={'left'}
+      titleAnchorPoint={'r'}
+      titlePaddingX={-20}
+    />
 
     <DiscreteLegend
       scale = {fruits}
-      fillOpacity={0.5}
+      fillOpacity={0.8}
       fill={fruitScale}
       orient={'horizontal'}
       hjust={'center'}

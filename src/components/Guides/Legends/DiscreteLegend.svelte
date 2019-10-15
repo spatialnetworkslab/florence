@@ -74,7 +74,7 @@
     export let titleRotation = 0
     export let titleAnchorPoint = 't'
     export let titlePaddingX = 0
-    export let titlePaddingY = 0
+    export let titlePaddingY = titleVjust === 'bottom' ? 5 : titleVjust === 'top' ? -5 : 0
 
     // transition
     export let transition = undefined
@@ -234,37 +234,41 @@
 
     // OPACITY
     $: {
-        if (fillOpacity && (fillOpacity.constructor === Array || fillOpacity.constructor === Function)) {
-            // d3 scale
-            if (fillOpacity.constructor === Function) {
-                tickOpacities = tickLabelText.map((value, i) => {
-                    if (Array.isArray(scale[0]) && scale.length > 0) {
-                        return fillOpacity(i)
-                    } else {
-                        return fillOpacity(value)
-                    }
-                })
-            // array
-            } else if (fillOpacity.constructor === Array) {
-                tickOpacities = tickLabelText.map((value, i) => {
-                    return fillOpacity[i]
-                })
-            }
+        if (fillOpacity) {
+            if (fillOpacity.constructor === Array || fillOpacity.constructor === Function) {
+                // d3 scale
+                if (fillOpacity.constructor === Function) {
+                    tickOpacities = tickLabelText.map((value, i) => {
+                        if (Array.isArray(scale[0]) && scale.length > 0) {
+                            return fillOpacity(i)
+                        } else {
+                            return fillOpacity(value)
+                        }
+                    })
+                // array
+                } else if (fillOpacity.constructor === Array) {
+                    tickOpacities = tickLabelText.map((value, i) => {
+                        return fillOpacity[i]
+                    })
+                }
 
-            if (orient === 'vertical') {
-                tickLabelPositions = tickLabelYCoords
-                tickAlign = tickLabelXCoords
-            } else {
-                tickLabelPositions = tickLabelXCoords
-                tickAlign = tickLabelYCoords
-            }
+                if (orient === 'vertical') {
+                    tickLabelPositions = tickLabelYCoords
+                    tickAlign = tickLabelXCoords
+                } else {
+                    tickLabelPositions = tickLabelXCoords
+                    tickAlign = tickLabelYCoords
+                }
 
-            // something's wrong with the fillOpacity function
-            colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords)
-            if (!tickColors){
-                tickColors = fill
+                // something's wrong with the fillOpacity function
+                colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords)
+                if (!tickColors){
+                    tickColors = fill
+                }
+            } else if (fillOpacity.constructor === Number) {
+                tickOpacities = fillOpacity
             }
-        }    
+        }
     }
 
     // Color bar geometry
