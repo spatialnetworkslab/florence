@@ -54,22 +54,27 @@
   const xLoc = (data.domain('a')[0]+data.domain('a')[1])/2
   const yLoc = data.domain('b')[1]
 
-  // open question: how do we evalute fill functions against the domains for marks? x or y?
-  // takes care of tickmarks, color scale spec
-  // maybe convenience function would be helpful
-  const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
-  const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateViridis);
-  const alphaScale = scaleLinear().domain(data.domain('a')).range([0, 1])
+  // scatterplot scale
   const radiusScale = scaleLinear().domain(data.domain('b')).range([10, 0])
-   
+
+  // data
   const bins = [[0, 30], [30, 70], [70, 100], [100, 155], [55, 300]]
-  const binScale = scaleLinear().domain([0, 4]).range(['red', 'blue'])
-  //const binAlpha = scaleLinear().domain(data.domain('a')).range([0, 1])
-  const linearColorScale2 = scaleLinear().domain(bins).range(["red", "blue"])
-  const binAlpha2 = scaleLinear().domain(bins).range([0, 1])
   const fruits = ['apple', 'banana', 'orange', 'pomelo']
+
+  // fill scales
+  const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
+  const linearColorScaleBin = scaleLinear().domain(bins).range(["red", "blue"])
+  const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateViridis);
   const fruitScale = scaleOrdinal().domain(fruits).range(schemeDark2)
+  const binScale = scaleLinear().domain([0, 4]).range(['red', 'blue'])
+
+  // fill opacity scales
+  const alphaScale = scaleLinear().domain(data.domain('a')).range([0, 1])
   const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
+  const binAlpha = scaleLinear().domain([0,4]).range([0, 1])
+  
+  
+  
 </script>
 
 <div>
@@ -156,17 +161,16 @@
       orient={'horizontal'}
     /> -->
     
-    <DiscreteLegend
+    <GradientLegend
       scale = {bins}
-      fill= {binScale}
+      fillOpacity= {binAlpha}
+      fill={'green'}
       labelCount={8}
       firstLabel={10}
       title={'Title'}
       vjust={'top'}
       hjust={'right'}
       orient={'horizontal'}
-      flipLabels
-      flip
     />
           <!-- vjust={'center'}
       hjust={'right'}
@@ -192,8 +196,6 @@
       padding={50}
     > 
 
-    <!--        x1=270 x2={510}
-        y1={50} y2={200}-->
 
       <PointLayer
         x={filteredData.column('a')}
@@ -211,65 +213,6 @@
       <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
     
     </Section>
-
-    <!-- <Section
-			x1={50} x2={450}
-			y1={350} y2={800}
-			scaleX={scaleA}
-			scaleY={scaleB}
-      {zoomIdentity}
-		> 
-
-      <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
-      <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
-    <!--      {transformation}-->
-      <!-- <GradientLegend
-        scale = {data.domain('a')}
-        x1={0} x2={100}
-        y1={50} y2={150}
-        fill={linearColorScale}
-        labelCount={8}
-        orient={'horizontal'}
-        labelExtra
-        titleY={0.7}
-      /> -->
-
-	 <!-- <PointLayer
-        x={filteredData.column('a')}
-        y={filteredData.column('b')}
-        fill={data.map('a', linearColorScale)}
-        fillOpacity={data.map('a', linearColorScale)}
-        radius={data.map('a', radiusScale)}
-        index={filteredData.column('$key')}
-        onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
-        onMouseout={handleMouseout}
-        transition={duration}
-      />
-		
-		</Section> -->
-
-    <!-- <Section
-			x1={50} x2={450}
-			y1={650} y2={950}
-			scaleX={scaleA}
-			scaleY={scaleB}
-      flipY
-      {transformation}
-		>
-
-			<PointLayer
-        x={filteredData.column('a')}
-        y={filteredData.column('b')}
-        fill={'red'}
-        radius={transformation === 'identity' ? 3 : 6}
-        fillOpacity={data.map('a', alphaScale)}
-        index={filteredData.column('$key')}
-        onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
-        onMouseout={handleMouseout}
-        transition={duration}
-      />
-		
-		</Section> -->
 
 	</Graphic>
 
