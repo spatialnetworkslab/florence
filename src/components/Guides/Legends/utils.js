@@ -50,6 +50,7 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
 
 export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates, flip, orient) {
   let tickPositions
+  console.log(scale.constructor, 'ticks' in scale || 'domain' in scale)
   // Bins
   if (Array.isArray(scale[0]) && scale.length > 0) {
     const domain = [Math.min(...tickValuesArray), Math.max(...tickValuesArray)]
@@ -72,7 +73,7 @@ export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates
     const interval = orient === 'vertical' ? coordinates.height / (tickValuesArray.length) : coordinates.width / (tickValuesArray.length)
     const firstVal = orient === 'vertical' ? coordinates.y1 : coordinates.x1
     tickValuesArray = flip ? tickValuesArray.reverse() : tickValuesArray
-
+    console.log(firstVal, interval, tickValuesArray, coordinates)
     tickPositions = tickValuesArray.map((value, i) => {
       return firstVal + interval * (i + 0.5)
     })
@@ -236,111 +237,67 @@ export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, ti
 
   if (orient === 'vertical') {
     gradX = { x1: '0%', x2: '0%' }
-    gradY = { y1: '100%', y2: '0%' }
+    gradY = flip ? { y1: '100%', y2: '0%' } : { y1: '0%', y2: '100%' }
+    y1 = yCoords.y1
+    y2 = yCoords.y2
 
     // Color bar dimensions
     if (flipLabels) {
-      if (colorBarWidth <= 1) {
-        x1 = xCoords.x1
-        x2 = xCoords.x2 - (1 - colorBarWidth) * xCoords.width
-        y1 = yCoords.y1
-        y2 = yCoords.y2
-      } else {
-        x1 = xCoords.x1
-        x2 = xCoords.x1 + colorBarWidth
-        y1 = yCoords.y1
-        y2 = yCoords.y2
-      }
+      x1 = xCoords.x1
+      x2 = colorBarWidth <= 1 ? xCoords.x2 - (1 - colorBarWidth) * xCoords.width : xCoords.x1 + colorBarWidth
     } else {
-      if (colorBarWidth <= 1) {
-        x1 = xCoords.x2 - colorBarWidth * xCoords.width
-        x2 = xCoords.x2
-        y1 = yCoords.y1
-        y2 = yCoords.y2
-      } else {
-        x1 = xCoords.x2 - colorBarWidth
-        x2 = xCoords.x2
-        y1 = yCoords.y1
-        y2 = yCoords.y2
-      }
+      x1 = colorBarWidth <= 1 ? xCoords.x2 - colorBarWidth * xCoords.width : xCoords.x2 - colorBarWidth
+      x2 = xCoords.x2
     }
 
     rectCoords = { x1, x2, y1, y2 }
-
-    // Bins
-    if (Array.isArray(scale[0]) && scale.length > 0) {
-      offsets = tickMappable.map((value, i) => {
-        if (flip) {
-          return 1 - tickLabelPositions[i]
-        } else {
-          return tickLabelPositions[i]
-        }
-      })
-
-    // Array or scale
-    // Fix
-    } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
-      const interval = 1 / tickMappable.length
-
-      offsets = tickMappable.map((value, i) => {
-        return interval * (i + 0.5)
-      })
-    } else {
-      throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
-          either a 'ticks' or a 'domain' method.`)
-    }
   } else if (orient === 'horizontal') {
-    gradX = { x1: '0%', x2: '100%' }
+    gradX = flip ? { x1: '100%', x2: '0%' } : { x1: '0%', x2: '100%' }
     gradY = { y1: '0%', y2: '0%' }
+    x1 = xCoords.x1
+    x2 = xCoords.x2
 
     // Color bar dimensions
     if (flipLabels) {
-      if (colorBarLength <= 1) {
-        y1 = yCoords.y1 + (1 - colorBarLength) * yCoords.height
-        y2 = yCoords.y2
-        x1 = xCoords.x1
-        x2 = xCoords.x2
-      } else {
-        y1 = yCoords.y1 + colorBarLength
-        y2 = yCoords.y2
-        x1 = xCoords.x1
-        x2 = xCoords.x2
-      }
+      y2 = yCoords.y2
+      y1 = colorBarLength <= 1 ? yCoords.y1 + (1 - colorBarLength) * yCoords.height : yCoords.y1 + colorBarLength
     } else {
-      if (colorBarLength <= 1) {
-        y1 = yCoords.y1
-        y2 = yCoords.y2 - (1 - colorBarLength) * yCoords.height
-        x1 = xCoords.x1
-        x2 = xCoords.x2
-      } else {
-        y1 = yCoords.y2 - colorBarLength
-        y2 = yCoords.y2
-        x1 = xCoords.x1
-        x2 = xCoords.x2
-      }
+      y1 = colorBarLength <= 1 ? yCoords.y1 : yCoords.y2 - colorBarLength
+      y2 = colorBarLength <= 1 ? yCoords.y2 - (1 - colorBarLength) * yCoords.height : yCoords.y2
     }
 
     rectCoords = { x1, x2, y1, y2 }
-    // Bins
-    if (Array.isArray(scale[0]) && scale.length > 0) {
-      offsets = tickMappable.map((value, i) => {
-        if (flip) {
-          return tickLabelPositions[i]
-        } else {
-          return 1 - tickLabelPositions[i]
-        }
-      })
-    // Array or scale
-    } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
-      const interval = 1 / tickMappable.length
-
-      offsets = tickMappable.map((value, i) => {
-        return interval * (i + 0.5)
-      })
-    } else {
-      throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
-          either a 'ticks' or a 'domain' method.`)
-    }
   }
+
+  // Color assignment
+  // Bins
+  if (Array.isArray(scale[0]) && scale.length > 0) {
+    let posScale
+    if (!flip) {
+      posScale = scaleLinear().domain([0, scale.length]).range([0, 1])
+    } else {
+      posScale = scaleLinear().domain([0, scale.length]).range([1, 0])
+    }
+    offsets = scale.map((value, i) => {
+      if (flip) {
+        return 1 - posScale(i)
+      } else {
+        return posScale(i)
+      }
+    })
+
+  // Array or scale
+  // Fix
+  } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
+    const interval = 1 / tickMappable.length
+
+    offsets = tickMappable.map((value, i) => {
+      return interval * (i + 0.5)
+    })
+  } else {
+    throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
+        either a 'ticks' or a 'domain' method.`)
+  }
+
   return { offsets, gradX, gradY, rectCoords }
 }

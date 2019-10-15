@@ -39,7 +39,7 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   return { y1, y2, height }
 }
 
-export function createPosXCoords (hjust, xRange, orient, width, offset) {
+export function createPosXCoords (hjust, xRange, orient, width, offset, labelFontSize) {
   let x1
   let x2
   const x1Range = xRange[0]
@@ -48,24 +48,24 @@ export function createPosXCoords (hjust, xRange, orient, width, offset) {
   width = width === 0 ? (x2Range - x1Range) * widthRatio : width
 
   if (hjust === 'left') {
-    x1 = x1Range + offset
-    x2 = x1Range + width + offset
+    x1 = x1Range + offset - labelFontSize
+    x2 = x1Range + width + offset - labelFontSize
   }
   if (hjust === 'center') {
     const xCoord = (x2Range - x1Range) * 0.5 + x1Range
-    x1 = xCoord - width / 2 + offset
-    x2 = xCoord + width / 2 + offset
+    x1 = xCoord - width / 2 + offset - labelFontSize
+    x2 = xCoord + width / 2 + offset - labelFontSize
   }
 
   if (hjust === 'right') {
-    x1 = x2Range - width + offset
-    x2 = x2Range + offset
+    x1 = x2Range - width + offset - labelFontSize
+    x2 = x2Range + offset - labelFontSize
   }
 
   if (!isNaN(hjust)) {
     const xCoord = (x2Range - x1Range) * hjust + x1Range
-    x1 = xCoord
-    x2 = xCoord + width
+    x1 = xCoord - labelFontSize
+    x2 = xCoord + width - labelFontSize
   }
 
   if (!['left', 'center', 'right'].includes(hjust) && x1 === undefined) {

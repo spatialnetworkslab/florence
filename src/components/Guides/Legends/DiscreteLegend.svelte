@@ -122,8 +122,8 @@
             y2 = yCoords.y2
             height = yCoords.height
         } else { 
-            xCoords = { x1, x2 }
-            yCoords = { y1, y2 }
+            xCoords = { x1, x2, width: Math.abs(x2 - x1) }
+            yCoords = { y1, y2, height: Math.abs(y2 - y1) }
         }
     }
 
@@ -170,28 +170,20 @@
     // TICK LABELS and POSITIONING
     $: {
         tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
-        let locRange
         if (orient === 'vertical') {
-            locRange = [yCoords.y1, yCoords.y2]
-            tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, locRange, flip)
+            tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, yCoords, flip, orient)
             tickLabelXCoords = flipLabels ? x1 + colorBarLength * (x2 - x1) : x1 + (1 - colorBarLength) * (x2 - x1) 
+            tickLabelXCoords = labelX ? labelX : tickLabelXCoords
 
-            if (labelX) {
-                tickLabelXCoords = labelX
-            }
-            
             if (labelPadding !== undefined) { 
                 tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPadding : tickLabelXCoords - labelPadding
             }
 
             format = getFormat(labelFormat, scale, tickLabelYCoords.length)
         } else if (orient === 'horizontal'){
-            locRange = [xCoords.x1, xCoords.x2]
-            tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, locRange, flip)
+            tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, xCoords, flip. orient)
             tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * (yCoords.y2 - yCoords.y1) : yCoords.y2 - colorBarWidth * (yCoords.y2 - yCoords.y1) 
-            if (labelY) {
-                tickLabelYCoords = labelY
-            }
+            tickLabelYCoords = labelY ? labelY : tickLabelYCoords
 
             if (labelPadding !== undefined) { 
                 tickLabelYCoords = flipLabels ? tickLabelYCoords - labelPadding : tickLabelYCoords + labelPadding
@@ -265,7 +257,7 @@
             if (!tickColors){
                 tickColors = fill
             }
-        }     
+        }    
     }
 
     // Color bar geometry

@@ -120,7 +120,7 @@
             const yRange = $sectionContext.scaleY.domain()
 
             if (sectionContext.flipX) xRange.reverse()
-            xCoords = createPosXCoords(hjust, xRange, orient, width, xOffset)
+            xCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize)
             x1 = xCoords.x1
             x2 = xCoords.x2
             width = xCoords.width
@@ -209,7 +209,6 @@
             throw new Error(`Couldn't construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
         }
         tickLabelText = tickLabelText.map(format)
-        console.log(tickLabelText, tickLabelYCoords)
     }   
 
     // COLORS
@@ -236,7 +235,7 @@
             } else {
                 tickLabelPositions = tickLabelXCoords
             }
-  
+
             // need to update this 
             colorGeoms = getGradientGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
 
@@ -277,7 +276,7 @@
                 tickColors = fill !== undefined ? fill : 'black'
             }
         }     
-        console.log(colorGeoms.offsets, tickColors, tickLabelPositions, tickLabelText)
+        console.log(tickOpacities, tickColors, colorGeoms)
     }
 
     // Color bar geometry
