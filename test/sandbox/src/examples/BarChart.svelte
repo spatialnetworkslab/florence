@@ -24,7 +24,7 @@
   let duration = 2000
 
   $: handler = transformation === 'identity' ?
-    () => { console.log('id') } :
+    e => { console.log(e) } :
     () => { console.log('polar') }
 </script>
 

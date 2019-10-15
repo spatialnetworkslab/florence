@@ -19,6 +19,8 @@
   import NonNumericAxis from './examples/NonNumericAxis.svelte'
   import DragAllMarks from './examples/DragAllMarks.svelte'
   import StackedBarChart from './examples/StackedBarChart.svelte'
+  import SelectRectangle from './examples/SelectRectangle.svelte'
+  import SelectPolygon from './examples/SelectPolygon.svelte'
 
   // and add them to this component array
   let components = [
@@ -106,6 +108,16 @@
       name: 'Stacked bar chart',
       url: 'stackedbarchart',
       component: StackedBarChart
+    },
+    {
+      name: 'Select rectangle',
+      url: 'selectrectangle',
+      component: SelectRectangle
+    },
+    {
+      name: 'Select polygon',
+      url: 'selectpolygon',
+      component: SelectPolygon
     }
   ]
 </script>

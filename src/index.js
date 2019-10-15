@@ -21,8 +21,9 @@ export { default as XAxis } from './components/Guides/Axes/XAxis.svelte'
 export { default as YAxis } from './components/Guides/Axes/YAxis.svelte'
 
 export { default as createGeoScales } from './helpers/createGeoScales.js'
-export { default as createPanHandler } from './helpers/createPanHandler'
-export { default as createZoomHandler } from './helpers/createZoomHandler'
+export { default as createPanHandler } from './helpers/createPanHandler.js'
+export { default as createZoomHandler } from './helpers/createZoomHandler.js'
 
 export { default as DiscreteLegend } from './components/Guides/Legends/DiscreteLegend.svelte'
 export { default as GradientLegend } from './components/Guides/Legends/GradientLegend.svelte'
+

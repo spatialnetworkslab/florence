@@ -9,6 +9,10 @@ export default function (point, geometry) {
 
 function pointInPolygon (point, geometry) {
   const coordinates = geometry.coordinates
+  return pointInPolygonCoordinates(point, coordinates)
+}
+
+function pointInPolygonCoordinates (point, coordinates) {
   const outerRing = coordinates[0]
 
   if (!pointInRing(point, outerRing)) return false
@@ -26,14 +30,14 @@ function pointInMultiPolygon (point, geometry) {
   const coordinates = geometry.coordinates
 
   for (let i = 0; i < coordinates.length; i++) {
-    const polygon = coordinates[i]
+    const polygonCoordinates = coordinates[i]
 
-    if (pointInPolygon(point, polygon)) return true
+    if (pointInPolygonCoordinates(point, polygonCoordinates)) return true
   }
 
   return false
 }
 
 function pointInRing (point, coordinates) {
-  return robustPointInPolygon(coordinates, point) !== 1
+  return robustPointInPolygon(coordinates, point) === -1
 }

@@ -6,7 +6,8 @@
 </script>
 
 <script>
-  import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
+  import { beforeUpdate, afterUpdate, onMount, onDestroy, tick } from 'svelte'
+  import detectIt from 'detect-it'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -57,21 +58,31 @@
   export let rotation = undefined
   export let anchorPoint = undefined
 
-  // Transitions and interactions
+  // Transitions
   export let transition = undefined
+
+  // Mouse interactions
   export let onClick = undefined
+  export let onMousedown = undefined
+  export let onMouseup = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
-  export let onDragstart = undefined
-  export let onDrag = undefined
-  export let onDragend = undefined
+  export let onMousedrag = undefined
+
+  // Touch interactions
+  // TODO
+
+  // Select interactions
+  export let onSelect = undefined
+  export let onDeselect = undefined
 
   // Other
   export let key = undefined
   export let interpolate = undefined
   export let _asPolygon = true
   export let zoomIdentity = undefined
- 
+  export let blockReindexing = false
+
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
     type,
@@ -220,27 +231,29 @@
   let screenGeometryObjectRecalculationNecessary = false
 
   $: {
-    if (coordSysGeometryObjectRecalculationNecessary) {
-      updateCoordSysGeometryObject()
-      keyArray = Object.keys(coordSysGeometryObject)
+    tick().then(() => {
+      if (coordSysGeometryObjectRecalculationNecessary) {
+        updateCoordSysGeometryObject()
+        keyArray = Object.keys(coordSysGeometryObject)
 
-      if (_asPolygon) {
-        updateRadiusAndStrokeWidth()
+        if (_asPolygon) {
+          updateRadiusAndStrokeWidth()
+        }
       }
-    }
     
-    if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
+      if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
 
-    if (screenGeometryObjectRecalculationNecessary) {
-      updateScreenGeometryObject()
-      updateScreenGeometryObjectTransitionable()
+      if (screenGeometryObjectRecalculationNecessary) {
+        updateScreenGeometryObject()
+        updateScreenGeometryObjectTransitionable()
 
-      updateInteractionManagerIfNecessary()
-    }
+        updateInteractionManagerIfNecessary()
+      }
 
-    coordSysGeometryObjectRecalculationNecessary = false
-    pixelGeometryObjectRecalculationNecessary = false
-    screenGeometryObjectRecalculationNecessary = false
+      coordSysGeometryObjectRecalculationNecessary = false
+      pixelGeometryObjectRecalculationNecessary = false
+      screenGeometryObjectRecalculationNecessary = false
+    })
   }
 
   beforeUpdate(() => {
@@ -268,8 +281,15 @@
   })
 
   // Interactivity
-  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
-  || onDragstart !== undefined || onDrag !== undefined || onDragend !== undefined
+  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined || 
+    onMousedown !== undefined || onMouseup !== undefined ||
+    onMouseover !== undefined || onMouseout !== undefined ||
+    onMousedrag !== undefined
+  )
+
+  $: isInteractiveTouch = detectIt.hasTouch // TODO
+
+  $: isSelectable = onSelect !== undefined || onDeselect !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -333,24 +353,52 @@
   }
 
   function updateInteractionManagerIfNecessary () {
-    removeLayerFromSpatialIndexIfNecessary()
+    if (initPhase || !(blockReindexing || $sectionContext.blockReindexing)) {
+      removeLayerFromSpatialIndexIfNecessary()
 
-    if (isInteractive) {
-      $interactionManagerContext.loadLayer(type, createDataNecessaryForIndexing())
+      if (isInteractiveMouse) {
+        const markInterface = $interactionManagerContext.mouse().marks()
+      
+        markInterface.loadLayer(type, createDataNecessaryForIndexing())
 
-      if (onClick) $interactionManagerContext.addLayerInteraction('click', layerId, onClick)
-      if (onMouseover) $interactionManagerContext.addLayerInteraction('mouseover', layerId, onMouseover)
-      if (onMouseout) $interactionManagerContext.addLayerInteraction('mouseout', layerId, onMouseout)
-      if (onDragstart || onDrag || onDragend) {
-        $interactionManagerContext.addLayerInteraction('drag', layerId, { onDragstart, onDrag, onDragend })
+        if (onClick) markInterface.addLayerInteraction('click', layerId, onClick)
+        if (onMousedown) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
+        if (onMouseup) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
+        if (onMouseout) markInterface.addLayerInteraction('mouseout', layerId, onMouseout)
+        if (onMouseover) markInterface.addLayerInteraction('mouseover', layerId, onMouseover)
+        if (onMousedrag) markInterface.addLayerInteraction('mousedrag', layerId, onMousedrag)
       }
+
+      if (isInteractiveTouch) {
+        // TODO
+      }
+    }
+
+    removeLayerFromSelectIfNecessary()
+    
+    if (isSelectable) {
+      const selectManager = $interactionManagerContext.select()
+
+      selectManager.loadLayer(
+        type, createDataNecessaryForIndexing(), { onSelect, onDeselect }
+      )
     }
   }
 
   function removeLayerFromSpatialIndexIfNecessary () {
-    if ($interactionManagerContext.layerIsLoaded(layerId)) {
-      $interactionManagerContext.removeAllLayerInteractions(layerId)
-      $interactionManagerContext.removeLayer(layerId)
+    const markInterface = $interactionManagerContext.mouse().marks()
+
+    if (markInterface.layerIsLoaded(layerId)) {
+      markInterface.removeAllLayerInteractions(layerId)
+      markInterface.removeLayer(layerId)
+    }
+  }
+
+  function removeLayerFromSelectIfNecessary () {
+    const selectManager = $interactionManagerContext.select()
+
+    if (selectManager.layerIsLoaded(layerId)) {
+      selectManager.removeLayer(layerId)
     }
   }
 
