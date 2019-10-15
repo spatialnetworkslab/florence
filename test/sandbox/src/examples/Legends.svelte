@@ -147,16 +147,16 @@
       orient={'horizontal'}
     /> -->
 
-    <DiscreteLegend
+    <!-- <DiscreteLegend
       scale = {scalePow().domain(data.domain('b'))}
       x1={250} x2={490}
       y1={50} y2={200}
       fillOpacity={scaleLinear().domain(data.domain('b')).range([0, 1])}
       fill={'green'}
       orient={'horizontal'}
-    />
+    /> -->
     
-    <!-- <GradientLegend
+    <DiscreteLegend
       scale = {bins}
       fill= {binScale}
       labelCount={8}
@@ -166,7 +166,7 @@
       hjust={'right'}
       orient={'horizontal'}
       flipLabels
-      flip -->
+      flip
     />
           <!-- vjust={'center'}
       hjust={'right'}

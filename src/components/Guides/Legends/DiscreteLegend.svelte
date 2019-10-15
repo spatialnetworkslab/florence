@@ -110,11 +110,10 @@
             const yRange = $sectionContext.scaleY.domain()
 
             if (sectionContext.flipX) xRange.reverse()
-            xCoords = createPosXCoords(hjust, xRange, orient, width, xOffset)
+            xCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize)
             x1 = xCoords.x1
             x2 = xCoords.x2
             width = xCoords.width
-           
             if (sectionContext.flipY) yRange.reverse()
             yCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, titleFontSize)
             yCoords.y1 = yCoords.y1
@@ -181,7 +180,7 @@
 
             format = getFormat(labelFormat, scale, tickLabelYCoords.length)
         } else if (orient === 'horizontal'){
-            tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, xCoords, flip. orient)
+            tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, xCoords, flip, orient)
             tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * (yCoords.y2 - yCoords.y1) : yCoords.y2 - colorBarWidth * (yCoords.y2 - yCoords.y1) 
             tickLabelYCoords = labelY ? labelY : tickLabelYCoords
 
@@ -191,7 +190,7 @@
 
             format = getFormat(labelFormat, scale, tickLabelXCoords.length)
         } else {
-            throw new Error(`Couldn't construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
+            throw new Error(`Could not construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
         }
         tickLabelText = tickLabelText.map(format)
     }   
@@ -199,7 +198,7 @@
     // COLORS
     $: {
         if (fill && (fill.constructor === Array || fill.constructor === Function)) {
-            // d3 scale
+            // d3 scale or bins
             if (fill.constructor === Function) {
                 tickColors = tickLabelText.map((value, i) => {
                     if (Array.isArray(scale[0]) && scale.length > 0) {
@@ -218,8 +217,9 @@
             if (orient === 'vertical') {
                 tickLabelPositions = tickLabelYCoords
             } else {
-                tickLabelPositions = tickLabelXCoords.reverse()
+                tickLabelPositions = tickLabelXCoords
             }
+
             colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
             if (!tickOpacities){
                 tickOpacities = fill

@@ -132,8 +132,8 @@
             y2 = yCoords.y2
             height = yCoords.height
         } else { 
-            xCoords = { x1, x2 }
-            yCoords = { y1, y2 }
+            xCoords = { x1, x2, width: Math.abs(x2 - x1) }
+            yCoords = { y1, y2, height: Math.abs(y2 - y1) }
         }
     }
 
@@ -236,8 +236,7 @@
                 tickLabelPositions = tickLabelXCoords
             }
 
-            // need to update this 
-            colorGeoms = getGradientGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
+            colorGeoms = getGradientGeoms(tickColors, orient, scale, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
 
             if (!tickOpacities){
                 tickOpacities = fillOpacity !== undefined ? fillOpacity : 1
@@ -271,12 +270,11 @@
                 tickLabelPositions = tickLabelXCoords
             }
             
-            colorGeoms = getGradientGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
+            colorGeoms = getGradientGeoms(tickOpacities, orient, scale, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
             if (!tickColors){
                 tickColors = fill !== undefined ? fill : 'black'
             }
         }     
-        console.log(tickOpacities, tickColors, colorGeoms)
     }
 
     // Color bar geometry

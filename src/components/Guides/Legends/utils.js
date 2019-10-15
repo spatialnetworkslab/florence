@@ -50,7 +50,7 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
 
 export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates, flip, orient) {
   let tickPositions
-  console.log(scale.constructor, 'ticks' in scale || 'domain' in scale)
+
   // Bins
   if (Array.isArray(scale[0]) && scale.length > 0) {
     const domain = [Math.min(...tickValuesArray), Math.max(...tickValuesArray)]
@@ -73,7 +73,7 @@ export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates
     const interval = orient === 'vertical' ? coordinates.height / (tickValuesArray.length) : coordinates.width / (tickValuesArray.length)
     const firstVal = orient === 'vertical' ? coordinates.y1 : coordinates.x1
     tickValuesArray = flip ? tickValuesArray.reverse() : tickValuesArray
-    console.log(firstVal, interval, tickValuesArray, coordinates)
+
     tickPositions = tickValuesArray.map((value, i) => {
       return firstVal + interval * (i + 0.5)
     })
@@ -85,7 +85,6 @@ export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates
   if (tickExtra && 'domain' in scale && tickPositions[0] !== scale.domain()[0]) {
     tickPositions.unshift(scale.domain()[0])
   }
-
   return tickPositions
 }
 
@@ -146,16 +145,16 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
     // One to one
     } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
       const interval = Math.abs(yCoords.y2 - yCoords.y1) / tickMappable.length
-      let start = yCoords.y2
+      let start = yCoords.y1
       colorYStartCoords = tickMappable.map((value, i) => {
         if (i > 0) {
-          start -= interval
+          start += interval
           colorYEndCoords.push(start)
         }
         return start
       })
 
-      colorYEndCoords.push(start - interval)
+      colorYEndCoords.push(start + interval)
     }
   } else if (orient === 'horizontal') {
     const coordsLength = Math.abs(yCoords.y2 - yCoords.y1)
@@ -225,7 +224,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
   return { colorXStartCoords, colorXEndCoords, colorYStartCoords, colorYEndCoords }
 }
 
-export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords) {
+export function getGradientGeoms (tickMappable, orient, scale, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords) {
   let offsets
   let gradX
   let gradY
@@ -279,10 +278,10 @@ export function getGradientGeoms (tickMappable, orient, scale, tickLabelText, ti
       posScale = scaleLinear().domain([0, scale.length]).range([1, 0])
     }
     offsets = scale.map((value, i) => {
-      if (flip) {
-        return 1 - posScale(i)
-      } else {
+      if (!flip) {
         return posScale(i)
+      } else {
+        return 1 - posScale(i)
       }
     })
 

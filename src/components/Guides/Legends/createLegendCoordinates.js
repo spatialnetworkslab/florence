@@ -48,13 +48,13 @@ export function createPosXCoords (hjust, xRange, orient, width, offset, labelFon
   width = width === 0 ? (x2Range - x1Range) * widthRatio : width
 
   if (hjust === 'left') {
-    x1 = x1Range + offset - labelFontSize
-    x2 = x1Range + width + offset - labelFontSize
+    x1 = x1Range + offset + labelFontSize
+    x2 = x1Range + width + offset + labelFontSize
   }
   if (hjust === 'center') {
     const xCoord = (x2Range - x1Range) * 0.5 + x1Range
-    x1 = xCoord - width / 2 + offset - labelFontSize
-    x2 = xCoord + width / 2 + offset - labelFontSize
+    x1 = xCoord - width / 2 + offset
+    x2 = xCoord + width / 2 + offset
   }
 
   if (hjust === 'right') {
