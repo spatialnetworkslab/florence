@@ -22,6 +22,7 @@
   
   let threshold = 0
   let filteredData
+
   $: {
     filteredData = data
     .filter(row => row.a > threshold)
@@ -44,21 +45,13 @@
   let y = 0
   let k = 1
   let zoomIdentity = { x, y, kx: k, ky: k }
-
-  $: hoverPointKeys = Object.keys(hoverPoints)
-  function handleMouseout (ix) {
-    delete hoverPoints[ix]
-    hoverPoints = hoverPoints
-  }
-
-  const xLoc = (data.domain('a')[0]+data.domain('a')[1])/2
-  const yLoc = data.domain('b')[1]
-
+  
   // scatterplot scale
   const radiusScale = scaleLinear().domain(data.domain('b')).range([10, 0])
 
   // data
   const bins = [[0, 30], [30, 70], [70, 100], [100, 155], [55, 300]]
+  const bins2 = [[0, 10], [10, 40], [40, 200]]
   const fruits = ['apple', 'banana', 'orange', 'pomelo']
 
   // fill scales
@@ -71,10 +64,7 @@
   // fill opacity scales
   const alphaScale = scaleLinear().domain(data.domain('a')).range([0, 1])
   const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
-  const binAlpha = scaleLinear().domain([0,4]).range([0, 1])
-  
-  
-  
+  const binAlpha = scaleLinear().domain([0,2]).range([0, 0.9])
 </script>
 
 <div>
@@ -162,7 +152,20 @@
     /> -->
     
     <GradientLegend
-      scale = {bins}
+      scale = {bins2}
+      fillOpacity= {binAlpha}
+      fill={'green'}
+      labelCount={8}
+      firstLabel={10}
+      title={'Title'}
+      vjust={'top'}
+      hjust={'center'}
+      orient={'vertical'}
+      flipLabels
+    />
+
+    <GradientLegend
+      scale = {bins2}
       fillOpacity= {binAlpha}
       fill={'green'}
       labelCount={8}
@@ -171,48 +174,8 @@
       vjust={'top'}
       hjust={'right'}
       orient={'horizontal'}
+
     />
-          <!-- vjust={'center'}
-      hjust={'right'}
-      titleHjust={'right'}
-      orient={'horizontal'} -->
-    <!-- <DiscreteLegend
-          x1={50} 
-          x2={300}
-          y1={50} 
-          y2={150}
-          scale = {data.domain('a')}
-          fill={linearColorScale}
-          labelCount={8}
-          firstLabel={10}
-        /> -->
-
-    <Section 
-      x1={50} x2={450}
-			y1={200} y2={800}
-			scaleX={scaleA}
-			scaleY={scaleB}
-      {zoomIdentity}
-      padding={50}
-    > 
-
-
-      <PointLayer
-        x={filteredData.column('a')}
-        y={filteredData.column('b')}
-        fill={data.map('a', linearColorScale)}
-        fillOpacity={data.map('a', linearColorScale)}
-        radius={data.map('a', radiusScale)}
-        index={filteredData.column('$key')}
-        onMouseover={ix => hoverPoints[ix] = filteredData.row(ix)}
-        onMouseout={handleMouseout}
-        transition={duration}
-      />
-
-      <XAxis title={'Test'} zoomIdentity={{ y: 0, ky: 1 }} vjust={0} />
-      <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
-    
-    </Section>
 
 	</Graphic>
 

@@ -95,35 +95,35 @@ export function getFormat (labelFormat, scale, numberOfTicks) {
   return x => x
 }
 
-export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords) {
+export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords) {
   let colorXStartCoords = []
   let colorXEndCoords = []
   let colorYStartCoords = []
   let colorYEndCoords = []
 
   if (orient === 'vertical') {
-    // x coordinates
+    // x coords
     colorXStartCoords = tickLabelText.map(i => {
       if (flipLabels) {
-        return xCoords.x1
-      } else {
         if (colorBarWidth <= 1) {
-          return xCoords.x2 - colorBarWidth * xCoords.width
-        } else {
-          return xCoords.x2 - colorBarWidth
+          return tickAlign - labelFontSize - colorBarWidth * xCoords.width
+        } else { 
+          return tickAlign - labelFontSize - colorBarWidth
         }
+      } else {
+        return tickAlign + labelFontSize
       }
     })
 
     colorXEndCoords = tickLabelText.map((value, i) => {
       if (flipLabels) {
-        if (colorBarWidth <= 1) {
-          return xCoords.x2 - (1 - colorBarWidth) * xCoords.width
-        } else {
-          return xCoords.x2 - colorBarWidth
-        }
+        return tickAlign - labelFontSize
       } else {
-        return xCoords.x2
+        if (colorBarWidth <= 1) {
+          return tickAlign + labelFontSize + colorBarWidth * xCoords.width
+        } else {
+          return tickAlign + labelFontSize + colorBarWidth
+        }
       }
     })
 
@@ -142,7 +142,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       colorYEndCoords.shift()
       tickMappable.pop()
 
-    // One to one
+    // Arrays or one tick to one box
     } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
       const interval = Math.abs(yCoords.y2 - yCoords.y1) / tickMappable.length
       let start = yCoords.y1
@@ -161,17 +161,29 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
 
     colorYStartCoords = tickLabelText.map(i => {
       if (flipLabels) {
-        if (colorBarLength <= 1) {
-          return yCoords.y1 + (1 - colorBarLength) * coordsLength
-        } else {
-          return colorBarLength
-        }
+        return tickAlign + labelFontSize * 1.25
       } else {
-        return yCoords.y1
+        return tickAlign - labelFontSize * 1.25
       }
     })
 
     colorYEndCoords = tickLabelText.map((value, i) => {
+      if (flipLabels) {
+        if (colorBarWidth <= 1) {
+          return tickAlign + labelFontSize * 1.25 + colorBarLength * yCoords.height
+        } else {
+          return tickAlign + labelFontSize + colorBarLength
+        }
+      } else {
+        if (colorBarWidth <= 1) {
+          return tickAlign - labelFontSize * 1.25 - colorBarLength * yCoords.height
+        } else {
+          return tickAlign - labelFontSize - colorBarLength
+        }
+      }
+    })
+    
+    tickLabelText.map((value, i) => {
       if (flipLabels) {
         return yCoords.y2
       } else {
@@ -183,6 +195,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       }
     })
 
+    // Bins: follows tick location
     // Non-uniform distribution along linear scale
     if (Array.isArray(scale[0]) && scale.length > 0) {
       colorXStartCoords = tickLabelText.map((value, i) => {
@@ -224,7 +237,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
   return { colorXStartCoords, colorXEndCoords, colorYStartCoords, colorYEndCoords }
 }
 
-export function getGradientGeoms (tickMappable, orient, scale, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords) {
+export function getGradientGeoms (tickMappable, orient, scale, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize) {
   let offsets
   let gradX
   let gradY
@@ -242,13 +255,15 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarLength, c
 
     // Color bar dimensions
     if (flipLabels) {
-      x1 = xCoords.x1
-      x2 = colorBarWidth <= 1 ? xCoords.x2 - (1 - colorBarWidth) * xCoords.width : xCoords.x1 + colorBarWidth
+      x1 = tickAlign + labelFontSize
+      x2 = colorBarWidth <= 1 ? tickAlign - labelFontSize - colorBarWidth * xCoords.width : tickAlign - labelFontSize - colorBarWidth
     } else {
-      x1 = colorBarWidth <= 1 ? xCoords.x2 - colorBarWidth * xCoords.width : xCoords.x2 - colorBarWidth
-      x2 = xCoords.x2
+      x1 = colorBarWidth <= 1 ? tickAlign + labelFontSize + colorBarWidth * xCoords.width : tickAlign + labelFontSize + colorBarWidth
+      x2 = tickAlign + labelFontSize
+      // x1 = colorBarWidth <= 1 ? xCoords.x2 - colorBarWidth * xCoords.width : xCoords.x2 - colorBarWidth
+      // x2 = xCoords.x2
     }
-
+    console.log(x1, x2)
     rectCoords = { x1, x2, y1, y2 }
   } else if (orient === 'horizontal') {
     gradX = flip ? { x1: '100%', x2: '0%' } : { x1: '0%', x2: '100%' }
@@ -268,7 +283,7 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarLength, c
     rectCoords = { x1, x2, y1, y2 }
   }
 
-  // Color assignment
+  // Gradient bar color offset assignment
   // Bins
   if (Array.isArray(scale[0]) && scale.length > 0) {
     let posScale
@@ -297,6 +312,6 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarLength, c
     throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
         either a 'ticks' or a 'domain' method.`)
   }
-
+  console.log(offsets)
   return { offsets, gradX, gradY, rectCoords }
 }

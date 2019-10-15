@@ -5,7 +5,7 @@
 
     import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from "./createLegendCoordinates.js"
 
-    // Test
+    // Contexts
     import * as GraphicContext from '../../Core/Graphic/GraphicContext'
     import * as SectionContext from '../../Core/Section/SectionContext'
     
@@ -19,8 +19,8 @@
     export let y1 = undefined
     export let y2 = undefined
     export let orient = 'vertical'
-    export let colorBarLength = 0.85
-    export let colorBarWidth = 0.7
+    export let colorBarLength = 0.9
+    export let colorBarWidth = 0.75
     export let vjust = 'center'
     export let height = undefined
     export let hjust = 'left'
@@ -57,7 +57,7 @@
     export let labelExtra = false
     export let firstLabel = undefined
     export let format = undefined
-    export let labelPadding = undefined
+    export let labelPadding = 12
 
     // legend title
     export let titleHjust = 'center'
@@ -77,7 +77,7 @@
 
     // transition
     export let transition = undefined
-    // export let zoomIdentity = undefined
+    export let zoomIdentity = undefined
 
     // Contexts
     const sectionContext = SectionContext.subscribe()
@@ -86,12 +86,14 @@
     // Permanent
     const zoomContext = ZoomContext.subscribe()
 
+    // Private props
     let tickLabelText 
     let tickLabelPositions
     let tickLabelXCoords
     let tickLabelYCoords
     let tickColors
     let tickOpacities
+    let tickAlign
 
     let colorXStartCoords
     let colorXEndCoords
@@ -216,11 +218,13 @@
             
             if (orient === 'vertical') {
                 tickLabelPositions = tickLabelYCoords
+                tickAlign = tickLabelXCoords
             } else {
                 tickLabelPositions = tickLabelXCoords
+                tickAlign = tickLabelYCoords
             }
 
-            colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
+            colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
             if (!tickOpacities){
                 tickOpacities = fill
             }
@@ -248,12 +252,14 @@
 
             if (orient === 'vertical') {
                 tickLabelPositions = tickLabelYCoords
+                tickAlign = tickLabelXCoords
             } else {
                 tickLabelPositions = tickLabelXCoords
+                tickAlign = tickLabelYCoords
             }
 
             // something's wrong with the fillOpacity function
-            colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
+            colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
             if (!tickColors){
                 tickColors = fill
             }
@@ -282,6 +288,7 @@
             {transition} 
             {stroke}
             {strokeWidth}
+            {zoomIdentity}
         />
 
         <LabelLayer
@@ -296,6 +303,7 @@
             opacity={labelOpacity} 
             fill={labelColor}
             {transition} 
+            {zoomIdentity}
         />
 
         <Label 
@@ -310,6 +318,7 @@
             opacity={titleOpacity} 
             fill={titleColor}
             {transition} 
+            {zoomIdentity}
         />
     {/if}
 

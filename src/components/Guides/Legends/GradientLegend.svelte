@@ -12,7 +12,7 @@
 
     import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from "./createLegendCoordinates.js"
 
-    // Test
+    // Contexts
     import * as GraphicContext from '../../Core/Graphic/GraphicContext'
     import * as SectionContext from '../../Core/Section/SectionContext'
     
@@ -67,7 +67,7 @@
     export let labelExtra = false
     export let firstLabel = undefined
     export let format = undefined
-    export let labelPadding = undefined
+    export let labelPadding = 2
 
     // legend title
     export let titleHjust = 'center'
@@ -96,12 +96,14 @@
     // Permanent
     const zoomContext = ZoomContext.subscribe()
 
+    // Private props
     let tickLabelText 
     let tickLabelPositions
     let tickLabelXCoords
     let tickLabelYCoords
     let tickColors
     let tickOpacities
+    let tickAlign
 
     let colorGeoms
     let offsets
@@ -176,18 +178,14 @@
         }
     }
 
-    // TICK LABELS and POSITIONING
+    // TICK POSITIONING
     $: {
         tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
-        let locRange
         if (orient === 'vertical') {
             tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, yCoords, flip, orient)
-            tickLabelXCoords = flipLabels ? xCoords.x1 + colorBarLength * xCoords.width : xCoords.x1 + (1 - colorBarLength) * xCoords.width
+            tickLabelXCoords = flipLabels ? x1 + colorBarLength * (x2 - x1) : x1 + (1 - colorBarLength) * (x2 - x1) 
+            tickLabelXCoords = labelX ? labelX : tickLabelXCoords
 
-            if (labelX) {
-                tickLabelXCoords = labelX
-            }
-            
             if (labelPadding !== undefined) { 
                 tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPadding : tickLabelXCoords - labelPadding
             }
@@ -195,10 +193,8 @@
             format = getFormat(labelFormat, scale, tickLabelYCoords.length)
         } else if (orient === 'horizontal'){
             tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, xCoords, flip, orient)
-            tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * yCoords.height : yCoords.y2 - colorBarWidth * yCoords.height
-            if (labelY) {
-                tickLabelYCoords = labelY
-            }
+            tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * (yCoords.y2 - yCoords.y1) : yCoords.y2 - colorBarWidth * (yCoords.y2 - yCoords.y1) 
+            tickLabelYCoords = labelY ? labelY : tickLabelYCoords
 
             if (labelPadding !== undefined) { 
                 tickLabelYCoords = flipLabels ? tickLabelYCoords - labelPadding : tickLabelYCoords + labelPadding
@@ -206,10 +202,10 @@
 
             format = getFormat(labelFormat, scale, tickLabelXCoords.length)
         } else {
-            throw new Error(`Couldn't construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
+            throw new Error(`Could not construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
         }
         tickLabelText = tickLabelText.map(format)
-    }   
+    }  
 
     // COLORS
     $: {
@@ -232,11 +228,13 @@
             
             if (orient === 'vertical') {
                 tickLabelPositions = tickLabelYCoords
+                tickAlign = tickLabelXCoords
             } else {
                 tickLabelPositions = tickLabelXCoords
+                tickAlign = tickLabelYCoords
             }
 
-            colorGeoms = getGradientGeoms(tickColors, orient, scale, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
+            colorGeoms = getGradientGeoms(tickColors, orient, scale, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize)
 
             if (!tickOpacities){
                 tickOpacities = fillOpacity !== undefined ? fillOpacity : 1
@@ -266,11 +264,13 @@
 
             if (orient === 'vertical') {
                 tickLabelPositions = tickLabelYCoords
+                tickAlign = tickLabelXCoords
             } else {
                 tickLabelPositions = tickLabelXCoords
+                tickAlign = tickLabelYCoords
             }
-            
-            colorGeoms = getGradientGeoms(tickOpacities, orient, scale, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
+
+            colorGeoms = getGradientGeoms(tickOpacities, orient, scale, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize)
             if (!tickColors){
                 tickColors = fill !== undefined ? fill : 'black'
             }
@@ -289,7 +289,7 @@
 </script>
 
 <g class="gradient-legend">
-     <!-- Gradient definition -->
+    <!-- Gradient definition -->
     <defs>
       <linearGradient
         id={gradientId}
@@ -308,53 +308,47 @@
       </linearGradient>
     </defs>
     
+    <!-- Florence components-->
     {#if isValid(x1, x2, y1, y2)}
-        <!-- <Section
-            {x1} {y1}
-            {x2} {y2}
-            scaleX={scaleLinear().domain([0, 1])} 
-            scaleY={scaleLinear().domain([0, 1])}
+        <Rectangle
+            x1 = {rectCoords.x1}
+            x2 = {rectCoords.x2}
+            y1 = {rectCoords.y1}
+            y2 = {rectCoords.y2}
+            fill={`url(#${gradientId})`}
+            {transition}
+            {zoomIdentity} 
+        />
+
+        <LabelLayer
+            x={tickLabelXCoords} 
+            y={tickLabelYCoords} 
+            text={tickLabelText} 
+            anchorPoint={labelAnchorPoint}
+            rotation={labelRotate} 
+            fontFamily={labelFont} 
+            fontSize={labelFontSize}
+            fontWeight={labelFontWeight} 
+            opacity={labelOpacity} 
+            fill={labelColor}
+            {transition} 
             {zoomIdentity}
-            flipY
-        >    -->
-            <Rectangle
-                x1 = {rectCoords.x1}
-                x2 = {rectCoords.x2}
-                y1 = {rectCoords.y1}
-                y2 = {rectCoords.y2}
-                fill={`url(#${gradientId})`}
-                {transition} 
-            />
+        />
 
-            <LabelLayer
-                x={tickLabelXCoords} 
-                y={tickLabelYCoords} 
-                text={tickLabelText} 
-                anchorPoint={labelAnchorPoint}
-                rotation={labelRotate} 
-                fontFamily={labelFont} 
-                fontSize={labelFontSize}
-                fontWeight={labelFontWeight} 
-                opacity={labelOpacity} 
-                fill={labelColor}
-                {transition} 
-            />
-
-            <Label 
-                x={titleX}
-                y={titleY}
-                text={title}
-                fontFamily={titleFont}
-                fontSize={titleFontSize}
-                fontWeight={titleFontWeight}
-                rotation={titleRotation}
-                anchorPoint={titleAnchorPoint}
-                opacity={titleOpacity} 
-                fill={titleColor}
-                {transition} 
-            />
-        <!-- </Section> -->
-
+        <Label 
+            x={titleX}
+            y={titleY}
+            text={title}
+            fontFamily={titleFont}
+            fontSize={titleFontSize}
+            fontWeight={titleFontWeight}
+            rotation={titleRotation}
+            anchorPoint={titleAnchorPoint}
+            opacity={titleOpacity} 
+            fill={titleColor}
+            {transition} 
+            {zoomIdentity}
+        />
     {/if}
 
 </g>

@@ -1,7 +1,7 @@
 // There are three ways of setting the position of the axis, in order of precedence
 // 1. vjust with 'bottom', 'center' or 'top'
-// 2. vjust with a number (relative position within content of section
-// 3. y1, y2 props with either a single number (positioning in data coords)
+// 2. vjust with a number (relative position within content of section)
+// 3. x1, x2, y1, y2 props with positioning in data coords
 
 export function createPosYCoords (vjust, yRange, orient, height, offset, titleFontSize) {
   let y1
@@ -132,7 +132,7 @@ export function createTitleYCoord (vjust, yCoords, y, offset, fontSize, orient) 
     addFontSize = fontSize
   }
   if (vjust === 'top') {
-    justification = orient === 'horizontal' ? -0.2 : -0.1
+    justification = orient === 'horizontal' ? -0.25 : -0.1
     addFontSize = -fontSize
   }
 
