@@ -99,16 +99,28 @@
       Vertical
       x1={270} x2={340}
       y1={50} y2={400}-->
-    <!-- <DiscreteLegend
+    <DiscreteLegend
       scale = {data.domain('a')}
-      x1=270 x2={510}
+      x1={270} x2={510}
       y1={50} y2={200}
       fill={linearColorScale}
       labelCount={8}
       orient={'horizontal'}
       firstLabel={10}
       labelExtra
-    /> -->
+    />
+
+    <GradientLegend
+      scale = {data.domain('a')}
+      x1={100} x2={180}
+      y1={50} y2={400}
+      fill={linearColorScale}
+      labelCount={8}
+      orient={'vertical'}
+      firstLabel={10}
+      labelExtra
+    />
+
 
     <!-- <DiscreteLegend
       scale = {bins}
@@ -151,7 +163,7 @@
       orient={'horizontal'}
     /> -->
     
-    <GradientLegend
+    <!-- <GradientLegend
       scale = {bins2}
       fillOpacity= {binAlpha}
       fill={'green'}
@@ -174,8 +186,8 @@
       vjust={'top'}
       hjust={'right'}
       orient={'horizontal'}
-
-    />
+      height={400}
+    /> -->
 
 	</Graphic>
 

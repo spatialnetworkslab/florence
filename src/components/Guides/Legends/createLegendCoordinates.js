@@ -75,7 +75,7 @@ export function createPosXCoords (hjust, xRange, orient, width, offset, labelFon
   return { x1, x2, width }
 }
 
-export function createTitleXCoord (hjust, xCoords, x, offset, fontSize) {
+export function createTitleXCoord (hjust, xCoords, x, offset, fontSize, padding) {
   if (x) {
     return () => x
   }
@@ -110,10 +110,10 @@ export function createTitleXCoord (hjust, xCoords, x, offset, fontSize) {
     throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `hjust`')
   }
 
-  return x1 + Math.abs(x1 - x2) * justification + addFontSize
+  return x1 + Math.abs(x1 - x2) * justification + addFontSize + padding
 }
 
-export function createTitleYCoord (vjust, yCoords, y, offset, fontSize, orient) {
+export function createTitleYCoord (vjust, yCoords, y, offset, fontSize, orient, padding) {
   if (y) {
     return () => y
   }
@@ -132,7 +132,7 @@ export function createTitleYCoord (vjust, yCoords, y, offset, fontSize, orient) 
     addFontSize = fontSize
   }
   if (vjust === 'top') {
-    justification = orient === 'horizontal' ? -0.25 : -0.1
+    justification = -0.075
     addFontSize = -fontSize
   }
 
@@ -150,5 +150,5 @@ export function createTitleYCoord (vjust, yCoords, y, offset, fontSize, orient) 
     throw Error('Please specify either `top`, `center`, `bottom` or a number for `vjust`')
   }
 
-  return y1 + Math.abs(y1 - y2) * justification + addFontSize
+  return y1 + Math.abs(y1 - y2) * justification + addFontSize + padding
 }

@@ -95,7 +95,7 @@ export function getFormat (labelFormat, scale, numberOfTicks) {
   return x => x
 }
 
-export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords) {
+export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords) {
   let colorXStartCoords = []
   let colorXEndCoords = []
   let colorYStartCoords = []
@@ -105,11 +105,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
     // x coords
     colorXStartCoords = tickLabelText.map(i => {
       if (flipLabels) {
-        if (colorBarWidth <= 1) {
-          return tickAlign - labelFontSize - colorBarWidth * xCoords.width
-        } else { 
-          return tickAlign - labelFontSize - colorBarWidth
-        }
+        return tickAlign - labelFontSize - colorBarWidth * xCoords.width
       } else {
         return tickAlign + labelFontSize
       }
@@ -119,11 +115,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       if (flipLabels) {
         return tickAlign - labelFontSize
       } else {
-        if (colorBarWidth <= 1) {
-          return tickAlign + labelFontSize + colorBarWidth * xCoords.width
-        } else {
-          return tickAlign + labelFontSize + colorBarWidth
-        }
+        return tickAlign + labelFontSize + colorBarWidth * xCoords.width
       }
     })
 
@@ -161,25 +153,17 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
 
     colorYStartCoords = tickLabelText.map(i => {
       if (flipLabels) {
-        return tickAlign + labelFontSize * 1.25
+        return tickAlign + labelFontSize * 1.5
       } else {
-        return tickAlign - labelFontSize * 1.25
+        return tickAlign - labelFontSize * 1.5
       }
     })
 
     colorYEndCoords = tickLabelText.map((value, i) => {
       if (flipLabels) {
-        if (colorBarWidth <= 1) {
-          return tickAlign + labelFontSize * 1.25 + colorBarLength * yCoords.height
-        } else {
-          return tickAlign + labelFontSize + colorBarLength
-        }
+        return tickAlign + labelFontSize * 1.5 + colorBarHeight * yCoords.height
       } else {
-        if (colorBarWidth <= 1) {
-          return tickAlign - labelFontSize * 1.25 - colorBarLength * yCoords.height
-        } else {
-          return tickAlign - labelFontSize - colorBarLength
-        }
+        return tickAlign - labelFontSize * 1.5 - colorBarHeight * yCoords.height
       }
     })
     
@@ -187,11 +171,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       if (flipLabels) {
         return yCoords.y2
       } else {
-        if (colorBarLength <= 1) {
-          return yCoords.y1 + colorBarLength * coordsLength
-        } else {
-          return colorBarLength
-        }
+        return yCoords.y1 + colorBarHeight * coordsLength
       }
     })
 
@@ -237,11 +217,10 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
   return { colorXStartCoords, colorXEndCoords, colorYStartCoords, colorYEndCoords }
 }
 
-export function getGradientGeoms (tickMappable, orient, scale, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize) {
+export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize) {
   let offsets
   let gradX
   let gradY
-  let rectCoords
   let x1
   let x2
   let y1
@@ -255,16 +234,12 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarLength, c
 
     // Color bar dimensions
     if (flipLabels) {
-      x1 = tickAlign + labelFontSize
-      x2 = colorBarWidth <= 1 ? tickAlign - labelFontSize - colorBarWidth * xCoords.width : tickAlign - labelFontSize - colorBarWidth
+      x1 = tickAlign - labelFontSize - colorBarWidth * xCoords.width
+      x2 = tickAlign - labelFontSize
     } else {
-      x1 = colorBarWidth <= 1 ? tickAlign + labelFontSize + colorBarWidth * xCoords.width : tickAlign + labelFontSize + colorBarWidth
-      x2 = tickAlign + labelFontSize
-      // x1 = colorBarWidth <= 1 ? xCoords.x2 - colorBarWidth * xCoords.width : xCoords.x2 - colorBarWidth
-      // x2 = xCoords.x2
+      x1 = tickAlign + labelFontSize
+      x2 = tickAlign + labelFontSize + colorBarWidth * xCoords.width
     }
-    console.log(x1, x2)
-    rectCoords = { x1, x2, y1, y2 }
   } else if (orient === 'horizontal') {
     gradX = flip ? { x1: '100%', x2: '0%' } : { x1: '0%', x2: '100%' }
     gradY = { y1: '0%', y2: '0%' }
@@ -273,15 +248,15 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarLength, c
 
     // Color bar dimensions
     if (flipLabels) {
-      y2 = yCoords.y2
-      y1 = colorBarLength <= 1 ? yCoords.y1 + (1 - colorBarLength) * yCoords.height : yCoords.y1 + colorBarLength
+      y1 = tickAlign + labelFontSize
+      y2 = tickAlign + labelFontSize + colorBarHeight * yCoords.height
     } else {
-      y1 = colorBarLength <= 1 ? yCoords.y1 : yCoords.y2 - colorBarLength
-      y2 = colorBarLength <= 1 ? yCoords.y2 - (1 - colorBarLength) * yCoords.height : yCoords.y2
+      y1 = tickAlign - labelFontSize * 1.5 - colorBarHeight * yCoords.height
+      y2 = tickAlign - labelFontSize * 1.5
     }
-
-    rectCoords = { x1, x2, y1, y2 }
   }
+
+  const rectCoords = { x1, x2, y1, y2 }
 
   // Gradient bar color offset assignment
   // Bins
@@ -312,6 +287,6 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarLength, c
     throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
         either a 'ticks' or a 'domain' method.`)
   }
-  console.log(offsets)
+
   return { offsets, gradX, gradY, rectCoords }
 }

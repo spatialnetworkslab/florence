@@ -23,14 +23,13 @@
     // global properties
     let gradientId = getId()
 
+    // Public props
     // Aesthetics: positioning
     export let x1 = undefined
     export let x2 = undefined
     export let y1 = undefined
     export let y2 = undefined
     export let orient = 'vertical'
-    export let colorBarLength = 0.85
-    export let colorBarWidth = 0.7
     export let vjust = 'center'
     export let height = undefined
     export let hjust = 'left'
@@ -84,6 +83,8 @@
     export let titleOpacity = 1
     export let titleRotation = 0
     export let titleAnchorPoint = 't'
+    export let titlePaddingX = 0
+    export let titlePaddingY = 0
 
     // transition
     export let transition = undefined
@@ -110,6 +111,8 @@
     let gradX
     let gradY
     let rectCoords
+    let colorBarHeight = undefined
+    let colorBarWidth = undefined
 
     let posScaleY
     let xCoords
@@ -145,13 +148,13 @@
             if (!titleX && titleX !== 0) {
                 const xRange = $sectionContext.scaleX.range()
                 if (sectionContext.flipX) xRange.reverse()
-                titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, titleFontSize)
+                titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, titleFontSize, titlePaddingX)
             }
 
             if (!titleY && titleY !== 0) {
                 const yRange = $sectionContext.scaleY.range()
                 if (sectionContext.flipY) yRange.reverse()
-                titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, titleFontSize, orient)
+                titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, titleFontSize, orient, titlePaddingY)
             }
         }
     }
@@ -172,8 +175,16 @@
     }
 
     $: {
+        if (colorBarHeight === undefined) {
+            colorBarHeight = orient === 'horizontal' ? 0.9 : 1
+        }
+
+        if (colorBarWidth === undefined) {
+            colorBarWidth = orient === 'horizontal' ? 0.1 : 0.75
+        }
+
         if (orient === 'horizontal') {
-            colorBarLength = 0.75
+            colorBarHeight = 0.75
             colorBarWidth  = 0.1
         }
     }
@@ -183,7 +194,7 @@
         tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
         if (orient === 'vertical') {
             tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, yCoords, flip, orient)
-            tickLabelXCoords = flipLabels ? x1 + colorBarLength * (x2 - x1) : x1 + (1 - colorBarLength) * (x2 - x1) 
+            tickLabelXCoords = flipLabels ? x1 + colorBarHeight * (x2 - x1) : x1 + (1 - colorBarHeight) * (x2 - x1) 
             tickLabelXCoords = labelX ? labelX : tickLabelXCoords
 
             if (labelPadding !== undefined) { 
@@ -233,8 +244,8 @@
                 tickLabelPositions = tickLabelXCoords
                 tickAlign = tickLabelYCoords
             }
-
-            colorGeoms = getGradientGeoms(tickColors, orient, scale, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize)
+            
+            colorGeoms = getGradientGeoms(tickColors, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize)
 
             if (!tickOpacities){
                 tickOpacities = fillOpacity !== undefined ? fillOpacity : 1
@@ -269,8 +280,8 @@
                 tickLabelPositions = tickLabelXCoords
                 tickAlign = tickLabelYCoords
             }
-
-            colorGeoms = getGradientGeoms(tickOpacities, orient, scale, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize)
+            colorGeoms = getGradientGeoms(tickOpacities, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize)
+            
             if (!tickColors){
                 tickColors = fill !== undefined ? fill : 'black'
             }

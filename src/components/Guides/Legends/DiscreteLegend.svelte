@@ -13,14 +13,13 @@
     import * as ZoomContext from '../../Core/Section/ZoomContext'
     import { getTickPositions, getFormat, getTicks, getColorGeoms, isValid } from './utils.js'
 
+    // Public props
     // Aesthetics: positioning
     export let x1 = undefined
     export let x2 = undefined
     export let y1 = undefined
     export let y2 = undefined
     export let orient = 'vertical'
-    export let colorBarLength = 0.9
-    export let colorBarWidth = 0.75
     export let vjust = 'center'
     export let height = undefined
     export let hjust = 'left'
@@ -57,7 +56,7 @@
     export let labelExtra = false
     export let firstLabel = undefined
     export let format = undefined
-    export let labelPadding = 12
+    export let labelPadding = 0
 
     // legend title
     export let titleHjust = 'center'
@@ -74,6 +73,8 @@
     export let titleOpacity = 1
     export let titleRotation = 0
     export let titleAnchorPoint = 't'
+    export let titlePaddingX = 0
+    export let titlePaddingY = 0
 
     // transition
     export let transition = undefined
@@ -100,6 +101,8 @@
     let colorYStartCoords 
     let colorYEndCoords 
     let colorGeoms
+    let colorBarHeight
+    let colorBarWidth
 
     let posScaleY
     let xCoords
@@ -134,13 +137,13 @@
             if (!titleX && titleX !== 0) {
                 const xRange = $sectionContext.scaleX.range()
                 if (sectionContext.flipX) xRange.reverse()
-                titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, titleFontSize)
+                titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, titleFontSize, titlePaddingX)
             }
 
             if (!titleY && titleY !== 0) {
                 const yRange = $sectionContext.scaleY.range()
                 if (sectionContext.flipY) yRange.reverse()
-                titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, titleFontSize, orient)
+                titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, titleFontSize, orient, titlePaddingY)
             }
         }
     }
@@ -162,10 +165,8 @@
     }
 
     $: {
-        if (orient === 'horizontal') {
-            colorBarLength = 0.75
-            colorBarWidth  = 0.1
-        }
+        colorBarHeight = orient === 'horizontal' ? 0.75 : 1
+        colorBarWidth = orient === 'horizontal' ? 0.1 : 0.75
     }
 
     // TICK LABELS and POSITIONING
@@ -173,7 +174,7 @@
         tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
         if (orient === 'vertical') {
             tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, yCoords, flip, orient)
-            tickLabelXCoords = flipLabels ? x1 + colorBarLength * (x2 - x1) : x1 + (1 - colorBarLength) * (x2 - x1) 
+            tickLabelXCoords = flipLabels ? x1 + colorBarHeight * (x2 - x1) : x1 + (1 - colorBarHeight) * (x2 - x1) 
             tickLabelXCoords = labelX ? labelX : tickLabelXCoords
 
             if (labelPadding !== undefined) { 
@@ -224,7 +225,7 @@
                 tickAlign = tickLabelYCoords
             }
 
-            colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
+            colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords)
             if (!tickOpacities){
                 tickOpacities = fill
             }
@@ -259,7 +260,7 @@
             }
 
             // something's wrong with the fillOpacity function
-            colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarLength, colorBarWidth, flipLabels, flip, xCoords, yCoords)
+            colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords)
             if (!tickColors){
                 tickColors = fill
             }
