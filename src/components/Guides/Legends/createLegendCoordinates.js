@@ -22,8 +22,8 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
     y2 = yCoord + height / 2 + offset + addTitle
   }
   if (vjust === 'bottom') {
-    y1 = y2Range - height + offset
-    y2 = y2Range + offset
+    y1 = y2Range - height + offset - addTitle
+    y2 = y2Range + offset - addTitle
   }
 
   if (!isNaN(vjust)) {

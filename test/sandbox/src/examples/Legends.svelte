@@ -74,31 +74,6 @@
     scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
   >       
-    <!-- 
-      horizontal
-      x1={0} x2={240}
-      y1={50} y2={200}
-
-      Vertical
-      x1={150} x2={220}
-      y1={50} y2={400} -->
-    <!-- <GradientLegend
-      scale = {data.domain('a')}
-      x1={0} x2={240}
-      y1={50} y2={200}
-      fill={linearColorScale}
-      labelCount={8}
-      orient={'horizontal'}
-      labelExtra
-    /> -->
-    <!--
-      Horizontal
-      x1=270 x2={510}
-      y1={50} y2={200}
-
-      Vertical
-      x1={270} x2={340}
-      y1={50} y2={400}-->
     <DiscreteLegend
       scale = {data.domain('a')}
       x1={270} x2={510}
@@ -154,24 +129,25 @@
       orient={'horizontal'}
     /> -->
 
-    <!-- <DiscreteLegend
-      scale = {scalePow().domain(data.domain('b'))}
-      x1={250} x2={490}
-      y1={50} y2={200}
-      fillOpacity={scaleLinear().domain(data.domain('b')).range([0, 1])}
-      fill={'green'}
+    <DiscreteLegend
+      scale = {fruits}
+      fillOpacity={0.5}
+      fill={fruitScale}
       orient={'horizontal'}
-    /> -->
+      hjust={'center'}
+      vjust={'center'}
+      titlePaddingY={-15}
+    />
     
-    <!-- <GradientLegend
+    <DiscreteLegend
       scale = {bins2}
       fillOpacity= {binAlpha}
       fill={'green'}
       labelCount={8}
       firstLabel={10}
       title={'Title'}
-      vjust={'top'}
-      hjust={'center'}
+      vjust={'bottom'}
+      hjust={'left'}
       orient={'vertical'}
       flipLabels
     />
@@ -183,11 +159,12 @@
       labelCount={8}
       firstLabel={10}
       title={'Title'}
-      vjust={'top'}
-      hjust={'right'}
+      vjust={'bottom'}
+      hjust={'center'}
       orient={'horizontal'}
-      height={400}
-    /> -->
+      height={120}
+      flip
+    />
 
 	</Graphic>
 
