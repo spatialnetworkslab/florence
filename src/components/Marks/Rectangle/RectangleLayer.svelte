@@ -15,19 +15,29 @@
   export let fillOpacity = undefined
   export let opacity = undefined
 
-  // Transitions and interactions
+  // Transitions
   export let transition = undefined
+
+  // Mouse interactions
   export let onClick = undefined
+  export let onMousedown = undefined
+  export let onMouseup = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
-  export let onDragstart = undefined
-  export let onDrag = undefined
-  export let onDragend = undefined
+  export let onMousedrag = undefined
+
+  // Touch interactions
+  // TODO
+
+  // Select interactions
+  export let onSelect = undefined
+  export let onDeselect = undefined
 
   // Other
   export let key = undefined
   export let interpolate = true
   export let zoomIdentity = undefined
+  export let blockReindexing = false
 </script>
 
 <Layer 
@@ -35,7 +45,8 @@
   {x1} {x2} {y1} {y2}
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
-  {transition} {onClick} {onMouseover} {onMouseout}
-  {onDragstart} {onDrag} {onDragend}
-  {key} {zoomIdentity} {interpolate}
+  {transition} 
+  {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
+  {onSelect} {onDeselect}
+  {key} {zoomIdentity} {interpolate} {blockReindexing}
 />

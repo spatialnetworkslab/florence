@@ -24,24 +24,28 @@
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scalePoint().domain(domainB)
   
-  let bigPoint = { x: 50, y: 'c' }
+  let hitKey
   let dragPoint
+  let blockReindexing = false
 
-  function handleDragstart (event) {
-    dragPoint = event.localCoordinates
-  }
+  function onMousedrag (event) {
+    if (event.dragType === 'start') {
+      hitKey = event.key
+      blockReindexing = true
+    }
 
-  function handleDrag (event) {
-    dragPoint = event.localCoordinates
-  }
+    if (event.dragType === 'drag') {
+      dragPoint = event.localCoordinates
+    }
 
-  function handleDragend (event) {
-    dragPoint = undefined
-    const hitKey = Number(event.key)
-    const position = event.localCoordinates
+    if (event.dragType === 'end') {
+      data.updateRow(hitKey, { a: dragPoint.x, b: dragPoint.y })
+      data = data
 
-    data.updateRow(hitKey, { a: position.x, b: position.y })
-    data = data
+      hitKey = undefined
+      dragPoint = undefined
+      blockReindexing = false
+    }
   }
 
 </script>
@@ -55,18 +59,17 @@
 			y1={50} y2={450}
 			scaleX={scaleA}
 			scaleY={scaleB}
-      backgroundColor="pink"
+      backgroundColor="white"
       transformation="polar"
       zoomIdentity={{x: 0, y: 0, kx: 1.2, ky: 1.2}}
+      {blockReindexing}
 		>
 
 			<PointLayer
         x={data.column('a')}
         y={data.column('b')}
         key={data.column('$key')}
-        onDragstart={handleDragstart}
-        onDrag={handleDrag}
-        onDragend={handleDragend}
+        {onMousedrag}
       />
 
       {#if dragPoint}

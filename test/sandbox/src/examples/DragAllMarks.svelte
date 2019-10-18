@@ -2,6 +2,8 @@
   import { Graphic, Section, Rectangle, Line, FuncLine } from '../../../../src'
   import { scaleLinear } from 'd3-scale'
 
+  let blockReindexing = false
+
   // Rectangle
   let rectanglePosition = { x: 1, y: 1 }
   let rectangleWH = { w: 2, h: 2 }
@@ -15,17 +17,26 @@
 
   let rectStartDelta
 
-  function handleStartRectangle ({ localCoordinates }) {
-    rectStartDelta = { 
-      x: localCoordinates.x - rectanglePosition.x,
-      y: localCoordinates.y - rectanglePosition.y
+  function dragRectangle (event) {
+    const localCoordinates = event.localCoordinates
+    
+    if (event.dragType === 'start') {
+      blockReindexing = true
+      rectStartDelta = {
+        x: localCoordinates.x - rectanglePosition.x,
+        y: localCoordinates.y - rectanglePosition.y
+      }
     }
-  }
 
-  function handleDragRectangle ({ localCoordinates }) {
-    rectanglePosition = {
-      x: localCoordinates.x - rectStartDelta.x,
-      y: localCoordinates.y - rectStartDelta.y
+    if (event.dragType === 'drag') {
+      rectanglePosition = {
+        x: localCoordinates.x - rectStartDelta.x,
+        y: localCoordinates.y - rectStartDelta.y
+      }      
+    }
+
+    if (event.dragType === 'end') {
+      blockReindexing = false
     }
   }
 
@@ -37,16 +48,26 @@
   let currentLinePosition
   let lineOffset = { x: 0, y: 0 }
 
-  function handleStartLine ({ localCoordinates }) {
-    currentLinePosition = localCoordinates
-  }
+  function dragLine (event) {
+    const localCoordinates = event.localCoordinates
+    
+    if (event.dragType === 'start') {
+      blockReindexing = true
+      currentLinePosition = localCoordinates
+    }
 
-  function handleDragLine ({ localCoordinates }) {
-    previousLinePosition = currentLinePosition
-    currentLinePosition = localCoordinates
-    lineOffset = {
-      x: lineOffset.x + (currentLinePosition.x - previousLinePosition.x),
-      y: lineOffset.y + (currentLinePosition.y - previousLinePosition.y)
+    if (event.dragType === 'drag') {
+      previousLinePosition = currentLinePosition
+      currentLinePosition = localCoordinates
+      
+      lineOffset = {
+        x: lineOffset.x + (currentLinePosition.x - previousLinePosition.x),
+        y: lineOffset.y + (currentLinePosition.y - previousLinePosition.y)
+      }  
+    }
+
+    if (event.dragType === 'end') {
+      blockReindexing = false
     }
   }
 
@@ -62,14 +83,23 @@
   let previousY
   let currentY
 
-  function handleStartFuncLine ({ localCoordinates }) {
-    currentY = localCoordinates.y
-  }
+  function dragFuncLine (event) {
+    const localCoordinates = event.localCoordinates
 
-  function handleDragFuncLine ({ localCoordinates }) {
-    previousY = currentY
-    currentY = localCoordinates.y
-    baseA = baseA + (currentY - previousY)
+    if (event.dragType === 'start') {
+      blockReindexing = true
+      currentY = localCoordinates.y
+    }
+
+    if (event.dragType === 'drag') {
+      previousY = currentY
+      currentY = localCoordinates.y
+      baseA = baseA + (currentY - previousY) 
+    }
+
+    if (event.dragType === 'end') {
+      blockReindexing = false
+    }
   }
 </script>
 
@@ -78,29 +108,27 @@
   <Section 
     scaleX={scaleLinear().domain([0, 10])}
     scaleY={scaleLinear().domain([0, 10])}
+    {blockReindexing}
   >
   
     <Rectangle 
       {...rectangleCoords} 
       fill="green"
-      onDragstart={handleStartRectangle}
-      onDrag={handleDragRectangle}
+      onMousedrag={dragRectangle}
     />
 
     <Line
       {...lineCoords}
       strokeWidth={6}
       stroke="red"
-      onDragstart={handleStartLine}
-      onDrag={handleDragLine}
+      onMousedrag={dragLine}
     />
     
     <FuncLine
       {func}
       stroke="blue"
       strokeWidth={8}
-      onDragstart={handleStartFuncLine}
-      onDrag={handleDragFuncLine}
+      onMousedrag={dragFuncLine}
     />
 
   </Section>

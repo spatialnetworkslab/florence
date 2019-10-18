@@ -5,6 +5,7 @@ import livereload from 'rollup-plugin-livereload'
 import { terser } from 'rollup-plugin-terser'
 import globals from 'rollup-plugin-node-globals'
 import json from 'rollup-plugin-json'
+import dsv from 'rollup-plugin-dsv'
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -39,6 +40,8 @@ export default {
       include: ['**/src/data/**'],
       compact: true
     }),
+
+    dsv(),
 
     // Allows you to use 'process'
     globals(),
