@@ -22,11 +22,12 @@
   let hoverKey
 
   function onMouseover ({ key }) {
+    console.log(key)
     hoverKey = key
   }
 
-  function onMouseout ({ key }) {
-    if (hoverKey === key) hoverKey = undefined
+  function onMouseout () {
+    hoverKey = undefined
   }
 </script>
 
@@ -38,9 +39,11 @@
       x={data.column('a')}
       y={data.column('b')}
       fill={key => key === hoverKey ? 'red' : 'black'}
-      radius={7}
+      radius={17}
       {onMouseover}
       {onMouseout}
+      onTouchstart={onMouseover}
+      onTouchend={onMouseout}
     />
 
   </Section>
