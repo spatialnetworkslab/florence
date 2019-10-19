@@ -368,18 +368,22 @@
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
-    const markMouseInterface = $interactionManagerContext.mouse().marks()
+    if (detectIt.hasMouse) {
+      const markMouseInterface = $interactionManagerContext.mouse().marks()
 
-    if (markMouseInterface.markIsLoaded(markId)) {
-      markMouseInterface.removeAllMarkInteractions(markId)
-      markMouseInterface.removeMark(markId)
+      if (markMouseInterface.markIsLoaded(markId)) {
+        markMouseInterface.removeAllMarkInteractions(markId)
+        markMouseInterface.removeMark(markId)
+      }
     }
 
-    const markTouchInterface = $interactionManagerContext.touch().marks()
+    if (detectIt.hasTouch) {
+      const markTouchInterface = $interactionManagerContext.touch().marks()
 
-    if (markTouchInterface.markIsLoaded(markId)) {
-      markTouchInterface.removeAllMarkInteractions(markId)
-      markTouchInterface.removeMark(markId)
+      if (markTouchInterface.markIsLoaded(markId)) {
+        markTouchInterface.removeAllMarkInteractions(markId)
+        markTouchInterface.removeMark(markId)
+      }
     }
   }
 

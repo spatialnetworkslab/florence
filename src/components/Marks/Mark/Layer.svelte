@@ -397,18 +397,22 @@
   }
 
   function removeLayerFromSpatialIndexIfNecessary () {
-    const markMouseInterface = $interactionManagerContext.mouse().marks()
+    if (detectIt.hasMouse) {
+      const markMouseInterface = $interactionManagerContext.mouse().marks()
 
-    if (markMouseInterface.layerIsLoaded(layerId)) {
-      markMouseInterface.removeAllLayerInteractions(layerId)
-      markMouseInterface.removeLayer(layerId)
+      if (markMouseInterface.layerIsLoaded(layerId)) {
+        markMouseInterface.removeAllLayerInteractions(layerId)
+        markMouseInterface.removeLayer(layerId)
+      }
     }
 
-    const markTouchInterface = $interactionManagerContext.touch().marks()
+    if (detectIt.hasTouch) {
+      const markTouchInterface = $interactionManagerContext.touch().marks()
 
-    if (markTouchInterface.layerIsLoaded(layerId)) {
-      markTouchInterface.removeAllLayerInteractions(layerId)
-      markTouchInterface.removeLayer(layerId)
+      if (markTouchInterface.layerIsLoaded(layerId)) {
+        markTouchInterface.removeAllLayerInteractions(layerId)
+        markTouchInterface.removeLayer(layerId)
+      }
     }
   }
 
