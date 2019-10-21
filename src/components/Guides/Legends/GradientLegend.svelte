@@ -8,16 +8,14 @@
 <script>
     import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from "../../../"
     import { scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
-    import { default as getDataType } from '../../../utils/getDataType.js'
-
     import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from "./createLegendCoordinates.js"
 
     // Contexts
     import * as GraphicContext from '../../Core/Graphic/GraphicContext'
     import * as SectionContext from '../../Core/Section/SectionContext'
+    import * as ZoomContext from '../../Core/Section/ZoomContext'
     
     // Permanent
-    import * as ZoomContext from '../../Core/Section/ZoomContext'
     import { getTickPositions, getFormat, getTicks, getGradientGeoms, isValid } from './utils.js'
 
     // global properties
@@ -46,7 +44,7 @@
     export let stroke = 'none'
     export let strokeWidth = 2
 
-    // Aesthetics: mappable
+    // Aesthetics
     export let fill = undefined
     export let fillOpacity = undefined
 
@@ -97,7 +95,7 @@
     // Permanent
     const zoomContext = ZoomContext.subscribe()
 
-    // Private props
+    // Private variables
     let tickLabelText 
     let tickLabelPositions
     let tickLabelXCoords
@@ -117,12 +115,13 @@
     let posScaleY
     let xCoords
     let yCoords
+    let addTitleSize
     
     // Section positioning wrt section/graphic context
     $: {
         if (!isValid(x1, x2, y1, y2)) {
             const xRange = $sectionContext.scaleX.domain()
-            const yRange = $sectionContext.scaleY.domain()
+            const yDomain = $sectionContext.scaleY.domain()
 
             if (sectionContext.flipX) xRange.reverse()
             xCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize)
@@ -130,8 +129,9 @@
             x2 = xCoords.x2
             width = xCoords.width
            
-            if (sectionContext.flipY) yRange.reverse()
-            yCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, titleFontSize)
+            if (sectionContext.flipY) yDomain.reverse()
+            addTitleSize = title.length > 0 ? titleFontSize : 0
+            yCoords = createPosYCoords(vjust, yDomain, orient, height, yOffset, addTitleSize)
             yCoords.y1 = yCoords.y1
             y1 = yCoords.y1
             y2 = yCoords.y2
@@ -152,8 +152,8 @@
             }
 
             if (!titleY && titleY !== 0) {
-                const yRange = $sectionContext.scaleY.range()
-                if (sectionContext.flipY) yRange.reverse()
+                const yDomain = $sectionContext.scaleY.range()
+                if (sectionContext.flipY) yDomain.reverse()
                 titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, titleFontSize, orient, titlePaddingY)
             }
         }
@@ -300,66 +300,67 @@
 </script>
 
 <g class="gradient-legend">
-    <!-- Gradient definition -->
-    <defs>
-      <linearGradient
-        id={gradientId}
-        x1={gradX.x1}
-        y1={gradY.y1}
-        x2={gradX.x2}
-        y2={gradY.y2}
-        >
-        {#each offsets as o, i}
-            <stop
-            key={i}
-            offset={`${o*100 + '%'}`}
-            style={`stop-color:${Array.isArray(tickColors) ? tickColors[i] : tickColors};stop-opacity:${Array.isArray(tickOpacities) ? tickOpacities[i] : tickOpacities}`}
-            />
-        {/each}
-      </linearGradient>
-    </defs>
-    
-    <!-- Florence components-->
-    {#if isValid(x1, x2, y1, y2)}
-        <Rectangle
-            x1 = {rectCoords.x1}
-            x2 = {rectCoords.x2}
-            y1 = {rectCoords.y1}
-            y2 = {rectCoords.y2}
-            fill={`url(#${gradientId})`}
-            {transition}
-            {zoomIdentity} 
-        />
+  <!-- Gradient definition -->
+  <defs>
+    <linearGradient
+      id={gradientId}
+      x1={gradX.x1}
+      y1={gradY.y1}
+      x2={gradX.x2}
+      y2={gradY.y2}
+      >
+      {#each offsets as o, i}
+          <stop
+          key={i}
+          offset={`${o*100 + '%'}`}
+          style={`stop-color:${Array.isArray(tickColors) ? tickColors[i] : tickColors};stop-opacity:${Array.isArray(tickOpacities) ? tickOpacities[i] : tickOpacities}`}
+          />
+      {/each}
+    </linearGradient>
+  </defs>
+  
+  <!-- Florence components-->
+  {#if isValid(x1, x2, y1, y2)}
+      <Rectangle
+          x1 = {rectCoords.x1}
+          x2 = {rectCoords.x2}
+          y1 = {rectCoords.y1}
+          y2 = {rectCoords.y2}
+          fill={`url(#${gradientId})`}
+          {transition}
+          {zoomIdentity} 
+      />
 
-        <LabelLayer
-            x={tickLabelXCoords} 
-            y={tickLabelYCoords} 
-            text={tickLabelText} 
-            anchorPoint={labelAnchorPoint}
-            rotation={labelRotate} 
-            fontFamily={labelFont} 
-            fontSize={labelFontSize}
-            fontWeight={labelFontWeight} 
-            opacity={labelOpacity} 
-            fill={labelColor}
-            {transition} 
-            {zoomIdentity}
-        />
-
-        <Label 
-            x={titleX}
-            y={titleY}
-            text={title}
-            fontFamily={titleFont}
-            fontSize={titleFontSize}
-            fontWeight={titleFontWeight}
-            rotation={titleRotation}
-            anchorPoint={titleAnchorPoint}
-            opacity={titleOpacity} 
-            fill={titleColor}
-            {transition} 
-            {zoomIdentity}
-        />
-    {/if}
+      <LabelLayer
+          x={tickLabelXCoords} 
+          y={tickLabelYCoords} 
+          text={tickLabelText} 
+          anchorPoint={labelAnchorPoint}
+          rotation={labelRotate} 
+          fontFamily={labelFont} 
+          fontSize={labelFontSize}
+          fontWeight={labelFontWeight} 
+          opacity={labelOpacity} 
+          fill={labelColor}
+          {transition} 
+          {zoomIdentity}
+      />
+      {#if title.length > 0}
+          <Label 
+              x={titleX}
+              y={titleY}
+              text={title}
+              fontFamily={titleFont}
+              fontSize={titleFontSize}
+              fontWeight={titleFontWeight}
+              rotation={titleRotation}
+              anchorPoint={titleAnchorPoint}
+              opacity={titleOpacity} 
+              fill={titleColor}
+              {transition} 
+              {zoomIdentity}
+          />
+      {/if}
+  {/if}
 
 </g>
