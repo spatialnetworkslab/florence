@@ -105,10 +105,15 @@
   let posScaleY
   let xCoords
   let yCoords
+  let addTitleSize
 
   // Section positioning wrt section/graphic context
   $: {
-    if (!isValid(x1, x2, y1, y2)) {
+    if (!['horizontal', 'vertical'].includes(orient)) {
+      throw Error('Invalid input for `orient` property. Please provide either `horizontal` or `vertical` as inputs.')
+    }
+
+    if (!isValid(x1, x2, y1, y2) && ['horizontal', 'vertical'].includes(orient)) {
       const xDomain = $sectionContext.scaleX.domain()
       const yDomain = $sectionContext.scaleY.domain()
 
@@ -118,7 +123,8 @@
       x2 = xCoords.x2
       width = xCoords.width
       if (sectionContext.flipY) yDomain.reverse()
-      yCoords = createPosYCoords(vjust, yDomain, orient, height, yOffset, titleFontSize)
+      addTitleSize = title.length > 0 ? titleFontSize : 0
+      yCoords = createPosYCoords(vjust, yDomain, orient, height, yOffset, addTitleSize)
       yCoords.y1 = yCoords.y1
       y1 = yCoords.y1
       y2 = yCoords.y2
@@ -309,20 +315,22 @@
       {zoomIdentity}
     />
 
-    <Label 
-      x={titleX}
-      y={titleY}
-      text={title}
-      fontFamily={titleFont}
-      fontSize={titleFontSize}
-      fontWeight={titleFontWeight}
-      rotation={titleRotation}
-      anchorPoint={titleAnchorPoint}
-      opacity={titleOpacity} 
-      fill={titleColor}
-      {transition} 
-      {zoomIdentity}
-    />
+    {#if title.length > 0}
+      <Label 
+        x={titleX}
+        y={titleY}
+        text={title}
+        fontFamily={titleFont}
+        fontSize={titleFontSize}
+        fontWeight={titleFontWeight}
+        rotation={titleRotation}
+        anchorPoint={titleAnchorPoint}
+        opacity={titleOpacity} 
+        fill={titleColor}
+        {transition} 
+        {zoomIdentity}
+      />
+    {/if}
   {/if}
 
 </g>

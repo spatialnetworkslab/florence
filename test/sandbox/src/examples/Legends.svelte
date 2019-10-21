@@ -73,7 +73,7 @@
     width={700} {height}
     scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
-    padding={200}
+    padding={100}
   >       
     <DiscreteLegend
       scale = {data.domain('a')}
@@ -105,7 +105,10 @@
       orient={'horizontal'}
       hjust={'right'}
       vjust={'bottom'}
+      yOffset={-100}
       height={120}
+      labelCount={6}
+      title={'Test Legend'}
     />
 
     <GradientLegend

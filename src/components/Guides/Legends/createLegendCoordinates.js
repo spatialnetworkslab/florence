@@ -10,30 +10,30 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   const y2Range = yRange[1]
   const heightRatio = orient === 'vertical' ? 0.3 : 0.1
   height = (height === 0 || height === undefined) ? (y2Range - y1Range) * heightRatio : height
-  const addTitle = titleFontSize * 4
-
+  const addTitleSize = titleFontSize * 4
+  console.log('!!!', offset)
   if (vjust === 'top') {
-    y1 = y1Range + offset + addTitle
-    y2 = y1Range + height + offset + addTitle
+    y1 = y1Range + offset + addTitleSize
+    y2 = y1Range + height + offset + addTitleSize
   }
   if (vjust === 'center' || vjust === 'centre') {
     const yCoord = (y2Range - y1Range) * 0.5 + y1Range
-    y1 = yCoord - height / 2 + offset + addTitle
-    y2 = yCoord + height / 2 + offset + addTitle
+    y1 = yCoord - height / 2 + offset + addTitleSize
+    y2 = yCoord + height / 2 + offset + addTitleSize
   }
   if (vjust === 'bottom') {
-    y1 = y2Range - height + offset - addTitle
-    y2 = y2Range + offset - addTitle
+    y1 = y2Range - height + offset - addTitleSize
+    y2 = y2Range + offset - addTitleSize
   }
 
-  if (!isNaN(vjust)) {
+  if (!isNaN(vjust) && (vjust <= 1 && vjust >= -1)) {
     const yCoord = (y2Range - y1Range) * vjust + y1Range
-    y1 = yCoord
-    y2 = yCoord + height
+    y1 = yCoord + offset - addTitleSize
+    y2 = yCoord + height + offset - addTitleSize
   }
 
   if (!['top', 'bottom', 'center'].includes(vjust) && y1 === undefined) {
-    throw Error('Please specify either `top`, `center`, `bottom` or a number for `vjust`')
+    throw Error('Please specify either `top`, `center`, `bottom` or a number in the range [-1, 1] for `vjust`')
   }
 
   return { y1, y2, height }

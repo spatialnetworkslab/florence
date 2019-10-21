@@ -115,6 +115,7 @@
     let posScaleY
     let xCoords
     let yCoords
+    let addTitleSize
     
     // Section positioning wrt section/graphic context
     $: {
@@ -129,7 +130,8 @@
             width = xCoords.width
            
             if (sectionContext.flipY) yDomain.reverse()
-            yCoords = createPosYCoords(vjust, yDomain, orient, height, yOffset, titleFontSize)
+            addTitleSize = title.length > 0 ? titleFontSize : 0
+            yCoords = createPosYCoords(vjust, yDomain, orient, height, yOffset, addTitleSize)
             yCoords.y1 = yCoords.y1
             y1 = yCoords.y1
             y2 = yCoords.y2
@@ -298,66 +300,67 @@
 </script>
 
 <g class="gradient-legend">
-    <!-- Gradient definition -->
-    <defs>
-      <linearGradient
-        id={gradientId}
-        x1={gradX.x1}
-        y1={gradY.y1}
-        x2={gradX.x2}
-        y2={gradY.y2}
-        >
-        {#each offsets as o, i}
-            <stop
-            key={i}
-            offset={`${o*100 + '%'}`}
-            style={`stop-color:${Array.isArray(tickColors) ? tickColors[i] : tickColors};stop-opacity:${Array.isArray(tickOpacities) ? tickOpacities[i] : tickOpacities}`}
-            />
-        {/each}
-      </linearGradient>
-    </defs>
-    
-    <!-- Florence components-->
-    {#if isValid(x1, x2, y1, y2)}
-        <Rectangle
-            x1 = {rectCoords.x1}
-            x2 = {rectCoords.x2}
-            y1 = {rectCoords.y1}
-            y2 = {rectCoords.y2}
-            fill={`url(#${gradientId})`}
-            {transition}
-            {zoomIdentity} 
-        />
+  <!-- Gradient definition -->
+  <defs>
+    <linearGradient
+      id={gradientId}
+      x1={gradX.x1}
+      y1={gradY.y1}
+      x2={gradX.x2}
+      y2={gradY.y2}
+      >
+      {#each offsets as o, i}
+          <stop
+          key={i}
+          offset={`${o*100 + '%'}`}
+          style={`stop-color:${Array.isArray(tickColors) ? tickColors[i] : tickColors};stop-opacity:${Array.isArray(tickOpacities) ? tickOpacities[i] : tickOpacities}`}
+          />
+      {/each}
+    </linearGradient>
+  </defs>
+  
+  <!-- Florence components-->
+  {#if isValid(x1, x2, y1, y2)}
+      <Rectangle
+          x1 = {rectCoords.x1}
+          x2 = {rectCoords.x2}
+          y1 = {rectCoords.y1}
+          y2 = {rectCoords.y2}
+          fill={`url(#${gradientId})`}
+          {transition}
+          {zoomIdentity} 
+      />
 
-        <LabelLayer
-            x={tickLabelXCoords} 
-            y={tickLabelYCoords} 
-            text={tickLabelText} 
-            anchorPoint={labelAnchorPoint}
-            rotation={labelRotate} 
-            fontFamily={labelFont} 
-            fontSize={labelFontSize}
-            fontWeight={labelFontWeight} 
-            opacity={labelOpacity} 
-            fill={labelColor}
-            {transition} 
-            {zoomIdentity}
-        />
-
-        <Label 
-            x={titleX}
-            y={titleY}
-            text={title}
-            fontFamily={titleFont}
-            fontSize={titleFontSize}
-            fontWeight={titleFontWeight}
-            rotation={titleRotation}
-            anchorPoint={titleAnchorPoint}
-            opacity={titleOpacity} 
-            fill={titleColor}
-            {transition} 
-            {zoomIdentity}
-        />
-    {/if}
+      <LabelLayer
+          x={tickLabelXCoords} 
+          y={tickLabelYCoords} 
+          text={tickLabelText} 
+          anchorPoint={labelAnchorPoint}
+          rotation={labelRotate} 
+          fontFamily={labelFont} 
+          fontSize={labelFontSize}
+          fontWeight={labelFontWeight} 
+          opacity={labelOpacity} 
+          fill={labelColor}
+          {transition} 
+          {zoomIdentity}
+      />
+      {#if title.length > 0}
+          <Label 
+              x={titleX}
+              y={titleY}
+              text={title}
+              fontFamily={titleFont}
+              fontSize={titleFontSize}
+              fontWeight={titleFontWeight}
+              rotation={titleRotation}
+              anchorPoint={titleAnchorPoint}
+              opacity={titleOpacity} 
+              fill={titleColor}
+              {transition} 
+              {zoomIdentity}
+          />
+      {/if}
+  {/if}
 
 </g>
