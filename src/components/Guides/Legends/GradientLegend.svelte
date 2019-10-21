@@ -8,16 +8,14 @@
 <script>
     import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from "../../../"
     import { scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
-    import { default as getDataType } from '../../../utils/getDataType.js'
-
     import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from "./createLegendCoordinates.js"
 
     // Contexts
     import * as GraphicContext from '../../Core/Graphic/GraphicContext'
     import * as SectionContext from '../../Core/Section/SectionContext'
+    import * as ZoomContext from '../../Core/Section/ZoomContext'
     
     // Permanent
-    import * as ZoomContext from '../../Core/Section/ZoomContext'
     import { getTickPositions, getFormat, getTicks, getGradientGeoms, isValid } from './utils.js'
 
     // global properties
@@ -46,7 +44,7 @@
     export let stroke = 'none'
     export let strokeWidth = 2
 
-    // Aesthetics: mappable
+    // Aesthetics
     export let fill = undefined
     export let fillOpacity = undefined
 
@@ -97,7 +95,7 @@
     // Permanent
     const zoomContext = ZoomContext.subscribe()
 
-    // Private props
+    // Private variables
     let tickLabelText 
     let tickLabelPositions
     let tickLabelXCoords

@@ -113,7 +113,6 @@
       y1={350} y2={500}
       fill={'purple'}
       fillOpacity={alphaScale}
-      colorBarWidth={0.5}
       orient={'horizontal'}
       labelCount={5}
       title={'Longer title than usual test'}
