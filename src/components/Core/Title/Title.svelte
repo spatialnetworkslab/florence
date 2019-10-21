@@ -5,8 +5,6 @@
     // Contexts
   import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from '../Section/SectionContext'
-  
-  // Permanent
   import * as ZoomContext from '../../Core/Section/ZoomContext'
 
   // Aesthetics: positioning
@@ -53,9 +51,6 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
-  export let onDragstart = undefined
-  export let onDrag = undefined
-  export let onDragend = undefined
 
   // Other
   export let zoomIdentity = undefined
@@ -65,29 +60,22 @@
   const graphicContext = GraphicContext.subscribe()
   const zoomContext = ZoomContext.subscribe()
 
-  let adjustSubtitle
-
   // Title text positioning wrt section/graphic context
   $: {
-    if (!isValid(x, y)) {
-      const xRange = $sectionContext.scaleX.range()
-      const yRange = $sectionContext.scaleY.range()
+    const xRange = $sectionContext.scaleX.range()
+    const yRange = $sectionContext.scaleY.range()
 
-      if (sectionContext.flipX) xRange.reverse()
-      x = $sectionContext.scaleX.invert(createTitleXCoord(hjust, xRange, x, xOffset, titleFontSize))
+    if (sectionContext.flipX) xRange.reverse()
+    x = $sectionContext.scaleX.invert(createTitleXCoord(hjust, xRange, x, xOffset, titleFontSize))
 
-      if (sectionContext.flipY) yRange.reverse()
-      y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize))
-    }
-  }
+    if (sectionContext.flipY) yRange.reverse()
+    y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize))
 
-  // Title text positioning wrt section/graphic context
-  $: {
-    if (subtitle.length > 0){
+    if (subtitle.length > 0) {
       if (!isValid(subtitleX, subtitleY)) {
         const yRange = $sectionContext.scaleY.range()
         subtitleX = x
-        adjustSubtitle = $sectionContext.scaleY.invert(titleFontSize + yRange[0])
+        const adjustSubtitle = $sectionContext.scaleY.invert(titleFontSize + yRange[0])
         subtitleY = y + adjustSubtitle
       }
     }
@@ -96,28 +84,30 @@
   
 </script>
 
-{#if title.length > 0}
-  <Mark
-    type="Label"
-    {x} {y} {geometry} 
-    fill={titleFill} stroke={titleStroke} strokeWidth={titleStrokeWidth}
-    strokeOpacity={titleStrokeOpacity} fillOpacity={titleFillOpacity} opacity={titleOpacity}
-    text={title}
-    fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
-    {transition} {onClick} {onMouseover} {onMouseout}
-    {zoomIdentity} _asPolygon={false}
-  />
-{/if}
+{#if isValid(x, y) && isValid(subtitleX, subtitleY)}
+  {#if title.length > 0}
+    <Mark
+      type="Label"
+      {x} {y} {geometry} 
+      fill={titleFill} stroke={titleStroke} strokeWidth={titleStrokeWidth}
+      strokeOpacity={titleStrokeOpacity} fillOpacity={titleFillOpacity} opacity={titleOpacity}
+      text={title}
+      fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
+      {transition} {onClick} {onMouseover} {onMouseout}
+      {zoomIdentity} _asPolygon={false}
+    />
+  {/if}
 
-{#if subtitle.length > 0}
-  <Mark
-    type="Label"
-    x={subtitleX} y={subtitleY} {geometry} 
-    fill={subtitleFill} stroke={subtitleStroke} strokeWidth={subtitleStrokeWidth}
-    strokeOpacity={subtitleStrokeOpacity} fillOpacity={subtitleFillOpacity} opacity={subtitleOpacity}
-    text={subtitle}
-    fontFamily={subtitleFontFamily} fontSize={subtitleFontSize} fontWeight={subtitleFontWeight} rotation={subtitleRotation} anchorPoint={titleAnchorPoint}
-    {transition} {onClick} {onMouseover} {onMouseout}
-    {zoomIdentity} _asPolygon={false}
-  />
+  {#if subtitle.length > 0}
+    <Mark
+      type="Label"
+      x={subtitleX} y={subtitleY} {geometry} 
+      fill={subtitleFill} stroke={subtitleStroke} strokeWidth={subtitleStrokeWidth}
+      strokeOpacity={subtitleStrokeOpacity} fillOpacity={subtitleFillOpacity} opacity={subtitleOpacity}
+      text={subtitle}
+      fontFamily={subtitleFontFamily} fontSize={subtitleFontSize} fontWeight={subtitleFontWeight} rotation={subtitleRotation} anchorPoint={titleAnchorPoint}
+      {transition} {onClick} {onMouseover} {onMouseout}
+      {zoomIdentity} _asPolygon={false}
+    />
+  {/if}
 {/if}

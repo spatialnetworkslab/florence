@@ -11,35 +11,20 @@
   const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
   const setBlockReindexing = bool => { blockReindexing = bool }
 
-  // const pan = createPanHandler(zoomIdentity, {
-  //   setZoomIdentity,
-  //   setBlockReindexing,
-  //   extentX: [-500, 500],
-  //   extentY: [-500, 500]
-  //     // dimension: 'x'
-  // })
-
-  // const zoom = createZoomHandler(zoomIdentity, {
-  //   setZoomIdentity,
-  //   minZoom: 0.2,
-  //   maxZoom: 3,
-  //   extentX: [-500, 500],
-  //   extentY: [-500, 500],
-  //   step: 1,
-  //   center: { x: 0, y: 0 }
-  //   // dimension: 'x'
-  // })
+  let vjust = 'top'
+  let hjust = 'center'
 </script>
 
 <Graphic width={500} height={500}>
 
   <!-- <Rectangle fill="blue" opacity={0.3} /> -->
   <Title 
-  title={'Lorem ipsum dolor sit amet, consectetur adipiscing ...'} 
-  subtitle={'... elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'}
-  vjust={'top'} 
-  hjust={'center'}
-  titleFontFamily={'Baskerville'}/>
+  title={'Lorem ipsum dolor sit amet, consectetur adipiscing'} 
+  subtitle={'elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'}
+  {vjust}
+  {hjust}
+  titleFontFamily={'Baskerville'}
+  titleFill={'pink'}/>
 
   <Section 
     x1={50} x2={450}
@@ -51,14 +36,14 @@
     {blockReindexing}
   >
     <Title 
-    title={'Lorem ipsum dolor sit amet, consectetur adipiscing ...'} 
-    subtitle={'... elit'}
-    vjust={'top'} 
-    hjust={'center'}
+    title={'Lorem ipsum dolor sit amet, consectetur adipiscing'} 
+    subtitle={'elit, sed do eiusmod tempor incididunt'}
+    vjust={'center'}
+    hjust={'right'}
     subtitleFontFamily={'Garamond'}
+    subtitleStroke={'green'}
+    subtitleStrokeWidth={2}
     yOffset={-15}/>
-    
-    <Rectangle fill="blue" opacity={0.3} />
 
     <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
     <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
