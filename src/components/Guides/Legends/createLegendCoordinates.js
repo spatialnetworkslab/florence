@@ -6,11 +6,12 @@
 export function createPosYCoords (vjust, yRange, orient, height, offset, titleFontSize) {
   let y1
   let y2
+
   const y1Range = yRange[0]
   const y2Range = yRange[1]
   const heightRatio = orient === 'vertical' ? 0.3 : 0.1
+  const addTitleSize = titleFontSize
   height = (height === 0 || height === undefined) ? (y2Range - y1Range) * heightRatio : height
-  const addTitleSize = titleFontSize * 4
 
   if (vjust === 'top') {
     y1 = y1Range + offset + addTitleSize
@@ -21,6 +22,7 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
     y1 = yCoord - height / 2 + offset + addTitleSize
     y2 = yCoord + height / 2 + offset + addTitleSize
   }
+
   if (vjust === 'bottom') {
     y1 = y2Range - height + offset - addTitleSize
     y2 = y2Range + offset - addTitleSize
@@ -132,7 +134,7 @@ export function createTitleYCoord (vjust, yCoords, y, offset, fontSize, orient, 
     addFontSize = fontSize
   }
   if (vjust === 'top') {
-    justification = -0.05
+    justification = 0
     addFontSize = -fontSize
   }
 

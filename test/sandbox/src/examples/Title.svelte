@@ -34,6 +34,11 @@
 <Graphic width={500} height={500}>
 
   <!-- <Rectangle fill="blue" opacity={0.3} /> -->
+  <Title 
+    title={'Lorem ipsum dolor sit amet, consectetur adipiscing ...'} 
+    subtitle={'... elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'}
+    vjust={'top'} 
+    hjust={'center'}/>
 
   <Section 
     x1={50} x2={450}
@@ -44,7 +49,6 @@
     {zoomIdentity}
     {blockReindexing}
   >
-    <Title title={'Test Title'} hjust={'left'}/>
     <Rectangle fill="blue" opacity={0.3} />
 
     <!-- <PolygonLayer

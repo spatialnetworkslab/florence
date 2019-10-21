@@ -50,13 +50,13 @@ export function createTitleXCoord (hjust, domain, x, offset, fontSize) {
     addFontSize = 0
   }
 
-  // if (!['left', 'center', 'right'].includes(hjust) && isNaN(hjust)) {
-  //   throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `hjust`')
-  // }
+  if (!['left', 'center', 'right'].includes(hjust) && isNaN(hjust)) {
+    throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `hjust`')
+  }
   return x1 + sectionWidth * justification + offset + addFontSize
 }
 
-export function createTitleYCoord (vjust, domain, x, offset, fontSize) {
+export function createTitleYCoord (vjust, domain, y, offset, fontSize) {
   if (y) {
     return y
   }
@@ -77,7 +77,7 @@ export function createTitleYCoord (vjust, domain, x, offset, fontSize) {
     addFontSize = fontSize
   }
   if (vjust === 'top') {
-    justification = -0.05
+    justification = 0.05
     addFontSize = -fontSize
   }
 

@@ -1,94 +1,81 @@
 <script>
-    import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
-    import { isValid, createTitleXCoord, createTitleYCoord } from "./utils.js"
-
-     // Contexts
-    import * as GraphicContext from '../Graphic/GraphicContext'
-    import * as SectionContext from '../Section/SectionContext'
-    
-    // Permanent
-    import * as ZoomContext from '../../Core/Section/ZoomContext'
-
-    // Aesthetics: positioning
-    export let x = undefined
-    export let y = undefined
-    export let geometry = undefined
-    export let vjust = 'top'
-    export let hjust = 'center'
-    export let xOffset = 0
-    export let yOffset = 0 
-
-    // Aesthetics: Title
-    export let title = 'Title Text'
-    export let titleFill = 'black'
-    export let titleStroke = undefined
-    export let titleStrokeWidth = undefined
-    export let titleStrokeOpacity = undefined
-    export let titleFillOpacity = undefined
-    export let titleOpacity = 1
-    export let titleFontFamily = undefined
-    export let titleFontSize = 20
-    export let titleFontWeight = 'bold'
-    export let titleRotation = 0
-    export let titleAnchorPoint = 'center'
-
-    // Aesthetics: Subtitle
-    export let subtitle = ''
-    export let subtitleFill = 'black'
-    export let subtitleStroke = undefined
-    export let subtitleStrokeWidth = undefined
-    export let subtitleStrokeOpacity = undefined
-    export let subtitleFillOpacity = undefined
-    export let subtitleOpacity = 1
-    export let subtitleFontFamily = undefined
-    export let subtitleFontSize = 20
-    export let subtitleFontWeight = 'bold'
-    export let subtitleRotation = 0
-    export let subtitleAnchorPoint = 'center'
-
-    // Transitions and interactions
-    export let transition = undefined
-    export let onClick = undefined
-    export let onMouseover = undefined
-    export let onMouseout = undefined
-    export let onDragstart = undefined
-    export let onDrag = undefined
-    export let onDragend = undefined
-
-    // Other
-    export let zoomIdentity = undefined
+  import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
+  import { isValid, createTitleXCoord, createTitleYCoord } from "./utils.js"
 
     // Contexts
-    const sectionContext = SectionContext.subscribe()
-    const graphicContext = GraphicContext.subscribe()
+  import * as GraphicContext from '../Graphic/GraphicContext'
+  import * as SectionContext from '../Section/SectionContext'
+  
+  // Permanent
+  import * as ZoomContext from '../../Core/Section/ZoomContext'
 
-    // Permanent
-    const zoomContext = ZoomContext.subscribe()
+  // Aesthetics: positioning
+  export let x = undefined
+  export let y = undefined
+  export let geometry = undefined
+  export let vjust = 'top'
+  export let hjust = 'center'
+  export let xOffset = 0
+  export let yOffset = 10
 
-    // Title text positioning wrt section/graphic context
-    $: {
-        if (!isValid(x, y)) {
-          const xDomain = $sectionContext.scaleX.domain()
-          const yDomain = $sectionContext.scaleY.domain()
+  // Aesthetics: Title
+  export let title = 'Title Text'
+  export let titleFill = 'black'
+  export let titleStroke = undefined
+  export let titleStrokeWidth = undefined
+  export let titleStrokeOpacity = undefined
+  export let titleFillOpacity = undefined
+  export let titleOpacity = 1
+  export let titleFontFamily = undefined
+  export let titleFontSize = 20
+  export let titleFontWeight = 'bold'
+  export let titleRotation = 0
+  export let titleAnchorPoint = 'center'
 
-          if (sectionContext.flipX) xDomain.reverse()
-          x = createTitleXCoord(hjust, xDomain, x, xOffset, titleFontSize)
+  // Aesthetics: Subtitle
+  export let subtitle = ''
+  export let subtitleFill = 'black'
+  export let subtitleStroke = undefined
+  export let subtitleStrokeWidth = undefined
+  export let subtitleStrokeOpacity = undefined
+  export let subtitleFillOpacity = undefined
+  export let subtitleOpacity = 1
+  export let subtitleFontFamily = undefined
+  export let subtitleFontSize = 14
+  export let subtitleFontWeight = 'bold'
+  export let subtitleRotation = 0
+  export let subtitleAnchorPoint = 'center'
 
-          if (sectionContext.flipY) yDomain.reverse()
-          y = createTitleXCoord(vjust, yDomain, y, yOffset, titleFontSize)
-          console.log(x, y, $sectionContext.rangeX, $sectionContext.scaleX(0))
-        }
+  // Transitions and interactions
+  export let transition = undefined
+  export let onClick = undefined
+  export let onMouseover = undefined
+  export let onMouseout = undefined
+  export let onDragstart = undefined
+  export let onDrag = undefined
+  export let onDragend = undefined
+
+  // Other
+  export let zoomIdentity = undefined
+
+  // Contexts
+  const sectionContext = SectionContext.subscribe()
+  const graphicContext = GraphicContext.subscribe()
+  const zoomContext = ZoomContext.subscribe()
+
+  // Title text positioning wrt section/graphic context
+  $: {
+    if (!isValid(x, y)) {
+      const xRange = $sectionContext.scaleX.range()
+      const yRange = $sectionContext.scaleY.range()
+
+      if (sectionContext.flipX) xRange.reverse()
+      x = $sectionContext.scaleX.invert(createTitleXCoord(hjust, xRange, x, xOffset, titleFontSize))
+
+      if (sectionContext.flipY) yRange.reverse()
+      y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize))
     }
-
-    // Title positioning wrt section/graphic context
-    // $: {
-    //     if (title.length > 0) {
-    //         // continue
-    //     }
-    // }
-
-    // geometry
-
+  }
 </script>
 
 {#if title.length > 0}

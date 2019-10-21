@@ -37,15 +37,13 @@
 
   const log = console.log
 
-  let background = "pink"
-  let big = false
-  let hoverPoints = {}
+  let pad = 0
 
   let x = 0
   let y = 0
   let k = 1
   let zoomIdentity = { x, y, kx: k, ky: k }
-  
+
   // scatterplot scale
   const radiusScale = scaleLinear().domain(data.domain('b')).range([10, 0])
 
@@ -65,15 +63,21 @@
   const alphaScale = scaleLinear().domain(data.domain('a')).range([0, 1])
   const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
   const binAlpha = scaleLinear().domain([0,2]).range([0, 0.9])
+
+  // Padding slider
 </script>
 
 <div>
+  <label for="height-slider">Padding</label>
+  <input type="range" min="0" max="150" bind:value={pad} name="height-slider" />
+</div>
 
+<div>
 	<Graphic 
     width={700} {height}
     scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
-    padding={100}
+    padding={pad}
   >       
     <DiscreteLegend
       scale = {data.domain('a')}
@@ -105,8 +109,8 @@
       orient={'horizontal'}
       hjust={'right'}
       vjust={'bottom'}
-      yOffset={-100}
-      height={120}
+      yOffset={-50}
+      height={100}
       labelCount={6}
       title={'Test Legend'}
     />
@@ -159,7 +163,7 @@
       vjust={'bottom'}
       hjust={'center'}
       orient={'horizontal'}
-      height={120}
+      height={100}
       flip
     />
 
