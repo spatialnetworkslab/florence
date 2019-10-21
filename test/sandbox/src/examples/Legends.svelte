@@ -73,7 +73,7 @@
     width={700} {height}
     scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
-    padding={50}
+    padding={200}
   >       
     <DiscreteLegend
       scale = {data.domain('a')}

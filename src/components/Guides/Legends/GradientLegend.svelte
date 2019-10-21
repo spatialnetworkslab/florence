@@ -120,7 +120,7 @@
     $: {
         if (!isValid(x1, x2, y1, y2)) {
             const xRange = $sectionContext.scaleX.domain()
-            const yRange = $sectionContext.scaleY.domain()
+            const yDomain = $sectionContext.scaleY.domain()
 
             if (sectionContext.flipX) xRange.reverse()
             xCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize)
@@ -128,8 +128,8 @@
             x2 = xCoords.x2
             width = xCoords.width
            
-            if (sectionContext.flipY) yRange.reverse()
-            yCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, titleFontSize)
+            if (sectionContext.flipY) yDomain.reverse()
+            yCoords = createPosYCoords(vjust, yDomain, orient, height, yOffset, titleFontSize)
             yCoords.y1 = yCoords.y1
             y1 = yCoords.y1
             y2 = yCoords.y2
@@ -150,8 +150,8 @@
             }
 
             if (!titleY && titleY !== 0) {
-                const yRange = $sectionContext.scaleY.range()
-                if (sectionContext.flipY) yRange.reverse()
+                const yDomain = $sectionContext.scaleY.range()
+                if (sectionContext.flipY) yDomain.reverse()
                 titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, titleFontSize, orient, titlePaddingY)
             }
         }

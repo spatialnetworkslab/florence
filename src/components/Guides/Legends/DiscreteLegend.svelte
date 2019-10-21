@@ -109,16 +109,16 @@
   // Section positioning wrt section/graphic context
   $: {
     if (!isValid(x1, x2, y1, y2)) {
-      const xRange = $sectionContext.scaleX.domain()
-      const yRange = $sectionContext.scaleY.domain()
+      const xDomain = $sectionContext.scaleX.domain()
+      const yDomain = $sectionContext.scaleY.domain()
 
-      if (sectionContext.flipX) xRange.reverse()
-      xCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize)
+      if (sectionContext.flipX) xDomain.reverse()
+      xCoords = createPosXCoords(hjust, xDomain, orient, width, xOffset, labelFontSize)
       x1 = xCoords.x1
       x2 = xCoords.x2
       width = xCoords.width
-      if (sectionContext.flipY) yRange.reverse()
-      yCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, titleFontSize)
+      if (sectionContext.flipY) yDomain.reverse()
+      yCoords = createPosYCoords(vjust, yDomain, orient, height, yOffset, titleFontSize)
       yCoords.y1 = yCoords.y1
       y1 = yCoords.y1
       y2 = yCoords.y2
@@ -133,14 +133,14 @@
   $: {
     if (title.length > 0) {
       if (!titleX && titleX !== 0) {
-        const xRange = $sectionContext.scaleX.range()
-        if (sectionContext.flipX) xRange.reverse()
+        const xDomain = $sectionContext.scaleX.range()
+        if (sectionContext.flipX) xDomain.reverse()
         titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, titleFontSize, titlePaddingX)
       }
 
       if (!titleY && titleY !== 0) {
-        const yRange = $sectionContext.scaleY.range()
-        if (sectionContext.flipY) yRange.reverse()
+        const yDomain = $sectionContext.scaleY.range()
+        if (sectionContext.flipY) yDomain.reverse()
         titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, titleFontSize, orient, titlePaddingY)
       }
     }
