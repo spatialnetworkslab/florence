@@ -37,15 +37,13 @@
 
   const log = console.log
 
-  let background = "pink"
-  let big = false
-  let hoverPoints = {}
+  let pad = 0
 
   let x = 0
   let y = 0
   let k = 1
   let zoomIdentity = { x, y, kx: k, ky: k }
-  
+
   // scatterplot scale
   const radiusScale = scaleLinear().domain(data.domain('b')).range([10, 0])
 
@@ -65,15 +63,21 @@
   const alphaScale = scaleLinear().domain(data.domain('a')).range([0, 1])
   const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
   const binAlpha = scaleLinear().domain([0,2]).range([0, 0.9])
+
+  // Padding slider
 </script>
 
 <div>
+  <label for="height-slider">Padding</label>
+  <input type="range" min="0" max="150" bind:value={pad} name="height-slider" />
+</div>
 
+<div>
 	<Graphic 
     width={700} {height}
     scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
-    padding={50}
+    padding={pad}
   >       
     <DiscreteLegend
       scale = {data.domain('a')}
@@ -98,13 +102,15 @@
       titleVjust={'bottom'}
     />
 
+
     <DiscreteLegend
       scale = {data.domain('a')}
       fill={seqScale}
       orient={'horizontal'}
       hjust={'right'}
       vjust={'bottom'}
-      width={150}
+      yOffset={-50}
+      height={100}
       labelCount={6}
       title={'Test Legend'}
     />
@@ -112,7 +118,7 @@
     <GradientLegend
       scale = {data.domain('a')}
       x1={450} x2={600}
-      y1={300} y2={450}
+      y1={350} y2={500}
       fill={'purple'}
       fillOpacity={alphaScale}
       orient={'horizontal'}
@@ -122,7 +128,7 @@
       titleHjust={'left'}
       titleAnchorPoint={'r'}
       titlePaddingX={-20}
-    /> 
+    />
 
     <DiscreteLegend
       scale = {fruits}
@@ -131,8 +137,9 @@
       orient={'horizontal'}
       hjust={'center'}
       vjust={'center'}
+      titlePaddingY={-15}
     />
-
+    
     <DiscreteLegend
       scale = {bins2}
       fillOpacity= {binAlpha}
@@ -156,7 +163,7 @@
       vjust={'bottom'}
       hjust={'center'}
       orient={'horizontal'}
-      width={150}
+      height={100}
       flip
     />
 
