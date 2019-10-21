@@ -6,12 +6,13 @@
 export function createPosYCoords (vjust, yRange, orient, height, offset, titleFontSize) {
   let y1
   let y2
+
   const y1Range = yRange[0]
   const y2Range = yRange[1]
-  const heightRatio = orient === 'vertical' ? 0.3 : 0.1
+  const heightRatio = orient === 'vertical' ? 0.4 : 0.15
+  const addTitleSize = titleFontSize
   height = (height === 0 || height === undefined) ? (y2Range - y1Range) * heightRatio : height
-  const addTitleSize = titleFontSize * 4
-  console.log('!!!', offset)
+
   if (vjust === 'top') {
     y1 = y1Range + offset + addTitleSize
     y2 = y1Range + height + offset + addTitleSize
@@ -21,6 +22,7 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
     y1 = yCoord - height / 2 + offset + addTitleSize
     y2 = yCoord + height / 2 + offset + addTitleSize
   }
+
   if (vjust === 'bottom') {
     y1 = y2Range - height + offset - addTitleSize
     y2 = y2Range + offset - addTitleSize
@@ -44,7 +46,7 @@ export function createPosXCoords (hjust, xRange, orient, width, offset, labelFon
   let x2
   const x1Range = xRange[0]
   const x2Range = xRange[1]
-  const widthRatio = orient === 'vertical' ? 0.1 : 0.3
+  const widthRatio = orient === 'vertical' ? 0.15 : 0.4
   width = width === 0 ? (x2Range - x1Range) * widthRatio : width
 
   if (hjust === 'left') {

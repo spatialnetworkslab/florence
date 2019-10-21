@@ -114,21 +114,26 @@
     }
 
     if (!isValid(x1, x2, y1, y2) && ['horizontal', 'vertical'].includes(orient)) {
-      const xDomain = $sectionContext.scaleX.domain()
-      const yDomain = $sectionContext.scaleY.domain()
+      const xRange = $sectionContext.scaleX.range()
+      const yRange = $sectionContext.scaleY.range()
 
-      if (sectionContext.flipX) xDomain.reverse()
-      xCoords = createPosXCoords(hjust, xDomain, orient, width, xOffset, labelFontSize)
-      x1 = xCoords.x1
-      x2 = xCoords.x2
-      width = xCoords.width
-      if (sectionContext.flipY) yDomain.reverse()
+      if (sectionContext.flipX) xRange.reverse()
+      const rangeXCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, $sectionContext.padding)
+
+      x1 = $sectionContext.scaleX.invert(rangeXCoords.x1)
+      x2 = $sectionContext.scaleX.invert(rangeXCoords.x2)
+      width = Math.abs(x2 - x1)
+      xCoords = { x1, x2, width }
+
+      if (sectionContext.flipY) yRange.reverse()
       addTitleSize = title.length > 0 ? titleFontSize : 0
-      yCoords = createPosYCoords(vjust, yDomain, orient, height, yOffset, addTitleSize)
-      yCoords.y1 = yCoords.y1
-      y1 = yCoords.y1
-      y2 = yCoords.y2
-      height = yCoords.height
+      const rangeYCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, $sectionContext.padding)
+
+      y1 = $sectionContext.scaleY.invert(rangeYCoords.y1)
+      y2 = $sectionContext.scaleY.invert(rangeYCoords.y2)
+      height = Math.abs(y2 - y1)
+      yCoords = { y1, y2, height }
+    
     } else { 
       xCoords = { x1, x2, width: Math.abs(x2 - x1) }
       yCoords = { y1, y2, height: Math.abs(y2 - y1) }
@@ -139,14 +144,14 @@
   $: {
     if (title.length > 0) {
       if (!titleX && titleX !== 0) {
-        const xDomain = $sectionContext.scaleX.range()
-        if (sectionContext.flipX) xDomain.reverse()
+        const xRange = $sectionContext.scaleX.range()
+        if (sectionContext.flipX) xRange.reverse()
         titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, titleFontSize, titlePaddingX)
       }
 
       if (!titleY && titleY !== 0) {
-        const yDomain = $sectionContext.scaleY.range()
-        if (sectionContext.flipY) yDomain.reverse()
+        const yRange = $sectionContext.scaleY.range()
+        if (sectionContext.flipY) yRange.reverse()
         titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, titleFontSize, orient, titlePaddingY)
       }
     }
@@ -170,15 +175,16 @@
 
   $: {
     colorBarHeight = orient === 'horizontal' ? 0.75 : 1
-    colorBarWidth = orient === 'horizontal' ? 0.1 : 0.75
+    colorBarWidth = orient === 'horizontal' ? 0 : 0.75
   }
 
   // TICK LABELS and POSITIONING
   $: {
     tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
+
     if (orient === 'vertical') {
       tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, yCoords, flip, orient)
-      tickLabelXCoords = flipLabels ? x1 + colorBarHeight * (x2 - x1) : x1 + (1 - colorBarHeight) * (x2 - x1) 
+      tickLabelXCoords = flipLabels ? x1 + colorBarHeight * xCoords.width : x1 + (1 - colorBarHeight) * xCoords.width
       tickLabelXCoords = labelX ? labelX : tickLabelXCoords
 
       if (labelPadding !== undefined) { 
@@ -188,7 +194,7 @@
       format = getFormat(labelFormat, scale, tickLabelYCoords.length)
     } else if (orient === 'horizontal'){
       tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, xCoords, flip, orient)
-      tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * (yCoords.y2 - yCoords.y1) : yCoords.y2 - colorBarWidth * (yCoords.y2 - yCoords.y1) 
+      tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * yCoords.height : yCoords.y2 - colorBarWidth * yCoords.height
       tickLabelYCoords = labelY ? labelY : tickLabelYCoords
 
       if (labelPadding !== undefined) { 
@@ -286,51 +292,48 @@
 </script>
 
 <g class="discrete-legend">
-  {#if isValid(x1, x2, y1, y2)}
-    <RectangleLayer
-      x1 = {colorXStartCoords}
-      x2 = {colorXEndCoords}
-      y1 = {colorYStartCoords}
-      y2 = {colorYEndCoords}
-      fill = {tickColors}
-      fillOpacity = {tickOpacities}
+  <RectangleLayer
+    x1 = {colorXStartCoords}
+    x2 = {colorXEndCoords}
+    y1 = {colorYStartCoords}
+    y2 = {colorYEndCoords}
+    fill = {tickColors}
+    fillOpacity = {tickOpacities}
+    {transition} 
+    {stroke}
+    {strokeWidth}
+    {zoomIdentity}
+  />
+
+  <LabelLayer
+    x={tickLabelXCoords} 
+    y={tickLabelYCoords} 
+    text={tickLabelText} 
+    anchorPoint={labelAnchorPoint}
+    rotation={labelRotate} 
+    fontFamily={labelFont} 
+    fontSize={labelFontSize}
+    fontWeight={labelFontWeight} 
+    opacity={labelOpacity} 
+    fill={labelColor}
+    {transition} 
+    {zoomIdentity}
+  />
+
+  {#if title.length > 0}
+    <Label 
+      x={titleX}
+      y={titleY}
+      text={title}
+      fontFamily={titleFont}
+      fontSize={titleFontSize}
+      fontWeight={titleFontWeight}
+      rotation={titleRotation}
+      anchorPoint={titleAnchorPoint}
+      opacity={titleOpacity} 
+      fill={titleColor}
       {transition} 
-      {stroke}
-      {strokeWidth}
       {zoomIdentity}
     />
-
-    <LabelLayer
-      x={tickLabelXCoords} 
-      y={tickLabelYCoords} 
-      text={tickLabelText} 
-      anchorPoint={labelAnchorPoint}
-      rotation={labelRotate} 
-      fontFamily={labelFont} 
-      fontSize={labelFontSize}
-      fontWeight={labelFontWeight} 
-      opacity={labelOpacity} 
-      fill={labelColor}
-      {transition} 
-      {zoomIdentity}
-    />
-
-    {#if title.length > 0}
-      <Label 
-        x={titleX}
-        y={titleY}
-        text={title}
-        fontFamily={titleFont}
-        fontSize={titleFontSize}
-        fontWeight={titleFontWeight}
-        rotation={titleRotation}
-        anchorPoint={titleAnchorPoint}
-        opacity={titleOpacity} 
-        fill={titleColor}
-        {transition} 
-        {zoomIdentity}
-      />
-    {/if}
   {/if}
-
 </g>

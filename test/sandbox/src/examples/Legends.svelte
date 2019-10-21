@@ -73,7 +73,7 @@
     width={700} {height}
     scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
-    padding={100}
+    padding={50}
   >       
     <DiscreteLegend
       scale = {data.domain('a')}
@@ -98,15 +98,13 @@
       titleVjust={'bottom'}
     />
 
-
     <DiscreteLegend
       scale = {data.domain('a')}
       fill={seqScale}
       orient={'horizontal'}
       hjust={'right'}
       vjust={'bottom'}
-      yOffset={-100}
-      height={120}
+      width={150}
       labelCount={6}
       title={'Test Legend'}
     />
@@ -114,7 +112,7 @@
     <GradientLegend
       scale = {data.domain('a')}
       x1={450} x2={600}
-      y1={350} y2={500}
+      y1={300} y2={450}
       fill={'purple'}
       fillOpacity={alphaScale}
       orient={'horizontal'}
@@ -124,7 +122,7 @@
       titleHjust={'left'}
       titleAnchorPoint={'r'}
       titlePaddingX={-20}
-    />
+    /> 
 
     <DiscreteLegend
       scale = {fruits}
@@ -133,9 +131,8 @@
       orient={'horizontal'}
       hjust={'center'}
       vjust={'center'}
-      titlePaddingY={-15}
     />
-    
+
     <DiscreteLegend
       scale = {bins2}
       fillOpacity= {binAlpha}
@@ -159,7 +156,7 @@
       vjust={'bottom'}
       hjust={'center'}
       orient={'horizontal'}
-      height={120}
+      width={150}
       flip
     />
 
