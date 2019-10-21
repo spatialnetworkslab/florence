@@ -44,7 +44,7 @@
     {zoomIdentity}
     {blockReindexing}
   >
-    <Title x={2} y={0} />
+    <Title title={'Test Title'} hjust={'left'}/>
     <Rectangle fill="blue" opacity={0.3} />
 
     <!-- <PolygonLayer

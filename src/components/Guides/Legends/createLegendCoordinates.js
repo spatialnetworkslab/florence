@@ -11,7 +11,7 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   const heightRatio = orient === 'vertical' ? 0.3 : 0.1
   height = (height === 0 || height === undefined) ? (y2Range - y1Range) * heightRatio : height
   const addTitleSize = titleFontSize * 4
-  console.log('!!!', offset)
+
   if (vjust === 'top') {
     y1 = y1Range + offset + addTitleSize
     y2 = y1Range + height + offset + addTitleSize

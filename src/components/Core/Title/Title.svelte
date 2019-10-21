@@ -1,6 +1,6 @@
 <script>
     import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
-    import { isValid, createPosYCoords, createPosXCoords } from "./utils.js"
+    import { isValid, createTitleXCoord, createTitleYCoord } from "./utils.js"
 
      // Contexts
     import * as GraphicContext from '../Graphic/GraphicContext'
@@ -15,20 +15,36 @@
     export let geometry = undefined
     export let vjust = 'top'
     export let hjust = 'center'
+    export let xOffset = 0
+    export let yOffset = 0 
 
-    // Aesthetics: other
-    export let fill = 'black'
-    export let stroke = undefined
-    export let strokeWidth = undefined
-    export let strokeOpacity = undefined
-    export let fillOpacity = undefined
-    export let opacity = 1
-    export let text = 'Title Text'
-    export let fontFamily = undefined
-    export let fontSize = 16
-    export let fontWeight = 'bold'
-    export let rotation = 0
-    export let anchorPoint = 'center'
+    // Aesthetics: Title
+    export let title = 'Title Text'
+    export let titleFill = 'black'
+    export let titleStroke = undefined
+    export let titleStrokeWidth = undefined
+    export let titleStrokeOpacity = undefined
+    export let titleFillOpacity = undefined
+    export let titleOpacity = 1
+    export let titleFontFamily = undefined
+    export let titleFontSize = 20
+    export let titleFontWeight = 'bold'
+    export let titleRotation = 0
+    export let titleAnchorPoint = 'center'
+
+    // Aesthetics: Subtitle
+    export let subtitle = ''
+    export let subtitleFill = 'black'
+    export let subtitleStroke = undefined
+    export let subtitleStrokeWidth = undefined
+    export let subtitleStrokeOpacity = undefined
+    export let subtitleFillOpacity = undefined
+    export let subtitleOpacity = 1
+    export let subtitleFontFamily = undefined
+    export let subtitleFontSize = 20
+    export let subtitleFontWeight = 'bold'
+    export let subtitleRotation = 0
+    export let subtitleAnchorPoint = 'center'
 
     // Transitions and interactions
     export let transition = undefined
@@ -49,31 +65,19 @@
     // Permanent
     const zoomContext = ZoomContext.subscribe()
 
-    // Positioning props
-    let xPos = undefined
-    let yPos = undefined
-    console.log(x, y, fill, text, $sectionContext.scaleX)
-    // Section positioning wrt section/graphic context
+    // Title text positioning wrt section/graphic context
     $: {
-        // if (!isValid(x, y)) {
-        const xRange = $sectionContext.scaleX.domain()
-        const yRange = $sectionContext.scaleY.domain()
-        console.log(xRange, yRange)
-        // if (sectionContext.flipX) xRange.reverse()
-        // xCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize)
-        // x1 = xCoords.x1
-        // x2 = xCoords.x2
-        // width = xCoords.width
-        // if (sectionContext.flipY) yRange.reverse()
-        // yCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, titleFontSize)
-        // yCoords.y1 = yCoords.y1
-        // y1 = yCoords.y1
-        // y2 = yCoords.y2
-        // height = yCoords.height
-        // } else { 
-        //     xCoords = { x1, x2, width: Math.abs(x2 - x1) }
-        //     yCoords = { y1, y2, height: Math.abs(y2 - y1) }
-        // }
+        if (!isValid(x, y)) {
+          const xDomain = $sectionContext.scaleX.domain()
+          const yDomain = $sectionContext.scaleY.domain()
+
+          if (sectionContext.flipX) xDomain.reverse()
+          x = createTitleXCoord(hjust, xDomain, x, xOffset, titleFontSize)
+
+          if (sectionContext.flipY) yDomain.reverse()
+          y = createTitleXCoord(vjust, yDomain, y, yOffset, titleFontSize)
+          console.log(x, y, $sectionContext.rangeX, $sectionContext.scaleX(0))
+        }
     }
 
     // Title positioning wrt section/graphic context
@@ -87,14 +91,30 @@
 
 </script>
 
-<Mark
-  type="Label"
-  {x} {y} {geometry} 
-  {fill} {stroke} {strokeWidth}
-  {strokeOpacity} {fillOpacity} {opacity}
-  {text}
-  {fontFamily} {fontSize} {fontWeight} {rotation} {anchorPoint}
-  {transition} {onClick} {onMouseover} {onMouseout}
-  {onDragstart} {onDrag} {onDragend}
-  {zoomIdentity} _asPolygon={false}
-/>
+{#if title.length > 0}
+  <Mark
+    type="Label"
+    {x} {y} {geometry} 
+    fill={titleFill} stroke={titleStroke} strokeWidth={titleStrokeWidth}
+    strokeOpacity={titleStrokeOpacity} fillOpacity={titleFillOpacity} titleOpacity={titleOpacity}
+    text={title}
+    fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
+    {transition} {onClick} {onMouseover} {onMouseout}
+    {onDragstart} {onDrag} {onDragend}
+    {zoomIdentity} _asPolygon={false}
+  />
+{/if}
+
+<!-- {#if subtitle.length > 0}
+  <Mark
+    type="Label"
+    {x} {y} {geometry} 
+    {subtitleFill} {subtitleStroke} {subtitleStrokeWidth}
+    {subtitleStrokeOpacity} {subtitleFillOpacity} {subtitleOpacity}
+    text={subtitle}
+    {subtitleFontFamily} {subtitleFontSize} {subtitleFontWeight} {subtitleRotation} {titleAnchorPoint}
+    {transition} {onClick} {onMouseover} {onMouseout}
+    {onDragstart} {onDrag} {onDragend}
+    {zoomIdentity} _asPolygon={false}
+  />
+{/if} -->
