@@ -5,6 +5,11 @@ export function isValid (x1, x2, y1, y2) {
   if (!isNaN(x1) && !isNaN(x2) && !isNaN(y1) && !isNaN(y2)) {
     return true
   }
+
+  if (x1 !== undefined || x2 !== undefined || y1 !== undefined || y2 !== undefined) {
+    throw new Error('Couldn\'t construct legend because of invalid x1, x2, y1, y2 inputs.')
+  }
+
   return false
 }
 
@@ -37,7 +42,7 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
   } else if ('domain' in scale) {
     tickValues = scale.domain()
   } else {
-    throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
+    throw new Error(`Couldn't construct legend. Please provide 'tickValues' or a scale with
         either a 'ticks' or a 'domain' method.`)
   }
 
@@ -78,7 +83,7 @@ export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates
       return firstVal + interval * (i + 0.5)
     })
   } else {
-    throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
+    throw new Error(`Couldn't construct legend. Please provide 'tickValues' or a scale with
         either a 'ticks' or a 'domain' method.`)
   }
 
@@ -166,7 +171,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
         return tickAlign - labelFontSize * 1.5 - colorBarHeight * yCoords.height
       }
     })
-    
+
     tickLabelText.map((value, i) => {
       if (flipLabels) {
         return yCoords.y2
@@ -284,7 +289,7 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
       return interval * (i + 0.5)
     })
   } else {
-    throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
+    throw new Error(`Couldn't construct legend. Please provide 'tickValues' or a scale with
         either a 'ticks' or a 'domain' method.`)
   }
 
