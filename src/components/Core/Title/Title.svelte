@@ -42,9 +42,11 @@
   export let subtitleOpacity = 1
   export let subtitleFontFamily = undefined
   export let subtitleFontSize = 14
-  export let subtitleFontWeight = 'bold'
+  export let subtitleFontWeight = 'normal'
   export let subtitleRotation = 0
   export let subtitleAnchorPoint = 'center'
+  export let subtitleX = undefined
+  export let subtitleY = undefined
 
   // Transitions and interactions
   export let transition = undefined
@@ -63,6 +65,8 @@
   const graphicContext = GraphicContext.subscribe()
   const zoomContext = ZoomContext.subscribe()
 
+  let adjustSubtitle
+
   // Title text positioning wrt section/graphic context
   $: {
     if (!isValid(x, y)) {
@@ -76,6 +80,20 @@
       y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize))
     }
   }
+
+  // Title text positioning wrt section/graphic context
+  $: {
+    if (subtitle.length > 0){
+      if (!isValid(subtitleX, subtitleY)) {
+        const yRange = $sectionContext.scaleY.range()
+        subtitleX = x
+        adjustSubtitle = $sectionContext.scaleY.invert(titleFontSize + yRange[0])
+        subtitleY = y + adjustSubtitle
+      }
+    }
+  }
+
+  
 </script>
 
 {#if title.length > 0}
@@ -83,25 +101,23 @@
     type="Label"
     {x} {y} {geometry} 
     fill={titleFill} stroke={titleStroke} strokeWidth={titleStrokeWidth}
-    strokeOpacity={titleStrokeOpacity} fillOpacity={titleFillOpacity} titleOpacity={titleOpacity}
+    strokeOpacity={titleStrokeOpacity} fillOpacity={titleFillOpacity} opacity={titleOpacity}
     text={title}
     fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
     {transition} {onClick} {onMouseover} {onMouseout}
-    {onDragstart} {onDrag} {onDragend}
     {zoomIdentity} _asPolygon={false}
   />
 {/if}
 
-<!-- {#if subtitle.length > 0}
+{#if subtitle.length > 0}
   <Mark
     type="Label"
-    {x} {y} {geometry} 
-    {subtitleFill} {subtitleStroke} {subtitleStrokeWidth}
-    {subtitleStrokeOpacity} {subtitleFillOpacity} {subtitleOpacity}
+    x={subtitleX} y={subtitleY} {geometry} 
+    fill={subtitleFill} stroke={subtitleStroke} strokeWidth={subtitleStrokeWidth}
+    strokeOpacity={subtitleStrokeOpacity} fillOpacity={subtitleFillOpacity} opacity={subtitleOpacity}
     text={subtitle}
-    {subtitleFontFamily} {subtitleFontSize} {subtitleFontWeight} {subtitleRotation} {titleAnchorPoint}
+    fontFamily={subtitleFontFamily} fontSize={subtitleFontSize} fontWeight={subtitleFontWeight} rotation={subtitleRotation} anchorPoint={titleAnchorPoint}
     {transition} {onClick} {onMouseover} {onMouseout}
-    {onDragstart} {onDrag} {onDragend}
     {zoomIdentity} _asPolygon={false}
   />
-{/if} -->
+{/if}

@@ -35,10 +35,11 @@
 
   <!-- <Rectangle fill="blue" opacity={0.3} /> -->
   <Title 
-    title={'Lorem ipsum dolor sit amet, consectetur adipiscing ...'} 
-    subtitle={'... elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'}
-    vjust={'top'} 
-    hjust={'center'}/>
+  title={'Lorem ipsum dolor sit amet, consectetur adipiscing ...'} 
+  subtitle={'... elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'}
+  vjust={'top'} 
+  hjust={'center'}
+  titleFontFamily={'Baskerville'}/>
 
   <Section 
     x1={50} x2={450}
@@ -49,23 +50,15 @@
     {zoomIdentity}
     {blockReindexing}
   >
+    <Title 
+    title={'Lorem ipsum dolor sit amet, consectetur adipiscing ...'} 
+    subtitle={'... elit'}
+    vjust={'top'} 
+    hjust={'center'}
+    subtitleFontFamily={'Garamond'}
+    yOffset={-15}/>
+    
     <Rectangle fill="blue" opacity={0.3} />
-
-    <!-- <PolygonLayer
-      x={[
-        [0, 1, 1, 0, 0],
-        [1, 2, 2, 1, 1],
-        [2, 3, 3, 2, 2]
-      ]}
-      y={[
-        [0, 0, 1, 1, 0],
-        [1, 1, 2, 2, 1],
-        [2, 2, 3, 3, 2]
-      ]}
-      fill={[
-        'red', 'green', 'yellow'
-      ]}
-    /> -->
 
     <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
     <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
