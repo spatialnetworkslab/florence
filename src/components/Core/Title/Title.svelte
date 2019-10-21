@@ -42,29 +42,39 @@
     // Other
     export let zoomIdentity = undefined
 
-    console.log(x, y, fill, text)
-    // Section positioning wrt section/graphic context
-    // $: {
-    //     if (!isValid(x, y)) {
-    //         const xRange = $sectionContext.scaleX.domain()
-    //         const yRange = $sectionContext.scaleY.domain()
+    // Contexts
+    const sectionContext = SectionContext.subscribe()
+    const graphicContext = GraphicContext.subscribe()
 
-    //         if (sectionContext.flipX) xRange.reverse()
-    //         xCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize)
-    //         x1 = xCoords.x1
-    //         x2 = xCoords.x2
-    //         width = xCoords.width
-    //         if (sectionContext.flipY) yRange.reverse()
-    //         yCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, titleFontSize)
-    //         yCoords.y1 = yCoords.y1
-    //         y1 = yCoords.y1
-    //         y2 = yCoords.y2
-    //         height = yCoords.height
-    //     } else { 
-    //         xCoords = { x1, x2, width: Math.abs(x2 - x1) }
-    //         yCoords = { y1, y2, height: Math.abs(y2 - y1) }
-    //     }
-    // }
+    // Permanent
+    const zoomContext = ZoomContext.subscribe()
+
+    // Positioning props
+    let xPos = undefined
+    let yPos = undefined
+    console.log(x, y, fill, text, $sectionContext.scaleX)
+    // Section positioning wrt section/graphic context
+    $: {
+        // if (!isValid(x, y)) {
+        const xRange = $sectionContext.scaleX.domain()
+        const yRange = $sectionContext.scaleY.domain()
+        console.log(xRange, yRange)
+        // if (sectionContext.flipX) xRange.reverse()
+        // xCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize)
+        // x1 = xCoords.x1
+        // x2 = xCoords.x2
+        // width = xCoords.width
+        // if (sectionContext.flipY) yRange.reverse()
+        // yCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, titleFontSize)
+        // yCoords.y1 = yCoords.y1
+        // y1 = yCoords.y1
+        // y2 = yCoords.y2
+        // height = yCoords.height
+        // } else { 
+        //     xCoords = { x1, x2, width: Math.abs(x2 - x1) }
+        //     yCoords = { y1, y2, height: Math.abs(y2 - y1) }
+        // }
+    }
 
     // Title positioning wrt section/graphic context
     // $: {
