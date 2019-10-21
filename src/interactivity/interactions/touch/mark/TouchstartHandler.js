@@ -2,7 +2,7 @@ import MarkInteractionHandler from '../../base/handlers/MarkInteractionHandler.j
 
 import { createMarkEvent, createLayerEvent } from '../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../utils/getLocalCoordinates.js'
-import { coordinatesAreInsideSection, hitIsMark, hitIsInLayer } from '../../utils/hitUtils.js'
+import { hitIsMark, hitIsInLayer } from '../../utils/hitUtils.js'
 
 export default class TouchstartHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
@@ -13,10 +13,6 @@ export default class TouchstartHandler extends MarkInteractionHandler {
   }
 
   _handleEvent (screenCoordinates, nativeEvent) {
-    if (!coordinatesAreInsideSection(screenCoordinates, this.section())) {
-      return
-    }
-
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(screenCoordinates)
     const localCoordinates = getLocalCoordinates(screenCoordinates, this.interactionManager())
