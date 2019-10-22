@@ -15,6 +15,7 @@
   export let hjust = 'center'
   export let xOffset = 0
   export let yOffset = 10
+  export let usePadding = false
 
   // Aesthetics: Title
   export let title = 'Title Text'
@@ -25,7 +26,7 @@
   export let titleFillOpacity = undefined
   export let titleOpacity = 1
   export let titleFontFamily = undefined
-  export let titleFontSize = 20
+  export let titleFontSize = 18
   export let titleFontWeight = 'bold'
   export let titleRotation = 0
   export let titleAnchorPoint = 'center'
@@ -60,16 +61,26 @@
   const graphicContext = GraphicContext.subscribe()
   const zoomContext = ZoomContext.subscribe()
 
+  // Consider Graphic/Section padding
+  let padding
+
+  $: {
+    if (usePadding === true) {
+      padding = $sectionContext.padding
+    }
+  }
+
   // Title text positioning wrt section/graphic context
   $: {
+
     const xRange = $sectionContext.scaleX.range()
     const yRange = $sectionContext.scaleY.range()
 
     if (sectionContext.flipX) xRange.reverse()
-    x = $sectionContext.scaleX.invert(createTitleXCoord(hjust, xRange, x, xOffset, titleFontSize))
+    x = $sectionContext.scaleX.invert(createTitleXCoord(hjust, xRange, x, xOffset, titleFontSize, padding))
 
     if (sectionContext.flipY) yRange.reverse()
-    y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize))
+    y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize, padding))
 
     if (subtitle.length > 0) {
       if (!isValid(subtitleX, subtitleY)) {

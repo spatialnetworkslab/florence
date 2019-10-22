@@ -13,41 +13,48 @@
 
   let vjust = 'top'
   let hjust = 'center'
+  let graphicPadding = 10
+  let sectionPadding = 30
+  let gUsePadding = true
+  let sUsePadding = true
 </script>
 
-<Graphic width={500} height={500}>
+<Graphic width={500} height={500} padding={graphicPadding}>
 
-  <!-- <Rectangle fill="blue" opacity={0.3} /> -->
-  <Title 
-  title={'Lorem ipsum dolor sit amet, consectetur adipiscing'} 
-  subtitle={'elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'}
-  {vjust}
-  {hjust}
-  titleFontFamily={'Baskerville'}
-  titleFill={'pink'}/>
-
-  <Section 
+ <Section 
     x1={50} x2={450}
     y1={50} y2={450}
-    padding={30}
+    padding={sectionPadding}
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
     {zoomIdentity}
     {blockReindexing}
-  >
+  > 
+
     <Title 
-    title={'Lorem ipsum dolor sit amet, consectetur adipiscing'} 
-    subtitle={'elit, sed do eiusmod tempor incididunt'}
-    vjust={'center'}
-    hjust={'right'}
-    subtitleFontFamily={'Garamond'}
-    subtitleStroke={'green'}
-    subtitleStrokeWidth={2}
-    yOffset={-15}/>
+      title={'Lorem ipsum dolor sit amet, consectetur adipiscing'} 
+      subtitle={'elit, sed do eiusmod tempor incididunt'}
+      {vjust}
+      {hjust}
+      subtitleFontFamily={'Garamond'}
+      subtitleStroke={'green'}
+      subtitleStrokeWidth={2}
+      usePadding={false}
+      />
 
     <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
     <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
   
   </Section>
+
+  <Title 
+    title={'Test'} 
+    subtitle={'subtitle'}
+    vjust={'bottom'}
+    {hjust}
+    titleFontFamily={'Baskerville'}
+    titleFill={'pink'}
+    usePadding={false}
+    />
 
 </Graphic>
