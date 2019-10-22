@@ -12,7 +12,6 @@
   import Line from './examples/Line.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
   import FuncLines from './examples/FuncLines.svelte'
-  import Legends from './examples/Legends.svelte'
   import DragCategorical from './examples/DragCategorical.svelte'
   import FunctionAPI from './examples/FunctionAPI.svelte'
   import FlipTest from './examples/FlipTest.svelte'
@@ -74,11 +73,6 @@
       name: 'FuncLines',
       url: 'funclines',
       component: FuncLines
-    },
-    {
-      name: 'Legends',
-      url: '/legends',
-      component: Legends
     },
     {
       name: 'DragCategorical',
