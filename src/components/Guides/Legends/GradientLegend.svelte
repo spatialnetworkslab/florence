@@ -7,7 +7,6 @@
 
 <script>
   import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from "../../../"
-  import { scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
   import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from "./createLegendCoordinates.js"
 
   // Contexts
