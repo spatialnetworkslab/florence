@@ -23,6 +23,7 @@
   export let width = 0
   export let xOffset = 0
   export let yOffset = 0
+  export let usePadding = false
 
   // Aesthetics: colors
   export let scale = undefined
@@ -71,7 +72,7 @@
   export let titleRotation = 0
   export let titleAnchorPoint = 't'
   export let titlePaddingX = 0
-  export let titlePaddingY = titleVjust === 'bottom' ? 5 : titleVjust === 'top' ? -5 : 0
+  export let titlePaddingY = -2
 
   // transition
   export let transition = undefined
@@ -101,12 +102,24 @@
   let colorBarHeight
   let colorBarWidth
 
-  let posScaleY
+ let posScaleY
   let xCoords
   let yCoords
   let addTitleSize
-
+  let addLabelSize
+  let parentPadding
+  let rangeXCoords
+  let rangeYCoords
+  
+   $: {
+    usePadding = usePadding
+    if (usePadding === true) {
+      parentPadding = $sectionContext.padding
+    }
+  }
+  
   // Section positioning wrt section/graphic context
+  // Uses pixel values
   $: {
     if (!['horizontal', 'vertical'].includes(orient)) {
       throw Error('Invalid input for `orient` property. Please provide either `horizontal` or `vertical` as inputs.')
@@ -117,25 +130,31 @@
       const yRange = $sectionContext.scaleY.range()
 
       if (sectionContext.flipX) xRange.reverse()
-      const rangeXCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, $sectionContext.padding)
-
+      rangeXCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip, parentPadding)
       x1 = $sectionContext.scaleX.invert(rangeXCoords.x1)
       x2 = $sectionContext.scaleX.invert(rangeXCoords.x2)
+
       width = Math.abs(x2 - x1)
       xCoords = { x1, x2, width }
-
+    
       if (sectionContext.flipY) yRange.reverse()
-      addTitleSize = title.length > 0 ? titleFontSize : 0
-      const rangeYCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, $sectionContext.padding)
-
+      addTitleSize = title.length > 0 ? titleFontSize * 1.5 : 0
+      rangeYCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flip, parentPadding)
+      
       y1 = $sectionContext.scaleY.invert(rangeYCoords.y1)
       y2 = $sectionContext.scaleY.invert(rangeYCoords.y2)
       height = Math.abs(y2 - y1)
       yCoords = { y1, y2, height }
-    
+
     } else { 
       xCoords = { x1, x2, width: Math.abs(x2 - x1) }
       yCoords = { y1, y2, height: Math.abs(y2 - y1) }
+    }
+
+    if (orient === 'vertical') {
+      addLabelSize = labelFontSize / rangeXCoords.width * width * 0.75
+    } else {
+      addLabelSize = labelFontSize / rangeYCoords.height * height * 0.75
     }
   }
 
@@ -233,8 +252,8 @@
         tickLabelPositions = tickLabelXCoords
         tickAlign = tickLabelYCoords
       }
-
-      colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords)
+  
+      colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, addLabelSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords)
       if (!tickOpacities){
         tickOpacities = fill
       }
@@ -270,7 +289,7 @@
         }
 
         // something's wrong with the fillOpacity function
-        colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords)
+        colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, addLabelSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords)
         if (!tickColors){
           tickColors = fill
         }

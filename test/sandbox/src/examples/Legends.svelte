@@ -37,7 +37,8 @@
 
   const log = console.log
 
-  let pad = 0
+  // let pad1 = 30
+  // let usePadding = true
 
   let x = 0
   let y = 0
@@ -55,31 +56,100 @@
   // fill scales
   const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
   const linearColorScaleBin = scaleLinear().domain(bins).range(["red", "blue"])
-  const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateViridis);
+  const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateSinebow);
   const fruitScale = scaleOrdinal().domain(fruits).range(schemeDark2)
   const binScale = scaleLinear().domain([0, 4]).range(['red', 'blue'])
 
   // fill opacity scales
   const alphaScale = scaleLinear().domain(data.domain('a')).range([0, 1])
   const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
-  const binAlpha = scaleLinear().domain([0,2]).range([0, 0.9])
+  const binAlpha = scaleLinear().domain([0,2]).range([0.5, 1])
 
   // Padding slider
 </script>
 
-<div>
-  <label for="height-slider">Padding</label>
-  <input type="range" min="0" max="150" bind:value={pad} name="height-slider" />
-</div>
+<!-- <div>
+  <label for="height-slider">Padding: </label>
+  <input type="range" min="0" max="150" bind:value={pad1} name="height-slider" /> {pad1}
+  <input type="radio" value="true" bind:value={usePadding} name="height-slider" /> True
+  <input type="radio" value="false" bind:value={usePadding} name="height-slider" /> False
+</div> -->
 
 <div>
 	<Graphic 
     width={700} {height}
     scaleX={scaleLinear().domain([0, 600])}
     scaleY={scaleLinear().domain([0, 1000])}
-    padding={pad}
   >       
+
+    <Section 
+      x1={50} x2={300}
+      y1={50} y2={700}
+      padding={30}
+      scaleX={scaleLinear().domain(data.domain('a'))}
+      scaleY={scaleLinear().domain(data.domain('b'))}
+      {zoomIdentity}
+    >
+
+     <GradientLegend
+      scale = {data.domain('a')}
+      fill={linearColorScale}
+      labelCount={3}
+      orient={'vertical'}
+      labelExtra
+      titleVjust={'top'}
+      vjust={'top'}
+      hjust={'right'}
+      titleFontSize={14}
+      usePadding={true}
+    />
+
+    <PointLayer
+        x={filteredData.column('a')}
+        y={filteredData.column('b')}
+        key={filteredData.column('$key')}
+        fill={linearColorScale}
+      />
+
+    <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
+    <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
+  
+  </Section>
+
+  <Section 
+    x1={350} x2={600}
+    y1={50} y2={700}
+    padding={20}
+    scaleX={scaleLinear().domain(data.domain('a'))}
+    scaleY={scaleLinear().domain(data.domain('b'))}
+    {zoomIdentity}
+  >
     <DiscreteLegend
+      scale = {data.domain('a')}
+      fill={seqScale}
+      labelCount={8}
+      orient={'vertical'}
+      labelExtra
+      titleVjust={'top'}
+      vjust={'top'}
+      hjust={'right'}
+      titleFontSize={14}
+      usePadding={false}
+    />
+
+    <PointLayer
+        x={filteredData.column('a')}
+        y={filteredData.column('b')}
+        key={filteredData.column('$key')}
+        fill={seqScale}
+      />
+
+    <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
+    <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
+  
+  </Section>
+
+    <!-- <DiscreteLegend
       scale = {data.domain('a')}
       x1={270} x2={510}
       y1={50} y2={200}
@@ -165,7 +235,7 @@
       orient={'horizontal'}
       height={100}
       flip
-    />
+    /> -->
 
 	</Graphic>
 

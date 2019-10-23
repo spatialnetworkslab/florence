@@ -33,6 +33,7 @@
   export let width = 0
   export let xOffset = 0
   export let yOffset = 0
+  export let usePadding = false
 
   // Aesthetics: colors
   export let scale = undefined
@@ -81,7 +82,7 @@
   export let titleRotation = 0
   export let titleAnchorPoint = 't'
   export let titlePaddingX = 0
-  export let titlePaddingY = titleVjust === 'bottom' ? 5 : titleVjust === 'top' ? -5 : 0
+  export let titlePaddingY = -2
 
   // transition
   export let transition = undefined
@@ -115,8 +116,20 @@
   let xCoords
   let yCoords
   let addTitleSize
+  let addLabelSize
+  let parentPadding
+  let rangeXCoords
+  let rangeYCoords
+  
+   $: {
+    usePadding = usePadding
+    if (usePadding === true) {
+      parentPadding = $sectionContext.padding
+    }
+  }
   
   // Section positioning wrt section/graphic context
+  // Uses pixel values
   $: {
     if (!['horizontal', 'vertical'].includes(orient)) {
       throw Error('Invalid input for `orient` property. Please provide either `horizontal` or `vertical` as inputs.')
@@ -127,24 +140,31 @@
       const yRange = $sectionContext.scaleY.range()
 
       if (sectionContext.flipX) xRange.reverse()
-      const rangeXCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize)
-
+      rangeXCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip, parentPadding)
       x1 = $sectionContext.scaleX.invert(rangeXCoords.x1)
       x2 = $sectionContext.scaleX.invert(rangeXCoords.x2)
+
       width = Math.abs(x2 - x1)
       xCoords = { x1, x2, width }
-
+    
       if (sectionContext.flipY) yRange.reverse()
-      addTitleSize = title.length > 0 ? titleFontSize : 0
-      const rangeYCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize)
-
+      addTitleSize = title.length > 0 ? titleFontSize * 1.5 : 0
+      rangeYCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flip, parentPadding)
+      
       y1 = $sectionContext.scaleY.invert(rangeYCoords.y1)
       y2 = $sectionContext.scaleY.invert(rangeYCoords.y2)
       height = Math.abs(y2 - y1)
       yCoords = { y1, y2, height }
+
     } else { 
       xCoords = { x1, x2, width: Math.abs(x2 - x1) }
       yCoords = { y1, y2, height: Math.abs(y2 - y1) }
+    }
+
+    if (orient === 'vertical') {
+      addLabelSize = labelFontSize / rangeXCoords.width * width 
+    } else {
+      addLabelSize = labelFontSize / rangeYCoords.height * height
     }
   }
 
@@ -205,7 +225,7 @@
       tickLabelYCoords = labelY ? labelY : tickLabelYCoords
 
       if (labelPadding !== undefined) { 
-        tickLabelYCoords = flipLabels ? tickLabelYCoords - sectionContextlabelPadding : tickLabelYCoords + labelPadding
+        tickLabelYCoords = flipLabels ? tickLabelYCoords - labelPadding : tickLabelYCoords + labelPadding
       } 
 
       format = getFormat(labelFormat, scale, tickLabelXCoords.length)
@@ -236,13 +256,13 @@
           
           if (orient === 'vertical') {
               tickLabelPositions = tickLabelYCoords
-              tickAlign = tickLabelXCoords
+              tickAlign = tickLabelXCoords 
           } else {
               tickLabelPositions = tickLabelXCoords
               tickAlign = tickLabelYCoords
           }
-          
-          colorGeoms = getGradientGeoms(tickColors, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize)
+
+          colorGeoms = getGradientGeoms(tickColors, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, addLabelSize)
 
           if (!tickOpacities){
               tickOpacities = fillOpacity !== undefined ? fillOpacity : 1
@@ -277,6 +297,7 @@
               tickLabelPositions = tickLabelXCoords
               tickAlign = tickLabelYCoords
           }
+
           colorGeoms = getGradientGeoms(tickOpacities, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize)
           
           if (!tickColors){

@@ -3,15 +3,19 @@
 // 2. vjust with a number (relative position within content of section)
 // 3. x1, x2, y1, y2 props with positioning in data coords
 
-export function createPosYCoords (vjust, yRange, orient, height, offset, titleFontSize) {
+export function createPosYCoords (vjust, yRange, orient, height, offset, titleFontSize, flip, parentPadding) {
   let y1
   let y2
-
-  const y1Range = yRange[0]
-  const y2Range = yRange[1]
+  let y1Range = yRange[0]
+  let y2Range = yRange[1]
   const heightRatio = orient === 'vertical' ? 0.3 : 0.1
   const addTitleSize = titleFontSize
   height = (height === 0 || height === undefined) ? (y2Range - y1Range) * heightRatio : height
+  
+  if (parentPadding !== undefined) {
+    y1Range = !flip ? y1Range - parentPadding.top : y1Range - parentPadding.bottom
+    y2Range = !flip ? y2Range + parentPadding.bottom : y2Range + parentPadding.top
+  }
 
   if (vjust === 'top') {
     y1 = y1Range + offset + addTitleSize
@@ -37,22 +41,28 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   if (!['top', 'bottom', 'center'].includes(vjust) && y1 === undefined) {
     throw Error('Please specify either `top`, `center`, `bottom` or a number in the range [-1, 1] for `vjust`')
   }
-
+  console.log(y1, y2, height)
   return { y1, y2, height }
 }
 
-export function createPosXCoords (hjust, xRange, orient, width, offset, labelFontSize) {
+export function createPosXCoords (hjust, xRange, orient, width, offset, labelFontSize, flip, parentPadding) {
   let x1
   let x2
-  const x1Range = xRange[0]
-  const x2Range = xRange[1]
+  let x1Range = xRange[0]
+  let x2Range = xRange[1]
   const widthRatio = orient === 'vertical' ? 0.1 : 0.3
   width = width === 0 ? (x2Range - x1Range) * widthRatio : width
+
+  if (parentPadding !== undefined) {
+    x1Range = !flip ? x1Range - parentPadding.top : x1Range - parentPadding.bottom
+    x2Range = !flip ? x2Range + parentPadding.bottom : x2Range + parentPadding.top
+  }
 
   if (hjust === 'left') {
     x1 = x1Range + offset + labelFontSize
     x2 = x1Range + width + offset + labelFontSize
   }
+
   if (hjust === 'center' || hjust === 'centre') {
     const xCoord = (x2Range - x1Range) * 0.5 + x1Range
     x1 = xCoord - width / 2 + offset
@@ -73,7 +83,7 @@ export function createPosXCoords (hjust, xRange, orient, width, offset, labelFon
   if (!['left', 'center', 'right'].includes(hjust) && x1 === undefined) {
     throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `vjust`')
   }
-
+  
   return { x1, x2, width }
 }
 
@@ -130,12 +140,12 @@ export function createTitleYCoord (vjust, yCoords, y, offset, fontSize, orient, 
     addFontSize = 0
   }
   if (vjust === 'bottom') {
-    justification = 1
-    addFontSize = fontSize
+    justification = 0.95
+    addFontSize = fontSize / 2
   }
   if (vjust === 'top') {
     justification = 0
-    addFontSize = -fontSize
+    addFontSize = -fontSize / 2
   }
 
   if (!isNaN(vjust)) {
