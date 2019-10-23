@@ -18,30 +18,30 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   }
 
   if (vjust === 'top') {
-    y1 = y1Range + offset + addTitleSize
-    y2 = y1Range + height + offset + addTitleSize
+    y1 = y1Range + offset + addTitleSize * 1.05
+    y2 = y1Range + height + offset + addTitleSize * 1.05
   }
   if (vjust === 'center' || vjust === 'centre') {
     const yCoord = (y2Range - y1Range) * 0.5 + y1Range
-    y1 = yCoord - height / 2 + offset + addTitleSize
-    y2 = yCoord + height / 2 + offset + addTitleSize
+    y1 = yCoord - height / 2 + offset + addTitleSize * 1.05
+    y2 = yCoord + height / 2 + offset + addTitleSize * 1.05
   }
 
   if (vjust === 'bottom') {
-    y1 = y2Range - height + offset - addTitleSize
-    y2 = y2Range + offset - addTitleSize
+    y1 = y2Range - height + offset - addTitleSize * 1.05
+    y2 = y2Range + offset - addTitleSize * 1.05
   }
 
   if (!isNaN(vjust) && (vjust <= 1 && vjust >= -1)) {
     const yCoord = (y2Range - y1Range) * vjust + y1Range
-    y1 = yCoord + offset - addTitleSize
-    y2 = yCoord + height + offset - addTitleSize
+    y1 = yCoord + offset - addTitleSize * 1.05
+    y2 = yCoord + height + offset - addTitleSize * 1.05
   }
 
   if (!['top', 'bottom', 'center'].includes(vjust) && y1 === undefined) {
     throw Error('Please specify either `top`, `center`, `bottom` or a number in the range [-1, 1] for `vjust`')
   }
-  console.log(y1, y2, height)
+
   return { y1, y2, height }
 }
 
@@ -59,8 +59,8 @@ export function createPosXCoords (hjust, xRange, orient, width, offset, labelFon
   }
 
   if (hjust === 'left') {
-    x1 = x1Range + offset + labelFontSize
-    x2 = x1Range + width + offset + labelFontSize
+    x1 = x1Range + offset + labelFontSize * 1.05
+    x2 = x1Range + width + offset + labelFontSize * 1.05
   }
 
   if (hjust === 'center' || hjust === 'centre') {
@@ -70,24 +70,24 @@ export function createPosXCoords (hjust, xRange, orient, width, offset, labelFon
   }
 
   if (hjust === 'right') {
-    x1 = x2Range - width + offset - labelFontSize
-    x2 = x2Range + offset - labelFontSize
+    x1 = x2Range - width + offset - labelFontSize * 1.05
+    x2 = x2Range + offset - labelFontSize * 1.05
   }
 
   if (!isNaN(hjust)) {
     const xCoord = (x2Range - x1Range) * hjust + x1Range
-    x1 = xCoord - labelFontSize
-    x2 = xCoord + width - labelFontSize
+    x1 = xCoord - labelFontSize * 1.05
+    x2 = xCoord + width - labelFontSize * 1.05
   }
 
   if (!['left', 'center', 'right'].includes(hjust) && x1 === undefined) {
     throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `vjust`')
   }
-  
+
   return { x1, x2, width }
 }
 
-export function createTitleXCoord (hjust, xCoords, x, offset, fontSize, padding) {
+export function createTitleXCoord (hjust, xCoords, x, offset, addTitleSize, addLabelSize, orient, padding) {
   if (x) {
     return () => x
   }
@@ -103,11 +103,11 @@ export function createTitleXCoord (hjust, xCoords, x, offset, fontSize, padding)
   }
   if (hjust === 'left') {
     justification = 0
-    addFontSize = fontSize
+    addFontSize = addTitleSize + addLabelSize
   }
   if (hjust === 'right') {
     justification = 1
-    addFontSize = -fontSize
+    addFontSize = -addTitleSize - addLabelSize
   }
   if (!isNaN(hjust)) {
     justification = hjust
@@ -121,11 +121,11 @@ export function createTitleXCoord (hjust, xCoords, x, offset, fontSize, padding)
   if (!['left', 'center', 'right'].includes(hjust) && isNaN(hjust)) {
     throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `hjust`')
   }
-
-  return x1 + Math.abs(x1 - x2) * justification + addFontSize + padding
+  
+  return x1 + Math.abs(x1 - x2) * justification + addFontSize + padding + offset
 }
 
-export function createTitleYCoord (vjust, yCoords, y, offset, fontSize, orient, padding) {
+export function createTitleYCoord (vjust, yCoords, y, offset, addTitleSize, addLabelSize, orient, padding) {
   if (y) {
     return () => y
   }
@@ -141,11 +141,11 @@ export function createTitleYCoord (vjust, yCoords, y, offset, fontSize, orient, 
   }
   if (vjust === 'bottom') {
     justification = 0.95
-    addFontSize = fontSize / 2
+    addFontSize = addTitleSize / 2
   }
   if (vjust === 'top') {
     justification = 0
-    addFontSize = -fontSize / 2
+    addFontSize = -addTitleSize / 2
   }
 
   if (!isNaN(vjust)) {
@@ -162,5 +162,5 @@ export function createTitleYCoord (vjust, yCoords, y, offset, fontSize, orient, 
     throw Error('Please specify either `top`, `center`, `bottom` or a number for `vjust`')
   }
 
-  return y1 + Math.abs(y1 - y2) * justification + addFontSize + padding
+  return y1 + Math.abs(y1 - y2) * justification + addFontSize + padding + offset
 }

@@ -53,7 +53,7 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
   return tickValues
 }
 
-export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates, flip, orient) {
+export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates, flip, orient, padding) {
   let tickPositions
 
   // Bins
@@ -69,7 +69,7 @@ export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates
     }
 
     tickPositions = tickValuesArray.map((value, i) => {
-      return posScale(value)
+      return posScale(value) + padding
     })
 
   // Arrays
@@ -80,7 +80,7 @@ export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates
     tickValuesArray = flip ? tickValuesArray.reverse() : tickValuesArray
 
     tickPositions = tickValuesArray.map((value, i) => {
-      return firstVal + interval * (i + 0.5)
+      return firstVal + interval * (i + 0.5) + padding
     })
   } else {
     throw new Error(`Couldn't construct legend. Please provide 'tickValues' or a scale with
@@ -245,7 +245,6 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
       x1 = tickAlign + labelFontSize
       x2 = tickAlign + labelFontSize + colorBarWidth * xCoords.width
     }
-
   } else if (orient === 'horizontal') {
     gradX = flip ? { x1: '100%', x2: '0%' } : { x1: '0%', x2: '100%' }
     gradY = { y1: '0%', y2: '0%' }

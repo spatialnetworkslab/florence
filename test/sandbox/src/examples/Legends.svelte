@@ -63,7 +63,7 @@
   // fill opacity scales
   const alphaScale = scaleLinear().domain(data.domain('a')).range([0, 1])
   const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
-  const binAlpha = scaleLinear().domain([0,2]).range([0.5, 1])
+  const binAlpha = scaleLinear().domain([0,4]).range([0, 1])
 
   // Padding slider
 </script>
@@ -95,12 +95,26 @@
       scale = {data.domain('a')}
       fill={linearColorScale}
       labelCount={3}
-      orient={'vertical'}
+      orient={'horizontal'}
       labelExtra
       titleVjust={'top'}
       vjust={'top'}
       hjust={'right'}
-      titleFontSize={14}
+      usePadding={false}
+    />
+
+    <GradientLegend
+      scale = {bins}
+      fillOpacity= {binAlpha}
+      fill={'green'}
+      orient={'vertical'}
+      labelCount={6}
+      vjust={'center'}
+      hjust={'right'}
+      title={'Test title 12345'}
+      titleVjust={'center'}
+      titleHjust={'right'}
+      titleRotation={-90}
       usePadding={true}
     />
 
@@ -126,15 +140,32 @@
   >
     <DiscreteLegend
       scale = {data.domain('a')}
-      fill={seqScale}
-      labelCount={8}
-      orient={'vertical'}
+      fill={'purple'}
+      fillOpacity={alphaScale}
+      labelCount={2}
+      strokeWidth={2}
+      stroke={'white'}
+      orient={'horizontal'}
+      labelAnchorPoint={'r'}
       labelExtra
       titleVjust={'top'}
       vjust={'top'}
       hjust={'right'}
-      titleFontSize={14}
-      usePadding={false}
+      labelPaddingX={-3}
+      usePadding={true}
+    />
+
+    <DiscreteLegend
+      scale = {fruits}
+      fill={fruitScale}
+      strokeWidth={2}
+      stroke={'white'}
+      orient={'vertical'}
+      labelAnchorPoint={'r'}
+      labelExtra
+      vjust={'centre'}
+      hjust={'right'}
+      usePadding={true}
     />
 
     <PointLayer

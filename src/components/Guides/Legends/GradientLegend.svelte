@@ -64,7 +64,8 @@
   export let labelExtra = false
   export let firstLabel = undefined
   export let format = undefined
-  export let labelPadding = 0
+  export let labelPaddingX = 0
+  export let labelPaddingY = 0
 
   // legend title
   export let titleHjust = 'center'
@@ -76,13 +77,13 @@
   export let title = 'Legend'
   export let titleColor = 'black'
   export let titleFont = 'Helvetica'
-  export let titleFontSize = 14
+  export let titleFontSize = 12
   export let titleFontWeight = 'bold'
   export let titleOpacity = 1
   export let titleRotation = 0
   export let titleAnchorPoint = 't'
   export let titlePaddingX = 0
-  export let titlePaddingY = -2
+  export let titlePaddingY = 1
 
   // transition
   export let transition = undefined
@@ -162,7 +163,7 @@
     }
 
     if (orient === 'vertical') {
-      addLabelSize = labelFontSize / rangeXCoords.width * width 
+      addLabelSize = labelFontSize / rangeXCoords.width * width
     } else {
       addLabelSize = labelFontSize / rangeYCoords.height * height
     }
@@ -170,19 +171,20 @@
 
   // Title positioning wrt section/graphic context
   $: {
-      if (title.length > 0) {
-          if (!titleX && titleX !== 0) {
-              const xRange = $sectionContext.scaleX.range()
-              if (sectionContext.flipX) xRange.reverse()
-              titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, titleFontSize, titlePaddingX)
-          }
+    console.log(addLabelSize)
+    if (title.length > 0) {
+        if (!titleX && titleX !== 0) {
+            const xRange = $sectionContext.scaleX.range()
+            if (sectionContext.flipX) xRange.reverse()
+            titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, addTitleSize, addLabelSize, orient, titlePaddingX)
+        }
 
-          if (!titleY && titleY !== 0) {
-              const yDomain = $sectionContext.scaleY.range()
-              if (sectionContext.flipY) yDomain.reverse()
-              titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, titleFontSize, orient, titlePaddingY)
-          }
-      }
+        if (!titleY && titleY !== 0) {
+            const yDomain = $sectionContext.scaleY.range()
+            if (sectionContext.flipY) yDomain.reverse()
+            titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, addLabelSize, orient, titlePaddingY)
+        }
+    }
   }
 
   // CHECK: that scale is provided,
@@ -210,22 +212,22 @@
     tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
 
     if (orient === 'vertical') {
-      tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, yCoords, flip, orient)
+      tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, yCoords, flip, orient, labelPaddingY)
       tickLabelXCoords = flipLabels ? x1 + colorBarHeight * xCoords.width : x1 + (1 - colorBarHeight) * xCoords.width
       tickLabelXCoords = labelX ? labelX : tickLabelXCoords
 
-      if (labelPadding !== undefined) { 
-        tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPadding : tickLabelXCoords - labelPadding
+      if (labelPaddingX !== undefined) { 
+        tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPaddingX : tickLabelXCoords - labelPaddingX
       }
 
       format = getFormat(labelFormat, scale, tickLabelYCoords.length)
     } else if (orient === 'horizontal'){
-      tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, xCoords, flip, orient)
+      tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, xCoords, flip, orient, labelPaddingX)
       tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * yCoords.height : yCoords.y2 - colorBarWidth * yCoords.height
       tickLabelYCoords = labelY ? labelY : tickLabelYCoords
 
-      if (labelPadding !== undefined) { 
-        tickLabelYCoords = flipLabels ? tickLabelYCoords - labelPadding : tickLabelYCoords + labelPadding
+      if (labelPaddingY !== undefined) { 
+        tickLabelYCoords = flipLabels ? tickLabelYCoords - labelPaddingY : tickLabelYCoords + labelPaddingY
       } 
 
       format = getFormat(labelFormat, scale, tickLabelXCoords.length)
@@ -298,7 +300,7 @@
               tickAlign = tickLabelYCoords
           }
 
-          colorGeoms = getGradientGeoms(tickOpacities, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize)
+          colorGeoms = getGradientGeoms(tickOpacities, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, addLabelSize)
           
           if (!tickColors){
               tickColors = fill !== undefined ? fill : 'black'
