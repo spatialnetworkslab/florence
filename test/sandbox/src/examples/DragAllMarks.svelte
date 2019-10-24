@@ -115,6 +115,7 @@
       {...rectangleCoords} 
       fill="green"
       onMousedrag={dragRectangle}
+      onTouchdrag={dragRectangle}
     />
 
     <Line
@@ -122,6 +123,7 @@
       strokeWidth={6}
       stroke="red"
       onMousedrag={dragLine}
+      onTouchdrag={dragLine}
     />
     
     <FuncLine
@@ -129,6 +131,7 @@
       stroke="blue"
       strokeWidth={8}
       onMousedrag={dragFuncLine}
+      onTouchdrag={dragFuncLine}
     />
 
   </Section>

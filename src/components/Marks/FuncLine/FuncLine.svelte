@@ -155,7 +155,7 @@
       if (isInteractiveTouch) {
         const markInterface = $interactionManagerContext.touch().marks()
 
-        markInterface.loadMark(type, createDataNecessaryForIndexing())
+        markInterface.loadMark('Line', createDataNecessaryForIndexing())
 
         if (onTouchdown) markInterface.addMarkInteraction('touchdown', markId, onTouchdown)
         if (onTouchup) markInterface.addMarkInteraction('touchup', markId, onTouchup)
