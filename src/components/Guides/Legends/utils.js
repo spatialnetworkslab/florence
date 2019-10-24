@@ -101,7 +101,7 @@ export function getFormat (labelFormat, scale, numberOfTicks) {
   return x => x
 }
 
-export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords) {
+export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale) {
   let colorXStartCoords = []
   let colorXEndCoords = []
   let colorYStartCoords = []
@@ -127,7 +127,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
 
     // y coords
     // Non-uniform distribution along linear scale
-    if (Array.isArray(scale[0]) && scale.length > 0) {
+    if (useScale) {
       colorYStartCoords = tickLabelText.map((value, i) => {
         return tickLabelPositions[i]
       })
@@ -183,7 +183,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
 
     // Bins: follows tick location
     // Non-uniform distribution along linear scale
-    if (Array.isArray(scale[0]) && scale.length > 0) {
+    if (useScale) {
       colorXStartCoords = tickLabelText.map((value, i) => {
         if (i === 0) {
           return tickLabelPositions[i] - 0.02

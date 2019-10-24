@@ -91,15 +91,14 @@
       {zoomIdentity}
     >
 
-     <GradientLegend
+    <GradientLegend
       fill={linearColorScale}
-      labelCount={3}
       orient={'horizontal'}
-      labelExtra
       titleVjust={'top'}
+      labelCount={4}
       vjust={'top'}
       hjust={'right'}
-      usePadding={false}
+      usePadding={true}
     />
   
     <GradientLegend
@@ -115,7 +114,7 @@
       titleHjust={'left'}
       titleRotation={-90}
       titlePaddingX={-15}
-      usePadding={true}
+      usePadding={false}
     />
 
     <PointLayer
@@ -138,7 +137,19 @@
     scaleY={scaleLinear().domain(data.domain('b'))}
     {zoomIdentity}
   >
-    <!-- <DiscreteLegend
+    <DiscreteLegend
+      labels={[0, 15, 50, 90, 120]}
+      fillOpacity= {scaleLinear().domain([0, 120]).range([0, 1])}
+      fill={'green'}
+      orient={'horizontal'}
+      width={100}
+      vjust={'top'}
+      hjust={'center'}
+      title={'Test title 12345'}
+      usePadding={true}
+    />
+
+    <DiscreteLegend
       fill={seqScale}
       strokeWidth={2}
       labelCount={5}
@@ -146,11 +157,10 @@
       orient={'vertical'}
       labelAnchorPoint={'r'}
       labelExtra
-      titleVjust={'center'}
+      titleVjust={'top'}
       titleHjust={'left'}
       vjust={'top'}
       hjust={'right'}
-      labelPaddingX={-3}
       usePadding={true}
     />
 
@@ -164,7 +174,7 @@
       vjust={'centre'}
       hjust={'right'}
       usePadding={false}
-    /> -->
+    />
 
     <PointLayer
         x={filteredData.column('a')}
