@@ -91,190 +91,102 @@
       {zoomIdentity}
     >
 
-    <GradientLegend
-      fill={linearColorScale}
-      orient={'horizontal'}
-      titleVjust={'top'}
-      labelCount={4}
-      vjust={'top'}
-      hjust={'right'}
-      usePadding={true}
-    />
-  
-    <GradientLegend
-      labels={bins2}
-      fillOpacity= {binAlpha}
-      fill={'green'}
-      orient={'vertical'}
-      labelCount={6}
-      vjust={'center'}
-      hjust={'right'}
-      title={'Test title 12345'}
-      titleVjust={'center'}
-      titleHjust={'left'}
-      titleRotation={-90}
-      titlePaddingX={-15}
-      usePadding={false}
-    />
-
-    <PointLayer
-        x={filteredData.column('a')}
-        y={filteredData.column('b')}
-        key={filteredData.column('$key')}
+      <GradientLegend
         fill={linearColorScale}
+        orient={'horizontal'}
+        titleVjust={'top'}
+        labelCount={4}
+        vjust={'top'}
+        hjust={'right'}
+        usePadding={true}
       />
-
-    <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
-    <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
-  
-  </Section>
-
-  <Section 
-    x1={350} x2={600}
-    y1={50} y2={700}
-    padding={40}
-    scaleX={scaleLinear().domain(data.domain('a'))}
-    scaleY={scaleLinear().domain(data.domain('b'))}
-    {zoomIdentity}
-  >
-    <DiscreteLegend
-      labels={[0, 15, 50, 90, 120]}
-      fillOpacity= {scaleLinear().domain([0, 120]).range([0, 1])}
-      fill={'green'}
-      orient={'horizontal'}
-      width={100}
-      vjust={'top'}
-      hjust={'center'}
-      title={'Test title 12345'}
-      usePadding={true}
-    />
-
-    <DiscreteLegend
-      fill={seqScale}
-      strokeWidth={2}
-      labelCount={5}
-      stroke={'white'}
-      orient={'vertical'}
-      labelAnchorPoint={'r'}
-      labelExtra
-      titleVjust={'top'}
-      titleHjust={'left'}
-      vjust={'top'}
-      hjust={'right'}
-      usePadding={true}
-    />
-
-    <DiscreteLegend
-      fill={fruitScale}
-      strokeWidth={2}
-      stroke={'white'}
-      orient={'vertical'}
-      labelAnchorPoint={'r'}
-      labelExtra
-      vjust={'centre'}
-      hjust={'right'}
-      usePadding={false}
-    />
-
-    <PointLayer
-        x={filteredData.column('a')}
-        y={filteredData.column('b')}
-        key={filteredData.column('$key')}
-        fill={seqScale}
-      />
-
-    <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
-    <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
-  
-  </Section>
-
-    <!-- <DiscreteLegend
-      scale = {data.domain('a')}
-      x1={270} x2={510}
-      y1={50} y2={200}
-      fill={linearColorScale}
-      labelCount={8}
-      orient={'horizontal'}
-      firstLabel={10}
-      labelExtra
-    />
-
-    <GradientLegend
-      scale = {data.domain('a')}
-      x1={100} x2={180}
-      y1={50} y2={400}
-      fill={linearColorScale}
-      labelCount={8}
-      orient={'vertical'}
-      firstLabel={10}
-      labelExtra
-      titleVjust={'bottom'}
-    />
-
-
-    <DiscreteLegend
-      scale = {data.domain('a')}
-      fill={seqScale}
-      orient={'horizontal'}
-      hjust={'right'}
-      vjust={'bottom'}
-      yOffset={-50}
-      height={100}
-      labelCount={6}
-      title={'Test Legend'}
-    />
-
-    <GradientLegend
-      scale = {data.domain('a')}
-      x1={450} x2={600}
-      y1={350} y2={500}
-      fill={'purple'}
-      fillOpacity={alphaScale}
-      orient={'horizontal'}
-      labelCount={5}
-      title={'Longer title than usual test'}
-      titleVjust={'center'}
-      titleHjust={'left'}
-      titleAnchorPoint={'r'}
-      titlePaddingX={-20}
-    />
-
-    <DiscreteLegend
-      scale = {fruits}
-      fillOpacity={0.8}
-      fill={fruitScale}
-      orient={'horizontal'}
-      hjust={'center'}
-      vjust={'center'}
-      titlePaddingY={-15}
-    />
     
-    <DiscreteLegend
-      scale = {bins2}
-      fillOpacity= {binAlpha}
-      fill={'green'}
-      labelCount={8}
-      firstLabel={10}
-      title={'Title'}
-      vjust={'bottom'}
-      hjust={'left'}
-      orient={'vertical'}
-      flipLabels
-    />
+      <GradientLegend
+        labels={bins2}
+        fillOpacity= {binAlpha}
+        fill={'green'}
+        orient={'vertical'}
+        labelCount={6}
+        vjust={'center'}
+        hjust={'right'}
+        title={'Test title 12345'}
+        titleVjust={'center'}
+        titleHjust={'left'}
+        titleRotation={-90}
+        titlePaddingX={-15}
+        usePadding={false}
+      />
 
-    <GradientLegend
-      scale = {bins2}
-      fillOpacity= {binAlpha}
-      fill={'green'}
-      labelCount={8}
-      firstLabel={10}
-      title={'Title'}
-      vjust={'bottom'}
-      hjust={'center'}
-      orient={'horizontal'}
-      height={100}
-      flip
-    /> -->
+      <PointLayer
+          x={filteredData.column('a')}
+          y={filteredData.column('b')}
+          key={filteredData.column('$key')}
+          fill={linearColorScale}
+        />
+
+      <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
+      <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
+    
+    </Section>
+
+    <Section 
+      x1={350} x2={600}
+      y1={50} y2={700}
+      padding={40}
+      scaleX={scaleLinear().domain(data.domain('a'))}
+      scaleY={scaleLinear().domain(data.domain('b'))}
+      {zoomIdentity}
+    >
+      <DiscreteLegend
+        labels={[0, 15, 50, 90, 120]}
+        fillOpacity= {scaleLinear().domain([0, 120]).range([0, 1])}
+        fill={'green'}
+        orient={'horizontal'}
+        width={100}
+        vjust={'top'}
+        hjust={'center'}
+        title={'Test title 12345'}
+        usePadding={true}
+      />
+
+      <DiscreteLegend
+        fill={seqScale}
+        strokeWidth={2}
+        labelCount={5}
+        stroke={'white'}
+        orient={'vertical'}
+        labelAnchorPoint={'r'}
+        labelExtra
+        titleVjust={'top'}
+        titleHjust={'left'}
+        vjust={'top'}
+        hjust={'right'}
+        usePadding={true}
+      />
+
+      <DiscreteLegend
+        fill={fruitScale}
+        strokeWidth={2}
+        stroke={'white'}
+        orient={'vertical'}
+        labelAnchorPoint={'r'}
+        labelExtra
+        vjust={'centre'}
+        hjust={'right'}
+        usePadding={false}
+      />
+
+      <PointLayer
+          x={filteredData.column('a')}
+          y={filteredData.column('b')}
+          key={filteredData.column('$key')}
+          fill={seqScale}
+        />
+
+      <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
+      <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
+    
+    </Section>
 
 	</Graphic>
 
