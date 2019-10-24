@@ -56,7 +56,8 @@
   // fill scales
   const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
   const linearColorScaleBin = scaleLinear().domain(bins).range(["red", "blue"])
-  const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateSinebow);
+  const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateSinebow)
+  const linearColorScale2 =  scaleSequential().domain([0, 120]).interpolator(d3.interpolateViridis)
   const fruitScale = scaleOrdinal().domain(fruits).range(schemeDark2)
   const binScale = scaleLinear().domain([0, 4]).range(['red', 'blue'])
 
@@ -104,7 +105,7 @@
       <GradientLegend
         labels={bins2}
         fillOpacity= {binAlpha}
-        fill={'green'}
+        fill={'purple'}
         orient={'vertical'}
         labelCount={6}
         vjust={'center'}

@@ -18,24 +18,24 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   }
 
   if (vjust === 'top') {
-    y1 = y1Range + offset + addTitleSize * 1.05
-    y2 = y1Range + height + offset + addTitleSize * 1.05
+    y1 = y1Range + offset + addTitleSize
+    y2 = y1Range + height + offset + addTitleSize
   }
   if (vjust === 'center' || vjust === 'centre') {
     const yCoord = (y2Range - y1Range) * 0.5 + y1Range
-    y1 = yCoord - height / 2 + offset + addTitleSize * 1.05
-    y2 = yCoord + height / 2 + offset + addTitleSize * 1.05
+    y1 = yCoord - height / 2 + offset + addTitleSize
+    y2 = yCoord + height / 2 + offset + addTitleSize
   }
 
   if (vjust === 'bottom') {
-    y1 = y2Range - height + offset - addTitleSize * 1.05
-    y2 = y2Range + offset - addTitleSize * 1.05
+    y1 = y2Range - height + offset - addTitleSize
+    y2 = y2Range + offset - addTitleSize
   }
 
   if (!isNaN(vjust) && (vjust <= 1 && vjust >= -1)) {
     const yCoord = (y2Range - y1Range) * vjust + y1Range
-    y1 = yCoord + offset - addTitleSize * 1.05
-    y2 = yCoord + height + offset - addTitleSize * 1.05
+    y1 = yCoord + offset - addTitleSize
+    y2 = yCoord + height + offset - addTitleSize
   }
 
   if (!['top', 'bottom', 'center'].includes(vjust) && y1 === undefined) {
