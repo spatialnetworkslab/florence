@@ -24,6 +24,7 @@
   import { createDataNecessaryForIndexingLayer } from './createDataNecessaryForIndexing.js'
   import generatePath from '../utils/generatePath.js'
   import textAnchorPoint from '../utils/textAnchorPoint.js'
+  import any from '../utils/any.js'
 
   let layerId = getId()
 
@@ -285,17 +286,8 @@
   })
 
   // Interactivity
-  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined || 
-    onMousedown !== undefined || onMouseup !== undefined ||
-    onMouseover !== undefined || onMouseout !== undefined ||
-    onMousedrag !== undefined
-  )
-
-  $: isInteractiveTouch = detectIt.hasTouch && (
-    onTouchdown !== undefined || onTouchup !== undefined ||
-    onTouchover !== undefined || onTouchout !== undefined ||
-    onTouchdrag !== undefined
-  )
+  $: isInteractiveMouse = detectIt.hasMouse && any(onClick, onMousedown, onMouseup, onMouseover, onMouseout, onMousedrag)
+  $: isInteractiveTouch = detectIt.hasTouch && any(onTouchdown, onTouchup, onTouchover, onTouchout, onTouchdrag)
 
   $: isSelectable = onSelect !== undefined || onDeselect !== undefined
 

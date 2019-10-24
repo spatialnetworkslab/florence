@@ -19,6 +19,7 @@
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
   import { createDataNecessaryForIndexingMark } from '../Mark/createDataNecessaryForIndexing.js'
+  import any from '../utils/any.js'
 
   let markId = getId()
 
@@ -48,6 +49,8 @@
   // Touch interactions
   export let onTouchdown = undefined
   export let onTouchup = undefined
+  export let onTouchover = undefined
+  export let onTouchout = undefined
   export let onTouchdrag = undefined
 
   // Select interactions
@@ -118,16 +121,8 @@
   })
 
   // Interactivity
-  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined || 
-    onMousedown !== undefined || onMouseup !== undefined ||
-    onMouseover !== undefined || onMouseout !== undefined ||
-    onMousedrag !== undefined
-  )
-
-  $: isInteractiveTouch = detectIt.hasTouch && (
-    onTouchdown !== undefined || onTouchup !== undefined ||
-    onTouchdrag !== undefined
-  )
+  $: isInteractiveMouse = detectIt.hasMouse && any(onClick, onMousedown, onMouseup, onMouseover, onMouseout, onMousedrag)
+  $: isInteractiveTouch = detectIt.hasTouch && any(onTouchdown, onTouchup, onTouchover, onTouchout, onTouchdrag)
 
   $: isSelectable = onSelect !== undefined || onDeselect !== undefined
 
@@ -164,6 +159,8 @@
 
         if (onTouchdown) markInterface.addMarkInteraction('touchdown', markId, onTouchdown)
         if (onTouchup) markInterface.addMarkInteraction('touchup', markId, onTouchup)
+        if (onTouchover) markInterface.addMarkInteraction('touchover', markId, onTouchover)
+        if (onTouchout) markInterface.addMarkInteraction('touchout', markId, onTouchout)
         if (onTouchdrag) markInterface.addMarkInteraction('touchdrag', markId, onTouchdrag)
       }
     }
