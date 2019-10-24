@@ -70,7 +70,7 @@ export default class MousedragHandler extends MarkInteractionHandler {
     const localCoordinates = getLocalCoordinates(screenCoordinates, this.interactionManager())
 
     if (hitIsMark(hit)) {
-      const mousedragEvent = createMarkEvent('drag', {
+      const mousedragEvent = createMarkEvent('mousedrag', {
         screenCoordinates,
         localCoordinates,
         dragType
@@ -80,7 +80,7 @@ export default class MousedragHandler extends MarkInteractionHandler {
     }
 
     if (hitIsInLayer(hit)) {
-      const mousedragEvent = createLayerEvent('drag', {
+      const mousedragEvent = createLayerEvent('mousedrag', {
         screenCoordinates,
         localCoordinates,
         dragType

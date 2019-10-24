@@ -70,7 +70,7 @@ export default class TouchdragHandler extends MarkInteractionHandler {
     const localCoordinates = getLocalCoordinates(screenCoordinates, this.interactionManager())
 
     if (hitIsMark(hit)) {
-      const touchdragEvent = createMarkEvent('drag', {
+      const touchdragEvent = createMarkEvent('touchdrag', {
         screenCoordinates,
         localCoordinates,
         dragType
@@ -80,7 +80,7 @@ export default class TouchdragHandler extends MarkInteractionHandler {
     }
 
     if (hitIsInLayer(hit)) {
-      const touchdragEvent = createLayerEvent('drag', {
+      const touchdragEvent = createLayerEvent('touchdrag', {
         screenCoordinates,
         localCoordinates,
         dragType
