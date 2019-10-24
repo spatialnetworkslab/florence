@@ -51,8 +51,8 @@
       radius={17}
       {onMouseover}
       {onMouseout}
-      onTouchover={onMouseover}
-      onTouchout={onMouseout}
+      onTouchdown={onMouseover}
+      onTouchup={onMouseout}
     />
 
   </Section>
