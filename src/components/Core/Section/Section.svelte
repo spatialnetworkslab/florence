@@ -52,6 +52,8 @@
   export let onTouchdown = undefined
   export let onTouchmove = undefined
   export let onTouchup = undefined
+  export let onTouchover = undefined
+  export let onTouchout = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -107,7 +109,8 @@
   // Change callbacks if necessary
   $: {
     removeSectionInteractionsIfNecessary(
-      onWheel, onClick, onMousedown, onMouseup, onMouseover, onMouseout
+      onWheel, onClick, onMousedown, onMouseup, onMouseover, onMouseout,
+      onTouchdown, onTouchmove, onTouchup, onTouchover, onTouchout
     )
   }
 
@@ -142,6 +145,8 @@
       if (onTouchdown) sectionInterface.addInteraction('touchdown', onTouchdown)
       if (onTouchmove) sectionInterface.addInteraction('touchmove', onTouchmove)
       if (onTouchup) sectionInterface.addInteraction('touchup', onTouchup)
+      if (onTouchover) sectionInterface.addInteraction('touchover', onTouchover)
+      if (onTouchout) sectionInterface.addInteraction('touchout', onTouchout)
     }
   }
 

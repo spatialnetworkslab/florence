@@ -40,12 +40,12 @@ export default class TouchoverHandler extends SectionInteractionHandler {
       if (!this._fingerCurrentlyOverSection) {
         const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
 
-        const mousedownEvent = createSectionEvent('touchover', {
+        const touchoverEvent = createSectionEvent('touchover', {
           screenCoordinates,
           localCoordinates
         }, nativeEvent)
 
-        this._callback(mousedownEvent)
+        this._callback(touchoverEvent)
         this._fingerCurrentlyOverSection = true
       }
     } else {

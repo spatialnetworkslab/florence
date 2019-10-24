@@ -32,11 +32,17 @@
     console.log(key)
     hoverKey = undefined
   }
+
+  const log = console.log
 </script>
 
 <Graphic width={500} height={500}>
 
-  <Section {scaleX} {scaleY} padding={20}>
+  <Section 
+    {scaleX} {scaleY} padding={20}
+    onTouchover={log}
+    onTouchout={log}
+  >
   
     <PointLayer
       x={data.column('a')}
