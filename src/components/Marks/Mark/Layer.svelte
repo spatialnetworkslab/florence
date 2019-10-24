@@ -72,6 +72,8 @@
   // Touch interactions
   export let onTouchdown = undefined
   export let onTouchup = undefined
+  export let onTouchover = undefined
+  export let onTouchout = undefined
   export let onTouchdrag = undefined
 
   // Select interactions
@@ -291,6 +293,7 @@
 
   $: isInteractiveTouch = detectIt.hasTouch && (
     onTouchdown !== undefined || onTouchup !== undefined ||
+    onTouchover !== undefined || onTouchout !== undefined ||
     onTouchdrag !== undefined
   )
 
@@ -381,6 +384,8 @@
 
         if (onTouchdown) markInterface.addLayerInteraction('touchdown', layerId, onTouchdown)
         if (onTouchup) markInterface.addLayerInteraction('touchup', layerId, onTouchup)
+        if (onTouchover) markInterface.addLayerInteraction('touchover', layerId, onTouchover)
+        if (onTouchout) markInterface.addLayerInteraction('touchout', layerId, onTouchout)
         if (onTouchdrag) markInterface.addLayerInteraction('touchdrag', layerId, onTouchdrag)
       }
     }

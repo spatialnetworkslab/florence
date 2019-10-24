@@ -38,23 +38,15 @@
 
   <Section {scaleX} {scaleY} padding={20}>
   
-    <!-- <PointLayer
+    <PointLayer
       x={data.column('a')}
       y={data.column('b')}
       fill={key => key === hoverKey ? 'red' : 'black'}
       radius={17}
       {onMouseover}
       {onMouseout}
-      onTouchdown={onMouseover}
-      onTouchup={onMouseout}
-    /> -->
-    <PointLayer
-      x={data.column('a')}
-      y={data.column('b')}
-      fill={key => key === hoverKey ? 'red' : 'black'}
-      radius={17}
-      onTouchdown={onMouseover}
-      onTouchup={onMouseout}
+      onTouchover={onMouseover}
+      onTouchout={onMouseout}
     />
 
   </Section>
