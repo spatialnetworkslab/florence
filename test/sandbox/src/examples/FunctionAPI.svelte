@@ -45,16 +45,16 @@
       radius={17}
       {onMouseover}
       {onMouseout}
-      onTouchstart={onMouseover}
-      onTouchend={onMouseout}
+      onTouchdown={onMouseover}
+      onTouchup={onMouseout}
     /> -->
     <PointLayer
       x={data.column('a')}
       y={data.column('b')}
       fill={key => key === hoverKey ? 'red' : 'black'}
       radius={17}
-      onTouchstart={onMouseover}
-      onTouchend={onMouseout}
+      onTouchdown={onMouseover}
+      onTouchup={onMouseout}
     />
 
   </Section>

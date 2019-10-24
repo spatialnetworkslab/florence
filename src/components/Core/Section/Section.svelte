@@ -49,9 +49,9 @@
   export let onMousemove = undefined
   
   // Touch interactions
-  export let onTouchstart = undefined
+  export let onTouchdown = undefined
   export let onTouchmove = undefined
-  export let onTouchend = undefined
+  export let onTouchup = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -139,9 +139,9 @@
       const sectionInterface = $interactionManagerContext.touch().section()
       sectionInterface.removeAllInteractions()
 
-      if (onTouchstart) sectionInterface.addInteraction('touchstart', onTouchstart)
+      if (onTouchdown) sectionInterface.addInteraction('touchdown', onTouchdown)
       if (onTouchmove) sectionInterface.addInteraction('touchmove', onTouchmove)
-      if (onTouchend) sectionInterface.addInteraction('touchend', onTouchend)
+      if (onTouchup) sectionInterface.addInteraction('touchup', onTouchup)
     }
   }
 

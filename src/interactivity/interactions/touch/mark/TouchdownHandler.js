@@ -4,10 +4,10 @@ import { createMarkEvent, createLayerEvent } from '../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../utils/getLocalCoordinates.js'
 import { hitIsMark, hitIsInLayer } from '../../utils/hitUtils.js'
 
-export default class TouchstartHandler extends MarkInteractionHandler {
+export default class TouchdownHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager, {
-      interactionName: 'touchstart',
+      interactionName: 'touchdown',
       eventName: 'touchstart'
     })
   }
@@ -21,21 +21,21 @@ export default class TouchstartHandler extends MarkInteractionHandler {
       const hit = hits[i]
 
       if (hitIsMark(hit)) {
-        const touchstartEvent = createMarkEvent('touchstart', {
+        const touchdownEvent = createMarkEvent('touchdown', {
           screenCoordinates,
           localCoordinates
         }, hit, nativeEvent)
 
-        this._markCallbacks[hit.markId](touchstartEvent)
+        this._markCallbacks[hit.markId](touchdownEvent)
       }
 
       if (hitIsInLayer(hit)) {
-        const touchstartEvent = createLayerEvent('touchstart', {
+        const touchdownEvent = createLayerEvent('touchdown', {
           screenCoordinates,
           localCoordinates
         }, hit, nativeEvent)
 
-        this._layerCallbacks[hit.layerId](touchstartEvent)
+        this._layerCallbacks[hit.layerId](touchdownEvent)
       }
     }
   }

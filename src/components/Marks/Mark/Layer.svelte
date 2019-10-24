@@ -70,8 +70,8 @@
   export let onMousedrag = undefined
 
   // Touch interactions
-  export let onTouchstart = undefined
-  export let onTouchend = undefined
+  export let onTouchdown = undefined
+  export let onTouchup = undefined
   export let onTouchdrag = undefined
 
   // Select interactions
@@ -290,7 +290,7 @@
   )
 
   $: isInteractiveTouch = detectIt.hasTouch && (
-    onTouchstart !== undefined || onTouchend !== undefined ||
+    onTouchdown !== undefined || onTouchup !== undefined ||
     onTouchdrag !== undefined
   )
 
@@ -379,8 +379,8 @@
 
         markInterface.loadLayer(type, createDataNecessaryForIndexing())
 
-        if (onTouchstart) markInterface.addLayerInteraction('touchstart', layerId, onTouchstart)
-        if (onTouchend) markInterface.addLayerInteraction('touchend', layerId, onTouchend)
+        if (onTouchdown) markInterface.addLayerInteraction('touchdown', layerId, onTouchdown)
+        if (onTouchup) markInterface.addLayerInteraction('touchup', layerId, onTouchup)
         if (onTouchdrag) markInterface.addLayerInteraction('touchdrag', layerId, onTouchdrag)
       }
     }

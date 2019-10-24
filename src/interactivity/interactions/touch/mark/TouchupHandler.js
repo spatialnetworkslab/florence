@@ -4,10 +4,10 @@ import { createMarkEvent, createLayerEvent } from '../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../utils/getLocalCoordinates.js'
 import { hitIsMark, hitIsInLayer } from '../../utils/hitUtils.js'
 
-export default class MouseupHandler extends MarkInteractionHandler {
+export default class TouchupHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager, {
-      interactionName: 'touchend',
+      interactionName: 'touchup',
       eventName: ['touchend', 'touchcancel']
     })
   }
@@ -21,21 +21,21 @@ export default class MouseupHandler extends MarkInteractionHandler {
       const hit = hits[i]
 
       if (hitIsMark(hit)) {
-        const touchendEvent = createMarkEvent('touchend', {
+        const touchupEvent = createMarkEvent('touchup', {
           screenCoordinates,
           localCoordinates
         }, hit, nativeEvent)
 
-        this._markCallbacks[hit.markId](touchendEvent)
+        this._markCallbacks[hit.markId](touchupEvent)
       }
 
       if (hitIsInLayer(hit)) {
-        const touchendEvent = createLayerEvent('touchend', {
+        const touchupEvent = createLayerEvent('touchup', {
           screenCoordinates,
           localCoordinates
         }, hit, nativeEvent)
 
-        this._layerCallbacks[hit.layerId](touchendEvent)
+        this._layerCallbacks[hit.layerId](touchupEvent)
       }
     }
   }
