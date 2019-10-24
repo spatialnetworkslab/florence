@@ -84,28 +84,29 @@ when independentAxis is 'Y'`)
 
   const arrayLengthsEqual = arrayLengths.every((val, idx, arr) => val === arr[0])
 
-  if (!arrayLengthsEqual) throw new Error('Arrays given must be of equal length')
+  if (!arrayLengthsEqual) { throw new Error('Arrays given must be of equal length') }
 
   return allowedProps
 }
 
-function augmentProps (positioningProps) {
-  let { x1, y1, x2, y2, independentAxis } = positioningProps
+function augmentProps (allowedProps) {
+  let { x1, y1, x2, y2, independentAxis } = allowedProps
+  independentAxis = independentAxis && independentAxis.toLowerCase()
 
   // x is independent
-  if (!independentAxis || independentAxis === 'X') {
+  if (!independentAxis || independentAxis === 'x') {
     // if y1 is not an array, broadcast its value
     if (!Array.isArray(y1)) { y1 = Array(x1.length).fill(y1) }
     if (y2 === undefined) { y2 = Array(x1.length).fill(0) }
     // if all 4 props are provided, x2 is ignored
-    return { coordinates: { x1: x1, y1: y1, y2: y2 }, independentAxis: 'X' }
-  } else if (independentAxis === 'Y') {
+    return { coordinates: { x1: x1, y1: y1, y2: y2 }, independentAxis: 'x' }
+  } else if (independentAxis === 'y') {
     // y is independent
     // if x1 is not an array, broadcast its value
     if (!Array.isArray(x1)) { x1 = Array(y1.length).fill(x1) }
     if (x2 === undefined) { x2 = Array(y1.length).fill(0) }
     // if all 4 props are provided, y2 is ignored
-    return { coordinates: { x1: x1, y1: y1, x2: x2 }, independentAxis: 'Y' }
+    return { coordinates: { x1: x1, y1: y1, x2: x2 }, independentAxis: 'y' }
   }
 }
 
