@@ -189,12 +189,13 @@
       if (typeof fillOpacity === "function") {
         scale = fillOpacity
       }
-
-      if (scale.hasOwnProperty('domain')) {
-        if (typeof scale.domain === "function") {
-          scaleDomain = scale.domain()
-        } else {
-          scaleDomain = scale.domain
+      if (scale) {
+        if (scale.hasOwnProperty('domain')) {
+          if (typeof scale.domain === "function") {
+            scaleDomain = scale.domain()
+          } else {
+            scaleDomain = scale.domain
+          }
         }
       } else {
         throw new Error(`Couldn't construct legend. Please provide at least 'fill' or 'fillOpacity'
@@ -264,7 +265,7 @@
     
         colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, addLabelSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords)
         if (!tickOpacities){
-          tickOpacities = fill
+          tickOpacities = 1
         }
       } 
     }    

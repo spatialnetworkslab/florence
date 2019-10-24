@@ -95,34 +95,29 @@ export function createTitleXCoord (hjust, xCoords, x, offset, addTitleSize, addL
   const x1 = xCoords.x1
   const x2 = xCoords.x2
   let justification
-  let addFontSize
 
   if (hjust === 'center' || hjust === 'centre') {
     justification = 0.5
-    addFontSize = 0
   }
   if (hjust === 'left') {
     justification = 0
-    addFontSize = addTitleSize + addLabelSize
   }
   if (hjust === 'right') {
     justification = 1
-    addFontSize = -addTitleSize - addLabelSize
   }
+
   if (!isNaN(hjust)) {
     justification = hjust
-    addFontSize = 0
   }
   if (justification === undefined) {
     justification = 0.5
-    addFontSize = 0
   }
 
   if (!['left', 'center', 'right'].includes(hjust) && isNaN(hjust)) {
     throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `hjust`')
   }
-  
-  return x1 + Math.abs(x1 - x2) * justification + addFontSize + padding + offset
+
+  return x1 + Math.abs(x1 - x2) * justification + padding + offset
 }
 
 export function createTitleYCoord (vjust, yCoords, y, offset, addTitleSize, addLabelSize, orient, padding) {

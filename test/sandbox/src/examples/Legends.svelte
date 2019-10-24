@@ -1,6 +1,6 @@
 <script>
   // d3
-  import { scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
+  import { scaleThreshold, scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
   import * as d3 from 'd3-scale-chromatic'
   import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
 
@@ -50,7 +50,7 @@
 
   // data
   const bins = [[0, 30], [30, 70], [70, 100], [100, 155], [55, 300]]
-  const bins2 = [[0, 10], [10, 40], [40, 200]]
+  const bins2 = [0, 10, 20, 40, 90, 120]
   const fruits = ['apple', 'banana', 'orange', 'pomelo']
 
   // fill scales
@@ -63,7 +63,7 @@
   // fill opacity scales
   const alphaScale = scaleLinear().domain(data.domain('a')).range([0, 1])
   const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
-  const binAlpha = scaleLinear().domain([0,4]).range([0, 1])
+  const binAlpha = scaleLinear().domain([0, 120]).range([0, 1])
 
   // Padding slider
 </script>
@@ -91,8 +91,7 @@
       {zoomIdentity}
     >
 
-     <!-- <GradientLegend
-      scale = {data.domain('a')}
+     <GradientLegend
       fill={linearColorScale}
       labelCount={3}
       orient={'horizontal'}
@@ -102,9 +101,9 @@
       hjust={'right'}
       usePadding={false}
     />
-
+  
     <GradientLegend
-      scale = {bins}
+      labels={bins2}
       fillOpacity= {binAlpha}
       fill={'green'}
       orient={'vertical'}
@@ -113,10 +112,11 @@
       hjust={'right'}
       title={'Test title 12345'}
       titleVjust={'center'}
-      titleHjust={'right'}
+      titleHjust={'left'}
       titleRotation={-90}
+      titlePaddingX={-15}
       usePadding={true}
-    /> -->
+    />
 
     <PointLayer
         x={filteredData.column('a')}
@@ -133,21 +133,21 @@
   <Section 
     x1={350} x2={600}
     y1={50} y2={700}
-    padding={20}
+    padding={40}
     scaleX={scaleLinear().domain(data.domain('a'))}
     scaleY={scaleLinear().domain(data.domain('b'))}
     {zoomIdentity}
   >
-    <DiscreteLegend
-      fill={'purple'}
-      fillOpacity={alphaScale}
-      labelCount={2}
+    <!-- <DiscreteLegend
+      fill={seqScale}
       strokeWidth={2}
+      labelCount={5}
       stroke={'white'}
-      orient={'horizontal'}
+      orient={'vertical'}
       labelAnchorPoint={'r'}
       labelExtra
-      titleVjust={'top'}
+      titleVjust={'center'}
+      titleHjust={'left'}
       vjust={'top'}
       hjust={'right'}
       labelPaddingX={-3}
@@ -163,8 +163,8 @@
       labelExtra
       vjust={'centre'}
       hjust={'right'}
-      usePadding={true}
-    />
+      usePadding={false}
+    /> -->
 
     <PointLayer
         x={filteredData.column('a')}

@@ -53,12 +53,11 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
   return tickValues
 }
 
-export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates, flip, orient, padding) {
+export function getTickPositions (tickValuesArray, domain, tickExtra, coordinates, flip, orient, padding, useScale) {
   let tickPositions
 
   // Bins
-  if (Array.isArray(scale[0]) && scale.length > 0) {
-    const domain = [Math.min(...tickValuesArray), Math.max(...tickValuesArray)]
+  if (useScale) {
     let posScale
     const locRange = orient === 'vertical' ? [coordinates.y1, coordinates.y2] : [coordinates.x1, coordinates.x2]
 
@@ -74,7 +73,7 @@ export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates
 
   // Arrays
   // equal interval: works on both vertical and horizontal orientations
-  } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
+  } else if (Array.isArray(domain)) {
     const interval = orient === 'vertical' ? coordinates.height / (tickValuesArray.length) : coordinates.width / (tickValuesArray.length)
     const firstVal = orient === 'vertical' ? coordinates.y1 : coordinates.x1
     tickValuesArray = flip ? tickValuesArray.reverse() : tickValuesArray
@@ -82,14 +81,16 @@ export function getTickPositions (tickValuesArray, scale, tickExtra, coordinates
     tickPositions = tickValuesArray.map((value, i) => {
       return firstVal + interval * (i + 0.5) + padding
     })
+
   } else {
     throw new Error(`Couldn't construct legend. Please provide 'tickValues' or a scale with
         either a 'ticks' or a 'domain' method.`)
   }
 
-  if (tickExtra && 'domain' in scale && tickPositions[0] !== scale.domain()[0]) {
-    tickPositions.unshift(scale.domain()[0])
+  if (tickExtra && tickPositions[0] !== domain[0] && useScale) {
+    tickPositions.unshift(domain[0])
   }
+
   return tickPositions
 }
 
@@ -222,7 +223,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
   return { colorXStartCoords, colorXEndCoords, colorYStartCoords, colorYEndCoords }
 }
 
-export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize) {
+export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize, labels) {
   let offsets
   let gradX
   let gradY
@@ -230,7 +231,7 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
   let x2
   let y1
   let y2
-
+  
   if (orient === 'vertical') {
     gradX = { x1: '0%', x2: '0%' }
     gradY = flip ? { y1: '100%', y2: '0%' } : { y1: '0%', y2: '100%' }
@@ -265,24 +266,25 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
 
   // Gradient bar color offset assignment
   // Bins
-  if (Array.isArray(scale[0]) && scale.length > 0) {
+  if (labels) {
     let posScale
     if (!flip) {
-      posScale = scaleLinear().domain([0, scale.length]).range([0, 1])
+      posScale = scaleLinear().domain(scale.domain()).range([0, 1])
     } else {
-      posScale = scaleLinear().domain([0, scale.length]).range([1, 0])
+      posScale = scaleLinear().domain(scale.domain()).range([1, 0])
     }
-    offsets = scale.map((value, i) => {
+
+    offsets = labels.map((value, i) => {
       if (!flip) {
-        return posScale(i)
+        return posScale(value)
       } else {
-        return 1 - posScale(i)
+        return 1 - posScale(value)
       }
     })
 
   // Array or scale
   // Fix
-  } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
+  } else if (labels === undefined) {
     const interval = 1 / tickMappable.length
 
     offsets = tickMappable.map((value, i) => {
