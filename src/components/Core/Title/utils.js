@@ -18,14 +18,18 @@ export function isValid (x, y) {
   return false
 }
 
-export function createTitleXCoord (hjust, range, x, offset, fontSize, padding) {
+export function createTitleXCoord (hjust, range, x, offset, fontSize, padding, usePadding) {
   if (x) {
     return x
   }
 
   let x1 = range[0]
-  const x2 = range[1]
+  let x2 = range[1]
   const sectionWidth = Math.abs(x2 - x1)
+
+  // if (usePadding){
+  //   x1 = hjust = 'left'
+  // }
 
   let justification
   let addFontSize
@@ -65,13 +69,13 @@ export function createTitleXCoord (hjust, range, x, offset, fontSize, padding) {
   return x1 + sectionWidth * justification + offset + addFontSize
 }
 
-export function createTitleYCoord (vjust, range, y, offset, fontSize, padding) {
+export function createTitleYCoord (vjust, range, y, offset, fontSize, padding, usePadding) {
   if (y) {
     return y
   }
 
   let y1 = range[0]
-  const y2 = range[1]
+  let y2 = range[1]
   const sectionHeight = Math.abs(y2 - y1)
 
   let justification

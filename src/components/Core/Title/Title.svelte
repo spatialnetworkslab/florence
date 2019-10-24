@@ -77,10 +77,10 @@
     const yRange = $sectionContext.scaleY.range()
 
     if (sectionContext.flipX) xRange.reverse()
-    x = $sectionContext.scaleX.invert(createTitleXCoord(hjust, xRange, x, xOffset, titleFontSize, padding))
+    x = $sectionContext.scaleX.invert(createTitleXCoord(hjust, xRange, x, xOffset, titleFontSize, padding, usePadding))
 
     if (sectionContext.flipY) yRange.reverse()
-    y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize, padding))
+    y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize, padding, usePadding))
 
     if (subtitle.length > 0) {
       if (!isValid(subtitleX, subtitleY)) {
