@@ -91,7 +91,7 @@
       {zoomIdentity}
     >
 
-     <GradientLegend
+     <!-- <GradientLegend
       scale = {data.domain('a')}
       fill={linearColorScale}
       labelCount={3}
@@ -116,7 +116,7 @@
       titleHjust={'right'}
       titleRotation={-90}
       usePadding={true}
-    />
+    /> -->
 
     <PointLayer
         x={filteredData.column('a')}
@@ -139,7 +139,6 @@
     {zoomIdentity}
   >
     <DiscreteLegend
-      scale = {data.domain('a')}
       fill={'purple'}
       fillOpacity={alphaScale}
       labelCount={2}
@@ -156,7 +155,6 @@
     />
 
     <DiscreteLegend
-      scale = {fruits}
       fill={fruitScale}
       strokeWidth={2}
       stroke={'white'}

@@ -171,7 +171,6 @@
 
   // Title positioning wrt section/graphic context
   $: {
-    console.log(addLabelSize)
     if (title.length > 0) {
         if (!titleX && titleX !== 0) {
             const xRange = $sectionContext.scaleX.range()
@@ -191,7 +190,7 @@
   // that least one of `fill, opacity` has been specified
   $: {
       if (fill || fillOpacity){
-          // continue
+        // continue
       } else if (typeof scale === 'undefined'  && (fill === undefined && fillOpacity === undefined)) {
           throw new Error(`Couldn't construct legend. Please provide at least 'fill' or 'fillOpacity'
           with either an array, or a scale with a 'ticks' or a 'domain' method.`)
@@ -208,6 +207,8 @@
   }
 
   // TICK LABELS and POSITIONING
+  // Assumes that legend illustrates one dimensional scale, 
+  // and that either fill or fillOpacity can used (it will look at fill first)
   $: {
     tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
 
