@@ -9,6 +9,7 @@ export { default as Polygon } from './components/Marks/Polygon/Polygon.svelte'
 export { default as Line } from './components/Marks/Line/Line.svelte'
 export { default as Label } from './components/Marks/Label/Label.svelte'
 export { default as FuncLine } from './components/Marks/FuncLine/FuncLine.svelte'
+export { default as Area } from './components/Marks/Area/Area.svelte'
 
 export { default as Layer } from './components/Marks/Mark/Layer.svelte'
 export { default as PointLayer } from './components/Marks/Point/PointLayer.svelte'

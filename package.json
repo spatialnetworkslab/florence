@@ -21,6 +21,8 @@
     "cypress": "^3.4.1",
     "d3-format": "^1.4.1",
     "d3-scale-chromatic": "^1.5.0",
+    "d3-dsv": "^1.1.1",
+    "d3-fetch": "^1.1.2",
     "eslint": "^6.2.2",
     "eslint-config-standard": "^14.0.1",
     "eslint-plugin-import": "^2.18.2",
