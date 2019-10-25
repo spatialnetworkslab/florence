@@ -99,7 +99,6 @@
         orient={'horizontal'}
         titleVjust={'top'}
         labelCount={4}
-        usePadding={true}
       />
     
       <GradientLegend

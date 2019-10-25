@@ -2,7 +2,7 @@
   import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from "../../../"
   import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from "./createLegendCoordinates.js"
   import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
-
+  import { removePadding } from '../../Core/utils/padding.js'
 
   // Contexts
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
@@ -100,6 +100,12 @@
   let tickOpacities
   let tickAlign
 
+  let _padding
+  let rangeCoordsX
+  let rangeCoordsY
+  let xRange = $sectionContext.scaleX.range()
+  let yRange = $sectionContext.scaleY.range()
+
   let colorXStartCoords
   let colorXEndCoords
   let colorYStartCoords 
@@ -113,14 +119,12 @@
   let yCoords
   let addTitleSize
   let addLabelSize
-  let parentPadding
-  let rangeCoordsX
-  let rangeCoordsY
   
-   $: {
-    usePadding = usePadding
+  $: {
     if (usePadding === true) {
-      parentPadding = $sectionContext.padding
+      _padding = $sectionContext.padding
+      xRange = removePadding(xRange, _padding.left, _padding.right)
+      yRange = removePadding(yRange, _padding.top, _padding.bottom)
     }
   }
   
@@ -134,12 +138,8 @@
     addTitleSize = title.length > 0 ? titleFontSize * 1.5 : 0
 
     if (!isValid(x1, x2, y1, y2) && ['horizontal', 'vertical'].includes(orient)) {
-      // In pixels
-      const xRange = $sectionContext.scaleX.range()
-      const yRange = $sectionContext.scaleY.range()
-
       if (sectionContext.flipX) xRange.reverse()
-      rangeCoordsX = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip, parentPadding)
+      rangeCoordsX = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip)
       
       // convert back to section scale
       x1 = $sectionContext.scaleX.invert(rangeCoordsX.x1)
@@ -150,7 +150,7 @@
 
       // In pixels
       if (sectionContext.flipY) yRange.reverse()
-      rangeCoordsY = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flip, parentPadding)
+      rangeCoordsY = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flip)
       
       // convert back to section scale
       y1 = $sectionContext.scaleY.invert(rangeCoordsY.y1)
