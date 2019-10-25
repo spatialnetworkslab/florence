@@ -8,6 +8,7 @@
 <script>
   import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from "../../../"
   import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from "./createLegendCoordinates.js"
+  import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
 
   // Contexts
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
@@ -122,8 +123,8 @@
   let addTitleSize
   let addLabelSize
   let parentPadding
-  let rangeXCoords
-  let rangeYCoords
+  let rangeCoordsX
+  let rangeCoordsY
   
    $: {
     usePadding = usePadding
@@ -133,59 +134,69 @@
   }
   
   // Section positioning wrt section/graphic context
-  // Uses pixel values
+  // Uses pixel values initially, then converts to scale domain coordinates
   $: {
     if (!['horizontal', 'vertical'].includes(orient)) {
       throw Error('Invalid input for `orient` property. Please provide either `horizontal` or `vertical` as inputs.')
     }
 
     if (!isValid(x1, x2, y1, y2) && ['horizontal', 'vertical'].includes(orient)) {
+      // In pixels
       const xRange = $sectionContext.scaleX.range()
       const yRange = $sectionContext.scaleY.range()
 
       if (sectionContext.flipX) xRange.reverse()
-      rangeXCoords = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip, parentPadding)
-      x1 = $sectionContext.scaleX.invert(rangeXCoords.x1)
-      x2 = $sectionContext.scaleX.invert(rangeXCoords.x2)
+      rangeCoordsX = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip, parentPadding)
+      
+      // convert back to section scale
+      x1 = $sectionContext.scaleX.invert(rangeCoordsX.x1)
+      x2 = $sectionContext.scaleX.invert(rangeCoordsX.x2)
 
       width = Math.abs(x2 - x1)
       xCoords = { x1, x2, width }
-    
+
+      // In pixels
       if (sectionContext.flipY) yRange.reverse()
-      addTitleSize = title.length > 0 ? titleFontSize * 1.5 : 0
-      rangeYCoords = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flip, parentPadding)
+      rangeCoordsY = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flip, parentPadding)
       
-      y1 = $sectionContext.scaleY.invert(rangeYCoords.y1)
-      y2 = $sectionContext.scaleY.invert(rangeYCoords.y2)
+      // convert back to section scale
+      y1 = $sectionContext.scaleY.invert(rangeCoordsY.y1)
+      y2 = $sectionContext.scaleY.invert(rangeCoordsY.y2)
       height = Math.abs(y2 - y1)
       yCoords = { y1, y2, height }
-
+      
+      // In pixels
+      addLabelSize = orient === 'vertical' ? labelFontSize / rangeCoordsX.width * width : labelFontSize / rangeCoordsY.height * height
     } else { 
+      // In section scale coordinates
       xCoords = { x1, x2, width: Math.abs(x2 - x1) }
       yCoords = { y1, y2, height: Math.abs(y2 - y1) }
+
+      const pixelWidth = Math.abs($sectionContext.scaleX(x2) - $sectionContext.scaleX(x1))
+      const pixelHeight = Math.abs($sectionContext.scaleY(y2) - $sectionContext.scaleY(y1))
+      
+      // In pixels
+      addLabelSize = orient === 'vertical' ? labelFontSize / pixelWidth * xCoords.width : labelFontSize / pixelHeight * yCoords.height
     }
 
-    if (orient === 'vertical') {
-      addLabelSize = labelFontSize / rangeXCoords.width * width
-    } else {
-      addLabelSize = labelFontSize / rangeYCoords.height * height
-    }
+    addTitleSize = title.length > 0 ? titleFontSize * 1.5 : 0
   }
 
   // Title positioning wrt section/graphic context
   $: {
     if (title.length > 0) {
-        if (!titleX && titleX !== 0) {
-            const xRange = $sectionContext.scaleX.range()
-            if (sectionContext.flipX) xRange.reverse()
-            titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, addTitleSize, addLabelSize, orient, titlePaddingX)
-        }
+      if (!titleX && titleX !== 0) {
+          const xRange = $sectionContext.scaleX.range()
+          if (sectionContext.flipX) xRange.reverse()
+          titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, addTitleSize, addLabelSize, orient, titlePaddingX)
+      }
 
-        if (!titleY && titleY !== 0) {
-            const yDomain = $sectionContext.scaleY.range()
-            if (sectionContext.flipY) yDomain.reverse()
-            titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, addLabelSize, orient, titlePaddingY)
-        }
+      if (!titleY && titleY !== 0) {
+          const yDomain = $sectionContext.scaleY.range()
+          if (sectionContext.flipY) yDomain.reverse()
+          console.log(addTitleSize)
+          titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, addLabelSize, orient, titlePaddingY)
+      }
     }
   }
 

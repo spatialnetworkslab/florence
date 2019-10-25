@@ -93,16 +93,16 @@
     >
 
       <GradientLegend
+        x1={70} x2={100}
+        y1={10} y2={30}
         fill={linearColorScale}
         orient={'horizontal'}
         titleVjust={'top'}
         labelCount={4}
-        vjust={'top'}
-        hjust={'right'}
         usePadding={true}
       />
     
-      <GradientLegend
+      <!-- <GradientLegend
         labels={bins2}
         fillOpacity= {binAlpha}
         fill={'purple'}
@@ -116,7 +116,7 @@
         titleRotation={-90}
         titlePaddingX={-15}
         usePadding={false}
-      />
+      /> -->
 
       <PointLayer
           x={filteredData.column('a')}
