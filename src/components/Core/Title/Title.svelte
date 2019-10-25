@@ -62,11 +62,11 @@
   const zoomContext = ZoomContext.subscribe()
 
   // Consider Graphic/Section padding
-  let padding
+  let parentPadding
 
   $: {
     if (usePadding === true) {
-      padding = $sectionContext.padding
+      parentPadding = $sectionContext.padding
     }
   }
 
@@ -77,17 +77,18 @@
     const yRange = $sectionContext.scaleY.range()
 
     if (sectionContext.flipX) xRange.reverse()
-    x = $sectionContext.scaleX.invert(createTitleXCoord(hjust, xRange, x, xOffset, titleFontSize, padding, usePadding))
+    x = $sectionContext.scaleX.invert(createTitleXCoord(hjust, xRange, x, xOffset, titleFontSize, sectionContext.flipX, parentPadding))
 
     if (sectionContext.flipY) yRange.reverse()
-    y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize, padding, usePadding))
+    y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize, sectionContext.flipY, parentPadding))
 
     if (subtitle.length > 0) {
       if (!isValid(subtitleX, subtitleY)) {
         const yRange = $sectionContext.scaleY.range()
         subtitleX = x
         const adjustSubtitle = $sectionContext.scaleY.invert(titleFontSize + yRange[0])
-        subtitleY = y + adjustSubtitle
+        subtitleY = y + adjustSubtitle * 0.5
+        y = y - adjustSubtitle * 0.5
       }
     }
   }

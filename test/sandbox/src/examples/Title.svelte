@@ -14,7 +14,7 @@
   let vjust = 'top'
   let hjust = 'center'
   let graphicPadding = 10
-  let sectionPadding = 30
+  let sectionPadding = 40
   let gUsePadding = true
   let sUsePadding = true
 </script>
@@ -24,7 +24,7 @@
  <Section 
     x1={50} x2={450}
     y1={50} y2={450}
-    padding={sectionPadding}
+    padding={30}
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
     {zoomIdentity}
@@ -34,12 +34,10 @@
     <Title 
       title={'Lorem ipsum dolor sit amet, consectetur adipiscing'} 
       subtitle={'elit, sed do eiusmod tempor incididunt'}
-      {vjust}
-      {hjust}
       subtitleFontFamily={'Garamond'}
       subtitleStroke={'green'}
       subtitleStrokeWidth={2}
-      usePadding={false}
+      usePadding={true}
       />
 
     <XAxis zoomIdentity={{ y: 0, ky: 1 }} />

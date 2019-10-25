@@ -18,7 +18,7 @@ export function isValid (x, y) {
   return false
 }
 
-export function createTitleXCoord (hjust, range, x, offset, fontSize, padding, usePadding) {
+export function createTitleXCoord (hjust, range, x, offset, fontSize, flip, parentPadding) {
   if (x) {
     return x
   }
@@ -27,9 +27,10 @@ export function createTitleXCoord (hjust, range, x, offset, fontSize, padding, u
   let x2 = range[1]
   const sectionWidth = Math.abs(x2 - x1)
 
-  // if (usePadding){
-  //   x1 = hjust = 'left'
-  // }
+  if (parentPadding !== undefined) {
+    x1 = !flip ? x1 - parentPadding.left : x1 - parentPadding.right
+    x2 = !flip ? x2 + parentPadding.right : x1 + parentPadding.left
+  }
 
   let justification
   let addFontSize
@@ -42,34 +43,30 @@ export function createTitleXCoord (hjust, range, x, offset, fontSize, padding, u
   if (hjust === 'left') {
     justification = 0
     addFontSize = fontSize
-    x1 = padding !== undefined ? x1 - padding.left / 1.5 : x1
   }
 
   if (hjust === 'right') {
     justification = 1
     addFontSize = -fontSize
-    x1 = padding !== undefined ? x1 + padding.right / 1.5 : x1
   }
 
   if (!isNaN(hjust)) {
     justification = hjust
-    x1 = padding !== undefined ? x1 - padding.left / 1.5 : x1
   }
 
   if (justification === undefined) {
     justification = 0.5
     addFontSize = 0
-    x1 = padding !== undefined ? x1 - padding.left / 1.5 : x1
   }
 
   if (!['left', 'center', 'right'].includes(hjust) && isNaN(hjust)) {
     throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `hjust`')
   }
-
-  return x1 + sectionWidth * justification + offset + addFontSize
+  console.log(x1, x1 + sectionWidth * justification + offset)
+  return x1 + sectionWidth * justification + offset //+ addFontSize
 }
 
-export function createTitleYCoord (vjust, range, y, offset, fontSize, padding, usePadding) {
+export function createTitleYCoord (vjust, range, y, offset, fontSize, flip, parentPadding) {
   if (y) {
     return y
   }
@@ -77,6 +74,11 @@ export function createTitleYCoord (vjust, range, y, offset, fontSize, padding, u
   let y1 = range[0]
   let y2 = range[1]
   const sectionHeight = Math.abs(y2 - y1)
+
+  if (parentPadding !== undefined) {
+    y1 = !flip ? y1 - parentPadding.top : y1 - parentPadding.bottom
+    y2 = !flip ? y2 + parentPadding.bottom : y2 + parentPadding.top
+  }
 
   let justification
   let addFontSize
@@ -89,30 +91,30 @@ export function createTitleYCoord (vjust, range, y, offset, fontSize, padding, u
   if (vjust === 'bottom') {
     justification = 1 - (fontSize / sectionHeight)
     addFontSize = fontSize
-    y1 = padding !== undefined ? y1 + padding.bottom : y1
+    // y1 = padding !== undefined ? y1 + padding.bottom : y1
   }
 
   if (vjust === 'top') {
-    justification = 0.01
+    justification = 0.05
     addFontSize = -fontSize
-    y1 = padding !== undefined ? y1 - padding.top - fontSize : y1 - fontSize
+    // y1 = padding !== undefined ? y1 - padding.top - fontSize : y1 - fontSize
   }
 
   if (!isNaN(vjust)) {
     justification = vjust
     addFontSize = 0
-    y1 = padding !== undefined ? y1 + padding.bottom : y1
+    // y1 = padding !== undefined ? y1 + padding.bottom : y1
   }
 
   if (justification === undefined) {
     justification = 0.5
     addFontSize = 0
-    y1 = padding !== undefined ? y1 - padding.top : y1
+    // y1 = padding !== undefined ? y1 - padding.top : y1
   }
 
   if (!['center', 'bottom', 'top'].includes(vjust) && isNaN(vjust)) {
     throw Error('Please specify either `top`, `center`, `bottom` or a number for `vjust`')
   }
-
-  return y1 + sectionHeight * justification + offset - addFontSize
+  console.log(y1, y1 + sectionHeight * justification + offset - addFontSize)
+  return y1 + sectionHeight * justification + offset // - addFontSize
 }
