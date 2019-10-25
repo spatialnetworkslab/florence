@@ -1,8 +1,10 @@
 <script>
   import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
   import { isValid, createTitleXCoord, createTitleYCoord } from "./utils.js"
-
-    // Contexts
+  import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
+  import { parsePadding, removePadding } from '../utils/padding.js'
+  
+  // Contexts
   import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from '../Section/SectionContext'
   import * as ZoomContext from '../../Core/Section/ZoomContext'
@@ -61,34 +63,34 @@
   const graphicContext = GraphicContext.subscribe()
   const zoomContext = ZoomContext.subscribe()
 
-  // Consider Graphic/Section padding
-  let parentPadding
+  // Private variables
+  let _padding
+  let xRange = $sectionContext.scaleX.range()
+  let yRange = $sectionContext.scaleY.range()
 
   $: {
     if (usePadding === true) {
-      parentPadding = $sectionContext.padding
+      _padding = $sectionContext.padding
+      xRange = removePadding(xRange, _padding.left, _padding.right)
+      yRange = removePadding(yRange, _padding.top, _padding.bottom)
     }
   }
 
   // Title text positioning wrt section/graphic context
   $: {
-
-    const xRange = $sectionContext.scaleX.range()
-    const yRange = $sectionContext.scaleY.range()
-
     if (sectionContext.flipX) xRange.reverse()
-    x = $sectionContext.scaleX.invert(createTitleXCoord(hjust, xRange, x, xOffset, titleFontSize, sectionContext.flipX, parentPadding))
+    x = $sectionContext.scaleX.invert(createTitleXCoord(hjust, xRange, x, xOffset, titleFontSize, sectionContext.flipX, _padding))
 
     if (sectionContext.flipY) yRange.reverse()
-    y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize, sectionContext.flipY, parentPadding))
+    y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize, sectionContext.flipY, _padding))
 
     if (subtitle.length > 0) {
       if (!isValid(subtitleX, subtitleY)) {
         const yRange = $sectionContext.scaleY.range()
         subtitleX = x
         const adjustSubtitle = $sectionContext.scaleY.invert(titleFontSize + yRange[0])
-        subtitleY = y + adjustSubtitle * 0.5
-        y = y - adjustSubtitle * 0.5
+        subtitleY = y
+        y = y - adjustSubtitle
       }
     }
   }

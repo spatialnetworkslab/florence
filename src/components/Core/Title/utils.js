@@ -18,19 +18,14 @@ export function isValid (x, y) {
   return false
 }
 
-export function createTitleXCoord (hjust, range, x, offset, fontSize, flip, parentPadding) {
+export function createTitleXCoord (hjust, range, x, offset, fontSize, flip) {
   if (x) {
     return x
   }
 
-  let x1 = range[0]
-  let x2 = range[1]
+  const x1 = range[0]
+  const x2 = range[1]
   const sectionWidth = Math.abs(x2 - x1)
-
-  if (parentPadding !== undefined) {
-    x1 = !flip ? x1 - parentPadding.left : x1 - parentPadding.right
-    x2 = !flip ? x2 + parentPadding.right : x1 + parentPadding.left
-  }
 
   let justification
   let addFontSize
@@ -62,23 +57,18 @@ export function createTitleXCoord (hjust, range, x, offset, fontSize, flip, pare
   if (!['left', 'center', 'right'].includes(hjust) && isNaN(hjust)) {
     throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `hjust`')
   }
-  console.log(x1, x1 + sectionWidth * justification + offset)
-  return x1 + sectionWidth * justification + offset //+ addFontSize
+
+  return x1 + sectionWidth * justification + offset
 }
 
-export function createTitleYCoord (vjust, range, y, offset, fontSize, flip, parentPadding) {
+export function createTitleYCoord (vjust, range, y, offset, fontSize, flip) {
   if (y) {
     return y
   }
 
-  let y1 = range[0]
-  let y2 = range[1]
+  const y1 = range[0]
+  const y2 = range[1]
   const sectionHeight = Math.abs(y2 - y1)
-
-  if (parentPadding !== undefined) {
-    y1 = !flip ? y1 - parentPadding.top : y1 - parentPadding.bottom
-    y2 = !flip ? y2 + parentPadding.bottom : y2 + parentPadding.top
-  }
 
   let justification
   let addFontSize
@@ -91,30 +81,26 @@ export function createTitleYCoord (vjust, range, y, offset, fontSize, flip, pare
   if (vjust === 'bottom') {
     justification = 1 - (fontSize / sectionHeight)
     addFontSize = fontSize
-    // y1 = padding !== undefined ? y1 + padding.bottom : y1
   }
 
   if (vjust === 'top') {
     justification = 0.05
     addFontSize = -fontSize
-    // y1 = padding !== undefined ? y1 - padding.top - fontSize : y1 - fontSize
   }
 
   if (!isNaN(vjust)) {
     justification = vjust
     addFontSize = 0
-    // y1 = padding !== undefined ? y1 + padding.bottom : y1
   }
 
   if (justification === undefined) {
     justification = 0.5
     addFontSize = 0
-    // y1 = padding !== undefined ? y1 - padding.top : y1
   }
 
   if (!['center', 'bottom', 'top'].includes(vjust) && isNaN(vjust)) {
     throw Error('Please specify either `top`, `center`, `bottom` or a number for `vjust`')
   }
-  console.log(y1, y1 + sectionHeight * justification + offset - addFontSize)
-  return y1 + sectionHeight * justification + offset // - addFontSize
+
+  return y1 + sectionHeight * justification + offset
 }
