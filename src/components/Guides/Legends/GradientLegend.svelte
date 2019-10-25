@@ -140,6 +140,8 @@
       throw Error('Invalid input for `orient` property. Please provide either `horizontal` or `vertical` as inputs.')
     }
 
+    addTitleSize = title.length > 0 ? titleFontSize * 1.5 : 0
+
     if (!isValid(x1, x2, y1, y2) && ['horizontal', 'vertical'].includes(orient)) {
       // In pixels
       const xRange = $sectionContext.scaleX.range()
@@ -171,15 +173,15 @@
       // In section scale coordinates
       xCoords = { x1, x2, width: Math.abs(x2 - x1) }
       yCoords = { y1, y2, height: Math.abs(y2 - y1) }
-
-      const pixelWidth = Math.abs($sectionContext.scaleX(x2) - $sectionContext.scaleX(x1))
-      const pixelHeight = Math.abs($sectionContext.scaleY(y2) - $sectionContext.scaleY(y1))
+     
+      // In pixels
+      let scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+      const pixelWidth = Math.abs(scaledCoordinates.x2 - scaledCoordinates.x2)
+      const pixelHeight = Math.abs(scaledCoordinates.y2 - scaledCoordinates.y1)
       
       // In pixels
       addLabelSize = orient === 'vertical' ? labelFontSize / pixelWidth * xCoords.width : labelFontSize / pixelHeight * yCoords.height
     }
-
-    addTitleSize = title.length > 0 ? titleFontSize * 1.5 : 0
   }
 
   // Title positioning wrt section/graphic context
@@ -194,7 +196,6 @@
       if (!titleY && titleY !== 0) {
           const yDomain = $sectionContext.scaleY.range()
           if (sectionContext.flipY) yDomain.reverse()
-          console.log(addTitleSize)
           titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, addLabelSize, orient, titlePaddingY)
       }
     }

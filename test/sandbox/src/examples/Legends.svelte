@@ -102,7 +102,7 @@
         usePadding={true}
       />
     
-      <!-- <GradientLegend
+      <GradientLegend
         labels={bins2}
         fillOpacity= {binAlpha}
         fill={'purple'}
@@ -116,7 +116,7 @@
         titleRotation={-90}
         titlePaddingX={-15}
         usePadding={false}
-      /> -->
+      />
 
       <PointLayer
           x={filteredData.column('a')}
@@ -156,7 +156,6 @@
         labelCount={5}
         stroke={'white'}
         orient={'vertical'}
-        labelAnchorPoint={'r'}
         labelExtra
         titleVjust={'top'}
         titleHjust={'left'}
