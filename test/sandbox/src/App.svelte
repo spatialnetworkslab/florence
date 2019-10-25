@@ -21,6 +21,7 @@
   import SelectRectangle from './examples/SelectRectangle.svelte'
   import SelectPolygon from './examples/SelectPolygon.svelte'
   import AreaChart from './examples/AreaChart.svelte'
+  import StackedAreaChart from './examples/StackedAreaChart.svelte'
 
   // and add them to this component array
   let components = [
@@ -118,6 +119,11 @@
       name: 'Area chart',
       url: 'areachart',
       component: AreaChart
+    },
+    {
+      name: 'Stacked area chart',
+      url: 'stackedareachart',
+      component: StackedAreaChart
     }
   ]
 </script>
