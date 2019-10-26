@@ -129,10 +129,10 @@ function scaleCoordinates (augmentedProps, sectionContext) {
 
 function createScaledGeometry (scaledProps) {
   // polygon outer ring is defined counterclockwise
-
   const bottomPoints = scaledProps.y2.map((y2, i) => [scaledProps.x1[i], y2])
   const topPoints = scaledProps.y1.map((y1, i) => [scaledProps.x1[i], y1]).reverse()
-  const allPoints = [bottomPoints.concat(topPoints)]
+  const origin = [bottomPoints[0]]
+  const allPoints = [bottomPoints.concat(topPoints, origin)]
 
   const scaledGeometryArray = { type: 'Polygon', coordinates: allPoints }
   return scaledGeometryArray
