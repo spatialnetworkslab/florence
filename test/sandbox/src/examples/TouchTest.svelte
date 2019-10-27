@@ -11,11 +11,10 @@
   }
 </script>
 
-<Graphic width={500} height={500}>
-
-  <Label x={250} y={30} text="Section interactions:" />
-
+<Graphic width={500} height={1000}>
+  
   <Section 
+    y1={0} y2={500}
     padding={75} 
     scaleX={scaleLinear().domain([0, 1])} 
     scaleY={scaleLinear().domain([0, 1])}
@@ -27,6 +26,12 @@
     <Rectangle fill="green" />
 
     <Label x={0.5} y={0.5} {text} fill="white" />
+  </Section>
+
+  <Section
+
+  >
+  
   </Section>
 
 </Graphic>

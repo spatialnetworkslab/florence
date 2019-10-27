@@ -41,7 +41,9 @@ const EVENT_NAMES = ['touchstart', 'touchend', 'touchmove', 'touchcancel']
 const EXPOSED_EVENTS = EVENT_NAMES.map(eventName => ({
   eventName,
   nativeEventName: getNativeTouchEventName(eventName),
-  useWindow: eventName === 'touchmove'
+  // useWindow: eventName === 'touchmove'
+  useWindow: false,
+  preventDefault: true
 }))
 
 function getNativeTouchEventName (exposedEventName) {
