@@ -20,6 +20,7 @@
   import StackedBarChart from './examples/StackedBarChart.svelte'
   import SelectRectangle from './examples/SelectRectangle.svelte'
   import SelectPolygon from './examples/SelectPolygon.svelte'
+  import TouchTest from './examples/TouchTest.svelte'
 
   // and add them to this component array
   let components = [
@@ -112,6 +113,11 @@
       name: 'Select polygon',
       url: 'selectpolygon',
       component: SelectPolygon
+    },
+    {
+      name: 'Touch test',
+      url: 'touchtest',
+      component: TouchTest
     }
   ]
 </script>

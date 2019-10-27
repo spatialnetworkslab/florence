@@ -8,7 +8,7 @@ export default class TouchoutHandler extends SectionInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager, {
       interactionName: 'touchout',
-      eventName: ['touchstart', 'touchmove']
+      eventName: ['touchstart', 'touchmove', 'touchend']
     })
 
     this._fingerCurrentlyOverSection = false
@@ -21,6 +21,10 @@ export default class TouchoutHandler extends SectionInteractionHandler {
 
     if (nativeEvent.eventName === 'touchmove') {
       this._handleTouchmove(screenCoordinates, nativeEvent)
+    }
+
+    if (nativeEvent.eventName === 'touchend') {
+      this._handleTouchend()
     }
   }
 
@@ -53,5 +57,9 @@ export default class TouchoutHandler extends SectionInteractionHandler {
         this._fingerCurrentlyOverSection = false
       }
     }
+  }
+
+  _handleTouchend () {
+    this._fingerCurrentlyOverSection = false
   }
 }
