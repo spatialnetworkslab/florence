@@ -19,6 +19,7 @@
     "@snlab/florence-datacontainer": "^0.1.4",
     "babel-jest": "^24.9.0",
     "cypress": "^3.5.0",
+    "d3-array": "^2.3.3",
     "d3-format": "^1.4.1",
     "d3-dsv": "^1.1.1",
     "d3-fetch": "^1.1.2",
