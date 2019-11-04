@@ -1,7 +1,7 @@
 <script>
   import { scaleLinear, scaleUtc, scaleOrdinal } from 'd3-scale'
   import { schemeCategory10 } from 'd3-scale-chromatic'
-  import { Graphic, Section, Area, XAxis, YAxis } from '../../../../src'
+  import { Graphic, Section, Area, AreaLayer, XAxis, YAxis } from '../../../../src'
   import { autoType } from 'd3-dsv'
   import { csv } from 'd3-fetch'
   import DataContainer from '@snlab/florence-datacontainer'
@@ -75,6 +75,13 @@
           fill={scaleColor(c)}
         />
       {/each}
+      
+        <!-- <AreaLayer
+          x1={columnNames.map(c => rowCumSum.column('date'))}
+          y1={columnNames.map(c => rowCumSum.column(c).map(d => d[0]))}
+          y2={columnNames.map(c => rowCumSum.column(c).map(d => d[1]))}
+          fill={columnNames.map(c => scaleColor(c))}
+        /> -->
 
       <XAxis
         baseLine={false}

@@ -3,29 +3,28 @@ import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
 export default function (positioningProps, sectionContext, coordinateTransformationContext, interpolate) {
   // filter for allowed props; leave any undefined props in place
   const allowedProps =
-        (({
-          x1 = undefined,
-          y1 = undefined,
-          x2 = undefined,
-          y2 = undefined,
-          independentAxis = undefined
-        }) =>
-          ({ x1, y1, x2, y2, independentAxis }))(positioningProps)
+    (({
+      x1 = undefined,
+      y1 = undefined,
+      x2 = undefined,
+      y2 = undefined,
+      independentAxis = undefined
+    }) => ({ x1, y1, x2, y2, independentAxis }))(positioningProps)
 
   const coordSysGeometry =
-        createCoordSysGeometry(
-          createScaledGeometry(
-            scaleCoordinates(
-              augmentProps(
-                validateProps(allowedProps)),
-              sectionContext)),
-          coordinateTransformationContext,
-          interpolate)
+    createCoordSysGeometry(
+      createScaledGeometry(
+        scaleCoordinates(
+          augmentProps(
+            validateProps(allowedProps)),
+          sectionContext)),
+      coordinateTransformationContext,
+      interpolate)
 
   return coordSysGeometry
 }
 
-function validateProps (allowedProps) {
+export function validateProps (allowedProps) {
   // validate only defined coordinate props
   const definedProps = {}
   for (const [key, value] of Object.entries(allowedProps)) {
@@ -89,7 +88,7 @@ function validateProps (allowedProps) {
   return allowedProps
 }
 
-function augmentProps (allowedProps) {
+export function augmentProps (allowedProps) {
   let { x1, y1, x2, y2, independentAxis } = allowedProps
   independentAxis = independentAxis && independentAxis.toLowerCase()
 
@@ -111,7 +110,7 @@ function augmentProps (allowedProps) {
 
 const scaleMap = { x1: 'scaleX', y1: 'scaleY', x2: 'scaleX', y2: 'scaleY' }
 
-function scaleCoordinates (augmentedProps, sectionContext) {
+export function scaleCoordinates (augmentedProps, sectionContext) {
   const coordinateProps = augmentedProps.coordinates
 
   const scaledProps = {}
@@ -126,7 +125,7 @@ function scaleCoordinates (augmentedProps, sectionContext) {
   return scaledProps
 }
 
-function createScaledGeometry (scaledProps) {
+export function createScaledGeometry (scaledProps) {
   // polygon outer ring is defined counterclockwise
 
   const propKeys = Object.keys(scaledProps)

@@ -17,6 +17,7 @@ export { default as RectangleLayer } from './components/Marks/Rectangle/Rectangl
 export { default as PolygonLayer } from './components/Marks/Polygon/PolygonLayer.svelte'
 export { default as LineLayer } from './components/Marks/Line/LineLayer.svelte'
 export { default as LabelLayer } from './components/Marks/Label/LabelLayer.svelte'
+export { default as AreaLayer } from './components/Marks/Area/AreaLayer.svelte'
 
 export { default as XAxis } from './components/Guides/Axes/XAxis.svelte'
 export { default as YAxis } from './components/Guides/Axes/YAxis.svelte'

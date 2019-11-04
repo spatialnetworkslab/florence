@@ -8,6 +8,7 @@ import createCoordSysGeometryObjectPoint from '../Point/createCoordSysGeometryOb
 import createCoordSysGeometryObjectRectangle from '../Rectangle/createCoordSysGeometryObject.js'
 import createCoordSysGeometryObjectPolygon from '../Polygon/createCoordSysGeometryObject.js'
 import createCoordSysGeometryObjectLine from '../Line/createCoordSysGeometryObject.js'
+import createCoordSysGeometryObjectArea from '../Area/createCoordSysGeometryObject.js'
 
 export const markCoordSysGeometryFuncs = new Proxy({
   Point: createCoordSysGeometryPoint,
@@ -31,7 +32,8 @@ export const layerCoordSysGeometryFuncs = new Proxy({
   Rectangle: createCoordSysGeometryObjectRectangle,
   Polygon: createCoordSysGeometryObjectPolygon,
   Line: createCoordSysGeometryObjectLine,
-  Label: createCoordSysGeometryObjectPoint
+  Label: createCoordSysGeometryObjectPoint,
+  Area: createCoordSysGeometryObjectArea
 }, {
   get: (obj, prop) => {
     if (prop in obj) {
