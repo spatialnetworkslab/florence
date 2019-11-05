@@ -7,26 +7,31 @@ export default class TouchEventManager extends BaseEventManager {
   }
 
   _getScreenCoordinates (nativeEvent) {
-    const targetTouches = nativeEvent.targetTouches
-    const changedTouches = nativeEvent.changedTouches
+    const touches = nativeEvent.touches
 
-    if (targetTouches.length === 1 || changedTouches.length === 1) {
-      if (targetTouches[0]) {
-        const targetTouch = targetTouches[0]
-        this._svgPoint.x = targetTouch.clientX
-        this._svgPoint.y = targetTouch.clientY
-      }
-
-      if (changedTouches[0]) {
-        const changedTouch = changedTouches[0]
-        this._svgPoint.x = changedTouch.clientX
-        this._svgPoint.y = changedTouch.clientY
-      }
-    } else if (targetTouches.length > 1 || changedTouches.length > 1) {
-      // to handle pinch and other multi touch gestures
+    if (touches.length === 1) {
+      return this._getScreenCoordinatesSingle(touches[0])
     }
 
+    if (touches.length > 1) {
+      return this._getScreenCoordinatesMulti(touches)
+    }
+
+  _getScreenCoordinatesSingle (touch) {
+    this._svgPoint.x = touch.clientX
+    this._svgPoint.y = touch.clientY
+
     return this._svgPoint.matrixTransform(this._domNode.getScreenCTM().inverse())
+  }
+
+  _getScreenCoordinatesMulti (touches) {
+    const touchesInScreenCoordinates = []
+    
+    for (const touch of touches) {
+      touchesInScreenCoordinates.push(this._getScreenCoordinatesSingle(touch))
+    }
+
+    return touchesInScreenCoordinates
   }
 }
 
