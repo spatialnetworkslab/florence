@@ -7,7 +7,7 @@ export default class TouchEventManager extends BaseEventManager {
   }
 
   _getScreenCoordinates (nativeEvent) {
-    const touches = nativeEvent.touches
+    const touches = getTouches(nativeEvent)
 
     if (touches.length === 1) {
       return this._getScreenCoordinatesSingle(touches[0])
@@ -16,6 +16,7 @@ export default class TouchEventManager extends BaseEventManager {
     if (touches.length > 1) {
       return this._getScreenCoordinatesMulti(touches)
     }
+  }
 
   _getScreenCoordinatesSingle (touch) {
     this._svgPoint.x = touch.clientX
@@ -26,7 +27,7 @@ export default class TouchEventManager extends BaseEventManager {
 
   _getScreenCoordinatesMulti (touches) {
     const touchesInScreenCoordinates = []
-    
+
     for (const touch of touches) {
       touchesInScreenCoordinates.push(this._getScreenCoordinatesSingle(touch))
     }
@@ -46,7 +47,6 @@ const EVENT_NAMES = ['touchstart', 'touchend', 'touchmove', 'touchcancel']
 const EXPOSED_EVENTS = EVENT_NAMES.map(eventName => ({
   eventName,
   nativeEventName: getNativeTouchEventName(eventName),
-  // useWindow: eventName === 'touchmove'
   useWindow: false,
   preventDefault: true
 }))
@@ -71,3 +71,7 @@ function getNativeTouchEventName (exposedEventName) {
 }
 
 const sliceOffTouch = str => str.slice(5, str.length)
+
+function getTouches (nativeEvent) {
+  return nativeEvent.changedTouches
+}

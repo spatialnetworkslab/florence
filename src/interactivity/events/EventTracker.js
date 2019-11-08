@@ -1,6 +1,6 @@
 let handler
 
-export default class MouseEventTracker {
+export default class EventTracker {
   constructor (eventManager, { eventName, nativeEventName, useWindow, preventDefault }) {
     this._eventManager = eventManager
     this._eventName = eventName
