@@ -14,7 +14,7 @@ export default class PinchHandler extends SectionInteractionHandler {
   }
 
   _handleEvent (nativeEvent) {
-    if (numberOfTouches(nativeEvent) > 1) {
+    if (numberOfTouches(nativeEvent) !== 2) {
       return
     }
 

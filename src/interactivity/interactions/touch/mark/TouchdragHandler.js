@@ -3,6 +3,7 @@ import MarkInteractionHandler from '../../base/handlers/MarkInteractionHandler.j
 import { createMarkEvent, createLayerEvent } from '../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../utils/getLocalCoordinates.js'
 import { coordinatesAreInsideSection, hitIsMark, hitIsInLayer, getHitId } from '../../utils/hitUtils.js'
+import numberOfTouches from '../../utils/numberOfTouches.js'
 
 export default class TouchdragHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
@@ -15,6 +16,10 @@ export default class TouchdragHandler extends MarkInteractionHandler {
   }
 
   _handleEvent (screenCoordinates, nativeEvent) {
+    if (numberOfTouches(screenCoordinates) !== 1) {
+      return
+    }
+
     if (nativeEvent.eventName === 'touchstart') {
       this._handleTouchstart(screenCoordinates, nativeEvent)
     }

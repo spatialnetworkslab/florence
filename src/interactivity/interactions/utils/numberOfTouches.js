@@ -1,5 +1,5 @@
-export default function numberOfTouches (nativeEvent) {
-  if (nativeEvent.constructor === Object) return 1
+export default function numberOfTouches (screenCoordinates) {
+  if (screenCoordinates.constructor === Object) return 1
 
-  return nativeEvent.length
+  return screenCoordinates.length
 }

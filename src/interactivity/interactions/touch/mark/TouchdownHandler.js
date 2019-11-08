@@ -3,6 +3,7 @@ import MarkInteractionHandler from '../../base/handlers/MarkInteractionHandler.j
 import { createMarkEvent, createLayerEvent } from '../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../utils/getLocalCoordinates.js'
 import { hitIsMark, hitIsInLayer } from '../../utils/hitUtils.js'
+import numberOfTouches from '../../utils/numberOfTouches.js'
 
 export default class TouchdownHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
@@ -13,6 +14,10 @@ export default class TouchdownHandler extends MarkInteractionHandler {
   }
 
   _handleEvent (screenCoordinates, nativeEvent) {
+    if (numberOfTouches(screenCoordinates) !== 1) {
+      return
+    }
+
     const spatialIndex = this._spatialIndex
     const hits = spatialIndex.queryMouseCoordinates(screenCoordinates)
     const localCoordinates = getLocalCoordinates(screenCoordinates, this.interactionManager())

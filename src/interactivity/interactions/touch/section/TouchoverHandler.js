@@ -3,6 +3,7 @@ import SectionInteractionHandler from '../../base/handlers/SectionInteractionHan
 import { createSectionEvent } from '../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../utils/getLocalCoordinates.js'
 import { coordinatesAreInsideSection } from '../../utils/hitUtils.js'
+import numberOfTouches from '../../utils/numberOfTouches.js'
 
 export default class TouchoverHandler extends SectionInteractionHandler {
   constructor (interactionManager) {
@@ -15,6 +16,10 @@ export default class TouchoverHandler extends SectionInteractionHandler {
   }
 
   _handleEvent (screenCoordinates, nativeEvent) {
+    if (numberOfTouches(screenCoordinates) !== 1) {
+      return
+    }
+
     if (nativeEvent.eventName === 'touchstart') {
       this._handleTouchstart(screenCoordinates, nativeEvent)
     }
