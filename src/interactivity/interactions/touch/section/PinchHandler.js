@@ -16,10 +16,6 @@ export default class PinchHandler extends SectionInteractionHandler {
   }
 
   _handleEvent (screenCoordinatesArray, nativeEvent) {
-    if (numberOfTouches(screenCoordinatesArray) !== 2) {
-      return
-    }
-
     if (nativeEvent.type === 'touchstart') {
       this._handleTouchstart(screenCoordinatesArray, nativeEvent)
     }
@@ -34,7 +30,10 @@ export default class PinchHandler extends SectionInteractionHandler {
   }
 
   _handleTouchstart (screenCoordinatesArray, nativeEvent) {
-    // const interactionManager = this.interactionManager()
+    if (numberOfTouches(screenCoordinatesArray) !== 2) {
+      return
+    }
+
     const section = this.section()
 
     if (allCoordinatesAreInsideSection(screenCoordinatesArray, section)) {
@@ -44,6 +43,10 @@ export default class PinchHandler extends SectionInteractionHandler {
   }
 
   _handleTouchmove (screenCoordinatesArray, nativeEvent) {
+    if (numberOfTouches(screenCoordinatesArray) !== 2) {
+      return
+    }
+
     if (!this._previousDelta) return
 
     const section = this.section()

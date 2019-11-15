@@ -10,8 +10,10 @@ export default function createZoomHandler (
   }
 ) {
   const zoom = function (event) {
+    const zoomPoint = getZoompoint(event)
+
     // Calculate new zoom factor based on step
-    const delta = event.wheelDelta * step
+    const delta = event.delta * step
     const tempK = zoomIdentity.kx - delta
 
     // Offsetting only takes effect when k is within range to prevent jitter
@@ -32,8 +34,8 @@ export default function createZoomHandler (
       }
 
       // stops zooming if past extents X and Y
-      const offsetX = -(event.screenCoordinates.x * delta)
-      const offsetY = -(event.screenCoordinates.y * delta)
+      const offsetX = -(zoomPoint.x * delta)
+      const offsetY = -(zoomPoint.y * delta)
 
       const tempX = zoomIdentity.x - offsetX
       const tempY = zoomIdentity.y - offsetY
@@ -47,6 +49,8 @@ export default function createZoomHandler (
         zoomIdentity.y += dimension !== 'x' ? offsetY : 0
       }
     }
+
+    console.log(zoomIdentity)
 
     setZoomIdentity(zoomIdentity)
   }
@@ -70,10 +74,16 @@ export default function createZoomHandler (
 
   return {
     handlers: {
-      onWheel: zoom
+      onWheel: zoom,
+      onPinch: zoom
     },
 
     reset,
     center
   }
+}
+
+function getZoompoint (event) {
+  if (event.type === 'wheel') return event.screenCoordinates
+  if (event.type === 'pinch') return event.screenCenter
 }

@@ -73,5 +73,5 @@ function getNativeTouchEventName (exposedEventName) {
 const sliceOffTouch = str => str.slice(5, str.length)
 
 function getTouches (nativeEvent) {
-  return nativeEvent.changedTouches
+  return nativeEvent.touches
 }
