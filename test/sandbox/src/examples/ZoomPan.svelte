@@ -24,8 +24,6 @@
     setZoomIdentity,
     minZoom: 0.2,
     maxZoom: 3,
-    extentX: [-500, 500],
-    extentY: [-500, 500],
     center: { x: 0, y: 0 }
     // dimension: 'x'
   })
