@@ -78,9 +78,8 @@ function hasValid (zoomIdentity, key) {
 }
 
 function reconcileZoomIdentities (zoomContext, zoomIdentity) {
-  const newZoomIdentity = {}
-  Object.assign(newZoomIdentity, zoomContext)
-  Object.assign(newZoomIdentity, zoomIdentity)
+  let newZoomIdentity = Object.assign({}, zoomContext)
+  newZoomIdentity = Object.assign(newZoomIdentity, zoomIdentity)
 
   return newZoomIdentity
 }
