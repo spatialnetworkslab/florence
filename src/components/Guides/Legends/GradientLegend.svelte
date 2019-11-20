@@ -298,12 +298,13 @@
           }
         })
       }
+      
       if (orient === 'vertical') {
         tickLabelPositions = tickLabelYCoords
-        tickAlign = tickLabelXCoords
+        tickAlign = tickLabelXCoords - labelPaddingX
       } else {
         tickLabelPositions = tickLabelXCoords
-        tickAlign = tickLabelYCoords
+        tickAlign = tickLabelYCoords - labelPaddingY
       }
 
       colorGeoms = getGradientGeoms(tickOpacities, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize, labels)

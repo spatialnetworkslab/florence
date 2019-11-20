@@ -216,6 +216,7 @@
         vjust={'centre'}
         hjust={'left'}
         flipLabels
+        labelPaddingX={10}
         usePadding={true}
       />
 

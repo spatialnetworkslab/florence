@@ -221,7 +221,7 @@
       tickLabelYCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, yCoords, flip, orient, labelPaddingY, useScale)
       tickLabelXCoords = flipLabels ? x1 + colorBarHeight * xCoords.width : x1 + (1 - colorBarHeight) * xCoords.width
       tickLabelXCoords = labelX ? labelX : tickLabelXCoords
-      
+
       if (labelPaddingX !== undefined) { 
         tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPaddingX : tickLabelXCoords - labelPaddingX
       }
@@ -257,10 +257,10 @@
         
         if (orient === 'vertical') {
           tickLabelPositions = tickLabelYCoords
-          tickAlign = tickLabelXCoords
+          tickAlign = tickLabelXCoords - labelPaddingX
         } else {
           tickLabelPositions = tickLabelXCoords
-          tickAlign = tickLabelYCoords
+          tickAlign = tickLabelYCoords - labelPaddingY
         }
     
         colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale)
