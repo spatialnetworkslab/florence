@@ -108,7 +108,7 @@
 
       <GradientLegend
         x1={200} x2={300}
-        y1={100} y2={150}
+        y1={60} y2={100}
         fill={linearColorScale}
         orient={'horizontal'}
         titleVjust={'top'}
