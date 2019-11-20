@@ -74,7 +74,7 @@
   export let titleRotation = 0
   export let titleAnchorPoint = 't'
   export let titlePaddingX = 0
-  export let titlePaddingY = -5
+  export let titlePaddingY = -3
 
   // transition
   export let transition = undefined
@@ -136,7 +136,6 @@
     addTitleSize = title.length > 0 ? titleFontSize * 1.5 : 0
 
     if (!isValid(x1, x2, y1, y2) && ['horizontal', 'vertical'].includes(orient)) {
-      // In pixels
       if (sectionContext.flipX) xRange.reverse()
       rangeCoordsX = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip)
       x1 = rangeCoordsX.x1
@@ -144,14 +143,13 @@
       width = Math.abs(x2 - x1)
       xCoords = { x1, x2, width }
 
-
       if (sectionContext.flipY) yRange.reverse()
-
       rangeCoordsY = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flip)
       y1 = rangeCoordsY.y1
       y2 = rangeCoordsY.y2
       height = Math.abs(y2 - y1)
       yCoords = { y1, y2, height }
+
     } else { 
       // This should always be in pixels
       xCoords = { x1, x2, width: Math.abs(x2 - x1) }
