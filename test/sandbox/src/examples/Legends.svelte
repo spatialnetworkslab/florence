@@ -91,7 +91,7 @@
       scaleY={scaleLinear().domain(data.domain('b'))}
       {zoomIdentity}
     >
-
+<!-- 
       <GradientLegend
         x1={70} x2={100}
         y1={10} y2={30}
@@ -115,7 +115,7 @@
         titleRotation={-90}
         titlePaddingX={-15}
         usePadding={false}
-      />
+      /> -->
 
       <PointLayer
           x={filteredData.column('a')}
@@ -157,7 +157,7 @@
         orient={'vertical'}
         labelExtra
         titleVjust={'top'}
-        titleHjust={'left'}
+        titleHjust={'right'}
         vjust={'top'}
         hjust={'right'}
         usePadding={true}

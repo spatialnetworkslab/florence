@@ -1,7 +1,6 @@
 <script>
   import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from "../../../"
   import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from "./createLegendCoordinates.js"
-  import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
   import { removePadding } from '../../Core/utils/padding.js'
 
   // Contexts
@@ -75,7 +74,7 @@
   export let titleRotation = 0
   export let titleAnchorPoint = 't'
   export let titlePaddingX = 0
-  export let titlePaddingY = 1
+  export let titlePaddingY = -5
 
   // transition
   export let transition = undefined
@@ -118,7 +117,6 @@
   let xCoords
   let yCoords
   let addTitleSize
-  let addLabelSize
   
   $: {
     if (usePadding === true) {
@@ -129,7 +127,7 @@
   }
   
   // Section positioning wrt section/graphic context
-  // Uses pixel values initially, then converts to scale domain coordinates
+  // Uses pixel values based on padding/no padding setting (does not rely on section/graphic scale)
   $: {
     if (!['horizontal', 'vertical'].includes(orient)) {
       throw Error('Invalid input for `orient` property. Please provide either `horizontal` or `vertical` as inputs.')
@@ -138,40 +136,26 @@
     addTitleSize = title.length > 0 ? titleFontSize * 1.5 : 0
 
     if (!isValid(x1, x2, y1, y2) && ['horizontal', 'vertical'].includes(orient)) {
+      // In pixels
       if (sectionContext.flipX) xRange.reverse()
       rangeCoordsX = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip)
-      
-      // convert back to section scale
-      x1 = $sectionContext.scaleX.invert(rangeCoordsX.x1)
-      x2 = $sectionContext.scaleX.invert(rangeCoordsX.x2)
-
+      x1 = rangeCoordsX.x1
+      x2 = rangeCoordsX.x2
       width = Math.abs(x2 - x1)
       xCoords = { x1, x2, width }
 
-      // In pixels
+
       if (sectionContext.flipY) yRange.reverse()
+
       rangeCoordsY = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flip)
-      
-      // convert back to section scale
-      y1 = $sectionContext.scaleY.invert(rangeCoordsY.y1)
-      y2 = $sectionContext.scaleY.invert(rangeCoordsY.y2)
+      y1 = rangeCoordsY.y1
+      y2 = rangeCoordsY.y2
       height = Math.abs(y2 - y1)
       yCoords = { y1, y2, height }
-      
-      // In pixels
-      addLabelSize = orient === 'vertical' ? labelFontSize / rangeCoordsX.width * width : labelFontSize / rangeCoordsY.height * height
     } else { 
-      // In section scale coordinates
+      // This should always be in pixels
       xCoords = { x1, x2, width: Math.abs(x2 - x1) }
       yCoords = { y1, y2, height: Math.abs(y2 - y1) }
-     
-      // In pixels
-      let scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-      const pixelWidth = Math.abs(scaledCoordinates.x2 - scaledCoordinates.x2)
-      const pixelHeight = Math.abs(scaledCoordinates.y2 - scaledCoordinates.y1)
-      
-      // In pixels
-      addLabelSize = orient === 'vertical' ? labelFontSize / pixelWidth * xCoords.width : labelFontSize / pixelHeight * yCoords.height
     }
   }
 
@@ -179,15 +163,11 @@
   $: {
     if (title.length > 0) {
       if (!titleX && titleX !== 0) {
-        const xRange = $sectionContext.scaleX.range()
-        if (sectionContext.flipX) xRange.reverse()
-        titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, addTitleSize, addLabelSize, orient, titlePaddingX)
+        titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, addTitleSize, labelFontSize, orient, titlePaddingX)
       }
 
       if (!titleY && titleY !== 0) {
-        const yRange = $sectionContext.scaleY.range()
-        if (sectionContext.flipY) yRange.reverse()
-        titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, addLabelSize, orient, titlePaddingY)
+        titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, labelFontSize, orient, titlePaddingY)
       }
     }
   }
@@ -285,7 +265,7 @@
           tickAlign = tickLabelYCoords
         }
     
-        colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, addLabelSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale)
+        colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale)
         if (!tickOpacities){
           tickOpacities = 1
         }
@@ -314,7 +294,7 @@
           tickAlign = tickLabelYCoords
         }
 
-        colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, addLabelSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale)
+        colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale)
         
         if (!tickColors){
           tickColors = fill
@@ -337,10 +317,10 @@
 
 <g class="discrete-legend">
   <RectangleLayer
-    x1 = {colorXStartCoords}
-    x2 = {colorXEndCoords}
-    y1 = {colorYStartCoords}
-    y2 = {colorYEndCoords}
+    x1 = { () => {return colorXStartCoords} }
+    x2 = { () => {return colorXEndCoords} }
+    y1 = { () => {return colorYStartCoords} }
+    y2 = { () => {return colorYEndCoords} }
     fill = {tickColors}
     fillOpacity = {tickOpacities}
     {transition} 
@@ -350,8 +330,8 @@
   />
 
   <LabelLayer
-    x={tickLabelXCoords} 
-    y={tickLabelYCoords} 
+    x={ () => {return tickLabelXCoords} }
+    y={ () => {return tickLabelYCoords} }
     text={tickLabelText} 
     anchorPoint={labelAnchorPoint}
     rotation={labelRotate} 
@@ -366,8 +346,8 @@
 
   {#if title.length > 0}
     <Label 
-      x={titleX}
-      y={titleY}
+      x={ () => {return titleX} }
+      y={ () => {return titleY} }
       text={title}
       fontFamily={titleFont}
       fontSize={titleFontSize}
