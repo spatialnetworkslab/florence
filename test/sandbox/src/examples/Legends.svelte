@@ -1,11 +1,11 @@
 <script>
   // d3
-  import { scaleThreshold, scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
+  import { scaleBand, scaleThreshold, scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
   import * as d3 from 'd3-scale-chromatic'
   import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
 
   // florence
-	import { Graphic, Grid, Section, PointLayer, Point, Label, LabelLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
+	import { Rectangle, Graphic, Grid, Section, PointLayer, Point, Label, LabelLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
@@ -31,14 +31,11 @@
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scaleLinear().domain(data.domain('b'))
   
-  let height = 500
+  let height = 800
   let transformation = 'identity'
   let duration = 2000
 
   const log = console.log
-
-  // let pad1 = 30
-  // let usePadding = true
 
   let x = 0
   let y = 0
@@ -48,7 +45,7 @@
   // scatterplot scale
   const radiusScale = scaleLinear().domain(data.domain('b')).range([10, 0])
 
-  // data
+  // scalar data
   const bins = [[0, 30], [30, 70], [70, 100], [100, 155], [55, 300]]
   const bins2 = [0, 10, 20, 40, 90, 120]
   const fruits = ['apple', 'banana', 'orange', 'pomelo']
@@ -66,15 +63,32 @@
   const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
   const binAlpha = scaleLinear().domain([0, 120]).range([0, 1])
 
-  // Padding slider
-</script>
+ // categorical data
+   let catData = new DataContainer({
+    fruit: ['apple', 'banana', 'apple', 'banana', 'apple', 'banana'],
+    nutrient: ['carbs', 'carbs', 'fibre', 'fibre', 'protein', 'protein'],
+    value: [3, 5, 1, 3, 4, 2]
+  })
 
-<!-- <div>
-  <label for="height-slider">Padding: </label>
-  <input type="range" min="0" max="150" bind:value={pad1} name="height-slider" /> {pad1}
-  <input type="radio" value="true" bind:value={usePadding} name="height-slider" /> True
-  <input type="radio" value="false" bind:value={usePadding} name="height-slider" /> False
-</div> -->
+  const fruitDomain = catData.domain('fruit')
+  const nutrientDomain = catData.domain('nutrient')
+
+  catData = catData
+    .groupBy('fruit')
+    .mutarise({ totalValuePerFruit: { value: 'sum' } })
+    .mutate({ valueFraction: row => row.value / row.totalValuePerFruit })
+    .select(['fruit', 'nutrient', 'valueFraction'])
+    .groupBy('fruit')
+
+
+  const containerPerFruit = catData.column('$grouped').map(container => {
+    return container.cumsum({ cumsum_value: 'valueFraction' })
+  })
+
+  const nutrientColorScale = scaleOrdinal()
+    .domain(nutrientDomain)
+    .range(schemeAccent)
+</script>
 
 <div>
 	<Graphic 
@@ -85,7 +99,7 @@
 
     <Section 
       x1={50} x2={300}
-      y1={50} y2={700}
+      y1={50} y2={500}
       padding={30}
       scaleX={scaleLinear().domain(data.domain('a'))}
       scaleY={scaleLinear().domain(data.domain('b'))}
@@ -94,7 +108,7 @@
 
       <GradientLegend
         x1={200} x2={300}
-        y1={50} y2={100}
+        y1={100} y2={150}
         fill={linearColorScale}
         orient={'horizontal'}
         titleVjust={'top'}
@@ -131,7 +145,7 @@
 
     <Section 
       x1={350} x2={600}
-      y1={50} y2={700}
+      y1={50} y2={500}
       padding={40}
       scaleX={scaleLinear().domain(data.domain('a'))}
       scaleY={scaleLinear().domain(data.domain('b'))}
@@ -184,6 +198,44 @@
 
       <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
       <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
+    
+    </Section>
+
+    <Section 
+      x1={200} x2={500}
+      y1={550} y2={950}
+      padding={40}
+      scaleX={scaleBand().domain(fruitDomain).padding(0.3)}
+      scaleY={scaleLinear().domain([0, 1])}
+    > 
+      <DiscreteLegend
+        fill={nutrientColorScale}
+        strokeWidth={2}
+        stroke={'white'}
+        orient={'vertical'}
+        vjust={'centre'}
+        hjust={'left'}
+        flipLabels
+        usePadding={true}
+      />
+
+      {#each containerPerFruit as container}
+
+      {#each container.rows() as row, i}
+
+        <Rectangle 
+          x1={row.fruit}
+          x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
+          y1={i === 0 ? 0 : container.prevRow(row.$key).cumsum_value}
+          y2={row.cumsum_value}
+          fill={nutrientColorScale(row.nutrient)}
+        />
+
+      {/each}
+
+    {/each}
+
+    <XAxis labelFontSize={13} />
     
     </Section>
 
