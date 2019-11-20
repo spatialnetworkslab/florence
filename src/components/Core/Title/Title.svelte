@@ -67,6 +67,7 @@
   let _padding
   let xRange = $sectionContext.scaleX.range()
   let yRange = $sectionContext.scaleY.range()
+  let totalFontSize
 
   $: {
     if (usePadding === true) {
@@ -78,19 +79,19 @@
 
   // Title text positioning wrt section/graphic context
   $: {
+    totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize : titleFontSize
+
     if (sectionContext.flipX) xRange.reverse()
-    x = $sectionContext.scaleX.invert(createTitleXCoord(hjust, xRange, x, xOffset, titleFontSize, sectionContext.flipX, _padding))
+    x = createTitleXCoord(hjust, xRange, x, xOffset, totalFontSize, sectionContext.flipX, _padding)
 
     if (sectionContext.flipY) yRange.reverse()
-    y = $sectionContext.scaleY.invert(createTitleYCoord(vjust, yRange, y, yOffset, titleFontSize, sectionContext.flipY, _padding))
+    y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize, sectionContext.flipY, _padding)
 
     if (subtitle.length > 0) {
       if (!isValid(subtitleX, subtitleY)) {
         const yRange = $sectionContext.scaleY.range()
         subtitleX = x
-        const adjustSubtitle = $sectionContext.scaleY.invert(titleFontSize + yRange[0])
-        subtitleY = y
-        y = y - adjustSubtitle
+        subtitleY = y + titleFontSize
       }
     }
   }
@@ -98,30 +99,34 @@
   
 </script>
 
-{#if isValid(x, y) && isValid(subtitleX, subtitleY)}
-  {#if title.length > 0}
-    <Mark
-      type="Label"
-      {x} {y} {geometry} 
-      fill={titleFill} stroke={titleStroke} strokeWidth={titleStrokeWidth}
-      strokeOpacity={titleStrokeOpacity} fillOpacity={titleFillOpacity} opacity={titleOpacity}
-      text={title}
-      fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
-      {transition} {onClick} {onMouseover} {onMouseout}
-      {zoomIdentity} _asPolygon={false}
-    />
-  {/if}
+{#if isValid(x, y) && title.length > 0}
+  <Mark
+    type="Label"
+    x={ () => { return x } } 
+    y={ () => { return y } } 
+    {geometry} 
+    fill={titleFill} 
+    stroke={titleStroke} 
+    strokeWidth={titleStrokeWidth}
+    strokeOpacity={titleStrokeOpacity} fillOpacity={titleFillOpacity} opacity={titleOpacity}
+    text={title}
+    fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
+    {transition} {onClick} {onMouseover} {onMouseout}
+    {zoomIdentity} _asPolygon={false}
+  />
+{/if}
 
-  {#if subtitle.length > 0}
-    <Mark
-      type="Label"
-      x={subtitleX} y={subtitleY} {geometry} 
-      fill={subtitleFill} stroke={subtitleStroke} strokeWidth={subtitleStrokeWidth}
-      strokeOpacity={subtitleStrokeOpacity} fillOpacity={subtitleFillOpacity} opacity={subtitleOpacity}
-      text={subtitle}
-      fontFamily={subtitleFontFamily} fontSize={subtitleFontSize} fontWeight={subtitleFontWeight} rotation={subtitleRotation} anchorPoint={titleAnchorPoint}
-      {transition} {onClick} {onMouseover} {onMouseout}
-      {zoomIdentity} _asPolygon={false}
-    />
-  {/if}
+{#if isValid(subtitleX, subtitleY) && subtitle.length > 0}
+  <Mark
+    type="Label"
+    x={ () => { return subtitleX } } 
+    y={ () => { return subtitleY } } 
+    {geometry} 
+    fill={subtitleFill} stroke={subtitleStroke} strokeWidth={subtitleStrokeWidth}
+    strokeOpacity={subtitleStrokeOpacity} fillOpacity={subtitleFillOpacity} opacity={subtitleOpacity}
+    text={subtitle}
+    fontFamily={subtitleFontFamily} fontSize={subtitleFontSize} fontWeight={subtitleFontWeight} rotation={subtitleRotation} anchorPoint={titleAnchorPoint}
+    {transition} {onClick} {onMouseover} {onMouseout}
+    {zoomIdentity} _asPolygon={false}
+  />
 {/if}

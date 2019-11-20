@@ -18,7 +18,7 @@ export function isValid (x, y) {
   return false
 }
 
-export function createTitleXCoord (hjust, range, x, offset, fontSize, flip) {
+export function createTitleXCoord (hjust, range, x, offset, fontSize, padding) {
   if (x) {
     return x
   }
@@ -28,21 +28,17 @@ export function createTitleXCoord (hjust, range, x, offset, fontSize, flip) {
   const sectionWidth = Math.abs(x2 - x1)
 
   let justification
-  let addFontSize
 
   if (hjust === 'center' || hjust === 'centre') {
     justification = 0.5
-    addFontSize = 0
   }
 
   if (hjust === 'left') {
     justification = 0
-    addFontSize = fontSize
   }
 
   if (hjust === 'right') {
     justification = 1
-    addFontSize = -fontSize
   }
 
   if (!isNaN(hjust)) {
@@ -51,7 +47,6 @@ export function createTitleXCoord (hjust, range, x, offset, fontSize, flip) {
 
   if (justification === undefined) {
     justification = 0.5
-    addFontSize = 0
   }
 
   if (!['left', 'center', 'right'].includes(hjust) && isNaN(hjust)) {
@@ -61,7 +56,7 @@ export function createTitleXCoord (hjust, range, x, offset, fontSize, flip) {
   return x1 + sectionWidth * justification + offset
 }
 
-export function createTitleYCoord (vjust, range, y, offset, fontSize, flip) {
+export function createTitleYCoord (vjust, range, y, offset, fontSize, padding) {
   if (y) {
     return y
   }
@@ -71,31 +66,25 @@ export function createTitleYCoord (vjust, range, y, offset, fontSize, flip) {
   const sectionHeight = Math.abs(y2 - y1)
 
   let justification
-  let addFontSize
 
   if (vjust === 'center') {
     justification = 0.5
-    addFontSize = 0
   }
 
   if (vjust === 'bottom') {
     justification = 1 - (fontSize / sectionHeight)
-    addFontSize = fontSize
   }
 
   if (vjust === 'top') {
-    justification = 0.05
-    addFontSize = -fontSize
+    justification = 0
   }
 
   if (!isNaN(vjust)) {
     justification = vjust
-    addFontSize = 0
   }
 
   if (justification === undefined) {
     justification = 0.5
-    addFontSize = 0
   }
 
   if (!['center', 'bottom', 'top'].includes(vjust) && isNaN(vjust)) {

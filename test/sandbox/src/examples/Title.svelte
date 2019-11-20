@@ -8,15 +8,10 @@
   let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
   let blockReindexing = false
 
-  const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
-  const setBlockReindexing = bool => { blockReindexing = bool }
-
   let vjust = 'top'
   let hjust = 'center'
   let graphicPadding = 10
   let sectionPadding = 40
-  let gUsePadding = true
-  let sUsePadding = true
 </script>
 
 <Graphic width={500} height={500} padding={graphicPadding}>
@@ -32,7 +27,8 @@
   > 
 
     <Title 
-      title={'Lorem ipsum dolor sit amet, consectetur adipiscing'} 
+      title={'Lorem ipsum dolor sit amet'} 
+      titleFontFamily={'Papyrus'}
       subtitle={'elit, sed do eiusmod tempor incididunt'}
       subtitleFontFamily={'Garamond'}
       subtitleStroke={'green'}
@@ -46,8 +42,8 @@
   </Section>
 
   <Title 
-    title={'Test'} 
-    subtitle={'subtitle'}
+    title={'Test text at bottom of chart'} 
+    subtitle={'elit, sed do eiusmod tempor incididunt'}
     vjust={'bottom'}
     {hjust}
     titleFontFamily={'Baskerville'}
