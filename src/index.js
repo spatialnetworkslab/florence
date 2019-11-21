@@ -8,6 +8,7 @@ export { default as Rectangle } from './components/Marks/Rectangle/Rectangle.sve
 export { default as Polygon } from './components/Marks/Polygon/Polygon.svelte'
 export { default as Line } from './components/Marks/Line/Line.svelte'
 export { default as Label } from './components/Marks/Label/Label.svelte'
+export { default as Symbol_ } from './components/Marks/Symbol/Symbol.svelte'
 export { default as FuncLine } from './components/Marks/FuncLine/FuncLine.svelte'
 
 export { default as Layer } from './components/Marks/Mark/Layer.svelte'
@@ -16,6 +17,7 @@ export { default as RectangleLayer } from './components/Marks/Rectangle/Rectangl
 export { default as PolygonLayer } from './components/Marks/Polygon/PolygonLayer.svelte'
 export { default as LineLayer } from './components/Marks/Line/LineLayer.svelte'
 export { default as LabelLayer } from './components/Marks/Label/LabelLayer.svelte'
+// export { default as SymbolLayer } from './components/Marks/Symbol/SymbolLayer.svelte'
 
 export { default as XAxis } from './components/Guides/Axes/XAxis.svelte'
 export { default as YAxis } from './components/Guides/Axes/YAxis.svelte'

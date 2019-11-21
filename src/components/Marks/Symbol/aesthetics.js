@@ -9,12 +9,10 @@ export default {
     required: false
   },
   shape: {
-    required: false,
-    default: 'circle'
+    required: false
   },
   size: {
-    required: false,
-    default: 3
+    required: false
   },
   fill: {
     required: false,

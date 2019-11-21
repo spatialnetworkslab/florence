@@ -1,5 +1,5 @@
 import createCoordSysGeometryPoint from '../Point/createCoordSysGeometry.js'
-import { createScaledGeomtry as createSquareGeometry } from '../Rectangle/createCoordSysGeometry.js'
+import { createScaledGeometry as createSquareGeometry } from '../Rectangle/createCoordSysGeometry.js'
 import geometryAlias from './geometryAlias.js'
 import { transformGeometry } from '../../../utils/geometryUtils'
 
@@ -12,7 +12,9 @@ export default function (geometryProps, sectionContext, coordinateTransformation
 
 function createSymbolGeometry (pointGeometry, geometryProps) {
   const [cx, cy] = pointGeometry.coordinates
-  const { shape, size } = geometryProps
+
+  const shape = geometryProps.shape || 'circle'
+  const size = geometryProps.size || 8
 
   if (shape === 'circle') {
     return pointGeometry
@@ -23,11 +25,16 @@ function createSymbolGeometry (pointGeometry, geometryProps) {
   }
 
   if (shape in geometryAlias) {
-    const geometry = geometryAlias[shape]
-    return createSymbolFromGeometry(cx, cy, geometry)
+    const coordinates = [geometryAlias[shape]]
+    const geometry = {
+      type: 'Polygon',
+      coordinates
+    }
+
+    return createSymbolFromGeometry(cx, cy, geometry, size)
   }
 
-  return createSymbolFromGeometry(cx, cy, shape)
+  return createSymbolFromGeometry(cx, cy, shape, size)
 }
 
 function createSquare (cx, cy, size) {
