@@ -42,7 +42,8 @@ function createSquare (cx, cy, size) {
 }
 
 function createSymbolFromGeometry (cx, cy, geometry, size) {
-  const transformation = p => [p[0] * size + cx, p[1] * size + cy]
+  const halfSize = size / 2
+  const transformation = p => [p[0] * halfSize + cx, p[1] * halfSize + cy]
 
   return transformGeometry(geometry, transformation)
 }
