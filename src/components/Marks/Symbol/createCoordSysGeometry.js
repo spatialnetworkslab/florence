@@ -1,0 +1,48 @@
+import createCoordSysGeometryPoint from '../Point/createCoordSysGeometry.js'
+import { createScaledGeomtry as createSquareGeometry } from '../Rectangle/createCoordSysGeometry.js'
+import geometryAlias from './geometryAlias.js'
+import { transformGeometry } from '../../../utils/geometryUtils'
+
+export default function (geometryProps, sectionContext, coordinateTransformationContext) {
+  const pointGeometry = createCoordSysGeometryPoint(geometryProps, sectionContext, coordinateTransformationContext)
+  const symbolGeometry = createSymbolGeometry(pointGeometry, geometryProps)
+
+  return symbolGeometry
+}
+
+function createSymbolGeometry (pointGeometry, geometryProps) {
+  const [cx, cy] = pointGeometry.coordinates
+  const { shape, size } = geometryProps
+
+  if (shape === 'circle') {
+    return pointGeometry
+  }
+
+  if (shape === 'square') {
+    return createSquare(cx, cy, size)
+  }
+
+  if (shape in geometryAlias) {
+    const geometry = geometryAlias[shape]
+    return createSymbolFromGeometry(cx, cy, geometry)
+  }
+
+  return createSymbolFromGeometry(cx, cy, shape)
+}
+
+function createSquare (cx, cy, size) {
+  const halfSize = size / 2
+
+  const x1 = cx - halfSize
+  const x2 = cx + halfSize
+  const y1 = cy - halfSize
+  const y2 = cy + halfSize
+
+  return createSquareGeometry({ x1, x2, y1, y2 })
+}
+
+function createSymbolFromGeometry (cx, cy, geometry, size) {
+  const transformation = p => [p[0] * size + cx, p[1] * size + cy]
+
+  return transformGeometry(geometry, transformation)
+}
