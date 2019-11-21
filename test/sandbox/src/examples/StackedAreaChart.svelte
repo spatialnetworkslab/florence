@@ -76,12 +76,12 @@
         />
       {/each}
       
-        <!-- <AreaLayer
-          x1={columnNames.map(c => rowCumSum.column('date'))}
-          y1={columnNames.map(c => rowCumSum.column(c).map(d => d[0]))}
-          y2={columnNames.map(c => rowCumSum.column(c).map(d => d[1]))}
-          fill={columnNames.map(c => scaleColor(c))}
-        /> -->
+      <!-- <AreaLayer
+        x1={columnNames.map(c => rowCumSum.column('date'))}
+        y1={columnNames.map(c => rowCumSum.column(c).map(d => d[0]))}
+        y2={columnNames.map(c => rowCumSum.column(c).map(d => d[1]))}
+        fill={columnNames.map(c => scaleColor(c))}
+      /> -->
 
       <XAxis
         baseLine={false}
