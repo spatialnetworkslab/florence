@@ -381,10 +381,8 @@
     )
   }
 
-  $: circleSymbol = type === 'Symbol' && shape === 'circle'
-
-  $: renderPolygon = (!['Point', 'Line', 'Label'].includes(type) && !circleSymbol) || _asPolygon
-  $: renderCircle = (type === 'Point' || circleSymbol) && !_asPolygon
+  $: renderPolygon = !['Point', 'Line', 'Label'].includes(type) || _asPolygon
+  $: renderCircle = type === 'Point' && !_asPolygon
   $: renderLine = type === 'Line' && !_asPolygon
   $: renderLabel = type === 'Label'
 </script>

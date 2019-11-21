@@ -2,6 +2,7 @@ import createCoordSysGeometryPoint from '../Point/createCoordSysGeometry.js'
 import { createScaledGeometry as createSquareGeometry } from '../Rectangle/createCoordSysGeometry.js'
 import geometryAlias from './geometryAlias.js'
 import { transformGeometry } from '../../../utils/geometryUtils'
+import { representPointAsPolygon } from '../Point/representPointAsPolygon.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext) {
   const pointGeometry = createCoordSysGeometryPoint(geometryProps, sectionContext, coordinateTransformationContext)
@@ -17,7 +18,7 @@ function createSymbolGeometry (pointGeometry, geometryProps) {
   const size = geometryProps.size || 8
 
   if (shape === 'circle') {
-    return pointGeometry
+    return createPoint(cx, cy, size)
   }
 
   if (shape === 'square') {
@@ -35,6 +36,11 @@ function createSymbolGeometry (pointGeometry, geometryProps) {
   }
 
   return createSymbolFromGeometry(cx, cy, shape, size)
+}
+
+function createPoint (cx, cy, size) {
+  const radius = size / 2
+  return representPointAsPolygon([cx, cy], { radius })
 }
 
 function createSquare (cx, cy, size) {
