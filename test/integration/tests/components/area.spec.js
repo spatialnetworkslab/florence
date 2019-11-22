@@ -14,6 +14,12 @@ context('Assertions', () => {
       cy.get('svg').snapshot({ name: 'svg with 1 area mark' })
     })
 
-    // interaction TODO
+    it('[interaction] hovering over area changes color', () => {
+      cy.get('.area').should('have.attr', 'fill', 'steelblue')
+      cy.get('.area').trigger('mousemove')
+      cy.get('.area').should('have.attr', 'fill', '#d5896f')
+      cy.get('.left-col').trigger('mousemove')
+      cy.get('.area').should('have.attr', 'fill', 'steelblue')
+    })
   })
 })

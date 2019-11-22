@@ -11,7 +11,7 @@
   {"u": 5,  "v": 81}, {"u": 6,  "v": 53},
   {"u": 7,  "v": 19}, {"u": 8,  "v": 87},
   {"u": 9,  "v": 52}, {"u": 10, "v": 48},
-  {"u": 11, "v": 24}, {"u": 12, "v": 49},
+  {"u": 11, "v": 55}, {"u": 12, "v": 49},
   {"u": 13, "v": 87}, {"u": 14, "v": 66},
   {"u": 15, "v": 17}, {"u": 16, "v": 27},
   {"u": 17, "v": 68}, {"u": 18, "v": 16},
@@ -26,6 +26,7 @@
  const scaleU = scaleLinear().domain(uDomain)
  const scaleV = scaleLinear().domain([0, vDomain[1]])
 
+ let isHovered = false
 </script>
 
 <Graphic
@@ -43,11 +44,12 @@
     <Area
       x1={dataContainer.column('u')}
       y1={dataContainer.column('v')}
-      fill={'steelblue'}
+      fill={isHovered ? '#d5896f' : 'steelblue'}
+      onMouseover={() => isHovered = !isHovered}
+      onMouseout={() => isHovered = !isHovered}
     />
 
     <XAxis baseLine={false} />
-
     <YAxis baseLine={false} />
 
   </Section>
