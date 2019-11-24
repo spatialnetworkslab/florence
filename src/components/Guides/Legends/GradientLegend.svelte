@@ -6,8 +6,8 @@
 </script>
 
 <script>
-  import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from "../../../"
-  import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from "./createLegendCoordinates.js"
+  import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from '../../../'
+  import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from './createLegendCoordinates.js'
   // import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
   import { removePadding } from '../../Core/utils/padding.js'
 
@@ -20,17 +20,17 @@
   import { getTickPositions, getFormat, getTicks, getGradientGeoms, isValid } from './utils.js'
 
   // global properties
-  let gradientId = getId()
+  const gradientId = getId()
 
   // Public props
   // Aesthetics: positioning
-  export let x1 = undefined
-  export let x2 = undefined
-  export let y1 = undefined
-  export let y2 = undefined
+  export let x1
+  export let x2
+  export let y1
+  export let y2
   export let orient = 'vertical'
   export let vjust = 'center'
-  export let height = undefined
+  export let height
   export let hjust = 'left'
   export let width = 0
   export let xOffset = 0
@@ -46,16 +46,16 @@
   export let strokeWidth = 2
 
   // Aesthetics
-  export let fill = undefined
-  export let fillOpacity = undefined
+  export let fill
+  export let fillOpacity
 
   // tick labels
-  export let labels = undefined
-  export let labelFormat = undefined
+  export let labels
+  export let labelFormat
   export let labelOffset = 0.2
   export let labelRotate = 0
-  export let labelX = undefined
-  export let labelY = undefined
+  export let labelX
+  export let labelY
   export let labelFont = 'Helvetica'
   export let labelFontSize = 10
   export let labelFontWeight = 'normal'
@@ -64,18 +64,18 @@
   export let labelAnchorPoint = 'center'
   export let labelCount = 10
   export let labelExtra = false
-  export let firstLabel = undefined
-  export let format = undefined
+  export let firstLabel
+  export let format
   export let labelPaddingX = 0
   export let labelPaddingY = 0
 
   // legend title
   export let titleHjust = 'center'
   export let titleXOffset = 0
-  export let titleX = undefined
+  export let titleX
   export let titleVjust = 'top'
   export let titleYOffset = 0
-  export let titleY = undefined
+  export let titleY
   export let title = 'Legend'
   export let titleColor = 'black'
   export let titleFont = 'Helvetica'
@@ -88,8 +88,8 @@
   export let titlePaddingY = -3
 
   // transition
-  export let transition = undefined
-  export let zoomIdentity = undefined
+  export let transition
+  export let zoomIdentity
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -102,7 +102,7 @@
   let scale
   let scaleDomain
   let scaleDomainGroups
-  let tickLabelText 
+  let tickLabelText
   let tickLabelPositions
   let tickLabelXCoords
   let tickLabelYCoords
@@ -121,8 +121,8 @@
   let gradX
   let gradY
   let rectCoords
-  let colorBarHeight = undefined
-  let colorBarWidth = undefined
+  let colorBarHeight
+  let colorBarWidth
 
   let posScaleY
   let xCoords
@@ -160,7 +160,7 @@
       y2 = rangeCoordsY.y2
       height = Math.abs(y2 - y1)
       yCoords = { y1, y2, height }
-    } else { 
+    } else {
       // This should always be in pixels
       xCoords = { x1, x2, width: Math.abs(x2 - x1) }
       yCoords = { y1, y2, height: Math.abs(y2 - y1) }
@@ -180,22 +180,22 @@
     }
   }
 
-  // CHECK: 
+  // CHECK:
   // 1. that scale is provided,
   // 2. that least one of `fill, opacity` has been specified
   $: {
-    if (fill || fillOpacity){
-      if (typeof fill === "function") {
+    if (fill || fillOpacity) {
+      if (typeof fill === 'function') {
         scale = fill
-      } 
+      }
 
-      if (typeof fillOpacity === "function") {
+      if (typeof fillOpacity === 'function') {
         scale = fillOpacity
       }
 
       if (scale) {
         if (scale.hasOwnProperty('domain')) {
-          if (typeof scale.domain === "function") {
+          if (typeof scale.domain === 'function') {
             scaleDomain = scale.domain()
           } else {
             scaleDomain = scale.domain
@@ -212,12 +212,12 @@
   }
 
   $: {
-      colorBarHeight = orient === 'horizontal' ? 0.75 : 1
-      colorBarWidth = orient === 'horizontal' ? 0 : 0.75
+    colorBarHeight = orient === 'horizontal' ? 0.75 : 1
+    colorBarWidth = orient === 'horizontal' ? 0 : 0.75
   }
 
   // TICK LABELS and POSITIONING
-  // Assumes that legend illustrates one dimensional scale, 
+  // Assumes that legend illustrates one dimensional scale,
   // and that either fill or fillOpacity can used (it will look at fill first)
   $: {
     let useScale = false
@@ -232,27 +232,27 @@
     if (orient === 'vertical') {
       tickLabelYCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, yCoords, flip, orient, labelPaddingY, useScale)
       tickLabelXCoords = flipLabels ? x1 + colorBarHeight * xCoords.width : x1 + (1 - colorBarHeight) * xCoords.width
-      tickLabelXCoords = labelX ? labelX : tickLabelXCoords
-      
-      if (labelPaddingX !== undefined) { 
+      tickLabelXCoords = labelX || tickLabelXCoords
+  
+      if (labelPaddingX !== undefined) {
         tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPaddingX : tickLabelXCoords - labelPaddingX
       }
 
       format = getFormat(labelFormat, scaleDomain, tickLabelYCoords.length)
-    } else if (orient === 'horizontal'){
+    } else if (orient === 'horizontal') {
       tickLabelXCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, xCoords, flip, orient, labelPaddingX, useScale)
       tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * yCoords.height : yCoords.y2 - colorBarWidth * yCoords.height
-      tickLabelYCoords = labelY ? labelY : tickLabelYCoords
+      tickLabelYCoords = labelY || tickLabelYCoords
 
-      if (labelPaddingY !== undefined) { 
+      if (labelPaddingY !== undefined) {
         tickLabelYCoords = flipLabels ? tickLabelYCoords - labelPaddingY : tickLabelYCoords + labelPaddingY
       }
 
       format = getFormat(labelFormat, scaleDomain, tickLabelXCoords.length)
     } else {
-      throw new Error(`Could not construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
+      throw new Error('Could not construct legend. Please provide either \'vertical\' or \'horizontal\' to \'orient\' prop.')
     }
-  } 
+  }
 
   // COLORS
   $: {
@@ -260,30 +260,29 @@
       if (typeof fill === 'function') {
         // d3 scale
         tickColors = tickLabelText.map((value, i) => {
-            if (Array.isArray(scale[0]) && scale.length > 0) {
-                return fill(i)
-            } else {
-                return fill(value)
-            }
-        })  
-        
+          if (Array.isArray(scale[0]) && scale.length > 0) {
+            return fill(i)
+          } else {
+            return fill(value)
+          }
+        })
+  
         if (orient === 'vertical') {
-            tickLabelPositions = tickLabelYCoords
-            tickAlign = tickLabelXCoords 
+          tickLabelPositions = tickLabelYCoords
+          tickAlign = tickLabelXCoords
         } else {
-            tickLabelPositions = tickLabelXCoords
-            tickAlign = tickLabelYCoords
+          tickLabelPositions = tickLabelXCoords
+          tickAlign = tickLabelYCoords
         }
 
         colorGeoms = getGradientGeoms(tickColors, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize)
 
-        if (!tickOpacities){
-            tickOpacities = fillOpacity !== undefined ? fillOpacity : 1
+        if (!tickOpacities) {
+          tickOpacities = fillOpacity !== undefined ? fillOpacity : 1
         }
       }
     }
   }
-
 
   // OPACITY
   $: {
@@ -292,13 +291,13 @@
       if (fillOpacity.constructor === Function) {
         tickOpacities = tickLabelText.map((value, i) => {
           if (Array.isArray(scale[0]) && scale.length > 0) {
-              return fillOpacity(i)
+            return fillOpacity(i)
           } else {
-              return fillOpacity(value)
+            return fillOpacity(value)
           }
         })
       }
-      
+  
       if (orient === 'vertical') {
         tickLabelPositions = tickLabelYCoords
         tickAlign = tickLabelXCoords - labelPaddingX
@@ -308,11 +307,11 @@
       }
 
       colorGeoms = getGradientGeoms(tickOpacities, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize, labels)
-      
-      if (!tickColors){
-          tickColors = fill !== undefined ? fill : 'black'
+  
+      if (!tickColors) {
+        tickColors = fill !== undefined ? fill : 'black'
       }
-    }     
+    }
   }
 
   // Color bar geometry
@@ -322,8 +321,6 @@
     gradY = colorGeoms.gradY
     rectCoords = colorGeoms.rectCoords
   }
-
-
 </script>
 
 <g class="gradient-legend">
@@ -339,7 +336,7 @@
       {#each offsets as o, i}
           <stop
           key={i}
-          offset={`${o*100 + '%'}`}
+          offset={`${o * 100 + '%'}`}
           style={`stop-color:${Array.isArray(tickColors) ? tickColors[i] : tickColors};stop-opacity:${Array.isArray(tickOpacities) ? tickOpacities[i] : tickOpacities}`}
           />
       {/each}

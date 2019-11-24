@@ -1,6 +1,6 @@
 <script>
-  import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from "../../../"
-  import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from "./createLegendCoordinates.js"
+  import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from '../../../'
+  import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from './createLegendCoordinates.js'
   import { removePadding } from '../../Core/utils/padding.js'
 
   // Contexts
@@ -13,13 +13,13 @@
 
   // Public props
   // Aesthetics: positioning
-  export let x1 = undefined
-  export let x2 = undefined
-  export let y1 = undefined
-  export let y2 = undefined
+  export let x1
+  export let x2
+  export let y1
+  export let y2
   export let orient = 'vertical'
   export let vjust = 'center'
-  export let height = undefined
+  export let height
   export let hjust = 'left'
   export let width = 0
   export let xOffset = 0
@@ -35,16 +35,16 @@
   export let strokeWidth = 2
 
   // Aesthetics
-  export let fill = undefined
-  export let fillOpacity = undefined
+  export let fill
+  export let fillOpacity
 
   // tick labels
-  export let labels = undefined
-  export let labelFormat = undefined
+  export let labels
+  export let labelFormat
   export let labelOffset = 0.2
   export let labelRotate = 0
-  export let labelX = undefined
-  export let labelY = undefined
+  export let labelX
+  export let labelY
   export let labelFont = 'Helvetica'
   export let labelFontSize = 10
   export let labelFontWeight = 'normal'
@@ -53,18 +53,18 @@
   export let labelAnchorPoint = 'center'
   export let labelCount = 10
   export let labelExtra = false
-  export let firstLabel = undefined
-  export let format = undefined
+  export let firstLabel
+  export let format
   export let labelPaddingY = 0
   export let labelPaddingX = 0
 
   // legend title
   export let titleHjust = 'center'
   export let titleXOffset = 0
-  export let titleX = undefined
+  export let titleX
   export let titleVjust = 'top'
   export let titleYOffset = 0
-  export let titleY = undefined
+  export let titleY
   export let title = 'Legend'
   export let titleColor = 'black'
   export let titleFont = 'Helvetica'
@@ -77,8 +77,8 @@
   export let titlePaddingY = -3
 
   // transition
-  export let transition = undefined
-  export let zoomIdentity = undefined
+  export let transition
+  export let zoomIdentity
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -91,7 +91,7 @@
   let scale
   let scaleDomain
   let useScale = false
-  let tickLabelText 
+  let tickLabelText
   let tickLabelPositions
   let tickLabelXCoords
   let tickLabelYCoords
@@ -107,8 +107,8 @@
 
   let colorXStartCoords
   let colorXEndCoords
-  let colorYStartCoords 
-  let colorYEndCoords 
+  let colorYStartCoords
+  let colorYEndCoords
   let colorGeoms
   let colorBarHeight
   let colorBarWidth
@@ -150,7 +150,7 @@
       height = Math.abs(y2 - y1)
       yCoords = { y1, y2, height }
 
-    } else { 
+   } else {
       // This should always be in pixels
       xCoords = { x1, x2, width: Math.abs(x2 - x1) }
       yCoords = { y1, y2, height: Math.abs(y2 - y1) }
@@ -170,21 +170,21 @@
     }
   }
 
-  // CHECK: 
+  // CHECK:
   // 1. that scale is provided,
   // 2. that least one of `fill, opacity` has been specified
   $: {
-    if (fill || fillOpacity){
-      if (typeof fill === "function") {
+    if (fill || fillOpacity) {
+      if (typeof fill === 'function') {
         scale = fill
-      } 
+      }
 
-      if (typeof fillOpacity === "function") {
+      if (typeof fillOpacity === 'function') {
         scale = fillOpacity
       }
       if (scale) {
         if (scale.hasOwnProperty('domain')) {
-          if (typeof scale.domain === "function") {
+          if (typeof scale.domain === 'function') {
             scaleDomain = scale.domain()
           } else {
             scaleDomain = scale.domain
@@ -206,7 +206,7 @@
   }
 
   // TICK LABELS and POSITIONING
-  // Assumes that legend illustrates one dimensional scale, 
+  // Assumes that legend illustrates one dimensional scale,
   // and that either fill or fillOpacity can used (it will look at fill first)
   $: {
     if (labels === undefined) {
@@ -220,27 +220,27 @@
     if (orient === 'vertical') {
       tickLabelYCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, yCoords, flip, orient, labelPaddingY, useScale)
       tickLabelXCoords = flipLabels ? x1 + colorBarHeight * xCoords.width : x1 + (1 - colorBarHeight) * xCoords.width
-      tickLabelXCoords = labelX ? labelX : tickLabelXCoords
+      tickLabelXCoords = labelX || tickLabelXCoords
 
-      if (labelPaddingX !== undefined) { 
+      if (labelPaddingX !== undefined) {
         tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPaddingX : tickLabelXCoords - labelPaddingX
       }
 
       format = getFormat(labelFormat, scaleDomain, tickLabelYCoords.length)
-    } else if (orient === 'horizontal'){
+    } else if (orient === 'horizontal') {
       tickLabelXCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, xCoords, flip, orient, labelPaddingX, useScale)
       tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * yCoords.height : yCoords.y2 - colorBarWidth * yCoords.height
-      tickLabelYCoords = labelY ? labelY : tickLabelYCoords
+      tickLabelYCoords = labelY || tickLabelYCoords
 
-      if (labelPaddingY !== undefined) { 
+      if (labelPaddingY !== undefined) {
         tickLabelYCoords = flipLabels ? tickLabelYCoords - labelPaddingY : tickLabelYCoords + labelPaddingY
       }
 
       format = getFormat(labelFormat, scaleDomain, tickLabelXCoords.length)
     } else {
-      throw new Error(`Could not construct legend. Please provide either 'vertical' or 'horizontal' to 'orient' prop.`)
+      throw new Error('Could not construct legend. Please provide either \'vertical\' or \'horizontal\' to \'orient\' prop.')
     }
-  } 
+  }
 
   // COLORS
   $: {
@@ -254,7 +254,7 @@
             return fill(value)
           }
         })
-        
+  
         if (orient === 'vertical') {
           tickLabelPositions = tickLabelYCoords
           tickAlign = tickLabelXCoords - labelPaddingX
@@ -262,13 +262,13 @@
           tickLabelPositions = tickLabelXCoords
           tickAlign = tickLabelYCoords - labelPaddingY
         }
-    
+  
         colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale)
-        if (!tickOpacities){
+        if (!tickOpacities) {
           tickOpacities = 1
         }
-      } 
-    }    
+      }
+    }
   }
 
   // OPACITY
@@ -283,7 +283,7 @@
             return fillOpacity(value)
           }
         })
-      
+  
         if (orient === 'vertical') {
           tickLabelPositions = tickLabelYCoords
           tickAlign = tickLabelXCoords
@@ -293,8 +293,8 @@
         }
 
         colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale)
-        
-        if (!tickColors){
+  
+        if (!tickColors) {
           tickColors = fill
         }
       } else if (fillOpacity.constructor === Number) {
@@ -310,15 +310,14 @@
     colorYStartCoords = colorGeoms.colorYStartCoords
     colorYEndCoords = colorGeoms.colorYEndCoords
   }
-
 </script>
 
 <g class="discrete-legend">
   <RectangleLayer
-    x1 = { () => {return colorXStartCoords} }
-    x2 = { () => {return colorXEndCoords} }
-    y1 = { () => {return colorYStartCoords} }
-    y2 = { () => {return colorYEndCoords} }
+    x1 = { () => { return colorXStartCoords } }
+    x2 = { () => { return colorXEndCoords } }
+    y1 = { () => { return colorYStartCoords } }
+    y2 = { () => { return colorYEndCoords } }
     fill = {tickColors}
     fillOpacity = {tickOpacities}
     {transition} 
@@ -328,8 +327,8 @@
   />
 
   <LabelLayer
-    x={ () => {return tickLabelXCoords} }
-    y={ () => {return tickLabelYCoords} }
+    x={ () => { return tickLabelXCoords } }
+    y={ () => { return tickLabelYCoords } }
     text={tickLabelText} 
     anchorPoint={labelAnchorPoint}
     rotation={labelRotate} 
@@ -344,8 +343,8 @@
 
   {#if title.length > 0}
     <Label 
-      x={ () => {return titleX} }
-      y={ () => {return titleY} }
+      x={ () => { return titleX } }
+      y={ () => { return titleY } }
       text={title}
       fontFamily={titleFont}
       fontSize={titleFontSize}
