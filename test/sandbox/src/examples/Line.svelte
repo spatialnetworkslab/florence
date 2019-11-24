@@ -5,7 +5,8 @@
 
   const data = new DataContainer({
     x: [1, 2, 4, 6, 9, 10, 12, 13],
-    y: new Array(8).fill(0).map((_, i) => Math.random() * (i * 2))
+    y: [1.5, 3.3, 2.8, 7.95, 3.39, 5.3, 6.34, 7]
+    // y: new Array(8).fill(0).map((_, i) => Math.random() * (i * 2))
   })
 
   const multiLineString = {
@@ -23,6 +24,12 @@
       [[2, 0], [6, 1], [8, 2]]
     ]
   }
+
+  const lineStrings = {
+    x: [[5.5, 6, 7], [8, 8.75, 10]],
+    y: [[5, 6.5, 5], [6, 5, 6]],
+  }
+  let hoverKey
 
   let clicked = false
   let hovered = false
@@ -59,6 +66,15 @@
       stroke={clicked ? 'green' : 'red'}
       onClick={() => { clicked = !clicked }} 
       onMouseover={() => { hovered = !hovered }} 
+    /> 
+
+    <LineLayer
+      x={lineStrings.x}
+      y={lineStrings.y}
+      onMouseover={({ key }) => { hoverKey = key }}
+      onMouseout={() => { hoverKey = null }}
+      stroke={key => key === hoverKey ? '#3f88c5' : '#f49d37'}
+      strokeWidth={3}
     />
 
   </Section>

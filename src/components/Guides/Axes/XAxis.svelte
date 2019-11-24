@@ -4,11 +4,11 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as ZoomContext from '../../Core/Section/ZoomContext'
 
-  import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord} from './createXAxisCoords.js'
+  import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord } from './createXAxisCoords.js'
   import { getTickPositions, getFormat } from './utils.js'
 
   // global properties
-  export let scale = undefined
+  export let scale
   export let flip = false
 
   // axis baseline
@@ -18,25 +18,25 @@
   export let baseLineWidth = 1
 
   // axis positioning
-  export let vjust = "bottom"
-  export let y = undefined
+  export let vjust = 'bottom'
+  export let y
   export let yOffset = 0
-  export let hjust = undefined // not used for x axis
-  export let x = undefined
+  export let hjust // not used for x axis
+  export let x
   export let xOffset = 0
 
   // tick marks
   export let ticks = true
   export let tickCount = 10
   export let tickExtra = false
-  export let tickValues = undefined
+  export let tickValues
   export let tickSize = 5
   export let tickWidth = 0.5
   export let tickColor = 'black'
   export let tickOpacity = 1
 
   // tick labels
-  export let labelFormat = undefined
+  export let labelFormat
   export let labelOffset = 2
   export let labelRotate = 0
   export let labelFont = 'Helvetica'
@@ -48,10 +48,10 @@
   // axis title
   export let titleHjust = 'center'
   export let titleXOffset = 0
-  export let titleX = undefined
+  export let titleX
   export let titleVjust = 'axis'
   export let titleYOffset = 'axis'
-  export let titleY = undefined
+  export let titleY
   export let title = ''
   export let titleColor = 'black'
   export let titleFont = 'Helvetica'
@@ -62,9 +62,8 @@
   export let titleAnchorPoint = 't'
 
   // transition
-  export let transition = undefined
-  export let zoomIdentity = undefined
-
+  export let transition
+  export let zoomIdentity
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -87,13 +86,13 @@
   let scaleX
 
   $: {
-    scaleX = (typeof scale === "undefined") ? $sectionContext.scaleX : scale; 
-    ({xCoords, yCoords} = createXAxisCoords(vjust, y, yOffset, scaleX, $sectionContext.scaleY, $sectionContext))
+    scaleX = (typeof scale === 'undefined') ? $sectionContext.scaleX : scale;
+    ({ xCoords, yCoords } = createXAxisCoords(vjust, y, yOffset, scaleX, $sectionContext.scaleY, $sectionContext))
   }
   $: {
     tickPositions = getTickPositions(tickValues, scaleX, tickCount, tickExtra);
-    ({tickXCoords, tickYCoords} = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
-    ({tickLabelXCoords, tickLabelYCoords} = createXLabelGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, labelOffset, flip))
+    ({ tickXCoords, tickYCoords } = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
+    ({ tickLabelXCoords, tickLabelYCoords } = createXLabelGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, labelOffset, flip))
 
     format = getFormat(labelFormat, scaleX, tickPositions.length)
     tickLabelText = tickPositions.map(format)

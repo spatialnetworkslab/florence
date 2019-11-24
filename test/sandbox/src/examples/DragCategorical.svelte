@@ -59,7 +59,7 @@
 			y1={50} y2={450}
 			scaleX={scaleA}
 			scaleY={scaleB}
-      backgroundColor="pink"
+      backgroundColor="white"
       transformation="polar"
       zoomIdentity={{x: 0, y: 0, kx: 1.2, ky: 1.2}}
       {blockReindexing}
