@@ -31,6 +31,10 @@ export function createDataNecessaryForIndexingMark (type, markId, geometryTypes,
     }
   }
 
+  if (type === 'Area') {
+    attributes = { screenGeometry: geometryTypes.screenGeometry }
+  }
+
   markData.attributes = attributes
 
   return markData
@@ -69,6 +73,10 @@ export function createDataNecessaryForIndexingLayer (
       pixelGeometryObject: geometryObjects.pixelGeometryObject,
       strokeWidthObject: aestheticsObjects.strokeWidthObject
     }
+  }
+
+  if (type === 'Area') {
+    layerAttributes = { screenGeometryObject: geometryObjects.screenGeometryObject }
   }
 
   layerData.layerAttributes = layerAttributes

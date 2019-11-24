@@ -41,6 +41,7 @@
   export let y1
   export let y2
   export let geometry
+  export let independentAxis
 
   // Aesthetics: other
   export let radius
@@ -94,6 +95,7 @@
       y1,
       y2,
       geometry,
+      independentAxis,
       radius,
       fill,
       stroke,
@@ -121,6 +123,7 @@
           y1,
           y2,
           geometry,
+          independentAxis,
           radius,
           fill,
           stroke,
@@ -140,10 +143,10 @@
   }
 
   // Create 'positioning' aesthetics object
-  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
+  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, independentAxis }
   $: {
     if (initDone()) {
-      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
+      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, independentAxis }
     }
   }
 
