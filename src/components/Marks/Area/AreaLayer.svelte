@@ -2,42 +2,42 @@
   import Mark from '../Mark/Layer.svelte'
 
   // Aesthetics: positioning
-  export let x1 = undefined
-  export let x2 = undefined
-  export let y1 = undefined
-  export let y2 = undefined
-  export let independentAxis = undefined
- 
+  export let x1
+  export let x2
+  export let y1
+  export let y2
+  export let independentAxis
+
   // Aesthetics: other
-  export let fill = undefined
-  export let stroke = undefined
-  export let strokeWidth = undefined
-  export let strokeOpacity = undefined
-  export let fillOpacity = undefined
-  export let opacity = undefined
+  export let fill
+  export let stroke
+  export let strokeWidth
+  export let strokeOpacity
+  export let fillOpacity
+  export let opacity
 
   // Transitions
-  export let transition = undefined
+  export let transition
 
   // Mouse interactions
-  export let onClick = undefined
-  export let onMousedown = undefined
-  export let onMouseup = undefined
-  export let onMouseover = undefined
-  export let onMouseout = undefined
-  export let onMousedrag = undefined
+  export let onClick
+  export let onMousedown
+  export let onMouseup
+  export let onMouseover
+  export let onMouseout
+  export let onMousedrag
 
   // Touch interactions
   // TODO
 
   // Select interactions
-  export let onSelect = undefined
-  export let onDeselect = undefined
+  export let onSelect
+  export let onDeselect
 
   // Other
-  export let key = undefined
+  export let key
   export let interpolate = true
-  export let zoomIdentity = undefined
+  export let zoomIdentity
   export let blockReindexing = false
 </script>
 
