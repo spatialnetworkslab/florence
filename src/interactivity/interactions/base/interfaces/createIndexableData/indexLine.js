@@ -89,7 +89,7 @@ export function indexLineLayer ({ layerAttributes, keyArray, layerId }) {
         lineStringCoords, lineAttributes, key
       )
 
-      segments = modifyForLayer(segments, layerId)
+      segments = modifyForLayer(segments, layerId, key, i)
       items = items.concat(segments)
     }
 
