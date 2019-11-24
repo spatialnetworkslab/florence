@@ -1,6 +1,6 @@
 <script>
   import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
-  import { isValid, createTitleXCoord, createTitleYCoord } from "./utils.js"
+  import { isValid, createTitleXCoord, createTitleYCoord } from './utils.js'
   import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
   import { parsePadding, removePadding } from '../utils/padding.js'
   
@@ -10,9 +10,9 @@
   import * as ZoomContext from '../../Core/Section/ZoomContext'
 
   // Aesthetics: positioning
-  export let x = undefined
-  export let y = undefined
-  export let geometry = undefined
+  export let x
+  export let y
+  export let geometry
   export let vjust = 'top'
   export let hjust = 'center'
   export let xOffset = 0
@@ -22,12 +22,12 @@
   // Aesthetics: Title
   export let title = 'Title Text'
   export let titleFill = 'black'
-  export let titleStroke = undefined
-  export let titleStrokeWidth = undefined
-  export let titleStrokeOpacity = undefined
-  export let titleFillOpacity = undefined
+  export let titleStroke
+  export let titleStrokeWidth
+  export let titleStrokeOpacity
+  export let titleFillOpacity
   export let titleOpacity = 1
-  export let titleFontFamily = undefined
+  export let titleFontFamily
   export let titleFontSize = 18
   export let titleFontWeight = 'bold'
   export let titleRotation = 0
@@ -36,27 +36,27 @@
   // Aesthetics: Subtitle
   export let subtitle = ''
   export let subtitleFill = 'black'
-  export let subtitleStroke = undefined
-  export let subtitleStrokeWidth = undefined
-  export let subtitleStrokeOpacity = undefined
-  export let subtitleFillOpacity = undefined
+  export let subtitleStroke
+  export let subtitleStrokeWidth
+  export let subtitleStrokeOpacity
+  export let subtitleFillOpacity
   export let subtitleOpacity = 1
-  export let subtitleFontFamily = undefined
+  export let subtitleFontFamily
   export let subtitleFontSize = 14
   export let subtitleFontWeight = 'normal'
   export let subtitleRotation = 0
   export let subtitleAnchorPoint = 'center'
-  export let subtitleX = undefined
-  export let subtitleY = undefined
+  export let subtitleX
+  export let subtitleY
 
   // Transitions and interactions
-  export let transition = undefined
-  export let onClick = undefined
-  export let onMouseover = undefined
-  export let onMouseout = undefined
+  export let transition
+  export let onClick
+  export let onMouseover
+  export let onMouseout
 
   // Other
-  export let zoomIdentity = undefined
+  export let zoomIdentity
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -95,8 +95,6 @@
       }
     }
   }
-
-  
 </script>
 
 {#if isValid(x, y) && title.length > 0}

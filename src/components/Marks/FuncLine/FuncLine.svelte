@@ -20,14 +20,14 @@
   import generatePath from '../utils/generatePath.js'
   import { createDataNecessaryForIndexingMark } from '../Mark/createDataNecessaryForIndexing.js'
 
-  let markId = getId()
+  const markId = getId()
 
   let initPhase = true
   const initDone = () => !initPhase
 
   // Aesthetics: positioning
   export let func
-  export let x = undefined
+  export let x
 
   // Aesthetics: other
   export let strokeWidth = 1
@@ -35,25 +35,25 @@
   export let opacity = 1
 
   // Transitions
-  export let transition = undefined
+  export let transition
 
   // Mouse interactions
-  export let onClick = undefined
-  export let onMousedown = undefined
-  export let onMouseup = undefined
-  export let onMouseover = undefined
-  export let onMouseout = undefined
-  export let onMousedrag = undefined
+  export let onClick
+  export let onMousedown
+  export let onMouseup
+  export let onMouseover
+  export let onMouseout
+  export let onMousedrag
 
   // Touch interactions
   // TODO
 
   // Select interactions
-  export let onSelect = undefined
-  export let onDeselect = undefined
+  export let onSelect
+  export let onDeselect
 
   // Other
-  export let zoomIdentity = undefined
+  export let zoomIdentity
   export let blockReindexing = false
 
   // Contexts
@@ -64,7 +64,7 @@
   const zoomContext = ZoomContext.subscribe()
 
   let screenGeometry = createScreenGeometry(
-    { func, x }, 
+    { func, x },
     $sectionContext,
     $coordinateTransformationContext,
     ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
@@ -116,7 +116,7 @@
   })
 
   // Interactivity
-  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined || 
+  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined ||
     onMousedown !== undefined || onMouseup !== undefined ||
     onMouseover !== undefined || onMouseout !== undefined ||
     onMousedrag !== undefined
