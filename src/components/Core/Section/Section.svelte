@@ -19,34 +19,34 @@
   import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
   import { parsePadding, applyPadding } from '../utils/padding.js'
 
-  let sectionId = getId()
+  const sectionId = getId()
   
   // Props
-  export let x1 = undefined
-  export let x2 = undefined
-  export let y1 = undefined
-  export let y2 = undefined
+  export let x1
+  export let x2
+  export let y1
+  export let y2
   export let padding = 0
-  export let scaleX = undefined
-  export let scaleY = undefined
+  export let scaleX
+  export let scaleY
   export let flipX = false
   export let flipY = false
-  export let zoomIdentity = undefined
-  export let transformation = undefined
+  export let zoomIdentity
+  export let transformation
   export let blockReindexing = false
 
   // Aesthetics
-  export let backgroundColor = undefined
-  export let paddingColor = undefined
+  export let backgroundColor
+  export let paddingColor
 
   // Mouse interactions
-  export let onWheel = undefined
-  export let onClick = undefined
-  export let onMousedown = undefined
-  export let onMouseup = undefined
-  export let onMouseover = undefined
-  export let onMouseout = undefined
-  export let onMousemove = undefined
+  export let onWheel
+  export let onClick
+  export let onMousedown
+  export let onMouseup
+  export let onMouseover
+  export let onMouseout
+  export let onMousemove
   
   // Touch interactions
   // TODO
@@ -66,7 +66,7 @@
   let rangeY
   
   // Set up InteractionManager
-  let interactionManager = new InteractionManager()
+  const interactionManager = new InteractionManager()
   interactionManager.setId(sectionId)
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
@@ -78,7 +78,7 @@
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
     rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
     rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
-    
+  
     if (flipX) rangeX.reverse()
     if (flipY) rangeY.reverse()
 
@@ -86,7 +86,7 @@
     rangeX = applyPadding(rangeX, _padding.left, _padding.right)
     rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
 
-    const updatedSectionContext = { 
+    const updatedSectionContext = {
       sectionId, rangeX, rangeY, scaleX, scaleY, padding: _padding, flipX, flipY, blockReindexing
     }
 
