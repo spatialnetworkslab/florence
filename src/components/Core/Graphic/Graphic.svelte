@@ -16,11 +16,11 @@
   export let width
   export let height
   export let padding = 0
-  export let scaleX = undefined
-  export let scaleY = undefined
+  export let scaleX
+  export let scaleY
   export let flipX = false
   export let flipY = false
-  export let renderer = undefined
+  export let renderer
   export let blockReindexing = false
 
   const graphicContext = GraphicContext.init()
@@ -35,12 +35,12 @@
   }
 
   let rootNode
- 
+
   // set up event and interaction manager
-  let eventManager = new EventManager()
+  const eventManager = new EventManager()
   EventManagerContext.update(eventManagerContext, eventManager)
 
-  let interactionManager = new InteractionManager()
+  const interactionManager = new InteractionManager()
   interactionManager.setId('graphic')
   interactionManager.linkEventManager(eventManager)
 
@@ -50,7 +50,7 @@
 
   $: {
     let rangeX = [0, width]
-    let rangeY = [0, height]    
+    let rangeY = [0, height]
 
     if (flipX) rangeX.reverse()
     if (flipY) rangeY.reverse()
@@ -59,7 +59,7 @@
     rangeX = applyPadding(rangeX, _padding.left, _padding.right)
     rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
 
-    SectionContext.update(sectionContext, 
+    SectionContext.update(sectionContext,
       { sectionId: 'graphic', rangeX, rangeY, scaleX, scaleY, padding: _padding, blockReindexing }
     )
 

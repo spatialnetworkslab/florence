@@ -23,7 +23,7 @@ export function createXAxisCoords (vjust, y, offset, scaleX, scaleY, sectionCont
       return [y1 + offset, y1 + offset]
     }
   }
-  if (vjust === 'center') {
+  if (vjust === 'center' || vjust === 'centre') {
     const yCoord = (y2 - y1) * 0.5 + y1
     yCoords = () => {
       return [yCoord + offset, yCoord + offset]
@@ -70,7 +70,7 @@ export function createTitleXCoord (hjust, axisXCoords, x, scaleX, scaleY, offset
   if (hjust === 'axis') {
     return () => axisXCoords()[0]
   }
-  if (hjust === 'center') {
+  if (hjust === 'center' || hjust === 'centre') {
     justification = 0.5
   }
   if (hjust === 'left') {
@@ -109,7 +109,7 @@ export function createTitleYCoord (vjust, axisYCoords, y, scaleX, scaleY, offset
     return () => axisYCoords()[0] + heightOffset
   }
 
-  if (vjust === 'center') {
+  if (vjust === 'center' || vjust === 'centre') {
     justification = 0.5
   }
   if (vjust === 'bottom') {
