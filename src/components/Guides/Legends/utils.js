@@ -7,7 +7,7 @@ import { scaleLinear } from 'd3-scale'
 export function isValid (x1, x2, y1, y2) {
   let validVariables = 0
 
-  for (let value in [x1, x2, y1, y2]) {
+  for (const value in [x1, x2, y1, y2]) {
     if (checkValidType(value)) {
       validVariables += 1
     }

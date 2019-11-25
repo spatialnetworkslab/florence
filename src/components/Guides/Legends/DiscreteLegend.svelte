@@ -150,10 +150,10 @@
       height = Math.abs(y2 - y1)
       yCoords = { y1, y2, height }
 
-    } else { 
+   } else {
       let _x1, _x2, _y1, _y2
 
-      /** If function, uses pixel values based on padding/no padding setting 
+      /** If function, uses pixel values based on padding/no padding setting
        * (does not rely on section/graphic scale)
        * else if value, uses data scale => convert to pixel values
       **/
@@ -182,8 +182,8 @@
       }
 
       // This ends up in pixel values
-      xCoords = { 'x1': _x1, 'x2': _x2, width: Math.abs(_x2 - _x1) }
-      yCoords = { 'y1': _y1, 'y2': _y2, height: Math.abs(_y2 - _y1) }
+      xCoords = { x1: _x1, x2: _x2, width: Math.abs(_x2 - _x1) }
+      yCoords = { y1: _y1, y2: _y2, height: Math.abs(_y2 - _y1) }
     }
   }
 
@@ -201,7 +201,7 @@
           titleX = $sectionContext.scaleX(titleX)
         }
       }
-      
+  
       // if titleY is not a function or a data scale value
       if (!titleY && titleY !== 0) {
         titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, labelFontSize, orient, titlePaddingY)
@@ -276,9 +276,9 @@
     } else if (orient === 'horizontal') {
       tickLabelXCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, xCoords, flip, orient, labelPaddingX, useScale)
       tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * yCoords.height : yCoords.y2 - colorBarWidth * yCoords.height
-      tickLabelYCoords = labelY ? labelY : tickLabelYCoords
-      
-      if (labelPaddingY !== undefined) { 
+      tickLabelYCoords = labelY || tickLabelYCoords
+  
+      if (labelPaddingY !== undefined) {
         tickLabelYCoords = flipLabels ? tickLabelYCoords - labelPaddingY : tickLabelYCoords + labelPaddingY
       }
 
@@ -286,8 +286,7 @@
     } else {
       throw new Error('Could not construct legend. Please provide either \'vertical\' or \'horizontal\' to \'orient\' prop.')
     }
-
-  } 
+}
 
   // COLORS
   $: {
@@ -308,8 +307,8 @@
         } else {
           tickLabelPositions = tickLabelXCoords
           tickAlign = tickLabelYCoords - labelPaddingY
-        } 
-       
+        }
+  
         colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale)
         if (!tickOpacities) {
           tickOpacities = 1
