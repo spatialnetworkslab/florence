@@ -12,6 +12,8 @@ export default function createZoomHandler (
     const zoomPoint = getZoompoint(event)
     const zoomFactor = event.delta * step
 
+    // console.log(event.delta)
+
     const previousScaleX = zoomIdentity.kx
     const previousScaleY = zoomIdentity.ky
 

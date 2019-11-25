@@ -12,7 +12,7 @@ export default class PinchHandler extends SectionInteractionHandler {
       eventName: ['touchstart', 'touchmove', 'touchend']
     })
 
-    this._previousDelta = undefined
+    this._previousTouchDistance = undefined
   }
 
   _handleEvent (screenCoordinatesArray, nativeEvent) {
@@ -37,8 +37,7 @@ export default class PinchHandler extends SectionInteractionHandler {
     const section = this.section()
 
     if (allCoordinatesAreInsideSection(screenCoordinatesArray, section)) {
-      const sectionHeight = section.maxY - section.minY
-      this._previousDelta = getDelta(screenCoordinatesArray, sectionHeight)
+      this._previousTouchDistance = getDistance(screenCoordinatesArray)
     }
   }
 
@@ -47,7 +46,7 @@ export default class PinchHandler extends SectionInteractionHandler {
       return
     }
 
-    if (!this._previousDelta) return
+    if (this._previousTouchDistance === undefined) return
 
     const section = this.section()
 
@@ -56,21 +55,17 @@ export default class PinchHandler extends SectionInteractionHandler {
 
       const center = getCenter(screenCoordinatesArray)
 
-      let delta = getDelta(screenCoordinatesArray, sectionHeight)
-      const absoluteDelta = Math.abs(delta)
+      const touchDistance = getDistance(screenCoordinatesArray)
+      const touchDelta = this._previousTouchDistance - touchDistance
+      const relativeTouchDelta = touchDelta / sectionHeight
 
-      if (this._previousDelta > absoluteDelta) {
-        delta = -delta
-      }
-
-      this._fireCallback(screenCoordinatesArray, nativeEvent, delta, center)
-
-      this._previousDelta = absoluteDelta
+      this._previousTouchDistance = touchDistance
+      this._fireCallback(screenCoordinatesArray, nativeEvent, relativeTouchDelta, center)
     }
   }
 
   _handleTouchend (screenCoordinatesArray, nativeEvent) {
-    this._previousDelta = undefined
+    this._previousTouchDistance = undefined
   }
 
   _fireCallback (screenCoordinatesArray, nativeEvent, delta, center) {
@@ -99,9 +94,9 @@ function allCoordinatesAreInsideSection (screenCoordinatesArray, section) {
   })
 }
 
-function getDelta (screenCoordinatesArray, sectionHeight) {
+function getDistance (screenCoordinatesArray) {
   const [coords1, coords2] = screenCoordinatesArray
-  return -Math.sqrt((coords2.x - coords1.x) ** 2 + (coords2.y - coords1.y) ** 2) / (sectionHeight * 50)
+  return Math.sqrt((coords2.x - coords1.x) ** 2 + (coords2.y - coords1.y) ** 2)
 }
 
 function getCenter (screenCoordinatesArray) {
