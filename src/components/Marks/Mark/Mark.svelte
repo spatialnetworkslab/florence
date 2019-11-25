@@ -42,12 +42,9 @@
   export let y1 = undefined
   export let y2 = undefined
   export let geometry = undefined
-<<<<<<< HEAD
   export let shape = undefined
   export let size = undefined
-=======
   export let independentAxis = undefined
->>>>>>> touch-interactions
 
   // Aesthetics: other
   export let radius = undefined
