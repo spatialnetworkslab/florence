@@ -98,7 +98,6 @@ export function getTickPositions (tickValuesArray, domain, tickExtra, coordinate
     tickPositions = tickValuesArray.map((value, i) => {
       return firstVal + interval * (i + 0.5) + padding
     })
-
   } else {
     throw new Error(`Couldn't construct legend. Please provide 'tickValues' or a scale with
         either a 'ticks' or a 'domain' method.`)
@@ -248,7 +247,7 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
   let x2
   let y1
   let y2
-  
+
   if (orient === 'vertical') {
     gradX = { x1: '0%', x2: '0%' }
     gradY = flip ? { y1: '100%', y2: '0%' } : { y1: '0%', y2: '100%' }

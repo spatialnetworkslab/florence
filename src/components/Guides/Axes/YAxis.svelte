@@ -1,15 +1,14 @@
 <script>
-  import { Line, LineLayer, Label, LabelLayer } from "../../../"
+  import { Line, LineLayer, Label, LabelLayer } from '../../../'
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
-  import * as SectionContext from "../../Core/Section/SectionContext"
+  import * as SectionContext from '../../Core/Section/SectionContext'
 
-  import { createYAxisCoords, createYTickGeoms, createYLabelGeoms, createTitleXCoord, createTitleYCoord} from "./createYAxisCoords.js"
+  import { createYAxisCoords, createYTickGeoms, createYLabelGeoms, createTitleXCoord, createTitleYCoord } from './createYAxisCoords.js'
   import { getTickPositions, getFormat } from './utils.js'
 
   // global properties
-  export let scale = undefined
+  export let scale
   export let flip = false
-
 
   // axis baseline
   export let baseLine = true
@@ -18,25 +17,25 @@
   export let baseLineWidth = 1
 
   // axis positioning
-  export let vjust = undefined
-  export let y = undefined
-  export let yOffset = undefined
+  export let vjust
+  export let y
+  export let yOffset
   export let hjust = 'left'
-  export let x = undefined
+  export let x
   export let xOffset = 0
 
   // tick marks
   export let ticks = true
   export let tickCount = 10
   export let tickExtra = false
-  export let tickValues = undefined
+  export let tickValues
   export let tickSize = 5
   export let tickWidth = 0.5
   export let tickColor = 'black'
   export let tickOpacity = 1
 
   // tick labels
-  export let labelFormat = undefined
+  export let labelFormat
   export let labelOffset = 2
   export let labelRotate = 0
   export let labelFont = 'Helvetica'
@@ -48,10 +47,10 @@
   // axis title
   export let titleHjust = 'axis'
   export let titleXOffset = 'axis'
-  export let titleX = undefined
+  export let titleX
   export let titleVjust = 'center'
   export let titleYOffset = 0
-  export let titleY = undefined
+  export let titleY
   export let title = ''
   export let titleColor = 'black'
   export let titleFont = 'Helvetica'
@@ -62,8 +61,8 @@
   export let titleAnchorPoint = 'center'
 
   // transition
-  export let transition = undefined
-  export let zoomIdentity = undefined
+  export let transition
+  export let zoomIdentity
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -85,13 +84,13 @@
   let scaleY
   
   $: {
-    scaleY = (typeof scale === "undefined") ? $sectionContext.scaleY : scale;
-    ({xCoords, yCoords} = createYAxisCoords(hjust, x, xOffset, $sectionContext.scaleX, scaleY, $sectionContext));
+    scaleY = (typeof scale === 'undefined') ? $sectionContext.scaleY : scale;
+    ({ xCoords, yCoords } = createYAxisCoords(hjust, x, xOffset, $sectionContext.scaleX, scaleY, $sectionContext))
   }
   $: {
     tickPositions = getTickPositions(tickValues, scaleY, tickCount, tickExtra);
-    ({tickXCoords, tickYCoords} = createYTickGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, flip));
-    ({tickLabelXCoords, tickLabelYCoords} = createYLabelGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, labelOffset, flip))
+    ({ tickXCoords, tickYCoords } = createYTickGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, flip));
+    ({ tickLabelXCoords, tickLabelYCoords } = createYLabelGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, labelOffset, flip))
     format = getFormat(labelFormat, scaleY, tickPositions.length)
     tickLabelText = tickPositions.map(format)
 
