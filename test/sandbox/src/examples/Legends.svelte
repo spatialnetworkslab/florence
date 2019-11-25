@@ -88,6 +88,7 @@
   const nutrientColorScale = scaleOrdinal()
     .domain(nutrientDomain)
     .range(schemeAccent)
+
 </script>
 
 <div>
@@ -105,10 +106,23 @@
       scaleY={scaleLinear().domain(data.domain('b'))}
       {zoomIdentity}
     >
+      <!-- NOTE: usePadding won't work on the two discrete legend examples here
+      because they are being given specific values -->
 
-      <GradientLegend
-        x1={200} x2={300}
-        y1={60} y2={100}
+      <!-- Pixels -->
+      <DiscreteLegend
+        x1={() => {return 200}} x2={() => {return 300}}
+        y1={() => {return 60}} y2={() => {return 100}}
+        fill={linearColorScale}
+        orient={'horizontal'}
+        titleVjust={'top'}
+        labelCount={8}
+      />
+
+      <!-- Data scale -->
+      <DiscreteLegend
+        x1={20} x2={60}
+        y1={80} y2={100}
         fill={linearColorScale}
         orient={'horizontal'}
         titleVjust={'top'}

@@ -1,13 +1,30 @@
 import { ticks as arrayTicks } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
 
+// if x1, x2, y1, y2 are values, functions => return true
+// if x1, x2, y1, y2 are all undefined => return false
+// if neither are fulfilled => raise error
 export function isValid (x1, x2, y1, y2) {
-  if (!isNaN(x1) && !isNaN(x2) && !isNaN(y1) && !isNaN(y2)) {
-    return true
+  let validVariables = 0
+
+  for (let value in [x1, x2, y1, y2]) {
+    if (checkValidType(value)) {
+      validVariables += 1
+    }
   }
 
-  if (x1 !== undefined || x2 !== undefined || y1 !== undefined || y2 !== undefined) {
+  if (validVariables < 4) {
     throw new Error('Couldn\'t construct legend because of invalid x1, x2, y1, y2 inputs.')
+  } else if (validVariables === 4 && x1 === undefined && x2 === undefined && y1 === undefined && y2 === undefined) {
+    return false
+  }
+
+  return true
+}
+
+function checkValidType (value) {
+  if (!isNaN(value) || {}.toString.call(value) === '[object Function]' || value === undefined) {
+    return true
   }
 
   return false
