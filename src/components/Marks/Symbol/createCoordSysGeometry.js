@@ -11,7 +11,7 @@ export default function (geometryProps, sectionContext, coordinateTransformation
   return symbolGeometry
 }
 
-function createSymbolGeometry (pointGeometry, geometryProps) {
+export function createSymbolGeometry (pointGeometry, geometryProps) {
   const [cx, cy] = pointGeometry.coordinates
 
   const shape = geometryProps.shape || 'circle'
