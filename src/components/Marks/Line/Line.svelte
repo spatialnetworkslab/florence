@@ -2,25 +2,25 @@
   import Mark from '../Mark/Mark.svelte'
 
   // Aesthetics: positioning
-  export let x
-  export let y
-  export let geometry
+  export let x = undefined
+  export let y = undefined
+  export let geometry = undefined
 
   // Aesthetics: other
-  export let strokeWidth
-  export let stroke
-  export let opacity
+  export let strokeWidth = undefined
+  export let stroke = undefined
+  export let opacity = undefined
 
   // Transitions
-  export let transition
+  export let transition = undefined
 
   // Mouse interactions
-  export let onClick
-  export let onMousedown
-  export let onMouseup
-  export let onMouseover
-  export let onMouseout
-  export let onMousedrag
+  export let onClick = undefined
+  export let onMousedown = undefined
+  export let onMouseup = undefined
+  export let onMouseover = undefined
+  export let onMouseout = undefined
+  export let onMousedrag = undefined
 
   // Touch interactions
   export let onTouchdown = undefined
@@ -30,12 +30,12 @@
   export let onTouchdrag = undefined
 
   // Select interactions
-  export let onSelect
-  export let onDeselect
+  export let onSelect = undefined
+  export let onDeselect = undefined
 
   // Other
   export let interpolate = true
-  export let zoomIdentity
+  export let zoomIdentity = undefined
   export let blockReindexing = false
 </script>
 

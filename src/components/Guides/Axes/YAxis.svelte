@@ -7,7 +7,7 @@
   import { getTickPositions, getFormat } from './utils.js'
 
   // global properties
-  export let scale
+  export let scale = undefined
   export let flip = false
 
   // axis baseline
@@ -17,25 +17,24 @@
   export let baseLineWidth = 1
 
   // axis positioning
-  export let vjust
-  export let y
-  export let yOffset
+  export let y = undefined
+  export let yOffset = undefined
   export let hjust = 'left'
-  export let x
+  export let x = undefined
   export let xOffset = 0
 
   // tick marks
   export let ticks = true
   export let tickCount = 10
   export let tickExtra = false
-  export let tickValues
+  export let tickValues = undefined
   export let tickSize = 5
   export let tickWidth = 0.5
   export let tickColor = 'black'
   export let tickOpacity = 1
 
   // tick labels
-  export let labelFormat
+  export let labelFormat = undefined
   export let labelOffset = 2
   export let labelRotate = 0
   export let labelFont = 'Helvetica'
@@ -47,10 +46,10 @@
   // axis title
   export let titleHjust = 'axis'
   export let titleXOffset = 'axis'
-  export let titleX
+  export let titleX = undefined
   export let titleVjust = 'center'
   export let titleYOffset = 0
-  export let titleY
+  export let titleY = undefined
   export let title = ''
   export let titleColor = 'black'
   export let titleFont = 'Helvetica'
@@ -61,8 +60,8 @@
   export let titleAnchorPoint = 'center'
 
   // transition
-  export let transition
-  export let zoomIdentity
+  export let transition = undefined
+  export let zoomIdentity = undefined
 
   // Contexts
   const sectionContext = SectionContext.subscribe()

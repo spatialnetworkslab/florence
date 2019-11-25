@@ -10,9 +10,9 @@
   import * as ZoomContext from '../../Core/Section/ZoomContext'
 
   // Aesthetics: positioning
-  export let x
-  export let y
-  export let geometry
+  export let x = undefined
+  export let y = undefined
+  export let geometry = undefined
   export let vjust = 'top'
   export let hjust = 'center'
   export let xOffset = 0
@@ -22,12 +22,12 @@
   // Aesthetics: Title
   export let title = 'Title Text'
   export let titleFill = 'black'
-  export let titleStroke
-  export let titleStrokeWidth
-  export let titleStrokeOpacity
-  export let titleFillOpacity
+  export let titleStroke = undefined
+  export let titleStrokeWidth = undefined
+  export let titleStrokeOpacity = undefined
+  export let titleFillOpacity = undefined
   export let titleOpacity = 1
-  export let titleFontFamily
+  export let titleFontFamily = undefined
   export let titleFontSize = 18
   export let titleFontWeight = 'bold'
   export let titleRotation = 0
@@ -36,27 +36,27 @@
   // Aesthetics: Subtitle
   export let subtitle = ''
   export let subtitleFill = 'black'
-  export let subtitleStroke
-  export let subtitleStrokeWidth
-  export let subtitleStrokeOpacity
-  export let subtitleFillOpacity
+  export let subtitleStroke = undefined
+  export let subtitleStrokeWidth = undefined
+  export let subtitleStrokeOpacity = undefined
+  export let subtitleFillOpacity = undefined
   export let subtitleOpacity = 1
   export let subtitleFontFamily
   export let subtitleFontSize = 14
   export let subtitleFontWeight = 'normal'
   export let subtitleRotation = 0
   export let subtitleAnchorPoint = 'center'
-  export let subtitleX
-  export let subtitleY
+  export let subtitleX = undefined
+  export let subtitleY = undefined
 
   // Transitions and interactions
-  export let transition
-  export let onClick
-  export let onMouseover
-  export let onMouseout
+  export let transition = undefined
+  export let onClick = undefined
+  export let onMouseover = undefined
+  export let onMouseout = undefined
 
   // Other
-  export let zoomIdentity
+  export let zoomIdentity = undefined
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
