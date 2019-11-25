@@ -45,7 +45,6 @@
   export let subtitleFontSize = 14
   export let subtitleFontWeight = 'normal'
   export let subtitleRotation = 0
-  export let subtitleAnchorPoint = 'center'
   export let subtitleX = undefined
   export let subtitleY = undefined
 

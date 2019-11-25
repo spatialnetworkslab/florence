@@ -21,8 +21,6 @@
   export let vjust = 'bottom'
   export let y = undefined
   export let yOffset = 0
-  export let x = undefined
-  export let xOffset = 0
 
   // tick marks
   export let ticks = true

@@ -17,8 +17,6 @@
   export let baseLineWidth = 1
 
   // axis positioning
-  export let y = undefined
-  export let yOffset = undefined
   export let hjust = 'left'
   export let x = undefined
   export let xOffset = 0
