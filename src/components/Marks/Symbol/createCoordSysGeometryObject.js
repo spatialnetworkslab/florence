@@ -1,6 +1,5 @@
 import createCoordSysGeometryObjectPoint from '../Point/createCoordSysGeometryObject.js'
 import { createSymbolGeometry } from './createCoordSysGeometry.js'
-import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 
 export default function (geometryProps, sectionContext, coordinateTransformationContext, keyProp) {
   const pointGeometryObject = createCoordSysGeometryObjectPoint(
