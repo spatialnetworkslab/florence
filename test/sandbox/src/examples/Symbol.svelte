@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-	import { Graphic, Section, Symbol_ } from '../../../../src/'
+	import { Graphic, Section, Symbol_, SymbolLayer } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   const N = 100
@@ -25,15 +25,18 @@
     return symbols[Math.floor(Math.random() * symbols.length)]
   }
 
-  // let hoverKey
+  let hoverKey
 
-  // function onMouseover ({ key }) {
-  //   hoverKey = key
-  // }
+  function onMouseover ({ key }) {
+    hoverKey = key
+  }
 
-  // function onMouseout ({ key }) {
-  //   if (hoverKey === key) hoverKey = undefined
-  // }
+  function onMouseout ({ key }) {
+    if (hoverKey === key) hoverKey = undefined
+  }
+
+  const fills = new Array(N).fill(0).map(_ => ['#a8122c', '#006600'][Math.floor(Math.random() * 2)])
+  const shapes = new Array(N).fill(0).map(getRandomSymbol)
 </script>
 
 <Graphic width={500} height={500}>
@@ -49,17 +52,29 @@
       {onMouseout}
     /> -->
 
-    {#each data.rows() as row (row.$key)}
+    {#each data.rows() as row, i (row.$key)}
 
       <Symbol_
         x={row.a}
         y={row.b}
         shape={getRandomSymbol()}
         size={14}
-        fill={['#a8122c', '#006600'][Math.floor(Math.random() * 2)]}
+        fill={hoverKey === row.$key ? 'orange' : fills[i]}
+        onMouseover={() => { onMouseover({ key: row.$key }) }}
+        onMouseout={() => { onMouseout({ key: row.$key }) }}
       />
 
     {/each}
+
+    <!-- <SymbolLayer 
+      x={data.column('a')}
+      y={data.column('b')}
+      shape={key => shapes[key]}
+      size={14}
+      fill={key => key === hoverKey ? 'orange' : fills[key]}
+      {onMouseover}
+      {onMouseout}
+    /> -->
 
   </Section>
 

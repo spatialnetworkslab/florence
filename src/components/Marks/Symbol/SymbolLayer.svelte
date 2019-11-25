@@ -1,12 +1,12 @@
 <script>
-  import Mark from '../Mark/Mark.svelte'
+  import Layer from '../Mark/Layer.svelte'
 
   // Aesthetics: positioning
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
-  export let shape = undefined
   export let size = undefined
+  export let shape = undefined
 
   // Aesthetics: other
   export let fill = undefined
@@ -39,18 +39,19 @@
   export let onDeselect = undefined
 
   // Other
+  export let key = undefined
   export let zoomIdentity = undefined
   export let blockReindexing = false
 </script>
 
-<Mark
+<Layer 
   type="Symbol"
-  {x} {y} {geometry} {shape} {size}
+  {x} {y} {geometry} {size} {shape}
   {fill} {stroke} {strokeWidth}
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} 
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
   {onTouchdown} {onTouchup} {onTouchover} {onTouchout} {onTouchdrag}
   {onSelect} {onDeselect}
-  {zoomIdentity} _asPolygon={false} {blockReindexing}
+  {key} {zoomIdentity} _asPolygon={false} {blockReindexing}
 />

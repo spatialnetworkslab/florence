@@ -41,6 +41,8 @@
   export let y1 = undefined
   export let y2 = undefined
   export let geometry = undefined
+  export let shape = undefined
+  export let size = undefined
   export let independentAxis = undefined
 
   // Aesthetics: other
@@ -100,6 +102,8 @@
       y1,
       y2,
       geometry,
+      shape,
+      size,
       independentAxis,
       radius,
       fill,
@@ -128,6 +132,8 @@
           y1,
           y2,
           geometry,
+          shape,
+          size,
           independentAxis,
           radius,
           fill,
@@ -148,10 +154,10 @@
   }
 
   // Create 'positioning' aesthetics object
-  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, independentAxis }
+  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, shape, size, independentAxis }
   $: {
     if (initDone()) {
-      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, independentAxis }
+      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, shape, size, independentAxis }
     }
   }
 

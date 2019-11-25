@@ -14,16 +14,18 @@ export default function (geometryProps, sectionContext, coordinateTransformation
 
 function createSymbolGeometryObject (pointGeometryObject, geometryProps) {
   const keys = Object.keys(pointGeometryObject)
-  const length = keys.length
-  const shapeArray = getPropArray(geometryProps.shape, length)
-  const sizeArray = getPropArray(geometryProps.size, length)
+
+  const shapeGetter = createPropGetter(geometryProps.shape, keys)
+  const sizeGetter = createPropGetter(geometryProps.size, keys)
+
+  // const shapeArray = getPropArray(geometryProps.shape, length, sectionContext)
+  // const sizeArray = getPropArray(geometryProps.size, length, sectionContext)
 
   const symbolGeometryObject = {}
 
-  for (let i = 0; i < length; i++) {
-    const key = keys[i]
-    const shape = shapeArray[i]
-    const size = sizeArray[i]
+  for (const key in pointGeometryObject) {
+    const shape = shapeGetter(key)
+    const size = sizeGetter(key)
 
     symbolGeometryObject[key] = createSymbolGeometry(pointGeometryObject[key], { shape, size })
   }
@@ -31,14 +33,54 @@ function createSymbolGeometryObject (pointGeometryObject, geometryProps) {
   return symbolGeometryObject
 }
 
-function getPropArray (prop, length) {
-  if (prop.constructor === Array) {
-    if (prop.length !== length) {
-      throw new Error('If provided as Arrays, all positioning props must be the same length')
-    }
+function createPropGetter (prop, keys) {
+  if (prop === undefined) return () => {}
 
+  if (prop.constructor === Function) {
     return prop
   }
 
-  return generateArrayOfLength(prop, length)
+  const propObject = createPropObject(prop, keys)
+  return key => propObject[key]
+}
+
+function createPropObject (prop, keys) {
+  const length = keys.length
+  const propObject = {}
+
+  if (prop.constructor === Array) {
+    validatePropArrayLength(prop, length)
+
+    for (let i = 0; i < length; i++) {
+      const key = keys[i]
+      propObject[key] = prop[i]
+    }
+  } else {
+    for (let i = 0; i < length; i++) {
+      const key = keys[i]
+      propObject[key] = prop
+    }
+  }
+
+  return propObject
+}
+
+// function getPropArray (prop, length, sectionContext) {
+//   if (prop === undefined) {
+//     return generateArrayOfLength(prop, length)
+//   }
+
+//   if (prop.constructor === Array) {
+//     validateArray(prop, length)
+
+//     return prop
+//   }
+
+//   return generateArrayOfLength(prop, length)
+// }
+
+function validatePropArrayLength (prop, length) {
+  if (prop.length !== length) {
+    throw new Error('If provided as Arrays, all positioning props must be the same length')
+  }
 }
