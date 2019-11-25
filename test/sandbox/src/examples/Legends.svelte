@@ -117,6 +117,8 @@
         orient={'horizontal'}
         titleVjust={'top'}
         labelCount={8}
+        titleX={() => {return 170}}
+        titleY={() => {return 70}}
       />
 
       <!-- Data scale -->
@@ -127,6 +129,8 @@
         orient={'horizontal'}
         titleVjust={'top'}
         labelCount={4}
+        titleX={40}
+        titleY={105}
       />
     
       <GradientLegend

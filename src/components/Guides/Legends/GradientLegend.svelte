@@ -201,12 +201,26 @@
   // Title positioning wrt section/graphic context
   $: {
     if (title.length > 0) {
+      // if titleX is not a function or a data scale value
       if (!titleX && titleX !== 0) {
         titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, addTitleSize, labelFontSize, orient, titlePaddingX)
+      } else {
+        if ({}.toString.call(titleX) === '[object Function]') {
+          titleX = titleX()
+        } else {
+          titleX = $sectionContext.scaleX(titleX)
+        }
       }
-
+      
+      // if titleY is not a function or a data scale value
       if (!titleY && titleY !== 0) {
         titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, labelFontSize, orient, titlePaddingY)
+      } else {
+        if ({}.toString.call(titleY) === '[object Function]') {
+          titleY = titleY()
+        } else {
+          titleY = $sectionContext.scaleY(titleY)
+        }
       }
     }
   }
