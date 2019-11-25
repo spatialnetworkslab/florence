@@ -1,13 +1,14 @@
 <script>
-  import Mark from '../Mark/Mark.svelte'
+  import Mark from '../Mark/Layer.svelte'
 
   // Aesthetics: positioning
-  export let x
-  export let y
-  export let geometry
+  export let x1
+  export let x2
+  export let y1
+  export let y2
+  export let independentAxis
 
   // Aesthetics: other
-  export let radius
   export let fill
   export let stroke
   export let strokeWidth
@@ -27,29 +28,26 @@
   export let onMousedrag
 
   // Touch interactions
-  export let onTouchdown = undefined
-  export let onTouchup = undefined
-  export let onTouchover = undefined
-  export let onTouchout = undefined
-  export let onTouchdrag = undefined
+  // TODO
 
   // Select interactions
   export let onSelect
   export let onDeselect
 
   // Other
+  export let key
+  export let interpolate = true
   export let zoomIdentity
   export let blockReindexing = false
 </script>
 
-<Mark
-  type="Point"
-  {x} {y} {geometry} {radius} 
-  {fill} {stroke} {strokeWidth}
+<Mark 
+  type="Area"
+  {x1} {x2} {y1} {y2} {independentAxis}
+  {fill} {stroke} {strokeWidth} 
   {strokeOpacity} {fillOpacity} {opacity}
-  {transition} 
+  {transition}
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
-  {onTouchdown} {onTouchup} {onTouchover} {onTouchout} {onTouchdrag}
   {onSelect} {onDeselect}
-  {zoomIdentity} _asPolygon={false} {blockReindexing}
+  {key} {interpolate} {zoomIdentity} {blockReindexing}
 />

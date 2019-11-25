@@ -27,7 +27,7 @@
 
   import textAnchorPoint from '../utils/textAnchorPoint.js'
 
-  let markId = getId()
+  const markId = getId()
 
   let initPhase = true
   const initDone = () => !initPhase
@@ -35,41 +35,42 @@
   export let type
   
   // Aesthetics: positioning
-  export let x = undefined
-  export let y = undefined
-  export let x1 = undefined
-  export let x2 = undefined
-  export let y1 = undefined
-  export let y2 = undefined
-  export let geometry = undefined
+  export let x
+  export let y
+  export let x1
+  export let x2
+  export let y1
+  export let y2
+  export let geometry
+  export let independentAxis
 
   // Aesthetics: other
-  export let radius = undefined
-  export let fill = undefined
-  export let stroke = undefined
-  export let strokeWidth = undefined
-  export let strokeOpacity = undefined
-  export let fillOpacity = undefined
-  export let opacity = undefined
+  export let radius
+  export let fill
+  export let stroke
+  export let strokeWidth
+  export let strokeOpacity
+  export let fillOpacity
+  export let opacity
 
   // Aesthetics: text-specific
-  export let text = undefined
-  export let fontFamily = undefined
-  export let fontSize = undefined
-  export let fontWeight = undefined
-  export let rotation = undefined
-  export let anchorPoint = undefined
+  export let text
+  export let fontFamily
+  export let fontSize
+  export let fontWeight
+  export let rotation
+  export let anchorPoint
 
   // Transitions
-  export let transition = undefined
+  export let transition
 
   // Mouse interactions
-  export let onClick = undefined
-  export let onMousedown = undefined
-  export let onMouseup = undefined
-  export let onMouseover = undefined
-  export let onMouseout = undefined
-  export let onMousedrag = undefined
+  export let onClick
+  export let onMousedown
+  export let onMouseup
+  export let onMouseover
+  export let onMouseout
+  export let onMousedrag
 
   // Touch interactions
   export let onTouchdown = undefined
@@ -79,23 +80,40 @@
   export let onTouchdrag = undefined
 
   // Select interactions
-  export let onSelect = undefined
-  export let onDeselect = undefined
+  export let onSelect
+  export let onDeselect
 
   // Other
   export let interpolate = false
   export let _asPolygon = true
-  export let zoomIdentity = undefined
+  export let zoomIdentity
   export let blockReindexing = false
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
     type,
     {
-      x, y, x1, x2, y1, y2, geometry, 
-      radius, fill, stroke, strokeWidth, strokeOpacity,
-      fillOpacity, opacity,
-      text, fontFamily, fontSize, fontWeight, rotation, anchorPoint
+      x,
+      y,
+      x1,
+      x2,
+      y1,
+      y2,
+      geometry,
+      independentAxis,
+      radius,
+      fill,
+      stroke,
+      strokeWidth,
+      strokeOpacity,
+      fillOpacity,
+      opacity,
+      text,
+      fontFamily,
+      fontSize,
+      fontWeight,
+      rotation,
+      anchorPoint
     }
   )
   $: {
@@ -103,20 +121,37 @@
       aesthetics = validateAesthetics(
         type,
         {
-          x, y, x1, x2, y1, y2, geometry, 
-          radius, fill, stroke, strokeWidth, strokeOpacity,
-          fillOpacity, opacity,
-          text, fontFamily, fontSize, fontWeight, rotation, anchorPoint 
+          x,
+          y,
+          x1,
+          x2,
+          y1,
+          y2,
+          geometry,
+          independentAxis,
+          radius,
+          fill,
+          stroke,
+          strokeWidth,
+          strokeOpacity,
+          fillOpacity,
+          opacity,
+          text,
+          fontFamily,
+          fontSize,
+          fontWeight,
+          rotation,
+          anchorPoint
         }
       )
     }
   }
-  
+
   // Create 'positioning' aesthetics object
-  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
+  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, independentAxis }
   $: {
     if (initDone()) {
-      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
+      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, independentAxis }
     }
   }
 
@@ -156,7 +191,7 @@
   let tr_fillOpacity = createTransitionable('fillOpacity', aesthetics.fillOpacity, transition)
   let tr_strokeOpacity = createTransitionable('strokeOpacity', aesthetics.strokeOpacity, transition)
   let tr_opacity = createTransitionable('opacity', aesthetics.opacity, transition)
-
+  
   // text transtitionables
   let tr_fontSize = createTransitionable('fontSize', aesthetics.fontSize, transition)
   let tr_fontWeight = createTransitionable('fontWeight', aesthetics.fontWeight, transition)
@@ -166,8 +201,8 @@
   $: {
     if (initDone()) {
       scheduleUpdateCoordSysGeometry(
-        positioningAesthetics, 
-        $sectionContext, 
+        positioningAesthetics,
+        $sectionContext,
         $coordinateTransformationContext,
         interpolate
       )
@@ -202,16 +237,15 @@
   $: { if (initDone()) tr_fillOpacity.set(aesthetics.fillOpacity) }
   $: { if (initDone()) tr_strokeOpacity.set(aesthetics.strokeOpacity) }
   $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
-
+  
   // text aes changes
-
   $: { if (initDone()) tr_fontSize.set(aesthetics.fontSize) }
   $: { if (initDone()) tr_fontWeight.set(aesthetics.fontWeight) }
   $: { if (initDone()) tr_rotation.set(aesthetics.rotation) }
 
   // non-transitionable aesthetics that need additional calculation
-  let rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`;
-  let parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint);
+  let rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`
+  let parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint)
 
   let previousTransition
 
@@ -228,7 +262,7 @@
       if (screenGeometryRecalculationNecessary) {
         updateScreenGeometry()
         tr_screenGeometry.set(screenGeometry)
-        
+  
         updateInteractionManagerIfNecessary()
       }
 
@@ -238,9 +272,8 @@
     }
   }
 
-  $: { if (initDone()) rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`};
-  $: { if (initDone()) parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint)}
-
+  $: { if (initDone()) rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})` };
+  $: { if (initDone()) parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint) }
 
   // Update transitionables when transition settings change
   beforeUpdate(() => {
@@ -259,7 +292,7 @@
       tr_fontWeight = createTransitionable('fontWeight', $tr_fontWeight, transition)
       tr_rotation = createTransitionable('rotation', $tr_rotation, transition)
 
-    }
+   }
   })
 
   afterUpdate(() => {
@@ -289,8 +322,8 @@
 
   function updateCoordSysGeometry () {
     coordSysGeometry = createCoordSysGeometry(
-      positioningAesthetics, 
-      $sectionContext, 
+      positioningAesthetics,
+      $sectionContext,
       $coordinateTransformationContext,
       interpolate
     )
@@ -354,7 +387,7 @@
     }
 
     removeMarkFromSelectIfNecessary()
-    
+  
     if (isSelectable) {
       const selectManager = $interactionManagerContext.select()
 

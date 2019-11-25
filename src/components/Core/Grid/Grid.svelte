@@ -8,15 +8,15 @@
   import { printGrid } from './viewGrid.js'
 
   // Props
-  export let x1 = undefined
-  export let x2 = undefined
-  export let y1 = undefined
-  export let y2 = undefined
+  export let x1
+  export let x2
+  export let y1
+  export let y2
   export let rows = 1
   export let columns = 1
   export let rowGap = 0
   export let columnGap = 0
-  export let areaNames = undefined
+  export let areaNames
   export let viewGridTemplate = false // Option to console log grid layout
   export let viewGridShape = false // Option to console log rows in cols in grid
 
@@ -34,7 +34,7 @@
   $: [allCells, rowSizes, colSizes, numRows, numCols] = getAllCells(rows, columns, rowGap, columnGap, scaledCoordinates)
 
   // Console log grid specification as necessary
-  $: if (viewGridTemplate) { printGrid( rowSizes, colSizes ) }
+  $: if (viewGridTemplate) { printGrid(rowSizes, colSizes) }
   $: if (viewGridShape) { console.log('rows:', numRows, ' columns:', numCols) }
 
   // Get named cells

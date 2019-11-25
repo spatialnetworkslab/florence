@@ -21,30 +21,34 @@
   import SelectRectangle from './examples/SelectRectangle.svelte'
   import SelectPolygon from './examples/SelectPolygon.svelte'
   import TouchTest from './examples/TouchTest.svelte'
+  import AreaChart from './examples/AreaChart.svelte'
+  import StackedAreaChart from './examples/StackedAreaChart.svelte'
+  import ViolinPlot from './examples/ViolinPlot.svelte'
+  import Title from './examples/Title.svelte'
 
   // and add them to this component array
-  let components = [
-    { 
+  const components = [
+    {
       name: 'Bar Chart',
       url: '/barchart',
       component: BarChart
     },
-    { 
+    {
       name: 'Polygons',
       url: '/polygons',
       component: Polygons
     },
-    { 
+    {
       name: 'Grid Layout',
       url: '/gridlayout',
       component: GridLayout
     },
-    { 
+    {
       name: 'Resize Layout',
       url: '/resizelayout',
       component: ResizeLayout
     },
-    { 
+    {
       name: 'Scatterplot',
       url: '/scatterplot',
       component: Scatterplot
@@ -118,6 +122,26 @@
       name: 'Touch test',
       url: 'touchtest',
       component: TouchTest
+    },
+    {
+      name: 'Area chart',
+      url: 'areachart',
+      component: AreaChart
+    },
+    {
+      name: 'Stacked area chart',
+      url: 'stackedareachart',
+      component: StackedAreaChart
+    },
+    {
+      name: 'Violin plot',
+      url: 'violinplot',
+      component: ViolinPlot
+    },
+    {
+      name: 'Title',
+      url: 'title',
+      component: Title
     }
   ]
 </script>

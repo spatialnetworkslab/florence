@@ -1,0 +1,95 @@
+// There are three ways of setting the position of the axis, in order of precedence
+// 1. vjust with 'bottom', 'center' or 'top'
+//      hjust with 'left', 'center', 'right'
+// 1.5. vjust and/or hjust with a number (relative position within content of section)
+// 3. x, y props with positioning in data coords
+// The first two use 'smart defaults' based on the dimensions of the Graphic or Section
+// that the Title is contained in
+
+export function isValid (x, y) {
+  if (!isNaN(x) && !isNaN(y)) {
+    return true
+  }
+
+  if (x !== undefined || y !== undefined) {
+    throw new Error('Couldn\'t construct title because of invalid x, y inputs.')
+  }
+
+  return false
+}
+
+export function createTitleXCoord (hjust, range, x, offset, fontSize, padding) {
+  if (x) {
+    return x
+  }
+
+  const x1 = range[0]
+  const x2 = range[1]
+  const sectionWidth = Math.abs(x2 - x1)
+
+  let justification
+
+  if (hjust === 'center' || hjust === 'centre') {
+    justification = 0.5
+  }
+
+  if (hjust === 'left') {
+    justification = 0
+  }
+
+  if (hjust === 'right') {
+    justification = 1
+  }
+
+  if (!isNaN(hjust)) {
+    justification = hjust
+  }
+
+  if (justification === undefined) {
+    justification = 0.5
+  }
+
+  if (!['left', 'center', 'right'].includes(hjust) && isNaN(hjust)) {
+    throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `hjust`')
+  }
+
+  return x1 + sectionWidth * justification + offset
+}
+
+export function createTitleYCoord (vjust, range, y, offset, fontSize, padding) {
+  if (y) {
+    return y
+  }
+
+  const y1 = range[0]
+  const y2 = range[1]
+  const sectionHeight = Math.abs(y2 - y1)
+
+  let justification
+
+  if (vjust === 'center') {
+    justification = 0.5
+  }
+
+  if (vjust === 'bottom') {
+    justification = 1 - (fontSize / sectionHeight)
+  }
+
+  if (vjust === 'top') {
+    justification = 0
+  }
+
+  if (!isNaN(vjust)) {
+    justification = vjust
+  }
+
+  if (justification === undefined) {
+    justification = 0.5
+  }
+
+  if (!['center', 'bottom', 'top'].includes(vjust) && isNaN(vjust)) {
+    throw Error('Please specify either `top`, `center`, `bottom` or a number for `vjust`')
+  }
+
+  return y1 + sectionHeight * justification + offset
+}
