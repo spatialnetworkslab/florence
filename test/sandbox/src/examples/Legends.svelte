@@ -106,7 +106,7 @@
       scaleY={scaleLinear().domain(data.domain('b'))}
       {zoomIdentity}
     >
-      <!-- NOTE: usePadding won't work on the two discrete legend examples here
+      <!-- NOTE: usePadding won't work on the first two legend examples here
       because they are being given specific values -->
 
       <!-- Pixels -->
@@ -132,7 +132,7 @@
         titleX={40}
         titleY={105}
       />
-    
+
       <GradientLegend
         labels={bins2}
         fillOpacity= {binAlpha}
