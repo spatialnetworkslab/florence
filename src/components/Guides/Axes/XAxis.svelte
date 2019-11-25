@@ -4,7 +4,7 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as ZoomContext from '../../Core/Section/ZoomContext'
 
-  import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord} from './createXAxisCoords.js'
+  import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord } from './createXAxisCoords.js'
   import { getTickPositions, getFormat } from './utils.js'
 
   // global properties
@@ -18,12 +18,9 @@
   export let baseLineWidth = 1
 
   // axis positioning
-  export let vjust = "bottom"
+  export let vjust = 'bottom'
   export let y = undefined
   export let yOffset = 0
-  export let hjust = undefined // not used for x axis
-  export let x = undefined
-  export let xOffset = 0
 
   // tick marks
   export let ticks = true
@@ -65,7 +62,6 @@
   export let transition = undefined
   export let zoomIdentity = undefined
 
-
   // Contexts
   const sectionContext = SectionContext.subscribe()
   const graphicContext = GraphicContext.subscribe()
@@ -87,13 +83,13 @@
   let scaleX
 
   $: {
-    scaleX = (typeof scale === "undefined") ? $sectionContext.scaleX : scale; 
-    ({xCoords, yCoords} = createXAxisCoords(vjust, y, yOffset, scaleX, $sectionContext.scaleY, $sectionContext))
+    scaleX = (typeof scale === 'undefined') ? $sectionContext.scaleX : scale;
+    ({ xCoords, yCoords } = createXAxisCoords(vjust, y, yOffset, scaleX, $sectionContext.scaleY, $sectionContext))
   }
   $: {
     tickPositions = getTickPositions(tickValues, scaleX, tickCount, tickExtra);
-    ({tickXCoords, tickYCoords} = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
-    ({tickLabelXCoords, tickLabelYCoords} = createXLabelGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, labelOffset, flip))
+    ({ tickXCoords, tickYCoords } = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
+    ({ tickLabelXCoords, tickLabelYCoords } = createXLabelGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, labelOffset, flip))
 
     format = getFormat(labelFormat, scaleX, tickPositions.length)
     tickLabelText = tickPositions.map(format)

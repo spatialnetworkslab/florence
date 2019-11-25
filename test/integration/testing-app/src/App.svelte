@@ -10,23 +10,24 @@
   import Axes from './pages/Axes.svelte'
   import Drag from './pages/Drag.svelte'
   import ScaleBandAxes from './pages/ScaleBandAxes.svelte'
+  import Area from './pages/Area.svelte'
 
   // and add them to this component array
   let components = [
-    { name: "Rectangles",
-      url: "/rectangles",
+    { name: 'Rectangles',
+      url: '/rectangles',
       component: Rectangles
     },
-     { name: "Geo",
-      url: "/geo",
+     { name: 'Geo',
+      url: '/geo',
       component: Geo
     },
-    { name: "Label Mark",
-      url: "/label-mark",
+    { name: 'Label Mark',
+      url: '/label-mark',
       component: LabelMark
     },
-    { name: "Zoom",
-      url: "/zoom",
+    { name: 'Zoom',
+      url: '/zoom',
       component: Zoom
     },
     {
@@ -48,6 +49,11 @@
       name: 'ScaleBand Axes',
       url: '/scale-band-axes',
       component: ScaleBandAxes
+    },
+    {
+      name: 'Area',
+      url: '/area',
+      component: Area
     }
   ]
 </script>

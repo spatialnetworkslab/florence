@@ -24,8 +24,9 @@
   import { createDataNecessaryForIndexingLayer } from './createDataNecessaryForIndexing.js'
   import generatePath from '../utils/generatePath.js'
   import textAnchorPoint from '../utils/textAnchorPoint.js'
+  import any from '../utils/any.js'
 
-  let layerId = getId()
+  const layerId = getId()
 
   let initPhase = true
   const initDone = () => !initPhase
@@ -40,6 +41,7 @@
   export let y1 = undefined
   export let y2 = undefined
   export let geometry = undefined
+  export let independentAxis = undefined
 
   // Aesthetics: other
   export let radius = undefined
@@ -70,7 +72,11 @@
   export let onMousedrag = undefined
 
   // Touch interactions
-  // TODO
+  export let onTouchdown = undefined
+  export let onTouchup = undefined
+  export let onTouchover = undefined
+  export let onTouchout = undefined
+  export let onTouchdrag = undefined
 
   // Select interactions
   export let onSelect = undefined
@@ -87,10 +93,27 @@
   let aesthetics = validateAesthetics(
     type,
     {
-      x, y, x1, x2, y1, y2, geometry, 
-      radius, fill, stroke, strokeWidth, strokeOpacity,
-      fillOpacity, opacity,
-      text, fontFamily, fontSize, fontWeight, rotation, anchorPoint 
+      x,
+      y,
+      x1,
+      x2,
+      y1,
+      y2,
+      geometry,
+      independentAxis,
+      radius,
+      fill,
+      stroke,
+      strokeWidth,
+      strokeOpacity,
+      fillOpacity,
+      opacity,
+      text,
+      fontFamily,
+      fontSize,
+      fontWeight,
+      rotation,
+      anchorPoint
     }
   )
   $: {
@@ -98,20 +121,37 @@
       aesthetics = validateAesthetics(
         type,
         {
-          x, y, x1, x2, y1, y2, geometry, 
-          radius, fill, stroke, strokeWidth, strokeOpacity,
-          fillOpacity, opacity,
-          text, fontFamily, fontSize, fontWeight, rotation, anchorPoint 
+          x,
+          y,
+          x1,
+          x2,
+          y1,
+          y2,
+          geometry,
+          independentAxis,
+          radius,
+          fill,
+          stroke,
+          strokeWidth,
+          strokeOpacity,
+          fillOpacity,
+          opacity,
+          text,
+          fontFamily,
+          fontSize,
+          fontWeight,
+          rotation,
+          anchorPoint
         }
       )
     }
   }
 
   // Create 'positioning' aesthetics object
-  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
+  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, independentAxis }
   $: {
     if (initDone()) {
-      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
+      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, independentAxis }
     }
   }
 
@@ -145,19 +185,18 @@
 
   // Generate other prop objects
   let radiusObject = generatePropObject(aesthetics.radius, keyArray)
-  let fillObject = generatePropObject(aesthetics.fill, keyArray)
-  let strokeObject = generatePropObject(aesthetics.stroke, keyArray)
+  const fillObject = generatePropObject(aesthetics.fill, keyArray)
+  const strokeObject = generatePropObject(aesthetics.stroke, keyArray)
   let strokeWidthObject = generatePropObject(aesthetics.strokeWidth, keyArray)
-  let strokeOpacityObject = generatePropObject(aesthetics.strokeOpacity, keyArray)
-  let fillOpacityObject = generatePropObject(aesthetics.fillOpacity, keyArray)
-  let opacityObject = generatePropObject(aesthetics.opacity, keyArray)
+  const strokeOpacityObject = generatePropObject(aesthetics.strokeOpacity, keyArray)
+  const fillOpacityObject = generatePropObject(aesthetics.fillOpacity, keyArray)
+  const opacityObject = generatePropObject(aesthetics.opacity, keyArray)
   let textObject = generatePropObject(aesthetics.text, keyArray)
   let fontFamilyObject = generatePropObject(aesthetics.fontFamily, keyArray)
-  let fontSizeObject = generatePropObject(aesthetics.fontSize, keyArray)
-  let fontWeightObject = generatePropObject(aesthetics.fontWeight, keyArray)
-  let rotationObject = generatePropObject(aesthetics.rotation, keyArray)
+  const fontSizeObject = generatePropObject(aesthetics.fontSize, keyArray)
+  const fontWeightObject = generatePropObject(aesthetics.fontWeight, keyArray)
+  const rotationObject = generatePropObject(aesthetics.rotation, keyArray)
   let anchorPointObject = generatePropObject(aesthetics.anchorPoint, keyArray)
-
 
   // This uses the radiusObject/strokeWidthObject in some cases, so must be done after the prop objects
   updateScreenGeometryObject()
@@ -181,7 +220,7 @@
   $: {
     if (initDone()) {
       scheduleUpdateCoordSysGeometryObject(
-        positioningAesthetics, 
+        positioningAesthetics,
         $sectionContext,
         $coordinateTransformationContext,
         key,
@@ -220,9 +259,9 @@
   $: { if (initDone()) tr_rotationObject.set(generatePropObject(aesthetics.rotation, keyArray)) }
 
   // non-transitionable aesthetics
-  $: { if (initDone()) textObject = generatePropObject(aesthetics.text, keyArray)}
-  $: { if (initDone()) fontFamilyObject = generatePropObject(aesthetics.fontFamily, keyArray)}
-  $: { if (initDone()) anchorPointObject = generatePropObject(aesthetics.anchorPoint, keyArray)}
+  $: { if (initDone()) textObject = generatePropObject(aesthetics.text, keyArray) }
+  $: { if (initDone()) fontFamilyObject = generatePropObject(aesthetics.fontFamily, keyArray) }
+  $: { if (initDone()) anchorPointObject = generatePropObject(aesthetics.anchorPoint, keyArray) }
 
   let previousTransition
 
@@ -240,7 +279,7 @@
           updateRadiusAndStrokeWidth()
         }
       }
-    
+  
       if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
 
       if (screenGeometryObjectRecalculationNecessary) {
@@ -281,13 +320,8 @@
   })
 
   // Interactivity
-  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined || 
-    onMousedown !== undefined || onMouseup !== undefined ||
-    onMouseover !== undefined || onMouseout !== undefined ||
-    onMousedrag !== undefined
-  )
-
-  $: isInteractiveTouch = detectIt.hasTouch // TODO
+  $: isInteractiveMouse = detectIt.hasMouse && any(onClick, onMousedown, onMouseup, onMouseover, onMouseout, onMousedrag)
+  $: isInteractiveTouch = detectIt.hasTouch && any(onTouchdown, onTouchup, onTouchover, onTouchout, onTouchdrag)
 
   $: isSelectable = onSelect !== undefined || onDeselect !== undefined
 
@@ -308,7 +342,7 @@
 
   function updateCoordSysGeometryObject () {
     coordSysGeometryObject = createCoordSysGeometryObject(
-      positioningAesthetics, 
+      positioningAesthetics,
       $sectionContext,
       $coordinateTransformationContext,
       key,
@@ -358,7 +392,7 @@
 
       if (isInteractiveMouse) {
         const markInterface = $interactionManagerContext.mouse().marks()
-      
+  
         markInterface.loadLayer(type, createDataNecessaryForIndexing())
 
         if (onClick) markInterface.addLayerInteraction('click', layerId, onClick)
@@ -370,12 +404,20 @@
       }
 
       if (isInteractiveTouch) {
-        // TODO
+        const markInterface = $interactionManagerContext.touch().marks()
+
+        markInterface.loadLayer(type, createDataNecessaryForIndexing())
+
+        if (onTouchdown) markInterface.addLayerInteraction('touchdown', layerId, onTouchdown)
+        if (onTouchup) markInterface.addLayerInteraction('touchup', layerId, onTouchup)
+        if (onTouchover) markInterface.addLayerInteraction('touchover', layerId, onTouchover)
+        if (onTouchout) markInterface.addLayerInteraction('touchout', layerId, onTouchout)
+        if (onTouchdrag) markInterface.addLayerInteraction('touchdrag', layerId, onTouchdrag)
       }
     }
 
     removeLayerFromSelectIfNecessary()
-    
+  
     if (isSelectable) {
       const selectManager = $interactionManagerContext.select()
 
@@ -386,11 +428,22 @@
   }
 
   function removeLayerFromSpatialIndexIfNecessary () {
-    const markInterface = $interactionManagerContext.mouse().marks()
+    if (detectIt.hasMouse) {
+      const markMouseInterface = $interactionManagerContext.mouse().marks()
 
-    if (markInterface.layerIsLoaded(layerId)) {
-      markInterface.removeAllLayerInteractions(layerId)
-      markInterface.removeLayer(layerId)
+      if (markMouseInterface.layerIsLoaded(layerId)) {
+        markMouseInterface.removeAllLayerInteractions(layerId)
+        markMouseInterface.removeLayer(layerId)
+      }
+    }
+
+    if (detectIt.hasTouch) {
+      const markTouchInterface = $interactionManagerContext.touch().marks()
+
+      if (markTouchInterface.layerIsLoaded(layerId)) {
+        markTouchInterface.removeAllLayerInteractions(layerId)
+        markTouchInterface.removeLayer(layerId)
+      }
     }
   }
 

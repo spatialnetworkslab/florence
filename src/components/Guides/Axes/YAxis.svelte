@@ -1,15 +1,14 @@
 <script>
-  import { Line, LineLayer, Label, LabelLayer } from "../../../"
+  import { Line, LineLayer, Label, LabelLayer } from '../../../'
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
-  import * as SectionContext from "../../Core/Section/SectionContext"
+  import * as SectionContext from '../../Core/Section/SectionContext'
 
-  import { createYAxisCoords, createYTickGeoms, createYLabelGeoms, createTitleXCoord, createTitleYCoord} from "./createYAxisCoords.js"
+  import { createYAxisCoords, createYTickGeoms, createYLabelGeoms, createTitleXCoord, createTitleYCoord } from './createYAxisCoords.js'
   import { getTickPositions, getFormat } from './utils.js'
 
   // global properties
   export let scale = undefined
   export let flip = false
-
 
   // axis baseline
   export let baseLine = true
@@ -18,9 +17,6 @@
   export let baseLineWidth = 1
 
   // axis positioning
-  export let vjust = undefined
-  export let y = undefined
-  export let yOffset = undefined
   export let hjust = 'left'
   export let x = undefined
   export let xOffset = 0
@@ -83,18 +79,18 @@
   let axisWidth
   let labelAnchorPoint = 'r'
   let scaleY
-
+  
   $: {
-    scaleY = (typeof scale === "undefined") ? $sectionContext.scaleY : scale;
-    ({xCoords, yCoords} = createYAxisCoords(hjust, x, xOffset, $sectionContext.scaleX, scaleY, $sectionContext));
+    scaleY = (typeof scale === 'undefined') ? $sectionContext.scaleY : scale;
+    ({ xCoords, yCoords } = createYAxisCoords(hjust, x, xOffset, $sectionContext.scaleX, scaleY, $sectionContext))
   }
   $: {
     tickPositions = getTickPositions(tickValues, scaleY, tickCount, tickExtra);
-    ({tickXCoords, tickYCoords} = createYTickGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, flip));
-    ({tickLabelXCoords, tickLabelYCoords} = createYLabelGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, labelOffset, flip))
-
+    ({ tickXCoords, tickYCoords } = createYTickGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, flip));
+    ({ tickLabelXCoords, tickLabelYCoords } = createYLabelGeoms(tickPositions, xCoords, scaleY, baseLineWidth, tickSize, labelOffset, flip))
     format = getFormat(labelFormat, scaleY, tickPositions.length)
     tickLabelText = tickPositions.map(format)
+
     axisWidth = baseLineWidth + tickSize + labelOffset + labelFontSize
     labelAnchorPoint = flip ? 'l' : 'r'
   }

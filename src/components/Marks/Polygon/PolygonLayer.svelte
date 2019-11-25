@@ -26,7 +26,11 @@
   export let onMousedrag = undefined
 
   // Touch interactions
-  // TODO
+  export let onTouchdown = undefined
+  export let onTouchup = undefined
+  export let onTouchover = undefined
+  export let onTouchout = undefined
+  export let onTouchdrag = undefined
 
   // Select interactions
   export let onSelect = undefined
@@ -46,6 +50,7 @@
   {strokeOpacity} {fillOpacity} {opacity}
   {transition} 
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
+  {onTouchdown} {onTouchup} {onTouchover} {onTouchout} {onTouchdrag}
   {onSelect} {onDeselect}
   {key} {zoomIdentity} {interpolate} {blockReindexing}
 />

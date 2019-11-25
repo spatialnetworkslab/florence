@@ -19,7 +19,7 @@
   import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
   import { parsePadding, applyPadding } from '../utils/padding.js'
 
-  let sectionId = getId()
+  const sectionId = getId()
   
   // Props
   export let x1 = undefined
@@ -40,8 +40,8 @@
   export let paddingColor = undefined
 
   // Mouse interactions
-  export let onWheel = undefined
   export let onClick = undefined
+  export let onWheel = undefined
   export let onMousedown = undefined
   export let onMouseup = undefined
   export let onMouseover = undefined
@@ -49,7 +49,12 @@
   export let onMousemove = undefined
   
   // Touch interactions
-  // TODO
+  export let onPinch = undefined
+  export let onTouchdown = undefined
+  export let onTouchmove = undefined
+  export let onTouchup = undefined
+  export let onTouchover = undefined
+  export let onTouchout = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -66,7 +71,7 @@
   let rangeY
   
   // Set up InteractionManager
-  let interactionManager = new InteractionManager()
+  const interactionManager = new InteractionManager()
   interactionManager.setId(sectionId)
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
@@ -78,7 +83,7 @@
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
     rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
     rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
-    
+  
     if (flipX) rangeX.reverse()
     if (flipY) rangeY.reverse()
 
@@ -86,7 +91,7 @@
     rangeX = applyPadding(rangeX, _padding.left, _padding.right)
     rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
 
-    const updatedSectionContext = { 
+    const updatedSectionContext = {
       sectionId, rangeX, rangeY, scaleX, scaleY, padding: _padding, flipX, flipY, blockReindexing
     }
 
@@ -105,7 +110,8 @@
   // Change callbacks if necessary
   $: {
     removeSectionInteractionsIfNecessary(
-      onWheel, onClick, onMousedown, onMouseup, onMouseover, onMouseout
+      onWheel, onClick, onMousedown, onMouseup, onMouseover, onMouseout,
+      onTouchdown, onTouchmove, onTouchup, onTouchover, onTouchout, onPinch
     )
   }
 
@@ -134,7 +140,15 @@
     }
 
     if (detectIt.hasTouch) {
-      // TODO
+      const sectionInterface = $interactionManagerContext.touch().section()
+      sectionInterface.removeAllInteractions()
+
+      if (onTouchdown) sectionInterface.addInteraction('touchdown', onTouchdown)
+      if (onTouchmove) sectionInterface.addInteraction('touchmove', onTouchmove)
+      if (onTouchup) sectionInterface.addInteraction('touchup', onTouchup)
+      if (onTouchover) sectionInterface.addInteraction('touchover', onTouchover)
+      if (onTouchout) sectionInterface.addInteraction('touchout', onTouchout)
+      if (onPinch) sectionInterface.addInteraction('pinch', onPinch)
     }
   }
 
