@@ -120,7 +120,7 @@
       />
 
       <!-- Data scale -->
-      <DiscreteLegend
+      <GradientLegend
         x1={20} x2={60}
         y1={80} y2={100}
         fill={linearColorScale}

@@ -138,7 +138,6 @@
   }
   
   // Section positioning wrt section/graphic context
-  // Uses pixel values based on padding/no padding setting (does not rely on section/graphic scale)
   $: {
     if (!['horizontal', 'vertical'].includes(orient)) {
       throw Error('Invalid input for `orient` property. Please provide either `horizontal` or `vertical` as inputs.')
@@ -146,6 +145,7 @@
 
     addTitleSize = title.length > 0 ? titleFontSize * 1.5 : 0
 
+    // Autopositioning
     if (!isValid(x1, x2, y1, y2) && ['horizontal', 'vertical'].includes(orient)) {
       if (sectionContext.flipX) xRange.reverse()
       rangeCoordsX = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip)
@@ -160,13 +160,44 @@
       y2 = rangeCoordsY.y2
       height = Math.abs(y2 - y1)
       yCoords = { y1, y2, height }
+
     } else { 
-      // This should always be in pixels
-      xCoords = { x1, x2, width: Math.abs(x2 - x1) }
-      yCoords = { y1, y2, height: Math.abs(y2 - y1) }
+      let _x1, _x2, _y1, _y2
+
+      /** If function, uses pixel values based on padding/no padding setting 
+       * (does not rely on section/graphic scale)
+       * else if value, uses data scale => convert to pixel values
+      **/
+      if ({}.toString.call(x1) === '[object Function]') {
+        _x1 = x1()
+      } else {
+        _x1 = $sectionContext.scaleX(x1)
+      }
+
+      if ({}.toString.call(x2) === '[object Function]') {
+        _x2 = x2()
+      } else {
+        _x2 = $sectionContext.scaleX(x2)
+      }
+
+      if ({}.toString.call(y1) === '[object Function]') {
+        _y1 = y1()
+      } else {
+        _y1 = $sectionContext.scaleY(y1)
+      }
+
+      if ({}.toString.call(y2) === '[object Function]') {
+        _y2 = y2()
+      } else {
+        _y2 = $sectionContext.scaleY(y2)
+      }
+
+      // This ends up in pixel values
+      xCoords = { 'x1': _x1, 'x2': _x2, width: Math.abs(_x2 - _x1) }
+      yCoords = { 'y1': _y1, 'y2': _y2, height: Math.abs(_y2 - _y1) }
     }
   }
-
+  
   // Title positioning wrt section/graphic context
   $: {
     if (title.length > 0) {
