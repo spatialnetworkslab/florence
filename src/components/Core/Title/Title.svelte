@@ -41,7 +41,7 @@
   export let subtitleStrokeOpacity = undefined
   export let subtitleFillOpacity = undefined
   export let subtitleOpacity = 1
-  export let subtitleFontFamily
+  export let subtitleFontFamily = undefined
   export let subtitleFontSize = 14
   export let subtitleFontWeight = 'normal'
   export let subtitleRotation = 0
