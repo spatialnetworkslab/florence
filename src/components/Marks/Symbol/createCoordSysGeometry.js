@@ -40,7 +40,11 @@ function createSymbolGeometry (pointGeometry, geometryProps) {
 
 function createPoint (cx, cy, size) {
   const radius = size / 2
-  return representPointAsPolygon([cx, cy], { radius })
+  const pointGeometry = {
+    type: 'Point',
+    coordinates: [cx, cy]
+  }
+  return representPointAsPolygon(pointGeometry, { radius })
 }
 
 function createSquare (cx, cy, size) {
