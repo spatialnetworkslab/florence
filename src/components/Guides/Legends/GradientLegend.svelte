@@ -24,13 +24,13 @@
 
   // Public props
   // Aesthetics: positioning
-  export let x1
-  export let x2
-  export let y1
-  export let y2
+  export let x1 = undefined
+  export let x2 = undefined
+  export let y1 = undefined
+  export let y2 = undefined
   export let orient = 'vertical'
   export let vjust = 'center'
-  export let height
+  export let height = undefined
   export let hjust = 'left'
   export let width = 0
   export let xOffset = 0
@@ -40,22 +40,19 @@
   // Aesthetics: colors
   export let flip = false
   export let flipLabels = false
-  export let background = 'none'
-  export let backgroundOpacity = 0.3
   export let stroke = 'none'
   export let strokeWidth = 2
 
   // Aesthetics
-  export let fill
-  export let fillOpacity
+  export let fill = undefined
+  export let fillOpacity = undefined
 
   // tick labels
-  export let labels
-  export let labelFormat
-  export let labelOffset = 0.2
+  export let labels = undefined
+  export let labelFormat = undefined
   export let labelRotate = 0
-  export let labelX
-  export let labelY
+  export let labelX = undefined
+  export let labelY = undefined
   export let labelFont = 'Helvetica'
   export let labelFontSize = 10
   export let labelFontWeight = 'normal'
@@ -64,18 +61,18 @@
   export let labelAnchorPoint = 'center'
   export let labelCount = 10
   export let labelExtra = false
-  export let firstLabel
-  export let format
+  export let firstLabel = undefined
+  export let format = undefined
   export let labelPaddingX = 0
   export let labelPaddingY = 0
 
   // legend title
   export let titleHjust = 'center'
   export let titleXOffset = 0
-  export let titleX
+  export let titleX = undefined
   export let titleVjust = 'top'
   export let titleYOffset = 0
-  export let titleY
+  export let titleY = undefined
   export let title = 'Legend'
   export let titleColor = 'black'
   export let titleFont = 'Helvetica'
@@ -398,6 +395,8 @@
       y2 = { () => { return rectCoords.y2 } }
       fill={`url(#${gradientId})`}
       {transition}
+      {stroke}
+      {strokeWidth}
       {zoomIdentity} 
   />
 
