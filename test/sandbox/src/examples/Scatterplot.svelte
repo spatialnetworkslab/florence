@@ -3,7 +3,7 @@
 	import { Graphic, Section, PointLayer, Point } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
-	export let N = 100
+	const N = 100
   let data = new DataContainer(generateData(N, 0.25))
 
 	function generateData (N, error) {
