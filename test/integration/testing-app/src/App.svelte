@@ -12,6 +12,7 @@
   import ScaleBandAxes from './pages/ScaleBandAxes.svelte'
   import Area from './pages/Area.svelte'
   import Title from './pages/Title.svelte'
+  import Legends from './pages/Legends.svelte'
 
   // and add them to this component array
   let components = [
@@ -60,6 +61,11 @@
       name: 'Title',
       url: '/title',
       component: Title
+    },
+    {
+      name: 'Legends',
+      url: '/legends',
+      component: Legends
     }
   ]
 </script>
