@@ -3,7 +3,7 @@ import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
 
 class SectionContext {
-  constructor ({ sectionId, rangeX, rangeY, scaleX, scaleY, padding, flipX, flipY }) {
+  constructor ({ sectionId, rangeX, rangeY, scaleX, scaleY, padding, flipX, flipY, blockReindexing }) {
     this._sectionId = sectionId
 
     this.rangeX = rangeX
@@ -20,6 +20,8 @@ class SectionContext {
 
     this.flipX = flipX
     this.flipY = flipY
+
+    this.blockReindexing = blockReindexing
   }
 
   _handleScales (scaleX, scaleY) {

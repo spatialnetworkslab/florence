@@ -28,6 +28,8 @@
   const nutrientColorScale = scaleOrdinal()
     .domain(nutrientDomain)
     .range(schemeAccent)
+
+  let activeIndex = undefined
 </script>
 
 <Graphic width={500} height={500}>
@@ -48,6 +50,10 @@
           y1={i === 0 ? 0 : container.prevRow(row.$key).cumsum_value}
           y2={row.cumsum_value}
           fill={nutrientColorScale(row.nutrient)}
+          strokeWidth={activeIndex === i ? 2 : 0}
+          stroke={activeIndex === i ? nutrientColorScale(row.nutrient) : 'none'}
+          onMousedown={() => { activeIndex = i }}
+          onMouseup={() => { activeIndex = undefined }}
         />
 
       {/each}
