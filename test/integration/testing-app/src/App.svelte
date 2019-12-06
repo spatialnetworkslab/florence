@@ -11,6 +11,7 @@
   import Drag from './pages/Drag.svelte'
   import ScaleBandAxes from './pages/ScaleBandAxes.svelte'
   import Area from './pages/Area.svelte'
+  import Title from './pages/Title.svelte'
 
   // and add them to this component array
   let components = [
@@ -54,6 +55,11 @@
       name: 'Area',
       url: '/area',
       component: Area
+    },
+    {
+      name: 'Title',
+      url: '/title',
+      component: Title
     }
   ]
 </script>
