@@ -17,7 +17,7 @@ export default function (positioningProps, sectionContext, coordinateTransformat
         scaleCoordinates(
           augmentProps(
             validateProps(
-              canonicalize(
+              normalize(
                 allowedProps,
                 sectionContext))),
           sectionContext)),
@@ -26,38 +26,37 @@ export default function (positioningProps, sectionContext, coordinateTransformat
   return coordSysGeometry
 }
 
-function canonicalize ({ independentAxis, ...coordinateProps }, sectionContext) {
-  const canonicalized = {}
+function normalize ({ independentAxis, ...coordinateProps }, sectionContext) {
+  const normalized = Object.entries(coordinateProps).reduce((acc, [k, v]) => {
+    const extracted = typeof v === 'function' ? v(sectionContext) : v
 
-  Object.entries(coordinateProps).forEach(([prop, value]) => {
-    const extracted = typeof value === 'function' ? value(sectionContext) : value
-
-    canonicalized[prop] = {
+    acc[k] = {
       type: extracted === undefined ? 'none' : Array.isArray(extracted) ? 'array' : 'singleton',
       ...(Array.isArray(extracted) && { arrayLength: extracted.length }),
       value: extracted,
-      scaled: typeof value === 'function'
+      scaled: typeof v === 'function'
     }
-  })
-  canonicalized.independentAxis = independentAxis && independentAxis.toLowerCase()
-  return canonicalized
+    return acc
+  }, {})
+  normalized.independentAxis = independentAxis && independentAxis.toLowerCase()
+  return normalized
 }
 
-export function validateProps (canonicalizedProps) {
-  const { independentAxis, ...coordinateProps } = canonicalizedProps
+export function validateProps (normalized) {
+  const { independentAxis, ...coordinateProps } = normalized
 
   const definedTypes = ['singleton', 'array']
   const definedProps = Object.entries(coordinateProps)
-    .filter(([prop, value]) => definedTypes.includes(value.type))
-    .reduce((acc, [prop, value]) => {
-      acc[prop] = coordinateProps[prop]
+    .filter(([k, v]) => definedTypes.includes(v.type))
+    .reduce((acc, [k, v]) => {
+      acc[k] = coordinateProps[k]
       return acc
     }, {})
 
   const definedKeys = Object.keys(definedProps)
 
   // reject if props do not include x1 and y1
-  const containsx1y1 = ['x1', 'y1'].every(prop => definedKeys.includes(prop))
+  const containsx1y1 = ['x1', 'y1'].every(k => definedKeys.includes(k))
   if (!containsx1y1) { throw new Error('At least x1 and y1 must be provided') }
 
   // reject if at least x1 or y1 is not an array
@@ -94,17 +93,14 @@ export function validateProps (canonicalizedProps) {
   }
 
   // reject if arrays given are not of equal length
-  const arrayProps = Object.values(definedProps).filter(value => value.type === 'array')
-
-  const arrayLengths = Object.values(arrayProps).reduce((accum, elem) => {
-    accum.push(elem.value.length)
-    return accum
-  }, [])
+  const arrayLengths = Object.values(definedProps)
+    .filter(v => v.type === 'array')
+    .map(v => v.value.length)
 
   const arrayLengthsEqual = arrayLengths.every((val, idx, arr) => val === arr[0])
   if (!arrayLengthsEqual) { throw new Error('Arrays given must be of equal length') }
 
-  return canonicalizedProps
+  return normalized
 }
 
 export function augmentProps ({ independentAxis, x1, y1, x2, y2 }) {
@@ -115,8 +111,27 @@ export function augmentProps ({ independentAxis, x1, y1, x2, y2 }) {
   const [depKey2, depVal2] = indAx === 'x' ? ['y2', y2] : ['x2', x2]
   const length = indVal.arrayLength
 
-  const depVal1Map = { singleton: { value: Array(length).fill(depVal1.value), type: 'array', arrayLength: length }, array: depVal1 }
-  const depVal2Map = { singleton: { value: Array(length).fill(depVal2.value), type: 'array', arrayLength: length }, none: { value: Array(length).fill(0), type: 'array', arrayLength: length }, array: depVal2 }
+  const depVal1Map = {
+    singleton: {
+      value: Array(length).fill(depVal1.value),
+      type: 'array',
+      arrayLength: length
+    },
+    array: depVal1
+  }
+  const depVal2Map = {
+    singleton: {
+      value: Array(length).fill(depVal2.value),
+      type: 'array',
+      arrayLength: length
+    },
+    none: {
+      value: Array(length).fill(0),
+      type: 'array',
+      arrayLength: length
+    },
+    array: depVal2
+  }
 
   return {
     independentAxis: indAx,
@@ -129,15 +144,15 @@ export function augmentProps ({ independentAxis, x1, y1, x2, y2 }) {
 const scaleMap = { x1: 'scaleX', y1: 'scaleY', x2: 'scaleX', y2: 'scaleY' }
 
 export function scaleCoordinates ({ independentAxis, ...coordinateProps }, sectionContext) {
-  const scaledProps = {}
-  Object.entries(coordinateProps).forEach(([prop, value]) => {
-    if (value.scaled) {
-      scaledProps[prop] = value.value
+  const scaledProps = Object.entries(coordinateProps).reduce((acc, [k, v]) => {
+    if (v.scaled) {
+      acc[k] = v.value
     } else {
-      const scale = sectionContext[scaleMap[prop]]
-      scaledProps[prop] = value.value.map(v => scale(v))
+      const scale = sectionContext[scaleMap[k]]
+      acc[k] = v.value.map(d => scale(d))
     }
-  })
+    return acc
+  }, {})
   return { independentAxis, ...scaledProps }
 }
 
