@@ -33,10 +33,5 @@ context('Assertions', () => {
       cy.get('g.discrete-legend > .label-layer > .label').should('have.length.greaterThan', 1)
       cy.get('g.gradient-legend > .label-layer > .label').should('have.length.greaterThan', 1)
     })
-
-    it('[render] legends snapshot correctly', () => {
-      cy.get('svg')
-        .snapshot({ name: 'svg with 2 discrete legends and 2 gradient legends' })
-    })
   })
 })

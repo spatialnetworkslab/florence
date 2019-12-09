@@ -17,10 +17,5 @@ context('Assertions', () => {
     it('[render] another title has correct text', () => {
       cy.get('.label').last().should('contain', 'elit, sed do eiusmod tempor incididunt')
     })
-
-    it('[render] labels snapshot correctly', () => {
-      cy.get('svg')
-        .snapshot({ name: 'svg with 4 text labels' })
-    })
   })
 })
