@@ -7,6 +7,7 @@
 
 <script>
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
+  import detectIt from 'detect-it'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -19,31 +20,41 @@
   import generatePath from '../utils/generatePath.js'
   import { createDataNecessaryForIndexingMark } from '../Mark/createDataNecessaryForIndexing.js'
 
-  let markId = getId()
+  const markId = getId()
 
   let initPhase = true
   const initDone = () => !initPhase
 
   // Aesthetics: positioning
   export let func
-  export let x = undefined
+  export let x
 
   // Aesthetics: other
   export let strokeWidth = 1
   export let stroke = 'black'
   export let opacity = 1
 
-  // Transitions and interactions
-  export let transition = undefined
-  export let onClick = undefined
-  export let onMouseover = undefined
-  export let onMouseout = undefined
-  export let onDragstart = undefined
-  export let onDrag = undefined
-  export let onDragend = undefined
+  // Transitions
+  export let transition
+
+  // Mouse interactions
+  export let onClick
+  export let onMousedown
+  export let onMouseup
+  export let onMouseover
+  export let onMouseout
+  export let onMousedrag
+
+  // Touch interactions
+  // TODO
+
+  // Select interactions
+  export let onSelect
+  export let onDeselect
 
   // Other
-  export let zoomIdentity = undefined
+  export let zoomIdentity
+  export let blockReindexing = false
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -53,7 +64,7 @@
   const zoomContext = ZoomContext.subscribe()
 
   let screenGeometry = createScreenGeometry(
-    { func, x }, 
+    { func, x },
     $sectionContext,
     $coordinateTransformationContext,
     ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
@@ -105,8 +116,15 @@
   })
 
   // Interactivity
-  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
-    || onDragstart !== undefined || onDrag !== undefined || onDragend !== undefined
+  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined ||
+    onMousedown !== undefined || onMouseup !== undefined ||
+    onMouseover !== undefined || onMouseout !== undefined ||
+    onMousedrag !== undefined
+  )
+
+  $: isInteractiveTouch = detectIt.hasTouch // TODO
+
+  $: isSelectable = onSelect !== undefined || onDeselect !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -118,24 +136,52 @@
 
   // Helpers
   function updateInteractionManagerIfNecessary () {
-    removeMarkFromSpatialIndexIfNecessary()
+    if (initPhase || !(blockReindexing || $sectionContext.blockReindexing)) {
+      removeMarkFromSpatialIndexIfNecessary()
 
-    if (isInteractive) {
-      $interactionManagerContext.loadMark('Line', createDataNecessaryForIndexing())
+      if (isInteractiveMouse) {
+        const markInterface = $interactionManagerContext.mouse().marks()
 
-      if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
-      if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
-      if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
-      if (onDragstart || onDrag || onDragend) {
-        $interactionManagerContext.addMarkInteraction('drag', markId, { onDragstart, onDrag, onDragend })
+        markInterface.loadMark('Line', createDataNecessaryForIndexing())
+
+        if (onClick) markInterface.addMarkInteraction('click', markId, onClick)
+        if (onMousedown) markInterface.addMarkInteraction('mousedown', markId, onMousedown)
+        if (onMouseup) markInterface.addMarkInteraction('mouseoup', markId, onMouseup)
+        if (onMouseover) markInterface.addMarkInteraction('mouseover', markId, onMouseover)
+        if (onMouseout) markInterface.addMarkInteraction('mouseout', markId, onMouseout)
+        if (onMousedrag) markInterface.addMarkInteraction('mousedrag', markId, onMousedrag)
       }
+
+      if (isInteractiveTouch) {
+        // TODO
+      }
+    }
+
+    removeMarkFromSelectIfNecessary()
+
+    if (isSelectable) {
+      const selectManager = $interactionManagerContext.select()
+
+      selectManager.loadMark(
+        'Line', createDataNecessaryForIndexing(), { onSelect, onDeselect }
+      )
     }
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
-    if ($interactionManagerContext.markIsLoaded(markId)) {
-      $interactionManagerContext.removeAllMarkInteractions(markId)
-      $interactionManagerContext.removeMark(markId)
+    const markInterface = $interactionManagerContext.mouse().marks()
+
+    if (markInterface.markIsLoaded(markId)) {
+      markInterface.removeAllMarkInteractions(markId)
+      markInterface.removeMark(markId)
+    }
+  }
+
+  function removeMarkFromSelectIfNecessary () {
+    const selectManager = $interactionManagerContext.select()
+
+    if (selectManager.markIsLoaded(markId)) {
+      selectManager.removeMark(markId)
     }
   }
 

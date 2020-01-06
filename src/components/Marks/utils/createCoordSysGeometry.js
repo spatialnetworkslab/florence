@@ -8,14 +8,10 @@ export function createCoordSysGeometry (
 
     if (interpolate) {
       return interpolateGeometry(geometry, transformFunc, visibilityTreshold)
-    }
-
-    if (!interpolate) {
+    } else {
       return transformGeometry(geometry, transformFunc, visibilityTreshold)
     }
-  }
-
-  if (!transformationNecessary(coordinateTransformationContext)) {
+  } else {
     return geometry
   }
 }

@@ -12,36 +12,43 @@
   import Line from './examples/Line.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
   import FuncLines from './examples/FuncLines.svelte'
+  import Legends from './examples/Legends.svelte'
   import DragCategorical from './examples/DragCategorical.svelte'
   import FunctionAPI from './examples/FunctionAPI.svelte'
   import FlipTest from './examples/FlipTest.svelte'
   import NonNumericAxis from './examples/NonNumericAxis.svelte'
   import DragAllMarks from './examples/DragAllMarks.svelte'
   import StackedBarChart from './examples/StackedBarChart.svelte'
+  import SelectRectangle from './examples/SelectRectangle.svelte'
+  import SelectPolygon from './examples/SelectPolygon.svelte'
+  import AreaChart from './examples/AreaChart.svelte'
+  import StackedAreaChart from './examples/StackedAreaChart.svelte'
+  import ViolinPlot from './examples/ViolinPlot.svelte'
+  import Title from './examples/Title.svelte'
 
   // and add them to this component array
-  let components = [
-    { 
+  const components = [
+    {
       name: 'Bar Chart',
       url: '/barchart',
       component: BarChart
     },
-    { 
+    {
       name: 'Polygons',
       url: '/polygons',
       component: Polygons
     },
-    { 
+    {
       name: 'Grid Layout',
       url: '/gridlayout',
       component: GridLayout
     },
-    { 
+    {
       name: 'Resize Layout',
       url: '/resizelayout',
       component: ResizeLayout
     },
-    { 
+    {
       name: 'Scatterplot',
       url: '/scatterplot',
       component: Scatterplot
@@ -72,6 +79,11 @@
       component: FuncLines
     },
     {
+      name: 'Legends',
+      url: '/legends',
+      component: Legends
+    },
+    {
       name: 'DragCategorical',
       url: 'dragcategorical',
       component: DragCategorical
@@ -100,6 +112,36 @@
       name: 'Stacked bar chart',
       url: 'stackedbarchart',
       component: StackedBarChart
+    },
+    {
+      name: 'Select rectangle',
+      url: 'selectrectangle',
+      component: SelectRectangle
+    },
+    {
+      name: 'Select polygon',
+      url: 'selectpolygon',
+      component: SelectPolygon
+    },
+    {
+      name: 'Area chart',
+      url: 'areachart',
+      component: AreaChart
+    },
+    {
+      name: 'Stacked area chart',
+      url: 'stackedareachart',
+      component: StackedAreaChart
+    },
+    {
+      name: 'Violin plot',
+      url: 'violinplot',
+      component: ViolinPlot
+    },
+    {
+      name: 'Title',
+      url: 'title',
+      component: Title
     }
   ]
 </script>

@@ -7,6 +7,7 @@
 
 <script>
   import { beforeUpdate } from 'svelte'
+  import detectIt from 'detect-it'
   import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from './SectionContext'
   import * as CoordinateTransformationContext from './CoordinateTransformationContext'
@@ -14,33 +15,42 @@
   import * as InteractionManagerContext from './InteractionManagerContext'
   import * as ZoomContext from './ZoomContext'
 
-  import InteractionManager from '../../../classes/InteractionManager'
+  import InteractionManager from '../../../interactivity/interactions/InteractionManager'
   import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
   import { parsePadding, applyPadding } from '../utils/padding.js'
 
-  let sectionId = getId()
+  const sectionId = getId()
   
   // Props
-  export let x1 = undefined
-  export let x2 = undefined
-  export let y1 = undefined
-  export let y2 = undefined
+  export let x1
+  export let x2
+  export let y1
+  export let y2
   export let padding = 0
-  export let scaleX = undefined
-  export let scaleY = undefined
+  export let scaleX
+  export let scaleY
   export let flipX = false
   export let flipY = false
-  export let zoomIdentity = undefined
-  export let transformation = undefined
+  export let zoomIdentity
+  export let transformation
+  export let blockReindexing = false
 
   // Aesthetics
-  export let backgroundColor = undefined
-  export let paddingColor = undefined
+  export let backgroundColor
+  export let paddingColor
 
-  // Interactivity
-  export let onWheel = undefined
-  export let onPan = undefined
+  // Mouse interactions
+  export let onWheel
+  export let onClick
+  export let onMousedown
+  export let onMouseup
+  export let onMouseover
+  export let onMouseout
+  export let onMousemove
   
+  // Touch interactions
+  // TODO
+
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
@@ -56,7 +66,7 @@
   let rangeY
   
   // Set up InteractionManager
-  let interactionManager = new InteractionManager()
+  const interactionManager = new InteractionManager()
   interactionManager.setId(sectionId)
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
@@ -68,16 +78,16 @@
     scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
     rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
     rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
-    
+  
     if (flipX) rangeX.reverse()
     if (flipY) rangeY.reverse()
 
     _padding = parsePadding(padding)
     rangeX = applyPadding(rangeX, _padding.left, _padding.right)
     rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
-    
-    const updatedSectionContext = { 
-      sectionId, rangeX, rangeY, scaleX, scaleY, padding: _padding, flipX, flipY
+
+    const updatedSectionContext = {
+      sectionId, rangeX, rangeY, scaleX, scaleY, padding: _padding, flipX, flipY, blockReindexing
     }
 
     SectionContext.update(
@@ -94,7 +104,9 @@
 
   // Change callbacks if necessary
   $: {
-    removeSectionInteractionsIfNecessary(onWheel, onPan)
+    removeSectionInteractionsIfNecessary(
+      onWheel, onClick, onMousedown, onMouseup, onMouseover, onMouseout
+    )
   }
 
   // Update zooming and panning
@@ -108,10 +120,57 @@
   })
 
   function removeSectionInteractionsIfNecessary () {
-    $interactionManagerContext.removeAllSectionInteractions()
+    if (detectIt.hasMouse) {
+      const sectionInterface = $interactionManagerContext.mouse().section()
+      sectionInterface.removeAllInteractions()
 
-    if (onWheel) $interactionManagerContext.addSectionInteraction('wheel', onWheel)
-    if (onPan) $interactionManagerContext.addSectionInteraction('pan', onPan)
+      if (onWheel) sectionInterface.addInteraction('wheel', onWheel)
+      if (onClick) sectionInterface.addInteraction('click', onClick)
+      if (onMousedown) sectionInterface.addInteraction('mousedown', onMousedown)
+      if (onMouseup) sectionInterface.addInteraction('mouseup', onMouseup)
+      if (onMouseover) sectionInterface.addInteraction('mouseover', onMouseover)
+      if (onMouseout) sectionInterface.addInteraction('mouseout', onMouseout)
+      if (onMousemove) sectionInterface.addInteraction('mousemove', onMousemove)
+    }
+
+    if (detectIt.hasTouch) {
+      // TODO
+    }
+  }
+
+  // Selection API
+  const selectManager = $interactionManagerContext.select()
+
+  export function selectRectangle (rectangle) {
+    selectManager.selectRectangle(rectangle)
+  }
+
+  export function updateSelectRectangle (rectangle) {
+    selectManager.updateSelectRectangle(rectangle)
+  }
+
+  export function resetSelectRectangle () {
+    selectManager.resetSelectRectangle()
+  }
+
+  export function startSelectPolygon (startCoordinates) {
+    selectManager.startSelectPolygon(startCoordinates)
+  }
+
+  export function addPointToSelectPolygon (pointCoordinates) {
+    selectManager.addPointToSelectPolygon(pointCoordinates)
+  }
+
+  export function moveSelectPolygon (delta) {
+    selectManager.moveSelectPolygon(delta)
+  }
+
+  export function getSelectPolygon () {
+    return selectManager.getSelectPolygon()
+  }
+
+  export function resetSelectPolygon () {
+    selectManager.resetSelectPolygon()
   }
 </script>
 

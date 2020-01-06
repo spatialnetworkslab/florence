@@ -7,6 +7,7 @@
 
 <script>
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
+  import detectIt from 'detect-it'
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -25,7 +26,7 @@
 
   import textAnchorPoint from '../utils/textAnchorPoint.js'
 
-  let markId = getId()
+  const markId = getId()
 
   let initPhase = true
   const initDone = () => !initPhase
@@ -33,53 +34,81 @@
   export let type
   
   // Aesthetics: positioning
-  export let x = undefined
-  export let y = undefined
-  export let x1 = undefined
-  export let x2 = undefined
-  export let y1 = undefined
-  export let y2 = undefined
-  export let geometry = undefined
+  export let x
+  export let y
+  export let x1
+  export let x2
+  export let y1
+  export let y2
+  export let geometry
+  export let independentAxis
 
   // Aesthetics: other
-  export let radius = undefined
-  export let fill = undefined
-  export let stroke = undefined
-  export let strokeWidth = undefined
-  export let strokeOpacity = undefined
-  export let fillOpacity = undefined
-  export let opacity = undefined
+  export let radius
+  export let fill
+  export let stroke
+  export let strokeWidth
+  export let strokeOpacity
+  export let fillOpacity
+  export let opacity
 
   // Aesthetics: text-specific
-  export let text = undefined
-  export let fontFamily = undefined
-  export let fontSize = undefined
-  export let fontWeight = undefined
-  export let rotation = undefined
-  export let anchorPoint = undefined
+  export let text
+  export let fontFamily
+  export let fontSize
+  export let fontWeight
+  export let rotation
+  export let anchorPoint
 
-  // Transitions and interactions
-  export let transition = undefined
-  export let onClick = undefined
-  export let onMouseover = undefined
-  export let onMouseout = undefined
-  export let onDragstart = undefined
-  export let onDrag = undefined
-  export let onDragend = undefined
+  // Transitions
+  export let transition
+
+  // Mouse interactions
+  export let onClick
+  export let onMousedown
+  export let onMouseup
+  export let onMouseover
+  export let onMouseout
+  export let onMousedrag
+
+  // Touch interactions
+  // TODO
+
+  // Select interactions
+  export let onSelect
+  export let onDeselect
 
   // Other
   export let interpolate = false
   export let _asPolygon = true
-  export let zoomIdentity = undefined
+  export let zoomIdentity
+  export let blockReindexing = false
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
     type,
     {
-      x, y, x1, x2, y1, y2, geometry, 
-      radius, fill, stroke, strokeWidth, strokeOpacity,
-      fillOpacity, opacity,
-      text, fontFamily, fontSize, fontWeight, rotation, anchorPoint
+      x,
+      y,
+      x1,
+      x2,
+      y1,
+      y2,
+      geometry,
+      independentAxis,
+      radius,
+      fill,
+      stroke,
+      strokeWidth,
+      strokeOpacity,
+      fillOpacity,
+      opacity,
+      text,
+      fontFamily,
+      fontSize,
+      fontWeight,
+      rotation,
+      anchorPoint
     }
   )
   $: {
@@ -87,20 +116,37 @@
       aesthetics = validateAesthetics(
         type,
         {
-          x, y, x1, x2, y1, y2, geometry, 
-          radius, fill, stroke, strokeWidth, strokeOpacity,
-          fillOpacity, opacity,
-          text, fontFamily, fontSize, fontWeight, rotation, anchorPoint 
+          x,
+          y,
+          x1,
+          x2,
+          y1,
+          y2,
+          geometry,
+          independentAxis,
+          radius,
+          fill,
+          stroke,
+          strokeWidth,
+          strokeOpacity,
+          fillOpacity,
+          opacity,
+          text,
+          fontFamily,
+          fontSize,
+          fontWeight,
+          rotation,
+          anchorPoint
         }
       )
     }
   }
-  
+
   // Create 'positioning' aesthetics object
-  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
+  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, independentAxis }
   $: {
     if (initDone()) {
-      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry }
+      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, independentAxis }
     }
   }
 
@@ -140,7 +186,7 @@
   let tr_fillOpacity = createTransitionable('fillOpacity', aesthetics.fillOpacity, transition)
   let tr_strokeOpacity = createTransitionable('strokeOpacity', aesthetics.strokeOpacity, transition)
   let tr_opacity = createTransitionable('opacity', aesthetics.opacity, transition)
-
+  
   // text transtitionables
   let tr_fontSize = createTransitionable('fontSize', aesthetics.fontSize, transition)
   let tr_fontWeight = createTransitionable('fontWeight', aesthetics.fontWeight, transition)
@@ -150,8 +196,8 @@
   $: {
     if (initDone()) {
       scheduleUpdateCoordSysGeometry(
-        positioningAesthetics, 
-        $sectionContext, 
+        positioningAesthetics,
+        $sectionContext,
         $coordinateTransformationContext,
         interpolate
       )
@@ -186,16 +232,15 @@
   $: { if (initDone()) tr_fillOpacity.set(aesthetics.fillOpacity) }
   $: { if (initDone()) tr_strokeOpacity.set(aesthetics.strokeOpacity) }
   $: { if (initDone()) tr_opacity.set(aesthetics.opacity) }
-
+  
   // text aes changes
-
   $: { if (initDone()) tr_fontSize.set(aesthetics.fontSize) }
   $: { if (initDone()) tr_fontWeight.set(aesthetics.fontWeight) }
   $: { if (initDone()) tr_rotation.set(aesthetics.rotation) }
 
   // non-transitionable aesthetics that need additional calculation
-  let rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`;
-  let parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint);
+  let rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`
+  let parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint)
 
   let previousTransition
 
@@ -212,7 +257,7 @@
       if (screenGeometryRecalculationNecessary) {
         updateScreenGeometry()
         tr_screenGeometry.set(screenGeometry)
-        
+  
         updateInteractionManagerIfNecessary()
       }
 
@@ -222,9 +267,8 @@
     }
   }
 
-  $: { if (initDone()) rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})`};
-  $: { if (initDone()) parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint)}
-
+  $: { if (initDone()) rotateTransform = `rotate(${$tr_rotation}, ${$tr_screenGeometry.coordinates[0]}, ${$tr_screenGeometry.coordinates[1]})` };
+  $: { if (initDone()) parsedTextAnchorPoint = textAnchorPoint(aesthetics.anchorPoint) }
 
   // Update transitionables when transition settings change
   beforeUpdate(() => {
@@ -243,7 +287,7 @@
       tr_fontWeight = createTransitionable('fontWeight', $tr_fontWeight, transition)
       tr_rotation = createTransitionable('rotation', $tr_rotation, transition)
 
-    }
+   }
   })
 
   afterUpdate(() => {
@@ -251,8 +295,15 @@
   })
 
   // Interactivity
-  $: isInteractive = onClick !== undefined || onMouseover !== undefined || onMouseout !== undefined
-    || onDragstart !== undefined || onDrag !== undefined || onDragend !== undefined
+  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined ||
+    onMousedown !== undefined || onMouseup !== undefined ||
+    onMouseover !== undefined || onMouseout !== undefined ||
+    onMousedrag !== undefined
+  )
+
+  $: isInteractiveTouch = detectIt.hasTouch // TODO
+
+  $: isSelectable = onSelect !== undefined || onDeselect !== undefined
 
   onMount(() => {
     updateInteractionManagerIfNecessary()
@@ -271,8 +322,8 @@
 
   function updateCoordSysGeometry () {
     coordSysGeometry = createCoordSysGeometry(
-      positioningAesthetics, 
-      $sectionContext, 
+      positioningAesthetics,
+      $sectionContext,
       $coordinateTransformationContext,
       interpolate
     )
@@ -306,24 +357,52 @@
   }
 
   function updateInteractionManagerIfNecessary () {
-    removeMarkFromSpatialIndexIfNecessary()
+    if (initPhase || !(blockReindexing || $sectionContext.blockReindexing)) {
+      removeMarkFromSpatialIndexIfNecessary()
 
-    if (isInteractive) {
-      $interactionManagerContext.loadMark(type, createDataNecessaryForIndexing())
+      if (isInteractiveMouse) {
+        const markInterface = $interactionManagerContext.mouse().marks()
 
-      if (onClick) $interactionManagerContext.addMarkInteraction('click', markId, onClick)
-      if (onMouseover) $interactionManagerContext.addMarkInteraction('mouseover', markId, onMouseover)
-      if (onMouseout) $interactionManagerContext.addMarkInteraction('mouseout', markId, onMouseout)
-      if (onDragstart || onDrag || onDragend) {
-        $interactionManagerContext.addMarkInteraction('drag', markId, { onDragstart, onDrag, onDragend })
+        markInterface.loadMark(type, createDataNecessaryForIndexing())
+
+        if (onClick) markInterface.addMarkInteraction('click', markId, onClick)
+        if (onMousedown) markInterface.addMarkInteraction('mousedown', markId, onMousedown)
+        if (onMouseup) markInterface.addMarkInteraction('mouseup', markId, onMouseup)
+        if (onMouseout) markInterface.addMarkInteraction('mouseout', markId, onMouseout)
+        if (onMouseover) markInterface.addMarkInteraction('mouseover', markId, onMouseover)
+        if (onMousedrag) markInterface.addMarkInteraction('mousedrag', markId, onMousedrag)
       }
+
+      if (isInteractiveTouch) {
+        // TODO
+      }
+    }
+
+    removeMarkFromSelectIfNecessary()
+  
+    if (isSelectable) {
+      const selectManager = $interactionManagerContext.select()
+
+      selectManager.loadMark(
+        type, createDataNecessaryForIndexing(), { onSelect, onDeselect }
+      )
     }
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
-    if ($interactionManagerContext.markIsLoaded(markId)) {
-      $interactionManagerContext.removeAllMarkInteractions(markId)
-      $interactionManagerContext.removeMark(markId)
+    const markInterface = $interactionManagerContext.mouse().marks()
+
+    if (markInterface.markIsLoaded(markId)) {
+      markInterface.removeAllMarkInteractions(markId)
+      markInterface.removeMark(markId)
+    }
+  }
+
+  function removeMarkFromSelectIfNecessary () {
+    const selectManager = $interactionManagerContext.select()
+
+    if (selectManager.markIsLoaded(markId)) {
+      selectManager.removeMark(markId)
     }
   }
 

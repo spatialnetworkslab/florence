@@ -8,25 +8,25 @@
 
   const log = console.log
 
-  let background = "pink"
+  let background = 'pink'
 
   let bigPoint = { x: 250, y: 250 }
   let dragPoint
 
-  function handleDragstart (event) {
-    dragPoint = event.localCoordinates
+  function onMousedrag (event) {
+    if (event.dragType === 'start') {
+      dragPoint = event.localCoordinates
+    }
+
+    if (event.dragType === 'drag') {
+      dragPoint = event.localCoordinates
+    }
+
+    if (event.dragType === 'end') {
+      bigPoint = dragPoint
+      dragPoint = undefined
+    }
   }
-
-  function handleDrag (event) {
-    dragPoint = event.localCoordinates
-  }
-
-  function handleDragend (event) {
-    bigPoint = dragPoint
-    dragPoint = undefined
-  }
-
-
 </script>
 
 <div>
@@ -64,9 +64,7 @@
         fill={'red'}
         opacity={dragPoint ? 0 : 1}
         radius={10}
-        onDragstart={handleDragstart}
-        onDrag={handleDrag}
-        onDragend={handleDragend}
+        {onMousedrag}
       />
 
       {#if dragPoint}

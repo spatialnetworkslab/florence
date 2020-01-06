@@ -2,35 +2,45 @@
   import Mark from '../Mark/Mark.svelte'
 
   // Aesthetics: positioning
-  export let x = undefined
-  export let y = undefined
-  export let geometry = undefined
+  export let x
+  export let y
+  export let geometry
 
   // Aesthetics: other
-  export let fill = undefined
-  export let stroke = undefined
-  export let strokeWidth = undefined
-  export let strokeOpacity = undefined
-  export let fillOpacity = undefined
-  export let opacity = undefined
-  export let text = undefined
-  export let fontFamily = undefined
-  export let fontSize = undefined
-  export let fontWeight = undefined
-  export let rotation = undefined
-  export let anchorPoint = undefined
+  export let fill
+  export let stroke
+  export let strokeWidth
+  export let strokeOpacity
+  export let fillOpacity
+  export let opacity
+  export let text
+  export let fontFamily
+  export let fontSize
+  export let fontWeight
+  export let rotation
+  export let anchorPoint
 
-  // Transitions and interactions
-  export let transition = undefined
-  export let onClick = undefined
-  export let onMouseover = undefined
-  export let onMouseout = undefined
-  export let onDragstart = undefined
-  export let onDrag = undefined
-  export let onDragend = undefined
+  // Transitions
+  export let transition
+
+  // Mouse interactions
+  export let onClick
+  export let onMousedown
+  export let onMouseup
+  export let onMouseover
+  export let onMouseout
+  export let onMousedrag
+
+  // Touch interactions
+  // TODO
+
+  // Select interactions
+  export let onSelect
+  export let onDeselect
 
   // Other
-  export let zoomIdentity = undefined
+  export let zoomIdentity
+  export let blockReindexing = false
 </script>
 
 <Mark
@@ -40,7 +50,8 @@
   {strokeOpacity} {fillOpacity} {opacity}
   {text}
   {fontFamily} {fontSize} {fontWeight} {rotation} {anchorPoint}
-  {transition} {onClick} {onMouseover} {onMouseout}
-  {onDragstart} {onDrag} {onDragend}
-  {zoomIdentity} _asPolygon={false}
+  {transition} 
+  {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
+  {onSelect} {onDeselect}
+  {zoomIdentity} _asPolygon={false} {blockReindexing}
 />

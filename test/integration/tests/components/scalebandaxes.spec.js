@@ -15,5 +15,17 @@ context('Assertions', () => {
       cy.get('g.x-axis > .label-layer > .label').eq(0).invoke('attr', 'x').should('be.equal', '151.73913043478257')
       cy.get('g.x-axis > .label-layer > .label').eq(1).invoke('attr', 'x').should('be.equal', '348.26086956521743')
     })
+
+    it('[interaction] mousing down and up over rectangle changes stroke and stroke-width', () => {
+      var rect = cy.get('.rectangle').first()
+      rect.should('have.attr', 'stroke', 'none')
+      rect.should('have.attr', 'stroke-width', '0')
+      rect.trigger('mousedown')
+      rect.should('have.attr', 'stroke', '#7fc97f')
+      rect.should('have.attr', 'stroke-width', '2')
+      rect.trigger('mouseup')
+      rect.should('have.attr', 'stroke', 'none')
+      rect.should('have.attr', 'stroke-width', '0')
+    })
   })
 })
