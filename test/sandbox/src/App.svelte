@@ -21,6 +21,7 @@
   import StackedBarChart from './examples/StackedBarChart.svelte'
   import SelectRectangle from './examples/SelectRectangle.svelte'
   import SelectPolygon from './examples/SelectPolygon.svelte'
+  import Symbol_ from './examples/Symbol.svelte'
   import TouchTest from './examples/TouchTest.svelte'
   import AreaChart from './examples/AreaChart.svelte'
   import StackedAreaChart from './examples/StackedAreaChart.svelte'
@@ -123,6 +124,11 @@
       name: 'Select polygon',
       url: 'selectpolygon',
       component: SelectPolygon
+    },
+    {
+      name: 'Symbol',
+      url: 'symbol',
+      component: Symbol_
     },
     {
       name: 'Touch test',

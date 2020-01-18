@@ -3,6 +3,7 @@ import { indexRectangle, indexRectangleLayer } from './indexRectangle.js'
 import { indexPolygon, indexPolygonLayer } from './indexPolygon.js'
 import { indexLine, indexLineLayer } from './indexLine.js'
 import { indexArea, indexAreaLayer } from './indexArea.js'
+import { indexSymbol, indexSymbolLayer } from './indexSymbol.js'
 
 export const markIndexing = {
   Point: indexPoint,
@@ -10,7 +11,8 @@ export const markIndexing = {
   Polygon: indexPolygon,
   Line: indexLine,
   Label: indexPoint,
-  Area: indexArea
+  Area: indexArea,
+  Symbol: indexSymbol
 }
 
 export const layerIndexing = {
@@ -19,5 +21,6 @@ export const layerIndexing = {
   Polygon: indexPolygonLayer,
   Line: indexLineLayer,
   Label: indexPointLayer,
-  Area: indexAreaLayer
+  Area: indexAreaLayer,
+  Symbol: indexSymbolLayer
 }
