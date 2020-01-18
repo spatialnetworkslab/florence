@@ -3,6 +3,8 @@
     "integrationFolder": "test/integration/tests",
     "video": false,
     "testFiles": "**/*.spec.js",
-    "useRelativeSnapshots": true,
-    "snapshotFileName": "cy_snapshots.js"
+    "ignoreTestFiles": [
+        "**/__snapshots__/*",
+        "**/__image_snapshots__/*"
+    ]
 }

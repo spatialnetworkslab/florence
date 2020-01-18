@@ -11,7 +11,7 @@ context('Assertions', () => {
     })
 
     it('[render] area snapshot correctly', () => {
-      cy.get('svg').snapshot({ name: 'svg with 1 area mark' })
+      cy.get('svg').toMatchSnapshot()
     })
 
     it('[interaction] hovering over area changes color', () => {

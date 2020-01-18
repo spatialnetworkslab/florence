@@ -11,7 +11,7 @@ context('Assertions', () => {
     })
 
     it('[render] area layer snapshot correctly', () => {
-      cy.get('svg').snapshot({ name: 'svg with stacked areas' })
+      cy.get('svg').toMatchSnapshot()
     })
 
     it('[interaction] hovering over area layer changes color', () => {

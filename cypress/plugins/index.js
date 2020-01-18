@@ -10,16 +10,9 @@
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
-const fs = require('fs')
+const { initPlugin } = require('cypress-plugin-snapshots/plugin')
 
 module.exports = (on, config) => {
-  on('task', {
-    readFileMaybe (filename) {
-      if (fs.existsSync(filename)) {
-        return fs.readFileSync(filename, 'utf8')
-      }
-
-      return null
-    }
-  })
+  initPlugin(on, config)
+  return config
 }

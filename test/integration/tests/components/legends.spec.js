@@ -35,8 +35,7 @@ context('Assertions', () => {
     })
 
     it('[render] legends snapshot correctly', () => {
-      cy.get('svg').snapshot({ name: 'svg with 2 discrete legends, 2 gradient legends' })
+      cy.get('svg').toMatchSnapshot()
     })
-
   })
 })
