@@ -34,61 +34,61 @@
   export let type
 
   // Aesthetics: positioning
-  export let x = undefined
-  export let y = undefined
-  export let x1 = undefined
-  export let x2 = undefined
-  export let y1 = undefined
-  export let y2 = undefined
-  export let geometry = undefined
-  export let shape = undefined
-  export let size = undefined
-  export let independentAxis = undefined
+  export let x
+  export let y
+  export let x1
+  export let x2
+  export let y1
+  export let y2
+  export let geometry
+  export let shape
+  export let size
+  export let independentAxis
 
   // Aesthetics: other
-  export let radius = undefined
-  export let fill = undefined
-  export let stroke = undefined
-  export let strokeWidth = undefined
-  export let strokeOpacity = undefined
-  export let fillOpacity = undefined
-  export let opacity = undefined
+  export let radius
+  export let fill
+  export let stroke
+  export let strokeWidth
+  export let strokeOpacity
+  export let fillOpacity
+  export let opacity
 
   // Aesthetics: text-specific
-  export let text = undefined
-  export let fontFamily = undefined
-  export let fontSize = undefined
-  export let fontWeight = undefined
-  export let rotation = undefined
-  export let anchorPoint = undefined
+  export let text
+  export let fontFamily
+  export let fontSize
+  export let fontWeight
+  export let rotation
+  export let anchorPoint
 
   // Transitions
-  export let transition = undefined
+  export let transition
 
   // Mouse interactions
-  export let onClick = undefined
-  export let onMousedown = undefined
-  export let onMouseup = undefined
-  export let onMouseover = undefined
-  export let onMouseout = undefined
-  export let onMousedrag = undefined
+  export let onClick
+  export let onMousedown
+  export let onMouseup
+  export let onMouseover
+  export let onMouseout
+  export let onMousedrag
 
   // Touch interactions
-  export let onTouchdown = undefined
-  export let onTouchup = undefined
-  export let onTouchover = undefined
-  export let onTouchout = undefined
-  export let onTouchdrag = undefined
+  export let onTouchdown
+  export let onTouchup
+  export let onTouchover
+  export let onTouchout
+  export let onTouchdrag
 
   // Select interactions
-  export let onSelect = undefined
-  export let onDeselect = undefined
+  export let onSelect
+  export let onDeselect
 
   // Other
-  export let key = undefined
-  export let interpolate = undefined
+  export let key
+  export let interpolate
   export let _asPolygon = true
-  export let zoomIdentity = undefined
+  export let zoomIdentity
   export let blockReindexing = false
 
   // Validate aesthetics every time input changes
@@ -403,7 +403,7 @@
 
         if (onClick) markInterface.addLayerInteraction('click', layerId, onClick)
         if (onMousedown) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
-        if (onMouseup) markInterface.addLayerInteraction('mousedown', layerId, onMousedown)
+        if (onMouseup) markInterface.addLayerInteraction('mouseup', layerId, onMouseup)
         if (onMouseout) markInterface.addLayerInteraction('mouseout', layerId, onMouseout)
         if (onMouseover) markInterface.addLayerInteraction('mouseover', layerId, onMouseover)
         if (onMousedrag) markInterface.addLayerInteraction('mousedrag', layerId, onMousedrag)
