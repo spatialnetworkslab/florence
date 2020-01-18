@@ -92,7 +92,6 @@
   let scale
   let scaleDomain
   let tickLabelText
-  let tickLabelPositions
   let tickLabelXCoords
   let tickLabelYCoords
   let tickColors
