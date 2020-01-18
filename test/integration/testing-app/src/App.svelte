@@ -11,24 +11,28 @@
   import Drag from './pages/Drag.svelte'
   import ScaleBandAxes from './pages/ScaleBandAxes.svelte'
   import Area from './pages/Area.svelte'
+  import AreaLayer from './pages/AreaLayer.svelte'
   import Title from './pages/Title.svelte'
-  import Legends from './pages/Legends.svelte'
 
   // and add them to this component array
-  let components = [
-    { name: 'Rectangles',
+  const components = [
+    {
+      name: 'Rectangles',
       url: '/rectangles',
       component: Rectangles
     },
-     { name: 'Geo',
+    {
+      name: 'Geo',
       url: '/geo',
       component: Geo
     },
-    { name: 'Label Mark',
+    {
+      name: 'Label Mark',
       url: '/label-mark',
       component: LabelMark
     },
-    { name: 'Zoom',
+    {
+      name: 'Zoom',
       url: '/zoom',
       component: Zoom
     },
@@ -58,14 +62,14 @@
       component: Area
     },
     {
+      name: 'AreaLayer',
+      url: '/arealayer',
+      component: AreaLayer
+    },
+    {
       name: 'Title',
       url: '/title',
       component: Title
-    },
-    {
-      name: 'Legends',
-      url: '/legends',
-      component: Legends
     }
   ]
 </script>

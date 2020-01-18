@@ -11,7 +11,7 @@ context('Assertions', () => {
     })
     it('[render] geo polygons correctly', () => {
       cy.get('svg')
-        .snapshot({ name: 'svg with 3 geo polygons' })
+        .toMatchSnapshot()
     })
   })
 })
