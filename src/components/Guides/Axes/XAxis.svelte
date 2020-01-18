@@ -1,8 +1,6 @@
 <script>
   import { Line, LineLayer, Label, LabelLayer } from '../../../'
-  import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
-  import * as ZoomContext from '../../Core/Section/ZoomContext'
 
   import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord } from './createXAxisCoords.js'
   import { getTickPositions, getFormat } from './utils.js'
@@ -64,8 +62,6 @@
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
-  const graphicContext = GraphicContext.subscribe()
-  const zoomContext = ZoomContext.subscribe()
   
   let xCoords
   let yCoords

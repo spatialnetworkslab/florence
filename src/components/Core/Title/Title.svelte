@@ -1,13 +1,10 @@
 <script>
   import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
   import { isValid, createTitleXCoord, createTitleYCoord } from './utils.js'
-  import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
-  import { parsePadding, removePadding } from '../utils/padding.js'
+  import { removePadding } from '../utils/padding.js'
   
   // Contexts
-  import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from '../Section/SectionContext'
-  import * as ZoomContext from '../../Core/Section/ZoomContext'
 
   // Aesthetics: positioning
   export let x
@@ -60,8 +57,6 @@
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
-  const graphicContext = GraphicContext.subscribe()
-  const zoomContext = ZoomContext.subscribe()
 
   // Private variables
   let _padding
@@ -114,7 +109,7 @@
 
     if (subtitle.length > 0) {
       if (!isValid(subtitleX, subtitleY)) {
-        const yRange = $sectionContext.scaleY.range()
+        yRange = $sectionContext.scaleY.range()
         subtitleX = x
         subtitleY = y + titleFontSize
       }

@@ -8,7 +8,6 @@
 <script>
   import { beforeUpdate } from 'svelte'
   import detectIt from 'detect-it'
-  import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from './SectionContext'
   import * as CoordinateTransformationContext from './CoordinateTransformationContext'
   import * as EventManagerContext from '../Graphic/EventManagerContext'
@@ -57,7 +56,6 @@
   export let onTouchout = undefined
 
   // Contexts
-  const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
   const newSectionContext = SectionContext.init()
   const coordinateTransformationContext = CoordinateTransformationContext.subscribe()

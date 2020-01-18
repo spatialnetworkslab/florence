@@ -28,7 +28,6 @@
   $: scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
 
   let allCells
-  let allNames
 
   // Get cells
   $: [allCells, rowSizes, colSizes, numRows, numCols] = getAllCells(rows, columns, rowGap, columnGap, scaledCoordinates)

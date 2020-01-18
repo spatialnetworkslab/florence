@@ -1,12 +1,10 @@
 <script>
-  import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from '../../../'
+  import { Label, LabelLayer, RectangleLayer } from '../../../'
   import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from './createLegendCoordinates.js'
   import { removePadding } from '../../Core/utils/padding.js'
 
   // Contexts
-  import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
-  import * as ZoomContext from '../../Core/Section/ZoomContext'
   
   // Permanent
   import { getTickPositions, getFormat, getTicks, getColorGeoms, isValid } from './utils.js'
@@ -79,10 +77,8 @@
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
-  const graphicContext = GraphicContext.subscribe()
 
   // Permanent
-  const zoomContext = ZoomContext.subscribe()
 
   // Private variables
   let scale
@@ -110,7 +106,6 @@
   let colorBarHeight
   let colorBarWidth
 
-  let posScaleY
   let xCoords
   let yCoords
   let addTitleSize
@@ -226,7 +221,7 @@
         scale = fillOpacity
       }
       if (scale) {
-        if (scale.hasOwnProperty('domain')) {
+        if (Object.prototype.hasOwnProperty.call(scale, 'domain')) {
           if (typeof scale.domain === 'function') {
             scaleDomain = scale.domain()
           } else {
