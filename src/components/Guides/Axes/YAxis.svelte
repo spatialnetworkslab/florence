@@ -1,6 +1,5 @@
 <script>
   import { Line, LineLayer, Label, LabelLayer } from '../../../'
-  import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
 
   import { createYAxisCoords, createYTickGeoms, createYLabelGeoms, createTitleXCoord, createTitleYCoord } from './createYAxisCoords.js'
@@ -63,7 +62,6 @@
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
-  const graphicContext = GraphicContext.subscribe()
   
   let xCoords
   let yCoords
