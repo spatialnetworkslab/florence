@@ -10,9 +10,9 @@
   import * as ZoomContext from '../../Core/Section/ZoomContext'
 
   // Aesthetics: positioning
-  export let x = undefined
-  export let y = undefined
-  export let geometry = undefined
+  export let x
+  export let y
+  export let geometry
   export let vjust = 'top'
   export let hjust = 'center'
   export let xOffset = 0
@@ -22,12 +22,12 @@
   // Aesthetics: Title
   export let title = 'Title Text'
   export let titleFill = 'black'
-  export let titleStroke = undefined
-  export let titleStrokeWidth = undefined
-  export let titleStrokeOpacity = undefined
-  export let titleFillOpacity = undefined
+  export let titleStroke
+  export let titleStrokeWidth
+  export let titleStrokeOpacity
+  export let titleFillOpacity
   export let titleOpacity = 1
-  export let titleFontFamily = undefined
+  export let titleFontFamily
   export let titleFontSize = 18
   export let titleFontWeight = 'bold'
   export let titleRotation = 0
@@ -36,26 +36,27 @@
   // Aesthetics: Subtitle
   export let subtitle = ''
   export let subtitleFill = 'black'
-  export let subtitleStroke = undefined
-  export let subtitleStrokeWidth = undefined
-  export let subtitleStrokeOpacity = undefined
-  export let subtitleFillOpacity = undefined
+  export let subtitleStroke
+  export let subtitleStrokeWidth
+  export let subtitleStrokeOpacity
+  export let subtitleFillOpacity
   export let subtitleOpacity = 1
-  export let subtitleFontFamily = undefined
+  export let subtitleFontFamily
   export let subtitleFontSize = 14
   export let subtitleFontWeight = 'normal'
   export let subtitleRotation = 0
-  export let subtitleX = undefined
-  export let subtitleY = undefined
+  export let subtitleX
+  export let subtitleY
+  export let subtitleAnchorPoint = 'center'
 
   // Transitions and interactions
-  export let transition = undefined
-  export let onClick = undefined
-  export let onMouseover = undefined
-  export let onMouseout = undefined
+  export let transition
+  export let onClick
+  export let onMouseover
+  export let onMouseout
 
   // Other
-  export let zoomIdentity = undefined
+  export let zoomIdentity
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -79,9 +80,9 @@
   // Title text positioning wrt section/graphic context
   $: {
     totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize : titleFontSize
-    console.log(x,y)
+    console.log(x, y)
     // Autopositioning
-    if (!isValid(x,y)){
+    if (!isValid(x, y)) {
       if (sectionContext.flipX) xRange.reverse()
       x = createTitleXCoord(hjust, xRange, x, xOffset, totalFontSize, sectionContext.flipX, _padding)
 
@@ -94,13 +95,13 @@
        * else if value, uses data scale => convert to pixel values
       **/
 
-     if ({}.toString.call(x) === '[object Function]') {
+      if ({}.toString.call(x) === '[object Function]') {
         _x = x()
       } else {
         _x = $sectionContext.scaleX(x)
       }
 
-     if ({}.toString.call(y) === '[object Function]') {
+      if ({}.toString.call(y) === '[object Function]') {
         _y = y()
       } else {
         _y = $sectionContext.scaleY(y)
