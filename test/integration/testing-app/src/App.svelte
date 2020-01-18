@@ -13,27 +13,26 @@
   import Area from './pages/Area.svelte'
   import AreaLayer from './pages/AreaLayer.svelte'
   import Title from './pages/Title.svelte'
-  import Legends from './pages/Legends.svelte'
 
   // and add them to this component array
   const components = [
     {
- name: 'Rectangles',
+      name: 'Rectangles',
       url: '/rectangles',
       component: Rectangles
     },
     {
- name: 'Geo',
+      name: 'Geo',
       url: '/geo',
       component: Geo
     },
     {
- name: 'Label Mark',
+      name: 'Label Mark',
       url: '/label-mark',
       component: LabelMark
     },
     {
- name: 'Zoom',
+      name: 'Zoom',
       url: '/zoom',
       component: Zoom
     },
@@ -71,11 +70,6 @@
       name: 'Title',
       url: '/title',
       component: Title
-    },
-    {
-      name: 'Legends',
-      url: '/legends',
-      component: Legends
     }
   ]
 </script>
