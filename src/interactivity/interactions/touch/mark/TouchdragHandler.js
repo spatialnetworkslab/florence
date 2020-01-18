@@ -3,32 +3,37 @@ import MarkInteractionHandler from '../../base/handlers/MarkInteractionHandler.j
 import { createMarkEvent, createLayerEvent } from '../../utils/createEvent.js'
 import { getLocalCoordinates } from '../../utils/getLocalCoordinates.js'
 import { coordinatesAreInsideSection, hitIsMark, hitIsInLayer, getHitId } from '../../utils/hitUtils.js'
+import numberOfTouches from '../../utils/numberOfTouches.js'
 
-export default class MousedragHandler extends MarkInteractionHandler {
+export default class TouchdragHandler extends MarkInteractionHandler {
   constructor (interactionManager) {
     super(interactionManager, {
-      interactionName: 'mousedrag',
-      eventName: ['mousedown', 'mousemove', 'mouseup']
+      interactionName: 'touchdrag',
+      eventName: ['touchstart', 'touchmove', 'touchend']
     })
 
     this._currentHits = {}
   }
 
   _handleEvent (screenCoordinates, nativeEvent) {
-    if (nativeEvent.eventName === 'mousedown') {
-      this._handleMousedown(screenCoordinates, nativeEvent)
+    if (numberOfTouches(screenCoordinates) !== 1) {
+      return
     }
 
-    if (nativeEvent.eventName === 'mousemove') {
-      this._handleMousemove(screenCoordinates, nativeEvent)
+    if (nativeEvent.eventName === 'touchstart') {
+      this._handleTouchstart(screenCoordinates, nativeEvent)
     }
 
-    if (nativeEvent.eventName === 'mouseup') {
-      this._handleMouseup(screenCoordinates, nativeEvent)
+    if (nativeEvent.eventName === 'touchmove') {
+      this._handleTouchmove(screenCoordinates, nativeEvent)
+    }
+
+    if (nativeEvent.eventName === 'touchend') {
+      this._handleTouchend(screenCoordinates, nativeEvent)
     }
   }
 
-  _handleMousedown (screenCoordinates, nativeEvent) {
+  _handleTouchstart (screenCoordinates, nativeEvent) {
     if (!coordinatesAreInsideSection(screenCoordinates, this.section())) {
       return
     }
@@ -46,7 +51,7 @@ export default class MousedragHandler extends MarkInteractionHandler {
     }
   }
 
-  _handleMousemove (screenCoordinates, nativeEvent) {
+  _handleTouchmove (screenCoordinates, nativeEvent) {
     if (!coordinatesAreInsideSection(screenCoordinates, this.section())) {
       return
     }
@@ -57,7 +62,7 @@ export default class MousedragHandler extends MarkInteractionHandler {
     }
   }
 
-  _handleMouseup (screenCoordinates, nativeEvent) {
+  _handleTouchend (screenCoordinates, nativeEvent) {
     for (const hitId in this._currentHits) {
       const hit = this._currentHits[hitId]
       this._fireCallback(hit, screenCoordinates, nativeEvent, 'end')
@@ -70,23 +75,23 @@ export default class MousedragHandler extends MarkInteractionHandler {
     const localCoordinates = getLocalCoordinates(screenCoordinates, this.interactionManager())
 
     if (hitIsMark(hit)) {
-      const mousedragEvent = createMarkEvent('mousedrag', {
+      const touchdragEvent = createMarkEvent('touchdrag', {
         screenCoordinates,
         localCoordinates,
         dragType
       }, hit, nativeEvent)
 
-      this._markCallbacks[hit.markId](mousedragEvent)
+      this._markCallbacks[hit.markId](touchdragEvent)
     }
 
     if (hitIsInLayer(hit)) {
-      const mousedragEvent = createLayerEvent('mousedrag', {
+      const touchdragEvent = createLayerEvent('touchdrag', {
         screenCoordinates,
         localCoordinates,
         dragType
       }, hit, nativeEvent)
 
-      this._layerCallbacks[hit.layerId](mousedragEvent)
+      this._layerCallbacks[hit.layerId](touchdragEvent)
     }
   }
 }

@@ -19,6 +19,7 @@
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
   import { createDataNecessaryForIndexingMark } from '../Mark/createDataNecessaryForIndexing.js'
+  import any from '../utils/any.js'
 
   const markId = getId()
 
@@ -26,8 +27,8 @@
   const initDone = () => !initPhase
 
   // Aesthetics: positioning
-  export let func
-  export let x
+  export let func = undefined
+  export let x = undefined
 
   // Aesthetics: other
   export let strokeWidth = 1
@@ -35,25 +36,29 @@
   export let opacity = 1
 
   // Transitions
-  export let transition
+  export let transition = undefined
 
   // Mouse interactions
-  export let onClick
-  export let onMousedown
-  export let onMouseup
-  export let onMouseover
-  export let onMouseout
-  export let onMousedrag
+  export let onClick = undefined
+  export let onMousedown = undefined
+  export let onMouseup = undefined
+  export let onMouseover = undefined
+  export let onMouseout = undefined
+  export let onMousedrag = undefined
 
   // Touch interactions
-  // TODO
+  export let onTouchdown = undefined
+  export let onTouchup = undefined
+  export let onTouchover = undefined
+  export let onTouchout = undefined
+  export let onTouchdrag = undefined
 
   // Select interactions
-  export let onSelect
-  export let onDeselect
+  export let onSelect = undefined
+  export let onDeselect = undefined
 
   // Other
-  export let zoomIdentity
+  export let zoomIdentity = undefined
   export let blockReindexing = false
 
   // Contexts
@@ -116,13 +121,8 @@
   })
 
   // Interactivity
-  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined ||
-    onMousedown !== undefined || onMouseup !== undefined ||
-    onMouseover !== undefined || onMouseout !== undefined ||
-    onMousedrag !== undefined
-  )
-
-  $: isInteractiveTouch = detectIt.hasTouch // TODO
+  $: isInteractiveMouse = detectIt.hasMouse && any(onClick, onMousedown, onMouseup, onMouseover, onMouseout, onMousedrag)
+  $: isInteractiveTouch = detectIt.hasTouch && any(onTouchdown, onTouchup, onTouchover, onTouchout, onTouchdrag)
 
   $: isSelectable = onSelect !== undefined || onDeselect !== undefined
 
@@ -153,7 +153,15 @@
       }
 
       if (isInteractiveTouch) {
-        // TODO
+        const markInterface = $interactionManagerContext.touch().marks()
+
+        markInterface.loadMark('Line', createDataNecessaryForIndexing())
+
+        if (onTouchdown) markInterface.addMarkInteraction('touchdown', markId, onTouchdown)
+        if (onTouchup) markInterface.addMarkInteraction('touchup', markId, onTouchup)
+        if (onTouchover) markInterface.addMarkInteraction('touchover', markId, onTouchover)
+        if (onTouchout) markInterface.addMarkInteraction('touchout', markId, onTouchout)
+        if (onTouchdrag) markInterface.addMarkInteraction('touchdrag', markId, onTouchdrag)
       }
     }
 
@@ -169,11 +177,22 @@
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
-    const markInterface = $interactionManagerContext.mouse().marks()
+    if (detectIt.hasMouse) {
+      const markMouseInterface = $interactionManagerContext.mouse().marks()
 
-    if (markInterface.markIsLoaded(markId)) {
-      markInterface.removeAllMarkInteractions(markId)
-      markInterface.removeMark(markId)
+      if (markMouseInterface.markIsLoaded(markId)) {
+        markMouseInterface.removeAllMarkInteractions(markId)
+        markMouseInterface.removeMark(markId)
+      }
+    }
+
+    if (detectIt.hasTouch) {
+      const markTouchInterface = $interactionManagerContext.touch().marks()
+
+      if (markTouchInterface.markIsLoaded(markId)) {
+        markTouchInterface.removeAllMarkInteractions(markId)
+        markTouchInterface.removeMark(markId)
+      }
     }
   }
 

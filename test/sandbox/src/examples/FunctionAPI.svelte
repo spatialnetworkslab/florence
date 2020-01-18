@@ -22,27 +22,45 @@
   let hoverKey
 
   function onMouseover ({ key }) {
+    console.log('mouseover')
+    console.log(key)
     hoverKey = key
   }
 
   function onMouseout ({ key }) {
-    if (hoverKey === key) hoverKey = undefined
+    console.log('mouseout')
+    console.log(key)
+    hoverKey = undefined
   }
+
+  const log = console.log
 </script>
 
 <Graphic width={500} height={500}>
 
-  <Section {scaleX} {scaleY} padding={20}>
+  <Section 
+    {scaleX} {scaleY} padding={20}
+    onTouchover={log}
+    onTouchout={log}
+  >
   
     <PointLayer
       x={data.column('a')}
       y={data.column('b')}
       fill={key => key === hoverKey ? 'red' : 'black'}
-      radius={7}
+      radius={17}
       {onMouseover}
       {onMouseout}
+      onTouchdown={onMouseover}
+      onTouchup={onMouseout}
     />
 
   </Section>
 
 </Graphic>
+
+<br /><br />
+
+{#if hoverKey}
+  <h1>OVER: {hoverKey}</h1>
+{/if}
