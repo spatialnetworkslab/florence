@@ -22,34 +22,39 @@
   const sectionId = getId()
   
   // Props
-  export let x1
-  export let x2
-  export let y1
-  export let y2
+  export let x1 = undefined
+  export let x2 = undefined
+  export let y1 = undefined
+  export let y2 = undefined
   export let padding = 0
-  export let scaleX
-  export let scaleY
+  export let scaleX = undefined
+  export let scaleY = undefined
   export let flipX = false
   export let flipY = false
-  export let zoomIdentity
-  export let transformation
+  export let zoomIdentity = undefined
+  export let transformation = undefined
   export let blockReindexing = false
 
   // Aesthetics
-  export let backgroundColor
-  export let paddingColor
+  export let backgroundColor = undefined
+  export let paddingColor = undefined
 
   // Mouse interactions
-  export let onWheel
-  export let onClick
-  export let onMousedown
-  export let onMouseup
-  export let onMouseover
-  export let onMouseout
-  export let onMousemove
+  export let onClick = undefined
+  export let onWheel = undefined
+  export let onMousedown = undefined
+  export let onMouseup = undefined
+  export let onMouseover = undefined
+  export let onMouseout = undefined
+  export let onMousemove = undefined
   
   // Touch interactions
-  // TODO
+  export let onPinch = undefined
+  export let onTouchdown = undefined
+  export let onTouchmove = undefined
+  export let onTouchup = undefined
+  export let onTouchover = undefined
+  export let onTouchout = undefined
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -105,7 +110,8 @@
   // Change callbacks if necessary
   $: {
     removeSectionInteractionsIfNecessary(
-      onWheel, onClick, onMousedown, onMouseup, onMouseover, onMouseout
+      onWheel, onClick, onMousedown, onMouseup, onMouseover, onMouseout,
+      onTouchdown, onTouchmove, onTouchup, onTouchover, onTouchout, onPinch
     )
   }
 
@@ -134,7 +140,15 @@
     }
 
     if (detectIt.hasTouch) {
-      // TODO
+      const sectionInterface = $interactionManagerContext.touch().section()
+      sectionInterface.removeAllInteractions()
+
+      if (onTouchdown) sectionInterface.addInteraction('touchdown', onTouchdown)
+      if (onTouchmove) sectionInterface.addInteraction('touchmove', onTouchmove)
+      if (onTouchup) sectionInterface.addInteraction('touchup', onTouchup)
+      if (onTouchover) sectionInterface.addInteraction('touchover', onTouchover)
+      if (onTouchout) sectionInterface.addInteraction('touchout', onTouchout)
+      if (onPinch) sectionInterface.addInteraction('pinch', onPinch)
     }
   }
 

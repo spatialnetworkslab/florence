@@ -7,12 +7,36 @@
 // that the Title is contained in
 
 export function isValid (x, y) {
-  if (!isNaN(x) && !isNaN(y)) {
-    return true
+  let validVariables = 0
+
+  for (const value in [x, y]) {
+    if (checkValidType(value)) {
+      validVariables += 1
+    }
   }
 
-  if (x !== undefined || y !== undefined) {
-    throw new Error('Couldn\'t construct title because of invalid x, y inputs.')
+  if (validVariables < 2) {
+    throw new Error('Couldn\'t construct legend because of invalid x, y inputs.')
+  } else if (validVariables === 2 && x === undefined && y === undefined) {
+    return false
+  }
+
+  return true
+
+  // if (!isNaN(x) && !isNaN(y)) {
+  //   return true
+  // }
+
+  // if (x !== undefined || y !== undefined) {
+  //   throw new Error('Couldn\'t construct title because of invalid x, y inputs.')
+  // }
+
+  // return false
+}
+
+function checkValidType (value) {
+  if (!isNaN(value) || {}.toString.call(value) === '[object Function]' || value === undefined) {
+    return true
   }
 
   return false

@@ -22,7 +22,7 @@ export default class MouseoverHandler extends SectionInteractionHandler {
       if (!this._mouseCurrentlyOverSection) {
         const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
 
-        const mousedownEvent = createSectionEvent('mousedown', {
+        const mousedownEvent = createSectionEvent('mouseover', {
           screenCoordinates,
           localCoordinates
         }, nativeEvent)

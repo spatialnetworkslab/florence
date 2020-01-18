@@ -3,6 +3,7 @@ import rectangleAesthetics from '../Rectangle/aesthetics.js'
 import polygonAesthetics from '../Polygon/aesthetics.js'
 import lineAesthetics from '../Line/aesthetics.js'
 import labelAesthetics from '../Label/aesthetics.js'
+import symbolAesthetics from '../Symbol/aesthetics.js'
 import areaAesthetics from '../Area/aesthetics.js'
 
 import { isDefined, isUndefined } from '../../../utils/equals.js'
@@ -26,6 +27,10 @@ export default function (type, aesthetics) {
 
   if (type === 'Label') {
     return validateAesthetics(aesthetics, labelAesthetics)
+  }
+
+  if (type === 'Symbol') {
+    return validateAesthetics(aesthetics, symbolAesthetics)
   }
 
   if (type === 'Area') {

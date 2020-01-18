@@ -24,6 +24,7 @@
   import { createDataNecessaryForIndexingLayer } from './createDataNecessaryForIndexing.js'
   import generatePath from '../utils/generatePath.js'
   import textAnchorPoint from '../utils/textAnchorPoint.js'
+  import any from '../utils/any.js'
 
   const layerId = getId()
 
@@ -40,6 +41,8 @@
   export let y1
   export let y2
   export let geometry
+  export let shape
+  export let size
   export let independentAxis
 
   // Aesthetics: other
@@ -71,7 +74,11 @@
   export let onMousedrag
 
   // Touch interactions
-  // TODO
+  export let onTouchdown
+  export let onTouchup
+  export let onTouchover
+  export let onTouchout
+  export let onTouchdrag
 
   // Select interactions
   export let onSelect
@@ -95,6 +102,8 @@
       y1,
       y2,
       geometry,
+      shape,
+      size,
       independentAxis,
       radius,
       fill,
@@ -123,6 +132,8 @@
           y1,
           y2,
           geometry,
+          shape,
+          size,
           independentAxis,
           radius,
           fill,
@@ -143,10 +154,10 @@
   }
 
   // Create 'positioning' aesthetics object
-  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, independentAxis }
+  let positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, shape, size, independentAxis }
   $: {
     if (initDone()) {
-      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, independentAxis }
+      positioningAesthetics = { x, y, x1, x2, y1, y2, geometry, shape, size, independentAxis }
     }
   }
 
@@ -315,13 +326,8 @@
   })
 
   // Interactivity
-  $: isInteractiveMouse = detectIt.hasMouse && (onClick !== undefined ||
-    onMousedown !== undefined || onMouseup !== undefined ||
-    onMouseover !== undefined || onMouseout !== undefined ||
-    onMousedrag !== undefined
-  )
-
-  $: isInteractiveTouch = detectIt.hasTouch // TODO
+  $: isInteractiveMouse = detectIt.hasMouse && any(onClick, onMousedown, onMouseup, onMouseover, onMouseout, onMousedrag)
+  $: isInteractiveTouch = detectIt.hasTouch && any(onTouchdown, onTouchup, onTouchover, onTouchout, onTouchdrag)
 
   $: isSelectable = onSelect !== undefined || onDeselect !== undefined
 
@@ -404,7 +410,15 @@
       }
 
       if (isInteractiveTouch) {
-        // TODO
+        const markInterface = $interactionManagerContext.touch().marks()
+
+        markInterface.loadLayer(type, createDataNecessaryForIndexing())
+
+        if (onTouchdown) markInterface.addLayerInteraction('touchdown', layerId, onTouchdown)
+        if (onTouchup) markInterface.addLayerInteraction('touchup', layerId, onTouchup)
+        if (onTouchover) markInterface.addLayerInteraction('touchover', layerId, onTouchover)
+        if (onTouchout) markInterface.addLayerInteraction('touchout', layerId, onTouchout)
+        if (onTouchdrag) markInterface.addLayerInteraction('touchdrag', layerId, onTouchdrag)
       }
     }
 
@@ -420,11 +434,22 @@
   }
 
   function removeLayerFromSpatialIndexIfNecessary () {
-    const markInterface = $interactionManagerContext.mouse().marks()
+    if (detectIt.hasMouse) {
+      const markMouseInterface = $interactionManagerContext.mouse().marks()
 
-    if (markInterface.layerIsLoaded(layerId)) {
-      markInterface.removeAllLayerInteractions(layerId)
-      markInterface.removeLayer(layerId)
+      if (markMouseInterface.layerIsLoaded(layerId)) {
+        markMouseInterface.removeAllLayerInteractions(layerId)
+        markMouseInterface.removeLayer(layerId)
+      }
+    }
+
+    if (detectIt.hasTouch) {
+      const markTouchInterface = $interactionManagerContext.touch().marks()
+
+      if (markTouchInterface.layerIsLoaded(layerId)) {
+        markTouchInterface.removeAllLayerInteractions(layerId)
+        markTouchInterface.removeLayer(layerId)
+      }
     }
   }
 
