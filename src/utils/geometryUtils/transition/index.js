@@ -1,5 +1,5 @@
 import { interpolate } from 'd3-interpolate'
-import transshape from './transshape.umd.js'
+import transshape from '@snlab/transshape'
 
 export function transitionGeometry (fromGeometry, toGeometry) {
   if (pointTransition(fromGeometry, toGeometry)) {
