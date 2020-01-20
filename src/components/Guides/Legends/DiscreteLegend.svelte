@@ -1,5 +1,5 @@
 <script>
-  import { Label, LabelLayer, RectangleLayer } from '../../../'
+  import { Label, LabelLayer, RectangleLayer } from '../../../index.js'
   import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from './createLegendCoordinates.js'
   import { removePadding } from '../../Core/utils/padding.js'
 
