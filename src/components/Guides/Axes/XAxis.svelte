@@ -1,5 +1,5 @@
 <script>
-  import { Line, LineLayer, Label, LabelLayer } from '../../../'
+  import { Line, LineLayer, Label, LabelLayer } from '../../../index.js'
   import * as SectionContext from '../../Core/Section/SectionContext'
 
   import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord } from './createXAxisCoords.js'
