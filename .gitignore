@@ -5,7 +5,6 @@ public/bundle.*
 test/sandbox/public/bundle.*
 test/integration/testing-app/public/bundle.*
 dist/
-package-lock.json
 yarn.lock
 /cypress/screenshots
 site/static/index.css
