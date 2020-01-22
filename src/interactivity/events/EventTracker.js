@@ -12,6 +12,10 @@ export default class EventTracker {
     this._callbacks = {}
   }
 
+  setNativeEventName (nativeEventName) {
+    this._nativeEventName = nativeEventName
+  }
+
   addListener (listenerId, callback) {
     this._callbacks[listenerId] = callback
 
