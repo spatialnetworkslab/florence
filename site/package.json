@@ -38,6 +38,6 @@
     "rollup-plugin-terser": "^5.1.1",
     "sapper": "^0.27.0",
     "svelte": "^3.6.7",
-    "sveltex": "git+https://f3da89bc07d42fe52516ff9eefe08975c112c2a5:x-oauth-basic@github.com/spatialnetworkslab/sveltex.git"
+    "sveltex": "git+https://2f4873cd55f4329b5c380610b704a94504cc0a75:x-oauth-basic@github.com/spatialnetworkslab/sveltex.git"
   }
 }
