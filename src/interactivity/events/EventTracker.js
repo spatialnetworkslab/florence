@@ -1,6 +1,6 @@
 let handler
 
-export default class MouseEventTracker {
+export default class EventTracker {
   constructor (eventManager, { eventName, nativeEventName, useWindow, preventDefault }) {
     this._eventManager = eventManager
     this._eventName = eventName
@@ -10,6 +10,10 @@ export default class MouseEventTracker {
 
     this._numberOfActiveListeners = 0
     this._callbacks = {}
+  }
+
+  setNativeEventName (nativeEventName) {
+    this._nativeEventName = nativeEventName
   }
 
   addListener (listenerId, callback) {
@@ -76,6 +80,7 @@ export default class MouseEventTracker {
     if (this._preventDefault) nativeEvent.preventDefault()
 
     const screenCoordinates = this._getScreenCoordinates(nativeEvent)
+    nativeEvent.eventName = this._eventName
 
     for (const listenerId in this._callbacks) {
       this._callbacks[listenerId](screenCoordinates, nativeEvent)

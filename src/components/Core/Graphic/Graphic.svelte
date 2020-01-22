@@ -16,11 +16,11 @@
   export let width
   export let height
   export let padding = 0
-  export let scaleX
-  export let scaleY
+  export let scaleX = undefined
+  export let scaleY = undefined
   export let flipX = false
   export let flipY = false
-  export let renderer
+  export let renderer = undefined
   export let blockReindexing = false
 
   const graphicContext = GraphicContext.init()

@@ -1,5 +1,5 @@
 import { interpolate } from 'd3-interpolate'
-import transshape from './transshape.umd.js'
+import { transshape } from '@snlab/transshape'
 
 export function transitionGeometry (fromGeometry, toGeometry) {
   if (pointTransition(fromGeometry, toGeometry)) {
@@ -7,11 +7,11 @@ export function transitionGeometry (fromGeometry, toGeometry) {
   }
 
   if (polygonTransition(fromGeometry, toGeometry)) {
-    return transshape.transshape(fromGeometry, toGeometry)
+    return transshape(fromGeometry, toGeometry)
   }
 
   if (lineStringTransition(fromGeometry, toGeometry)) {
-    return transshape.transshape(fromGeometry, toGeometry)
+    return transshape(fromGeometry, toGeometry)
   }
 
   throw new Error('Invalid input')
@@ -26,11 +26,11 @@ export function transitionGeometries (fromLayer, toLayer) {
   }
 
   if (polygonTransition(firstFromGeometry, firstToGeometry)) {
-    return transitionLayer(fromLayer, toLayer, transshape.transshape)
+    return transitionLayer(fromLayer, toLayer, transshape)
   }
 
   if (lineStringTransition(firstFromGeometry, firstToGeometry)) {
-    return transitionLayer(fromLayer, toLayer, transshape.transshape)
+    return transitionLayer(fromLayer, toLayer, transshape)
   }
 
   throw new Error('Invalid input')

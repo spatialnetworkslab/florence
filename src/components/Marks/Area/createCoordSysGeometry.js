@@ -16,44 +16,61 @@ export default function (positioningProps, sectionContext, coordinateTransformat
       createScaledGeometry(
         scaleCoordinates(
           augmentProps(
-            validateProps(allowedProps)),
+            validateProps(
+              normalize(
+                allowedProps,
+                sectionContext))),
           sectionContext)),
       coordinateTransformationContext,
       interpolate)
-
   return coordSysGeometry
 }
 
-export function validateProps (allowedProps) {
-  // validate only defined coordinate props
-  const definedProps = {}
-  for (const [key, value] of Object.entries(allowedProps)) {
-    if (value !== undefined) {
-      definedProps[key] = value
+function normalize ({ independentAxis, ...coordinateProps }, sectionContext) {
+  const normalized = Object.entries(coordinateProps).reduce((acc, [k, v]) => {
+    const extracted = typeof v === 'function' ? v(sectionContext) : v
+
+    acc[k] = {
+      type: extracted === undefined ? 'none' : Array.isArray(extracted) ? 'array' : 'singleton',
+      ...(Array.isArray(extracted) && { arrayLength: extracted.length }),
+      value: extracted,
+      scaled: typeof v === 'function'
     }
-  }
+    return acc
+  }, {})
+  normalized.independentAxis = independentAxis && independentAxis.toLowerCase()
+  return normalized
+}
+
+export function validateProps (normalized) {
+  const { independentAxis, ...coordinateProps } = normalized
+
+  const definedTypes = ['singleton', 'array']
+  const definedProps = Object.entries(coordinateProps)
+    .filter(([k, v]) => definedTypes.includes(v.type))
+    .reduce((acc, [k, v]) => {
+      acc[k] = coordinateProps[k]
+      return acc
+    }, {})
 
   const definedKeys = Object.keys(definedProps)
 
   // reject if props do not include x1 and y1
-  const containsx1y1 = ['x1', 'y1'].every(prop => definedKeys.includes(prop))
+  const containsx1y1 = ['x1', 'y1'].every(k => definedKeys.includes(k))
   if (!containsx1y1) { throw new Error('At least x1 and y1 must be provided') }
 
-  // reject if at least one of x1 or y1 is not an array
-  // assumes containsx1y1 check passes
-  if (!(Array.isArray(definedProps.x1) || Array.isArray(definedProps.y1))) {
+  // reject if at least x1 or y1 is not an array
+  if (definedProps.x1.type === 'singleton' && definedProps.y1.type === 'singleton') {
     throw new Error('At least x1 or y1 must be passed an array')
   }
 
   // reject if independentAxis does not align with x/y types
-  const independentAxis = definedProps.independentAxis &&
-        definedProps.independentAxis.toLowerCase()
-
   if (!independentAxis || independentAxis === 'x') {
     // check that x is the independent variable
-    // reject if x1 is not given an array; x cannot be a constant and hence cannot be broadcasted
-    if (!Array.isArray(definedProps.x1)) {
-      throw new Error('x1 must be passed an array when independentAxis is "x" or undefined')
+    // reject if x1 is not given an array of at least length 2 - x must not be constant
+    // x1 should also be distinct (for all types) and monotonically increasing for Number/Date types, but no checks will be performed for these
+    if (definedProps.x1.type === 'singleton' || (definedProps.x1.type === 'array' && definedProps.x1.arrayLength < 2)) {
+      throw new Error('x1 must be passed an array of at least length 2 when independentAxis is "x" or undefined')
     }
     // reject if x1, y1 and x2 are provided but independentAxis is not y
     if (definedKeys.includes('x2')) {
@@ -61,9 +78,10 @@ export function validateProps (allowedProps) {
     }
   } else if (independentAxis === 'y') {
     // check that y is the independent variable
-    // reject if y1 is not given an array; y cannot be a constant and hence cannot be broadcasted
-    if (!Array.isArray(definedProps.y1)) {
-      throw new Error('y1 must be passed an array when independentAxis is "y"')
+    // reject if y1 is not given an array of at least length 2 - y must not be constant
+    // y1 should also be distinct (for all types) and monotonically increasing for Number/Date types, but no checks will be performed for these
+    if (definedProps.y1.type === 'singleton' || (definedProps.y1.type === 'array' && definedProps.y1.arrayLength < 2)) {
+      throw new Error('y1 must be passed an array of at least length 2 when independentAxis is "y"')
     }
     // reject if x1, y1 and y2 are provided but independentAxis is not x
     if (definedKeys.includes('y2')) {
@@ -75,69 +93,82 @@ export function validateProps (allowedProps) {
   }
 
   // reject if arrays given are not of equal length
-  const arrayProps = Object.values(definedProps).filter(v => Array.isArray(v))
-
-  const arrayLengths = Object.values(arrayProps).reduce((accum, elem) => {
-    accum.push(elem.length)
-    return accum
-  }, [])
+  const arrayLengths = Object.values(definedProps)
+    .filter(v => v.type === 'array')
+    .map(v => v.value.length)
 
   const arrayLengthsEqual = arrayLengths.every((val, idx, arr) => val === arr[0])
   if (!arrayLengthsEqual) { throw new Error('Arrays given must be of equal length') }
 
-  return allowedProps
+  return normalized
 }
 
-export function augmentProps (allowedProps) {
-  let { x1, y1, x2, y2, independentAxis } = allowedProps
-  independentAxis = independentAxis && independentAxis.toLowerCase()
+export function augmentProps ({ independentAxis, x1, y1, x2, y2 }) {
+  const indAx = !independentAxis || independentAxis === 'x' ? 'x' : 'y'
 
-  // undefined independentAxis defaults to x
-  if (!independentAxis || independentAxis === 'x') {
-    // if y1 is not an array, broadcast its value
-    if (!Array.isArray(y1)) { y1 = Array(x1.length).fill(y1) }
-    if (y2 === undefined) { y2 = Array(x1.length).fill(0) }
-    // if all 4 props are provided, x2 is ignored
-    return { coordinates: { x1: x1, y1: y1, y2: y2 }, independentAxis: 'x' }
-  } else if (independentAxis === 'y') {
-    // if x1 is not an array, broadcast its value
-    if (!Array.isArray(x1)) { x1 = Array(y1.length).fill(x1) }
-    if (x2 === undefined) { x2 = Array(y1.length).fill(0) }
-    // if all 4 props are provided, y2 is ignored
-    return { coordinates: { x1: x1, y1: y1, x2: x2 }, independentAxis: 'y' }
+  const [indKey, indVal] = indAx === 'x' ? ['x1', x1] : ['y1', y1]
+  const [depKey1, depVal1] = indAx === 'x' ? ['y1', y1] : ['x1', x1]
+  const [depKey2, depVal2] = indAx === 'x' ? ['y2', y2] : ['x2', x2]
+  const length = indVal.arrayLength
+
+  const depVal1Map = {
+    singleton: {
+      value: Array(length).fill(depVal1.value),
+      type: 'array',
+      arrayLength: length
+    },
+    array: depVal1
+  }
+  const depVal2Map = {
+    singleton: {
+      value: Array(length).fill(depVal2.value),
+      type: 'array',
+      arrayLength: length
+    },
+    none: {
+      value: Array(length).fill(0),
+      type: 'array',
+      arrayLength: length
+    },
+    array: depVal2
+  }
+
+  return {
+    independentAxis: indAx,
+    [indKey]: indVal,
+    [depKey1]: depVal1Map[depVal1.type],
+    [depKey2]: depVal2Map[depVal2.type]
   }
 }
 
 const scaleMap = { x1: 'scaleX', y1: 'scaleY', x2: 'scaleX', y2: 'scaleY' }
 
-export function scaleCoordinates (augmentedProps, sectionContext) {
-  const coordinateProps = augmentedProps.coordinates
-
-  const scaledProps = {}
-
-  const propKeys = Object.keys(coordinateProps)
-
-  for (const prop of propKeys) {
-    const scale = sectionContext[scaleMap[prop]]
-    const scaledValues = coordinateProps[prop].map(v => scale(v))
-    scaledProps[prop] = scaledValues
-  }
-  return scaledProps
+export function scaleCoordinates ({ independentAxis, ...coordinateProps }, sectionContext) {
+  const scaledProps = Object.entries(coordinateProps).reduce((acc, [k, v]) => {
+    if (v.scaled) {
+      acc[k] = v.value
+    } else {
+      const scale = sectionContext[scaleMap[k]]
+      acc[k] = v.value.map(d => scale(d))
+    }
+    return acc
+  }, {})
+  return { independentAxis, ...scaledProps }
 }
 
-export function createScaledGeometry (scaledProps) {
+export function createScaledGeometry ({ x1, y1, x2, y2, independentAxis }) {
   // polygon outer ring is defined counterclockwise
 
-  const propKeys = Object.keys(scaledProps)
   let bottomPoints, topPoints
 
-  if (propKeys.includes('y2')) { // x independent
-    bottomPoints = scaledProps.y2.map((y2, i) => [scaledProps.x1[i], y2])
-    topPoints = scaledProps.y1.map((y1, i) => [scaledProps.x1[i], y1]).reverse()
+  if (independentAxis === 'x') {
+    bottomPoints = y2.map((y2, i) => [x1[i], y2])
+    topPoints = y1.map((y1, i) => [x1[i], y1]).reverse()
   } else { // y independent
-    bottomPoints = scaledProps.x2.map((x2, i) => [x2, scaledProps.y1[i]])
-    topPoints = scaledProps.x1.map((x1, i) => [x1, scaledProps.y1[i]]).reverse()
+    bottomPoints = x2.map((x2, i) => [x2, y1[i]])
+    topPoints = x1.map((x1, i) => [x1, y1[i]]).reverse()
   }
+
   const origin = [bottomPoints[0]]
   const allPoints = [bottomPoints.concat(topPoints, origin)]
 

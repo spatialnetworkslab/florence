@@ -1,1 +1,1 @@
-require('@cypress/snapshot').register()
+import 'cypress-plugin-snapshots/commands'

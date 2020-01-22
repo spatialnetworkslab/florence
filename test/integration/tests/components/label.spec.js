@@ -16,7 +16,7 @@ context('Assertions', () => {
 
     it('[render] labels snapshot correctly', () => {
       cy.get('svg')
-        .snapshot({ name: 'svg with 4 text labels' })
+        .toMatchSnapshot()
     })
 
     it('[interaction] clicking on label changes color', () => {
