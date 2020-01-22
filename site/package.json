@@ -6,7 +6,7 @@
     "dev": "npm run copy-workers && sapper dev --ext '.svelte .sveltex'",
     "copy-workers": "rm -rf static/workers && cp -r node_modules/@sveltejs/svelte-repl/workers static",
     "build": "sapper build --ext '.svelte .sveltex'",
-    "export": "npm run copy-workers && sapper export --ext '.svelte .sveltex'",
+    "export": "npm run copy-workers && sapper export --ext '.svelte .sveltex' > /dev/null",
     "start": "node __sapper__/build",
     "link": "cd ../ && npm install --production && cd site/ && npm link ../",
     "build:netlify": "cd ../ && rm package-lock.json || true && export NODE_ENV=production && npm install && cd site/ && npm link ../",
@@ -38,6 +38,6 @@
     "rollup-plugin-terser": "^5.1.1",
     "sapper": "^0.27.0",
     "svelte": "^3.6.7",
-    "sveltex": "git+https://f3da89bc07d42fe52516ff9eefe08975c112c2a5:x-oauth-basic@github.com/spatialnetworkslab/sveltex.git"
+    "sveltex": "git+https://2f4873cd55f4329b5c380610b704a94504cc0a75:x-oauth-basic@github.com/spatialnetworkslab/sveltex.git"
   }
 }
