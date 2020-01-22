@@ -3,7 +3,7 @@ import capitalize from '../../utils/capitalize.js'
 
 export default class MouseEventManager extends BaseEventManager {
   constructor () {
-    super(EXPOSED_EVENTS)
+    super(EXPOSED_EVENTS, 'mouse')
   }
 
   _getNativeMouseEventName (exposedEventName, BROWSER_TYPE) {

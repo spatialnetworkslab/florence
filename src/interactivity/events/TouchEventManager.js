@@ -3,7 +3,7 @@ import capitalize from '../../utils/capitalize.js'
 
 export default class TouchEventManager extends BaseEventManager {
   constructor () {
-    super(EXPOSED_EVENTS)
+    super(EXPOSED_EVENTS, 'touch')
   }
 
   _getNativeTouchEventName (exposedEventName, BROWSER_TYPE) {
