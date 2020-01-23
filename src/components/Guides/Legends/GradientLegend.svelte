@@ -91,6 +91,7 @@
   // Private variables
   let scale
   let scaleDomain
+  let tickLabelPositions
   let tickLabelText
   let tickLabelXCoords
   let tickLabelYCoords

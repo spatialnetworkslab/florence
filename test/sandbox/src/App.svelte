@@ -27,6 +27,7 @@
   import StackedAreaChart from './examples/StackedAreaChart.svelte'
   import ViolinPlot from './examples/ViolinPlot.svelte'
   import Title from './examples/Title.svelte'
+  import LegendsDocs from './examples/LegendsDocs.svelte'
 
   // and add them to this component array
   const components = [
@@ -154,6 +155,11 @@
       name: 'Title',
       url: 'title',
       component: Title
+    },
+    {
+      name: 'Legends: Docs',
+      url: 'legendsdocs',
+      component: LegendsDocs
     }
   ]
 </script>
