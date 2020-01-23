@@ -6,7 +6,7 @@
     "dev": "npm run copy-workers && sapper dev --ext '.svelte .sveltex'",
     "copy-workers": "rm -rf static/workers && cp -r node_modules/@sveltejs/svelte-repl/workers static",
     "build": "sapper build --ext '.svelte .sveltex'",
-    "export": "npm run copy-workers && sapper export --ext '.svelte .sveltex'",
+    "export": "npm run copy-workers && sapper export --ext '.svelte .sveltex' > /dev/null",
     "start": "node __sapper__/build",
     "link": "cd ../ && npm install --production && cd site/ && npm link ../",
     "build:netlify": "cd ../ && rm package-lock.json || true && export NODE_ENV=production && npm install && cd site/ && npm link ../",
