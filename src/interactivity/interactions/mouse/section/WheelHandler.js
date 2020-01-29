@@ -22,12 +22,12 @@ export default class WheelHandler extends SectionInteractionHandler {
 
     if (coordinatesAreInsideSection(screenCoordinates, section)) {
       const localCoordinates = getLocalCoordinates(screenCoordinates, interactionManager)
-      const wheelDelta = getWheelDelta(nativeEvent)
+      const delta = getDelta(nativeEvent)
 
       const wheelEvent = createSectionEvent('wheel', {
         screenCoordinates,
         localCoordinates,
-        wheelDelta
+        delta
       }, nativeEvent)
 
       this._callback(wheelEvent)
@@ -37,7 +37,7 @@ export default class WheelHandler extends SectionInteractionHandler {
 
 let scrollLineHeight
 
-function getWheelDelta (nativeEvent) {
+function getDelta (nativeEvent) {
   let delta
 
   // Legacy

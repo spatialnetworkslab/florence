@@ -1,5 +1,5 @@
 import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
-import { createScaledGeometry, validateProps, augmentProps, scaleCoordinates } from './createCoordSysGeometry.js'
+import { validateProps, augmentProps, scaleCoordinates, createScaledGeometry } from './createCoordSysGeometry.js'
 import getKeyArray from '../utils/getKeyArray.js'
 
 export default function (positioningProps, sectionContext, coordinateTransformationContext, keyProp, interpolate) {
@@ -13,24 +13,36 @@ export default function (positioningProps, sectionContext, coordinateTransformat
       independentAxis = undefined
     }) => ({ x1, y1, x2, y2, independentAxis }))(positioningProps)
 
-  const { validatedProps, numAreas } = validateNumAreas(allowedProps)
+  const { numAreas, independentAxis, ...augmentedAreas } =
+    augmentAreas(
+      validateAreas(
+        normalizeAreas(
+          allowedProps,
+          sectionContext)))
 
   // pivot data for use with area mark methods
-  const validatedPropArray = [...Array(numAreas).keys()].map(areaIndex => {
-    return {
-      x1: validatedProps.x1 && validatedProps.x1[areaIndex],
-      y1: validatedProps.y1 && validatedProps.y1[areaIndex],
-      x2: validatedProps.x2 && validatedProps.x2[areaIndex],
-      y2: validatedProps.y2 && validatedProps.y2[areaIndex],
-      independentAxis: validatedProps.independentAxis
-    }
-  })
+  const areasAsArray = [...Array(numAreas).keys()].map(areaIndex =>
+    Object.entries(augmentedAreas).reduce((acc, [k, v]) => {
+      const isNestedArray = v.type === 'array of arrays'
 
-  const scaledGeometryArray = validatedPropArray.map(area => {
+      acc[k] = {
+        type: isNestedArray ? 'array' : 'none',
+        value: isNestedArray ? v.value[areaIndex] : v.value,
+        ...(isNestedArray && { arrayLength: v.value[areaIndex].length }),
+        scaled: v.scaled
+      }
+
+      acc.independentAxis = independentAxis
+      return acc
+    }, {})
+  )
+
+  const scaledGeometryArray = areasAsArray.map(area => {
     return createScaledGeometry(
       scaleCoordinates(
         augmentProps(
-          validateProps(area)),
+          validateProps(
+            area)),
         sectionContext))
   })
 
@@ -42,23 +54,94 @@ export default function (positioningProps, sectionContext, coordinateTransformat
       coordinateTransformationContext,
       keyArray,
       interpolate)
-
   return coordSysGeometryObject
 }
 
-function validateNumAreas (allowedProps) {
-  const propsWithArray = Object.values(allowedProps).filter(v => Array.isArray(v))
+function normalizeAreas ({ independentAxis, ...coordinateProps }, sectionContext) {
+  const normalized = Object.entries(coordinateProps).reduce((acc, [k, v]) => {
+    const extracted = typeof v === 'function' ? v(sectionContext) : v
 
-  const numAreasAll = Object.values(propsWithArray).reduce((accum, elem) => {
-    accum.push(elem.length)
-    return accum
-  }, [])
+    const isUndefined = (x) => typeof x === 'undefined'
+    const isSingleton = (x) => !isUndefined(x) && !Array.isArray(x)
+    const isNestedArray = (xs) => !isUndefined(xs) && !isSingleton(xs) && xs.every(x => Array.isArray(x))
+
+    acc[k] = {
+      type: isUndefined(extracted)
+        ? 'none'
+        : isSingleton(extracted)
+          ? 'singleton'
+          : isNestedArray(extracted)
+            ? 'array of arrays'
+            : 'array',
+      ...(isNestedArray(extracted) && { numAreas: extracted.length }),
+      value: extracted,
+      scaled: typeof v === 'function'
+    }
+    return acc
+  }, {})
+
+  normalized.independentAxis = independentAxis && independentAxis.toLowerCase()
+  return normalized
+}
+
+function validateAreas (normalizedAreas) {
+  const { independentAxis, ...coordinateProps } = normalizedAreas
+  const { x1, x2, y1, y2 } = coordinateProps
+
+  // reject singletons
+  Object.values(coordinateProps).forEach(v => {
+    if (v.type === 'singleton') {
+      throw new Error('Props passed to the AreaLayer must be either an array or an array of arrays')
+    }
+  })
+
+  const indAx = !independentAxis || independentAxis === 'x' ? 'x' : 'y'
+  const [depKey1, depVal1] = indAx === 'x' ? ['y1', y1] : ['x1', x1]
+  const [depKey2, depVal2] = indAx === 'x' ? ['y2', y2] : ['x2', x2]
+
+  // only x1 can be broadcasted when x is the independent variable
+  // only y1 can be broadcasted when y is the independent variable
+  if (depVal1.type === 'array' || depVal2.type === 'array') {
+    throw new Error(`${depKey1} and ${depKey2} must be passed an array of arrays when independentAxis is "${indAx}"`)
+  }
+
+  // reject if number of areas per prop are not equal
+  const numAreasAll = Object.values(coordinateProps)
+    .filter(v => v.type === 'array of arrays')
+    .map(v => v.numAreas)
 
   const numAreasEqual = numAreasAll.every((val, idx, arr) => val === arr[0])
-  let numAreas
   if (!numAreasEqual) {
     throw new Error('Number of areas declared per prop must be equal')
-  } else { numAreas = numAreasAll[0] }
+  }
 
-  return { validatedProps: allowedProps, numAreas: numAreas }
+  const numAreas = numAreasAll[0]
+  return { numAreas, independentAxis, ...normalizedAreas }
+}
+
+function augmentAreas ({ numAreas, independentAxis, x1, y1, x2, y2 }) {
+  const indAx = !independentAxis || independentAxis === 'x' ? 'x' : 'y'
+  const [indKey1, indVal1] = indAx === 'x' ? ['x1', x1] : ['y1', y1]
+  const [indKey2, indVal2] = indAx === 'x' ? ['x2', x2] : ['y2', y2]
+  const [depKey1, depVal1] = indAx === 'x' ? ['y1', y1] : ['x1', x1]
+  const [depKey2, depVal2] = indAx === 'x' ? ['y2', y2] : ['x2', x2]
+
+  const indValMap = {
+    array: {
+      value: Array(numAreas).fill(indVal1.value),
+      type: 'array of arrays',
+      numAreas: numAreas,
+      scaled: indVal1.scaled
+    },
+    'array of arrays': indVal1
+  }
+
+  return {
+    numAreas: numAreas,
+    independentAxis: indAx,
+    [indKey1]: indValMap[indVal1.type],
+    [indKey2]: indVal2,
+    [depKey1]: depVal1,
+    [depKey2]: depVal2
+  }
 }

@@ -1,13 +1,10 @@
 <script>
   import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
   import { isValid, createTitleXCoord, createTitleYCoord } from './utils.js'
-  import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
-  import { parsePadding, removePadding } from '../utils/padding.js'
+  import { removePadding } from '../utils/padding.js'
   
   // Contexts
-  import * as GraphicContext from '../Graphic/GraphicContext'
   import * as SectionContext from '../Section/SectionContext'
-  import * as ZoomContext from '../../Core/Section/ZoomContext'
 
   // Aesthetics: positioning
   export let x
@@ -45,9 +42,9 @@
   export let subtitleFontSize = 14
   export let subtitleFontWeight = 'normal'
   export let subtitleRotation = 0
-  export let subtitleAnchorPoint = 'center'
   export let subtitleX
   export let subtitleY
+  export let subtitleAnchorPoint = 'center'
 
   // Transitions and interactions
   export let transition
@@ -60,8 +57,6 @@
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
-  const graphicContext = GraphicContext.subscribe()
-  const zoomContext = ZoomContext.subscribe()
 
   // Private variables
   let _padding
@@ -80,16 +75,41 @@
   // Title text positioning wrt section/graphic context
   $: {
     totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize : titleFontSize
+    console.log(x, y)
+    // Autopositioning
+    if (!isValid(x, y)) {
+      if (sectionContext.flipX) xRange.reverse()
+      x = createTitleXCoord(hjust, xRange, x, xOffset, totalFontSize, sectionContext.flipX, _padding)
 
-    if (sectionContext.flipX) xRange.reverse()
-    x = createTitleXCoord(hjust, xRange, x, xOffset, totalFontSize, sectionContext.flipX, _padding)
+      if (sectionContext.flipY) yRange.reverse()
+      y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize, sectionContext.flipY, _padding)
+    } else {
+      let _x, _y
+      /** If function, uses pixel values based on padding/no padding setting
+       * (does not rely on section/graphic scale)
+       * else if value, uses data scale => convert to pixel values
+      **/
 
-    if (sectionContext.flipY) yRange.reverse()
-    y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize, sectionContext.flipY, _padding)
+      if ({}.toString.call(x) === '[object Function]') {
+        _x = x()
+      } else {
+        _x = $sectionContext.scaleX(x)
+      }
+
+      if ({}.toString.call(y) === '[object Function]') {
+        _y = y()
+      } else {
+        _y = $sectionContext.scaleY(y)
+      }
+
+      // Reassignment of values
+      x = _x
+      y = _y
+    }
 
     if (subtitle.length > 0) {
       if (!isValid(subtitleX, subtitleY)) {
-        const yRange = $sectionContext.scaleY.range()
+        yRange = $sectionContext.scaleY.range()
         subtitleX = x
         subtitleY = y + titleFontSize
       }
@@ -97,34 +117,36 @@
   }
 </script>
 
-{#if isValid(x, y) && title.length > 0}
-  <Mark
-    type="Label"
-    x={ () => { return x } } 
-    y={ () => { return y } } 
-    {geometry} 
-    fill={titleFill} 
-    stroke={titleStroke} 
-    strokeWidth={titleStrokeWidth}
-    strokeOpacity={titleStrokeOpacity} fillOpacity={titleFillOpacity} opacity={titleOpacity}
-    text={title}
-    fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
-    {transition} {onClick} {onMouseover} {onMouseout}
-    {zoomIdentity} _asPolygon={false}
-  />
-{/if}
+<!-- TITLE -->
+<!-- {#if isValid(x, y) && title.length > 0} -->
+<Mark
+  type="Label"
+  x={ () => { return x } } 
+  y={ () => { return y } } 
+  {geometry} 
+  fill={titleFill} 
+  stroke={titleStroke} 
+  strokeWidth={titleStrokeWidth}
+  strokeOpacity={titleStrokeOpacity} fillOpacity={titleFillOpacity} opacity={titleOpacity}
+  text={title}
+  fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
+  {transition} {onClick} {onMouseover} {onMouseout}
+  {zoomIdentity} _asPolygon={false}
+/>
+<!-- {/if} -->
 
-{#if isValid(subtitleX, subtitleY) && subtitle.length > 0}
-  <Mark
-    type="Label"
-    x={ () => { return subtitleX } } 
-    y={ () => { return subtitleY } } 
-    {geometry} 
-    fill={subtitleFill} stroke={subtitleStroke} strokeWidth={subtitleStrokeWidth}
-    strokeOpacity={subtitleStrokeOpacity} fillOpacity={subtitleFillOpacity} opacity={subtitleOpacity}
-    text={subtitle}
-    fontFamily={subtitleFontFamily} fontSize={subtitleFontSize} fontWeight={subtitleFontWeight} rotation={subtitleRotation} anchorPoint={titleAnchorPoint}
-    {transition} {onClick} {onMouseover} {onMouseout}
-    {zoomIdentity} _asPolygon={false}
-  />
-{/if}
+<!-- SUBTITLE -->
+<!-- {#if isValid(subtitleX, subtitleY) && subtitle.length > 0} -->
+<Mark
+  type="Label"
+  x={ () => { return subtitleX } } 
+  y={ () => { return subtitleY } } 
+  {geometry} 
+  fill={subtitleFill} stroke={subtitleStroke} strokeWidth={subtitleStrokeWidth}
+  strokeOpacity={subtitleStrokeOpacity} fillOpacity={subtitleFillOpacity} opacity={subtitleOpacity}
+  text={subtitle}
+  fontFamily={subtitleFontFamily} fontSize={subtitleFontSize} fontWeight={subtitleFontWeight} rotation={subtitleRotation} anchorPoint={subtitleAnchorPoint}
+  {transition} {onClick} {onMouseover} {onMouseout}
+  {zoomIdentity} _asPolygon={false}
+/>
+<!-- {/if} -->

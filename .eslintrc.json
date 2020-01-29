@@ -11,7 +11,9 @@
                 "import/first": "off",
                 "import/no-duplicates": "off",
                 "import/no-mutable-exports": "off",
-                "import/no-unresolved": "off"
+                "import/no-unresolved": "off",
+                "no-undef-init": "off",
+                "no-multiple-empty-lines": ["error", { "max": 1, "maxBOF": 2, "maxEOF": 0 }] 
               }
         }
     ],

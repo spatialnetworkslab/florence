@@ -6,15 +6,12 @@
 </script>
 
 <script>
-  import { Label, LabelLayer, Rectangle, RectangleLayer, Section } from '../../../'
+  import { Label, LabelLayer, Rectangle } from '../../../index.js'
   import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from './createLegendCoordinates.js'
-  // import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
   import { removePadding } from '../../Core/utils/padding.js'
 
   // Contexts
-  import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
-  import * as ZoomContext from '../../Core/Section/ZoomContext'
   
   // Permanent
   import { getTickPositions, getFormat, getTicks, getGradientGeoms, isValid } from './utils.js'
@@ -90,17 +87,12 @@
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
-  const graphicContext = GraphicContext.subscribe()
-  
-  // Permanent
-  const zoomContext = ZoomContext.subscribe()
 
   // Private variables
   let scale
   let scaleDomain
-  let scaleDomainGroups
-  let tickLabelText
   let tickLabelPositions
+  let tickLabelText
   let tickLabelXCoords
   let tickLabelYCoords
   let tickColors
@@ -121,7 +113,6 @@
   let colorBarHeight
   let colorBarWidth
 
-  let posScaleY
   let xCoords
   let yCoords
   let addTitleSize
@@ -238,7 +229,7 @@
       }
 
       if (scale) {
-        if (scale.hasOwnProperty('domain')) {
+        if (Object.prototype.hasOwnProperty.call(scale, 'domain')) {
           if (typeof scale.domain === 'function') {
             scaleDomain = scale.domain()
           } else {

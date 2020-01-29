@@ -1,0 +1,40 @@
+exports[`Assertions > Rectangle Tests > [render] rectangles snapshot correctly #0`] = `
+<svg width="500" height="500">
+  <defs>
+    <clipPath id="clip-sc0">
+      <rect x="50" y="50" width="400" height="400"></rect>
+    </clipPath>
+    <clipPath id="clip-sc0-data">
+      <rect x="50" y="50" width="400" height="400" fill="white"></rect>
+    </clipPath>
+  </defs>
+  <g class="section" clip-path="url(#clip-sc0)">
+    <g class="rectangle-layer">
+      <path
+        class="rectangle"
+        d="M75,50L175,50L175,450L75,450Z"
+        fill="yellow"
+        stroke="none"
+        stroke-width="0"
+        opacity="1"
+      ></path>
+      <path
+        class="rectangle"
+        d="M200,50L300,50L300,263.3333333333333L200,263.3333333333333Z"
+        fill="yellow"
+        stroke="none"
+        stroke-width="0"
+        opacity="1"
+      ></path>
+      <path
+        class="rectangle"
+        d="M325,50L425,50L425,183.33333333333334L325,183.33333333333334Z"
+        fill="yellow"
+        stroke="none"
+        stroke-width="0"
+        opacity="1"
+      ></path>
+    </g>
+  </g>
+</svg>
+`;

@@ -12,7 +12,7 @@ context('Assertions', () => {
 
     it('[render] rectangles snapshot correctly', () => {
       cy.get('svg')
-        .snapshot({ name: 'svg with 3 rectangles' })
+        .toMatchSnapshot()
     })
 
     it('[interaction] clicking on rectangle changes color', () => {
