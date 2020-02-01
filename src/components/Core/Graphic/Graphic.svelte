@@ -13,8 +13,10 @@
 
   import { parsePadding, applyPadding } from '../utils/padding.js'
 
-  export let width
-  export let height
+  export let width = 500
+  export let height = 500
+  export let displayWidth = undefined
+  export let displayHeight = undefined
   export let padding = 0
   export let scaleX = undefined
   export let scaleY = undefined
@@ -66,6 +68,18 @@
     $interactionManagerContext.loadSection($sectionContext)
   }
 
+  const originalDisplayHeight = displayHeight
+  const originalDisplayWidth = displayWidth
+
+  $: {
+    if (originalDisplayHeight === undefined) {
+      displayHeight = height
+    }
+    if (originalDisplayWidth === undefined) {
+      displayWidth = width
+    }
+  }
+
   onMount(() => {
     // only on mount can we bind the svg root node and attach actual event listeners
     eventManager.addRootNode(rootNode)
@@ -73,9 +87,10 @@
   })
 </script>
 
-<svg 
-  {width} 
-  {height}
+<svg
+  width={displayWidth}
+  height={displayHeight}
+  viewBox="0 0 {width} {height}"
   bind:this={rootNode}
 >
   <slot />

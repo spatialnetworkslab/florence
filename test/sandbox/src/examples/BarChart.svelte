@@ -3,8 +3,8 @@
   import { Graphic, Section, Rectangle, RectangleLayer } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  let data = new DataContainer({ 
-    quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
+  let data = new DataContainer({
+    quantity: [1, 4, 2, 3, 3, 5, 6, 9],
     fruit: [NaN, 'anchovies', 'banana', 'banana', 'coconut', 'coconut', 'durian', 'durian']
   })
 
@@ -16,16 +16,16 @@
     .arrange({ meanQuantity: 'descending' })
 
   const scaleFruit = scaleBand().domain(data.domain('fruit')).padding(0.2)
-	let meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
+const meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
   const scaleMeanQuantity = scaleLinear().domain(meanQuantityDomain)
 
-  let height = 500
+  const height = 500
   let transformation = 'identity'
   let duration = 2000
 
-  $: handler = transformation === 'identity' ?
-    e => { console.log(e) } :
-    () => { console.log('polar') }
+  $: handler = transformation === 'identity'
+    ? e => { console.log(e) }
+    : () => { console.log('polar') }
 </script>
 
 <div>
@@ -48,6 +48,8 @@
 
 <Graphic 
   width={500} {height}
+  displayHeight="100%"
+  displayWidth="100%"
   scaleX={scaleLinear().domain([0, 500])}
   scaleY={scaleLinear().domain([0, 500])}
 >
