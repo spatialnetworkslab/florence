@@ -1,6 +1,6 @@
 <script>
   import { scalePoint, scaleLinear } from 'd3-scale'
-  import { Graphic, Section, Rectangle, XAxis, YAxis } from '../../../../../src'
+  import { Graphic, Section, Rectangle } from '@snlab/florence'
 </script>
 
 <Graphic width={500} height={500}>

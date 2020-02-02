@@ -1,10 +1,10 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, RectangleLayer } from '../../../../src/'
+  import { Graphic, Section, RectangleLayer } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
   
-  let data = new DataContainer({ 
-    quantity: [1, 4, 2, 3, 3, 5, 6, 9], 
+  let data = new DataContainer({
+    quantity: [1, 4, 2, 3, 3, 5, 6, 9],
     fruit: [NaN, 'anchovies', 'banana', 'banana', 'coconut', 'coconut', 'durian', 'durian']
   })
 
@@ -15,14 +15,13 @@
     .summarise({ meanQuantity: { quantity: 'mean' } })
     .arrange({ meanQuantity: 'descending' })
 
-  
   let notAllowedfruit = ''
 
   $: filteredData = data
     .filter(row => row.fruit !== notAllowedfruit)
 
   const scaleFruit = scaleBand().domain(data.domain('fruit')).padding(0.2)
-	let meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
+const meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
   const scaleMeanQuantity = scaleLinear().domain(meanQuantityDomain)
 
   let height = 500
@@ -70,7 +69,7 @@
 
     <RectangleLayer 
       x1={filteredData.column('fruit')}
-      x2={({ scaleX }) => filteredData.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
+      x2={({ scaleX }) => filteredData.map('fruit', v => scaleX(v) + scaleX.bandwidth())}
       y1={0}
       y2={filteredData.column('meanQuantity')}
       fill={transformation === 'identity' ? 'green' : 'blue'}

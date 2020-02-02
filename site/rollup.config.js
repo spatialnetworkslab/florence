@@ -6,7 +6,6 @@ import babel from 'rollup-plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 import config from 'sapper/config/rollup.js'
 import pkg from './package.json'
-import json from 'rollup-plugin-json'
 import { sveltex } from '@snlab/sveltex-unified'
 
 const mode = process.env.NODE_ENV
@@ -80,11 +79,7 @@ export default {
       resolve({
         dedupe
       }),
-	  commonjs(),
-	  json({
-        include: '../node_modules/proj4/**',
-        compact: true
-      })
+	  commonjs()
     ],
     external: Object.keys(pkg.dependencies).concat(
       require('module').builtinModules || Object.keys(process.binding('natives'))

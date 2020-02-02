@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, Section, Point } from '../../../../../src'
+  import { Graphic, Section, Point } from '@snlab/florence'
   let padding = 0
 </script>
 
