@@ -13,7 +13,7 @@ export default {
 	input: 'src/index.js',
 	output: [
 		{ file: pkg.module, 'format': 'es' },
-		{ file: pkg.main, 'format': 'umd', name: 'florence' }
+		// { file: pkg.main, 'format': 'umd', name: 'florence' }
 	],
 	plugins: [
 		svelte({
