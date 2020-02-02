@@ -8,7 +8,7 @@
   import * as CoordinateTransformationContext from '../Section/CoordinateTransformationContext'
   import * as ZoomContext from '../Section/ZoomContext'
 
-  import EventManager from '../../../interactivity/events/EventManager.js'
+  import { EventManager } from '../../../interactivity/events/EventManager.js'
   import InteractionManager from '../../../interactivity/interactions/InteractionManager.js'
 
   import { parsePadding, applyPadding } from '../utils/padding.js'

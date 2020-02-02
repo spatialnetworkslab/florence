@@ -1,6 +1,6 @@
-import EventTracker from './EventTracker.js'
+import { EventTracker } from './EventTracker.js'
 
-export default class BaseEventManager {
+export class BaseEventManager {
   constructor (EXPOSED_EVENTS, managerType) {
     this._domNode = undefined
     this._svgPoint = undefined
