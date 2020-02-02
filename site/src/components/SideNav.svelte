@@ -1,11 +1,8 @@
 <script>
-	export let items;
+	export let items
 </script>
 
 <style>
-.toc {
-    list-style-type: none;
-}
 </style>
 
 <nav>

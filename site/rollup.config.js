@@ -5,12 +5,16 @@ import svelte from 'rollup-plugin-svelte'
 import babel from 'rollup-plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 import config from 'sapper/config/rollup.js'
+import sveltePreprocess from 'svelte-preprocess'
+import postcss from 'rollup-plugin-postcss'
 import pkg from './package.json'
 import { sveltex } from '@snlab/sveltex-unified'
 
 const mode = process.env.NODE_ENV
 const dev = mode === 'development'
 const legacy = !!process.env.SAPPER_LEGACY_BUILD
+
+const preprocess = sveltePreprocess({ postcss: true })
 
 const onwarn = (warning, onwarn) => (warning.code === 'CIRCULAR_DEPENDENCY' && /[/\\]@sapper[/\\]/.test(warning.message)) || onwarn(warning)
 const dedupe = importee => importee === 'svelte' || importee.startsWith('svelte/')
@@ -29,7 +33,10 @@ export default {
         dev,
         hydratable: true,
         emitCss: true,
-        preprocess: sveltex({ extension: '.sveltex' })
+        preprocess: [
+          sveltex({ extension: '.sveltex' }),
+          preprocess
+        ]
       }),
       resolve({
         browser: true,
@@ -38,7 +45,7 @@ export default {
       commonjs(),
 
       legacy && babel({
-        extensions: ['.js', '.mjs', '.html', '.svelte'],
+        extensions: ['.js', '.mjs', '.html', '.svelte', 'sveltex'],
         runtimeHelpers: true,
         exclude: ['node_modules/@babel/**'],
         presets: [
@@ -74,12 +81,19 @@ export default {
         extensions: ['.svelte', '.sveltex'],
         generate: 'ssr',
         dev,
-        preprocess: sveltex({ extension: '.sveltex' })
+        preprocess: [
+          sveltex({ extension: '.sveltex' }),
+          preprocess
+        ]
+      }),
+      postcss({
+        minimize: true,
+        extract: './static/css/index.css'
       }),
       resolve({
         dedupe
       }),
-	  commonjs()
+      commonjs()
     ],
     external: Object.keys(pkg.dependencies).concat(
       require('module').builtinModules || Object.keys(process.binding('natives'))
