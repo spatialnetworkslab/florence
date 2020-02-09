@@ -1,6 +1,6 @@
 <script context="module">
   export async function preload () {
-    const res = await this.fetch('examples.json')
+    const res = await this.fetch('gallery.json')
     const items = await res.json()
     if (res.status === 200) {
       return { items }
@@ -16,16 +16,18 @@
 </script>
 
 <style>
-.flex-grid {
-  display: flex;
+.exampleContainer {
+  @apply flex flex-row;
 }
-
 .left-col {
-  margin-right: 80px;
+  @apply w-2/12;
+}
+.right-col {
+  @apply w-auto;
 }
 </style>
 
-<div class="flex-grid">
+<div class="exampleContainer">
 	<div class="left-col">
 		<SideNav { items }/>
 	</div>

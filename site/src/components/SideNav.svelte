@@ -1,14 +1,29 @@
 <script>
-	export let items
+    export let items
+
+    let selected
 </script>
 
-<style>
-</style>
-
 <nav>
-    <ul class="toc">
-        {#each items as item}
-            <li><a rel=prefetch href={item.path}>{item.name}</a></li>  
+  <ul>
+    {#each items as item, index}
+      <li>
+        {item.title}
+      </li>
+      
+      {#if item.children}
+        {#each item.children as child, index}
+        <li>
+            <a
+                rel="prefetch"
+                href={child.path}
+                on:click={() => (selected = item.title + index)}
+                class>
+                {child.title}
+            </a>
+        </li>
         {/each}
-    </ul>
+      {/if}
+    {/each}
+  </ul>
 </nav>

@@ -64,7 +64,7 @@ Note that `Section` components clip everything outside of their boundaries.
 ```
 
 ```js exec
-import Padding from './doc-examples/Padding.svelte'
+import Padding from './utils/_Padding.svelte'
 ```
 
 <Padding />
@@ -123,7 +123,7 @@ It is also possible to use non-numeric domains:
 ```
 
 ```js exec
-import NonNumericDomains from './doc-examples/NonNumericDomains.svelte'
+import NonNumericDomains from './utils/_NonNumericDomains.svelte'
 ```
 
 <NonNumericDomains />
@@ -224,7 +224,7 @@ to use anything other than marks, layers and axes. An example:
 ```
 
 ```js exec
-import Polar from './doc-examples/Polar.svelte'
+import Polar from './utils/_Polar.svelte'
 ```
 
 <Polar />
