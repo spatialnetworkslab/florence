@@ -3,23 +3,43 @@
 /* global font styles */
 
 h1 {
-  @apply text-2xl font-sans font-semibold mb-4 ;
+  @apply text-2xl font-sans font-semibold mb-4;
+  @screen sm {
+    @apply text-2xl;
+  }
+  @screen md {
+    @apply text-3xl;
+  }
 }
 
 h2 {
   @apply text-xl font-sans font-semibold mt-3 mb-3 border-b border-gray-400;
+  @screen sm {
+    @apply text-xl;
+  }
+  @screen md {
+    @apply text-2xl;
+  }
 }
 
 h3 {
   @apply text-base font-sans font-semibold mt-1 mb-1;
+  @screen sm {
+    @apply text-base;
+  }
+  @screen md {
+    @apply text-lg;
+  }
 }
+
 p {
-  @apply mt-1 mb-2;
+  @apply mt-2 mb-3;
 }
 
 strong {
   @apply font-semibold;
 }
+
 a {
   @apply underline;
 }
@@ -79,12 +99,6 @@ tr > td {
   @apply my-4 border-orange-200 border-4 rounded;
 }
 
-/* layout */
-
-main {
-  @apply mt-10;
-}
-
 /* nav bars */
 
 .selected {
@@ -92,7 +106,7 @@ main {
 }
 
 .nav-ul {
-  @apply block fixed top-0 m-0 p-0 w-full border-b border-gray-400 px-8 bg-white;
+  @apply block fixed top-0 m-0 py-0 px-8 w-full border-b border-gray-400 bg-white;
 }
 
 .nav-li {
@@ -100,7 +114,7 @@ main {
 }
 
 .nav-a {
-  @apply no-underline py-2 px-2 block font-normal text-black;
+  @apply no-underline py-2 px-0 mr-4 block font-normal text-black;
   transition: border-color 1s; 
 }
 
@@ -111,7 +125,7 @@ main {
 /* side nav */
 
 .sidenav-first{
-  @apply text-xl font-bold no-underline;
+  @apply text-xl font-semibold no-underline;
 }
 
 .sidenav-second{
@@ -134,7 +148,7 @@ main {
 }
 
 .cols {
-  @apply py-10 px-4 mx-0 mt-2;
+  @apply py-2 mx-0;
 }
 
 .left-col {
@@ -142,7 +156,13 @@ main {
 }
 
 .right-col {
-  @apply w-5/6
+  @apply w-5/6 ml-6;
+}
+
+/* main */
+
+.main-body {
+  @apply bg-white p-8 my-4 mx-auto;
 }
 
 @tailwind components;

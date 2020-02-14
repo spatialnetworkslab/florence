@@ -8,6 +8,6 @@
 
 <Nav {segment} class='border border-gray-500'/>
 
-<main class='bg-white static p-8 my-0 mx-auto'>
+<main class='main-body'>
 	<slot></slot>
 </main>

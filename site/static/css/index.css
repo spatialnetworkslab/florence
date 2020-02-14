@@ -589,6 +589,12 @@ h1 {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
   margin-bottom: 1rem;
+  @media (min-width: 640px) {
+    font-size: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    font-size: 1.875rem;
+  }
 }
 
 h2 {
@@ -599,6 +605,12 @@ h2 {
   margin-bottom: 0.75rem;
   border-bottom-width: 1px;
   border-color: #cbd5e0;
+  @media (min-width: 640px) {
+    font-size: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    font-size: 1.5rem;
+  }
 }
 
 h3 {
@@ -607,11 +619,17 @@ h3 {
   font-weight: 600;
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
+  @media (min-width: 640px) {
+    font-size: 1rem;
+  }
+  @media (min-width: 768px) {
+    font-size: 1.125rem;
+  }
 }
 
 p {
-  margin-top: 0.25rem;
-  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 strong {
@@ -714,12 +732,6 @@ tr > td {
   border-radius: 0.25rem;
 }
 
-/* layout */
-
-main {
-  margin-top: 2.5rem;
-}
-
 /* nav bars */
 
 .selected {
@@ -735,12 +747,13 @@ main {
   position: fixed;
   top: 0;
   margin: 0;
-  padding: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 2rem;
+  padding-right: 2rem;
   width: 100%;
   border-bottom-width: 1px;
   border-color: #cbd5e0;
-  padding-left: 2rem;
-  padding-right: 2rem;
   background-color: #fff;
 }
 
@@ -754,8 +767,9 @@ main {
   text-decoration: none;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-left: 0;
+  padding-right: 0;
+  margin-right: 1rem;
   display: block;
   font-weight: 400;
   color: #000;
@@ -771,7 +785,7 @@ main {
 
 .sidenav-first{
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -801,13 +815,10 @@ main {
 }
 
 .cols {
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   margin-left: 0;
   margin-right: 0;
-  margin-top: 0.5rem;
 }
 
 .left-col {
@@ -817,7 +828,19 @@ main {
 }
 
 .right-col {
-  width: 83.333333%
+  width: 83.333333%;
+  margin-left: 1.5rem;
+}
+
+/* main */
+
+.main-body {
+  background-color: #fff;
+  padding: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .container {
