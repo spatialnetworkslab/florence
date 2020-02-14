@@ -162,7 +162,7 @@ tr > td {
 /* main */
 
 .main-body {
-  @apply bg-white p-8 my-4 mx-auto;
+  @apply bg-white pt-8 px-8 pb-auto mt-4 mb-auto mx-auto;
 }
 
 @tailwind components;
