@@ -1,0 +1,73 @@
+# Plot title
+___
+```html
+  <Graphic>
+    <Title
+        ...
+      />
+      
+    <Section>
+      <Title
+        ...
+      />
+    </Section>
+
+  </Graphic>
+```
+The `Title` component is used to create a plot title and has smart defaults for positioning and aesthetics. 
+
+## Props
+___
+
+### Positioning
+| Prop |     Type(s)     |    Required     |   Default   |       Units       |
+| ---- | --------------- | --------------- | ----------- | ----------------- |
+| x   |  `Number`, `Function`  |  ✅  | `undefined` | local coordinates (`Number`), pixels (`Function`) |
+| y   |  `Number`, `Function`  |  ✅  | `undefined` | local coordinates (`Number`), pixels (`Function`) |
+| vjust   |  `String`  |  ❌  | `top` | `top`, `center`/`centre`, `bottom` |
+| hjust   |  `String`  |  ❌  | `center` | `left`, `center`/`centre`, `right` |
+| xOffset   |  `String`  |  ❌  | `0` |    |
+| yOffset   |  `String`  |  ❌  | `10` |    |
+| usePadding   |  `Boolean`  |  ❌  | `false` |  |
+
+### Title 
+| Prop |     Type(s)     |    Required     |   Default   |       Units       |
+| ---- | --------------- | --------------- | ----------- | ----------------- |
+| title   |  `String`  |  ✅  | `Title Text` |  |
+| titleFill   |  `String`  |  ❌  | `black` |  |
+| titleStroke   |  `String`  |  ❌  | `undefined` | |
+| titleStrokeWidth   |  `Number`  |  ❌  | `undefined` | pixels |
+| titleStrokeOpacity   |  `Number`  |  ❌  | `undefined` | 0 to 1 |
+| titleFillOpacity   |  `Number`  |  ❌  | `undefined` | 0 to 1 |
+| titleOpacity   |  `Number`  |  ❌  | `1` | 0 to 1 |
+| titleFontFamily   |  `String`  |  ❌  | `Helvetica` |  |
+| titleFontSize   |  `Number`  |  ❌  | `18` | pixels |
+| titleFontWeight   |  `Number`  | ❌  | `bold` |  |
+| titleRotation   |  `Number`  |  ❌  | `0` | degrees |
+| titleAnchorPoint   |  `Number`  |  ❌  | `center` | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc' |
+
+
+### Title 
+| Prop |     Type(s)     |    Required     |   Default   |       Units       |
+| ---- | --------------- | --------------- | ----------- | ----------------- |
+| subtitle   |  `String`  |  ❌  | '' |  |
+| subtitleFill   |  `String`  |  ❌  | `black` |  |
+| subtitleStroke   |  `Number`  |  ❌  | `undefined` |    |
+| subtitleStrokeWidth   |  `Number`  |  ❌  | `undefined` |  pixels  |
+| subtitleStrokeOpacity   |  `Number`  |  ❌  | `undefined` |  0 to 1  |
+| subtitleFillOpacity   |  `Number`  |  ❌  | `undefined` |  0 to 1  |
+| subtitleOpacity   |  `Number`  |  ❌  | `1` |  0 to 1  |
+| subtitleFontFamily   |  `String`  |  ❌  | `Helvetica` |    |
+| subtitleFontSize   |  `Number`  |  ❌  | `14` |  pixels  |
+| subtitleFontWeight   | `Number`   |  ❌  | `normal` |    |
+| subtitleRotation   |  `Number`  |  ❌  | `0` |  degrees  |
+| subtitleAnchorPoint   |  `String`  |  ❌  | `center` |  'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc'  |
+| subtitleX   |  `Number`  |  ❌  | `undefined` |  pixels  |
+| subtitleY   |  `Number`  |  ❌  | `undefined` |  pixels  |
+
+
+## Examples
+___
+
+## Code
+___
