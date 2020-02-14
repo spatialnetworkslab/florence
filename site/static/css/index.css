@@ -716,16 +716,14 @@ tr > td {
 
 /* layout */
 
-main, nav {
-  margin-left: 2.5rem;
-  margin-right: 2.5rem;
-}
+/* main, nav {
+  @apply px-10;
+} */
 
 /* nav bars */
 
 .selected {
   position: relative;
-  display: inline-block;
   border-bottom-width: 2px;
   border-color: #e53e3e;
   text-decoration: none;
@@ -734,11 +732,21 @@ main, nav {
 
 .nav-ul {
   display: block;
+  position: fixed;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  border-bottom-width: 1px;
+  border-color: #cbd5e0;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  background-color: #fff;
 }
 
 .nav-li {
   list-style-type: none;
-  display: block;
+  display: inline;
   float: left;
 }
 
@@ -783,6 +791,31 @@ main, nav {
 
 .sidenav-a{
   text-decoration: none;
+}
+
+/* docs, gallery */
+
+.content {
+  display: flex;
+  flex-direction: row;
+}
+
+.cols {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 0;
+  padding-right: 1rem;
+  margin: 1rem;
+}
+
+.left-col {
+  width: 16.666667%;
+  border-right-width: 1px;
+  border-color: #cbd5e0;
+}
+
+.right-col {
+  width: auto;
 }
 
 .container {

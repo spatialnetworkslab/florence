@@ -81,22 +81,22 @@ tr > td {
 
 /* layout */
 
-main, nav {
-  @apply mx-10;
-}
+/* main, nav {
+  @apply px-10;
+} */
 
 /* nav bars */
 
 .selected {
-  @apply relative inline-block border-b-2 border-red-600 no-underline text-black;
+  @apply relative border-b-2 border-red-600 no-underline text-black;
 }
 
 .nav-ul {
-  @apply block;
+  @apply block fixed top-0 m-0 p-0 w-full border-b border-gray-400 px-8 bg-white;
 }
 
 .nav-li {
-  @apply list-none block float-left;
+  @apply list-none inline float-left;
 }
 
 .nav-a {
@@ -125,6 +125,24 @@ main, nav {
 
 .sidenav-a{
   @apply no-underline;
+}
+
+/* docs, gallery */
+
+.content {
+  @apply flex flex-row;
+}
+
+.cols {
+  @apply py-4 pl-0 pr-auto m-4;
+}
+
+.left-col {
+  @apply w-1/6 border-r border-gray-400;
+}
+
+.right-col {
+  @apply w-auto;
 }
 
 @tailwind components;

@@ -15,23 +15,11 @@
 	export let items
 </script>
 
-<style>
-.exampleContainer {
-  @apply flex flex-row;
-}
-.left-col {
-  @apply w-2/12;
-}
-.right-col {
-  @apply w-auto;
-}
-</style>
-
-<div class="exampleContainer">
-	<div class="left-col">
+<div class="content">
+	<div class="left-col cols">
 		<SideNav { items }/>
 	</div>
-	<div class="right-col">
+	<div class="right-col cols">
 		<main>
 			<slot></slot>
 		</main>

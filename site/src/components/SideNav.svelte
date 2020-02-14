@@ -4,16 +4,16 @@
     let selected
 </script>
 
-<nav>
+<nav class='fixed'>
   <ul>
     {#each items as item, index}
-      <li class='nav-li sidenav-first'>
+      <li class='list-none sidenav-first'>
         {item.title}
       </li>
       
       {#if item.children}
         {#each item.children as child, index}
-        <li class={`nav-li sidenav-second
+        <li class={`list-none sidenav-second
            ${selected === child.title + index ? 
            'sidenav-second-selected': ''}`}>
             <a
