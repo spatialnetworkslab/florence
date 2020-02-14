@@ -5,15 +5,18 @@
 h1 {
   @apply text-2xl font-sans font-semibold mb-4 ;
 }
+
 h2 {
   @apply text-xl font-sans font-semibold mt-3 mb-3 border-b border-gray-400;
 }
+
 h3 {
   @apply text-base font-sans font-semibold mt-1 mb-1;
 }
 p {
   @apply mt-1 mb-2;
 }
+
 strong {
   @apply font-semibold;
 }
@@ -75,6 +78,70 @@ tr > td {
 .csb {
   @apply my-4 border-orange-200 border-4 rounded;
 }
+
+/* layout */
+
+main, nav {
+  @apply mx-10;
+}
+
+main {
+  @apply relative bg-white p-8 my-0 mx-auto;
+}
+
+/* nav bars */
+
+.selected {
+  @apply relative inline-block border-b-2 border-red-600 no-underline text-black;
+}
+
+.nav-ul {
+  @apply block;
+}
+
+.nav-li {
+  @apply list-none float-left;
+}
+
+.nav-a {
+  @apply no-underline py-2 px-2 block font-normal text-black;
+  transition: border-color 1s; 
+}
+
+.nav-a:hover {
+  @apply border-b-2 border-red-600 no-underline text-black;
+}
+
+/* side nav */
+
+.sidenav {
+  @apply pr-4 border-r-2 border-red-600;
+}
+
+.sidenav-first{
+  @apply text-xl font-bold no-underline;
+}
+
+.sidenav-second{
+  @apply text-base font-normal pl-6 static;
+  transition: border-color 1s;
+}
+
+.sidenav-second:hover, .sidenav-second-selected {
+  @apply border-l-2 border-red-600 pl-5;
+}
+
+.sidenav-a{
+  @apply no-underline;
+}
+
+/* .sidenav-a:hover{
+  @apply border-l-2 border-red-600 pl-2;
+} */
+
+/* .sidenav-a-selected{
+  @apply border-l-2 border-red-600 pl-2;
+} */
 
 @tailwind components;
 @tailwind utilities;

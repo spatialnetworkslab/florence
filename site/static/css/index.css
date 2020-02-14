@@ -714,6 +714,102 @@ tr > td {
   border-radius: 0.25rem;
 }
 
+/* layout */
+
+main, nav {
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+}
+
+main {
+  position: relative;
+  background-color: #fff;
+  padding: 2rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* nav bars */
+
+.selected {
+  position: relative;
+  display: inline-block;
+  border-bottom-width: 2px;
+  border-color: #e53e3e;
+  text-decoration: none;
+  color: #000;
+}
+
+.nav-ul {
+  display: block;
+}
+
+.nav-li {
+  list-style-type: none;
+  float: left;
+}
+
+.nav-a {
+  text-decoration: none;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  display: block;
+  font-weight: 400;
+  color: #000;
+  transition: border-color 1s;
+}
+
+.nav-a:hover {
+  border-bottom-width: 2px;
+  border-color: #e53e3e;
+  text-decoration: none;
+  color: #000;
+}
+
+/* side nav */
+
+.sidenav {
+  padding-right: 1rem;
+  border-right-width: 2px;
+  border-color: #e53e3e;
+}
+
+.sidenav-first{
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.sidenav-second{
+  font-size: 1rem;
+  font-weight: 400;
+  padding-left: 1.5rem;
+  position: static;
+  transition: border-color 1s;
+}
+
+.sidenav-second:hover, .sidenav-second-selected {
+  border-left-width: 2px;
+  border-color: #e53e3e;
+  padding-left: 1.25rem;
+}
+
+.sidenav-a{
+  text-decoration: none;
+}
+
+/* .sidenav-a:hover{
+  @apply border-l-2 border-red-600 pl-2;
+} */
+
+/* .sidenav-a-selected{
+  @apply border-l-2 border-red-600 pl-2;
+} */
+
 .container {
   width: 100%;
 }
