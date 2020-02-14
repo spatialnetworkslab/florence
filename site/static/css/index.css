@@ -766,8 +766,6 @@ main {
 .nav-a:hover {
   border-bottom-width: 2px;
   border-color: #e53e3e;
-  text-decoration: none;
-  color: #000;
 }
 
 /* side nav */
@@ -795,7 +793,7 @@ main {
 .sidenav-second:hover, .sidenav-second-selected {
   border-left-width: 2px;
   border-color: #e53e3e;
-  padding-left: 1.25rem;
+  padding-left: 1.5rem;
 }
 
 .sidenav-a{

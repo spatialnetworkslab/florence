@@ -85,10 +85,6 @@ main, nav {
   @apply mx-10;
 }
 
-main {
-  @apply relative bg-white p-8 my-0 mx-auto;
-}
-
 /* nav bars */
 
 .selected {
@@ -109,7 +105,7 @@ main {
 }
 
 .nav-a:hover {
-  @apply border-b-2 border-red-600 no-underline text-black;
+  @apply border-b-2 border-red-600;
 }
 
 /* side nav */
@@ -128,7 +124,7 @@ main {
 }
 
 .sidenav-second:hover, .sidenav-second-selected {
-  @apply border-l-2 border-red-600 pl-5;
+  @apply border-l-2 border-red-600 pl-6;
 }
 
 .sidenav-a{
@@ -144,4 +140,10 @@ main {
 } */
 
 @tailwind components;
+
+
+main {
+  @apply relative bg-white p-8 my-0 mx-auto box-border;
+}
+
 @tailwind utilities;
