@@ -148,7 +148,7 @@ tr > td {
 }
 
 .cols {
-  @apply py-2 mx-0;
+  @apply py-4 mx-0;
 }
 
 .left-col {
