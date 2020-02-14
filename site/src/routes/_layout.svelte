@@ -6,8 +6,8 @@
 <style>
 </style>
 
-<Nav {segment}/>
+<Nav {segment} class='border border-gray-500'/>
 
-<main>
+<main class='bg-white'>
 	<slot></slot>
 </main>

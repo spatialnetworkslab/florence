@@ -20,7 +20,7 @@
   @apply flex flex-row;
 }
 .left-col {
-  @apply w-2/12 border-r border-gray-400;
+  @apply w-1/5 border-l border-gray-400;
 }
 .right-col {
   @apply w-auto;
