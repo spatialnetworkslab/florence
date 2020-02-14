@@ -716,9 +716,9 @@ tr > td {
 
 /* layout */
 
-/* main, nav {
-  @apply px-10;
-} */
+main {
+  margin-top: 2.5rem;
+}
 
 /* nav bars */
 
@@ -801,11 +801,13 @@ tr > td {
 }
 
 .cols {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  padding-left: 0;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  padding-left: 1rem;
   padding-right: 1rem;
-  margin: 1rem;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0.5rem;
 }
 
 .left-col {
@@ -815,7 +817,7 @@ tr > td {
 }
 
 .right-col {
-  width: auto;
+  width: 83.333333%
 }
 
 .container {

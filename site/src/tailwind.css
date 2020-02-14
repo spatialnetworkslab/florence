@@ -81,9 +81,9 @@ tr > td {
 
 /* layout */
 
-/* main, nav {
-  @apply px-10;
-} */
+main {
+  @apply mt-10;
+}
 
 /* nav bars */
 
@@ -134,7 +134,7 @@ tr > td {
 }
 
 .cols {
-  @apply py-4 pl-0 pr-auto m-4;
+  @apply py-10 px-4 mx-0 mt-2;
 }
 
 .left-col {
@@ -142,7 +142,7 @@ tr > td {
 }
 
 .right-col {
-  @apply w-auto;
+  @apply w-5/6
 }
 
 @tailwind components;

@@ -5,7 +5,7 @@
 </script>
 
 <nav class='fixed'>
-  <ul>
+  <ul class='flex-wrap'>
     {#each items as item, index}
       <li class='list-none sidenav-first'>
         {item.title}
