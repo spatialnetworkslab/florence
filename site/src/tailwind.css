@@ -96,7 +96,7 @@ main, nav {
 }
 
 .nav-li {
-  @apply list-none float-left;
+  @apply list-none block float-left;
 }
 
 .nav-a {
@@ -109,10 +109,6 @@ main, nav {
 }
 
 /* side nav */
-
-.sidenav {
-  @apply pr-4 border-r-2 border-red-600;
-}
 
 .sidenav-first{
   @apply text-xl font-bold no-underline;
@@ -131,19 +127,5 @@ main, nav {
   @apply no-underline;
 }
 
-/* .sidenav-a:hover{
-  @apply border-l-2 border-red-600 pl-2;
-} */
-
-/* .sidenav-a-selected{
-  @apply border-l-2 border-red-600 pl-2;
-} */
-
 @tailwind components;
-
-
-main {
-  @apply relative bg-white p-8 my-0 mx-auto box-border;
-}
-
 @tailwind utilities;

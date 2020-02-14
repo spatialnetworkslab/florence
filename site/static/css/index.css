@@ -721,16 +721,6 @@ main, nav {
   margin-right: 2.5rem;
 }
 
-main {
-  position: relative;
-  background-color: #fff;
-  padding: 2rem;
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 /* nav bars */
 
 .selected {
@@ -748,6 +738,7 @@ main {
 
 .nav-li {
   list-style-type: none;
+  display: block;
   float: left;
 }
 
@@ -769,12 +760,6 @@ main {
 }
 
 /* side nav */
-
-.sidenav {
-  padding-right: 1rem;
-  border-right-width: 2px;
-  border-color: #e53e3e;
-}
 
 .sidenav-first{
   font-size: 1.25rem;
@@ -799,14 +784,6 @@ main {
 .sidenav-a{
   text-decoration: none;
 }
-
-/* .sidenav-a:hover{
-  @apply border-l-2 border-red-600 pl-2;
-} */
-
-/* .sidenav-a-selected{
-  @apply border-l-2 border-red-600 pl-2;
-} */
 
 .container {
   width: 100%;

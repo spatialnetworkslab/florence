@@ -4,7 +4,7 @@
     let selected
 </script>
 
-<nav class='sidenav'>
+<nav>
   <ul>
     {#each items as item, index}
       <li class='nav-li sidenav-first'>
