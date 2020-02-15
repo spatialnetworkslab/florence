@@ -8,8 +8,6 @@
 </Graphic>
 ```
 
-___
-
 ## Description
 
 Every `florence` graphic starts with the `Graphic` component. Think of

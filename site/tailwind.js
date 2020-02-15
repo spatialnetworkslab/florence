@@ -6,7 +6,11 @@ module.exports = {
       decimal: 'decimal',
       circle: 'circle'
     },
-    extend: {}
+    extend: {
+      colors: {
+        codegray: '#f5f2f0'
+      }
+    }
   },
   variants: {},
   plugins: []
