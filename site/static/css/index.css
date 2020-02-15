@@ -668,7 +668,7 @@ ol {
 /* code layout */
 
 code {
-  background-color: #edf2f7;
+  background-color: #f5f2f0;
   font-size: 0.75rem;
   padding: 0.25rem;
   @media (min-width: 640px) {
@@ -839,9 +839,8 @@ tr > td {
   padding-top: 2rem;
   padding-left: 2rem;
   padding-right: 2rem;
-  padding-bottom: 0;
   margin-top: 1rem;
-  margin-bottom: 0;
+  margin-bottom: auto;
   margin-left: auto;
   margin-right: auto;
 }

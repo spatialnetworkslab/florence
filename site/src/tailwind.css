@@ -67,7 +67,7 @@ ol {
 /* code layout */
 
 code {
-  @apply bg-codegray-200 text-xs p-1;
+  @apply bg-codegray text-xs p-1;
   @screen sm {
     @apply text-xs;
   }
@@ -162,7 +162,7 @@ tr > td {
 /* main */
 
 .main-body {
-  @apply bg-white pt-8 px-8 pb-auto mt-4 mb-auto mx-auto;
+  @apply bg-white pt-8 px-8 mt-4 mb-auto mx-auto;
 }
 
 @tailwind components;
