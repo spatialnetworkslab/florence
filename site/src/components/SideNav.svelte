@@ -14,13 +14,13 @@
       {#if item.children}
         {#each item.children as child, index}
         <li class={`list-none sidenav-second
-           ${selected === child.title + index ? 
-           'sidenav-second-selected': ''}`}>
+           ${selected === child.title + index
+           ? 'sidenav-second-selected' : ''}`}>
             <a
               rel="prefetch"
               href={child.path}
               on:click={() => (selected = child.title + index)}
-              class={`sidenav-a`}>
+              class={'sidenav-a'}>
               {child.title} 
             </a>
         </li>
