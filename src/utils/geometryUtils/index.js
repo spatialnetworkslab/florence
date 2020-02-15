@@ -13,14 +13,11 @@ export { pointDistance, linearRingLength } from './distance.js'
 export { default as pointInPolygon } from './pointInPolygon.js'
 
 export {
-  scaleGeometries,
+  transformGeometry,
   transformGeometries,
-  scaleGeometry,
-  transformGeometry
-} from './transform.js'
+  chainTransformations
+} from './transformGeometry'
 
-export { interpolateGeometry } from './interpolate'
-
-export { transitionGeometry, transitionGeometries } from './transition'
+export { transitionGeometry, transitionGeometries } from './transition.js'
 
 export { polygonArea, linearRingIsClockwise } from './polygonArea.js'
