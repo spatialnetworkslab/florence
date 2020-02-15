@@ -30,6 +30,21 @@ export function transformGeometries (geometries, transformation, settings) {
   }
 }
 
+export function transformGeometriesWithKeys (geometries, keys, transformation, settings) {
+  const transformedGeometries = {}
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i]
+    transformedGeometries[key] = transformation(
+      geometries[i],
+      transformation,
+      settings
+    )
+  }
+
+  return transformedGeometries
+}
+
 export function chainTransformations ({ scale, coordinateTransformation, zoom }) {
   const functions = []
 
