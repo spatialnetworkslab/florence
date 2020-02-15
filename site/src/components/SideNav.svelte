@@ -4,7 +4,26 @@
     let selected
 </script>
 
-<nav class='fixed'>
+<style>
+.sidenav-first{
+  @apply text-xl font-semibold no-underline;
+}
+
+.sidenav-second{
+  @apply text-base font-normal pl-6;
+  transition: border-color 1s;
+}
+
+.sidenav-second:hover, .sidenav-second-selected {
+  @apply border-l-2 border-red-600;
+}
+
+.sidenav-a{
+  @apply no-underline;
+}
+</style>
+
+<nav>
   <ul class='flex-wrap'>
     {#each items as item, index}
       <li class='list-none sidenav-first'>

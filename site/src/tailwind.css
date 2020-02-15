@@ -83,86 +83,31 @@ table {
 }
 
 tr > th {
-  @apply border border-gray-400 px-4 py-2;
+  @apply border border-gray-400 px-2 py-1;
 }
 
 tr > td {
-  @apply border border-gray-400 px-4 py-2;
-}
-
-/* callouts */
-.callout {
-  @apply bg-green-100 border-green-500 border-l-8 my-4 px-10 py-3 font-sans leading-snug;
-}
-
-.csb {
-  @apply my-4 border-orange-200 border-4 rounded;
-}
-
-/* nav bars */
-
-.selected {
-  @apply relative border-b-2 border-red-600 no-underline text-black;
-}
-
-.nav-ul {
-  @apply block fixed top-0 m-0 py-0 px-8 w-full border-b border-gray-400 bg-white;
-}
-
-.nav-li {
-  @apply list-none inline float-left;
-}
-
-.nav-a {
-  @apply no-underline py-2 px-0 mr-4 block font-normal text-black;
-  transition: border-color 1s; 
-}
-
-.nav-a:hover {
-  @apply border-b-2 border-red-600;
-}
-
-/* side nav */
-
-.sidenav-first{
-  @apply text-xl font-semibold no-underline;
-}
-
-.sidenav-second{
-  @apply text-base font-normal pl-6 static;
-  transition: border-color 1s;
-}
-
-.sidenav-second:hover, .sidenav-second-selected {
-  @apply border-l-2 border-red-600 pl-6;
-}
-
-.sidenav-a{
-  @apply no-underline;
+  @apply border border-gray-400 px-2 py-1;
 }
 
 /* docs, gallery */
-
 .content {
   @apply flex flex-row;
 }
 
-.cols {
-  @apply py-4 mx-0;
-}
 
 .left-col {
-  @apply w-1/6 border-r border-gray-400;
+  @apply w-48 border-r border-gray-400 pr-4 whitespace-no-wrap flex-none;
 }
 
 .right-col {
-  @apply w-5/6 ml-6;
+  @apply w-full ml-6;
 }
 
 /* main */
 
 .main-body {
-  @apply bg-white pt-8 px-8 mt-4 mb-auto mx-auto;
+  @apply bg-white px-4 mt-4 max-w-5xl;
 }
 
 @tailwind components;

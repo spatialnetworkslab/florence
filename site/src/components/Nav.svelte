@@ -10,10 +10,38 @@
 </script>
 
 <style>
+/* nav bars */
+
+.selected {
+  @apply relative border-b-2 border-red-600 no-underline text-black;
+}
+
+.top-nav {
+  @apply h-full py-2 px-4 w-screen border-b border-gray-400 bg-white;
+}
+
+.nav-li {
+  @apply list-none;
+}
+
+.nav-a {
+  @apply no-underline py-2 px-0 mr-4 font-normal text-black;
+  transition: border-color 1s; 
+}
+
+.nav-a:hover {
+  @apply border-b-2 border-red-600;
+}
+
+@screen md {
+  ul {
+    @apply ml-0;
+  }
+}
 </style>
 
-<nav>
-	<ul class='nav-ul text-sm sm:text-sm md:text-base'>
+<nav class='top-nav'>
+	<ul class='ml-8 flex flex-row mb-0'>
     <li class='nav-li'>
       <a class={`nav-a ${segment ===
         undefined ? 'selected' : ''}`} href='.'>Home</a></li>

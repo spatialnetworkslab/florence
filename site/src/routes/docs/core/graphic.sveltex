@@ -1,5 +1,4 @@
 # Graphic
-___
 
 ```html
 <Graphic width={500} height={500}>
