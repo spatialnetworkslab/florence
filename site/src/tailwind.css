@@ -4,32 +4,14 @@
 
 h1 {
   @apply text-2xl font-sans font-semibold mb-4;
-  @screen sm {
-    @apply text-2xl;
-  }
-  @screen md {
-    @apply text-3xl;
-  }
 }
 
 h2 {
   @apply text-xl font-sans font-semibold mt-3 mb-3 border-b border-gray-400;
-  @screen sm {
-    @apply text-xl;
-  }
-  @screen md {
-    @apply text-2xl;
-  }
 }
 
 h3 {
   @apply text-base font-sans font-semibold mt-1 mb-1;
-  @screen sm {
-    @apply text-base;
-  }
-  @screen md {
-    @apply text-lg;
-  }
 }
 
 p {
@@ -68,12 +50,6 @@ ol {
 
 code {
   @apply bg-codegray text-xs p-1;
-  @screen sm {
-    @apply text-xs;
-  }
-  @screen md {
-    @apply text-sm;
-  }
 }
 
 /* table layout */
