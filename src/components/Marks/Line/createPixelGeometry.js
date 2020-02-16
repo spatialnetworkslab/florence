@@ -2,16 +2,15 @@ import {
   ensureValidGeometryProps,
   getInputType
 } from '../utils/geometryPropTools.js'
-import {
-  createPixelGeometryFromXYArrays,
-  createPixelGeometryFromGeometry
-} from '../utils/createPixelGeometry.js'
+
+import createPixelGeometryFromXYArrays from '../utils/createPixelGeometryFromXYArrays.js'
+import createPixelGeometryFromGeometry from '../utils/createPixelGeometryFromGeometry.js'
 
 export default function createPixelGeometry (
   geometryProps,
   sectionContext,
   coordinateTransformationContext,
-  zoomContext,
+  zoomTransformation,
   renderSettings
 ) {
   ensureValidGeometryProps(geometryProps)
@@ -22,8 +21,9 @@ export default function createPixelGeometry (
       geometryProps,
       sectionContext,
       coordinateTransformationContext,
-      zoomContext,
-      renderSettings
+      zoomTransformation,
+      renderSettings,
+      'LineString'
     )
   }
 
@@ -32,7 +32,7 @@ export default function createPixelGeometry (
       geometryProps,
       sectionContext,
       coordinateTransformationContext,
-      zoomContext,
+      zoomTransformation,
       renderSettings
     )
   }
