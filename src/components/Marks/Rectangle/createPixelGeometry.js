@@ -1,24 +1,30 @@
-import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
-import { isInvalid, isUndefined, isDefined } from '../../../utils/equals.js'
+import { createPixelGeometryFromGeometry } from '../utils/createPixelGeometryFromGeometry.js'
+import { isDefined, isUndefined, isInvalid } from '../../../utils/equals.js'
 
-export default function (coordinateProps, sectionContext, coordinateTransformationContext, interpolate) {
-  const scaledCoordinates = scaleCoordinates(coordinateProps, sectionContext)
+export default function createPixelGeometry (
+  geometryProps,
+  sectionContext,
+  coordinateTransformationContext,
+  zoomTransformation,
+  renderSettings
+) {
+  const scaledCoordinates = scaleCoordinates(geometryProps, sectionContext)
   const scaledGeometry = createScaledGeometry(scaledCoordinates)
 
-  const coordSysGeometry = createCoordSysGeometry(
-    scaledGeometry,
+  return createPixelGeometryFromGeometry(
+    { geometry: () => scaledGeometry },
+    sectionContext,
     coordinateTransformationContext,
-    interpolate
+    zoomTransformation,
+    renderSettings
   )
-
-  return coordSysGeometry
 }
 
-export function scaleCoordinates (coordinateProps, sectionContext) {
-  ensureValidCombination(coordinateProps)
-  validateTypes(coordinateProps)
+export function scaleCoordinates (geometryProps, sectionContext) {
+  ensureValidCombination(geometryProps)
+  validateTypes(geometryProps)
 
-  const { x1, x2, y1, y2 } = coordinateProps
+  const { x1, x2, y1, y2 } = geometryProps
 
   const scaledCoordinates = {}
 
@@ -59,9 +65,9 @@ function onlyOne (a, b) {
 
 const invalidCoordinateValueError = (value, name) => new Error(`Rectangle: invalid coordinate value for '${name}': ${s(value)}`)
 
-function validateTypes (coordinates) {
-  for (const coordinateName in coordinates) {
-    const coordinate = coordinates[coordinateName]
+function validateTypes (geometryProps) {
+  for (const coordinateName in geometryProps) {
+    const coordinate = geometryProps[coordinateName]
 
     if (isDefined(coordinate)) {
       if (isInvalid(coordinate)) throw invalidCoordinateValueError(coordinate, coordinateName)
