@@ -1,43 +1,42 @@
-// import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
-// import { scaleGeometries } from '../../../utils/geometryUtils'
-// import {
-//   ensureValidCombination, createScaledGeometryArrayFromXYProps
-// } from '../utils/createScaledGeometryFromXYProps.js'
-// import getKeyArray from '../utils/getKeyArray.js'
-// import { isDefined, isUndefined } from '../../../utils/equals.js'
+import {
+  ensureValidGeometryProps,
+  getInputType
+} from '../utils/geometryPropTools.js'
 
-// export default function (
-//   geometryProps, sectionContext, coordinateTransformationContext, keyProp, interpolate
-// ) {
-//   const { scaledGeometryArray, length } = createScaledGeometryArray(geometryProps, sectionContext)
-//   const keyArray = getKeyArray(keyProp, length)
-//   const coordSysGeometryObject = createCoordSysGeometryObject(
-//     scaledGeometryArray, coordinateTransformationContext, keyArray, interpolate
-//   )
+import { createPixelGeometryObjectFromXYArrays } from '../utils/createPixelGeometryFromXYArrays.js'
+import { createPixelGeometryObjectFromGeometry } from '../utils/createPixelGeometryFromGeometry.js'
 
-//   return coordSysGeometryObject
-// }
+export default function createPixelGeometry (
+  geometryProps,
+  keyProp,
+  sectionContext,
+  coordinateTransformationContext,
+  zoomTransformation,
+  renderSettings
+) {
+  ensureValidGeometryProps(geometryProps)
+  const inputType = getInputType(geometryProps)
 
-// function createScaledGeometryArray (geometryProps, sectionContext) {
-//   ensureValidCombination(geometryProps)
-//   if (isDefined(geometryProps.geometry)) {
-//     if (geometryProps.geometry.constructor === Function) {
-//       return geometryProps.geometry(sectionContext)
-//     } else {
-//       return scaleGeometryProp(geometryProps.geometry, sectionContext)
-//     }
-//   }
+  if (inputType === 'xyArrays') {
+    return createPixelGeometryObjectFromXYArrays(
+      geometryProps,
+      keyProp,
+      sectionContext,
+      coordinateTransformationContext,
+      zoomTransformation,
+      renderSettings,
+      'LineString'
+    )
+  }
 
-//   if (isUndefined(geometryProps.geometry)) {
-//     return createScaledGeometryArrayFromXYProps(
-//       geometryProps.x, geometryProps.y, sectionContext, 'Line'
-//     )
-//   }
-// }
-
-// function scaleGeometryProp (geometry, scales) {
-//   const scaledGeometryArray = scaleGeometries(geometry, scales)
-//   const length = scaledGeometryArray.length
-
-//   return { scaledGeometryArray, length }
-// }
+  if (inputType === 'geometry') {
+    return createPixelGeometryObjectFromGeometry(
+      geometryProps,
+      keyProp,
+      sectionContext,
+      coordinateTransformationContext,
+      zoomTransformation,
+      renderSettings
+    )
+  }
+}

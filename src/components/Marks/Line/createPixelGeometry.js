@@ -3,8 +3,8 @@ import {
   getInputType
 } from '../utils/geometryPropTools.js'
 
-import createPixelGeometryFromXYArrays from '../utils/createPixelGeometryFromXYArrays.js'
-import createPixelGeometryFromGeometry from '../utils/createPixelGeometryFromGeometry.js'
+import { createPixelGeometryFromXYArrays } from '../utils/createPixelGeometryFromXYArrays.js'
+import { createPixelGeometryFromGeometry } from '../utils/createPixelGeometryFromGeometry.js'
 
 export default function createPixelGeometry (
   geometryProps,
