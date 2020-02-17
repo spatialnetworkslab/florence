@@ -1,17 +1,50 @@
 <script>
-	export let items;
+    export let items
+
+    let selected
 </script>
 
 <style>
-.toc {
-    list-style-type: none;
+.sidenav-first{
+  @apply text-xl font-semibold no-underline;
+}
+
+.sidenav-second{
+  @apply text-base font-normal pl-6;
+  transition: border-color 1s;
+}
+
+.sidenav-second:hover, .sidenav-second-selected {
+  @apply border-l-2 border-red-600;
+}
+
+.sidenav-a{
+  @apply no-underline;
 }
 </style>
 
 <nav>
-    <ul class="toc">
-        {#each items as item}
-            <li><a rel=prefetch href={item.path}>{item.name}</a></li>  
+  <ul class='flex-wrap'>
+    {#each items as item, index}
+      <li class='list-none sidenav-first'>
+        {item.title}
+      </li>
+      
+      {#if item.children}
+        {#each item.children as child, index}
+        <li class={`list-none sidenav-second
+           ${selected === child.title + index
+           ? 'sidenav-second-selected' : ''}`}>
+            <a
+              rel="prefetch"
+              href={child.path}
+              on:click={() => (selected = child.title + index)}
+              class={'sidenav-a'}>
+              {child.title} 
+            </a>
+        </li>
         {/each}
-    </ul>
+      {/if}
+    {/each}
+  </ul>
 </nav>
