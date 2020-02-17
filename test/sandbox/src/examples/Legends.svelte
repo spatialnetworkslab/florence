@@ -8,7 +8,7 @@
 	import { Rectangle, Graphic, Grid, Section, PointLayer, Point, Label, LabelLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
-	export let N = 100
+	let N = 100
 	const data = new DataContainer(generateData(N, 0.25))
 	function generateData (N, error) {
 		const getError = () => -error + (Math.random() * (2 * error)) * N

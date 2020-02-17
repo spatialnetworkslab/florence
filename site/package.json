@@ -3,14 +3,12 @@
   "description": "Site for Florence",
   "version": "0.0.1",
   "scripts": {
-    "dev": "npm run copy-workers && sapper dev --ext '.svelte .sveltex'",
-    "copy-workers": "rm -rf static/workers && cp -r node_modules/@sveltejs/svelte-repl/workers static",
+    "dev": "sapper dev --ext '.svelte .sveltex'",
     "build": "sapper build --ext '.svelte .sveltex'",
-    "export": "npm run copy-workers && sapper export --ext '.svelte .sveltex' > /dev/null",
+    "export": "sapper export --ext '.svelte .sveltex' > /dev/null",
     "start": "node __sapper__/build",
-    "link": "cd ../ && npm install --production && cd site/ && npm link ../",
-    "build:netlify": "cd ../ && rm package-lock.json || true && export NODE_ENV=production && npm install && cd site/ && npm link ../",
-    "export:netlify": "npm run build:netlify && npm run export"
+    "watch:tailwind": "postcss src/tailwind.css -o static/css/index.css -w",
+    "build:tailwind": "NODE_ENV=production postcss src/tailwind.css -o static/css/index.css"
   },
   "dependencies": {
     "@polka/send": "^1.0.0-next.3",
@@ -24,20 +22,27 @@
     "@babel/plugin-transform-runtime": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/runtime": "^7.0.0",
+    "@fullhuman/postcss-purgecss": "^2.0.5",
+    "@snlab/florence": "^0.1.8",
     "@snlab/florence-datacontainer": "^0.1.3",
-    "@sveltejs/svelte-repl": "^0.1.8",
+    "@snlab/sveltex-unified": "0.0.11",
     "d3-scale": "^3.0.0",
     "npm-run-all": "^4.1.5",
+    "postcss-cli": "^7.1.0",
+    "purgecss-from-html": "^2.0.3",
+    "purgecss-from-svelte": "^2.0.2",
     "rollup": "^1.12.0",
     "rollup-plugin-babel": "^4.0.2",
     "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^2.0.5",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-svelte": "^5.0.1",
     "rollup-plugin-terser": "^5.1.1",
     "sapper": "^0.27.0",
     "svelte": "^3.6.7",
-    "sveltex": "git+https://2f4873cd55f4329b5c380610b704a94504cc0a75:x-oauth-basic@github.com/spatialnetworkslab/sveltex.git"
+    "svelte-preprocess": "^3.3.1",
+    "sync-rpc": "^1.3.6",
+    "tailwindcss": "^1.1.4"
   }
 }
