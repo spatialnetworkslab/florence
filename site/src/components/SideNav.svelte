@@ -4,22 +4,43 @@
     let selected
 </script>
 
+<style>
+.sidenav-first{
+  @apply text-xl font-semibold no-underline;
+}
+
+.sidenav-second{
+  @apply text-base font-normal pl-6;
+  transition: border-color 1s;
+}
+
+.sidenav-second:hover, .sidenav-second-selected {
+  @apply border-l-2 border-red-600;
+}
+
+.sidenav-a{
+  @apply no-underline;
+}
+</style>
+
 <nav>
-  <ul>
+  <ul class='flex-wrap'>
     {#each items as item, index}
-      <li>
+      <li class='list-none sidenav-first'>
         {item.title}
       </li>
       
       {#if item.children}
         {#each item.children as child, index}
-        <li>
+        <li class={`list-none sidenav-second
+           ${selected === child.title + index
+           ? 'sidenav-second-selected' : ''}`}>
             <a
-                rel="prefetch"
-                href={child.path}
-                on:click={() => (selected = item.title + index)}
-                class>
-                {child.title}
+              rel="prefetch"
+              href={child.path}
+              on:click={() => (selected = child.title + index)}
+              class={'sidenav-a'}>
+              {child.title} 
             </a>
         </li>
         {/each}
