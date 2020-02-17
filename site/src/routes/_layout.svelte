@@ -6,7 +6,7 @@
 <style>
 </style>
 
-<Nav {segment} class='border border-gray-500'/>
+<Nav {segment}/>
 
 <main class='main-body'>
 	<slot></slot>
