@@ -1,5 +1,6 @@
 # Legends
-___ 
+
+Legends are guides used to show mappings for aesthetics like color, shape, size, opacity to a given domain. Each legend is mapped to a single dimension or variable. Florence supports two types of legends that map values to color and/or opacity – gradient and discrete legends.
 
 ```svelte
 <Graphic>
@@ -23,10 +24,7 @@ ___
 </Graphic>
 ```
 
-Legends are guides used to show mappings for aesthetics like color, shape, size, opacity to a given domain. Each legend is mapped to a single dimension or variable. Florence supports two types of legends that map values to color and/or opacity – gradient and discrete legends.
-
 ## Props
-___ 
 
 ### Positioning
 
@@ -116,7 +114,6 @@ Legends may be positioned and their sizes set using the following combinations:
 | flipLabels   | `Boolean`  |  ❌ |   `false` |     |
 
 ## Examples
-___
 
 ### A simple discrete/gradient legend
 
@@ -127,6 +124,5 @@ ___
 ### Padding
 
 ## Code
-___
 
 The `Legend` implementation can be found at [insert github link].

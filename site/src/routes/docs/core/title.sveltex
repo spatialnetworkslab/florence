@@ -1,5 +1,5 @@
 # Plot title
-___
+
 ```html
   <Graphic>
     <Title
@@ -17,7 +17,7 @@ ___
 The `Title` component is used to create a plot title and has smart defaults for positioning and aesthetics. 
 
 ## Props
-___
+
 
 ### Positioning
 | Prop |     Type(s)     |    Required     |   Default   |       Units       |
@@ -47,7 +47,7 @@ ___
 | titleAnchorPoint   |  `Number`  |  ❌  | `center` | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc' |
 
 
-### Title 
+### Subtitle 
 | Prop |     Type(s)     |    Required     |   Default   |       Units       |
 | ---- | --------------- | --------------- | ----------- | ----------------- |
 | subtitle   |  `String`  |  ❌  | '' |  |
@@ -67,7 +67,6 @@ ___
 
 
 ## Examples
-___
+
 
 ## Code
-___
