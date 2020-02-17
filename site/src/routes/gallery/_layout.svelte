@@ -1,6 +1,6 @@
 <script context="module">
   export async function preload () {
-    const res = await this.fetch('docs.json')
+    const res = await this.fetch('gallery.json')
     const items = await res.json()
     if (res.status === 200) {
       return { items }
@@ -40,4 +40,6 @@
 	@apply absolute top-0 left-0 pl-1 pt-1;
 }
 </style>
+
+
 

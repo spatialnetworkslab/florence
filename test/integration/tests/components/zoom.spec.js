@@ -7,17 +7,25 @@ context('Assertions', () => {
 
   describe('Zoom Tests', () => {
     it('[interaction] pan works', () => {
-      cy.get('svg').trigger('mouseover')
+      cy.get('svg')
+        .trigger('mouseover')
         .trigger('mousedown')
         .trigger('mousemove', 100, 50)
         .trigger('mouseup')
-      cy.get('#x').invoke('val').should('be.lessThan', 0)
+      cy.get('#x').then($x => {
+        const x = parseFloat($x.val())
+        expect(x).to.be.below(0)
+      })
     })
 
     it('[interaction] pan works', () => {
-      cy.get('svg').trigger('mouseover')
+      cy.get('svg')
+        .trigger('mouseover')
         .trigger('wheel', { clientX: 200, clientY: 300, deltaMode: 0, deltaY: 100 })
-      cy.get('#k').invoke('val').should('be.greaterThan', 0)
+      cy.get('#k').then($k => {
+        const k = parseFloat($k.val())
+        expect(k).to.be.above(0)
+      })
     })
   })
 })
