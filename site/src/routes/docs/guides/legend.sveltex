@@ -115,13 +115,33 @@ Legends may be positioned and their sizes set using the following combinations:
 
 ## Examples
 
-### A simple discrete/gradient legend
+### Simple discrete and gradient legends with continuous scales for `fill`
 
-### Continuous scales
+```js exec
+import SimpleLegends from './utils/_SimpleLegends.svelte'
+```
+
+<SimpleLegends/>
+
+### Using `fillOpacity`
+TODO
 
 ### Categorical scales
 
+```js exec
+import CategoricalScales from './utils/_CategoricalScales.svelte'
+```
+
+<CategoricalScales/>
+
 ### Padding
+TODO
+
+<!-- ```js exec
+import Padding from './utils/_Padding.svelte'
+```
+
+<Padidng/> -->
 
 ## Code
 
