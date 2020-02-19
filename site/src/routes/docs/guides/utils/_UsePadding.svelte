@@ -66,6 +66,7 @@
         fill={linearColorScale}
         labelCount={5}
         flip
+        usePadding={true}
       />
 
       <!-- Pixels -->
@@ -77,6 +78,7 @@
         labelCount={5}
         titleX={() => {return 170}}
         titleY={() => {return 70}}
+        usePadding={true}
       />
       
       <PointLayer

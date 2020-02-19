@@ -30,7 +30,6 @@
   let height = 400
   let width = 400
   let transformation = 'identity'
-  let duration = 2000
 
   const log = console.log
 
@@ -40,7 +39,8 @@
   let zoomIdentity = { x, y, kx: k, ky: k }
 
   // fill scales
-  const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
+  const alphaScale = scaleLinear().domain([0, 120]).range([0, 1])
+  const bins = [0, 15, 50, 90, 120]
 
 </script>
 
@@ -48,47 +48,41 @@
 	<Graphic 
     {width} {height}
   >         
-
-    <!-- Basic example + continuous scales -->
     <Section 
       x1={0} x2={400}
       y1={0} y2={400}
       padding={30}
       scaleX={scaleLinear().domain(data.domain('a'))}
       scaleY={scaleLinear().domain(data.domain('b'))}
-      {zoomIdentity}
-    >
-      <!-- NOTE: usePadding won't work on the first two legend examples here
-      because they are being given specific values -->
-
-      <!-- Vjust -->
-      <DiscreteLegend
-        fill={linearColorScale}
-        labelCount={5}
-        flip
-      />
-
-      <!-- Pixels -->
+    > 
       <GradientLegend
-        x1={() => {return 200}} x2={() => {return 300}}
-        y1={() => {return 60}} y2={() => {return 100}}
-        fill={linearColorScale}
-        orient={'horizontal'}
-        labelCount={5}
-        titleX={() => {return 170}}
-        titleY={() => {return 70}}
+        labels={bins}
+        fillOpacity= {alphaScale}
+        fill={'goldenrod'}
+        title={'Bins'}
+        usePadding={true}
       />
-      
-      <PointLayer
-          x={filteredData.column('a')}
-          y={filteredData.column('b')}
-          key={filteredData.column('$key')}
-          fill={linearColorScale}
-        />
 
-      <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
-      <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
-    
+      <!-- Fill opacity + Bins -->
+      <DiscreteLegend
+        labels={bins}
+        fillOpacity= {alphaScale}
+        fill={'goldenrod'}
+        orient={'horizontal'}
+        width={100}
+        vjust={'top'}
+        hjust={'center'}
+        title={'Bins'}
+        usePadding={true}
+      />
+
+      <PointLayer
+        x={filteredData.column('a')}
+        y={filteredData.column('b')}
+        key={filteredData.column('$key')}
+        fillOpacity={alphaScale}
+        fill={'goldenrod'}
+      />
     </Section>
 
 	</Graphic>
