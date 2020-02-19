@@ -21,7 +21,6 @@ export const posts = [
       }
     ]
   },
-
   {
     title: 'Guides',
     path: '/docs/guides/legend',
