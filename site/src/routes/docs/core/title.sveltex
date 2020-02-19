@@ -14,7 +14,10 @@
 
   </Graphic>
 ```
-The `Title` component is used to create a plot title and has smart defaults for positioning and aesthetics. 
+
+## Description
+
+The `Title` component is used to create a plot title and has smart defaults for positioning and aesthetics/visual properties. 
 
 ## Props
 
@@ -67,6 +70,10 @@ The `Title` component is used to create a plot title and has smart defaults for 
 
 
 ## Examples
+This example shows how to position and customize the title (and subtitle).
 
+```js exec
+import Title from './utils/_Title.svelte'
+```
 
-## Code
+<Title />
