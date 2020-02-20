@@ -1,47 +1,37 @@
 <script>
   // d3
-  import { scaleLinear, scaleLog } from 'd3-scale'
-  import * as d3 from 'd3-scale-chromatic'
+  import { scaleLinear } from 'd3-scale'
   
   // florence
-	import { Rectangle, Graphic, Grid, Section, PointLayer, Point, Label, LabelLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '@snlab/florence'
+  import { Graphic, Section, PointLayer, DiscreteLegend, GradientLegend } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-	export let N = 100
-	const data = new DataContainer(generateData(N, 0.25))
-	function generateData (N, error) {
-		const getError = () => -error + (Math.random() * (2 * error)) * N
-		let data = { a: [], b: [] }
-		for (let i = 0; i < N; i++) {
-			data.a.push(i + getError())
-			data.b.push(i + getError())
-		}
-		return data
+  export let N = 100
+  const data = new DataContainer(generateData(N, 0.25))
+  function generateData (N, error) {
+    const getError = () => -error + (Math.random() * (2 * error)) * N
+    const data = { a: [], b: [] }
+    for (let i = 0; i < N; i++) {
+      data.a.push(i + getError())
+      data.b.push(i + getError())
+    }
+    return data
   }
   
-  let threshold = 0
+  const threshold = 0
   let filteredData
 
   $: {
     filteredData = data
-    .filter(row => row.a > threshold)
+      .filter(row => row.a > threshold)
   }
 
-  let height = 400
-  let width = 400
-  let transformation = 'identity'
-
-  const log = console.log
-
-  let x = 0
-  let y = 0
-  let k = 1
-  let zoomIdentity = { x, y, kx: k, ky: k }
+  const height = 400
+  const width = 400
 
   // fill scales
   const alphaScale = scaleLinear().domain([0, 120]).range([0, 1])
   const bins = [0, 15, 50, 90, 120]
-
 </script>
 
 <div>
