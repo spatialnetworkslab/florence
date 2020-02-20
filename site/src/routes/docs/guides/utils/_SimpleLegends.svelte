@@ -1,47 +1,38 @@
 <script>
   // d3
-  import { scaleLinear, scaleLog } from 'd3-scale'
-  import * as d3 from 'd3-scale-chromatic'
-  
+  import { scaleLinear } from 'd3-scale'
   // florence
-	import { Rectangle, Graphic, Grid, Section, PointLayer, Point, Label, LabelLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '@snlab/florence'
+  import { Graphic, Section, PointLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-	export let N = 100
-	const data = new DataContainer(generateData(N, 0.25))
-	function generateData (N, error) {
-		const getError = () => -error + (Math.random() * (2 * error)) * N
-		let data = { a: [], b: [] }
-		for (let i = 0; i < N; i++) {
-			data.a.push(i + getError())
-			data.b.push(i + getError())
-		}
-		return data
+  export let N = 100
+  const data = new DataContainer(generateData(N, 0.25))
+  function generateData (N, error) {
+    const getError = () => -error + (Math.random() * (2 * error)) * N
+    const data = { a: [], b: [] }
+    for (let i = 0; i < N; i++) {
+      data.a.push(i + getError())
+      data.b.push(i + getError())
+    }
+    return data
   }
   
-  let threshold = 0
+  const threshold = 0
   let filteredData
 
   $: {
-    filteredData = data
-    .filter(row => row.a > threshold)
+    filteredData = data.filter(row => row.a > threshold)
   }
 
-  let height = 400
-  let width = 400
-  let transformation = 'identity'
-  let duration = 2000
-
-  const log = console.log
-
-  let x = 0
-  let y = 0
-  let k = 1
-  let zoomIdentity = { x, y, kx: k, ky: k }
+  const height = 400
+  const width = 400
+  const x = 0
+  const y = 0
+  const k = 1
+  const zoomIdentity = { x, y, kx: k, ky: k }
 
   // fill scales
-  const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
-
+  const linearColorScale = scaleLinear().domain(data.domain('a')).range(['red', 'blue'])
 </script>
 
 <div>
@@ -70,13 +61,13 @@
 
       <!-- Pixels -->
       <GradientLegend
-        x1={() => {return 200}} x2={() => {return 300}}
-        y1={() => {return 60}} y2={() => {return 100}}
+        x1={() => { return 200 }} x2={() => { return 300 }}
+        y1={() => { return 60 }} y2={() => { return 100 }}
         fill={linearColorScale}
         orient={'horizontal'}
         labelCount={5}
-        titleX={() => {return 170}}
-        titleY={() => {return 70}}
+        titleX={() => { return 170 }}
+        titleY={() => { return 70 }}
       />
       
       <PointLayer
