@@ -6,7 +6,7 @@
   import DataContainer from '@snlab/florence-datacontainer'
 
   export let N = 100
-  const data = new DataContainer(generateData(N, 0.25))
+
   function generateData (N, error) {
     const getError = () => -error + (Math.random() * (2 * error)) * N
     const data = { a: [], b: [] }
@@ -17,6 +17,7 @@
     return data
   }
   
+  const data = new DataContainer(generateData(N, 0.25))
   const threshold = 0
   let filteredData
 
