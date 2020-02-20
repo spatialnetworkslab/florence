@@ -1,17 +1,14 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { 
-    Graphic, Section, PolygonLayer, Rectangle,
-    XAxis, YAxis, Title
-  } from '@snlab/florence'
+  import { Graphic, Section, XAxis, YAxis, Title } from '@snlab/florence'
 
-  let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
-  let blockReindexing = false
+  const zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
+  const blockReindexing = false
 
-  let vjust = 'top'
-  let hjust = 'center'
-  let graphicPadding = 5
-  let sectionPadding = 40
+  const vjust = 'bottom'
+  const hjust = 'center'
+  const graphicPadding = 5
+  const sectionPadding = 30
 </script>
 
 <Graphic width={500} height={500} padding={graphicPadding}>
@@ -19,7 +16,7 @@
  <Section 
     x1={50} x2={450}
     y1={50} y2={450}
-    padding={30}
+    padding={sectionPadding}
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
     {zoomIdentity}
@@ -46,7 +43,7 @@
     titleFill={'pink'}
     subtitle={'Here is the subtitle'}
     subtitleFontFamily={'Baskerville'}
-    vjust={'bottom'}
+    {vjust}
     {hjust}
     usePadding={false}
     />
