@@ -1,51 +1,47 @@
 <script>
-  import { scaleLinear } from 'd3-scale'
   import { Graphic, Section, XAxis, YAxis, Title } from '@snlab/florence'
 
-  const zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
-  const blockReindexing = false
-
-  const vjust = 'bottom'
-  const hjust = 'center'
-  const graphicPadding = 5
-  const sectionPadding = 30
+  const sectionPadding = 75
+  const background = '#808080'
+  const padding = '#E8E8E8'
 </script>
 
-<Graphic width={500} height={500} padding={graphicPadding}>
+<Graphic width={500} height={500}
+>
 
- <Section 
+ <Section
     x1={50} x2={450}
     y1={50} y2={450}
     padding={sectionPadding}
-    scaleX={scaleLinear().domain([0, 4])}
-    scaleY={scaleLinear().domain([0, 4])}
-    {zoomIdentity}
-    {blockReindexing}
+    backgroundColor={background}
+    paddingColor={padding}
+    flipY
   > 
 
-    <Title 
-      title={'This title uses the padding of the section'} 
+      <Title 
+      title={'This title should be inside of the padding of the section'} 
       titleFontFamily={'Baskerville'}
-      titleFill={'steelblue'}
-      subtitle={'Subtitle'}
-      subtitleFontFamily={'Helvetica'}
-      subtitleStrokeWidth={1.5}
       usePadding={true}
       />
 
-    <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
-    <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
+      <Title 
+      title={'This title should be outside of the padding of the section'} 
+      titleFontFamily={'Baskerville'}
+      usePadding={false}
+      />
+
+    <XAxis />
+    <YAxis />
   
   </Section>
 
   <Title 
-    title={'This title does not use the padding of the section'} 
+    title={'This title is placed outside of the section'} 
     titleFill={'pink'}
-    subtitle={'Here is the subtitle'}
+    subtitle={'Its parent is the Graphic'}
     subtitleFontFamily={'Baskerville'}
-    {vjust}
-    {hjust}
-    usePadding={false}
+    vjust={'top'}
+    hjust={'center'}
     />
 
 </Graphic>
