@@ -16,8 +16,7 @@
   import * as ZoomContext from '../../Core/Section/ZoomContext'
   
   import validateAesthetics from './validateAesthetics.js'
-  import { transformGeometries } from '../../../utils/geometryUtils/index.js'
-  import { layerCoordSysGeometryFuncs } from './coordSysGeometryFuncs.js'
+  import { layerPixelGeometryFuncs } from './pixelGeometryFuncs.js'
   import { layerRepresentAsPolygonFuncs } from './representAsPolygonFuncs.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import { generatePropObject } from '../utils/generatePropObject.js'
@@ -86,7 +85,6 @@
 
   // Other
   export let key = undefined
-  export let interpolate = undefined
   export let _asPolygon = true
   export let zoomIdentity = undefined
   export let blockReindexing = false
@@ -162,7 +160,7 @@
   }
 
   // Select appriopriate geometry conversion functions
-  let createCoordSysGeometryObject = layerCoordSysGeometryFuncs[type]
+  let createPixelGeometryObject = layerPixelGeometryFuncs[type]
   let representAsPolygonObject = layerRepresentAsPolygonFuncs[type]
 
   $: {
@@ -180,14 +178,12 @@
   const zoomContext = ZoomContext.subscribe()
 
   // Initiate geometry objects and key array
-  let coordSysGeometryObject
   let pixelGeometryObject
   let screenGeometryObject
 
-  updateCoordSysGeometryObject()
   updatePixelGeometryObject()
   
-  let keyArray = Object.keys(coordSysGeometryObject)
+  let keyArray = Object.keys(pixelGeometryObject)
 
   // Generate other prop objects
   let radiusObject = generatePropObject(aesthetics.radius, keyArray)
@@ -222,27 +218,21 @@
   let tr_fontWeightObject = createTransitionableLayer('fontWeight', fontWeightObject, transition)
   let tr_rotationObject = createTransitionableLayer('rotation', rotationObject, transition)
 
-  // Handle coordSysGeometryObject changes
+  // Handle changes to geometry
   $: {
     if (initDone()) {
-      scheduleUpdateCoordSysGeometryObject(
+      scheduleUpdatePixelGeometryObject(
         positioningAesthetics,
+        key,
         $sectionContext,
         $coordinateTransformationContext,
-        key,
-        interpolate
+        $zoomContext,
+        zoomIdentity
       )
     }
   }
 
-  // Handle zooming changes
-  $: {
-    if (initDone()) {
-      scheduleUpdatePixelGeometryObject($zoomContext)
-    }
-  }
-
-  // Handle radius/strokeWidth changes
+  // Handle radius and strokeWidth changes if Points or Lines are represented as Polygons
   $: {
     if (initDone()) {
       if (!_asPolygon) {
@@ -271,22 +261,19 @@
 
   let previousTransition
 
-  let coordSysGeometryObjectRecalculationNecessary = false
   let pixelGeometryObjectRecalculationNecessary = false
   let screenGeometryObjectRecalculationNecessary = false
 
   $: {
     tick().then(() => {
-      if (coordSysGeometryObjectRecalculationNecessary) {
-        updateCoordSysGeometryObject()
+      if (pixelGeometryObjectRecalculationNecessary) {
+        updatePixelGeometryObject()
         keyArray = Object.keys(coordSysGeometryObject)
 
         if (_asPolygon) {
           updateRadiusAndStrokeWidth()
         }
       }
-  
-      if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
 
       if (screenGeometryObjectRecalculationNecessary) {
         updateScreenGeometryObject()
@@ -295,7 +282,6 @@
         updateInteractionManagerIfNecessary()
       }
 
-      coordSysGeometryObjectRecalculationNecessary = false
       pixelGeometryObjectRecalculationNecessary = false
       screenGeometryObjectRecalculationNecessary = false
     })
@@ -340,22 +326,6 @@
   })
 
   // Helpers
-  function scheduleUpdateCoordSysGeometryObject () {
-    coordSysGeometryObjectRecalculationNecessary = true
-    pixelGeometryObjectRecalculationNecessary = true
-    screenGeometryObjectRecalculationNecessary = true
-  }
-
-  function updateCoordSysGeometryObject () {
-    coordSysGeometryObject = createCoordSysGeometryObject(
-      positioningAesthetics,
-      $sectionContext,
-      $coordinateTransformationContext,
-      key,
-      interpolate
-    )
-  }
-
   function scheduleUpdatePixelGeometryObject () {
     pixelGeometryObjectRecalculationNecessary = true
     screenGeometryObjectRecalculationNecessary = true
@@ -364,11 +334,14 @@
   function updatePixelGeometryObject () {
     const zoomTransformation = ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
 
-    if (zoomTransformation) {
-      pixelGeometryObject = transformGeometries(coordSysGeometryObject, zoomTransformation)
-    } else {
-      pixelGeometryObject = coordSysGeometryObject
-    }
+    pixelGeometryObject = createPixelGeometryObject(
+      positioningAesthetics,
+      key,
+      $sectionContext,
+      $coordinateTransformationContext,
+      zoomTransformation,
+      {}
+    )
   }
 
   function scheduleUpdateScreenGeometryObject () {

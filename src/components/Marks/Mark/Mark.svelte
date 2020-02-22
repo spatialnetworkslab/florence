@@ -19,7 +19,6 @@
   import { markPixelGeometryFuncs } from './pixelGeometryFuncs.js'
   import { markRepresentAsPolygonFuncs } from './representAsPolygonFuncs.js'
   import { createDataNecessaryForIndexingMark } from './createDataNecessaryForIndexing.js'
-  import { transformGeometry } from '../../../utils/geometryUtils/index.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import any from '../utils/any.js'
 
