@@ -1,6 +1,12 @@
-import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
+import { createPixelGeometryFromGeometry } from '../utils/createPixelGeometryFromGeometry.js'
 
-export default function (positioningProps, sectionContext, coordinateTransformationContext, interpolate) {
+export default function createPixelGeometry (
+  geometryProps,
+  sectionContext,
+  coordinateTransformationContext,
+  zoomTransformation,
+  renderSettings
+) {
   // filter for allowed props; leave any undefined props in place
   const allowedProps =
     (({
@@ -9,21 +15,20 @@ export default function (positioningProps, sectionContext, coordinateTransformat
       x2 = undefined,
       y2 = undefined,
       independentAxis = undefined
-    }) => ({ x1, y1, x2, y2, independentAxis }))(positioningProps)
+    }) => ({ x1, y1, x2, y2, independentAxis }))(geometryProps)
 
-  const coordSysGeometry =
-    createCoordSysGeometry(
-      createScaledGeometry(
-        scaleCoordinates(
-          augmentProps(
-            validateProps(
-              normalize(
-                allowedProps,
-                sectionContext))),
-          sectionContext)),
-      coordinateTransformationContext,
-      interpolate)
-  return coordSysGeometry
+  const scaledGeometry = createScaledGeometry(scaleCoordinates(augmentProps(validateProps(normalize(
+    allowedProps,
+    sectionContext
+  )))))
+
+  return createPixelGeometryFromGeometry(
+    { geometry: () => scaledGeometry },
+    sectionContext,
+    coordinateTransformationContext,
+    zoomTransformation,
+    renderSettings
+  )
 }
 
 function normalize ({ independentAxis, ...coordinateProps }, sectionContext) {
