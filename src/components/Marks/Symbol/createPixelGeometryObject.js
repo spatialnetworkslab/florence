@@ -1,5 +1,5 @@
 import createPixelGeometryObjectPoint from '../Point/createPixelGeometryObject.js'
-import { createSymbolGeometry } from './createCoordSysGeometry.js'
+import { createSymbolGeometry } from './createPixelGeometry.js'
 
 export default function createPixelGeometryObject (
   geometryProps,

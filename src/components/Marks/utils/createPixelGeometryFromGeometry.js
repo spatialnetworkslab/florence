@@ -37,7 +37,7 @@ export function createPixelGeometryFromGeometry (
     : geometry
 }
 
-function ensureValidGeometry (geometry) {
+export function ensureValidGeometry (geometry) {
   if (
     isDefined(geometry) &&
     geometry.constructor === Object &&

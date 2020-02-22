@@ -1,5 +1,5 @@
-import createPixelGeometryPoint from '../Point/createCoordSysGeometry.js'
-import { createScaledGeometry as createSquareGeometry } from '../Rectangle/createCoordSysGeometry.js'
+import createPixelGeometryPoint from '../Point/createPixelGeometry.js'
+import { createScaledGeometry as createSquareGeometry } from '../Rectangle/createPixelGeometry.js'
 import geometryAlias from './geometryAlias.js'
 import { transformGeometry } from '../../../utils/geometryUtils'
 import { representPointAsPolygon } from '../Point/representPointAsPolygon.js'

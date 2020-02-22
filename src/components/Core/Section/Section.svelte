@@ -15,7 +15,7 @@
   import * as ZoomContext from './ZoomContext'
 
   import InteractionManager from '../../../interactivity/interactions/InteractionManager'
-  import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
+  import { scaleCoordinates } from '../../Marks/Rectangle/createPixelGeometry.js'
   import { parsePadding, applyPadding } from '../utils/padding.js'
 
   const sectionId = getId()

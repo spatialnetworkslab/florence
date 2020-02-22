@@ -1,5 +1,5 @@
 import { createPixelGeometryObjectFromGeometry } from '../utils/createPixelGeometryFromGeometry.js'
-import { createScaledGeometry, ensureValidCombination } from './createCoordSysGeometry.js'
+import { createScaledGeometry, ensureValidCombination } from './createPixelGeometry.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
 import { isDefined, isUndefined } from '../../../utils/equals.js'
 

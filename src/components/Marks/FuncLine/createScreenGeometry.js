@@ -4,7 +4,7 @@ import getTotalTransformation from '../utils/getTotalTransformation'
 import { isDefined, isUndefined } from '../../../utils/equals.js'
 import { warn } from '../../../utils/logging.js'
 
-export default function createPixelGeometry (
+export default function createScreenGeometry (
   { func, x },
   sectionContext,
   coordinateTransformationContext,
