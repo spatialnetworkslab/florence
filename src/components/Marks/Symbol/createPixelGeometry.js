@@ -1,11 +1,24 @@
-import createCoordSysGeometryPoint from '../Point/createCoordSysGeometry.js'
+import createPixelGeometryPoint from '../Point/createCoordSysGeometry.js'
 import { createScaledGeometry as createSquareGeometry } from '../Rectangle/createCoordSysGeometry.js'
 import geometryAlias from './geometryAlias.js'
 import { transformGeometry } from '../../../utils/geometryUtils'
 import { representPointAsPolygon } from '../Point/representPointAsPolygon.js'
 
-export default function (geometryProps, sectionContext, coordinateTransformationContext) {
-  const pointGeometry = createCoordSysGeometryPoint(geometryProps, sectionContext, coordinateTransformationContext)
+export default function createPixelGeometry (
+  geometryProps,
+  sectionContext,
+  coordinateTransformationContext,
+  zoomTransformation,
+  renderSettings
+) {
+  const pointGeometry = createPixelGeometryPoint(
+    geometryProps,
+    sectionContext,
+    coordinateTransformationContext,
+    zoomTransformation,
+    renderSettings
+  )
+
   const symbolGeometry = createSymbolGeometry(pointGeometry, geometryProps)
 
   return symbolGeometry

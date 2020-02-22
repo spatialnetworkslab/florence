@@ -1,5 +1,5 @@
 import getTotalTransformation from './getTotalTransformation.js'
-import { transformGeometry } from '../../../utils/geometryUtils/transformGeometry/index.js'
+import { transformGeometry } from '../../../utils/geometryUtils'
 import { isDefined } from '../../../utils/equals.js'
 import getKeyArray from './getKeyArray.js'
 import { validateGeometryProp, validateGeometryPropLayer } from './geometryPropTools.js'

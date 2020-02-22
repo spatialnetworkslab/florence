@@ -12,11 +12,7 @@ export { pointDistance, linearRingLength } from './distance.js'
 
 export { default as pointInPolygon } from './pointInPolygon.js'
 
-export {
-  transformGeometry,
-  transformGeometries,
-  chainTransformations
-} from './transformGeometry'
+export { transformGeometry } from './rendervous.esm.js'
 
 export { transitionGeometry, transitionGeometries } from './transition.js'
 
