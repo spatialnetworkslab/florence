@@ -1,28 +1,42 @@
 import { interpolate } from 'd3-interpolate'
-import { transformGeometry, interpolateGeometry } from '../../../utils/geometryUtils'
+import { transformGeometry } from '../../../utils/geometryUtils'
+import getTotalTransformation from '../utils/getTotalTransformation'
 import { isDefined, isUndefined } from '../../../utils/equals.js'
 import { warn } from '../../../utils/logging.js'
 
-export default function createScreenGeometry ({ func, x }, sectionContext, coordinateTransformationContext, zoomContext) {
+export default function createPixelGeometry (
+  { func, x },
+  sectionContext,
+  coordinateTransformationContext,
+  zoomTransformation,
+  renderSettings
+) {
   ensureValidInput(func, x)
 
   const dataPoints = generateDataPoints(func, x, sectionContext)
+
   const geometry = {
     type: 'LineString',
     coordinates: dataPoints
   }
 
-  const totalTransformation = createTotalTransformation(sectionContext, coordinateTransformationContext, zoomContext)
+  const totalTransformation = getTotalTransformation({
+    sectionContext,
+    xNeedsScaling: true,
+    yNeedsScaling: true,
+    coordinateTransformationContext,
+    zoomTransformation
+  })
 
   if (geometryCompletelyOffScreen(geometry, totalTransformation, sectionContext)) {
-    warn('FuncLine was completely out of Section window. Please check your Section scales and FuncLine props.')
+    warn('FuncLine was completely out of Section window. Please check your Section settings and FuncLine props.')
     return {
       type: 'LineString',
       coordinates: [[0, 0], [0, 1]]
     }
   }
 
-  return interpolateGeometry(geometry, totalTransformation)
+  return transformGeometry(geometry, totalTransformation, { interpolate: true })
 }
 
 function ensureValidInput (func, x) {
@@ -33,7 +47,7 @@ function ensureValidInput (func, x) {
     }
   }
 
-  throw new Error('FuncLine: invalid positioning props')
+  throw new Error('FuncLine: invalid geometry props')
 }
 
 function generateDataPoints (func, x, sectionContext) {
@@ -65,7 +79,7 @@ function isValidScale (scale) {
   }
 }
 
-function interpolatePointsFromFunc (func, domainX, resolution = 100) {
+function interpolatePointsFromFunc (func, domainX, resolution = 10) {
   const points = []
 
   const interpolator = interpolate(...domainX)
@@ -84,38 +98,6 @@ function interpolatePointsFromFunc (func, domainX, resolution = 100) {
   return points
 }
 
-function createTotalTransformation (sectionContext, coordinateTransformationContext, zoomContext) {
-  const { scaleX, scaleY } = sectionContext
-
-  const sectionTransformation = ([x, y]) => ([scaleX(x), scaleY(y)])
-  const coordinateTransformation = createCoordinateTransformation(coordinateTransformationContext)
-  const zoomTransformation = createZoomTransformation(zoomContext)
-
-  const totalTransformation = position => zoomTransformation(
-    coordinateTransformation(
-      sectionTransformation(position)
-    )
-  )
-
-  return totalTransformation
-}
-
-function createCoordinateTransformation (coordinateTransformationContext) {
-  if (coordinateTransformationContext) {
-    return coordinateTransformationContext.transform.bind(coordinateTransformationContext)
-  } else {
-    return position => position
-  }
-}
-
-function createZoomTransformation (zoomContext) {
-  if (zoomContext) {
-    return zoomContext
-  } else {
-    return position => position
-  }
-}
-
 function geometryCompletelyOffScreen (geometry, totalTransformation, sectionContext) {
   const transformedGeometry = transformGeometry(geometry, totalTransformation)
 
@@ -128,6 +110,10 @@ function geometryCompletelyOffScreen (geometry, totalTransformation, sectionCont
 }
 
 function pointIsInRange (point, s) {
-  return point[0] >= s.minX && point[0] <= s.maxX &&
-    point[1] >= s.minY && point[1] <= s.maxY
+  return (
+    point[0] >= s.minX &&
+    point[0] <= s.maxX &&
+    point[1] >= s.minY &&
+    point[1] <= s.maxY
+  )
 }
