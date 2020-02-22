@@ -18,7 +18,7 @@ export default function getTotalTransformation ({
 
   if (coordinateTransformationContext) {
     transformations.push(
-      coordinateTransformationContext.transformation.bind(coordinateTransformationContext)
+      coordinateTransformationContext.transform.bind(coordinateTransformationContext)
     )
   }
 

@@ -4,7 +4,6 @@ import { isDefined } from '../../../utils/equals.js'
 import getKeyArray from './getKeyArray.js'
 import { validateGeometryProp, validateGeometryPropLayer } from './geometryPropTools.js'
 
-const needsScaling = prop => prop.constructor === Array
 const geometryNeedsToBeTransformed = totalTransformation => isDefined(totalTransformation)
 
 export function createPixelGeometryFromGeometry (
@@ -16,7 +15,7 @@ export function createPixelGeometryFromGeometry (
 ) {
   validateGeometryProp(geometryProps.geometry)
 
-  const geometryNeedsScaling = needsScaling(geometryProps.geometry)
+  const geometryNeedsScaling = geometryProps.geometry.constructor === Object
 
   const geometry = geometryNeedsScaling
     ? geometryProps.geometry
@@ -60,7 +59,7 @@ export function createPixelGeometryObjectFromGeometry (
 ) {
   validateGeometryPropLayer(geometryProps.geometry)
 
-  const geometryNeedsScaling = needsScaling(geometryProps.geometry)
+  const geometryNeedsScaling = geometryProps.geometry.constructor === Array
 
   const geometryArray = geometryNeedsScaling
     ? geometryProps.geometry
@@ -86,6 +85,8 @@ export function createPixelGeometryObjectFromGeometry (
       renderSettings
     )
   }
+
+  return pixelGeometryObject
 }
 
 function validateGeometryArray (geometryArray) {
