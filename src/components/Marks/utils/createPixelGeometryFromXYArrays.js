@@ -45,7 +45,7 @@ export function createPixelGeometryFromXYArrays (
     : transformGeometry(rendervousInput, x => x, renderSettings)
 }
 
-function validateXYArrays (x, y, minLength) {
+export function validateXYArrays (x, y) {
   if (x.constructor !== Array) {
     throw new Error('\'x\' prop must be Array or function that returns array')
   }

@@ -11,7 +11,7 @@ export function createPixelGeometryFromGeometry (
   geometryProps,
   sectionContext,
   coordinateTransformationContext,
-  zoomContext,
+  zoomTransformation,
   renderSettings
 ) {
   validateGeometryProp(geometryProps.geometry)
@@ -29,7 +29,7 @@ export function createPixelGeometryFromGeometry (
     xNeedsScaling: geometryNeedsScaling,
     yNeedsScaling: geometryNeedsScaling,
     coordinateTransformationContext,
-    zoomContext
+    zoomTransformation
   })
 
   return geometryNeedsToBeTransformed(totalTransformation)
@@ -55,7 +55,7 @@ export function createPixelGeometryObjectFromGeometry (
   keyProp,
   sectionContext,
   coordinateTransformationContext,
-  zoomContext,
+  zoomTransformation,
   renderSettings
 ) {
   validateGeometryPropLayer(geometryProps.geometry)
@@ -82,7 +82,7 @@ export function createPixelGeometryObjectFromGeometry (
       { geometry },
       sectionContext,
       coordinateTransformationContext,
-      zoomContext,
+      zoomTransformation,
       renderSettings
     )
   }

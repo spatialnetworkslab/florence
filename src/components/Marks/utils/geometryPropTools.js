@@ -15,32 +15,32 @@ export function getInputType ({ x, y, geometry }) {
 
 export function validateXYProps (x, y) {
   if (![Array, Function].includes(x)) {
-    throw new Error('\'x\' prop must be Array of Function')
+    throw new Error('\'x\' prop must be Array or Function')
   }
 
   if (![Array, Function].includes(y)) {
-    throw new Error('\'y\' prop must be Array of Function')
+    throw new Error('\'y\' prop must be Array or Function')
   }
 }
 
 export function validateGeometryProp (geometry) {
   if (![Object, Function].includes(geometry)) {
-    throw new Error('\'geometry\' prop must be Object of Function')
+    throw new Error('\'geometry\' prop must be Object or Function')
   }
 }
 
 export function validateXYPropsLayer (x, y) {
   if (![Array, Function].includes(x)) {
-    throw new Error('\'x\' prop must be Array of Function')
+    throw new Error('\'x\' prop must be Array or Function')
   }
 
   if (![Array, Function].includes(y)) {
-    throw new Error('\'y\' prop must be Array of Function')
+    throw new Error('\'y\' prop must be Array or Function')
   }
 }
 
 export function validateGeometryPropLayer (geometry) {
   if (![Array, Function].includes(geometry)) {
-    throw new Error('\'geometry\' prop must be Object of Function')
+    throw new Error('\'geometry\' prop must be Array or Function')
   }
 }

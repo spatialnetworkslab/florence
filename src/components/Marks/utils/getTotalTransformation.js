@@ -33,7 +33,7 @@ function scalingNeeded (xNeedsScaling, yNeedsScaling) {
   return xNeedsScaling === true || yNeedsScaling === true
 }
 
-function createScaleTransformation (scaleX = x => x, scaleY = y => y) {
+export function createScaleTransformation (scaleX = x => x, scaleY = y => y) {
   return point => ([scaleX(point[0]), scaleY(point[1])])
 }
 
