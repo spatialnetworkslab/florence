@@ -16,7 +16,7 @@ export default function createPixelGeometry (
   ensureValidGeometryProps(geometryProps)
   const inputType = getInputType(geometryProps)
 
-  if (inputType === 'xyArrays') {
+  if (inputType === 'xy') {
     return createPixelGeometryFromXYArrays(
       geometryProps,
       sectionContext,

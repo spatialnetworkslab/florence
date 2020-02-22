@@ -9,7 +9,7 @@ export function ensureValidGeometryProps ({ x, y, geometry }, markType) {
 }
 
 export function getInputType ({ x, y, geometry }) {
-  if (isUndefined(geometry)) return 'xyArrays'
+  if (isUndefined(geometry)) return 'xy'
   if (isDefined(geometry)) return 'geometry'
 }
 
