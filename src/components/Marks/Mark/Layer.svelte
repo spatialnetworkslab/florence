@@ -171,6 +171,14 @@
     }
   }
 
+  // Check if layer must be represented as polygon
+  let asPolygon = _asPolygon === true && representAsPolygon !== undefined
+  $: {
+    if (initDone()) {
+      asPolygon = _asPolygon === true && representAsPolygon !== undefined
+    }
+  }
+
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
@@ -233,10 +241,10 @@
     }
   }
 
-  // Handle radius and strokeWidth changes if Points or Lines are represented as Polygons
+  // Handle radius and strokeWidth changes if Points or Lines are not represented as Polygons
   $: {
     if (initDone()) {
-      if (!_asPolygon) {
+      if (!asPolygon) {
         tr_radiusObject.set(generatePropObject(aesthetics.radius, keyArray))
         tr_strokeWidthObject.set(generatePropObject(aesthetics.strokeWidth, keyArray))
       }
@@ -267,12 +275,11 @@
 
   $: {
     tick().then(() => {
-
       if (pixelGeometryObjectRecalculationNecessary) {
         updatePixelGeometryObject()
         keyArray = Object.keys(pixelGeometryObject)
 
-        if (_asPolygon) {
+        if (asPolygon) {
           updateRadiusAndStrokeWidth()
         }
       }
@@ -351,7 +358,7 @@
   }
 
   function updateScreenGeometryObject () {
-    if (_asPolygon) {
+    if (asPolygon) {
       screenGeometryObject = representAsPolygonObject(pixelGeometryObject, { radiusObject, strokeWidthObject })
     } else {
       screenGeometryObject = pixelGeometryObject
@@ -442,9 +449,9 @@
     )
   }
 
-  $: renderPolygon = !['Point', 'Line', 'Label'].includes(type) || _asPolygon
-  $: renderCircle = type === 'Point' && !_asPolygon
-  $: renderLine = type === 'Line' && !_asPolygon
+  $: renderPolygon = !['Point', 'Line', 'Label'].includes(type) || asPolygon
+  $: renderCircle = type === 'Point' && !asPolygon
+  $: renderLine = type === 'Line' && !asPolygon
   $: renderLabel = type === 'Label'
 </script>
 

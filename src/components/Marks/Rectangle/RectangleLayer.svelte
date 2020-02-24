@@ -54,4 +54,5 @@
   {onTouchdown} {onTouchup} {onTouchover} {onTouchout} {onTouchdrag}
   {onSelect} {onDeselect}
   {key} {zoomIdentity} {renderSettings} {blockReindexing}
+  _asPolygon={false}
 />
