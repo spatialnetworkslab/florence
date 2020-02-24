@@ -36,6 +36,10 @@ export const posts = [
       {
         title: 'Label',
         path: '/docs/marks/label'
+      },
+      {
+        title: 'Area',
+        path: '/docs/marks/area'
       }
     ]
   }

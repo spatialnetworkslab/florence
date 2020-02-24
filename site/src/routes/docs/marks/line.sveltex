@@ -48,12 +48,11 @@ To create plots with multiple lines, we can either loop over the dataset (with `
 ## Properties
 ### Positioning
 
-| Prop     | Required | Types                  | Default   | Description                     | Unit(s)           |
-| -------- | -------- | ---------------------- | --------- | ------------------------------- | ----------------- |
-| x        | depends  | [Array, Function] | undefined | x-coordinates of line | Data value to be scaled by Section's scaleX. If Function then local coordinates.  |
-| y        | depends  | [Array, Function] | undefined | y-coordinates of line | Data value to be scaled by Section's scaleY. If Function then local coordinates. |
-| geometry | depends  | [Object, Function]                 | undefined | GeoJSON object of type Line    | Data value to be scaled by Section's scaleX/scaleY. If Function then local coordinates. |
-                                                               |
+| Prop     | Required | Types              | Default   | Description                 | Unit(s)                                                                                 |
+| -------- | -------- | ------------------ | --------- | --------------------------- | --------------------------------------------------------------------------------------- |
+| x        | depends  | [Array, Function]  | undefined | x-coordinates of line       | Data value to be scaled by Section's scaleX. If Function then local coordinates.        |
+| y        | depends  | [Array, Function]  | undefined | y-coordinates of line       | Data value to be scaled by Section's scaleY. If Function then local coordinates.        |
+| geometry | depends  | [Object, Function] | undefined | GeoJSON object of type Line | Data value to be scaled by Section's scaleX/scaleY. If Function then local coordinates. |
 
 
 ### Other aesthetics
