@@ -60,13 +60,15 @@ function createPixelGeometryObjectFromCoordinates (
   const xNeedsScaling = needsScaling(x)
   const yNeedsScaling = needsScaling(y)
 
-  const xArray = xNeedsScaling
+  const xScaled = xNeedsScaling
     ? x
     : x(sectionContext)
 
-  const yArray = yNeedsScaling
+  const yScaled = yNeedsScaling
     ? y
     : y(sectionContext)
+
+  const { xArray, yArray } = applyRecyclingIfNecessary(xScaled, yScaled)
 
   validateXYArrays(xArray, yArray)
 
@@ -83,6 +85,21 @@ function createPixelGeometryObjectFromCoordinates (
   return totalTransformation
     ? transformXYArraysIntoGeometryObject(xArray, yArray, keyArray, totalTransformation)
     : transformXYArraysIntoGeometryObject(xArray, yArray, keyArray, x => x)
+}
+
+function applyRecyclingIfNecessary (xScaled, yScaled) {
+  if (xScaled.constructor !== Array && yScaled.constructor !== Array) {
+    throw new Error('Invalid input: cannot recycle all geometry props')
+  }
+
+  return {
+    xArray: xScaled.constructor === Array ? xScaled : recycle(xScaled, yScaled.length),
+    yArray: yScaled.constructor === Array ? yScaled : recycle(yScaled, xScaled.length)
+  }
+}
+
+function recycle (value, length) {
+  return new Array(length).fill(value)
 }
 
 function transformXYArraysIntoGeometryObject (xArray, yArray, keyArray, transformation) {
