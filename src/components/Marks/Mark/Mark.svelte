@@ -21,6 +21,7 @@
   import { createDataNecessaryForIndexingMark } from './createDataNecessaryForIndexing.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import any from '../utils/any.js'
+  import parseRenderSettings from '../utils/parseRenderSettings.js' 
 
   import generatePath from '../utils/generatePath.js'
 
@@ -216,7 +217,8 @@
         $sectionContext,
         $coordinateTransformationContext,
         $zoomContext,
-        zoomIdentity
+        zoomIdentity,
+        renderSettings
       )
     }
   }
@@ -328,7 +330,7 @@
       $sectionContext,
       $coordinateTransformationContext,
       zoomTransformation,
-      {}
+      parseRenderSettings(renderSettings, $coordinateTransformationContext)
     )
   }
 

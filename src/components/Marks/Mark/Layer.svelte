@@ -24,6 +24,7 @@
   import generatePath from '../utils/generatePath.js'
   import textAnchorPoint from '../utils/textAnchorPoint.js'
   import any from '../utils/any.js'
+  import parseRenderSettings from '../utils/parseRenderSettings.js' 
 
   const layerId = getId()
 
@@ -236,7 +237,8 @@
         $sectionContext,
         $coordinateTransformationContext,
         $zoomContext,
-        zoomIdentity
+        zoomIdentity,
+        renderSettings
       )
     }
   }
@@ -349,7 +351,7 @@
       $sectionContext,
       $coordinateTransformationContext,
       zoomTransformation,
-      {}
+      parseRenderSettings(renderSettings, $coordinateTransformationContext)
     )
   }
 
