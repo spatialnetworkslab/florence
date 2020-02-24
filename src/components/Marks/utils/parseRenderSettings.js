@@ -3,8 +3,8 @@ export default function parseRenderSettings (renderSettings, coordinateTransform
     simplify: false,
     simplificationTreshold: 1,
     interpolate: true,
-    interpolationTreshold: 1,
-    decimals: undefined
+    interpolationTreshold: 5,
+    decimals: 2
   }
 
   const parsedRenderSettings = Object.assign(defaultRenderSettings, renderSettings)
