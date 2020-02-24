@@ -6,6 +6,14 @@ export const posts = [
       {
         title: 'Bar Chart',
         path: '/gallery/basic/barchart'
+      },
+      {
+        title: 'Scatterplot Chart',
+        path: '/gallery/basic/scatterplot'
+      },
+      {
+        title: 'Contour Chart',
+        path: '/gallery/basic/contour'
       }
     ]
   }
