@@ -20,7 +20,7 @@ export default function createPixelGeometry (
   const scaledGeometry = createScaledGeometry(scaleCoordinates(augmentProps(validateProps(normalize(
     allowedProps,
     sectionContext
-  )))))
+  ))), sectionContext))
 
   return createPixelGeometryFromGeometry(
     { geometry: () => scaledGeometry },
