@@ -58,6 +58,7 @@
   export let onDeselect = undefined
 
   // Other
+  export let renderSettings = undefined
   export let zoomIdentity = undefined
   export let blockReindexing = false
 

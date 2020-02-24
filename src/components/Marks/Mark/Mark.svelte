@@ -85,9 +85,10 @@
   export let onDeselect = undefined
 
   // Other
-  export let _asPolygon = true
+  export let renderSettings = undefined
   export let zoomIdentity = undefined
   export let blockReindexing = false
+  export let _asPolygon = true
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
