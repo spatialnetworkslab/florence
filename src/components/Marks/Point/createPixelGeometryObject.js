@@ -93,10 +93,10 @@ function transformXYArraysIntoGeometryObject (xArray, yArray, keyArray, transfor
 
     geometryObject[key] = {
       type: 'Point',
-      coordinates: transformation(
+      coordinates: transformation([
         xArray[i],
         yArray[i]
-      )
+      ])
     }
   }
 

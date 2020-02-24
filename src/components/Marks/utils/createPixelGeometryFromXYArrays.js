@@ -38,7 +38,7 @@ export function createPixelGeometryFromXYArrays (
     zoomTransformation
   })
 
-  const rendervousInput = createRendervousInput(x, y, geometryType)
+  const rendervousInput = createRendervousInput(xArray, yArray, geometryType)
 
   return inputNeedsToBeTransformed(totalTransformation)
     ? transformGeometry(rendervousInput, totalTransformation, renderSettings)

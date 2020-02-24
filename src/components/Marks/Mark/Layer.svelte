@@ -165,7 +165,7 @@
 
   $: {
     if (initDone()) {
-      createCoordSysGeometryObject = layerCoordSysGeometryFuncs[type]
+      createPixelGeometryObject = layerPixelGeometryFuncs[type]
       representAsPolygonObject = layerRepresentAsPolygonFuncs[type]
     }
   }
@@ -266,9 +266,10 @@
 
   $: {
     tick().then(() => {
+
       if (pixelGeometryObjectRecalculationNecessary) {
         updatePixelGeometryObject()
-        keyArray = Object.keys(coordSysGeometryObject)
+        keyArray = Object.keys(pixelGeometryObject)
 
         if (_asPolygon) {
           updateRadiusAndStrokeWidth()

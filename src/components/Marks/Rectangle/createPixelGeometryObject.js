@@ -44,7 +44,7 @@ function scaleCoordinates (coordinateProps, sectionContext) {
     length
   )
 
-  return scaledCoordinates
+  return { scaledCoordinates, length }
 }
 
 const coordinateNames = ['x1', 'x2', 'y1', 'y2']
