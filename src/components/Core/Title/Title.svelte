@@ -79,7 +79,7 @@
     if (!isValid(x, y)) {
       if (sectionContext.flipX) xRange.reverse()
       x = createTitleXCoord(hjust, xRange, x, xOffset, totalFontSize, sectionContext.flipX, _padding)
-
+  
       if (sectionContext.flipY) yRange.reverse()
       y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize, sectionContext.flipY, _padding)
     } else {
@@ -88,7 +88,7 @@
        * (does not rely on section/graphic scale)
        * else if value, uses data scale => convert to pixel values
       **/
-
+  
       if ({}.toString.call(x) === '[object Function]') {
         _x = x()
       } else {
@@ -105,7 +105,7 @@
       x = _x
       y = _y
     }
-
+    console.log('+++', title, x, y)
     if (subtitle.length > 0) {
       if (!isValid(subtitleX, subtitleY)) {
         yRange = $sectionContext.scaleY.range()
@@ -113,7 +113,9 @@
         subtitleY = y + titleFontSize
       }
     }
+    console.log('+++', title, x, y)
   }
+  console.log('+++', title, x, y)
 </script>
 
 <!-- TITLE -->

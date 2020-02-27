@@ -1,5 +1,8 @@
 <script>
-  import { Graphic, Section, XAxis, YAxis, Title } from '@snlab/florence'
+  import { 
+    Graphic, Section, PolygonLayer, Rectangle,
+    XAxis, YAxis, Title
+  } from '../../../../src'
 
   const sectionPadding = 75
   const background = '#808080'
@@ -19,15 +22,14 @@
   > 
 
       <Title 
-      title={'This title should be inside of the padding of the section'} 
+      title={'Inside'} 
       titleFontFamily={'Baskerville'}
       usePadding={true}
       />
 
       <Title 
-      title={'This title should be outside of the padding of the section'} 
+      title={'Outside'} 
       titleFontFamily={'Baskerville'}
-      usePadding={false}
       />
 
     <XAxis />
