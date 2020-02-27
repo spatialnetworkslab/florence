@@ -2,7 +2,7 @@
   // d3
   import { scaleLinear } from 'd3-scale'
   // florence
-  import { Graphic, Section, PointLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '@snlab/florence'
+  import { Graphic, Section, PointLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   export let N = 100
@@ -41,6 +41,26 @@
     {width} {height}
   >         
 
+     <!-- Vjust -->
+    <DiscreteLegend
+      fill={linearColorScale}
+      labelCount={5}
+      flip
+    />
+
+
+    <!-- Pixels -->
+    <GradientLegend
+      x1={() => { return 200 }} x2={() => { return 300 }}
+      y1={() => { return 60 }} y2={() => { return 100 }}
+      fill={linearColorScale}
+      orient={'horizontal'}
+      labelCount={5}
+      titleX={() => { return 170 }}
+      titleY={() => { return 70 }}
+    />
+
+
     <!-- Basic example + continuous scales -->
     <Section 
       x1={0} x2={400}
@@ -52,24 +72,6 @@
     >
       <!-- NOTE: usePadding won't work on the first two legend examples here
       because they are being given specific values -->
-
-      <!-- Vjust -->
-      <DiscreteLegend
-        fill={linearColorScale}
-        labelCount={5}
-        flip
-      />
-
-      <!-- Pixels -->
-      <GradientLegend
-        x1={() => { return 200 }} x2={() => { return 300 }}
-        y1={() => { return 60 }} y2={() => { return 100 }}
-        fill={linearColorScale}
-        orient={'horizontal'}
-        labelCount={5}
-        titleX={() => { return 170 }}
-        titleY={() => { return 70 }}
-      />
       
       <PointLayer
           x={filteredData.column('a')}

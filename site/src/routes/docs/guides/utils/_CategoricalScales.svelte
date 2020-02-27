@@ -2,14 +2,11 @@
   // d3
   import { scaleBand, scaleLinear, scaleOrdinal} from 'd3-scale'
   import * as d3 from 'd3-scale-chromatic'
-  import { schemeAccent } from 'd3-scale-chromatic'
+  import { schemeTableau10 } from 'd3-scale-chromatic'
 
   // florence
-  import { Rectangle, Graphic, Section, DiscreteLegend, XAxis } from '@snlab/florence'
+  import { Rectangle, Graphic, Section, DiscreteLegend, XAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
-  
-  const height = 400
-  const width = 400
 
   // categorical data
   let catData = new DataContainer({
@@ -34,21 +31,19 @@
 
   const nutrientColorScale = scaleOrdinal()
     .domain(nutrientDomain)
-    .range(schemeAccent)
+    .range(schemeTableau10)
 </script>
 
 <div>
 	<Graphic 
-    {width} {height}
+    height={400} width={400}
   >         
 
     <!-- Categorical -->
     <Section 
-      x1={0} x2={width}
-      y1={0} y2={height}
-      padding={40}
       scaleX={scaleBand().domain(fruitDomain).padding(0.3)}
       scaleY={scaleLinear().domain([0, 1])}
+      padding={75}
     > 
       <DiscreteLegend
         fill={nutrientColorScale}
@@ -74,7 +69,7 @@
         {/each}
       {/each}
 
-      <XAxis labelFontSize={13} />
+      <XAxis labelFontSize={15} />
     
     </Section>
 

@@ -77,7 +77,9 @@ export function createTitleXCoord (hjust, range, x, offset, flipX) {
     throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `hjust`')
   }
 
-  return x1 + sectionWidth * justification + offset
+  // const posX = flipX ? x1 + sectionWidth * justification + offset : x2 - (sectionWidth * justification + offset)
+  const posX = flipX ? x1 - (sectionWidth * justification + offset) : x1 + (sectionWidth * justification + offset)
+  return posX
 }
 
 export function createTitleYCoord (vjust, range, y, offset, fontSize, flipY) {

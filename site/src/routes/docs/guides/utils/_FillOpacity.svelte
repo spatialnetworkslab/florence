@@ -3,7 +3,7 @@
   import { scaleLinear } from 'd3-scale'
   
   // florence
-  import { Graphic, Section, PointLayer, DiscreteLegend, GradientLegend } from '@snlab/florence'
+  import { Graphic, Section, PointLayer, DiscreteLegend, GradientLegend } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   export let N = 100
@@ -27,38 +27,33 @@
       .filter(row => row.a > threshold)
   }
 
-  const height = 400
-  const width = 400
-
   // fill scales
-  const alphaScale = scaleLinear().domain([0, 120]).range([0, 1])
   const bins = [0, 15, 50, 90, 120]
 </script>
 
 <div>
 	<Graphic 
-    {width} {height}
+    height={400} width={400}
   >         
     <Section 
-      x1={0} x2={400}
-      y1={0} y2={400}
       padding={30}
       scaleX={scaleLinear().domain(data.domain('a'))}
       scaleY={scaleLinear().domain(data.domain('b'))}
     > 
       <GradientLegend
         labels={bins}
-        fillOpacity= {alphaScale}
-        fill={'goldenrod'}
+        fillOpacity= {scaleLinear().domain([0, 120]).range([0, 1])}
+        fill={'firebrick'}
         title={'Bins'}
         usePadding={true}
+        flip
       />
 
       <!-- Fill opacity + Bins -->
       <DiscreteLegend
         labels={bins}
-        fillOpacity= {alphaScale}
-        fill={'goldenrod'}
+        fillOpacity= {scaleLinear().domain([0, 120]).range([0, 1])}
+        fill={'firebrick'}
         orient={'horizontal'}
         width={100}
         vjust={'top'}
@@ -71,8 +66,8 @@
         x={filteredData.column('a')}
         y={filteredData.column('b')}
         key={filteredData.column('$key')}
-        fillOpacity={alphaScale}
-        fill={'goldenrod'}
+        fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+        fill={'firebrick'}
       />
     </Section>
 

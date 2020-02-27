@@ -80,12 +80,13 @@
     }
 
     // Title text positioning wrt section/graphic context
-    totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize : titleFontSize
+    totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize / 2 : titleFontSize
 
     // Autopositioning
     if (!isValid(x, y)) {
       if (sectionContext.flipX) xRange.reverse()
-      x = createTitleXCoord(hjust, xRange, x, xOffset, totalFontSize, _flipX)
+      x = createTitleXCoord(hjust, xRange, x, xOffset, _flipX)
+  
       if (sectionContext.flipY) yRange.reverse()
       y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize, _flipY)
     } else {
