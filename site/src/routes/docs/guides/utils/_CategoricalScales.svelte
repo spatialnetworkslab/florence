@@ -5,7 +5,7 @@
   import { schemeTableau10 } from 'd3-scale-chromatic'
 
   // florence
-  import { Rectangle, Graphic, Section, DiscreteLegend, XAxis } from '../../../../src/'
+  import { Rectangle, Graphic, Section, DiscreteLegend, XAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
   // categorical data

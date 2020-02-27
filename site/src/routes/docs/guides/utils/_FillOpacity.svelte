@@ -3,7 +3,7 @@
   import { scaleLinear } from 'd3-scale'
   
   // florence
-  import { Graphic, Section, PointLayer, DiscreteLegend, GradientLegend } from '../../../../src/'
+  import { Graphic, Section, PointLayer, DiscreteLegend, GradientLegend } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
   export let N = 100

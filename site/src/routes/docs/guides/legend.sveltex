@@ -122,7 +122,7 @@ Changing from a discrete to a gradient legend is as simple as changing the compo
 property names for both are the same. However, note the use of different systems for positioning the legends. 
 
 The discrete legend is automatically positioned to 'center, left' using smart defaults (based on the dimensions of the container
-component it is in), while the gradient legend is positioned manually using pixel values (indiciated by the fat arrow functions `() => <pixelvalues>`). When using a positioning system, make sure to follow only one per legend component in order to avoid confusion.
+component it is in), while the gradient legend is positioned manually using pixel values (indicated by the fat arrow functions `() => <pixelvalues>`). When using a positioning system, make sure to follow only one per legend component in order to avoid confusion.
 
 ```js exec
 import SimpleLegends from './utils/_SimpleLegends.svelte'
