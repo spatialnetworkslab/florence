@@ -62,12 +62,32 @@
 
   // Private variables
   let _padding
-  const _flipY = $sectionContext.flipY
-  const _flipX = $sectionContext.flipX
+  let _flipY = false
+  let _flipX = false
   let xRange = $sectionContext.scaleX.range()
   let yRange = $sectionContext.scaleY.range()
   let totalFontSize
 
+  $: {
+    if ($sectionContext.flipY) {
+      _flipY = true
+    }
+
+    if ($graphicContext.flipY) {
+      _flipY = true
+    }
+  }
+
+  $: {
+    if ($sectionContext.flipX) {
+      _flipX = true
+    }
+
+    if ($graphicContext.flipX) {
+      _flipX = true
+    }
+  }
+  console.log($graphicContext.rangeY)
   $: {
     // Removal of padding from pixel value range, if necessary
     if (usePadding === true) {

@@ -17,7 +17,6 @@
     padding={sectionPadding}
     backgroundColor={background}
     paddingColor={padding}
-    flipY
   > 
     <Title 
       title={'Title is inside of the padding of the section'} 
@@ -30,7 +29,7 @@
     <Title 
       title={'Title is outside of the padding of the section'} 
       subtitle={'Its parent is the Section'}
-      subtitleFill={'pink'}
+      subtitleFill={'coral'}
       titleFontFamily={'Baskerville'}
       usePadding={false}
       />
@@ -43,7 +42,7 @@
   <Title 
     title={'This title is placed inside of the graphic'} 
     subtitle={'Its parent is the Graphic'}
-    titleFill={'pink'}
+    titleFill={'coral'}
     subtitleFontFamily={'Baskerville'}
     usePadding={false}
     />
