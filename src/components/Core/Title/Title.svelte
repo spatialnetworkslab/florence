@@ -87,7 +87,7 @@
       _flipX = true
     }
   }
-  console.log($graphicContext.rangeY)
+
   $: {
     // Removal of padding from pixel value range, if necessary
     if (usePadding === true) {

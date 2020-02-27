@@ -77,7 +77,6 @@ export function createTitleXCoord (hjust, range, x, offset, flipX) {
     throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `hjust`')
   }
 
-  // const posX = flipX ? x1 + sectionWidth * justification + offset : x2 - (sectionWidth * justification + offset)
   const posX = flipX ? x1 - (sectionWidth * justification + offset) : x1 + (sectionWidth * justification + offset)
   return posX
 }
@@ -87,7 +86,7 @@ export function createTitleYCoord (vjust, range, y, offset, fontSize, flipY) {
     return y
   }
 
-  let y1 = range[0]
+  const y1 = range[0]
   const y2 = range[1]
   const sectionHeight = Math.abs(y2 - y1)
 
@@ -116,7 +115,7 @@ export function createTitleYCoord (vjust, range, y, offset, fontSize, flipY) {
   if (!['center', 'bottom', 'top'].includes(vjust) && isNaN(vjust)) {
     throw Error('Please specify either `top`, `center`, `bottom` or a number for `vjust`')
   }
-  console.log(flipY)
-  y1 = flipY ? y1 - (sectionHeight * justification + offset) : y1 + sectionHeight * justification + offset
-  return y1
+
+  const posY = flipY ? y1 - (sectionHeight * justification + offset) : y1 + sectionHeight * justification + offset
+  return posY
 }

@@ -16,9 +16,9 @@
     y1={0} y2={500}
     padding={sectionPadding}
     backgroundColor={background}
-    paddingColor={padding}
+    paddingColor={padding} 
   > 
-    <Title 
+    <!-- <Title 
       title={'Title is inside of the padding of the section'} 
       subtitle={'Its parent is the Section'}
       subtitleFill={'steelblue'}
@@ -32,7 +32,7 @@
       subtitleFill={'coral'}
       titleFontFamily={'Baskerville'}
       usePadding={false}
-      />
+      /> -->
 
     <XAxis />
     <YAxis />
@@ -45,6 +45,7 @@
     titleFill={'coral'}
     subtitleFontFamily={'Baskerville'}
     usePadding={false}
+    vjust={'bottom'}
     />
 
   <Title 
@@ -53,5 +54,6 @@
     subtitle={'Its parent is the Graphic'}
     subtitleFontFamily={'Baskerville'}
     usePadding={true}
+    vjust={'bottom'}
     />
 </Graphic>
