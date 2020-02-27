@@ -1,0 +1,21 @@
+{
+  "files.autoSave": "off",
+  "eslint.trace.server": "messages",
+  "eslint.autoFixOnSave": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[svelte]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "eslint.validate": [
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "svelte",
+      "autoFix": true
+    }
+  ]
+}
