@@ -36,6 +36,7 @@ The `Title` component is used to create a plot title and has smart defaults for 
 | subtitleY   |  `Number`  | Vertical position of title | ❌  | `undefined` |  pixels  |
 
 ### Title 
+
 | Prop               | Type(s)  | Description                                   | Required | Default      | Units                                                                          |
 |--------------------|----------|-----------------------------------------------|----------|--------------|--------------------------------------------------------------------------------|
 | title              | `String` | Title text                                    | ✅        | `Title Text` |                                                                                |

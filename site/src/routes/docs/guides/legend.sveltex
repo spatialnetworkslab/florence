@@ -33,20 +33,20 @@ Legends are guides used to show mappings for aesthetics like color, shape, size,
 `Legend` components cannot be used outside of a `Graphic` component
 :::
 
-| Prop |     Type(s)     |    Required     |   Default   |       Units       |
-| ---- | --------------- | --------------- | ----------- | ----------------- |
-| x1   | `Number`, `Object`, `Function`, `String`  | ❌ | `undefined` | local coordinates (`Number`), pixel values (`Function`)   |
-| x2   | `Number`, `Object`, `Function`, `String`  | ❌ |   `undefined` |  local coordinates (`Number`), pixel values (`Function`)   |
-| y1   | `Number`, `Object`, `Function`, `String`  | ❌ |   `undefined` |  local coordinates (`Number`), pixel values (`Function`)   |
-| y2   | `Number`, `Object`, `Function`, `String`  | ❌ |   `undefined` |  local coordinates (`Number`), pixel values (`Function`)   |
-| orient   | `String`  | ❌ | `horizontal` |  `horizontal`, `vertical`   |
-| vjust   | `String`  | ❌ | `center` |  `top`, `center`/`centre`, `bottom`   |
-| hjust   | `String`  | ❌ | `left` |  `left`, `center`/`centre`, `right`  |
-| height   | `Number`  | ❌ | `undefined` |  local coordinates (`Number`), pixel values (`Function`) |
-| width   | `Number`  | ❌ | `0` |  local coordinates (`Number`), pixel values (`Function`)   |
-| xOffset   | `Number`  | ❌ | `0` |  local coordinates (`Number`), pixel values (`Function`)   |
-| yOffset   | `Number`  | ❌ | `0` |  local coordinates (`Number`), pixel values (`Function`)   |
-| usePadding   | `Boolean` | ❌ | `false`  |  |
+| Prop       | Type(s)                                  | Description                                                                                                                                                    | Required | Default      | Units                                                   |
+|------------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|--------------|---------------------------------------------------------|
+| x1         | `Number`, `Object`, `Function`, `String` | Left x coordinate                                                                                                                                              | ❌        | `undefined`  | local coordinates (`Number`), pixel values (`Function`) |
+| x2         | `Number`, `Object`, `Function`, `String` | Right x coordinate                                                                                                                                             | ❌        | `undefined`  | local coordinates (`Number`), pixel values (`Function`) |
+| y1         | `Number`, `Object`, `Function`, `String` | Bottom y coordinate                                                                                                                                            | ❌        | `undefined`  | local coordinates (`Number`), pixel values (`Function`) |
+| y2         | `Number`, `Object`, `Function`, `String` | Top y coordinate                                                                                                                                               | ❌        | `undefined`  | local coordinates (`Number`), pixel values (`Function`) |
+| orient     | `String`                                 | Orientation of legend                                                                                                                                          | ❌        | `horizontal` | `horizontal`, `vertical`                                |
+| vjust      | `String`                                 | Vertical position of legend                                                                                                                                    | ❌        | `center`     | `top`, `center`/`centre`, `bottom`                      |
+| hjust      | `String`                                 | Horizontal position of legend                                                                                                                                  | ❌        | `left`       | `left`, `center`/`centre`, `right`                      |
+| height     | `Number`                                 | If `vertical`, automatically computed according to 35% of parent section height + titleFontSize (screen pixels); if `horizontal`, 10% of parent section height | ❌        | `undefined`  | local coordinates (`Number`), pixel values (`Function`) |
+| width      | `Number`                                 | If `horizontal`, automatically computed according to 35% of parent section width + titleFontSize (screen pixels); if `vertical`, 10% of parent section width   | ❌        | `0`          | local coordinates (`Number`), pixel values (`Function`) |
+| xOffset    | `Number`                                 | Offsets horizontal position of the legend by pixel values                                                                                                      | ❌        | `0`          | local coordinates (`Number`), pixel values (`Function`) |
+| yOffset    | `Number`                                 | Offsets vertical position of the legend by pixel values                                                                                                        | ❌        | `0`          | local coordinates (`Number`), pixel values (`Function`) |
+| usePadding | `Boolean`                                | Positions title either within parent Section/Graphic (`usePadding=false`) or within padding of parent (`usePadding=true`)                                      | ❌        | `false`      |                                                         |
 
 Legends may be positioned and their sizes set using the following combinations:
 
@@ -59,70 +59,65 @@ Legends may be positioned and their sizes set using the following combinations:
 | `height` | The legend will be positioned at the leftmost edge the viewport (either the `Graphic` or the `Section`) along the center of the viewport's vertical axis, with enough space to accommodate the height (which is split in two along the vertical center). |
 | `width`  | The legend will be positioned at the leftmost edge the viewport (either the `Graphic` or the `Section`) along the center of the viewport's vertical axis, with enough space to accommodate the width (which is split in two along the horizontal center). |
 
-
-
 ### Aesthetics
 
-| Prop |     Type(s)     |    Required     |   Default   |       Units       |
-| ---- | --------------- | --------------- | ----------- | ----------------- |
-| fill   | `Function`, `String`  | ✅ | `black` |  If `String`, valid HEX/RGBA color  |
-| fillOpacity   | `Function`, `Number`  | ❌ |   `undefined` |  If number, between 0 and 1 |
-| stroke   | `String` | ❌  |   `none` |  If `String`, valid HEX/RGBA col   |
-| strokeWidth   | `Number`  |  ❌ | `2` |  Pixels   | 
-| flip   | Boolean; flips direction of labels and aesthetics (horizontal: right to left; vertical: bottom to top) |  ❌ | `false` |   |
+| Prop |     Type(s)     | Description |    Required     |   Default   |       Units       |
+| ---- | --------------- | --------------- | ----------- | ----------------- | --------------- |
+| fill   | `Function`, `String`  | Color scale to which the gradient section/discrete colors is/are mapped | ✅ | `black` |  If `String`, valid HEX/RGBA color  |
+| fillOpacity   | `Function`, `Number`  | Fill opacity of color in fill | ❌ |   `undefined` |  If number, between 0 and 1 |
+| stroke   | `String` | Stroke color surrounding legend section | ❌  |   `none` |  If `String`, valid HEX/RGBA col   |
+| strokeWidth   | `Number`  |  Stroke width of rectangle surrounding legend section |  ❌ | `2` |  Pixels   | 
+| flip   | Boolean |  Flips direction of labels and aesthetics (horizontal: right to left; vertical: bottom to top) | ❌ | `false` | 
 
 ### Title
 
-| Prop |     Type(s)     |    Required     |   Default   |       Units       |
-| ---- | --------------- | --------------- | ----------- | ----------------- |
-| title   | `String`  | ❌  | `Legend` |     |
-| titleX   |`Function`, `Number` | ❌  | `undefined` |  local coordinates (`Number`), pixel values (`Function`)  |
-| titleY   | `Function`, `Number` | ❌  | `undefined` |  local coordinates (`Number`), pixel values (`Function`)  |
-| titleXOffset   | `Number` | ❌  | `0` |  Pixel values   |
-| titleYOffset   | `Number` | ❌  | `0` |  Pixel values    |
-| titleHjust   | `String`  | ❌ | `left` |  `left`, `center`/`centre`, `right`  |
-| titleVjust   | `String`  | ❌ | `center` |  `top`, `center`/`centre`, `bottom`   |
-| titleFont   | `String`  | ❌ | `Helvetica` |    |
-| titleFontSize   | `Number`  | ❌ | `12` |  Pixel values   |
-| titleFontWeight   | `String`, `Number`  | ❌ | `bold` |    |
-| titleOpacity   | `Number`  | ❌ | `1` |  0 to 1   |
-| titleColor   | `String`  | ❌ | `black` |  Valid HEX/RGBA color   |
-| titleRotation   | `Number`  | ❌ | `0` |  Degrees  |
-| titleAnchorPoint   | `String` | ❌ | `t` |  'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc'   |
-| titlePaddingX   | `Number`  |  ❌ | `0` |  Pixel values  |
-| titlePaddingY   | `Number`  |  ❌ | `-3` | Pixel values   |
+| Prop |     Type(s)     |  Description |  Required     |   Default   |       Units       |
+| ---- | --------------- | --------------- | --------------- | ----------- | ----------------- |
+| title   | `String`  | Title text | ❌  | `Legend` |     |
+| titleX   |`Function`, `Number` | Horizontal position of legend title | ❌  | `undefined` |  local coordinates (`Number`), pixel values (`Function`)  |
+| titleY   | `Function`, `Number` | Vertical position of legend title | ❌  | `undefined` |  local coordinates (`Number`), pixel values (`Function`)  |
+| titleXOffset   | `Number` | Offsets horizontal position of the legend title by pixel values | ❌  | `0` |  Pixel values   |
+| titleYOffset   | `Number` | Offsets vertical position of the title by pixel values | ❌  | `0` |  Pixel values    |
+| titleHjust   | `String`  | Horizontal position of legend title | ❌ | `left` |  `left`, `center`/`centre`, `right`  |
+| titleVjust   | `String`  | Vertical position of legend title | ❌ | `center` |  `top`, `center`/`centre`, `bottom`   |
+| titleFont   | `String`  | Font family of legend text | ❌ | `Helvetica` |    |
+| titleFontSize   | `Number`  | Font size of legend text  | ❌ | `12` |  Pixel values   |
+| titleFontWeight   | `String`, `Number`  | Font weight of legend text  | ❌ | `bold` |    |
+| titleOpacity   | `Number`  | Opacity of legend text   | ❌ | `1` |  0 to 1   |
+| titleColor   | `String`  |   | ❌ | `black` |  Valid HEX/RGBA color   |
+| titleRotation   | `Number`  |  Rotation angle of legend text | ❌ | `0` |  Degrees  |
+| titleAnchorPoint   | `String` | Anchor point of legend text  | ❌ | `t` |  'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc'   |
+| titlePaddingX   | `Number`  |   | ❌ | `0` |  Pixel values  |
+| titlePaddingY   | `Number`  |   | ❌ | `-3` | Pixel values   |
 
 ### Labels
 
-| Prop |     Type(s)     |    Required     |   Default   |       Units       |
-| ---- | --------------- | --------------- | ----------- | ----------------- |
-| labels   | `Array`, `Function`  | ❌  |  `undefined` |     |
-| labelFormat   | `Function`  |  ❌ |   `undefined` |     |
-| labelX   | `Number`  |  ❌ |   `undefined` |  Pixel values   |
-| labelY   | `Number`  | ❌  |   `undefined` | Pixel values  |
-| labelPaddingX   | `Number`  |  ❌ | `0` |  Pixel values   |
-| labelPaddingY   | `Number`  |  ❌ | `0` |  Pixel values   |
-| labelRotate   | `Number` | ❌ | `0` |  Degrees   |
-| labelFont   | `String`  |  ❌ |   `Helvetica` |     |
-| labelFontSize   | `Number`  |  ❌ |   `10` |  Pixel values   |
-| labelFontWeight   | `Number`, `String`  | ❌  |   `normal` |    |
-| labelOpacity   | `Number`  |  ❌ |   `1` |  0 to 1  |
-| labelColor   | `String`  |  ❌  | `black` |  Valid HEX/RGBA color   |
-| labelAnchorPoint   | `String`  |  ❌ |   `center` | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc'   |
-| labelCount   | `Number`  |  ❌ |   `10` |  Integers   |
-| labelExtra   | `Boolean`  |  ❌ |   `false` |     |
-| firstLabel   | `String`, `Number`  |  ❌ |   `undefined` |     |
-| flipLabels   | `Boolean`  |  ❌ |   `false` |     |
+| Prop |     Type(s)     | Description |   Required     |   Default   |       Units       |
+| ---- | --------------- | --------------- | ----------- | ----------------- | --------------- |
+| labels   | `Array`, `Function`  |   | ❌  |  `undefined` |     |
+| labelFormat   | `Function`  |  formatting of legend labels, i.e. rounding off/down | ❌ |   `undefined` |     |
+| labelX   | `Number`  |   | ❌ |   `undefined` |  Pixel values   |
+| labelY   | `Number`  |   | ❌  |   `undefined` | Pixel values  |
+| labelPaddingX   | `Number`  |   | ❌ | `0` |  Pixel values   |
+| labelPaddingY   | `Number`  |    | ❌ | `0` |  Pixel values   |
+| labelRotate   | `Number` |   | ❌ | `0` |  Degrees   |
+| labelFont   | `String`  |  Font family of labels |  ❌ |   `Helvetica` |     |
+| labelFontSize   | `Number`  |  Font size of labels | ❌ |   `10` |  Pixel values   |
+| labelFontWeight   | `Number`, `String`  |  Font weight of labels | ❌  |   `normal` |    |
+| labelOpacity   | `Number`  |  Opacity of labels | ❌ |   `1` |  0 to 1  |
+| labelColor   | `String`  |  Fill color of labels | ❌  | `black` |  Valid HEX/RGBA color   |
+| labelAnchorPoint   | `String`  |  Anchor point of label points | ❌ |   `center` | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc'   |
+| labelCount   | `Number`  |  Number of ticks/labels to render  | ❌ |   `10` |  Integers   |
+| labelExtra   | `Boolean`  |  If set to `true`, then renders an extra label based on `labelCount` value | ❌ |   `false` |     |
+| firstLabel   | `String`, `Number`  |   | ❌ |   `undefined` |  Sets first label of legend manually   |
+| flipLabels   | `Boolean`  | Flips placement of labels  | ❌ |   `false` |     |
 
 ## Examples
 
 ### Simple discrete and gradient legends with continuous scales for `fill`
 
 Changing from a discrete to a gradient legend is as simple as changing the component name. The positioning and aesthetic
-property names for both are the same. However, note the use of different systems for positioning the legends. 
-
-The discrete legend is automatically positioned to 'center, left' using smart defaults (based on the dimensions of the container
-component it is in), while the gradient legend is positioned manually using pixel values (indicated by the fat arrow functions `() => <pixelvalues>`). When using a positioning system, make sure to follow only one per legend component in order to avoid confusion.
+property names for both are the same.
 
 ```js exec
 import SimpleLegends from './utils/_SimpleLegends.svelte'
@@ -130,14 +125,20 @@ import SimpleLegends from './utils/_SimpleLegends.svelte'
 
 <SimpleLegends/>
 
-### Padding
-Setting `usePadding` to `true` allows the legend components to include either the `Section` or `Graphic` padding as part of its canvas for positioning according to preset smart defaults. Therefore, when compared to the previous example, the legends here are positioned near the edges of the `Section` space.
+
+### Positioning 
+
+Note the use of different systems for positioning the legends. The discrete legend is automatically positioned to `vjust=center`, `hjust=left` using smart defaults (based on the dimensions of the container component it is in), while the gradient legend is positioned manually using pixel values (indicated by the fat arrow functions `() => <pixelvalues>`). 
+
+When using a positioning system, make sure to follow only one per legend component in order to avoid confusion.
 
 ```js exec
 import UsePadding from './utils/_UsePadding.svelte'
 ```
 
 <UsePadding/>
+
+Setting `usePadding` to `true` allows the legend components to include either the `Section` or `Graphic` padding as part of its canvas for positioning according to preset smart defaults. In this example, `GradientLegend` is positioned inside the parent `Section` while `DiscreteLegend` is positioned in the padding.
 
 ### Using `fillOpacity` and setting legends to bin values
 
