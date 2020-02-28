@@ -35,49 +35,43 @@
   const padding = '#E8E8E8'
 </script>
 
-<div>
-  <Graphic width={500} height={500}
-    padding={graphicPadding}
-  >     
+<Graphic width={500} height={500}
+  padding={graphicPadding}
+>     
 
-    <!-- Basic example + continuous scales -->
-    <Section 
-      x1={0} x2={500}
-      y1={0} y2={500}
-      padding={sectionPadding}
-      scaleX={scaleLinear().domain(data.domain('a'))}
-      scaleY={scaleLinear().domain(data.domain('b'))}
-      backgroundColor={background}
-      paddingColor={padding} 
-    >
+  <!-- Basic example + continuous scales -->
+  <Section 
+    x1={0} x2={500}
+    y1={0} y2={500}
+    padding={sectionPadding}
+    scaleX={scaleLinear().domain(data.domain('a'))}
+    scaleY={scaleLinear().domain(data.domain('b'))}
+    backgroundColor={background}
+    paddingColor={padding} 
+  >
 
-      <!-- Vjust -->
-      <GradientLegend
-        title={'Gradient'}
-        fill={linearColorScale}
-        labelCount={5}
-        flip
-        usePadding={false}
-      />
+    <!-- Vjust -->
+    <GradientLegend
+      title={'Gradient'}
+      fill={linearColorScale}
+      labelCount={5}
+      flip
+    />
 
-      <!-- Pixels -->
-      <DiscreteLegend
-        title={'Discrete'}
-        x1={() => { return 200 }} x2={() => { return 300 }}
-        y1={() => { return 60 }} y2={() => { return 100 }}
-        fill={linearColorScale}
-        orient={'horizontal'}
-        labelCount={5}
-        titleX={() => { return 170 }}
-        titleY={() => { return 70 }}
-        usePadding={true}
-      />
-      
-      <XAxis />
-      <YAxis />
+    <!-- Pixels -->
+    <DiscreteLegend
+      title={'Discrete'}
+      vjust={'top'}
+      hjust={'center'}
+      fill={linearColorScale}
+      orient={'horizontal'}
+      labelCount={5}
+      usePadding={'true'}
+    />
     
-    </Section>
+    <XAxis />
+    <YAxis />
+  
+  </Section>
 
-	</Graphic>
-
-</div>
+</Graphic>

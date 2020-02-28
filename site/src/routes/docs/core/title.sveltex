@@ -78,5 +78,5 @@ import Title from './utils/_Title.svelte'
 
 <Title />
 
-The property `usePadding` can be switched to `true` (its default setting is `false) to make use of the space set for 
+The property `usePadding` can be switched to `true` (its default setting is `false`) to make use of the space set for 
 padding for both `Section` and `Graphic`.

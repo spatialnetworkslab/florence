@@ -1,44 +1,43 @@
 <script>
   // d3
   import { scaleLinear } from 'd3-scale'
-
+  
   // florence
-  import { Graphic, Section, DiscreteLegend, GradientLegend, PointLayer, YAxis, XAxis } from '@snlab/florence'
+  import { Graphic, Section, PointLayer, DiscreteLegend, GradientLegend, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
   export let N = 100
   
   function generateData (N, error) {
     const getError = () => -error + (Math.random() * (2 * error)) * N
-    let data = { a: [], b: [] }
+    const data = { a: [], b: [] }
     for (let i = 0; i < N; i++) {
       data.a.push(i + getError())
       data.b.push(i + getError())
     }
     return data
   }
-
+  
   const data = new DataContainer(generateData(N, 0.25))
   const threshold = 0
-  let filteredData = undefined
+  let filteredData
 
   $: {
     filteredData = data
       .filter(row => row.a > threshold)
   }
-
-  // fill scales
-  const linearColorScale = scaleLinear().domain(data.domain('a')).range(['red', 'blue'])
 </script>
-
 
 <Graphic width={500} height={500}
 >     
   <!-- Vjust -->
   <GradientLegend
-    title={'Gradient'}
-    fill={linearColorScale}
+    labels={[0, 15, 50, 90, 120]}
+    fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+    fill={'steelblue'}
     labelCount={5}
+    title={'Gradient'}
+    titlePaddingY={-7}
     vjust={'top'}
     hjust={'right'}
     flip
@@ -46,8 +45,10 @@
 
   <!-- Pixels -->
   <DiscreteLegend
+    labels={[0, 15, 50, 90, 120]}
     title={'Discrete'}
-    fill={linearColorScale}
+    fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+    fill={'steelblue'}
     orient={'horizontal'}
     labelCount={5}
     vjust={'top'}
@@ -67,7 +68,8 @@
       x={filteredData.column('a')}
       y={filteredData.column('b')}
       key={filteredData.column('$key')}
-      fill={linearColorScale}
+      fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+      fill={'steelblue'}
     />
     <XAxis />
     <YAxis />

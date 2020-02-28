@@ -684,6 +684,10 @@ tr > td {
   padding-bottom: 0.25rem;
 }
 
+tr:nth-child(even) {
+  background: #efefef;
+}
+
 /* docs, gallery */
 
 .content {

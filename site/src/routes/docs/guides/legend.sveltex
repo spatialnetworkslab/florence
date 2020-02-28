@@ -65,8 +65,8 @@ Legends may be positioned and their sizes set using the following combinations:
 | ---- | --------------- | --------------- | ----------- | ----------------- | --------------- |
 | fill   | `Function`, `String`  | Color scale to which the gradient section/discrete colors is/are mapped | ✅ | `black` |  If `String`, valid HEX/RGBA color  |
 | fillOpacity   | `Function`, `Number`  | Fill opacity of color in fill | ❌ |   `undefined` |  If number, between 0 and 1 |
-| stroke   | `String` | Stroke color surrounding legend section | ❌  |   `none` |  If `String`, valid HEX/RGBA col   |
-| strokeWidth   | `Number`  |  Stroke width of rectangle surrounding legend section |  ❌ | `2` |  Pixels   | 
+| stroke   | `String` | Applies to discrete legend only -- stroke color surrounding individual color boxes | ❌  |   `none` |  If `String`, valid HEX/RGBA col   |
+| strokeWidth   | `Number`  |  Applies to discrete legend only -- stroke width surrounding individual color boxes |  ❌ | `2` |  Pixels   | 
 | flip   | Boolean |  Flips direction of labels and aesthetics (horizontal: right to left; vertical: bottom to top) | ❌ | `false` | 
 
 ### Title
@@ -84,23 +84,23 @@ Legends may be positioned and their sizes set using the following combinations:
 | titleFontSize   | `Number`  | Font size of legend text  | ❌ | `12` |  Pixel values   |
 | titleFontWeight   | `String`, `Number`  | Font weight of legend text  | ❌ | `bold` |    |
 | titleOpacity   | `Number`  | Opacity of legend text   | ❌ | `1` |  0 to 1   |
-| titleColor   | `String`  |   | ❌ | `black` |  Valid HEX/RGBA color   |
+| titleColor   | `String`  | Color of title text letters  | ❌ | `black` |  Valid HEX/RGBA color   |
 | titleRotation   | `Number`  |  Rotation angle of legend text | ❌ | `0` |  Degrees  |
 | titleAnchorPoint   | `String` | Anchor point of legend text  | ❌ | `t` |  'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc'   |
-| titlePaddingX   | `Number`  |   | ❌ | `0` |  Pixel values  |
-| titlePaddingY   | `Number`  |   | ❌ | `-3` | Pixel values   |
+| titlePaddingX   | `Number`  |  Horizontal space between title and legend -- the origin point is the center of the legend | ❌ | `0` |  Pixel values   |
+| titlePaddingY   | `Number`  |  Vertical space between title and legend -- the origin point is the topmost part of the legend  | ❌ | `-3` |  Pixel values   |
 
 ### Labels
 
 | Prop |     Type(s)     | Description |   Required     |   Default   |       Units       |
 | ---- | --------------- | --------------- | ----------- | ----------------- | --------------- |
-| labels   | `Array`, `Function`  |   | ❌  |  `undefined` |     |
+| labels   | `Array`, `Function`  | Label values to render, if you want to manually control what gets shown in the legend  | ❌  |  `undefined` |     |
 | labelFormat   | `Function`  |  formatting of legend labels, i.e. rounding off/down | ❌ |   `undefined` |     |
-| labelX   | `Number`  |   | ❌ |   `undefined` |  Pixel values   |
-| labelY   | `Number`  |   | ❌  |   `undefined` | Pixel values  |
-| labelPaddingX   | `Number`  |   | ❌ | `0` |  Pixel values   |
-| labelPaddingY   | `Number`  |    | ❌ | `0` |  Pixel values   |
-| labelRotate   | `Number` |   | ❌ | `0` |  Degrees   |
+| labelX   | `Number`  | Horizontal positioning of labels  | ❌ |   `undefined` |  Pixel values   |
+| labelY   | `Number`  | Vertical positioning of labels  | ❌  |   `undefined` | Pixel values  |
+| labelPaddingX   | `Number`  |  Horizontal space between labels and legend | ❌ | `0` |  Pixel values   |
+| labelPaddingY   | `Number`  |  Vertical space between labels and legend  | ❌ | `0` |  Pixel values   |
+| labelRotate   | `Number` | Rotation angle of all legend tick labels  | ❌ | `0` |  Degrees   |
 | labelFont   | `String`  |  Font family of labels |  ❌ |   `Helvetica` |     |
 | labelFontSize   | `Number`  |  Font size of labels | ❌ |   `10` |  Pixel values   |
 | labelFontWeight   | `Number`, `String`  |  Font weight of labels | ❌  |   `normal` |    |
@@ -109,12 +109,12 @@ Legends may be positioned and their sizes set using the following combinations:
 | labelAnchorPoint   | `String`  |  Anchor point of label points | ❌ |   `center` | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc'   |
 | labelCount   | `Number`  |  Number of ticks/labels to render  | ❌ |   `10` |  Integers   |
 | labelExtra   | `Boolean`  |  If set to `true`, then renders an extra label based on `labelCount` value | ❌ |   `false` |     |
-| firstLabel   | `String`, `Number`  |   | ❌ |   `undefined` |  Sets first label of legend manually   |
+| firstLabel   | `String`, `Number`  | Sets first label of legend manually  | ❌ |   `undefined` |     |
 | flipLabels   | `Boolean`  | Flips placement of labels  | ❌ |   `false` |     |
 
 ## Examples
 
-### Simple discrete and gradient legends with continuous scales for `fill`
+### Simple discrete and gradient legends with continuous linear scales for `fill`
 
 Changing from a discrete to a gradient legend is as simple as changing the component name. The positioning and aesthetic
 property names for both are the same.
@@ -125,22 +125,7 @@ import SimpleLegends from './utils/_SimpleLegends.svelte'
 
 <SimpleLegends/>
 
-
-### Positioning 
-
-Note the use of different systems for positioning the legends. The discrete legend is automatically positioned to `vjust=center`, `hjust=left` using smart defaults (based on the dimensions of the container component it is in), while the gradient legend is positioned manually using pixel values (indicated by the fat arrow functions `() => <pixelvalues>`). 
-
-When using a positioning system, make sure to follow only one per legend component in order to avoid confusion.
-
-```js exec
-import UsePadding from './utils/_UsePadding.svelte'
-```
-
-<UsePadding/>
-
-Setting `usePadding` to `true` allows the legend components to include either the `Section` or `Graphic` padding as part of its canvas for positioning according to preset smart defaults. In this example, `GradientLegend` is positioned inside the parent `Section` while `DiscreteLegend` is positioned in the padding.
-
-### Using `fillOpacity` and setting legends to bin values
+### Using `fillOpacity`
 
 To use `fillOpacity`, set the d3 scale input to a range of `[0,1]`. The color can be customised by inputting it to `fill`.
 
@@ -148,9 +133,41 @@ To use `fillOpacity`, set the d3 scale input to a range of `[0,1]`. The color ca
 import FillOpacity from './utils/_FillOpacity.svelte'
 ```
 
-Legend components can also accommodate bin values and their corresponding positioning. 
-
 <FillOpacity/>
+
+### Setting legends to bin values
+
+Legend components can also accommodate binned values (as an `Array` or `Function`) and their corresponding positioning. 
+
+```js exec
+import Bins from './utils/_Bins.svelte'
+```
+
+<Bins/>
+
+
+### Positioning 
+
+In this example, note the use of different systems for positioning the legends. The discrete legend is automatically positioned to `vjust=center`, `hjust=left` using smart defaults (based on the dimensions of the container component it is in), while the gradient legend is positioned manually using pixel values (indicated by the fat arrow functions `() => <pixelvalues>`). 
+
+When using a positioning system, make sure to follow only one per legend component in order to avoid confusion.
+
+```js exec
+import Positioning from './utils/_Positioning.svelte'
+```
+
+<Positioning/>
+
+
+### Using `Section`/`Graphic` padding as part of the positioning canvas
+
+Setting `usePadding` to `true` allows the legend components to include either the `Section` or `Graphic` padding as part of its canvas for positioning according to preset smart defaults. In this example, `GradientLegend` is positioned inside the parent `Section` while `DiscreteLegend` is positioned in the padding.
+
+```js exec
+import UsePadding from './utils/_UsePadding.svelte'
+```
+
+<UsePadding/>
 
 ### Categorical scales
 

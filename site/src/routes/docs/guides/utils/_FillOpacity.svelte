@@ -3,7 +3,7 @@
   import { scaleLinear } from 'd3-scale'
   
   // florence
-  import { Graphic, Section, PointLayer, DiscreteLegend, GradientLegend } from '@snlab/florence'
+  import { Graphic, Section, PointLayer, DiscreteLegend, GradientLegend, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
   export let N = 100
@@ -26,51 +26,51 @@
     filteredData = data
       .filter(row => row.a > threshold)
   }
-
-  // fill scales
-  const bins = [0, 15, 50, 90, 120]
 </script>
 
-<div>
-	<Graphic 
-    height={400} width={400}
-  >         
-    <Section 
-      padding={30}
-      scaleX={scaleLinear().domain(data.domain('a'))}
-      scaleY={scaleLinear().domain(data.domain('b'))}
-    > 
-      <GradientLegend
-        labels={bins}
-        fillOpacity= {scaleLinear().domain([0, 120]).range([0, 1])}
-        fill={'firebrick'}
-        title={'Bins'}
-        usePadding={true}
-        flip
-      />
+<Graphic width={500} height={500}
+>     
+  <!-- Vjust -->
+  <GradientLegend
+    title={'Gradient'}
+    fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+    fill={'goldenrod'}
+    labelCount={5}
+    vjust={'top'}
+    hjust={'right'}
+    flip
+  />
 
-      <!-- Fill opacity + Bins -->
-      <DiscreteLegend
-        labels={bins}
-        fillOpacity= {scaleLinear().domain([0, 120]).range([0, 1])}
-        fill={'firebrick'}
-        orient={'horizontal'}
-        width={100}
-        vjust={'top'}
-        hjust={'center'}
-        title={'Bins'}
-        usePadding={true}
-      />
+  <!-- Pixels -->
+  <DiscreteLegend
+    title={'Discrete'}
+    fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+    fill={'goldenrod'}
+    orient={'horizontal'}
+    labelCount={5}
+    vjust={'top'}
+    hjust={'center'}
+  /> 
 
-      <PointLayer
-        x={filteredData.column('a')}
-        y={filteredData.column('b')}
-        key={filteredData.column('$key')}
-        fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
-        fill={'firebrick'}
-      />
-    </Section>
+  <!-- Basic example + continuous scales -->
+  <Section 
+    x1={0} x2={500}
+    y1={0} y2={500}
+    padding={80}
+    scaleX={scaleLinear().domain(data.domain('a'))}
+    scaleY={scaleLinear().domain(data.domain('b'))}
+  >
 
-	</Graphic>
+    <PointLayer
+      x={filteredData.column('a')}
+      y={filteredData.column('b')}
+      key={filteredData.column('$key')}
+      fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+      fill={'goldenrod'}
+    />
+    <XAxis />
+    <YAxis />
+  
+  </Section>
 
-</div>
+</Graphic>
