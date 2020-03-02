@@ -1,0 +1,64 @@
+# Point
+
+## Description
+
+```svelte
+<!--
+This is a sample specification intended to show data structure.
+For a list of required props and permitted combinations,
+see allowed prop combinations below.
+-->
+
+<Graphic ...>
+  <Point
+    x={x}
+    y={y}
+  />
+<Graphic>
+
+<Graphic ...>
+  <PointLayer
+    x={x}
+    y={y}
+  />
+<Graphic>
+```
+
+
+The `Point` mark draws a circular dot on screen with position defined by `x` and `y` props respectively.
+
+All SVG attributes on a 'circle' are supported in `Point` in the form of props.
+
+To create scatter plots, either loop over the dataset to generate one `Point` per iteration or use the `PointLayer`. The `PointLayer` shares all of the `Area`'s props, but takes an array of arrays per prop instead of an array.
+
+## Props
+
+Positioning
+
+| Property | Type(s) | Description               | Representation |
+| -------- | ------- | ------------------------- | -------------- |
+| x1        | Number  | X1 coordinate of the bar |                |
+| y1        | Number  | Y1 coordinate of the bar |                |
+| x2        | Number  | X2 coordinate of the bar |                |
+| y2        | Number  | Y2 coordinate of the bar |                |
+
+
+| Property      | Type(s) | Description                                                               | Representation             |
+| ------------- | ------- | ------------------------------------------------------------------------- | -------------------------- |
+| fill          | String  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill           |                            |
+| stroke        | String  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke         |                            |
+| strokeWidth   | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width   |                            |
+| strokeOpacity | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity |                            |
+| fillOpacity   | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity   |                            |
+| opacity       | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity        |                            |
+
+
+## Examples
+
+```js exec
+import StackedBar from "./examples/_StackedBar.svelte";
+```
+
+### Scatter plot Chart
+
+<StackedBar/>

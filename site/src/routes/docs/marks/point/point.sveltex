@@ -1,0 +1,75 @@
+# Point
+
+## Description
+
+```svelte
+<!--
+This is a sample specification intended to show data structure.
+For a list of required props and permitted combinations,
+see allowed prop combinations below.
+-->
+
+<Graphic ...>
+  <Point
+    x={x}
+    y={y}
+  />
+<Graphic>
+
+<Graphic ...>
+  <PointLayer
+    x={x}
+    y={y}
+  />
+<Graphic>
+```
+
+```js exec
+import { Graphic, Point } from '@snlab/florence'
+```
+
+The `Point` mark draws a circular dot on screen with position defined by `x` and `y` props respectively.
+
+All SVG attributes on a 'circle' are supported in `Point` in the form of props.
+
+To create scatter plots, either loop over the dataset to generate one `Point` per iteration or use the `PointLayer`. The `PointLayer` shares all of the `Point`'s props, but takes an array of arrays per prop instead of an array.
+
+## Props
+
+Positioning
+
+| Property | Type(s) | Description               | Representation |
+| -------- | ------- | ------------------------- | -------------- |
+| x        | Number  | X coordinate of the point | <Graphic width={50} height={50}><Point x={25} y={25}  /></Graphic>  |
+| y        | Number  | Y coordinate of the point | <Graphic width={50} height={50}><Point x={25} y={30}  /></Graphic>               |
+| geometry | Object  | Type of geometry          |                |
+
+### Allowed prop combinations
+
+| x  | y | geometry  | valid? | comments                                                 |
+|----|---| -- |--------|----------------------------------------------------------|
+| ✓  |✓  |    | ✅      | x,y pair                         |
+|    | ✓ | ✓  | ❌      |                          |
+| ✓  |   | ✓  | ❌      |                          |
+
+
+| Property      | Type(s) | Description                                                               | Representation             |
+| ------------- | ------- | ------------------------------------------------------------------------- | -------------------------- |
+| radius        | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/radius         | <Graphic width={50} height={50}><Point x={20} y={25} radius={7} /> <Point x={45} y={25} radius={5}  /></Graphic>  |
+| fill          | String  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill           | <Graphic width={50} height={50}><Point x={20} y={25} radius={5}/> <Point x={40} y={25} radius={5} fill={'red'}  /></Graphic> |
+| stroke        | String  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke         |                            |
+| strokeWidth   | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width   |                            |
+| strokeOpacity | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity |                            |
+| fillOpacity   | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity   |                            |
+| opacity       | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity        |                            |
+
+
+## Examples
+
+```js exec
+import ScatterPlot from "./examples/_ScatterPlot.svelte";
+```
+
+### Scatter plot Chart
+
+<ScatterPlot/>
