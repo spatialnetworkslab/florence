@@ -82,8 +82,8 @@
   export let titlePaddingY = -3
 
   // transition
-  export let transition
-  export let zoomIdentity
+  export let transition = undefined
+  export let zoomIdentity = undefined
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
