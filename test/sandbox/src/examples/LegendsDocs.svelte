@@ -46,15 +46,16 @@
     flipX
   >
 
-    <!-- Vjust -->
+    <!-- usePadding = false -->
     <GradientLegend
       title={'Gradient'}
       fill={linearColorScale}
       labelCount={5}
-      vjust={'top'}
+      hjust={'right'}
+      flip
     />
 
-    <!-- usePadding -->
+    <!-- usePadding = true -->
     <DiscreteLegend
       title={'Discrete'}
       vjust={'top'}
