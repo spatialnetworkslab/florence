@@ -16,7 +16,6 @@
     padding={sectionPadding}
     backgroundColor={background}
     paddingColor={padding} 
-    flipY
   > 
     <Title 
       title={'Title is inside of the padding of the section'} 
@@ -30,6 +29,7 @@
       title={'Title is outside of the padding of the section'} 
       subtitle={'Its parent is the Section'}
       subtitleFill={'coral'}
+      vjust={'bottom'}
       titleFontFamily={'Baskerville'}
       usePadding={false}
       />

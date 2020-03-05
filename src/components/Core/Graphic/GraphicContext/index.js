@@ -2,7 +2,11 @@ import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
 
 class GraphicContext {
-  constructor ({ renderer }) {
+  constructor ({ renderer, flipY, flipX, padding }) {
+    this.flipY = flipY
+    this.flipX = flipX
+    this.padding = padding
+    
     if (!renderer) {
       this._rendererOptions = { output: 'svg' }
     }
