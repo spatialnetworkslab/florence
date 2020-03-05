@@ -32,6 +32,7 @@
 
 <Graphic width={500} height={500}
   padding={graphicPadding}
+  flipY
 >     
 
   <!-- Basic example + continuous scales -->
@@ -43,7 +44,6 @@
     scaleY={scaleLinear().domain(data.domain('b'))}
     backgroundColor={background}
     paddingColor={padding}
-    flipX
   >
 
     <!-- usePadding = false -->
