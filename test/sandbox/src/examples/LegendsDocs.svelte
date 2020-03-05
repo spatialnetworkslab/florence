@@ -58,10 +58,10 @@
     <!-- usePadding = true -->
     <DiscreteLegend
       title={'Discrete'}
-      vjust={'top'}
+      vjust={'bottom'}
       hjust={'center'}
-      fill={linearColorScale}
       orient={'horizontal'}
+      fill={linearColorScale}
       labelCount={5}
       usePadding={true}
     />
