@@ -88,9 +88,6 @@
     }
   }
 
-  // so long as we know if one is flipped, the correct math activates
-  // key is to save flipX/flipY info for graphic
-  console.log($graphicContext, _flipY, _flipX)
   $: {
     // Removal of padding from pixel value range, if necessary
     if (usePadding === true) {
@@ -100,7 +97,6 @@
       }
       xRange = removePadding(xRange, _padding.left, _padding.right)
       yRange = removePadding(yRange, _padding.top, _padding.bottom)
-      console.log(xRange, yRange)
     }
 
     // Title text positioning wrt section/graphic context
