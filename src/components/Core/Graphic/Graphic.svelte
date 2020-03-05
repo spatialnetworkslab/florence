@@ -13,8 +13,8 @@
 
   import { parsePadding, applyPadding } from '../utils/padding.js'
 
-  export let width
-  export let height
+  export let width = undefined
+  export let height = undefined
   export let padding = 0
   export let scaleX = undefined
   export let scaleY = undefined
@@ -31,7 +31,7 @@
   ZoomContext.init()
 
   $: {
-    GraphicContext.update(graphicContext, { renderer })
+    GraphicContext.update(graphicContext, { renderer, flipY, flipX, padding })
   }
 
   let rootNode
