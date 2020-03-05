@@ -5,6 +5,7 @@
 
   // Contexts
   import * as SectionContext from '../../Core/Section/SectionContext'
+  import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   
   // Permanent
   import { getTickPositions, getFormat, getTicks, getColorGeoms, isValid } from './utils.js'
@@ -77,6 +78,7 @@
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
+  const graphicContext = GraphicContext.subscribe()
 
   // Permanent
 

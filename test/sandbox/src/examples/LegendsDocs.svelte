@@ -32,7 +32,7 @@
 
 <Graphic width={500} height={500}
   padding={graphicPadding}
-  flipY
+  flipX
 >     
 
   <!-- Basic example + continuous scales -->
@@ -47,7 +47,7 @@
   >
 
     <!-- usePadding = false -->
-    <GradientLegend
+    <DiscreteLegend
       title={'Gradient'}
       fill={linearColorScale}
       labelCount={5}
