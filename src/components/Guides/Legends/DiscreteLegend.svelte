@@ -111,20 +111,40 @@
   let xCoords
   let yCoords
   let addTitleSize
-
-  let _flipX = $sectionContext.flipX
-  let _flipY = $sectionContext.flipY
+  let _flipX
+  let _flipY
   
   $: {
-    if (usePadding) {
-      _padding = $sectionContext.padding
-      xRange = removePadding(xRange, _padding.left, _padding.right)
-      yRange = removePadding(yRange, _padding.top, _padding.bottom)
+    if ($sectionContext.flipY) {
+      _flipY = true
+    }
+
+    if ($graphicContext.flipY) {
+      _flipY = true
+    }
+  }
+
+  $: {
+    if ($sectionContext.flipX) {
+      _flipX = true
+    }
+
+    if ($graphicContext.flipX) {
+      _flipX = true
     }
   }
   
-  // Section positioning wrt section/graphic context
   $: {
+    if (usePadding === true) {
+      _padding = $sectionContext.padding
+      if (_padding === undefined) {
+        _padding = $graphicContext.padding
+      }
+      xRange = removePadding(xRange, _padding.left, _padding.right)
+      yRange = removePadding(yRange, _padding.top, _padding.bottom)
+    }
+
+    // Section positioning wrt section/graphic context
     if (!['horizontal', 'vertical'].includes(orient)) {
       throw Error('Invalid input for `orient` property. Please provide either `horizontal` or `vertical` as inputs.')
     }

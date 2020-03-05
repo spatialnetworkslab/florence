@@ -141,9 +141,6 @@
     }
   }
   
-  // so long as we know if one is flipped, the correct math activates
-  // key is to save flipX/flipY info for graphic
-
   $: {
     if (usePadding === true) {
       _padding = $sectionContext.padding

@@ -32,7 +32,6 @@
 
 <Graphic width={500} height={500}
   padding={graphicPadding}
-  flipX
 >     
 
   <!-- Basic example + continuous scales -->
@@ -47,7 +46,7 @@
   >
 
     <!-- usePadding = false -->
-    <DiscreteLegend
+    <GradientLegend
       title={'Gradient'}
       fill={linearColorScale}
       labelCount={5}
@@ -58,7 +57,7 @@
     <!-- usePadding = true -->
     <DiscreteLegend
       title={'Discrete'}
-      vjust={'bottom'}
+      vjust={'top'}
       hjust={'center'}
       orient={'horizontal'}
       fill={linearColorScale}
