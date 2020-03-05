@@ -1,240 +1,73 @@
 <script>
   // d3
-  import { scaleBand, scaleThreshold, scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
-  import * as d3 from 'd3-scale-chromatic'
-  import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
-
+  import { scaleLinear } from 'd3-scale'
   // florence
-	import { Rectangle, Graphic, Grid, Section, PointLayer, Point, Label, LabelLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
+  import { Graphic, Section, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
-
-	export let N = 100
-	const data = new DataContainer(generateData(N, 0.25))
-	function generateData (N, error) {
-		const getError = () => -error + (Math.random() * (2 * error)) * N
-		let data = { a: [], b: [] }
-		for (let i = 0; i < N; i++) {
-			data.a.push(i + getError())
-			data.b.push(i + getError())
-		}
-		return data
-  }
+  export let N = 100
   
-  let threshold = 0
-  let filteredData
-
+  function generateData (N, error) {
+    const getError = () => -error + (Math.random() * (2 * error)) * N
+    let data = { a: [], b: [] }
+    for (let i = 0; i < N; i++) {
+      data.a.push(i + getError())
+      data.b.push(i + getError())
+    }
+    return data
+  }
+  const data = new DataContainer(generateData(N, 0.25))
+  const threshold = 0
+  let filteredData = undefined
   $: {
     filteredData = data
-    .filter(row => row.a > threshold)
+      .filter(row => row.a > threshold)
   }
-
-	const scaleA = scaleLinear().domain(data.domain('a'))
-  const scaleB = scaleLinear().domain(data.domain('b'))
-  
-  let height = 800
-  let transformation = 'identity'
-  let duration = 2000
-
-  const log = console.log
-
-  let x = 0
-  let y = 0
-  let k = 1
-  let zoomIdentity = { x, y, kx: k, ky: k }
-
-  // scatterplot scale
-  const radiusScale = scaleLinear().domain(data.domain('b')).range([10, 0])
-
-  // scalar data
-  const bins = [[0, 30], [30, 70], [70, 100], [100, 155], [55, 300]]
-  const bins2 = [0, 10, 20, 40, 90, 120]
-  const fruits = ['apple', 'banana', 'orange', 'pomelo']
-
   // fill scales
-  const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
-  const linearColorScaleBin = scaleLinear().domain(bins).range(["red", "blue"])
-  const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateSinebow)
-  const linearColorScale2 =  scaleSequential().domain([0, 120]).interpolator(d3.interpolateViridis)
-  const fruitScale = scaleOrdinal().domain(fruits).range(schemeDark2)
-  const binScale = scaleLinear().domain([0, 4]).range(['red', 'blue'])
-
-  // fill opacity scales
-  const alphaScale = scaleLinear().domain(data.domain('a')).range([0, 1])
-  const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
-  const binAlpha = scaleLinear().domain([0, 120]).range([0, 1])
-
- // categorical data
-   let catData = new DataContainer({
-    fruit: ['apple', 'banana', 'apple', 'banana', 'apple', 'banana'],
-    nutrient: ['carbs', 'carbs', 'fibre', 'fibre', 'protein', 'protein'],
-    value: [3, 5, 1, 3, 4, 2]
-  })
-
-  const fruitDomain = catData.domain('fruit')
-  const nutrientDomain = catData.domain('nutrient')
-
-  catData = catData
-    .groupBy('fruit')
-    .mutarise({ totalValuePerFruit: { value: 'sum' } })
-    .mutate({ valueFraction: row => row.value / row.totalValuePerFruit })
-    .select(['fruit', 'nutrient', 'valueFraction'])
-    .groupBy('fruit')
-
-
-  const containerPerFruit = catData.column('$grouped').map(container => {
-    return container.cumsum({ cumsum_value: 'valueFraction' })
-  })
-
-  const nutrientColorScale = scaleOrdinal()
-    .domain(nutrientDomain)
-    .range(schemeAccent)
-
+  const linearColorScale = scaleLinear().domain(data.domain('a')).range(['red', 'blue'])
+  const sectionPadding = 75
+  const graphicPadding = 50
+  const background = '#a8a8a8'
+  const padding = '#E8E8E8'
 </script>
 
-<div>
-	<Graphic 
-    width={700} {height}
-    scaleX={scaleLinear().domain([0, 600])}
-    scaleY={scaleLinear().domain([0, 1000])}
-  >         
+<Graphic width={500} height={500}
+  padding={graphicPadding}
+>     
 
-    <!-- Basic example + continuous scales -->
-    <Section 
-      x1={50} x2={300}
-      y1={50} y2={500}
-      padding={30}
-      scaleX={scaleLinear().domain(data.domain('a'))}
-      scaleY={scaleLinear().domain(data.domain('b'))}
-      {zoomIdentity}
-    >
-      <!-- NOTE: usePadding won't work on the first two legend examples here
-      because they are being given specific values -->
+  <!-- Basic example + continuous scales -->
+  <Section 
+    x1={0} x2={500}
+    y1={0} y2={500}
+    padding={sectionPadding}
+    scaleX={scaleLinear().domain(data.domain('a'))}
+    scaleY={scaleLinear().domain(data.domain('b'))}
+    backgroundColor={background}
+    paddingColor={padding}
+    flipX
+  >
 
-      <!-- Vjust -->
-      <GradientLegend
-        fill={linearColorScale}
-        labelCount={5}
-        usePadding={true}
-        flip
-      />
+    <!-- Vjust -->
+    <GradientLegend
+      title={'Gradient'}
+      fill={linearColorScale}
+      labelCount={5}
+      vjust={'top'}
+    />
 
-      <!-- Pixels -->
-      <GradientLegend
-        x1={() => {return 200}} x2={() => {return 300}}
-        y1={() => {return 60}} y2={() => {return 100}}
-        fill={linearColorScale}
-        orient={'horizontal'}
-        labelCount={8}
-        titleX={() => {return 170}}
-        titleY={() => {return 70}}
-      />
-      <PointLayer
-          x={filteredData.column('a')}
-          y={filteredData.column('b')}
-          key={filteredData.column('$key')}
-          fill={linearColorScale}
-        />
+    <!-- usePadding -->
+    <DiscreteLegend
+      title={'Discrete'}
+      vjust={'top'}
+      hjust={'center'}
+      fill={linearColorScale}
+      orient={'horizontal'}
+      labelCount={5}
+      usePadding={true}
+    />
     
-    </Section>
+    <XAxis />
+    <YAxis />
+  
+  </Section>
 
-    <Section 
-      x1={350} x2={600}
-      y1={50} y2={500}
-      padding={40}
-      scaleX={scaleLinear().domain(data.domain('a'))}
-      scaleY={scaleLinear().domain(data.domain('b'))}
-      {zoomIdentity}
-    >
-      <!-- Fill opacity + Bins -->
-      <DiscreteLegend
-        labels={[0, 15, 50, 90, 120]}
-        fillOpacity= {scaleLinear().domain([0, 120]).range([0, 1])}
-        fill={'green'}
-        orient={'horizontal'}
-        width={100}
-        vjust={'top'}
-        hjust={'center'}
-        title={'Test title 12345'}
-        usePadding={true}
-      />
-
-      <!-- Other scales: sequential + use padding-->
-      <DiscreteLegend
-        fill={seqScale}
-        strokeWidth={2}
-        labelCount={5}
-        stroke={'white'}
-        orient={'vertical'}
-        labelExtra
-        titleVjust={'top'}
-        titleHjust={'right'}
-        vjust={'top'}
-        hjust={'right'}
-        usePadding={true}
-      />
-
-      <!-- categorical -->
-      <DiscreteLegend
-        fill={fruitScale}
-        strokeWidth={2}
-        stroke={'white'}
-        orient={'vertical'}
-        labelAnchorPoint={'r'}
-        labelExtra
-        vjust={'centre'}
-        hjust={'right'}
-        usePadding={false}
-      />
-
-      <PointLayer
-          x={filteredData.column('a')}
-          y={filteredData.column('b')}
-          key={filteredData.column('$key')}
-          fill={seqScale}
-        />
-    
-    </Section>
-
-    <!-- Categorical -->
-    <Section 
-      x1={200} x2={500}
-      y1={550} y2={950}
-      padding={40}
-      scaleX={scaleBand().domain(fruitDomain).padding(0.3)}
-      scaleY={scaleLinear().domain([0, 1])}
-    > 
-      <DiscreteLegend
-        fill={nutrientColorScale}
-        strokeWidth={2}
-        stroke={'white'}
-        orient={'vertical'}
-        vjust={'centre'}
-        hjust={'left'}
-        flipLabels
-        labelPaddingX={10}
-        usePadding={true}
-      />
-
-      {#each containerPerFruit as container}
-
-      {#each container.rows() as row, i}
-
-        <Rectangle 
-          x1={row.fruit}
-          x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
-          y1={i === 0 ? 0 : container.prevRow(row.$key).cumsum_value}
-          y2={row.cumsum_value}
-          fill={nutrientColorScale(row.nutrient)}
-        />
-
-      {/each}
-
-    {/each}
-
-    <XAxis labelFontSize={13} />
-    
-    </Section>
-
-	</Graphic>
-
-</div>
+</Graphic>
