@@ -43,7 +43,6 @@
     scaleY={scaleLinear().domain(data.domain('b'))}
     backgroundColor={background}
     paddingColor={padding}
-    flipX
   >
 
     <!-- usePadding = false -->
@@ -60,6 +59,7 @@
       title={'Discrete'}
       vjust={'bottom'}
       hjust={'center'}
+      orient={'horizontal'}
       fill={linearColorScale}
       labelCount={5}
       usePadding={true}

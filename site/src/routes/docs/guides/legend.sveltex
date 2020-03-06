@@ -150,7 +150,7 @@ import Bins from './utils/_Bins.svelte'
 
 In this example, note the use of different systems for positioning the legends. The discrete legend is automatically positioned to `vjust=center`, `hjust=left` using smart defaults (based on the dimensions of the container component it is in), while the gradient legend is positioned manually using pixel values (indicated by the fat arrow functions `() => <pixelvalues>`). 
 
-When using a positioning system, make sure to follow only one per legend component in order to avoid confusion.
+The positioning according to `vjust`, `hjust` persists even when Section/Graphic is set to `flipX = true` and/or `flipY = true`. When using a positioning system, make sure to follow only one per legend component in order to avoid confusion.
 
 ```js exec
 import Positioning from './utils/_Positioning.svelte'
@@ -166,6 +166,8 @@ Setting `usePadding` to `true` allows the legend components to include either th
 ```js exec
 import UsePadding from './utils/_UsePadding.svelte'
 ```
+
+As above, the positioning according to `vjust`, `hjust` persists (even when `usePadding = true`) when Section/Graphic is set to `flipX = true` and/or `flipY = true`.
 
 <UsePadding/>
 

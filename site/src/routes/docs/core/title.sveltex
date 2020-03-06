@@ -80,3 +80,6 @@ import Title from './utils/_Title.svelte'
 
 The property `usePadding` can be switched to `true` (its default setting is `false`) to make use of the space set for 
 padding for both `Section` and `Graphic`.
+
+The positioning according to `vjust`, `hjust` persists (even when `usePadding = true`) when Section/Graphic is set to `flipX = true` and/or `flipY = true`.
+
