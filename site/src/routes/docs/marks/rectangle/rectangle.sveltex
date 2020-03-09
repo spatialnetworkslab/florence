@@ -1,4 +1,4 @@
-# Point
+# Rectangle
 
 ## Description
 
@@ -10,26 +10,30 @@ see allowed prop combinations below.
 -->
 
 <Graphic ...>
-  <Point
-    x={x}
-    y={y}
+  <Rectangle
+    x1={x1}
+    y1={y1}
+    x2={x2}
+    y2={y2}
   />
 <Graphic>
 
 <Graphic ...>
-  <PointLayer
-    x={x}
-    y={y}
+  <RectangleLayer
+    x1={()=>(// )}
+    y1={()=>(// )}
+    x2={()=>(// )}
+    y2={()=>(// )}
   />
 <Graphic>
 ```
 
 
-The `Point` mark draws a circular dot on screen with position defined by `x` and `y` props respectively.
+The `Rectangle` mark draws a rectangle shape on screen with four corner defined by `x1`,`x2`, `y1` and `y2` props respectively.
 
-All SVG attributes on a 'circle' are supported in `Point` in the form of props.
+All SVG attributes on a 'rectangle' are supported in `Rectangle` in the form of props.
 
-To create scatter plots, either loop over the dataset to generate one `Point` per iteration or use the `PointLayer`. The `PointLayer` shares all of the `Area`'s props, but takes an array of arrays per prop instead of an array.
+To create rectangle plots, either loop over the dataset to generate one `Point` per iteration or use the `PointLayer`. The `RectangleLayer` shares all of the `Rectangle`'s props, but takes an array of arrays per positional prop instead of an array.
 
 ## Props
 
@@ -37,10 +41,10 @@ Positioning
 
 | Property | Type(s) | Description               | Representation |
 | -------- | ------- | ------------------------- | -------------- |
-| x1        | Number  | X1 coordinate of the bar |                |
-| y1        | Number  | Y1 coordinate of the bar |                |
-| x2        | Number  | X2 coordinate of the bar |                |
-| y2        | Number  | Y2 coordinate of the bar |                |
+| x1        | Number  | X1 coordinate of the rectangle |                |
+| y1        | Number  | Y1 coordinate of the rectangle |                |
+| x2        | Number  | X2 coordinate of the rectangle |                |
+| y2        | Number  | Y2 coordinate of the rectangle |                |
 
 
 | Property      | Type(s) | Description                                                               | Representation             |

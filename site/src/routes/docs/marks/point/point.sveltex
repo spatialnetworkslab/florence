@@ -18,8 +18,8 @@ see allowed prop combinations below.
 
 <Graphic ...>
   <PointLayer
-    x={x}
-    y={y}
+    x={()=>// array of x}
+    y={()=>// array of y}
   />
 <Graphic>
 ```
@@ -55,13 +55,13 @@ Positioning
 
 | Property      | Type(s) | Description                                                               | Representation             |
 | ------------- | ------- | ------------------------------------------------------------------------- | -------------------------- |
-| radius        | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/radius         | <Graphic width={50} height={50}><Point x={20} y={25} radius={7} /> <Point x={45} y={25} radius={5}  /></Graphic>  |
-| fill          | String  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill           | <Graphic width={50} height={50}><Point x={20} y={25} radius={5}/> <Point x={40} y={25} radius={5} fill={'red'}  /></Graphic> |
-| stroke        | String  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke         |                            |
-| strokeWidth   | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width   |                            |
-| strokeOpacity | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity |                            |
-| fillOpacity   | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity   |                            |
-| opacity       | Number  | https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity        |                            |
+| radius        | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/r)              | <Graphic width={50} height={50}><Point x={20} y={25} radius={7} /> <Point x={45} y={25} radius={5}  /></Graphic>  |
+| fill          | String  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)           | <Graphic width={50} height={50}><Point x={20} y={25} radius={5}/> <Point x={40} y={25} radius={5} fill={'red'}  /></Graphic> |
+| stroke        | String  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)         |                            |
+| strokeWidth   | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)   |                            |
+| strokeOpacity | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) |                            |
+| fillOpacity   | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)   |                            |
+| opacity       | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)        |                            |
 
 
 ## Examples
