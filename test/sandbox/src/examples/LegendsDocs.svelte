@@ -1,11 +1,9 @@
 <script>
   // d3
   import { scaleLinear } from 'd3-scale'
-
   // florence
   import { Graphic, Section, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
-
   export let N = 100
   
   function generateData (N, error) {
@@ -17,16 +15,13 @@
     }
     return data
   }
-
   const data = new DataContainer(generateData(N, 0.25))
   const threshold = 0
   let filteredData = undefined
-
   $: {
     filteredData = data
       .filter(row => row.a > threshold)
   }
-
   // fill scales
   const linearColorScale = scaleLinear().domain(data.domain('a')).range(['red', 'blue'])
   const sectionPadding = 75
@@ -47,25 +42,27 @@
     scaleX={scaleLinear().domain(data.domain('a'))}
     scaleY={scaleLinear().domain(data.domain('b'))}
     backgroundColor={background}
-    paddingColor={padding} 
+    paddingColor={padding}
   >
 
-    <!-- Vjust -->
+    <!-- usePadding = false -->
     <GradientLegend
       title={'Gradient'}
       fill={linearColorScale}
       labelCount={5}
+      hjust={'right'}
       flip
     />
 
-    <!-- Pixels -->
+    <!-- usePadding = true -->
     <DiscreteLegend
       title={'Discrete'}
       vjust={'top'}
       hjust={'center'}
-      fill={linearColorScale}
       orient={'horizontal'}
+      fill={linearColorScale}
       labelCount={5}
+      usePadding={true}
     />
     
     <XAxis />

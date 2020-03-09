@@ -85,11 +85,6 @@
       url: 'funclines',
       component: FuncLines
     },
-    // {
-    //   name: 'Legends',
-    //   url: '/legends',
-    //   component: Legends
-    // },
     {
       name: 'DragCategorical',
       url: 'dragcategorical',

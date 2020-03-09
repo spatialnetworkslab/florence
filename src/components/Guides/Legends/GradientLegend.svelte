@@ -12,6 +12,7 @@
 
   // Contexts
   import * as SectionContext from '../../Core/Section/SectionContext'
+  import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   
   // Permanent
   import { getTickPositions, getFormat, getTicks, getGradientGeoms, isValid } from './utils.js'
@@ -87,6 +88,7 @@
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
+  const graphicContext = GraphicContext.subscribe()
 
   // Private variables
   let scale
@@ -116,17 +118,40 @@
   let xCoords
   let yCoords
   let addTitleSize
+  let _flipX
+  let _flipY
+  
+  $: {
+    if ($sectionContext.flipY) {
+      _flipY = true
+    }
+
+    if ($graphicContext.flipY) {
+      _flipY = true
+    }
+  }
+
+  $: {
+    if ($sectionContext.flipX) {
+      _flipX = true
+    }
+
+    if ($graphicContext.flipX) {
+      _flipX = true
+    }
+  }
   
   $: {
     if (usePadding === true) {
       _padding = $sectionContext.padding
+      if (_padding === undefined) {
+        _padding = $graphicContext.padding
+      }
       xRange = removePadding(xRange, _padding.left, _padding.right)
       yRange = removePadding(yRange, _padding.top, _padding.bottom)
     }
-  }
-  
-  // Section positioning wrt section/graphic context
-  $: {
+
+    // Section positioning wrt section/graphic context
     if (!['horizontal', 'vertical'].includes(orient)) {
       throw Error('Invalid input for `orient` property. Please provide either `horizontal` or `vertical` as inputs.')
     }
@@ -135,21 +160,20 @@
 
     // Autopositioning
     if (!isValid(x1, x2, y1, y2) && ['horizontal', 'vertical'].includes(orient)) {
-      if (sectionContext.flipX) xRange.reverse()
-      rangeCoordsX = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip)
+      if (_flipX) xRange.reverse()
+      rangeCoordsX = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip, _flipX)
       x1 = rangeCoordsX.x1
       x2 = rangeCoordsX.x2
       width = Math.abs(x2 - x1)
       xCoords = { x1, x2, width }
 
-      if (sectionContext.flipY) yRange.reverse()
-      rangeCoordsY = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flip)
+      if (_flipY) yRange.reverse()
+      rangeCoordsY = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flip, _flipY)
       y1 = rangeCoordsY.y1
       y2 = rangeCoordsY.y2
       height = Math.abs(y2 - y1)
       yCoords = { y1, y2, height }
-
-   } else {
+    } else {
       let _x1, _x2, _y1, _y2
 
       /** If function, uses pixel values based on padding/no padding setting

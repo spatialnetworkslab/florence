@@ -31,7 +31,7 @@
   ZoomContext.init()
 
   $: {
-    GraphicContext.update(graphicContext, { renderer })
+    GraphicContext.update(graphicContext, { renderer, flipY, flipX, padding })
   }
 
   let rootNode

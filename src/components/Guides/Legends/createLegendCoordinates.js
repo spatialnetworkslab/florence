@@ -3,7 +3,7 @@
 // 2. vjust with a number (relative position within content of section)
 // 3. x1, x2, y1, y2 props with positioning in data coords
 
-export function createPosYCoords (vjust, yRange, orient, height, offset, titleFontSize, flip) {
+export function createPosYCoords (vjust, yRange, orient, height, offset, titleFontSize, flip, flipY) {
   let y1
   let y2
   const y1Range = yRange[0]
@@ -28,8 +28,8 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   }
 
   if (vjust === 'bottom') {
-    y1 = y2Range - height + offset - addTitleSize
-    y2 = y2Range + offset - addTitleSize
+    y1 = y2Range - height + offset //+ addTitleSize * 0.5
+    y2 = y2Range + offset - addTitleSize * 0.25
   }
 
   if (!isNaN(vjust) && (vjust <= 1 && vjust >= -1)) {
@@ -45,7 +45,7 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   return { y1, y2, height }
 }
 
-export function createPosXCoords (hjust, xRange, orient, width, offset, labelFontSize, flip) {
+export function createPosXCoords (hjust, xRange, orient, width, offset, labelFontSize, flip, flipX) {
   let x1
   let x2
   const x1Range = xRange[0]
