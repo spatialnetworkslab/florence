@@ -35,42 +35,39 @@
       8.9,
       9.1,
       10.3,
-      9.4,
-      10.1
+      9.4
     ],
     fruit: [
-      "lime",
-      "lemon",
-      "grapefruit",
-      "lemon",
-      "orange",
-      "lemon",
-      "pomelo",
-      "grapefruit",
-      "lime",
-      "pomelo",
-      "lemon",
-      "lime",
-      "grapefruit",
-      "pomelo",
-      "grapefruit",
-      "grapefruit",
-      "pomelo",
-      "lime",
-      "orange",
-      "grapefruit",
-      "pomelo",
-      "grapefruit",
-      "anchovies"
+      'lime',
+      'lemon',
+      'grapefruit',
+      'lemon',
+      'orange',
+      'lemon',
+      'pomelo',
+      'grapefruit',
+      'lime',
+      'pomelo',
+      'lemon',
+      'lime',
+      'grapefruit',
+      'pomelo',
+      'grapefruit',
+      'grapefruit',
+      'pomelo',
+      'lime',
+      'orange',
+      'grapefruit',
+      'pomelo',
+      'grapefruit'
     ]
-  });
+  })
 
   const processedData = data
     .dropNA()
-    .filter(row => row.fruit !== "anchovies")
-    .groupBy("fruit")
-    .summarise({ meanDiameter: { diameter: "mean" } })
-    .arrange({ meanDiameter: "descending" });
+    .groupBy('fruit')
+    .summarise({ meanDiameter: { diameter: 'mean' } })
+    .arrange({ meanDiameter: 'descending' })
 
   const fruitDomain = data.domain("fruit");
   const scaleFruit = scalePoint()

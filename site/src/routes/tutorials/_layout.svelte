@@ -1,6 +1,6 @@
 <script context="module">
   export async function preload () {
-    const res = await this.fetch('docs.json')
+    const res = await this.fetch('tutorials.json')
     const items = await res.json()
     if (res.status === 200) {
       return { items }

@@ -9,7 +9,7 @@
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  let data = new DataContainer({
+    let data = new DataContainer({
     diameter: [
       4.7,
       6.1,
@@ -32,8 +32,7 @@
       8.9,
       9.1,
       10.3,
-      9.4,
-      10.1
+      9.4
     ],
     fruit: [
       'lime',
@@ -57,14 +56,12 @@
       'orange',
       'grapefruit',
       'pomelo',
-      'grapefruit',
-      'anchovies'
+      'grapefruit'
     ]
   })
 
   const processedData = data
     .dropNA()
-    .filter(row => row.fruit !== 'anchovies')
     .groupBy('fruit')
     .summarise({ meanDiameter: { diameter: 'mean' } })
     .arrange({ meanDiameter: 'descending' })

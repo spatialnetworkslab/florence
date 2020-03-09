@@ -1,17 +1,17 @@
 # Creating Basic Graphs
 The Florence library comes with a range of components that can be used to compose common graph types easily. Generally, most graphs use the following components:
 
-- Graphic
-- Section
+- [Graphic](docs/core/graphic)
+- [Section](docs/core/section)
 - Scales
 - A selection of the available Marks
 - Axes
 
 You may further customise your graph using the following components:
 
-- Plot Title
+- [Plot Title](docs/core/title)
 - Axis Title
-- Legend
+- [Legend](docs/guides/legend)
 - X/Y Grid
 
 For scaling, we rely on [d3 scales](https://github.com/d3/d3-scale).
@@ -107,7 +107,7 @@ This creates an empty svg canvas of the given width and height.
 </Graphic>
 ```
 
-For further details on `Graphic`, refer to the [documentation](docs/#graphic).
+For further details on `Graphic`, refer to the [documentation](docs/core/graphic).
 
 ## Section
 The `Section` component divides the `Graphic` (or canvas) up into subsections. Each subsection can contain its own graph with its own variables, axes etc.
@@ -130,7 +130,7 @@ In this example, we declare a single `Section` since only a single graph is bein
 </Graphic>
 ```
 
-For further details on `Section`, refer to the [documentation](docs/#section).
+For further details on `Section`, refer to the [documentation](docs/core/section).
 
 ## Scales
 
@@ -276,7 +276,7 @@ We also add padding to `Section` such that the axis labels show up.
 ```
 
 The graph should now look like this:
-
+<!-- TODO replace with codeboxes -->
 ```js exec
 import Basic2 from './utils/_Basic2.svelte'
 ```
@@ -294,48 +294,30 @@ Graphs usually come with titles describing the subject of the graph. This can be
     usePadding={true}
   />
 ```
-
+<!-- TODO replace with codeboxes -->
 ```js exec
 import Basic3 from './utils/_Basic3.svelte'
 ```
 
 <Basic3 />
 
-<!-- ## Adding scales to marks (Optional)
+For further details, refer to the [Title documentation](docs/core/title).
+
+## Adding scales to marks (Optional)
 
 We have briefly discussed the necessity of scales in the part on `Section` above. Scales are necessary for converting raw values in the dataset (e.g. fruit name) into values that can be rendered on a screen (e.g. pixels).
 
 However, scaling is not limited to changing data values into screen coordinates/pixels. Scaling can be done for a wide range of appearance aesthetics, such as color, shape and opacity. Different marks allow different aesthetics to be scaled. For details of each, refer to the Marks and Scales documentation.
 
 In this case, the points on the graph can be scaled to display a different color for each category of fruit, or a different radius for its diameter. To do so, the `fill` property on the `PointLayer` component can be changed from a single color to a scale, similar to the x and y properties. The same can be done to the `radius` property.
-
-```js
-  import { scaleLinear, scalePoint, scaleOrdinal } from 'd3-scale'
-  import { schemeCategory10 } from 'd3-scale-chromatic'
-  const scaleFruitColor = scaleOrdinal()
-    .domain(fruitDomain)
-    .range(schemeCategory10)
-
-  const scaleRadius = scaleLinear().domain(meanDiameterDomain).range([2, 10])
-```
-
-```svelte
-  <PointLayer
-    x={data.column('fruit')}
-    y={data.column('diameter')}
-    key={data.column('$key')}
-    fill={scaleFruitColor}
-    radius={scaleRadius}
-  />
-```
-
+<!-- TODO replace with codeboxes -->
 ```js exec
 import Basic4 from './utils/_Basic4.svelte'
 ```
 
 <Basic4 />
 
-Note that there is an extra type: 'schemeCategory10' specification passed to the scale. This simply tells the mark to use the 'category10' color scheme. This is one of many predefined color schemes from d3. However, do note that certain color schemes can only be used with categorical variables/certain scale types, while others can only be used with numerical variables. -->
+Note that there is an extra type: `schemeCategory10` specification passed to the scale. This simply tells the mark to use the 'category10' color scheme. This is one of many predefined color schemes from d3. However, do note that certain color schemes can only be used with categorical variables/certain scale types, while others can only be used with numerical variables. 
 
 
 ## Axis Title (Optional)
@@ -352,21 +334,27 @@ Similar to the plot title, titles can be added to the axes for additional readab
 
 ```
 
-The title-vjust and title-hjust properties are used to position the axis title relative to the vertical and horizontal size of the axis. For further details, refer to the axes component documentation. [TODO ADD LINK]
-
+The title-vjust and title-hjust properties are used to position the axis title relative to the vertical and horizontal size of the axis.
+<!-- TODO replace with codeboxes -->
 ```js exec
 import Basic5 from './utils/_Basic5.svelte'
 ```
 
 <Basic5 />
 
+For further details, refer to the axes component documentation. [TODO ADD LINK]
+
 ## Legend (Optional)
 
+Adding a legend to our chart can help increase the viewer's understanding of the data. We can manually add a `DiscreteLegend` to our chart to better explain the colors mapped to our marks. 
+<!-- TODO replace with codeboxes -->
 ```js exec
 import Basic6 from './utils/_Basic6.svelte'
 ```
 
 <Basic6 />
+
+For further details, refer to the [Legend documentation](docs/guides/legend).
 
 
 ## X/Y Grid (TODO)

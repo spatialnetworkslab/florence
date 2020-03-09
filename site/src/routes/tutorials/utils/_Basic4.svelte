@@ -11,7 +11,7 @@
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  let data = new DataContainer({
+  const data = new DataContainer({
     diameter: [
       4.7,
       6.1,
@@ -34,8 +34,7 @@
       8.9,
       9.1,
       10.3,
-      9.4,
-      10.1
+      9.4
     ],
     fruit: [
       'lime',
@@ -59,28 +58,30 @@
       'orange',
       'grapefruit',
       'pomelo',
-      'grapefruit',
-      'anchovies'
+      'grapefruit'
     ]
   })
 
   const processedData = data
     .dropNA()
-    .filter(row => row.fruit !== 'anchovies')
     .groupBy('fruit')
     .summarise({ meanDiameter: { diameter: 'mean' } })
     .arrange({ meanDiameter: 'descending' })
 
   const fruitDomain = data.domain('fruit')
-  const scaleFruit = scalePoint().domain(fruitDomain).padding(0.2)
+  const scaleFruit = scalePoint()
+    .domain(fruitDomain)
+    .padding(0.2)
+
   const meanDiameterDomain = [0, processedData.domain('meanDiameter')[1] * 1.5]
   const scaleMeanDiameter = scaleLinear().domain(meanDiameterDomain)
-
   const scaleFruitColor = scaleOrdinal()
     .domain(fruitDomain)
     .range(schemeCategory10)
 
-  const scaleRadius = scaleLinear().domain(meanDiameterDomain).range([2, 10])
+  const scaleRadius = scaleLinear()
+    .domain(meanDiameterDomain)
+    .range([2, 10])
 </script>
 
 
@@ -95,11 +96,12 @@
     scaleX={scaleFruit}
     scaleY={scaleMeanDiameter}
   >
+
     <Title 
       title={'Fruit Sizes'} 
       titleFontFamily={'Baskerville'}
       usePadding={true}
-    />
+      />
 
     <PointLayer
       x={data.column('fruit')}
@@ -109,10 +111,8 @@
       radius={scaleRadius}
     />
 
-    <XAxis
-    />
-    <YAxis 
-    />
+    <XAxis/>
+    <YAxis/>
   </Section>
 
 </Graphic>
