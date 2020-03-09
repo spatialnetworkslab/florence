@@ -43,7 +43,11 @@ export function createPixelGeometryFromXYArrays (
     const combinedContext = combineContexts(
       sectionContext,
       coordinateTransformationContext,
-      zoomContext
+      zoomContext,
+      {
+        xNeedsScaling,
+        yNeedsScaling
+      }
     )
 
     return interpolateGeometry(rendervousInput, combinedContext, renderSettings)

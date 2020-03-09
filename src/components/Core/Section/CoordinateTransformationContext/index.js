@@ -1,6 +1,6 @@
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
-import { createIdentityTransformation } from './indentity.js'
+import { createIdentityTransformation } from './identity.js'
 import { createPolarTransformation } from './polar.js'
 
 const key = {}

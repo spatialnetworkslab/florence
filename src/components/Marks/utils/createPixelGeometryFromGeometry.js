@@ -34,7 +34,11 @@ export function createPixelGeometryFromGeometry (
     const combinedContext = combineContexts(
       sectionContext,
       coordinateTransformationContext,
-      zoomContext
+      zoomContext,
+      {
+        xNeedsScaling: geometryNeedsScaling,
+        yNeedsScaling: geometryNeedsScaling
+      }
     )
 
     return interpolateGeometry(geometry, combinedContext, renderSettings)

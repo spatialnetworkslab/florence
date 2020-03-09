@@ -302,12 +302,12 @@ function createPostScaleTransformation ({
   if (zoomIdentity) {
     if (decimals !== undefined) {
       return point => roundPoint(
-        zoomIdentity.zoomTransformation(coordinateTransformation(point)), decimals
+        zoomIdentity.transformation(coordinateTransformation(point)), decimals
       )
     }
 
     if (decimals === undefined) {
-      return point => zoomIdentity.zoomTransformation(coordinateTransformation(point))
+      return point => zoomIdentity.transformation(coordinateTransformation(point))
     }
   }
 
@@ -333,6 +333,7 @@ function getNumberOfInterpolatedPoints (
 ) {
   const fromScaledDown = scaleDown(from);
   const toScaledDown = scaleDown(to);
+
   const totalScaleFactor = getTotalScaleFactor(context);
 
   if (straightInYDimension(fromScaledDown, toScaledDown, totalScaleFactor)) {
@@ -342,10 +343,12 @@ function getNumberOfInterpolatedPoints (
   const functionalForm = getFunctionalForm(fromScaledDown, toScaledDown);
   const scaledDownLength = getPolarLength(functionalForm);
 
+  console.log(scaledDownLength);
+
   const realLength = scaledDownLength * totalScaleFactor;
   const numberOfPointsNeeded = realLength / interpolationTreshold;
 
-  return Math.ceil(numberOfPointsNeeded) - 1
+  return Math.floor(numberOfPointsNeeded)
 }
 
 function getFunctionalForm (from, to) {
@@ -455,8 +458,6 @@ function interpolateLinearRingUnsimplified (linearRing, context, transformations
       context,
       settings
     );
-
-    console.log(`Number of points needed: ${numberOfPointsNeeded}`);
 
     if (numberOfPointsNeeded > 0) {
       interpolatePoints(
