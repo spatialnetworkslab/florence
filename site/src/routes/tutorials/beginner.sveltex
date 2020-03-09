@@ -1,0 +1,48 @@
+# Creating Basic Graphs
+The Florence library comes with a range of components that can be used to compose common graph types easily. Generally, most graphs use the following components:
+
+- Graphic
+- Section
+- Map
+- A selection of the available Marks
+- Axes
+
+You may further customise your graph using the following components:
+
+- Plot Title
+- Axis Title
+- X/Y Grid
+
+For scaling, we rely on d3 scales. // TODO add link
+
+## Dataset
+
+The following tutorial will walk through the steps needed to create a basic dot plot of this dataset:
+
+|fruit|	diameter|		|fruit|	diameter|
+| ---- | ---- | ---- | ---- | ---- |
+|lime|	4.7	|	| lime |	4.7 |
+|lemon|	6.1	| |	grapefruit |	8.8 |
+|grapefruit|	7.9 |	|	pomelo |	12.5 |
+|lemon|	6.6	| |	grapefruit |	12.7 |
+|orange|	6.7	| |	grapefruit |	8.6 |
+|lemon|	5.3	| |	pomelo |	13.1 |
+|pomelo|	11.6	|	 | lime |	5.8 |
+|grapefruit|	11.1	| |	orange	| 8.9 |
+|lime|	5.5	|	 | grapefruit |	9.1 |
+|pomelo|	10.6	| |	pomelo	| 10.3 |
+|lemon|	6.4	| |	grapefruit |	9.4 |
+
+## Graphic
+The `Graphic` component is used in all Florence graphs. The component is declared first, and takes the width, height and data properties.
+
+This creates an empty svg canvas of the given width and height.
+
+The data property is passed to all children in the `Graphic` component. Currently there are none.
+
+## Section
+The `Section` component divides the `Graphic` (or canvas) up into subsections. Each subsection can contain its own graph with its own variables, axes etc.
+
+It is sometimes convenient to use `Section` instead of declaring `Graphic` multiple times when the sub-graphs use the same dataset (faceting), or when user interactions are meant to be reflected across multiple graphs.
+
+In this example, we declare a single `Section` since only a single graph is being created.

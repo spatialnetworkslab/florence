@@ -15,7 +15,7 @@
 }
 
 .sidenav-second:hover, .sidenav-second-selected {
-  @apply border-l-2 border-red-600;
+  @apply border-l-4 border-red-600 font-semibold text-red-600;
 }
 
 .sidenav-a{
