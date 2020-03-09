@@ -52,9 +52,9 @@
 </script>
 
 <!-- adapted from https://observablehq.com/@mbostock/global-temperature-trends -->
-<Graphic width={800} height={500}>
+<Graphic width={400} height={250}>
 
-  <Label x={400} y={10} text={'Global Temperature Trends'} />
+  <Label x={200} y={10} text={'Global Temperature Trends'} />
 
   {#if done}
     <Section

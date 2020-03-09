@@ -28,8 +28,8 @@
     })
   })
   
-  const width = 900
-  const height = 600
+  const width = 400
+  const height = 250
   const padding = { top: 20, right: 30, bottom: 30, left: 40 }
 
   let dataContainer
