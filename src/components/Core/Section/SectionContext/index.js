@@ -2,47 +2,6 @@ import { scaleLinear } from 'd3-scale'
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
 
-class SectionContext {
-  constructor ({ sectionId, rangeX, rangeY, scaleX, scaleY, padding, flipX, flipY, blockReindexing }) {
-    this._sectionId = sectionId
-
-    this.rangeX = rangeX
-    this.rangeY = rangeY
-
-    this.minX = Math.min(...rangeX)
-    this.maxX = Math.max(...rangeX)
-    this.minY = Math.min(...rangeY)
-    this.maxY = Math.max(...rangeY)
-
-    this.padding = padding
-
-    this._handleScales(scaleX, scaleY)
-
-    this.flipX = flipX
-    this.flipY = flipY
-
-    this.blockReindexing = blockReindexing
-  }
-
-  _handleScales (scaleX, scaleY) {
-    if (scaleX) {
-      this.scaleX = scaleX.copy().range(this.rangeX)
-      this.scaleX.invert = createInvertMethod(this.scaleX)
-    } else {
-      const domainX = [this.minX - this.padding.left, this.maxX + this.padding.right]
-      this.scaleX = scaleLinear().domain(domainX).range(this.rangeX)
-    }
-
-    if (scaleY) {
-      this.scaleY = scaleY.copy().range(this.rangeY)
-      this.scaleY.invert = createInvertMethod(this.scaleY)
-    } else {
-      const domainY = [this.minY - this.padding.top, this.maxY + this.padding.bottom]
-      this.scaleY = scaleLinear().domain(domainY).range(this.rangeY)
-    }
-  }
-}
-
 const key = {}
 
 export function subscribe () {
@@ -57,7 +16,44 @@ export function init () {
 }
 
 export function update (sectionContext, options) {
-  sectionContext.set(new SectionContext(options))
+  sectionContext.set(createSectionContext(options))
+}
+
+function createSectionContext ({
+  scaleX: _scaleX,
+  scaleY: _scaleY,
+  ...sectionContext
+}) {
+  const { scaleX, scaleY } = setupScales(_scaleX, _scaleY, sectionContext)
+
+  return {
+    scaleX,
+    scaleY,
+    ...sectionContext
+  }
+}
+
+function setupScales (_scaleX, _scaleY, sctx) {
+  let scaleX
+  let scaleY
+
+  if (_scaleX) {
+    scaleX = _scaleX.copy().range(sctx.rangeX)
+    scaleX.invert = createInvertMethod(scaleX)
+  } else {
+    const domainX = [sctx.minX - sctx.padding.left, sctx.maxX + sctx.padding.right]
+    scaleX = scaleLinear().domain(domainX).range(sctx.rangeX)
+  }
+
+  if (_scaleY) {
+    scaleY = _scaleY.copy().range(sctx.rangeY)
+    scaleY.invert = createInvertMethod(scaleY)
+  } else {
+    const domainY = [sctx.minY - sctx.padding.top, sctx.maxY + sctx.padding.bottom]
+    scaleY = scaleLinear().domain(domainY).range(sctx.rangeY)
+  }
+
+  return { scaleX, scaleY }
 }
 
 /**

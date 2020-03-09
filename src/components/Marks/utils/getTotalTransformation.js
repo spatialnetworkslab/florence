@@ -16,9 +16,9 @@ export default function getTotalTransformation ({
     transformations.push(scaleTransformation)
   }
 
-  if (coordinateTransformationContext && coordinateTransformationContext.type() !== 'identity') {
+  if (coordinateTransformationContext && coordinateTransformationContext.type !== 'identity') {
     transformations.push(
-      coordinateTransformationContext.transform.bind(coordinateTransformationContext)
+      coordinateTransformationContext.transformation
     )
   }
 

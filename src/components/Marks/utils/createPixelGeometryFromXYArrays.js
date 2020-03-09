@@ -35,7 +35,7 @@ export function createPixelGeometryFromXYArrays (
 
   const interpolationNecessary = (
     coordinateTransformationContext &&
-    coordinateTransformationContext.type() !== 'identity' &&
+    coordinateTransformationContext.type !== 'identity' &&
     renderSettings.interpolate === true
   )
 

@@ -2,7 +2,7 @@ export function getLocalCoordinates (screenCoordinates, interactionManager) {
   const section = interactionManager._section
 
   const coordinateTransformation = interactionManager._coordinateTransformation
-    ? interactionManager._coordinateTransformation._transformation
+    ? interactionManager._coordinateTransformation.transformation
     : undefined
 
   const zoom = interactionManager._zoom

@@ -3,9 +3,11 @@ export default function combineContexts (
   coordinateTransformationContext,
   zoomContext
 ) {
+  const coordinateTransformation = coordinateTransformationContext.transformation
+
   return {
     ...sectionContext,
-    coordinateTransformation: coordinateTransformationContext.transform.bind(coordinateTransformationContext),
+    coordinateTransformation,
     zoomIdentity: zoomContext
   }
 }

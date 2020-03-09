@@ -1,41 +1,7 @@
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
+import { createIdentityTransformation } from './indentity.js'
 import { createPolarTransformation } from './polar.js'
-
-class CoordinateTransformationContext {
-  constructor ({ rangeX, rangeY, transformation }) {
-    if (transformation.constructor === Function) {
-      this._transformation = transformation(rangeX, rangeY)
-      this._type = 'custom'
-    }
-
-    if (transformation.constructor === String) {
-      this._type = transformation
-
-      switch (transformation) {
-        case 'identity':
-          this._transformation = c => c
-          this._transformation.invert = c => c
-          break
-
-        case 'polar':
-          this._transformation = createPolarTransformation(rangeX, rangeY)
-          break
-
-        default:
-          throw new Error(`Invalid transformation name: '${transformation}'`)
-      }
-    }
-  }
-
-  transform (coordinatePair) {
-    return this._transformation(coordinatePair)
-  }
-
-  type () {
-    return this._type
-  }
-}
 
 const key = {}
 
@@ -52,7 +18,7 @@ export function init () {
 
 export function update (coordinateTransformationContext, options) {
   if (options.transformation) {
-    coordinateTransformationContext.set(new CoordinateTransformationContext(options))
+    coordinateTransformationContext.set(createCoordinateTransformationContext(options))
   } else {
     coordinateTransformationContext.set(undefined)
   }
@@ -64,4 +30,14 @@ export function ensureNotParent (ctx) {
       'Sections with a coordinate transformation cannot contain anything other than Marks or Layers'
     )
   }
+}
+
+const createTransformation = {
+  identity: createIdentityTransformation,
+  polar: createPolarTransformation
+}
+
+function createCoordinateTransformationContext ({ rangeX, rangeY, transformation: type }) {
+  const transformation = createTransformation[type](rangeX, rangeY)
+  return { transformation, type }
 }
