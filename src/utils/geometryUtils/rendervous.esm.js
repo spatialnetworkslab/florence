@@ -1,107 +1,3 @@
-function pointDistance (point1, point2) {
-  return Math.sqrt(
-    (point1[0] - point2[0]) ** 2 +
-    (point1[1] - point2[1]) ** 2
-  )
-}
-
-function naiveTransformLinearRing (linearRing, transformation, settings) {
-  if (!settings.simplify || linearRing.length < 3) {
-    return naiveTransformLinearRingUnsimplified(linearRing, transformation)
-  }
-
-  if (settings.simplify === true) {
-    return naiveTransformLinearRingSimplified(linearRing, transformation, settings.simplificationTreshold)
-  }
-}
-
-function naiveTransformLinearRingUnsimplified (linearRing, transformation) {
-  const transformedLinearRing = [];
-
-  for (let i = 0; i < linearRing.length; i++) {
-    transformedLinearRing.push(transformation(linearRing[i]));
-  }
-
-  return transformedLinearRing
-}
-
-function naiveTransformLinearRingSimplified (linearRing, transformation, simplificationTreshold = 1) {
-  const transformedLinearRing = [transformation(linearRing[0])];
-
-  let from = transformedLinearRing[0];
-  let to;
-
-  for (let i = 1; i < linearRing.length - 1; i++) {
-    to = transformation(linearRing[i]);
-
-    const dontSkip = pointDistance(from, to) >= simplificationTreshold;
-
-    if (dontSkip) {
-      transformedLinearRing.push(to);
-      from = to;
-    }
-  }
-
-  const lastPoint = transformation(linearRing[linearRing.length - 1]);
-  transformedLinearRing.push(lastPoint);
-
-  return transformedLinearRing
-}
-
-function naiveTransformSetOfLinearRings (linearRings, transformation, settings) {
-  const transformedLinearRings = [];
-
-  for (let i = 0; i < linearRings.length; i++) {
-    transformedLinearRings.push(naiveTransformLinearRing(linearRings[i], transformation, settings));
-  }
-
-  return transformedLinearRings
-}
-
-function naiveTransformXYArrays ({ x, y }, transformation, settings) {
-  if (!settings.simplify || x.length < 3) {
-    return naiveTransformXYArraysUnsimplified(x, y, transformation)
-  }
-
-  if (settings.simplify === true) {
-    return naiveTransformXYArraysSimplified(x, y, transformation, settings.simplificationTreshold)
-  }
-}
-
-function naiveTransformXYArraysUnsimplified (x, y, transformation) {
-  const transformedLinearRing = [];
-
-  for (let i = 0; i < x.length; i++) {
-    transformedLinearRing.push(transformation([x[i], y[i]]));
-  }
-
-  return transformedLinearRing
-}
-
-function naiveTransformXYArraysSimplified (x, y, transformation, simplificationTreshold = 1) {
-  const transformedLinearRing = [transformation([x[0], y[0]])];
-
-  let from = transformedLinearRing[0];
-  let to;
-
-  for (let i = 1; i < x.length - 1; i++) {
-    to = transformation([x[i], y[i]]);
-
-    const dontSkip = pointDistance(from, to) >= simplificationTreshold;
-
-    if (dontSkip) {
-      transformedLinearRing.push(to);
-      from = to;
-    }
-  }
-
-  const lastIndex = x.length - 1;
-  const lastPoint = transformation([x[lastIndex], y[lastIndex]]);
-  transformedLinearRing.push(lastPoint);
-
-  return transformedLinearRing
-}
-
 const invalidInputError = new Error('Invalid input');
 
 function getInput (geometry) {
@@ -110,9 +6,11 @@ function getInput (geometry) {
   }
 
   if ('x' in geometry && 'y' in geometry) {
-    ensureSameLength(geometry.x, geometry.y);
+    if (geometry.type !== 'Point') {
+      ensureSameLength(geometry.x, geometry.y);
+    }
 
-    return 'xyArrays'
+    return 'xy'
   }
 
   throw invalidInputError
@@ -130,469 +28,6 @@ function ensureSameLength (x, y) {
   throw invalidInputError
 }
 
-const naiveTransformFunctions = {
-  naiveTransformLineString,
-  naiveTransformMultiLineString,
-  naiveTransformPolygon,
-  naiveTransformMultiPolygon
-};
-
-function naiveTransformGeometry (geometry, transformation, settings) {
-  const functionName = 'naiveTransform' + geometry.type;
-  return naiveTransformFunctions[functionName](geometry, transformation, settings)
-}
-
-function naiveTransformLineString (lineString, transformation, settings) {
-  const input = getInput(lineString);
-
-  if (input === 'geojson') {
-    return {
-      type: 'LineString',
-      coordinates: naiveTransformLinearRing(lineString.coordinates, transformation, settings)
-    }
-  }
-
-  if (input === 'xyArrays') {
-    return {
-      type: 'LineString',
-      coordinates: naiveTransformXYArrays(lineString, transformation, settings)
-    }
-  }
-}
-
-function naiveTransformMultiLineString (multiLineString, transformation, settings) {
-  const input = getInput(multiLineString);
-
-  if (input === 'geojson') {
-    return {
-      type: 'MultiLineString',
-      coordinates: naiveTransformSetOfLinearRings(multiLineString.coordinates, transformation, settings)
-    }
-  }
-
-  if (input === 'xyArrays') {
-    return {
-      type: 'MultiLineString',
-      coordinates: [
-        naiveTransformXYArrays(multiLineString, transformation, settings)
-      ]
-    }
-  }
-}
-
-function naiveTransformPolygon (polygon, transformation, settings) {
-  const input = getInput(polygon);
-
-  if (input === 'geojson') {
-    return {
-      type: 'Polygon',
-      coordinates: naiveTransformSetOfLinearRings(polygon.coordinates, transformation, settings)
-    }
-  }
-
-  if (input === 'xyArrays') {
-    return {
-      type: 'Polygon',
-      coordinates: [
-        naiveTransformXYArrays(polygon, transformation, settings)
-      ]
-    }
-  }
-}
-
-function naiveTransformMultiPolygon (multiPolygon, transformation, settings) {
-  const input = getInput(multiPolygon);
-
-  if (input === 'geojson') {
-    const polygons = multiPolygon.coordinates;
-    const transformedPolygons = [];
-
-    for (let i = 0; i < polygons.length; i++) {
-      transformedPolygons.push(naiveTransformSetOfLinearRings(polygons[i], transformation, settings));
-    }
-
-    return {
-      type: 'MultiPolygon',
-      coordinates: transformedPolygons
-    }
-  }
-
-  if (input === 'xyArrays') {
-    return {
-      type: 'MultiPolygon',
-      coordinates: [
-        [naiveTransformXYArrays(multiPolygon, transformation, settings)]
-      ]
-    }
-  }
-}
-
-function pointIntersectsLineSegment (point, lineSegment, lineWidth) {
-  const distance = distanceClosestPointOnLineSegment(point, lineSegment);
-
-  return distance < (lineWidth / 2)
-}
-
-function distanceClosestPointOnLineSegment (point, lineSegment) {
-  const closestPoint = closestPointOnLineSegment(point, lineSegment);
-  return pointDistance(point, closestPoint)
-}
-
-// https://stackoverflow.com/a/6853926/7237112
-function closestPointOnLineSegment (point, lineSegment) {
-  // Point coordinates
-  const x = point[0];
-  const y = point[1];
-
-  // Line segment coordinates
-  const x1 = lineSegment[0][0];
-  const y1 = lineSegment[0][1];
-  const x2 = lineSegment[1][0];
-  const y2 = lineSegment[1][1];
-
-  const A = x - x1;
-  const B = y - y1;
-  const C = x2 - x1;
-  const D = y2 - y1;
-
-  const dot = A * C + B * D;
-  const lengthSquared = C * C + D * D;
-  let param = -1;
-  if (lengthSquared !== 0) { // in case of 0 length line
-    param = dot / lengthSquared;
-  }
-
-  let xx, yy;
-
-  if (param < 0) {
-    xx = x1;
-    yy = y1;
-  } else if (param > 1) {
-    xx = x2;
-    yy = y2;
-  } else {
-    xx = x1 + param * C;
-    yy = y1 + param * D;
-  }
-
-  return [xx, yy]
-}
-
-function interpolatePointPair (
-  from, to, transformation, interpolationTreshold = 1, interpolatedPoints
-) {
-  const midPoint = interpolatePoint(from, to, 0.5);
-
-  if (interpolationBetweenPointsNecessary(from, to, midPoint, transformation, interpolationTreshold)) {
-    interpolatePointPair(from, midPoint, transformation, interpolationTreshold, interpolatedPoints);
-    interpolatePointPair(midPoint, to, transformation, interpolationTreshold, interpolatedPoints);
-  } else {
-    const transformedFrom = transformation(from);
-    interpolatedPoints.push(transformedFrom);
-  }
-}
-
-function interpolatePoint (p1, p2, t) {
-  return [
-    p1[0] + (p2[0] - p1[0]) * t,
-    p1[1] + (p2[1] - p1[1]) * t
-  ]
-}
-
-function interpolationBetweenPointsNecessary (from, to, midPoint, transformation, interpolationTreshold) {
-  const transformedFrom = transformation(from);
-  const transformedTo = transformation(to);
-
-  if (pointDistance(transformedFrom, transformedTo) > interpolationTreshold) {
-    const twoPointsInBetween = [
-      transformation(interpolatePoint(from, to, 0.33)),
-      transformation(interpolatePoint(from, to, 0.66))
-    ];
-
-    return pointsOnOneLine([transformedFrom, transformedTo], twoPointsInBetween) === false
-  }
-
-  const transformedMidPoint = transformation(midPoint);
-
-  return pointsCloseTogether(
-    [transformedFrom, transformedMidPoint, transformedTo],
-    interpolationTreshold
-  ) === false
-}
-
-const LINE_TRESHOLD = 0.01;
-
-function pointsOnOneLine (lineSegment, [secondPoint, thirdPoint]) {
-  return (
-    pointIntersectsLineSegment(secondPoint, lineSegment, LINE_TRESHOLD) &&
-    pointIntersectsLineSegment(thirdPoint, lineSegment, LINE_TRESHOLD)
-  )
-}
-
-function pointsCloseTogether (points, interpolationTreshold) {
-  const [firstPoint, secondPoint, thirdPoint] = points;
-
-  return (
-    pointDistance(firstPoint, secondPoint) <= interpolationTreshold &&
-    pointDistance(secondPoint, thirdPoint) <= interpolationTreshold
-  )
-}
-
-function interpolatedTransformLinearRing (linearRing, transformation, settings) {
-  if (!settings.simplify || linearRing.length < 3) {
-    return interpolatedTransformLinearRingUnsimplified(linearRing, transformation, settings)
-  }
-
-  if (settings.simplify === true) {
-    return interpolatedTransformLinearRingSimplified(linearRing, transformation, settings)
-  }
-}
-
-function interpolatedTransformLinearRingUnsimplified (linearRing, transformation, settings) {
-  const interpolatedLinearRing = [];
-
-  let from;
-  let to;
-
-  for (let i = 0; i < linearRing.length - 1; i++) {
-    from = linearRing[i];
-    to = linearRing[i + 1];
-
-    interpolatePointPair(
-      from,
-      to,
-      transformation,
-      settings.interpolationTreshold,
-      interpolatedLinearRing
-    );
-  }
-
-  interpolatedLinearRing.push(transformation(to));
-
-  return interpolatedLinearRing
-}
-
-function interpolatedTransformLinearRingSimplified (linearRing, transformation, settings) {
-  const interpolatedLinearRing = [];
-  const simplificationTreshold = settings.simplificationTreshold || 1;
-
-  let from = linearRing[0];
-  let to;
-
-  for (let i = 1; i < linearRing.length; i++) {
-    to = linearRing[i];
-
-    const dontSkip = pointDistance(
-      transformation(from),
-      transformation(to)
-    ) >= simplificationTreshold;
-
-    if (dontSkip) {
-      interpolatePointPair(
-        from,
-        to,
-        transformation,
-        settings.interpolationTreshold,
-        interpolatedLinearRing
-      );
-
-      from = to;
-    }
-  }
-
-  interpolatedLinearRing.push(transformation(to));
-
-  return interpolatedLinearRing
-}
-
-function interpolatedTransformSetOfLinearRings (linearRings, transformation, settings) {
-  const interpolatedLinearRings = [];
-
-  for (let i = 0; i < linearRings.length; i++) {
-    interpolatedLinearRings.push(interpolatedTransformLinearRing(linearRings[i], transformation, settings));
-  }
-
-  return interpolatedLinearRings
-}
-
-function interpolatedTransformXYArrays ({ x, y }, transformation, settings) {
-  if (!settings.simplify || x.length < 3) {
-    return interpolatedTransformXYArraysUnsimplified(x, y, transformation, settings)
-  }
-
-  if (settings.simplify === true) {
-    return interpolatedTransformXYArraysSimplified(x, y, transformation, settings)
-  }
-}
-
-function interpolatedTransformXYArraysUnsimplified (x, y, transformation, settings) {
-  const interpolatedLinearRing = [];
-
-  let from;
-  let to;
-
-  for (let i = 0; i < x.length - 1; i++) {
-    from = [x[i], y[i]];
-    to = [x[i + 1], y[i + 1]];
-
-    interpolatePointPair(
-      from,
-      to,
-      transformation,
-      settings.interpolationTreshold,
-      interpolatedLinearRing
-    );
-  }
-
-  interpolatedLinearRing.push(transformation(to));
-
-  return interpolatedLinearRing
-}
-
-function interpolatedTransformXYArraysSimplified (x, y, transformation, settings) {
-  const interpolatedLinearRing = [];
-  const simplificationTreshold = settings.simplificationTreshold || 1;
-
-  let from = [x[0], y[0]];
-  let to;
-
-  for (let i = 1; i < x.length; i++) {
-    to = [x[i], y[i]];
-
-    const dontSkip = pointDistance(
-      transformation(from),
-      transformation(to)
-    ) >= simplificationTreshold;
-
-    if (dontSkip) {
-      interpolatePointPair(
-        from,
-        to,
-        transformation,
-        settings.interpolationTreshold,
-        interpolatedLinearRing
-      );
-
-      from = to;
-    }
-  }
-
-  interpolatedLinearRing.push(transformation(to));
-
-  return interpolatedLinearRing
-}
-
-const interpolatedTransformFunctions = {
-  interpolatedTransformLineString,
-  interpolatedTransformMultiLineString,
-  interpolatedTransformPolygon,
-  interpolatedTransformMultiPolygon
-};
-
-function interpolatedTransfromGeometry (geometry, transformation, settings) {
-  const functionName = 'interpolatedTransform' + geometry.type;
-  return interpolatedTransformFunctions[functionName](geometry, transformation, settings)
-}
-
-function interpolatedTransformLineString (lineString, transformation, settings) {
-  const input = getInput(lineString);
-
-  if (input === 'geojson') {
-    return {
-      type: 'LineString',
-      coordinates: interpolatedTransformLinearRing(lineString.coordinates, transformation, settings)
-    }
-  }
-
-  if (input === 'xyArrays') {
-    return {
-      type: 'LineString',
-      coordinates: interpolatedTransformXYArrays(lineString, transformation, settings)
-    }
-  }
-}
-
-function interpolatedTransformMultiLineString (multiLineString, transformation, settings) {
-  const input = getInput(multiLineString);
-
-  if (input === 'geojson') {
-    return {
-      type: 'MultiLineString',
-      coordinates: interpolatedTransformSetOfLinearRings(multiLineString.coordinates, transformation, settings)
-    }
-  }
-
-  if (input === 'xyArrays') {
-    return {
-      type: 'MultiLineString',
-      coordinates: [
-        interpolatedTransformXYArrays(multiLineString, transformation, settings)
-      ]
-    }
-  }
-}
-
-function interpolatedTransformPolygon (polygon, transformation, settings) {
-  const input = getInput(polygon);
-
-  if (input === 'geojson') {
-    return {
-      type: 'Polygon',
-      coordinates: interpolatedTransformSetOfLinearRings(polygon.coordinates, transformation, settings)
-    }
-  }
-
-  if (input === 'xyArrays') {
-    return {
-      type: 'Polygon',
-      coordinates: [
-        interpolatedTransformXYArrays(polygon, transformation, settings)
-      ]
-    }
-  }
-}
-
-function interpolatedTransformMultiPolygon (multiPolygon, transformation, settings) {
-  const input = getInput(multiPolygon);
-
-  if (input === 'geojson') {
-    const polygons = multiPolygon.coordinates;
-    const interpolatedPolygons = [];
-
-    for (let i = 0; i < polygons.length; i++) {
-      interpolatedPolygons.push(interpolatedTransformSetOfLinearRings(polygons[i], transformation, settings));
-    }
-
-    return {
-      type: 'MultiPolygon',
-      coordinates: interpolatedPolygons
-    }
-  }
-
-  if (input === 'xyArrays') {
-    return {
-      type: 'MultiPolygon',
-      coordinates: [
-        [interpolatedTransformXYArrays(multiPolygon, transformation, settings)]
-      ]
-    }
-  }
-}
-
-function transformGeometry (geometry, _transformation, settings = {}) {
-  const transformation = settings.decimals
-    ? point => roundPoint(_transformation(point), settings.decimals)
-    : _transformation;
-
-  if (!settings.interpolate) {
-    return naiveTransformGeometry(geometry, transformation, settings)
-  }
-
-  if (settings.interpolate === true) {
-    return interpolatedTransfromGeometry(geometry, transformation, settings)
-  }
-}
-
 function roundPoint ([x, y], decimals) {
   const zeroes = 10 ** decimals;
 
@@ -602,4 +37,455 @@ function roundPoint ([x, y], decimals) {
   ]
 }
 
-export { transformGeometry };
+function pointDistance (p1, p2) {
+  return Math.sqrt(
+    (p1[0] - p2[0]) ** 2 +
+    (p1[1] - p2[1]) ** 2
+  )
+}
+
+function transformLinearRing (linearRing, transformation, settings) {
+  if (!settings.simplify || linearRing.length < 3) {
+    return transformLinearRingUnsimplified(linearRing, transformation)
+  }
+
+  if (settings.simplify === true) {
+    return transformLinearRingSimplified(linearRing, transformation, settings.simplificationTreshold)
+  }
+}
+
+function transformLinearRingUnsimplified (linearRing, transformation) {
+  const transformedLinearRing = [];
+
+  for (let i = 0; i < linearRing.length; i++) {
+    transformedLinearRing.push(transformation(linearRing[i]));
+  }
+
+  return transformedLinearRing
+}
+
+function transformLinearRingSimplified (linearRing, transformation, simplificationTreshold = 1) {
+  const transformedLinearRing = [transformation(linearRing[0])];
+
+  let start = transformedLinearRing[0];
+  let end;
+
+  for (let i = 1; i < linearRing.length - 1; i++) {
+    end = transformation(linearRing[i]);
+
+    const dontSkip = pointDistance(start, end) >= simplificationTreshold;
+
+    if (dontSkip) {
+      transformedLinearRing.push(end);
+      start = end;
+    }
+  }
+
+  const lastPoint = transformation(linearRing[linearRing.length - 1]);
+  transformedLinearRing.push(lastPoint);
+
+  return transformedLinearRing
+}
+
+function transformSetOfLinearRings (linearRings, transformation, settings) {
+  const transformedLinearRings = [];
+
+  for (let i = 0; i < linearRings.length; i++) {
+    transformedLinearRings.push(transformLinearRing(linearRings[i], transformation, settings));
+  }
+
+  return transformedLinearRings
+}
+
+function transformXYArrays ({ x, y }, transformation, settings) {
+  if (!settings.simplify || x.length < 3) {
+    return transformXYArraysUnsimplified(x, y, transformation)
+  }
+
+  if (settings.simplify === true) {
+    return transformXYArraysSimplified(x, y, transformation, settings.simplificationTreshold)
+  }
+}
+
+function transformXYArraysUnsimplified (x, y, transformation) {
+  const transformedLinearRing = [];
+
+  for (let i = 0; i < x.length; i++) {
+    transformedLinearRing.push(transformation([x[i], y[i]]));
+  }
+
+  return transformedLinearRing
+}
+
+function transformXYArraysSimplified (x, y, transformation, simplificationTreshold = 1) {
+  const transformedLinearRing = [transformation([x[0], y[0]])];
+
+  let start = transformedLinearRing[0];
+  let end;
+
+  for (let i = 1; i < x.length - 1; i++) {
+    end = transformation([x[i], y[i]]);
+
+    const dontSkip = pointDistance(start, end) >= simplificationTreshold;
+
+    if (dontSkip) {
+      transformedLinearRing.push(end);
+      start = end;
+    }
+  }
+
+  const lastIndex = x.length - 1;
+  const lastPoint = transformation([x[lastIndex], y[lastIndex]]);
+  transformedLinearRing.push(lastPoint);
+
+  return transformedLinearRing
+}
+
+const transformFunctions = {
+  transformPoint,
+  transformMultiPoint,
+  transformLineString,
+  transformMultiLineString,
+  transformPolygon,
+  transformMultiPolygon
+};
+
+function transformGeometry (geometry, _transformation, settings = {}) {
+  const functionName = 'transform' + geometry.type;
+
+  const transformation = settings.decimals
+    ? point => roundPoint(_transformation(point), settings.decimals)
+    : _transformation;
+
+  return transformFunctions[functionName](geometry, transformation, settings)
+}
+
+function transformPoint (point, transformation) {
+  const input = getInput(point);
+
+  if (input === 'geojson') {
+    return {
+      type: 'Point',
+      coordinates: transformation(point.coordinates)
+    }
+  }
+
+  if (input === 'xy') {
+    return {
+      type: 'Point',
+      coordinates: transformation([
+        point.x,
+        point.y
+      ])
+    }
+  }
+}
+
+function transformMultiPoint (multiPoint, transformation) {
+  const input = getInput(multiPoint);
+
+  if (input === 'geojson') {
+    return {
+      type: 'MultiPoint',
+      coordinates: transformLinearRing(multiPoint.coordinates, transformation, {})
+    }
+  }
+
+  if (input === 'xy') {
+    return {
+      type: 'MultiPoint',
+      coordinates: transformXYArrays(multiPoint, transformation, {})
+    }
+  }
+}
+
+function transformLineString (lineString, transformation, settings) {
+  const input = getInput(lineString);
+
+  if (input === 'geojson') {
+    return {
+      type: 'LineString',
+      coordinates: transformLinearRing(lineString.coordinates, transformation, settings)
+    }
+  }
+
+  if (input === 'xy') {
+    return {
+      type: 'LineString',
+      coordinates: transformXYArrays(lineString, transformation, settings)
+    }
+  }
+}
+
+function transformMultiLineString (multiLineString, transformation, settings) {
+  const input = getInput(multiLineString);
+
+  if (input === 'geojson') {
+    return {
+      type: 'MultiLineString',
+      coordinates: transformSetOfLinearRings(multiLineString.coordinates, transformation, settings)
+    }
+  }
+
+  if (input === 'xy') {
+    return {
+      type: 'MultiLineString',
+      coordinates: [
+        transformXYArrays(multiLineString, transformation, settings)
+      ]
+    }
+  }
+}
+
+function transformPolygon (polygon, transformation, settings) {
+  const input = getInput(polygon);
+
+  if (input === 'geojson') {
+    return {
+      type: 'Polygon',
+      coordinates: transformSetOfLinearRings(polygon.coordinates, transformation, settings)
+    }
+  }
+
+  if (input === 'xy') {
+    return {
+      type: 'Polygon',
+      coordinates: [
+        transformXYArrays(polygon, transformation, settings)
+      ]
+    }
+  }
+}
+
+function transformMultiPolygon (multiPolygon, transformation, settings) {
+  const input = getInput(multiPolygon);
+
+  if (input === 'geojson') {
+    const polygons = multiPolygon.coordinates;
+    const transformedPolygons = [];
+
+    for (let i = 0; i < polygons.length; i++) {
+      transformedPolygons.push(transformSetOfLinearRings(polygons[i], transformation, settings));
+    }
+
+    return {
+      type: 'MultiPolygon',
+      coordinates: transformedPolygons
+    }
+  }
+
+  if (input === 'xy') {
+    return {
+      type: 'MultiPolygon',
+      coordinates: [
+        [transformXYArrays(multiPolygon, transformation, settings)]
+      ]
+    }
+  }
+}
+
+function createDownScaler ({ scaleX, scaleY }) {
+  const sX = scaleX.copy().range([0, 2 * Math.PI]);
+  const sY = scaleY.copy().range([0, 1]);
+
+  return ([x, y]) => [sX(x), sY(y)]
+}
+
+function getNumberOfInterpolatedPoints (
+  from,
+  to,
+  scaleDown,
+  context,
+  { interpolationTreshold = 1 }
+) {
+  const fromScaledDown = scaleDown(from);
+  const toScaledDown = scaleDown(to);
+  const totalScaleFactor = getTotalScaleFactor(context);
+
+  if (straightInYDimension(fromScaledDown, toScaledDown, totalScaleFactor)) {
+    return 0
+  }
+
+  const functionalForm = getFunctionalForm(fromScaledDown, toScaledDown);
+  const scaledDownLength = getPolarLength(functionalForm);
+
+  const realLength = scaledDownLength * totalScaleFactor;
+  const numberOfPointsNeeded = realLength / interpolationTreshold;
+
+  return Math.ceil(numberOfPointsNeeded) - 1
+}
+
+function getFunctionalForm (from, to) {
+  const pointsSorted = from[0] < to[0]
+    ? [from, to]
+    : [to, from];
+
+  const [[x1, y1], [x2, y2]] = pointsSorted;
+
+  const a = (y2 - y1) / (x2 - x1);
+  const b = y1 - (x1 * a);
+  const interval = [x1, x2];
+
+  return { a, b, interval }
+}
+
+function straightInYDimension (from, to, totalScaleFactor) {
+  return Math.abs(from[0] - to[0]) * totalScaleFactor < 1
+}
+
+function getPolarLength ({ a, b, interval }) {
+  const [c, d] = interval;
+  const aSq = a ** 2;
+  const bSq = b ** 2;
+
+  /*
+   * This is the integral of:
+   * sqrt( (a * theta + b) ** 2 + a ** 2 )
+   * between c and d
+   */
+  return (
+    aSq * Math.asinh((a * d + b) / a) + (a * d + b) *
+    Math.sqrt(aSq * d ** 2 + 2 * a * b * d + bSq + aSq) -
+    aSq * Math.asinh((a * c + b) / a) + (-a * c - b) *
+    Math.sqrt(aSq * c ** 2 + 2 * a * b * c + bSq + aSq)
+  ) / (2 * a)
+}
+
+function getTotalScaleFactor ({ rangeX, rangeY, zoomIdentity }) {
+  const totalScaleFactorX = Math.abs(Math.abs(rangeX[1] - rangeX[0]) * zoomIdentity.kx);
+  const totalScaleFactorY = Math.abs(Math.abs(rangeY[1] - rangeY[0]) * zoomIdentity.ky);
+
+  return Math.max(totalScaleFactorX, totalScaleFactorY)
+}
+
+function interpolatePoints (
+  transformedLinearRing,
+  from,
+  to,
+  transformation,
+  numberOfPointsNeeded
+) {
+  const interpolator = interpolate(from, to);
+
+  for (let i = 0; i < numberOfPointsNeeded; i++) {
+    const t = i / numberOfPointsNeeded;
+    transformedLinearRing.push(interpolator(t));
+  }
+}
+
+function interpolate (from, to) {
+  const dx = from[0] - to[0];
+  const dy = from[1] - to[1];
+
+  return t => ([
+    from[0] + t * dx,
+    from[1] + t * dy
+  ])
+}
+
+function interpolateLinearRing (linearRing, transformation, context, settings) {
+  if (!settings.simplify || linearRing.length < 3) {
+    return interpolateLinearRingUnsimplified(linearRing, transformation, context, settings)
+  }
+
+  if (settings.simplify === true) {
+    return interpolateLinearRingSimplified()
+  }
+}
+
+function interpolateLinearRingUnsimplified (linearRing, transformation, context, settings) {
+  const interpolatedLinearRing = [];
+  const scaleDown = createDownScaler(context);
+
+  for (let i = 0; i < linearRing.length - 1; i++) {
+    const from = linearRing[i];
+    const to = linearRing[i + 1];
+
+    interpolatedLinearRing.push(transformation(from));
+
+    const numberOfPointsNeeded = getNumberOfInterpolatedPoints(
+      from,
+      to,
+      scaleDown,
+      context,
+      settings
+    );
+
+    if (numberOfPointsNeeded > 0) {
+      interpolatePoints(interpolatedLinearRing, from, to, transformation, numberOfPointsNeeded);
+    }
+  }
+
+  const lastPoint = linearRing[linearRing.length - 1];
+  interpolatedLinearRing.push(transformation(lastPoint));
+
+  return interpolatedLinearRing
+}
+
+function interpolateLinearRingSimplified (linearRing, transformation, context, settings) {
+
+}
+
+function interpolateSetOfLinearRings (linearRings, transformation, context, settings) {
+  const interpolatedLinearRings = [];
+
+  for (let i = 0; i < linearRings.length; i++) {
+    interpolatedLinearRings.push(interpolateLinearRing(linearRings[i], transformation, context, settings));
+  }
+
+  return interpolatedLinearRings
+}
+
+const interpolateFunctions = {
+  interpolateLineString,
+  interpolateMultiLineString,
+  interpolatePolygon,
+  interpolateMultiPolygon
+};
+
+function interpolateGeometry (geometry, _transformation, context, settings = {}) {
+  const functionName = 'interpolate' + geometry.type;
+
+  const transformation = settings.decimals
+    ? point => roundPoint(_transformation(point), settings.decimals)
+    : _transformation;
+
+  return interpolateFunctions[functionName](geometry, transformation, context, settings)
+}
+
+function interpolateLineString (lineString, transformation, context, settings) {
+  return {
+    type: 'LineString',
+    coordinates: interpolateLinearRing(lineString.coordinates, transformation, context, settings)
+  }
+}
+
+function interpolateMultiLineString (multiLineString, transformation, context, settings) {
+  return {
+    type: 'MultiLineString',
+    coordinates: interpolateSetOfLinearRings(multiLineString.coordinates, transformation, context, settings)
+  }
+}
+
+function interpolatePolygon (polygon, transformation, context, settings) {
+  return {
+    type: 'Polygon',
+    coordinates: interpolateSetOfLinearRings(polygon.coordinates, transformation, context, settings)
+  }
+}
+
+function interpolateMultiPolygon (multiPolygon, transformation, context, settings) {
+  const polygons = multiPolygon.coordinates;
+  const transformedPolygons = [];
+
+  for (let i = 0; i < polygons.length; i++) {
+    transformedPolygons.push(interpolateSetOfLinearRings(polygons[i], transformation, context, settings));
+  }
+
+  return {
+    type: 'MultiPolygon',
+    coordinates: transformedPolygons
+  }
+}
+
+export { interpolateGeometry, transformGeometry };
