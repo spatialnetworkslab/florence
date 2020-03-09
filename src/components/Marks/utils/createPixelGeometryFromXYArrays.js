@@ -31,14 +31,6 @@ export function createPixelGeometryFromXYArrays (
 
   validateXYArrays(xArray, yArray)
 
-  const totalTransformation = getTotalTransformation({
-    sectionContext,
-    xNeedsScaling,
-    yNeedsScaling,
-    coordinateTransformationContext,
-    zoomContext
-  })
-
   const rendervousInput = createRendervousInput(xArray, yArray, geometryType)
 
   if (
@@ -46,11 +38,20 @@ export function createPixelGeometryFromXYArrays (
     coordinateTransformationContext.type() !== 'identity' &&
     renderSettings.interpolate === true
   ) {
-    const combinedContext = combineContexts(sectionContext, zoomContext)
-    return interpolateGeometry(
-      rendervousInput, totalTransformation, combinedContext, renderSettings
+    const combinedContext = combineContexts(
+      sectionContext, coordinateTransformationContext, zoomContext
     )
+
+    return interpolateGeometry(rendervousInput, combinedContext, renderSettings)
   }
+
+  const totalTransformation = getTotalTransformation({
+    sectionContext,
+    xNeedsScaling,
+    yNeedsScaling,
+    coordinateTransformationContext,
+    zoomContext
+  })
 
   return inputNeedsToBeTransformed(totalTransformation)
     ? transformGeometry(rendervousInput, totalTransformation, renderSettings)

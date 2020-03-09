@@ -9,10 +9,8 @@ export default function parseRenderSettings (renderSettings, coordinateTransform
 
   const parsedRenderSettings = Object.assign(defaultRenderSettings, renderSettings)
 
-  if (coordinateTransformationContext) {
-    parsedRenderSettings.interpolate = coordinateTransformationContext.type() === 'identity'
-      ? false
-      : parsedRenderSettings.interpolate
+  if (coordinateTransformationContext && coordinateTransformationContext.type() === 'identity') {
+    parsedRenderSettings.interpolate = false
   }
 
   return parsedRenderSettings
