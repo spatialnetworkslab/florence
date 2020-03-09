@@ -6,11 +6,11 @@
 
 <style>
 .sidenav-first{
-  @apply text-xl font-semibold no-underline;
+  @apply text-lg font-semibold no-underline;
 }
 
 .sidenav-second{
-  @apply text-base font-normal pl-6;
+  @apply text-sm font-normal pl-6;
   transition: border-color 1s;
 }
 
