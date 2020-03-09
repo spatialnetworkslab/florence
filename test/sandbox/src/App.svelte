@@ -12,7 +12,7 @@
   import Line from './examples/Line.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
   import FuncLines from './examples/FuncLines.svelte'
-  import Legends from './examples/Legends.svelte'
+  // import Legends from './examples/Legends.svelte'
   import DragCategorical from './examples/DragCategorical.svelte'
   import FunctionAPI from './examples/FunctionAPI.svelte'
   import FlipTest from './examples/FlipTest.svelte'
@@ -29,6 +29,9 @@
   import Title from './examples/Title.svelte'
   import LegendsDocs from './examples/LegendsDocs.svelte'
   import TitleDocs from './examples/TitleDocs.svelte'
+
+  // Tutorials
+  import BasicTutorial from './examples/BasicTutorial.svelte'
 
   // and add them to this component array
   const components = [
@@ -82,11 +85,11 @@
       url: 'funclines',
       component: FuncLines
     },
-    {
-      name: 'Legends',
-      url: '/legends',
-      component: Legends
-    },
+    // {
+    //   name: 'Legends',
+    //   url: '/legends',
+    //   component: Legends
+    // },
     {
       name: 'DragCategorical',
       url: 'dragcategorical',
@@ -166,6 +169,11 @@
       name: 'Title: Docs',
       url: 'titledocs',
       component: TitleDocs
+    },
+    {
+      name: 'Basic Tutorial',
+      url: 'basictutorial',
+      component: BasicTutorial
     }
   ]
 </script>

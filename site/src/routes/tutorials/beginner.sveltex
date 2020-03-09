@@ -3,7 +3,7 @@ The Florence library comes with a range of components that can be used to compos
 
 - Graphic
 - Section
-- Map
+- Scales
 - A selection of the available Marks
 - Axes
 
@@ -11,13 +11,14 @@ You may further customise your graph using the following components:
 
 - Plot Title
 - Axis Title
+- Legend
 - X/Y Grid
 
-For scaling, we rely on d3 scales. // TODO add link
+For scaling, we rely on [d3 scales](https://github.com/d3/d3-scale).
 
 ## Dataset
 
-The following tutorial will walk through the steps needed to create a basic dot plot of this dataset:
+The following tutorial will walk through the steps needed to create a basic dot plot of this dataset.
 
 |fruit|	diameter|		|fruit|	diameter|
 | ---- | ---- | ---- | ---- | ---- |
@@ -33,6 +34,66 @@ The following tutorial will walk through the steps needed to create a basic dot 
 |pomelo|	10.6	| |	pomelo	| 10.3 |
 |lemon|	6.4	| |	grapefruit |	9.4 |
 
+## Formatting the dataset
+
+The data accepted by the library components can either be organized by row or by column.
+
+To pass in data by row, the data should take the form of an array of objects, where each object contains the column_name:value pairs per instance (row).
+
+To pass in data by column, the data should be a single object of column_name:[ value1, value2, value3 ...] where all the values in a column are included in an array accessible by column name.
+
+**Passing in data by column is the preferred format as it reduces the amount of pre-processing needed.** The above data, for example, should be pre-processed into the following structure:
+
+```js
+let data = {
+    diameter: [
+      4.7, 6.1, 7.9, 6.6, 6.7, 5.3, 11.6, 11.1, 5.5, 10.6, 6.4,
+      4.9, 8.8, 12.5, 12.7, 8.6, 13.1, 5.8, 8.9, 9.1, 10.3, 9.4, 10.1
+    ],
+    fruit: [
+      "lime", "lemon","grapefruit", "lemon", "orange", "lemon", 
+      "pomelo", "grapefruit", "lime", "pomelo", "lemon",
+      "lime", "grapefruit", "pomelo", "grapefruit", "grapefruit",
+      "pomelo", "lime", "orange", "grapefruit", "pomelo", 
+      "grapefruit", "anchovies"
+    ]
+  }
+```
+
+### Using a `DataContainer`
+
+When using Florence, we have the added advantage of a component called `DataContainer`, that lets us store data as either rows or columns and perform
+pre-processing operations on it. Take a look at the example below for examples of 
+such operations.
+
+```js
+import DataContainer from "@snlab/florence-datacontainer";
+
+let data = new DataContainer({
+    diameter: [
+      4.7, 6.1, 7.9, 6.6, 6.7, 5.3, 11.6, 11.1, 5.5, 10.6, 6.4,
+      4.9, 8.8, 12.5, 12.7, 8.6, 13.1, 5.8, 8.9, 9.1, 10.3, 9.4, 10.1
+    ],
+    fruit: [
+      "lime", "lemon","grapefruit", "lemon", "orange", "lemon", 
+      "pomelo", "grapefruit", "lime", "pomelo", "lemon",
+      "lime", "grapefruit", "pomelo", "grapefruit", "grapefruit",
+      "pomelo", "lime", "orange", "grapefruit", "pomelo", 
+      "grapefruit", "anchovies"
+    ]
+  });
+
+data = data
+    .dropNA() // drops NA values
+    .filter(row => row.fruit !== "anchovies") // filters out unwanted values
+    .groupBy("fruit") // groups data by common categorical values
+    .summarise({ meanQuantity: { diameter: "mean" } }) // gets mean of groups
+    .arrange({ meanQuantity: "descending" }); // arranges a variable by ascending/descending order
+```
+
+For further details on data loading and formatting using `Data Container`, refer to its [documentation](https://github.com/spatialnetworkslab/florence-datacontainer).
+
+
 ## Graphic
 The `Graphic` component is used in all Florence graphs. The component is declared first, and takes the width, height and data properties.
 
@@ -46,3 +107,20 @@ The `Section` component divides the `Graphic` (or canvas) up into subsections. E
 It is sometimes convenient to use `Section` instead of declaring `Graphic` multiple times when the sub-graphs use the same dataset (faceting), or when user interactions are meant to be reflected across multiple graphs.
 
 In this example, we declare a single `Section` since only a single graph is being created.
+
+## Scales
+
+## Marks
+
+### Adding color schemes to your marks
+
+## Axes
+
+## Plot Title (Optional)
+
+## Axis Title (Optional)
+
+## Legend (Optional)
+
+## X/Y Grid (TODO)
+

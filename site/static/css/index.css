@@ -620,6 +620,11 @@ strong {
 
 a {
   text-decoration: underline;
+  transition: color 0.75s;
+}
+
+a:hover {
+  color: #e53e3e;
 }
 
 ul {

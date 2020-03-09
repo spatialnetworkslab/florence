@@ -24,6 +24,11 @@ strong {
 
 a {
   @apply underline;
+  transition: color 0.75s;
+}
+
+a:hover {
+  @apply text-red-600;
 }
 
 ul {
