@@ -321,13 +321,11 @@
   }
 
   function updatePixelGeometry () {
-    const zoomTransformation = ZoomContext.createZoomTransformation($zoomContext)
-
     pixelGeometry = createPixelGeometry(
       positioningAesthetics,
       $sectionContext,
       $coordinateTransformationContext,
-      zoomTransformation,
+      $zoomContext,
       parseRenderSettings(renderSettings, $coordinateTransformationContext)
     )
   }

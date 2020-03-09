@@ -9,7 +9,7 @@ export default function createPixelGeometry (
   geometryProps,
   sectionContext,
   coordinateTransformationContext,
-  zoomTransformation,
+  zoomContext,
   renderSettings
 ) {
   ensureValidGeometryProps(geometryProps)
@@ -20,7 +20,7 @@ export default function createPixelGeometry (
     xNeedsScaling: false,
     yNeedsScaling: false,
     coordinateTransformationContext,
-    zoomTransformation
+    zoomContext
   })
 
   return transformation

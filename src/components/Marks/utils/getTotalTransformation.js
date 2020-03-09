@@ -16,14 +16,14 @@ export default function getTotalTransformation ({
     transformations.push(scaleTransformation)
   }
 
-  if (coordinateTransformationContext) {
+  if (coordinateTransformationContext && coordinateTransformationContext.type() !== 'identity') {
     transformations.push(
       coordinateTransformationContext.transform.bind(coordinateTransformationContext)
     )
   }
 
   if (zoomTransformation) {
-    transformations.push(zoomTransformation)
+    transformations.push(zoomTransformation.transformation)
   }
 
   return chainTransformations(transformations)

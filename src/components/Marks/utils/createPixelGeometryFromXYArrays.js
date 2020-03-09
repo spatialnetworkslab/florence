@@ -1,8 +1,9 @@
 import getTotalTransformation from './getTotalTransformation.js'
-import { transformGeometry } from '../../../utils/geometryUtils'
+import { transformGeometry, interpolateGeometry } from '../../../utils/geometryUtils'
 import { isDefined } from '../../../utils/equals.js'
 import getKeyArray from './getKeyArray.js'
 import { validateXYProps, validateXYPropsLayer } from './geometryPropTools.js'
+import combineContexts from './combineContexts.js'
 
 const needsScaling = prop => prop.constructor === Array
 const inputNeedsToBeTransformed = totalTransformation => isDefined(totalTransformation)
@@ -11,7 +12,7 @@ export function createPixelGeometryFromXYArrays (
   { x, y },
   sectionContext,
   coordinateTransformationContext,
-  zoomTransformation,
+  zoomContext,
   renderSettings,
   geometryType
 ) {
@@ -35,10 +36,21 @@ export function createPixelGeometryFromXYArrays (
     xNeedsScaling,
     yNeedsScaling,
     coordinateTransformationContext,
-    zoomTransformation
+    zoomContext
   })
 
   const rendervousInput = createRendervousInput(xArray, yArray, geometryType)
+
+  if (
+    coordinateTransformationContext &&
+    coordinateTransformationContext.type() !== 'identity' &&
+    renderSettings.interpolate === true
+  ) {
+    const combinedContext = combineContexts(sectionContext, zoomContext)
+    return interpolateGeometry(
+      rendervousInput, totalTransformation, combinedContext, renderSettings
+    )
+  }
 
   return inputNeedsToBeTransformed(totalTransformation)
     ? transformGeometry(rendervousInput, totalTransformation, renderSettings)
@@ -72,7 +84,7 @@ export function createPixelGeometryObjectFromXYArrays (
   keyProp,
   sectionContext,
   coordinateTransformationContext,
-  zoomTransformation,
+  zoomContext,
   renderSettings,
   geometryType
 ) {
@@ -109,7 +121,7 @@ export function createPixelGeometryObjectFromXYArrays (
       { x: xArray, y: yArray },
       sectionContext,
       coordinateTransformationContext,
-      zoomTransformation,
+      zoomContext,
       renderSettings,
       geometryType
     )

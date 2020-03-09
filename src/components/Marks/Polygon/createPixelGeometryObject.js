@@ -11,7 +11,7 @@ export default function createPixelGeometry (
   keyProp,
   sectionContext,
   coordinateTransformationContext,
-  zoomTransformation,
+  zoomContext,
   renderSettings
 ) {
   ensureValidGeometryProps(geometryProps)
@@ -23,7 +23,7 @@ export default function createPixelGeometry (
       keyProp,
       sectionContext,
       coordinateTransformationContext,
-      zoomTransformation,
+      zoomContext,
       renderSettings,
       'Polygon'
     )
@@ -35,7 +35,7 @@ export default function createPixelGeometry (
       keyProp,
       sectionContext,
       coordinateTransformationContext,
-      zoomTransformation,
+      zoomContext,
       renderSettings
     )
   }

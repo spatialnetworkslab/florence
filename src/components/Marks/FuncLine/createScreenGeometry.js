@@ -8,7 +8,7 @@ export default function createScreenGeometry (
   { func, x },
   sectionContext,
   coordinateTransformationContext,
-  zoomTransformation,
+  zoomContext,
   renderSettings
 ) {
   ensureValidInput(func, x)
@@ -25,7 +25,7 @@ export default function createScreenGeometry (
     xNeedsScaling: true,
     yNeedsScaling: true,
     coordinateTransformationContext,
-    zoomTransformation
+    zoomContext
   })
 
   if (geometryCompletelyOffScreen(geometry, totalTransformation, sectionContext)) {

@@ -58,7 +58,7 @@
   export let onDeselect = undefined
 
   // Other
-  export let renderSettings = undefined
+  // export let renderSettings = undefined
   export let blockReindexing = false
 
   // Contexts
@@ -72,7 +72,7 @@
     { func, x },
     $sectionContext,
     $coordinateTransformationContext,
-    ZoomContext.createZoomTransformation($zoomContext),
+    $zoomContext,
     {}
   )
 
@@ -89,7 +89,7 @@
         { func, x },
         $sectionContext,
         $coordinateTransformationContext,
-        ZoomContext.createZoomTransformation($zoomContext),
+        $zoomContext,
         {}
       )
 

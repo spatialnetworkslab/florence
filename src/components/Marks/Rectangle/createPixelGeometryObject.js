@@ -8,7 +8,7 @@ export default function createPixelGeometryObject (
   keyProp,
   sectionContext,
   coordinateTransformationContext,
-  zoomTransformation,
+  zoomContext,
   renderSettings
 ) {
   const { scaledCoordinates, length } = scaleCoordinates(geometryProps, sectionContext)
@@ -19,7 +19,7 @@ export default function createPixelGeometryObject (
     keyProp,
     sectionContext,
     coordinateTransformationContext,
-    zoomTransformation,
+    zoomContext,
     renderSettings
   )
 }

@@ -1,6 +1,5 @@
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
-import { isDefined, isUndefined } from '../../../../utils/equals.js'
 
 const key = {}
 
@@ -17,7 +16,7 @@ export function init () {
 
 export function update (zoomContext, zoomIdentity) {
   if (zoomIdentity) {
-    zoomContext.set(zoomIdentity)
+    zoomContext.set(createZoomContext(zoomIdentity))
   }
 
   if (!zoomIdentity) {
@@ -25,61 +24,23 @@ export function update (zoomContext, zoomIdentity) {
   }
 }
 
-export function createZoomTransformation (zoomContext, zoomIdentity) {
-  if (isDefined(zoomContext)) {
-    if (isUndefined(zoomIdentity)) {
-      return createZoomFunction(zoomContext)
-    }
+function createZoomContext (zoomIdentity) {
+  const parsedZoomIdentity = parseZoomIdentity(zoomIdentity)
+  const transformation = createZoomFunction(zoomIdentity)
 
-    if (isDefined(zoomIdentity)) {
-      const combinedZoomIdentity = reconcileZoomIdentities(zoomContext, zoomIdentity)
-      return createZoomFunction(combinedZoomIdentity)
-    }
-  }
-
-  if (isUndefined(zoomContext)) {
-    if (isUndefined(zoomIdentity)) {
-      return undefined
-    }
-
-    if (isDefined(zoomIdentity)) {
-      return createZoomFunction(zoomIdentity)
-    }
-  }
+  return { ...parsedZoomIdentity, transformation }
 }
 
-export function createZoomFunction (zoomIdentity) {
-  ensureValidZoomIdentity(zoomIdentity)
+function parseZoomIdentity (zoomIdentity) {
+  const defaults = { x: 0, y: 0, kx: 1, ky: 1 }
+  return Object.assign(defaults, zoomIdentity)
+}
 
+function createZoomFunction (zoomIdentity) {
   const { x, y, kx, ky } = zoomIdentity
   const transformation = p => [p[0] * kx + x, p[1] * ky + y]
   const inverseTransformation = p => [(p[0] - x) / kx, (p[1] - y) / ky]
   transformation.invert = inverseTransformation
 
   return transformation
-}
-
-function ensureValidZoomIdentity (zoomIdentity) {
-  if (
-    hasValid(zoomIdentity, 'x') &&
-    hasValid(zoomIdentity, 'y') &&
-    hasValid(zoomIdentity, 'kx') &&
-    hasValid(zoomIdentity, 'ky') &&
-    Object.keys(zoomIdentity).length === 4
-  ) {
-    return
-  }
-
-  throw new Error(`Invalid zoomIdentity: '${JSON.stringify(zoomIdentity)}`)
-}
-
-function hasValid (zoomIdentity, key) {
-  return key in zoomIdentity && zoomIdentity[key].constructor === Number
-}
-
-function reconcileZoomIdentities (zoomContext, zoomIdentity) {
-  let newZoomIdentity = Object.assign({}, zoomContext)
-  newZoomIdentity = Object.assign(newZoomIdentity, zoomIdentity)
-
-  return newZoomIdentity
 }

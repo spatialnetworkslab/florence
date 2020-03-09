@@ -1,8 +1,9 @@
 import getTotalTransformation from './getTotalTransformation.js'
-import { transformGeometry } from '../../../utils/geometryUtils'
+import { transformGeometry, interpolateGeometry } from '../../../utils/geometryUtils'
 import { isDefined } from '../../../utils/equals.js'
 import getKeyArray from './getKeyArray.js'
 import { validateGeometryProp, validateGeometryPropLayer } from './geometryPropTools.js'
+import combineContexts from './combineContexts.js'
 
 const geometryNeedsToBeTransformed = totalTransformation => isDefined(totalTransformation)
 
@@ -10,7 +11,7 @@ export function createPixelGeometryFromGeometry (
   geometryProps,
   sectionContext,
   coordinateTransformationContext,
-  zoomTransformation,
+  zoomContext,
   renderSettings
 ) {
   validateGeometryProp(geometryProps.geometry)
@@ -28,8 +29,19 @@ export function createPixelGeometryFromGeometry (
     xNeedsScaling: geometryNeedsScaling,
     yNeedsScaling: geometryNeedsScaling,
     coordinateTransformationContext,
-    zoomTransformation
+    zoomContext
   })
+
+  if (
+    coordinateTransformationContext &&
+    coordinateTransformationContext.type() !== 'identity' &&
+    renderSettings.interpolate === true
+  ) {
+    const combinedContext = combineContexts(sectionContext, zoomContext)
+    return interpolateGeometry(
+      geometry, totalTransformation, combinedContext, renderSettings
+    )
+  }
 
   return geometryNeedsToBeTransformed(totalTransformation)
     ? transformGeometry(geometry, totalTransformation, renderSettings)
@@ -54,7 +66,7 @@ export function createPixelGeometryObjectFromGeometry (
   keyProp,
   sectionContext,
   coordinateTransformationContext,
-  zoomTransformation,
+  zoomContext,
   renderSettings
 ) {
   validateGeometryPropLayer(geometryProps.geometry)
@@ -81,7 +93,7 @@ export function createPixelGeometryObjectFromGeometry (
       { geometry },
       sectionContext,
       coordinateTransformationContext,
-      zoomTransformation,
+      zoomContext,
       renderSettings
     )
   }

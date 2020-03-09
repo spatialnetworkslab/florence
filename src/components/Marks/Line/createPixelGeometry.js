@@ -10,7 +10,7 @@ export default function createPixelGeometry (
   geometryProps,
   sectionContext,
   coordinateTransformationContext,
-  zoomTransformation,
+  zoomContext,
   renderSettings
 ) {
   ensureValidGeometryProps(geometryProps)
@@ -21,7 +21,7 @@ export default function createPixelGeometry (
       geometryProps,
       sectionContext,
       coordinateTransformationContext,
-      zoomTransformation,
+      zoomContext,
       renderSettings,
       'LineString'
     )
@@ -32,7 +32,7 @@ export default function createPixelGeometry (
       geometryProps,
       sectionContext,
       coordinateTransformationContext,
-      zoomTransformation,
+      zoomContext,
       renderSettings
     )
   }

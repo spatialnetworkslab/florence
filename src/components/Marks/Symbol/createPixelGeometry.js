@@ -8,14 +8,14 @@ export default function createPixelGeometry (
   geometryProps,
   sectionContext,
   coordinateTransformationContext,
-  zoomTransformation,
+  zoomContext,
   renderSettings
 ) {
   const pointGeometry = createPixelGeometryPoint(
     geometryProps,
     sectionContext,
     coordinateTransformationContext,
-    zoomTransformation,
+    zoomContext,
     renderSettings
   )
 

@@ -1,5 +1,3 @@
-import { createZoomFunction } from '../../../components/Core/Section/ZoomContext'
-
 export function getLocalCoordinates (screenCoordinates, interactionManager) {
   const section = interactionManager._section
 
@@ -8,7 +6,7 @@ export function getLocalCoordinates (screenCoordinates, interactionManager) {
     : undefined
 
   const zoom = interactionManager._zoom
-    ? createZoomFunction(interactionManager._zoom)
+    ? interactionManager._zoom.transformation
     : undefined
 
   const { scaleX, scaleY } = section
