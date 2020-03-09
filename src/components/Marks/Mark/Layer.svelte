@@ -90,6 +90,7 @@
   export let _asPolygon = true
   export let zoomIdentity = undefined
   export let blockReindexing = false
+  export let clipped = true
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
@@ -476,7 +477,7 @@
 {#if $graphicContext.output() === 'svg'}
 
   {#if renderPolygon}
-    <g class={`${type.toLowerCase()}-layer`}>
+    <g class={`${type.toLowerCase()}-layer`} clip-path={clipped ? `url(#clip-${$sectionContext.sectionId}-data)` : 'none'}>
       {#each Object.keys($tr_screenGeometryObject) as $key ($key)}
 
         <path
@@ -496,7 +497,7 @@
   {/if}
 
   {#if renderCircle}
-    <g class="point-layer">
+    <g class="point-layer" clip-path={clipped ? `url(#clip-${$sectionContext.sectionId}-data)` : 'none'}>
       {#each Object.keys($tr_screenGeometryObject) as $key ($key)}
 
         <circle
@@ -517,7 +518,7 @@
   {/if}
 
   {#if renderLine}
-    <g class="line-layer">
+    <g class="line-layer" clip-path={clipped ? `url(#clip-${$sectionContext.sectionId}-data)` : 'none'}>
       {#each Object.keys($tr_screenGeometryObject) as $key ($key)}
 
         <path
@@ -536,7 +537,7 @@
 {/if}
 
 {#if renderLabel}
-  <g class="label-layer">
+  <g class="label-layer" clip-path={clipped ? `url(#clip-${$sectionContext.sectionId}-data)` : 'none'}>
     {#each Object.keys($tr_screenGeometryObject) as $key ($key)}
 
       <text 

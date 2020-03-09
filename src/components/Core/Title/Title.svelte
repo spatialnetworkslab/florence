@@ -63,6 +63,7 @@
   let xRange = $sectionContext.scaleX.range()
   let yRange = $sectionContext.scaleY.range()
   let totalFontSize
+  const clipped = false
 
   $: {
     if (usePadding === true) {
@@ -131,6 +132,7 @@
   fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
   {zoomIdentity} _asPolygon={false}
+  {clipped}
 />
 <!-- {/if} -->
 
@@ -147,5 +149,6 @@
   fontFamily={subtitleFontFamily} fontSize={subtitleFontSize} fontWeight={subtitleFontWeight} rotation={subtitleRotation} anchorPoint={subtitleAnchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
   {zoomIdentity} _asPolygon={false}
+  {clipped}
 />
 <!-- {/if} -->

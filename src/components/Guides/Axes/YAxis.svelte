@@ -77,6 +77,7 @@
   let axisWidth
   let labelAnchorPoint = 'r'
   let scaleY
+  const clipped = false
   
   $: {
     scaleY = (typeof scale === 'undefined') ? $sectionContext.scaleY : scale;
@@ -103,31 +104,31 @@
 <g class="y-axis">
 
   {#if baseLine}
-    <Line 
+    <Line
       x={xCoords} y={yCoords} strokeWidth={baseLineWidth} opacity={baseLineOpacity} stroke={baseLineColor}
-      {zoomIdentity}
+      {zoomIdentity} {clipped}
     />
   {/if}
 
   {#if ticks}
-    <LineLayer 
+    <LineLayer
       x={tickXCoords} y={tickYCoords} strokeWidth={tickWidth} opacity={tickOpacity} stroke={tickColor}
-      {transition} {zoomIdentity}
+      {transition} {zoomIdentity} {clipped}
     />
     <LabelLayer
       x={tickLabelXCoords} y={tickLabelYCoords} text={tickLabelText} anchorPoint={labelAnchorPoint}
       rotation={labelRotate} fontFamily={labelFont} fontSize={labelFontSize}
       fontWeight={labelFontWeight} opacity={labelOpacity} fill={labelColor}
-      {transition} {zoomIdentity}
+      {transition} {zoomIdentity} {clipped}
     />
   {/if}
 
   {#if title.length > 0}
-    <Label 
+    <Label
       x={titleXCoord} y={titleYCoord} text={title} anchorPoint={titleAnchorPoint}
       rotation={titleRotation} fontFamily={titleFont} fontSize={titleFontSize}
       fontWeight={titleFontWeight} opacity={titleOpacity} fill={titleColor}
-      {zoomIdentity}
+      {zoomIdentity} {clipped}
     />
   {/if}
 

@@ -46,6 +46,7 @@
   export let key = undefined
   export let zoomIdentity = undefined
   export let blockReindexing = false
+  export let clipped = true
 </script>
 
 <Layer 
@@ -60,4 +61,5 @@
   {onTouchdown} {onTouchup} {onTouchover} {onTouchout} {onTouchdrag}
   {onSelect} {onDeselect}
   {key} {zoomIdentity} _asPolygon={false} {blockReindexing}
+  {clipped}
 />

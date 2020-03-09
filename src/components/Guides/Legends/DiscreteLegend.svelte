@@ -97,6 +97,7 @@
   let rangeCoordsY
   let xRange = $sectionContext.scaleX.range()
   let yRange = $sectionContext.scaleY.range()
+  const clipped = false
 
   let colorXStartCoords
   let colorXEndCoords
@@ -362,6 +363,7 @@
     {stroke}
     {strokeWidth}
     {zoomIdentity}
+    {clipped}
   />
 
   <LabelLayer
@@ -377,10 +379,11 @@
     fill={labelColor}
     {transition} 
     {zoomIdentity}
+    {clipped}
   />
 
   {#if title.length > 0}
-    <Label 
+    <Label
       x={ () => { return titleX } }
       y={ () => { return titleY } }
       text={title}
@@ -393,6 +396,7 @@
       fill={titleColor}
       {transition} 
       {zoomIdentity}
+      {clipped}
     />
   {/if}
 </g>

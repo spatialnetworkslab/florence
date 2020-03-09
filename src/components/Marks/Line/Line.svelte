@@ -37,6 +37,7 @@
   export let interpolate = true
   export let zoomIdentity = undefined
   export let blockReindexing = false
+  export let clipped = true
 </script>
 
 <Mark 
@@ -48,4 +49,5 @@
   {onTouchdown} {onTouchup} {onTouchover} {onTouchout} {onTouchdrag}
   {onSelect} {onDeselect}
   {interpolate} {zoomIdentity} _asPolygon={false} {blockReindexing}
+  {clipped}
 />

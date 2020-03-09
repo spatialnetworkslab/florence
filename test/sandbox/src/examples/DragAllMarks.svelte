@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, Section, Rectangle, Line, FuncLine } from '../../../../src'
+  import { Graphic, Section, Rectangle, Line, FuncLine, XAxis, YAxis } from '../../../../src'
   import { scaleLinear } from 'd3-scale'
 
   let blockReindexing = false
@@ -109,6 +109,8 @@
     scaleX={scaleLinear().domain([0, 10])}
     scaleY={scaleLinear().domain([0, 10])}
     {blockReindexing}
+    flipY
+    padding={40}
   >
   
     <Rectangle 
@@ -133,6 +135,9 @@
       onMousedrag={dragFuncLine}
       onTouchdrag={dragFuncLine}
     />
+
+    <XAxis title='X' />
+    <YAxis title='Y' titleRotation={0} />
 
   </Section>
 

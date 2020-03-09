@@ -90,6 +90,7 @@
   export let _asPolygon = true
   export let zoomIdentity = undefined
   export let blockReindexing = false
+  export let clipped = true
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
@@ -447,7 +448,7 @@
 
   {#if renderPolygon}
 
-    <path
+    <path clip-path={clipped ? `url(#clip-${$sectionContext.sectionId}-data)` : 'none'}
       class={type.toLowerCase()}
       d={generatePath($tr_screenGeometry)}
       fill={$tr_fill}
@@ -462,7 +463,7 @@
 
   {#if renderCircle}
 
-    <circle 
+    <circle clip-path={clipped ? `url(#clip-${$sectionContext.sectionId}-data)` : 'none'}
       class="point"
       cx={$tr_screenGeometry.coordinates[0]}
       cy={$tr_screenGeometry.coordinates[1]}
@@ -479,7 +480,7 @@
 
   {#if renderLine}
 
-    <path
+    <path clip-path={clipped ? `url(#clip-${$sectionContext.sectionId}-data)` : 'none'}
       class="line"
       d={generatePath($tr_screenGeometry)}
       fill="none"
@@ -492,7 +493,7 @@
 
   {#if renderLabel}
 
-    <text 
+    <text clip-path={clipped ? `url(#clip-${$sectionContext.sectionId}-data)` : 'none'}
       class="label"
       x={$tr_screenGeometry.coordinates[0]}
       y={$tr_screenGeometry.coordinates[1]}

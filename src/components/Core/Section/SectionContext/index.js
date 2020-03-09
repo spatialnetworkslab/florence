@@ -4,7 +4,7 @@ import { writable } from 'svelte/store'
 
 class SectionContext {
   constructor ({ sectionId, rangeX, rangeY, scaleX, scaleY, padding, flipX, flipY, blockReindexing }) {
-    this._sectionId = sectionId
+    this.sectionId = sectionId
 
     this.rangeX = rangeX
     this.rangeY = rangeY
