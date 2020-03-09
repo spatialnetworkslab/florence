@@ -291,6 +291,39 @@ function createDownScaler ({ scaleX, scaleY }) {
   return ([x, y]) => [sX(x), sY(y)]
 }
 
+function createScaleTransformation ({ scaleX, scaleY }) {
+  return ([x, y]) => [scaleX(x), scaleY(y)]
+}
+
+function createPostScaleTransformation ({
+  coordinateTransformation,
+  zoomIdentity
+}, decimals) {
+  if (zoomIdentity) {
+    if (decimals !== undefined) {
+      return point => roundPoint(
+        zoomIdentity.zoomTransformation(coordinateTransformation(point)), decimals
+      )
+    }
+
+    if (decimals === undefined) {
+      return point => zoomIdentity.zoomTransformation(coordinateTransformation(point))
+    }
+  }
+
+  if (!zoomIdentity) {
+    if (decimals !== undefined) {
+      return point => roundPoint(
+        coordinateTransformation(point), decimals
+      )
+    }
+
+    if (decimals === undefined) {
+      return coordinateTransformation
+    }
+  }
+}
+
 function getNumberOfInterpolatedPoints (
   from,
   to,
@@ -365,30 +398,36 @@ function interpolatePoints (
   transformedLinearRing,
   from,
   to,
-  transformation,
+  scaleTransformation,
+  postScaleTransformation,
   numberOfPointsNeeded
 ) {
-  const interpolator = interpolate(from, to);
+  const fromScaled = scaleTransformation(from);
+  const toScaled = scaleTransformation(to);
+
+  const interpolator = interpolate(fromScaled, toScaled);
 
   for (let i = 0; i < numberOfPointsNeeded; i++) {
-    const t = i / numberOfPointsNeeded;
-    transformedLinearRing.push(interpolator(t));
+    const t = (i + 1) / (numberOfPointsNeeded + 1);
+    transformedLinearRing.push(
+      postScaleTransformation(interpolator(t))
+    );
   }
 }
 
-function interpolate (from, to) {
-  const dx = from[0] - to[0];
-  const dy = from[1] - to[1];
+function interpolate (a, b) {
+  const dx = a[0] - b[0];
+  const dy = a[1] - b[1];
 
   return t => ([
-    from[0] + t * dx,
-    from[1] + t * dy
+    a[0] + t * dx,
+    a[1] + t * dy
   ])
 }
 
-function interpolateLinearRing (linearRing, transformation, context, settings) {
+function interpolateLinearRing (linearRing, context, transformations, settings) {
   if (!settings.simplify || linearRing.length < 3) {
-    return interpolateLinearRingUnsimplified(linearRing, transformation, context, settings)
+    return interpolateLinearRingUnsimplified(linearRing, context, transformations, settings)
   }
 
   if (settings.simplify === true) {
@@ -396,15 +435,18 @@ function interpolateLinearRing (linearRing, transformation, context, settings) {
   }
 }
 
-function interpolateLinearRingUnsimplified (linearRing, transformation, context, settings) {
+function interpolateLinearRingUnsimplified (linearRing, context, transformations, settings) {
   const interpolatedLinearRing = [];
   const scaleDown = createDownScaler(context);
+  const { scaleTransformation, postScaleTransformation } = transformations;
 
   for (let i = 0; i < linearRing.length - 1; i++) {
     const from = linearRing[i];
     const to = linearRing[i + 1];
 
-    interpolatedLinearRing.push(transformation(from));
+    interpolatedLinearRing.push(postScaleTransformation(
+      scaleTransformation(from)
+    ));
 
     const numberOfPointsNeeded = getNumberOfInterpolatedPoints(
       from,
@@ -414,34 +456,45 @@ function interpolateLinearRingUnsimplified (linearRing, transformation, context,
       settings
     );
 
+    console.log(`Number of points needed: ${numberOfPointsNeeded}`);
+
     if (numberOfPointsNeeded > 0) {
-      interpolatePoints(interpolatedLinearRing, from, to, transformation, numberOfPointsNeeded);
+      interpolatePoints(
+        interpolatedLinearRing,
+        from,
+        to,
+        scaleTransformation,
+        postScaleTransformation,
+        numberOfPointsNeeded
+      );
     }
   }
 
   const lastPoint = linearRing[linearRing.length - 1];
-  interpolatedLinearRing.push(transformation(lastPoint));
+  interpolatedLinearRing.push(postScaleTransformation(
+    scaleTransformation(lastPoint)
+  ));
 
   return interpolatedLinearRing
 }
 
-function interpolateLinearRingSimplified (linearRing, transformation, context, settings) {
+function interpolateLinearRingSimplified (linearRing, context, transformations, settings) {
 
 }
 
-function interpolateSetOfLinearRings (linearRings, transformation, context, settings) {
+function interpolateSetOfLinearRings (linearRings, context, transformations, settings) {
   const interpolatedLinearRings = [];
 
   for (let i = 0; i < linearRings.length; i++) {
-    interpolatedLinearRings.push(interpolateLinearRing(linearRings[i], transformation, context, settings));
+    interpolatedLinearRings.push(interpolateLinearRing(linearRings[i], context, transformations, settings));
   }
 
   return interpolatedLinearRings
 }
 
-function interpolateXYArrays ({ x, y }, transformation, context, settings) {
+function interpolateXYArrays ({ x, y }, context, transformations, settings) {
   if (!settings.simplify || x.length < 3) {
-    return interpolateXYArraysUnsimplified(x, y, transformation, context, settings)
+    return interpolateXYArraysUnsimplified(x, y, context, transformations, settings)
   }
 
   if (settings.simplify === true) {
@@ -449,15 +502,18 @@ function interpolateXYArrays ({ x, y }, transformation, context, settings) {
   }
 }
 
-function interpolateXYArraysUnsimplified (x, y, transformation, context, settings) {
+function interpolateXYArraysUnsimplified (x, y, context, transformations, settings) {
   const interpolatedLinearRing = [];
   const scaleDown = createDownScaler(context);
+  const { scaleTransformation, postScaleTransformation } = transformations;
 
   for (let i = 0; i < x.length - 1; i++) {
     const from = [x[i], y[i]];
     const to = [x[i + 1], y[i + 1]];
 
-    interpolatedLinearRing.push(transformation(from));
+    interpolatedLinearRing.push(postScaleTransformation(
+      scaleTransformation(from)
+    ));
 
     const numberOfPointsNeeded = getNumberOfInterpolatedPoints(
       from,
@@ -468,18 +524,27 @@ function interpolateXYArraysUnsimplified (x, y, transformation, context, setting
     );
 
     if (numberOfPointsNeeded > 0) {
-      interpolatePoints(interpolatedLinearRing, from, to, transformation, numberOfPointsNeeded);
+      interpolatePoints(
+        interpolatedLinearRing,
+        from,
+        to,
+        scaleTransformation,
+        postScaleTransformation,
+        numberOfPointsNeeded
+      );
     }
   }
 
   const lastIndex = x.length - 1;
   const lastPoint = [x[lastIndex], y[lastIndex]];
-  interpolatedLinearRing.push(transformation(lastPoint));
+  interpolatedLinearRing.push(postScaleTransformation(
+    scaleTransformation(lastPoint)
+  ));
 
   return interpolatedLinearRing
 }
 
-function interpolateXYArraysSimplified (x, y, transformation, context, settings) {
+function interpolateXYArraysSimplified (x, y, context, transformations, settings) {
 
 }
 
@@ -490,41 +555,45 @@ const interpolateFunctions = {
   interpolateMultiPolygon
 };
 
-function interpolateGeometry (geometry, _transformation, context, settings = {}) {
+function interpolateGeometry (geometry, context, settings = {}) {
   const functionName = 'interpolate' + geometry.type;
 
-  const transformation = settings.decimals
-    ? point => roundPoint(_transformation(point), settings.decimals)
-    : _transformation;
+  const scaleTransformation = createScaleTransformation(context);
+  const postScaleTransformation = createPostScaleTransformation(context, settings.decimals);
 
-  return interpolateFunctions[functionName](geometry, transformation, context, settings)
+  const transformations = {
+    scaleTransformation,
+    postScaleTransformation
+  };
+
+  return interpolateFunctions[functionName](geometry, context, transformations, settings)
 }
 
-function interpolateLineString (lineString, transformation, context, settings) {
+function interpolateLineString (lineString, context, transformations, settings) {
   const input = getInput(lineString);
 
   if (input === 'geojson') {
     return {
       type: 'LineString',
-      coordinates: interpolateLinearRing(lineString.coordinates, transformation, context, settings)
+      coordinates: interpolateLinearRing(lineString.coordinates, context, transformations, settings)
     }
   }
 
   if (input === 'xy') {
     return {
       type: 'LineString',
-      coordinates: interpolateXYArrays(lineString, transformation, context, settings)
+      coordinates: interpolateXYArrays(lineString, context, transformations, settings)
     }
   }
 }
 
-function interpolateMultiLineString (multiLineString, transformation, context, settings) {
+function interpolateMultiLineString (multiLineString, context, transformations, settings) {
   const input = getInput(multiLineString);
 
   if (input === 'geojson') {
     return {
       type: 'MultiLineString',
-      coordinates: interpolateSetOfLinearRings(multiLineString.coordinates, transformation, context, settings)
+      coordinates: interpolateSetOfLinearRings(multiLineString.coordinates, context, transformations, settings)
     }
   }
 
@@ -532,19 +601,19 @@ function interpolateMultiLineString (multiLineString, transformation, context, s
     return {
       type: 'MultiLineString',
       coordinates: [
-        interpolateXYArrays(multiLineString, transformation, context, settings)
+        interpolateXYArrays(multiLineString, context, transformations, settings)
       ]
     }
   }
 }
 
-function interpolatePolygon (polygon, transformation, context, settings) {
+function interpolatePolygon (polygon, context, transformations, settings) {
   const input = getInput(polygon);
 
   if (input === 'geojson') {
     return {
       type: 'Polygon',
-      coordinates: interpolateSetOfLinearRings(polygon.coordinates, transformation, context, settings)
+      coordinates: interpolateSetOfLinearRings(polygon.coordinates, context, transformations, settings)
     }
   }
 
@@ -552,13 +621,13 @@ function interpolatePolygon (polygon, transformation, context, settings) {
     return {
       type: 'Polygon',
       coordinates: [
-        interpolateXYArrays(polygon, transformation, context, settings)
+        interpolateXYArrays(polygon, context, transformations, settings)
       ]
     }
   }
 }
 
-function interpolateMultiPolygon (multiPolygon, transformation, context, settings) {
+function interpolateMultiPolygon (multiPolygon, context, transformations, settings) {
   const input = getInput(multiPolygon);
 
   if (input === 'geojson') {
@@ -566,7 +635,7 @@ function interpolateMultiPolygon (multiPolygon, transformation, context, setting
     const transformedPolygons = [];
 
     for (let i = 0; i < polygons.length; i++) {
-      transformedPolygons.push(interpolateSetOfLinearRings(polygons[i], transformation, context, settings));
+      transformedPolygons.push(interpolateSetOfLinearRings(polygons[i], context, transformations, settings));
     }
 
     return {
@@ -579,7 +648,7 @@ function interpolateMultiPolygon (multiPolygon, transformation, context, setting
     return {
       type: 'MultiPolygon',
       coordinates: [
-        [interpolateXYArrays(multiPolygon, transformation, context, settings)]
+        [interpolateXYArrays(multiPolygon, context, transformations, settings)]
       ]
     }
   }

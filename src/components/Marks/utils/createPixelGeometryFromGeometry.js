@@ -24,29 +24,35 @@ export function createPixelGeometryFromGeometry (
 
   ensureValidGeometry(geometry)
 
-  if (
+  const interpolationNecessary = (
     coordinateTransformationContext &&
     coordinateTransformationContext.type() !== 'identity' &&
     renderSettings.interpolate === true
-  ) {
+  )
+
+  if (interpolationNecessary) {
     const combinedContext = combineContexts(
-      sectionContext, coordinateTransformationContext, zoomContext
+      sectionContext,
+      coordinateTransformationContext,
+      zoomContext
     )
 
     return interpolateGeometry(geometry, combinedContext, renderSettings)
   }
 
-  const totalTransformation = getTotalTransformation({
-    sectionContext,
-    xNeedsScaling: geometryNeedsScaling,
-    yNeedsScaling: geometryNeedsScaling,
-    coordinateTransformationContext,
-    zoomContext
-  })
+  if (!interpolationNecessary) {
+    const totalTransformation = getTotalTransformation({
+      sectionContext,
+      xNeedsScaling: geometryNeedsScaling,
+      yNeedsScaling: geometryNeedsScaling,
+      coordinateTransformationContext,
+      zoomContext
+    })
 
-  return geometryNeedsToBeTransformed(totalTransformation)
-    ? transformGeometry(geometry, totalTransformation, renderSettings)
-    : geometry
+    return geometryNeedsToBeTransformed(totalTransformation)
+      ? transformGeometry(geometry, totalTransformation, renderSettings)
+      : geometry
+  }
 }
 
 export function ensureValidGeometry (geometry) {
