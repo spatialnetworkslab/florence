@@ -66,10 +66,9 @@ Positioning
 
 ## Examples
 
-```js exec
-import ScatterPlot from "./examples/_ScatterPlot.svelte";
-```
 
 ### Scatter plot Chart
 
-<ScatterPlot/>
+
+::: codesandboxplus ../../../../../src/gallery/colored-scatterplot/App.svelte 1-3
+:::
