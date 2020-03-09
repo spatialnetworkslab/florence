@@ -87,7 +87,6 @@
 
   // Other
   export let renderSettings = undefined
-  export let zoomIdentity = undefined
   export let blockReindexing = false
   export let _asPolygon = true
 
@@ -217,7 +216,6 @@
         $sectionContext,
         $coordinateTransformationContext,
         $zoomContext,
-        zoomIdentity,
         renderSettings
       )
     }
@@ -323,7 +321,7 @@
   }
 
   function updatePixelGeometry () {
-    const zoomTransformation = ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
+    const zoomTransformation = ZoomContext.createZoomTransformation($zoomContext)
 
     pixelGeometry = createPixelGeometry(
       positioningAesthetics,

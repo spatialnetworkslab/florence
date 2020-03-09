@@ -52,9 +52,6 @@
   export let onMouseover = undefined
   export let onMouseout = undefined
 
-  // Other
-  export let zoomIdentity = undefined
-
   // Contexts
   const sectionContext = SectionContext.subscribe()
 
@@ -130,7 +127,7 @@
   text={title}
   fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {zoomIdentity} _asPolygon={false}
+  _asPolygon={false}
 />
 <!-- {/if} -->
 
@@ -146,6 +143,6 @@
   text={subtitle}
   fontFamily={subtitleFontFamily} fontSize={subtitleFontSize} fontWeight={subtitleFontWeight} rotation={subtitleRotation} anchorPoint={subtitleAnchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {zoomIdentity} _asPolygon={false}
+  _asPolygon={false}
 />
 <!-- {/if} -->

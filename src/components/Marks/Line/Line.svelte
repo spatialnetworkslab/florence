@@ -35,7 +35,6 @@
 
   // Other
   export let renderSettings = undefined
-  export let zoomIdentity = undefined
   export let blockReindexing = false
 </script>
 
@@ -47,6 +46,6 @@
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
   {onTouchdown} {onTouchup} {onTouchover} {onTouchout} {onTouchdrag}
   {onSelect} {onDeselect}
-  {renderSettings} {zoomIdentity} {blockReindexing}
+  {renderSettings} {blockReindexing}
   _asPolygon={false}
 />

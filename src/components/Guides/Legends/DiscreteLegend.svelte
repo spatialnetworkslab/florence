@@ -73,7 +73,6 @@
 
   // transition
   export let transition = undefined
-  export let zoomIdentity = undefined
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -361,7 +360,6 @@
     {transition} 
     {stroke}
     {strokeWidth}
-    {zoomIdentity}
   />
 
   <LabelLayer
@@ -375,8 +373,7 @@
     fontWeight={labelFontWeight} 
     opacity={labelOpacity} 
     fill={labelColor}
-    {transition} 
-    {zoomIdentity}
+    {transition}
   />
 
   {#if title.length > 0}
@@ -391,8 +388,7 @@
       anchorPoint={titleAnchorPoint}
       opacity={titleOpacity} 
       fill={titleColor}
-      {transition} 
-      {zoomIdentity}
+      {transition}
     />
   {/if}
 </g>

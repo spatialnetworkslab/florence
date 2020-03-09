@@ -59,7 +59,6 @@
 
   // Other
   export let renderSettings = undefined
-  export let zoomIdentity = undefined
   export let blockReindexing = false
 
   // Contexts
@@ -73,7 +72,7 @@
     { func, x },
     $sectionContext,
     $coordinateTransformationContext,
-    ZoomContext.createZoomTransformation($zoomContext, zoomIdentity),
+    ZoomContext.createZoomTransformation($zoomContext),
     {}
   )
 
@@ -90,7 +89,7 @@
         { func, x },
         $sectionContext,
         $coordinateTransformationContext,
-        ZoomContext.createZoomTransformation($zoomContext, zoomIdentity),
+        ZoomContext.createZoomTransformation($zoomContext),
         {}
       )
 
