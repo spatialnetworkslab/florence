@@ -1,8 +1,7 @@
 <script>
   // d3
-  import { scaleBand, scaleThreshold, scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
-  import * as d3 from 'd3-scale-chromatic'
-  import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3 } from 'd3-scale-chromatic'
+  import { scaleBand, scaleSequential, scaleLinear, scaleOrdinal } from 'd3-scale'
+  import { schemeAccent, schemeDark2, interpolateSinebow, interpolateViridis } from 'd3-scale-chromatic'
 
   // florence
 	import { Rectangle, Graphic, Grid, Section, PointLayer, Point, Label, LabelLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
@@ -53,8 +52,8 @@
   // fill scales
   const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
   const linearColorScaleBin = scaleLinear().domain(bins).range(["red", "blue"])
-  const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateSinebow)
-  const linearColorScale2 =  scaleSequential().domain([0, 120]).interpolator(d3.interpolateViridis)
+  const seqScale = scaleSequential().domain(data.domain('a')).interpolator(interpolateSinebow)
+  const linearColorScale2 =  scaleSequential().domain([0, 120]).interpolator(interpolateViridis)
   const fruitScale = scaleOrdinal().domain(fruits).range(schemeDark2)
   const binScale = scaleLinear().domain([0, 4]).range(['red', 'blue'])
 
