@@ -210,13 +210,6 @@
 </script>
 
 <defs>
-  <clipPath id={`clip-${sectionId}`}>
-    <rect
-      x={Math.min(scaledCoordinates.x1, scaledCoordinates.x2)}
-      y={Math.min(scaledCoordinates.y1, scaledCoordinates.y2)}
-      width={Math.abs(scaledCoordinates.x2 - scaledCoordinates.x1)}
-      height={Math.abs(scaledCoordinates.y2 - scaledCoordinates.y1)} />
-  </clipPath>
   <mask id={`mask-${sectionId}-padding-bg`}>
     <rect
       width="100%"
@@ -238,7 +231,7 @@
   </clipPath>
 </defs>
 
-<g class="section" clip-path={`url(#clip-${sectionId})`}>
+<g class="section">
   {#if paddingColor}
     <rect
       class="padding-background"
