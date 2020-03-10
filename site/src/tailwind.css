@@ -114,6 +114,11 @@ tr > td {
   border: 1px solid;
   margin: 5px;
 }
+
+.csbp-rendered svg {
+  margin: auto;
+}
+
 .csbp-code-tabs {
   flex: 1;
   position: relative;
