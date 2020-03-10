@@ -217,13 +217,24 @@
       width={Math.abs(scaledCoordinates.x2 - scaledCoordinates.x1)}
       height={Math.abs(scaledCoordinates.y2 - scaledCoordinates.y1)} />
   </clipPath>
-  <clipPath id={`clip-${sectionId}-data`}>
+  <mask id={`mask-${sectionId}-padding-bg`}>
+    <rect
+      width="100%"
+      height="100%"
+      fill="white" />
     <rect
       x={Math.min(...rangeX)}
       y={Math.min(...rangeY)}
       width={Math.abs(rangeX[0] - rangeX[1])}
       height={Math.abs(rangeY[0] - rangeY[1])}
-      fill="white" />
+      fill="black" />
+  </mask>
+  <clipPath id={`clip-${sectionId}-data`}>
+    <rect
+      x={Math.min(...rangeX)}
+      y={Math.min(...rangeY)}
+      width={Math.abs(rangeX[0] - rangeX[1])}
+      height={Math.abs(rangeY[0] - rangeY[1])} />
   </clipPath>
 </defs>
 
@@ -231,7 +242,7 @@
   {#if paddingColor}
     <rect
       class="padding-background"
-      mask={`url(#clip-${sectionId}-data)`}
+      mask={`url(#mask-${sectionId}-padding-bg)`}
       width="100%"
       height="100%"
       fill={paddingColor} />

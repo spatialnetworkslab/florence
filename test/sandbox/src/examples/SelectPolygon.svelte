@@ -79,6 +79,7 @@
 
   <Section
     bind:this={section}
+    paddingColor='#86bbd8'
     padding={30}
     scaleX={scaleLinear().domain([0, 10])}
     scaleY={scaleLinear().domain([0, 10])}
