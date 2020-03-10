@@ -98,11 +98,11 @@ tr > td {
   margin: auto;
 }
 .csbp-container {
+  margin-top: 80px;
   /* background-color: yellow;
   height: 200px; */
   display: flex;
   height: 500px;
-  max-width: 500px;
 
   /* max-width: 500px;
   overflow: scroll; */
@@ -115,8 +115,8 @@ tr > td {
   margin: 5px;
 }
 .csbp-code-tabs {
+  flex: 1;
   position: relative;
-  min-width: 800px;
   margin: 5px;
 }
 
@@ -141,7 +141,6 @@ tr > td {
 }
 .csbp-content {
   height: 500px;
-  width: 750px;
   position: absolute;
   overflow: scroll;
   top: 28px;
@@ -173,11 +172,13 @@ tr > td {
 .csbp-csb-link {
   flex: 1;
   min-width: 200px;
+  padding: 5px;
 }
 
 @media only screen and (max-width: 800px) {
   .csbp-container {
     flex-wrap: wrap;
+    margin-bottom: 500px;
   }
   .csbp-rendered {
     margin: auto;
