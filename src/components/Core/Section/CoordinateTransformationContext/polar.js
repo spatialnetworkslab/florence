@@ -10,6 +10,7 @@ export function createPolarTransformation (rangeX, rangeY) {
   const transform = function transform ([x, y]) {
     const theta = toTheta(x)
     const radius = toRadius(y)
+
     const coords = polarToCartesian(theta, radius)
 
     return [fitX(coords[0]), fitY(coords[1])]

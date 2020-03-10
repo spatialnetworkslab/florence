@@ -343,8 +343,6 @@ function getNumberOfInterpolatedPoints (
   const functionalForm = getFunctionalForm(fromScaledDown, toScaledDown);
   const scaledDownLength = getPolarLength(functionalForm);
 
-  console.log(scaledDownLength);
-
   const realLength = scaledDownLength * totalScaleFactor;
   const numberOfPointsNeeded = realLength / interpolationTreshold;
 
@@ -370,7 +368,16 @@ function straightInYDimension (from, to, totalScaleFactor) {
 }
 
 function getPolarLength ({ a, b, interval }) {
+  if (a === 0 && b === 0) {
+    return 0
+  }
+
   const [c, d] = interval;
+
+  if (a === 0 && b === 1) {
+    return d - c
+  }
+
   const aSq = a ** 2;
   const bSq = b ** 2;
 
@@ -419,8 +426,8 @@ function interpolatePoints (
 }
 
 function interpolate (a, b) {
-  const dx = a[0] - b[0];
-  const dy = a[1] - b[1];
+  const dx = b[0] - a[0];
+  const dy = b[1] - a[1];
 
   return t => ([
     a[0] + t * dx,
