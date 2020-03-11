@@ -51,23 +51,14 @@
   let _padding
 
   $: {
-    let rangeX = [0, width]
-    let rangeY = [0, height]
+    const coordinates = { x1: 0, y1: 0, x2: width, y2: height }
 
-    if (flipX) rangeX.reverse()
-    if (flipY) rangeY.reverse()
-
-    _padding = parsePadding(padding)
-    rangeX = applyPadding(rangeX, _padding.left, _padding.right)
-    rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
-
-    const updatedSectionContext = {
-      sectionId: 'graphic',
-      rangeX,
-      rangeY,
+    const sectionData = {
+      sectionId,
+      coordinates,
       scaleX,
       scaleY,
-      padding: _padding,
+      padding,
       flipX,
       flipY,
       blockReindexing,
@@ -75,9 +66,7 @@
       zoomIdentity
     }
 
-    SectionContext.update(
-      sectionContext, updatedSectionContext
-    )
+    SectionContext.update(sectionContext, sectionData)
 
     $interactionManagerContext.loadSection($sectionContext)
     $interactionManagerContext.loadZoom(zoomIdentity)

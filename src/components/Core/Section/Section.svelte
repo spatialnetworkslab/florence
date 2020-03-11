@@ -14,7 +14,6 @@
 
   import InteractionManager from '../../../interactivity/interactions/InteractionManager'
   import { scaleCoordinates } from '../../Marks/Rectangle/createPixelGeometry.js'
-  import { parsePadding, applyPadding } from '../utils/padding.js'
 
   const sectionId = getId()
   
@@ -69,7 +68,7 @@
   $: {
     const coordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
     
-    const updatedSectionData = {
+    const sectionData = {
       sectionId,
       coordinates,
       scaleX,
@@ -82,9 +81,7 @@
       zoomIdentity
     }
 
-    SectionContext.update(
-      newSectionContext, updatedSectionData
-    )
+    SectionContext.update(newSectionContext, sectionData)
 
     $interactionManagerContext.loadSection($newSectionContext)
     $interactionManagerContext.loadZoom(zoomIdentity)

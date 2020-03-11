@@ -6,18 +6,20 @@ export function createSectionContext (sectionData) {
   const ranges = getRanges(sectionData)
   const finalRanges = getFinalRanges(sectionData, ranges)
   const scales = createScales(sectionData, ranges)
+  const finalScales = createFinalScales(ranges, finalRanges)
 
   const sectionContext = constructSectionContext(
     sectionData,
     ranges,
     finalRanges,
-    scales
+    scales,
+    finalScales
   )
 
   const { scaleX, scaleY } = scales
 
   if (sectionContext.transformation !== 'polar') {
-    const { finalScaleX, finalScaleY } = createFinalScales(ranges, finalRanges)
+    const { finalScaleX, finalScaleY } = finalScales
 
     sectionContext.totalTransformation = ([x, y], { xNeedsScaling, yNeedsScaling }) => ([
       finalScaleX(scaleX(x, xNeedsScaling)),
@@ -47,7 +49,8 @@ function constructSectionContext (
   { scaleX, scaleY, ...sectionData },
   ranges,
   finalRanges,
-  scales
+  scales,
+  finalScales
 ) {
-  return { ...sectionData, ...ranges, ...finalRanges, ...scales }
+  return { ...sectionData, ...ranges, ...finalRanges, ...scales, ...finalScales }
 }
