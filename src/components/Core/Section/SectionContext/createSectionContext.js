@@ -1,7 +1,6 @@
-import { scaleLinear } from 'd3-scale'
 import { getRanges, getFinalRanges } from './getRanges.js'
 import { createScales, createFinalScales } from './createScales.js'
-import { createPolarTransformation } from './polar.js'
+import { applyTransformations } from './applyTransformations.js'
 
 export function createSectionContext (sectionData) {
   const ranges = getRanges(sectionData)
@@ -17,47 +16,7 @@ export function createSectionContext (sectionData) {
     finalScales
   )
 
-  const { scaleX, scaleY } = scales
-
-  if (sectionContext.transformation !== 'polar') {
-    const { finalScaleX, finalScaleY } = finalScales
-
-    sectionContext.getTotalTransformation = needsScaling => {
-      const { xNeedsScaling, yNeedsScaling } = parseNeedsScaling(needsScaling)
-
-      return ([x, y]) => ([
-        finalScaleX(xNeedsScaling ? scaleX(x) : x),
-        finalScaleY(yNeedsScaling ? scaleY(y) : y)
-      ])
-    }
-  }
-
-  if (sectionContext.transformation === 'polar') {
-    const getScaleTransformation = needsScaling => {
-      const { xNeedsScaling, yNeedsScaling } = parseNeedsScaling(needsScaling)
-
-      const toTheta = scaleLinear().domain(ranges.rangeX).range([0, 2 * Math.PI])
-      const toRadius = scaleLinear().domain(ranges.rangeY).range([0, 1])
-
-      return ([x, y]) => ([
-        xNeedsScaling ? scaleX(x) : toTheta(x),
-        yNeedsScaling ? scaleY(y) : toRadius(y)
-      ])
-    }
-
-    const postScaleTransformation = createPolarTransformation(finalRanges)
-
-    sectionContext.getScaleTransformation = getScaleTransformation
-    sectionContext.postScaleTransformation = postScaleTransformation
-
-    sectionContext.getTotalTransformation = needsScaling => {
-      const scaleTransformation = getScaleTransformation(needsScaling)
-
-      return point => (
-        postScaleTransformation(scaleTransformation(point))
-      )
-    }
-  }
+  applyTransformations(sectionContext)
 
   return sectionContext
 }
@@ -70,24 +29,4 @@ function constructSectionContext (
   finalScales
 ) {
   return { ...sectionData, ...ranges, ...finalRanges, ...scales, ...finalScales }
-}
-
-function parseNeedsScaling (needsScaling) {
-  if (needsScaling === undefined) {
-    return {
-      xNeedsScaling: true,
-      yNeedsScaling: true
-    }
-  }
-
-  if (needsScaling.constructor === Boolean) {
-    return {
-      xNeedsScaling: needsScaling,
-      yNeedsScaling: needsScaling
-    }
-  }
-
-  if (needsScaling.constructor === Object) {
-    return needsScaling
-  }
 }

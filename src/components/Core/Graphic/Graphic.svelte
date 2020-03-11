@@ -65,9 +65,7 @@
     }
 
     SectionContext.update(sectionContext, sectionData)
-
     $interactionManagerContext.loadSection($sectionContext)
-    $interactionManagerContext.loadZoom(zoomIdentity)
   }
 
   onMount(() => {

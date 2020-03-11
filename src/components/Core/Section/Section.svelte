@@ -84,7 +84,6 @@
     SectionContext.update(newSectionContext, sectionData)
 
     $interactionManagerContext.loadSection($newSectionContext)
-    $interactionManagerContext.loadZoom(zoomIdentity)
   }
 
   $: clipPropsNoPadding = getClipPropsNoPadding(coordinates)
