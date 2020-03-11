@@ -1,14 +1,11 @@
 import { interpolate } from 'd3-interpolate'
 import { transformGeometry } from '../../../utils/geometryUtils'
-import getTotalTransformation from '../utils/getTotalTransformation'
 import { isDefined, isUndefined } from '../../../utils/equals.js'
 import { warn } from '../../../utils/logging.js'
 
 export default function createScreenGeometry (
   { func, x },
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   ensureValidInput(func, x)
@@ -20,13 +17,7 @@ export default function createScreenGeometry (
     coordinates: dataPoints
   }
 
-  const totalTransformation = getTotalTransformation({
-    sectionContext,
-    xNeedsScaling: true,
-    yNeedsScaling: true,
-    coordinateTransformationContext,
-    zoomContext
-  })
+  const totalTransformation = sectionContext.getTotalTransformation()
 
   if (geometryCompletelyOffScreen(geometry, totalTransformation, sectionContext)) {
     warn('FuncLine was completely out of Section window. Please check your Section settings and FuncLine props.')

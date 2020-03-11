@@ -662,4 +662,4 @@ function interpolateMultiPolygon (multiPolygon, context, transformations, settin
   }
 }
 
-export { interpolateGeometry, transformGeometry };
+export { interpolateGeometry as polarGeometry, transformGeometry };

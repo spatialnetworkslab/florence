@@ -13,7 +13,7 @@
 
   import InteractionManager from '../../../interactivity/interactions/InteractionManager'
   import { getPixelCoordinates } from './getPixelCoordinates.js'
-  import { getClipPropsNoPadding, getClipPropsPadding } from './getClipProps.j'
+  import { getClipPropsNoPadding, getClipPropsPadding } from './getClipProps.js'
 
   const sectionId = getId()
   

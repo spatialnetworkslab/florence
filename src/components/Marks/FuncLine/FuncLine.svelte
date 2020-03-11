@@ -11,14 +11,13 @@
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
-  import * as CoordinateTransformationContext from '../../Core/Section/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
-  import * as ZoomContext from '../../Core/Section/ZoomContext'
 
   import createScreenGeometry from './createScreenGeometry.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import generatePath from '../utils/generatePath.js'
   import { createDataNecessaryForIndexingMark } from '../Mark/createDataNecessaryForIndexing.js'
+  import parseRenderSettings from '../utils/parseRenderSettings.js' 
   import any from '../utils/any.js'
 
   const markId = getId()
@@ -58,7 +57,7 @@
   export let onDeselect = undefined
 
   // Other
-  // export let renderSettings = undefined
+  export let renderSettings = undefined
   export let blockReindexing = false
 
   // Contexts
@@ -71,9 +70,7 @@
   let screenGeometry = createScreenGeometry(
     { func, x },
     $sectionContext,
-    $coordinateTransformationContext,
-    $zoomContext,
-    {}
+    parseRenderSettings(renderSettings)
   )
 
   // Initiate transitionables
@@ -88,9 +85,7 @@
       screenGeometry = createScreenGeometry(
         { func, x },
         $sectionContext,
-        $coordinateTransformationContext,
-        $zoomContext,
-        {}
+        parseRenderSettings(renderSettings)
       )
 
       tr_screenGeometry.set(screenGeometry)
