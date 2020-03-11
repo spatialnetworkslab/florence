@@ -14,6 +14,7 @@
 
   import InteractionManager from '../../../interactivity/interactions/InteractionManager'
   import { scaleCoordinates } from '../../Marks/Rectangle/createPixelGeometry.js'
+  import { getClipPropsNoPadding, getClipPropsPadding } from './getClipProps.j'
 
   const sectionId = getId()
   
@@ -87,8 +88,8 @@
     $interactionManagerContext.loadZoom(zoomIdentity)
   }
 
-  $: finalRangeX = $sectionContext.finalRangeX
-  $: finalRangeY = $sectionContext.finalRangeY
+  $: clipPropsNoPadding = getClipPropsNoPadding(coordinates)
+  $: clipPropsPadding = getClipPropsPadding(coordinates, padding)
 
   // Change callbacks if necessary
   $: {
@@ -167,40 +168,30 @@
 
 <defs>
   <clipPath id={`clip-${sectionId}`}>
-    <rect 
-      x={Math.min(coordinates.x1, coordinates.x2)}
-      y={Math.min(coordinates.y1, coordinates.y2)}
-      width={Math.abs(coordinates.x2 - coordinates.x1)}
-      height={Math.abs(coordinates.y2 - coordinates.y1)}
-    />
+    <rect {...clipPropsNoPadding} />
   </clipPath>
+
   <clipPath id={`clip-${sectionId}-data`}>
-    <rect 
-      x={Math.min(...finalRangeX)}
-      y={Math.min(...finalRangeY)}
-      width={Math.abs(finalRangeX[0] - finalRangeX[1])}
-      height={Math.abs(finalRangeY[0] - finalRangeY[1])}
-      fill="white"
-    />
+    <rect {...clipPropsPadding} fill="white" />
   </clipPath>
 </defs>
 
 <g class="section" clip-path={`url(#clip-${sectionId})`} >
+  {#if backgroundColor}
+    <rect 
+      class="content-background"
+      {...clipPropsNoPadding}
+      fill={backgroundColor}
+    />
+  {/if}
+
   {#if paddingColor}
-    <rect class="padding-background"
+    <rect 
+      class="padding-background"
       mask={`url(#clip-${sectionId}-data)`}
       width="100%"
       height="100%" 
       fill={paddingColor}
-    />
-  {/if}
-  {#if backgroundColor}
-    <rect class="content-background"
-      x={Math.min(...finalRangeX)}
-      y={Math.min(...finalRangeY)}
-      width={Math.abs(finalRangeX[0] - finalRangeX[1])}
-      height={Math.abs(finalRangeY[0] - finalRangeY[1])}
-      fill={backgroundColor}
     />
   {/if}
   <slot />
