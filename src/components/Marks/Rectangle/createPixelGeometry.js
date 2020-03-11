@@ -4,19 +4,16 @@ import { isDefined, isUndefined, isInvalid } from '../../../utils/equals.js'
 export default function createPixelGeometry (
   geometryProps,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   const scaledCoordinates = scaleCoordinates(geometryProps, sectionContext)
   const scaledGeometry = createScaledGeometry(scaledCoordinates)
 
   return createPixelGeometryFromGeometry(
-    { geometry: () => scaledGeometry },
+    scaledGeometry,
     sectionContext,
-    coordinateTransformationContext,
-    zoomContext,
-    renderSettings
+    renderSettings,
+    false
   )
 }
 

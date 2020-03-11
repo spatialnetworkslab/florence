@@ -3,6 +3,7 @@ import {
   getInputType
 } from '../utils/geometryPropTools.js'
 
+import propNeedsScaling from '../utils/propNeedsScaling.js'
 import { createPixelGeometryObjectFromXYArrays } from '../utils/createPixelGeometryFromXYArrays.js'
 import { createPixelGeometryObjectFromGeometry } from '../utils/createPixelGeometryFromGeometry.js'
 
@@ -10,33 +11,46 @@ export default function createPixelGeometry (
   geometryProps,
   keyProp,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   ensureValidGeometryProps(geometryProps)
   const inputType = getInputType(geometryProps)
 
   if (inputType === 'xy') {
+    const xNeedsScaling = propNeedsScaling(geometryProps.x)
+    const yNeedsScaling = propNeedsScaling(geometryProps.y)
+
+    const x = xNeedsScaling
+      ? geometryProps.x
+      : geometryProps.x(sectionContext)
+
+    const y = yNeedsScaling
+      ? geometryProps.y
+      : geometryProps.y(sectionContext)
+
     return createPixelGeometryObjectFromXYArrays(
-      geometryProps,
+      { x, y },
       keyProp,
       sectionContext,
-      coordinateTransformationContext,
-      zoomContext,
       renderSettings,
-      'Polygon'
+      'Polygon',
+      { xNeedsScaling, yNeedsScaling }
     )
   }
 
   if (inputType === 'geometry') {
+    const needsScaling = propNeedsScaling(geometryProps.geometry)
+
+    const geometry = needsScaling
+      ? geometryProps.geometry
+      : geometryProps.geometry(sectionContext)
+
     return createPixelGeometryObjectFromGeometry(
-      geometryProps,
+      geometry,
       keyProp,
       sectionContext,
-      coordinateTransformationContext,
-      zoomContext,
-      renderSettings
+      renderSettings,
+      needsScaling
     )
   }
 }

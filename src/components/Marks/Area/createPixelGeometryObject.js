@@ -51,10 +51,11 @@ export default function createPixelGeometryObject (
   })
 
   return createPixelGeometryObjectFromGeometry(
-    () => scaledGeometryArray,
+    scaledGeometryArray,
     keyProp,
     sectionContext,
-    renderSettings
+    renderSettings,
+    false
   )
 }
 

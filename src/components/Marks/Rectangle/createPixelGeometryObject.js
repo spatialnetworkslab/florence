@@ -7,20 +7,17 @@ export default function createPixelGeometryObject (
   geometryProps,
   keyProp,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   const { scaledCoordinates, length } = scaleCoordinates(geometryProps, sectionContext)
   const scaledGeometryArray = createScaledGeometryArray(scaledCoordinates, length)
 
   return createPixelGeometryObjectFromGeometry(
-    { geometry: () => scaledGeometryArray },
+    scaledGeometryArray,
     keyProp,
     sectionContext,
-    coordinateTransformationContext,
-    zoomContext,
-    renderSettings
+    renderSettings,
+    false
   )
 }
 

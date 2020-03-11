@@ -5,16 +5,12 @@ export default function createPixelGeometryObject (
   geometryProps,
   keyProp,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   const pointGeometryObject = createPixelGeometryObjectPoint(
     geometryProps,
     keyProp,
     sectionContext,
-    coordinateTransformationContext,
-    zoomContext,
     renderSettings
   )
 

@@ -7,17 +7,13 @@ import {
 
 import { validateXYArrays } from '../utils/createPixelGeometryFromXYArrays.js'
 import { ensureValidGeometry } from '../utils/createPixelGeometryFromGeometry.js'
+import propNeedsScaling from '../utils/propNeedsScaling.js'
 import getKeyArray from '../utils/getKeyArray.js'
-import getTotalTransformation from '../utils/getTotalTransformation.js'
-
-const needsScaling = prop => prop.constructor === Array
 
 export default function createPixelGeometryObject (
   geometryProps,
   keyProp,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   ensureValidGeometryProps(geometryProps)
@@ -29,8 +25,6 @@ export default function createPixelGeometryObject (
       geometryProps,
       keyProp,
       sectionContext,
-      coordinateTransformationContext,
-      zoomContext,
       renderSettings
     )
   }
@@ -40,8 +34,6 @@ export default function createPixelGeometryObject (
       geometryProps,
       keyProp,
       sectionContext,
-      coordinateTransformationContext,
-      zoomContext,
       renderSettings
     )
   }
@@ -51,14 +43,12 @@ function createPixelGeometryObjectFromCoordinates (
   { x, y },
   keyProp,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   validateXYProps(x, y)
 
-  const xNeedsScaling = needsScaling(x)
-  const yNeedsScaling = needsScaling(y)
+  const xNeedsScaling = propNeedsScaling(x)
+  const yNeedsScaling = propNeedsScaling(y)
 
   const xScaled = xNeedsScaling
     ? x
@@ -69,22 +59,13 @@ function createPixelGeometryObjectFromCoordinates (
     : y(sectionContext)
 
   const { xArray, yArray } = applyRecyclingIfNecessary(xScaled, yScaled)
-
   validateXYArrays(xArray, yArray)
 
   const keyArray = getKeyArray(keyProp, xArray.length)
 
-  const totalTransformation = getTotalTransformation({
-    sectionContext,
-    xNeedsScaling,
-    yNeedsScaling,
-    coordinateTransformationContext,
-    zoomContext
-  })
+  const totalTransformation = sectionContext.getTotalTransformation({ xNeedsScaling, yNeedsScaling })
 
-  return totalTransformation
-    ? transformXYArraysIntoGeometryObject(xArray, yArray, keyArray, totalTransformation)
-    : transformXYArraysIntoGeometryObject(xArray, yArray, keyArray, x => x)
+  return transformXYArraysIntoGeometryObject(xArray, yArray, keyArray, totalTransformation)
 }
 
 function applyRecyclingIfNecessary (xScaled, yScaled) {
@@ -124,13 +105,11 @@ function createPixelGeometryObjectFromGeometry (
   geometryProps,
   keyProp,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   validateGeometryPropLayer(geometryProps.geometry)
 
-  const geometryNeedsScaling = needsScaling(geometryProps.geometry)
+  const geometryNeedsScaling = propNeedsScaling(geometryProps.geometry)
 
   const geometry = geometryNeedsScaling
     ? geometryProps.geometry
@@ -140,17 +119,13 @@ function createPixelGeometryObjectFromGeometry (
 
   const keyArray = getKeyArray(keyProp, geometry.length)
 
-  const totalTransformation = getTotalTransformation({
-    sectionContext,
-    xNeedsScaling: geometryNeedsScaling,
-    yNeedsScaling: geometryNeedsScaling,
-    coordinateTransformationContext,
-    zoomContext
-  })
+  const totalTransformation = sectionContext.getTotalTransformation(geometryNeedsScaling)
 
-  return totalTransformation
-    ? transformGeometryArrayIntoGeometryObject(geometry, keyArray, totalTransformation)
-    : transformGeometryArrayIntoGeometryObject(geometry, keyArray, x => x)
+  return transformGeometryArrayIntoGeometryObject(
+    geometry,
+    keyArray,
+    totalTransformation
+  )
 }
 
 function transformGeometryArrayIntoGeometryObject (geometryArray, keyArray, transformation) {

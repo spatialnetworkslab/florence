@@ -7,15 +7,11 @@ import { representPointAsPolygon } from '../Point/representPointAsPolygon.js'
 export default function createPixelGeometry (
   geometryProps,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   const pointGeometry = createPixelGeometryPoint(
     geometryProps,
     sectionContext,
-    coordinateTransformationContext,
-    zoomContext,
     renderSettings
   )
 

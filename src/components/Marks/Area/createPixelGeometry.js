@@ -21,9 +21,10 @@ export default function createPixelGeometry (
   ))), sectionContext))
 
   return createPixelGeometryFromGeometry(
-    () => scaledGeometry,
+    scaledGeometry,
     sectionContext,
-    renderSettings
+    renderSettings,
+    false
   )
 }
 

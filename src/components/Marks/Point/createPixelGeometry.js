@@ -2,72 +2,43 @@ import {
   ensureValidGeometryProps,
   getInputType
 } from '../utils/geometryPropTools.js'
-
-import getTotalTransformation, { createScaleTransformation } from '../utils/getTotalTransformation.js'
+import propNeedsScaling from '../utils/propNeedsScaling.js'
+import { transformGeometry } from '../../../utils/geometryUtils/index.js'
 
 export default function createPixelGeometry (
   geometryProps,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   ensureValidGeometryProps(geometryProps)
-
-  const scaledGeometry = createScaledGeometry(geometryProps, sectionContext)
-
-  const transformation = getTotalTransformation({
-    xNeedsScaling: false,
-    yNeedsScaling: false,
-    coordinateTransformationContext,
-    zoomContext
-  })
-
-  return transformation
-    ? transformPointGeometry(scaledGeometry, transformation)
-    : scaledGeometry
-}
-
-function createScaledGeometry (geometryProps, sectionContext) {
   const inputType = getInputType(geometryProps)
 
   if (inputType === 'xy') {
-    return createScaledGeometryFromCoordinates(geometryProps.x, geometryProps.y, sectionContext)
+    const xNeedsScaling = propNeedsScaling(geometryProps.x)
+    const yNeedsScaling = propNeedsScaling(geometryProps.y)
+
+    const x = xNeedsScaling
+      ? geometryProps.x
+      : geometryProps.x(sectionContext)
+
+    const y = xNeedsScaling
+      ? geometryProps.y
+      : geometryProps.y(sectionContext)
+
+    const totalTransformation = sectionContext.getTotalTransformation({ xNeedsScaling, yNeedsScaling })
+
+    return transformGeometry({ type: 'Point', x, y }, totalTransformation, renderSettings)
   }
 
   if (inputType === 'geometry') {
-    return scaleGeometryProp(geometryProps.geometry, sectionContext)
-  }
-}
+    const needsScaling = propNeedsScaling(geometryProps.geometry)
 
-function createScaledGeometryFromCoordinates (x, y, sectionContext) {
-  const { scaleX, scaleY } = sectionContext
+    const geometry = needsScaling
+      ? geometryProps.geometry
+      : geometryProps.geometry(sectionContext)
 
-  const scaledX = x.constructor === Function ? x(sectionContext) : scaleX(x)
-  const scaledY = y.constructor === Function ? y(sectionContext) : scaleY(y)
+    const totalTransformation = sectionContext.getTotalTransformation(needsScaling)
 
-  return {
-    type: 'Point',
-    coordinates: [scaledX, scaledY]
-  }
-}
-
-function scaleGeometryProp (geometry, sectionContext) {
-  if (geometry.constructor === Function) {
-    return geometry(sectionContext)
-  } else {
-    const scaleTransformation = createScaleTransformation(
-      sectionContext.scaleX,
-      sectionContext.scaleY
-    )
-
-    return transformPointGeometry(geometry, scaleTransformation)
-  }
-}
-
-function transformPointGeometry (point, transformation) {
-  return {
-    type: 'Point',
-    coordinates: transformation(point.coordinates)
+    return transformGeometry(geometry, totalTransformation, renderSettings)
   }
 }
