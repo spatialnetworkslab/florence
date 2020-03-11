@@ -1,4 +1,4 @@
-export default function parseRenderSettings (renderSettings, coordinateTransformationContext) {
+export default function parseRenderSettings (renderSettings) {
   const defaultRenderSettings = {
     simplify: false,
     simplificationTreshold: 1,
@@ -8,10 +8,6 @@ export default function parseRenderSettings (renderSettings, coordinateTransform
   }
 
   const parsedRenderSettings = Object.assign(defaultRenderSettings, renderSettings)
-
-  if (coordinateTransformationContext && coordinateTransformationContext.type === 'identity') {
-    parsedRenderSettings.interpolate = false
-  }
 
   return parsedRenderSettings
 }

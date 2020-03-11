@@ -210,7 +210,7 @@
       scheduleUpdatePixelGeometry(
         positioningAesthetics,
         $sectionContext,
-        renderSettings
+        parseRenderSettings(renderSettings)
       )
     }
   }
@@ -318,7 +318,7 @@
     pixelGeometry = createPixelGeometry(
       positioningAesthetics,
       $sectionContext,
-      parseRenderSettings(renderSettings, $sectionContext)
+      parseRenderSettings(renderSettings)
     )
   }
 

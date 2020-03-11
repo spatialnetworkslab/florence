@@ -230,7 +230,7 @@
         positioningAesthetics,
         key,
         $sectionContext,
-        renderSettings
+        parseRenderSettings(renderSettings)
       )
     }
   }
@@ -339,7 +339,7 @@
       positioningAesthetics,
       key,
       $sectionContext,
-      parseRenderSettings(renderSettings, $sectionContext)
+      parseRenderSettings(renderSettings)
     )
   }
 
