@@ -741,16 +741,21 @@ tr > td {
 .csbp-rendered {
   flex: 1 1 0%;
   margin: 0.25rem;
+  padding-bottom: 1rem;
   align-self: center;
   @media (min-width: 640px) {
     width: 100%;
 
     flex: 1 1 0%;
+
+    padding-bottom: 1rem;
   }
   @media (min-width: 768px) {
     width: 50%;
 
     flex: 1 1 0%;
+
+    padding-bottom: 1rem;
   }
   @media (min-width: 1024px) {
     width: 50%;

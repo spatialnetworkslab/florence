@@ -96,13 +96,13 @@ tr > td {
 }
 
 .csbp-rendered {
-  @apply flex-1 m-1;
+  @apply flex-1 m-1 pb-4;
   align-self: center;
   @screen sm {
-    @apply w-full flex-1;
+    @apply w-full flex-1 pb-4;
   }
   @screen md {
-    @apply w-1/2 flex-1;
+    @apply w-1/2 flex-1 pb-4;
   }
   @screen lg {
     @apply w-1/2 flex-initial;
