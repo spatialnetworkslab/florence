@@ -93,6 +93,17 @@ tr > td {
 
 .csbp-container {
   @apply flex h-64 w-auto h-auto mt-10;
+  @screen sm {
+    @apply flex-col;
+  }
+
+  @screen md {
+    @apply flex-col;
+  }
+
+  @screen lg {
+    @apply flex-col;
+  }
 }
 
 .csbp-rendered {
@@ -104,7 +115,7 @@ tr > td {
 }
 
 .csbp-code-tabs {
-  @apply flex-1 relative m-2;
+  @apply flex-1 relative m-2 text-xs;
 }
 
 .csbp-tabs {
@@ -117,7 +128,7 @@ tr > td {
 }
 
 .csbp-tab label {
-  @apply bg-white relative border border rounded-sm border-gray-400 p-3 -ml-1 -m-px;
+  @apply bg-white relative border border rounded-sm border-gray-400 p-4 -ml-1 -m-px;
   left: 1px;
 }
 
@@ -127,7 +138,7 @@ tr > td {
 
 .csbp-content {
   height: 500px;
-  @apply absolute overflow-scroll border border rounded-sm border-gray-400 bg-codegray left-0 right-0 bottom-0;
+  @apply absolute overflow-scroll border border rounded-sm border-gray-400 bg-codegray left-0 right-0 bottom-0 mb-4;
   top: 28px;
 }
 
@@ -138,7 +149,7 @@ tr > td {
 }
 
 [type="radio"]:checked ~ label {
-  @apply bg-codegray border border-solid;
+  @apply bg-codegray border border-solid font-bold;
   border-bottom: #f5f2f0;
   z-index: 2;
 }
@@ -153,8 +164,13 @@ tr > td {
 }
 
 .csbp-csb-link {
-  @apply flex-1 p-2;
+  @apply flex-auto p-3;
   min-width: 200px;
+  transition: color 0.75s;
+}
+
+.csbp-csb-link:hover {
+  @apply text-red-700;
 }
 
 @media only screen and (max-width: 800px) {

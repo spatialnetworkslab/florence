@@ -736,6 +736,15 @@ tr > td {
   width: auto;
   height: auto;
   margin-top: 2.5rem;
+  @media (min-width: 640px) {
+    flex-direction: column;
+  }
+  @media (min-width: 768px) {
+    flex-direction: column;
+  }
+  @media (min-width: 1024px) {
+    flex-direction: column;
+  }
 }
 
 .csbp-rendered {
@@ -752,6 +761,7 @@ tr > td {
   flex: 1 1 0%;
   position: relative;
   margin: 0.5rem;
+  font-size: 0.75rem;
 }
 
 .csbp-tabs {
@@ -771,7 +781,7 @@ tr > td {
   border-width: 1px;
   border-radius: 0.125rem;
   border-color: #cbd5e0;
-  padding: 0.75rem;
+  padding: 1rem;
   margin-left: -0.25rem;
   margin: -1px;
   left: 1px;
@@ -793,6 +803,7 @@ tr > td {
   left: 0;
   right: 0;
   bottom: 0;
+  margin-bottom: 1rem;
   top: 28px;
 }
 
@@ -806,6 +817,7 @@ tr > td {
   background-color: #f5f2f0;
   border-width: 1px;
   border-style: solid;
+  font-weight: 700;
   border-bottom: #f5f2f0;
   z-index: 2;
 }
@@ -820,9 +832,14 @@ tr > td {
 }
 
 .csbp-csb-link {
-  flex: 1 1 0%;
-  padding: 0.5rem;
+  flex: 1 1 auto;
+  padding: 0.75rem;
   min-width: 200px;
+  transition: color 0.75s;
+}
+
+.csbp-csb-link:hover {
+  color: #c53030;
 }
 
 @media only screen and (max-width: 800px) {
