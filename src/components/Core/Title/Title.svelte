@@ -1,7 +1,6 @@
 <script>
   import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
   import { isValid, createTitleXCoord, createTitleYCoord } from './utils.js'
-  import { removePadding } from '../utils/padding.js'
   
   // Contexts
   import * as SectionContext from '../Section/SectionContext'
@@ -56,18 +55,20 @@
   const sectionContext = SectionContext.subscribe()
 
   // Private variables
-  let _padding
-  let xRange = $sectionContext.scaleX.range()
-  let yRange = $sectionContext.scaleY.range()
   let totalFontSize
 
-  $: {
-    if (usePadding === true) {
-      _padding = $sectionContext.padding
-      xRange = removePadding(xRange, _padding.left, _padding.right)
-      yRange = removePadding(yRange, _padding.top, _padding.bottom)
-    }
-  }
+  $: xRange = 
+  // let _padding
+  // let xRange = $sectionContext.rangeX
+  // let yRange = $sectionContext.rangeY
+
+  // $: {
+  //   if (usePadding === true) {
+  //     _padding = $sectionContext.padding
+  //     xRange = removePadding(xRange, _padding.left, _padding.right)
+  //     yRange = removePadding(yRange, _padding.top, _padding.bottom)
+  //   }
+  // }
 
   // Title text positioning wrt section/graphic context
   $: {

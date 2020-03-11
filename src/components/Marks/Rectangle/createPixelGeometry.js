@@ -29,16 +29,16 @@ export function scaleCoordinates (geometryProps, sectionContext) {
     scaledCoordinates.x1 = scaleCoordinate(x1, 'x1', sectionContext)
     scaledCoordinates.x2 = scaleCoordinate(x2, 'x2', sectionContext)
   } else {
-    scaledCoordinates.x1 = sectionContext.minX
-    scaledCoordinates.x2 = sectionContext.maxX
+    scaledCoordinates.x1 = sectionContext.paddedBBox.minX
+    scaledCoordinates.x2 = sectionContext.paddedBBox.maxX
   }
 
   if (wereSpecified(y1, y2)) {
     scaledCoordinates.y1 = scaleCoordinate(y1, 'y1', sectionContext)
     scaledCoordinates.y2 = scaleCoordinate(y2, 'y2', sectionContext)
   } else {
-    scaledCoordinates.y1 = sectionContext.minY
-    scaledCoordinates.y2 = sectionContext.maxY
+    scaledCoordinates.y1 = sectionContext.paddedBBox.minY
+    scaledCoordinates.y2 = sectionContext.paddedBBox.maxY
   }
 
   return scaledCoordinates

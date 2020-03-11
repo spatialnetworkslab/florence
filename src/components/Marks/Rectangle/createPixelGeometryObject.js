@@ -73,7 +73,7 @@ function getMissingCoordinatesFromContext (coordinates, sectionContext) {
 const coordMap = { x1: 'minX', x2: 'maxX', y1: 'minY', y2: 'maxY' }
 
 function getMissingCoordinateFromContext (coordinateName, sectionContext) {
-  return sectionContext[coordMap[coordinateName]]
+  return sectionContext.paddedBBox[coordMap[coordinateName]]
 }
 
 function getCoordinateValues (nonMissingCoordinates, sectionContext) {

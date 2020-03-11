@@ -1,5 +1,5 @@
 import { scaleLinear } from 'd3-scale'
-import { parsePadding, applyPadding } from '../../utils/padding.js'
+import { applyPadding } from '../../utils/padding.js'
 
 export function getRanges ({ coordinates }) {
   return {
@@ -8,13 +8,10 @@ export function getRanges ({ coordinates }) {
   }
 }
 
-export function getFinalRanges ({
-  flipX,
-  flipY,
-  padding,
-  zoomIdentity
-}, { rangeX, rangeY }) {
-  const { left, right, top, bottom } = parsePadding(padding)
+export function getFinalRanges (sectionContext, ranges, padding) {
+  const { flipX, flipY, zoomIdentity } = sectionContext
+  const { rangeX, rangeY } = ranges
+  const { left, right, top, bottom } = padding
 
   let finalRangeX = applyFlip(rangeX, flipX)
   finalRangeX = applyPadding(finalRangeX, left, right)

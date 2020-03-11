@@ -1,7 +1,7 @@
 import { scaleLinear } from 'd3-scale'
 import { createPolarTransformation } from './polar.js'
 
-export function applyTransformations (sectionContext) {
+export function attachTransformations (sectionContext) {
   const {
     transformation,
     rangeX,
