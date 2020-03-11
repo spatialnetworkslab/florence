@@ -1,3 +1,4 @@
+import { scaleLinear } from 'd3-scale'
 import { getRanges, getFinalRanges } from './getRanges.js'
 import { createScales, createFinalScales } from './createScales.js'
 import { createPolarTransformation } from './polar.js'
@@ -35,9 +36,12 @@ export function createSectionContext (sectionData) {
     const getScaleTransformation = needsScaling => {
       const { xNeedsScaling, yNeedsScaling } = parseNeedsScaling(needsScaling)
 
+      const toTheta = scaleLinear().domain(ranges.rangeX).range([0, 2 * Math.PI])
+      const toRadius = scaleLinear().domain(ranges.rangeY).range([0, 1])
+
       return ([x, y]) => ([
-        xNeedsScaling ? scaleX(x) : x,
-        yNeedsScaling ? scaleY(y) : y
+        xNeedsScaling ? scaleX(x) : toTheta(x),
+        yNeedsScaling ? scaleY(y) : toRadius(y)
       ])
     }
 
