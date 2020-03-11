@@ -21,25 +21,38 @@ export function createSectionContext (sectionData) {
   if (sectionContext.transformation !== 'polar') {
     const { finalScaleX, finalScaleY } = finalScales
 
-    sectionContext.totalTransformation = ([x, y], { xNeedsScaling, yNeedsScaling }) => ([
-      finalScaleX(scaleX(x, xNeedsScaling)),
-      finalScaleY(scaleY(y, yNeedsScaling))
-    ])
+    sectionContext.getTotalTransformation = needsScaling => {
+      const { xNeedsScaling, yNeedsScaling } = parseNeedsScaling(needsScaling)
+
+      return ([x, y]) => ([
+        finalScaleX(xNeedsScaling ? scaleX(x) : x),
+        finalScaleY(yNeedsScaling ? scaleY(y) : y)
+      ])
+    }
   }
 
   if (sectionContext.transformation === 'polar') {
-    const scaleTransformation = ([x, y], { xNeedsScaling, yNeedsScaling }) => ([
-      scaleX(x, xNeedsScaling),
-      scaleY(y, yNeedsScaling)
-    ])
+    const getScaleTransformation = needsScaling => {
+      const { xNeedsScaling, yNeedsScaling } = parseNeedsScaling(needsScaling)
+
+      return ([x, y]) => ([
+        xNeedsScaling ? scaleX(x) : x,
+        yNeedsScaling ? scaleY(y) : y
+      ])
+    }
 
     const postScaleTransformation = createPolarTransformation(finalRanges)
 
-    sectionContext.scaleTransformation = scaleTransformation
+    sectionContext.getScaleTransformation = getScaleTransformation
     sectionContext.postScaleTransformation = postScaleTransformation
-    sectionContext.totalTransformation = (point, needsScalingObj) => (
-      postScaleTransformation(scaleTransformation(point, needsScalingObj))
-    )
+
+    sectionContext.getTotalTransformation = needsScaling => {
+      const scaleTransformation = getScaleTransformation(needsScaling)
+
+      return point => (
+        postScaleTransformation(scaleTransformation(point))
+      )
+    }
   }
 
   return sectionContext
@@ -53,4 +66,24 @@ function constructSectionContext (
   finalScales
 ) {
   return { ...sectionData, ...ranges, ...finalRanges, ...scales, ...finalScales }
+}
+
+function parseNeedsScaling (needsScaling) {
+  if (needsScaling === undefined) {
+    return {
+      xNeedsScaling: true,
+      yNeedsScaling: true
+    }
+  }
+
+  if (needsScaling.constructor === Boolean) {
+    return {
+      xNeedsScaling: needsScaling,
+      yNeedsScaling: needsScaling
+    }
+  }
+
+  if (needsScaling.constructor === Object) {
+    return needsScaling
+  }
 }

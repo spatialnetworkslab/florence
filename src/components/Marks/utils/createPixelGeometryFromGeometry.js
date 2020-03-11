@@ -1,23 +1,13 @@
 import { transformGeometry, polarGeometry } from '../../../utils/geometryUtils'
 import { isDefined } from '../../../utils/equals.js'
 import getKeyArray from './getKeyArray.js'
-import { validateGeometryProp, validateGeometryPropLayer } from './geometryPropTools.js'
-
-const geometryNeedsToBeTransformed = totalTransformation => isDefined(totalTransformation)
 
 export function createPixelGeometryFromGeometry (
-  geometryProps,
+  geometry,
   sectionContext,
-  renderSettings
+  renderSettings,
+  geometryNeedsScaling
 ) {
-  validateGeometryProp(geometryProps.geometry)
-
-  const geometryNeedsScaling = geometryProps.geometry.constructor === Object
-
-  const geometry = geometryNeedsScaling
-    ? geometryProps.geometry
-    : geometryProps.geometry(sectionContext)
-
   ensureValidGeometry(geometry)
 
   const interpolationNecessary = (
@@ -26,16 +16,20 @@ export function createPixelGeometryFromGeometry (
   )
 
   if (interpolationNecessary) {
+    const scaleTransformation = sectionContext.getScaleTransformation(geometryNeedsScaling)
+    const postScaleTransformation = sectionContext.postScaleTransformation
+
     return polarGeometry(
       geometry,
       sectionContext,
-      { xNeedsScaling: geometryNeedsScaling, yNeedsScaling: geometryNeedsScaling },
+      { scaleTransformation, postScaleTransformation },
       renderSettings
     )
   }
 
   if (!interpolationNecessary) {
-    // const totalTransformation = 
+    const totalTransformation = sectionContext.getTotalTransformation(geometryNeedsScaling)
+
     return transformGeometry(geometry, totalTransformation, renderSettings)
   }
 }
@@ -54,49 +48,25 @@ export function ensureValidGeometry (geometry) {
 }
 
 export function createPixelGeometryObjectFromGeometry (
-  geometryProps,
+  geometry,
   keyProp,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
-  renderSettings
+  renderSettings,
+  geometryNeedsScaling
 ) {
-  validateGeometryPropLayer(geometryProps.geometry)
-
-  const geometryNeedsScaling = geometryProps.geometry.constructor === Array
-
-  const geometryArray = geometryNeedsScaling
-    ? geometryProps.geometry
-    : geometryProps.geometry(sectionContext)
-
-  validateGeometryArray(geometryArray)
-
-  const keyArray = getKeyArray(keyProp, geometryArray.length)
+  const keyArray = getKeyArray(keyProp, geometry.length)
   const pixelGeometryObject = {}
 
   for (let i = 0; i < keyArray.length; i++) {
     const key = keyArray[i]
 
-    const geometry = geometryNeedsScaling
-      ? geometryArray[i]
-      : () => geometryArray[i]
-
     pixelGeometryObject[key] = createPixelGeometryFromGeometry(
-      { geometry },
+      geometry[i],
       sectionContext,
-      coordinateTransformationContext,
-      zoomContext,
-      renderSettings
+      renderSettings,
+      geometryNeedsScaling
     )
   }
 
   return pixelGeometryObject
-}
-
-function validateGeometryArray (geometryArray) {
-  if (isDefined(geometryArray) && geometryArray.constructor === Array) {
-    return
-  }
-
-  throw new Error('\'geometry\' prop must be Array or function that returns array')
 }

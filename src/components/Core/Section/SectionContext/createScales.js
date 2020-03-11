@@ -13,17 +13,10 @@ function createScaleX ({ coordinates, transformation, scaleX }, rangeX) {
     : rangeX
 
   if (scaleX) {
-    const actualScale = scaleX.copy().range(range)
+    const scale = scaleX.copy().range(range)
+    scale.invert = createInvertMethod(scale)
 
-    const scaleFunction = function (x, needsScaling = true) {
-      return needsScaling
-        ? actualScale(x)
-        : x
-    }
-
-    scaleFunction.invert = createInvertMethod(actualScale)
-
-    return scaleFunction
+    return scale
   }
 
   if (!scaleX) {
@@ -37,15 +30,10 @@ function createScaleY ({ coordinates, transformation, scaleY }, rangeY) {
     : rangeY
 
   if (scaleY) {
-    const actualScale = scaleY.copy().range(range)
-    const scaleFunction = function (y, needsScaling = true) {
-      return needsScaling
-        ? actualScale(y)
-        : y
-    }
-    scaleFunction.invert = createInvertMethod(actualScale)
+    const scale = scaleY.copy().range(range)
+    scale.invert = createInvertMethod(scale)
 
-    return scaleFunction
+    return scale
   }
 
   if (!scaleY) {

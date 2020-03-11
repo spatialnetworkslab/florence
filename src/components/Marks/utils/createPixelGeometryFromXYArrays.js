@@ -1,70 +1,38 @@
-import getTotalTransformation from './getTotalTransformation.js'
-import { transformGeometry, interpolateGeometry } from '../../../utils/geometryUtils'
-import { isDefined } from '../../../utils/equals.js'
+import { transformGeometry, polarGeometry } from '../../../utils/geometryUtils'
 import getKeyArray from './getKeyArray.js'
-import { validateXYProps, validateXYPropsLayer } from './geometryPropTools.js'
-import combineContexts from './combineContexts.js'
-
-const needsScaling = prop => prop.constructor === Array
-const inputNeedsToBeTransformed = totalTransformation => isDefined(totalTransformation)
 
 export function createPixelGeometryFromXYArrays (
   { x, y },
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings,
-  geometryType
+  geometryType,
+  needsScaling
 ) {
-  validateXYProps(x, y)
+  validateXYArrays(x, y)
 
-  const xNeedsScaling = needsScaling(x)
-  const yNeedsScaling = needsScaling(y)
-
-  const xArray = xNeedsScaling
-    ? x
-    : x(sectionContext)
-
-  const yArray = yNeedsScaling
-    ? y
-    : y(sectionContext)
-
-  validateXYArrays(xArray, yArray)
-
-  const rendervousInput = createRendervousInput(xArray, yArray, geometryType)
+  const rendervousInput = createRendervousInput(x, y, geometryType)
 
   const interpolationNecessary = (
-    coordinateTransformationContext &&
-    coordinateTransformationContext.type !== 'identity' &&
+    sectionContext.type === 'polar' &&
     renderSettings.interpolate === true
   )
 
   if (interpolationNecessary) {
-    const combinedContext = combineContexts(
-      sectionContext,
-      coordinateTransformationContext,
-      zoomContext,
-      {
-        xNeedsScaling,
-        yNeedsScaling
-      }
-    )
+    const scaleTransformation = sectionContext.getScaleTransformation(needsScaling)
+    const postScaleTransformation = sectionContext.postScaleTransformation
 
-    return interpolateGeometry(rendervousInput, combinedContext, renderSettings)
+    return polarGeometry(
+      rendervousInput,
+      sectionContext,
+      { scaleTransformation, postScaleTransformation },
+      renderSettings
+    )
   }
 
   if (!interpolationNecessary) {
-    const totalTransformation = getTotalTransformation({
-      sectionContext,
-      xNeedsScaling,
-      yNeedsScaling,
-      coordinateTransformationContext,
-      zoomContext
-    })
+    const totalTransformation = sectionContext.getTotalTransformation(needsScaling)
 
-    return inputNeedsToBeTransformed(totalTransformation)
-      ? transformGeometry(rendervousInput, totalTransformation, renderSettings)
-      : transformGeometry(rendervousInput, x => x, renderSettings)
+    return transformGeometry(rendervousInput, totalTransformation, renderSettings)
   }
 }
 
@@ -94,25 +62,11 @@ export function createPixelGeometryObjectFromXYArrays (
   { x, y },
   keyProp,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings,
-  geometryType
+  geometryType,
+  needsScaling
 ) {
-  validateXYPropsLayer(x, y)
-
-  const xNeedsScaling = needsScaling(x)
-  const yNeedsScaling = needsScaling(y)
-
-  const xArray2d = xNeedsScaling
-    ? x
-    : x(sectionContext)
-
-  const yArray2d = yNeedsScaling
-    ? y
-    : y(sectionContext)
-
-  validateXYArrays(xArray2d, yArray2d)
+  validateXYArrays(x, y)
 
   const keyArray = getKeyArray(keyProp, x.length)
   const pixelGeometryObject = {}
@@ -120,21 +74,12 @@ export function createPixelGeometryObjectFromXYArrays (
   for (let i = 0; i < keyArray.length; i++) {
     const key = keyArray[i]
 
-    const xArray = xNeedsScaling
-      ? xArray2d[i]
-      : () => xArray2d[i]
-
-    const yArray = yNeedsScaling
-      ? yArray2d[i]
-      : () => yArray2d[i]
-
     pixelGeometryObject[key] = createPixelGeometryFromXYArrays(
-      { x: xArray, y: yArray },
+      { x: x[i], y: y[i] },
       sectionContext,
-      coordinateTransformationContext,
-      zoomContext,
       renderSettings,
-      geometryType
+      geometryType,
+      needsScaling
     )
   }
 
