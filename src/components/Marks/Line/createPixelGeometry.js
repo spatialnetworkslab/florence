@@ -20,8 +20,6 @@ export default function createPixelGeometry (
     return createPixelGeometryFromXYArrays(
       geometryProps,
       sectionContext,
-      coordinateTransformationContext,
-      zoomContext,
       renderSettings,
       'LineString'
     )
@@ -31,8 +29,6 @@ export default function createPixelGeometry (
     return createPixelGeometryFromGeometry(
       geometryProps,
       sectionContext,
-      coordinateTransformationContext,
-      zoomContext,
       renderSettings
     )
   }

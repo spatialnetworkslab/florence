@@ -65,9 +65,9 @@
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
   // Keep SectionContext and InteractionManagerContext up to date
+  $: coordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+
   $: {
-    const coordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-    
     const sectionData = {
       sectionId,
       coordinates,
@@ -86,6 +86,9 @@
     $interactionManagerContext.loadSection($newSectionContext)
     $interactionManagerContext.loadZoom(zoomIdentity)
   }
+
+  $: finalRangeX = $sectionContext.finalRangeX
+  $: finalRangeY = $sectionContext.finalRangeY
 
   // Change callbacks if necessary
   $: {
@@ -165,18 +168,18 @@
 <defs>
   <clipPath id={`clip-${sectionId}`}>
     <rect 
-      x={Math.min(scaledCoordinates.x1, scaledCoordinates.x2)}
-      y={Math.min(scaledCoordinates.y1, scaledCoordinates.y2)}
-      width={Math.abs(scaledCoordinates.x2 - scaledCoordinates.x1)}
-      height={Math.abs(scaledCoordinates.y2 - scaledCoordinates.y1)}
+      x={Math.min(coordinates.x1, coordinates.x2)}
+      y={Math.min(coordinates.y1, coordinates.y2)}
+      width={Math.abs(coordinates.x2 - coordinates.x1)}
+      height={Math.abs(coordinates.y2 - coordinates.y1)}
     />
   </clipPath>
   <clipPath id={`clip-${sectionId}-data`}>
     <rect 
-      x={Math.min(...rangeX)}
-      y={Math.min(...rangeY)}
-      width={Math.abs(rangeX[0] - rangeX[1])}
-      height={Math.abs(rangeY[0] - rangeY[1])}
+      x={Math.min(...finalRangeX)}
+      y={Math.min(...finalRangeY)}
+      width={Math.abs(finalRangeX[0] - finalRangeX[1])}
+      height={Math.abs(finalRangeY[0] - finalRangeY[1])}
       fill="white"
     />
   </clipPath>
@@ -193,10 +196,10 @@
   {/if}
   {#if backgroundColor}
     <rect class="content-background"
-      x={Math.min(...rangeX)}
-      y={Math.min(...rangeY)}
-      width={Math.abs(rangeX[0] - rangeX[1])}
-      height={Math.abs(rangeY[0] - rangeY[1])}
+      x={Math.min(...finalRangeX)}
+      y={Math.min(...finalRangeY)}
+      width={Math.abs(finalRangeX[0] - finalRangeX[1])}
+      height={Math.abs(finalRangeY[0] - finalRangeY[1])}
       fill={backgroundColor}
     />
   {/if}

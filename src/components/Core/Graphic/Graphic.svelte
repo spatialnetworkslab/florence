@@ -48,11 +48,9 @@
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
   // Keep SectionContext and InteractionManagerContext up to date
-  let _padding
+  $: coordinates = { x1: 0, y1: 0, x2: width, y2: height }
 
   $: {
-    const coordinates = { x1: 0, y1: 0, x2: width, y2: height }
-
     const sectionData = {
       sectionId,
       coordinates,

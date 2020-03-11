@@ -5,8 +5,6 @@ export default function createPixelGeometryObject (
   geometryProps,
   keyProp,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   // filter for allowed props; leave any undefined props in place
@@ -53,11 +51,9 @@ export default function createPixelGeometryObject (
   })
 
   return createPixelGeometryObjectFromGeometry(
-    { geometry: () => scaledGeometryArray },
+    () => scaledGeometryArray,
     keyProp,
     sectionContext,
-    coordinateTransformationContext,
-    zoomContext,
     renderSettings
   )
 }

@@ -1,17 +1,13 @@
-import getTotalTransformation from './getTotalTransformation.js'
-import { transformGeometry, interpolateGeometry } from '../../../utils/geometryUtils'
+import { transformGeometry, polarGeometry } from '../../../utils/geometryUtils'
 import { isDefined } from '../../../utils/equals.js'
 import getKeyArray from './getKeyArray.js'
 import { validateGeometryProp, validateGeometryPropLayer } from './geometryPropTools.js'
-import combineContexts from './combineContexts.js'
 
 const geometryNeedsToBeTransformed = totalTransformation => isDefined(totalTransformation)
 
 export function createPixelGeometryFromGeometry (
   geometryProps,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   validateGeometryProp(geometryProps.geometry)
@@ -25,37 +21,22 @@ export function createPixelGeometryFromGeometry (
   ensureValidGeometry(geometry)
 
   const interpolationNecessary = (
-    coordinateTransformationContext &&
-    coordinateTransformationContext.type !== 'identity' &&
+    sectionContext.type === 'polar' &&
     renderSettings.interpolate === true
   )
 
   if (interpolationNecessary) {
-    const combinedContext = combineContexts(
+    return polarGeometry(
+      geometry,
       sectionContext,
-      coordinateTransformationContext,
-      zoomContext,
-      {
-        xNeedsScaling: geometryNeedsScaling,
-        yNeedsScaling: geometryNeedsScaling
-      }
+      { xNeedsScaling: geometryNeedsScaling, yNeedsScaling: geometryNeedsScaling },
+      renderSettings
     )
-
-    return interpolateGeometry(geometry, combinedContext, renderSettings)
   }
 
   if (!interpolationNecessary) {
-    const totalTransformation = getTotalTransformation({
-      sectionContext,
-      xNeedsScaling: geometryNeedsScaling,
-      yNeedsScaling: geometryNeedsScaling,
-      coordinateTransformationContext,
-      zoomContext
-    })
-
-    return geometryNeedsToBeTransformed(totalTransformation)
-      ? transformGeometry(geometry, totalTransformation, renderSettings)
-      : geometry
+    // const totalTransformation = 
+    return transformGeometry(geometry, totalTransformation, renderSettings)
   }
 }
 

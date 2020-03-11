@@ -3,8 +3,6 @@ import { createPixelGeometryFromGeometry } from '../utils/createPixelGeometryFro
 export default function createPixelGeometry (
   geometryProps,
   sectionContext,
-  coordinateTransformationContext,
-  zoomContext,
   renderSettings
 ) {
   // filter for allowed props; leave any undefined props in place
@@ -23,10 +21,8 @@ export default function createPixelGeometry (
   ))), sectionContext))
 
   return createPixelGeometryFromGeometry(
-    { geometry: () => scaledGeometry },
+    () => scaledGeometry,
     sectionContext,
-    coordinateTransformationContext,
-    zoomContext,
     renderSettings
   )
 }
