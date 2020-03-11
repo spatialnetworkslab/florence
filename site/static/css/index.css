@@ -731,17 +731,11 @@ tr > td {
 }
 
 .csbp-container {
-  margin-top: 80px;
   display: flex;
   height: 16rem;
   width: auto;
-  /* background-color: yellow;
-  height: 200px; */
-  /* display: flex;
-  height: 500px; */
-  /* max-width: 500px;
-  overflow: scroll; */
-  /* position: relative; */
+  height: auto;
+  margin-top: 2.5rem;
 }
 
 .csbp-rendered {
@@ -771,11 +765,15 @@ tr > td {
 }
 
 .csbp-tab label {
-  background: #eee;
-  padding: 10px;
-  border: 1px solid #ccc;
-  margin-left: -1px;
+  background-color: #fff;
   position: relative;
+  border-width: 1px;
+  border-width: 1px;
+  border-radius: 0.125rem;
+  border-color: #cbd5e0;
+  padding: 0.75rem;
+  margin-left: -0.25rem;
+  margin: -1px;
   left: 1px;
 }
 
@@ -787,14 +785,15 @@ tr > td {
   height: 500px;
   position: absolute;
   overflow: scroll;
-  top: 28px;
+  border-width: 1px;
+  border-width: 1px;
+  border-radius: 0.125rem;
+  border-color: #cbd5e0;
+  background-color: #f5f2f0;
   left: 0;
-  background: white;
   right: 0;
   bottom: 0;
-  padding: 20px;
-  border: 1px solid #ccc;
-  overflow: scroll;
+  top: 28px;
 }
 
 .csbp-content > * {
@@ -804,8 +803,10 @@ tr > td {
 }
 
 [type="radio"]:checked ~ label {
-  background: white;
-  border-bottom: 1px solid white;
+  background-color: #f5f2f0;
+  border-width: 1px;
+  border-style: solid;
+  border-bottom: #f5f2f0;
   z-index: 2;
 }
 
@@ -819,9 +820,9 @@ tr > td {
 }
 
 .csbp-csb-link {
-  flex: 1;
+  flex: 1 1 0%;
+  padding: 0.5rem;
   min-width: 200px;
-  padding: 5px;
 }
 
 @media only screen and (max-width: 800px) {

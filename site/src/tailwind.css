@@ -92,16 +92,7 @@ tr > td {
 }
 
 .csbp-container {
-  margin-top: 80px;
-  @apply flex h-64 w-auto;
-  /* background-color: yellow;
-  height: 200px; */
-  /* display: flex;
-  height: 500px; */
-
-  /* max-width: 500px;
-  overflow: scroll; */
-  /* position: relative; */
+  @apply flex h-64 w-auto h-auto mt-10;
 }
 
 .csbp-rendered {
@@ -120,65 +111,59 @@ tr > td {
   @apply flex-1 relative;
   min-height: 500px;
 }
+
 .csbp-tab {
   @apply inline;
 }
 
 .csbp-tab label {
-  background: #eee;
-  padding: 10px;
-  border: 1px solid #ccc;
-  margin-left: -1px;
-  position: relative;
+  @apply bg-white relative border border rounded-sm border-gray-400 p-3 -ml-1 -m-px;
   left: 1px;
 }
 
 .csbp-tab [type="radio"] {
   @apply hidden;
 }
+
 .csbp-content {
   height: 500px;
-  position: absolute;
-  overflow: scroll;
+  @apply absolute overflow-scroll border border rounded-sm border-gray-400 bg-codegray left-0 right-0 bottom-0;
   top: 28px;
-  left: 0;
-  background: white;
-  right: 0;
-  bottom: 0;
-  padding: 20px;
-  border: 1px solid #ccc;
-  overflow: scroll;
 }
+
 .csbp-content > * {
   opacity: 0;
   /* transform: translateX(-100%);
   transition: all 0.1s ease; */
 }
+
 [type="radio"]:checked ~ label {
-  background: white;
-  border-bottom: 1px solid white;
+  @apply bg-codegray border border-solid;
+  border-bottom: #f5f2f0;
   z-index: 2;
 }
+
 [type="radio"]:checked ~ label ~ .csbp-content {
   z-index: 1;
 }
+
 [type="radio"]:checked ~ label ~ .csbp-content > * {
   opacity: 1;
   transform: translateX(0);
 }
+
 .csbp-csb-link {
-  flex: 1;
+  @apply flex-1 p-2;
   min-width: 200px;
-  padding: 5px;
 }
 
 @media only screen and (max-width: 800px) {
   .csbp-container {
-    flex-wrap: wrap;
+    @apply flex-wrap;
     margin-bottom: 500px;
   }
   .csbp-rendered {
-    margin: auto;
+    @apply m-auto;
   }
 }
 
