@@ -715,25 +715,30 @@ tr > td {
   max-width: 64rem;
 }
 
+/* codesandbox */
+
 .csbp-render-fullscreen {
   z-index: 10;
   position: absolute;
-  background-color: white;
+  background-color: transparent;
   top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
+  left: 0;
   display: flex;
   align-items: center;
   margin: auto;
 }
 
 .csbp-container {
+  margin-top: 80px;
+  display: flex;
+  height: 16rem;
+  width: auto;
   /* background-color: yellow;
   height: 200px; */
-  display: flex;
-  height: 500px;
-  max-width: 500px;
+  /* display: flex;
+  height: 500px; */
   /* max-width: 500px;
   overflow: scroll; */
   /* position: relative; */
@@ -741,21 +746,24 @@ tr > td {
 
 .csbp-rendered {
   align-self: center;
-  flex: 1;
-  border: 1px solid;
-  margin: 5px;
+  flex: 1 1 0%;
+  margin: 0.25rem;
+}
+
+.csbp-rendered svg {
+  margin: auto;
 }
 
 .csbp-code-tabs {
+  flex: 1 1 0%;
   position: relative;
-  min-width: 800px;
-  margin: 5px;
+  margin: 0.5rem;
 }
 
 .csbp-tabs {
-  flex: 1;
+  flex: 1 1 0%;
   position: relative;
-  min-height: 500px; /* This part sucks */
+  min-height: 500px;
 }
 
 .csbp-tab {
@@ -777,7 +785,6 @@ tr > td {
 
 .csbp-content {
   height: 500px;
-  width: 750px;
   position: absolute;
   overflow: scroll;
   top: 28px;
@@ -792,8 +799,8 @@ tr > td {
 
 .csbp-content > * {
   opacity: 0;
-  transform: translateX(-100%);
-  transition: all 0.6s ease;
+  /* transform: translateX(-100%);
+  transition: all 0.1s ease; */
 }
 
 [type="radio"]:checked ~ label {
@@ -814,11 +821,13 @@ tr > td {
 .csbp-csb-link {
   flex: 1;
   min-width: 200px;
+  padding: 5px;
 }
 
 @media only screen and (max-width: 800px) {
   .csbp-container {
     flex-wrap: wrap;
+    margin-bottom: 500px;
   }
 
   .csbp-rendered {
