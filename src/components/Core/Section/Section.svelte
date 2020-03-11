@@ -6,14 +6,13 @@
 </script>
 
 <script>
-  import { beforeUpdate } from 'svelte'
   import detectIt from 'detect-it'
   import * as SectionContext from './SectionContext'
   import * as EventManagerContext from '../Graphic/EventManagerContext'
   import * as InteractionManagerContext from './InteractionManagerContext'
 
   import InteractionManager from '../../../interactivity/interactions/InteractionManager'
-  import { scaleCoordinates } from '../../Marks/Rectangle/createPixelGeometry.js'
+  import { getPixelCoordinates } from './getPixelCoordinates.js'
   import { getClipPropsNoPadding, getClipPropsPadding } from './getClipProps.j'
 
   const sectionId = getId()
@@ -66,7 +65,7 @@
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
   // Keep SectionContext and InteractionManagerContext up to date
-  $: coordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+  $: coordinates = getPixelCoordinates({ x1, x2, y1, y2 }, $sectionContext)
 
   $: {
     const sectionData = {
@@ -98,10 +97,6 @@
       onTouchdown, onTouchmove, onTouchup, onTouchover, onTouchout, onPinch
     )
   }
-
-  beforeUpdate(() => {
-    // CoordinateTransformationContext.ensureNotParent($coordinateTransformationContext)
-  })
 
   function removeSectionInteractionsIfNecessary () {
     if (detectIt.hasMouse) {
