@@ -5,14 +5,14 @@
   import * as SectionContext from '../Section/SectionContext'
   import * as EventManagerContext from './EventManagerContext'
   import * as InteractionManagerContext from '../Section/InteractionManagerContext'
-  import * as CoordinateTransformationContext from '../Section/CoordinateTransformationContext'
-  import * as ZoomContext from '../Section/ZoomContext'
 
   import EventManager from '../../../interactivity/events/EventManager.js'
   import InteractionManager from '../../../interactivity/interactions/InteractionManager.js'
 
   import { parsePadding, applyPadding } from '../utils/padding.js'
 
+  export let renderer = undefined
+  
   export let width = undefined
   export let height = undefined
   export let padding = 0
@@ -20,7 +20,8 @@
   export let scaleY = undefined
   export let flipX = false
   export let flipY = false
-  export let renderer = undefined
+  export let zoomIdentity = undefined
+  export let transformation = undefined
   export let blockReindexing = false
 
   const graphicContext = GraphicContext.init()
@@ -46,6 +47,7 @@
 
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
+  // Keep SectionContext and InteractionManagerContext up to date
   let _padding
 
   $: {
@@ -59,11 +61,26 @@
     rangeX = applyPadding(rangeX, _padding.left, _padding.right)
     rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
 
-    SectionContext.update(sectionContext,
-      { sectionId: 'graphic', rangeX, rangeY, scaleX, scaleY, padding: _padding, blockReindexing }
+    const updatedSectionContext = {
+      sectionId: 'graphic',
+      rangeX,
+      rangeY,
+      scaleX,
+      scaleY,
+      padding: _padding,
+      flipX,
+      flipY,
+      blockReindexing,
+      transformation,
+      zoomIdentity
+    }
+
+    SectionContext.update(
+      sectionContext, updatedSectionContext
     )
 
     $interactionManagerContext.loadSection($sectionContext)
+    $interactionManagerContext.loadZoom(zoomIdentity)
   }
 
   onMount(() => {

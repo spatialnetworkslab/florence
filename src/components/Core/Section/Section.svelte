@@ -9,10 +9,8 @@
   import { beforeUpdate } from 'svelte'
   import detectIt from 'detect-it'
   import * as SectionContext from './SectionContext'
-  import * as CoordinateTransformationContext from './CoordinateTransformationContext'
   import * as EventManagerContext from '../Graphic/EventManagerContext'
   import * as InteractionManagerContext from './InteractionManagerContext'
-  import * as ZoomContext from './ZoomContext'
 
   import InteractionManager from '../../../interactivity/interactions/InteractionManager'
   import { scaleCoordinates } from '../../Marks/Rectangle/createPixelGeometry.js'
@@ -58,15 +56,8 @@
   // Contexts
   const sectionContext = SectionContext.subscribe()
   const newSectionContext = SectionContext.init()
-  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
-  const newCoordinateTransformationContext = CoordinateTransformationContext.init()
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
-  const zoomContext = ZoomContext.init()
-  
-  let scaledCoordinates
-  let rangeX
-  let rangeY
   
   // Set up InteractionManager
   const interactionManager = new InteractionManager()
@@ -74,35 +65,29 @@
   interactionManager.linkEventManager($eventManagerContext)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
-  // Keep SectionContext and CoordinateTransformationContext up to date
-  let _padding
-
+  // Keep SectionContext and InteractionManagerContext up to date
   $: {
-    scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-    rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
-    rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
-  
-    if (flipX) rangeX.reverse()
-    if (flipY) rangeY.reverse()
-
-    _padding = parsePadding(padding)
-    rangeX = applyPadding(rangeX, _padding.left, _padding.right)
-    rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
-
-    const updatedSectionContext = {
-      sectionId, rangeX, rangeY, scaleX, scaleY, padding: _padding, flipX, flipY, blockReindexing
+    const coordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+    
+    const updatedSectionData = {
+      sectionId,
+      coordinates,
+      scaleX,
+      scaleY,
+      padding,
+      flipX,
+      flipY,
+      blockReindexing,
+      transformation,
+      zoomIdentity
     }
 
     SectionContext.update(
-      newSectionContext, updatedSectionContext
-    )
-
-    CoordinateTransformationContext.update(
-      newCoordinateTransformationContext, { rangeX, rangeY, transformation }
+      newSectionContext, updatedSectionData
     )
 
     $interactionManagerContext.loadSection($newSectionContext)
-    $interactionManagerContext.loadCoordinateTransformation($newCoordinateTransformationContext)
+    $interactionManagerContext.loadZoom(zoomIdentity)
   }
 
   // Change callbacks if necessary
@@ -113,14 +98,8 @@
     )
   }
 
-  // Update zooming and panning
-  $: {
-    ZoomContext.update(zoomContext, zoomIdentity)
-    $interactionManagerContext.loadZoom($zoomContext)
-  }
-
   beforeUpdate(() => {
-    CoordinateTransformationContext.ensureNotParent($coordinateTransformationContext)
+    // CoordinateTransformationContext.ensureNotParent($coordinateTransformationContext)
   })
 
   function removeSectionInteractionsIfNecessary () {

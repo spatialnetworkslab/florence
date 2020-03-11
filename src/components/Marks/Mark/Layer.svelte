@@ -11,9 +11,7 @@
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
-  import * as CoordinateTransformationContext from '../../Core/Section/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
-  import * as ZoomContext from '../../Core/Section/ZoomContext'
   
   import validateAesthetics from './validateAesthetics.js'
   import { layerPixelGeometryFuncs } from './pixelGeometryFuncs.js'
@@ -182,9 +180,7 @@
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
-  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.subscribe()
-  const zoomContext = ZoomContext.subscribe()
 
   // Initiate geometry objects and key array
   let pixelGeometryObject
@@ -234,8 +230,6 @@
         positioningAesthetics,
         key,
         $sectionContext,
-        $coordinateTransformationContext,
-        $zoomContext,
         renderSettings
       )
     }
@@ -345,9 +339,7 @@
       positioningAesthetics,
       key,
       $sectionContext,
-      $coordinateTransformationContext,
-      $zoomContext,
-      parseRenderSettings(renderSettings, $coordinateTransformationContext)
+      parseRenderSettings(renderSettings, $sectionContext)
     )
   }
 
