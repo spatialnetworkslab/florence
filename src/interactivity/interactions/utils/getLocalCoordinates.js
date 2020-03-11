@@ -2,7 +2,7 @@ export function getLocalCoordinates (screenCoordinates, interactionManager) {
   const section = interactionManager._section
   const inverseTotalTransformation = section.inverseTotalTransformation
 
-  const { minX, maxX, minY, maxY } = section.paddedBBox
+  const { minX, maxX, minY, maxY } = section.paddedBbox
 
   const clampedX = clamp(screenCoordinates.x, minX, maxX)
   const clampedY = clamp(screenCoordinates.y, minY, maxY)

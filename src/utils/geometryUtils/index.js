@@ -1,4 +1,4 @@
-export { calculateBBoxGeometries, calculateBBoxGeometry } from './calculateBBox.js'
+export { calculateBboxGeometries, calculateBboxGeometry } from './calculateBbox.js'
 
 export { default as calculateCentroid } from './calculateCentroid.js'
 

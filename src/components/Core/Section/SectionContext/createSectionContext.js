@@ -39,12 +39,12 @@ function constructSectionContext (
     ...finalRanges,
     ...scales,
     ...finalScales,
-    bbox: getBBox(ranges),
-    paddedBBox: getPaddedBBox(ranges, padding)
+    bbox: getBbox(ranges),
+    paddedBbox: getpaddedBbox(ranges, padding)
   }
 }
 
-function getBBox ({ rangeX, rangeY }) {
+function getBbox ({ rangeX, rangeY }) {
   return {
     minX: Math.min(...rangeX),
     maxX: Math.max(...rangeY),
@@ -53,7 +53,7 @@ function getBBox ({ rangeX, rangeY }) {
   }
 }
 
-function getPaddedBBox ({ rangeX, rangeY }, { left, right, top, bottom }) {
+function getpaddedBbox ({ rangeX, rangeY }, { left, right, top, bottom }) {
   return {
     minX: Math.min(...rangeX) + left,
     maxX: Math.max(...rangeY) - right,

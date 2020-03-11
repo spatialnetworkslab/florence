@@ -94,8 +94,6 @@
   let _padding
   let rangeCoordsX
   let rangeCoordsY
-  let xRange = $sectionContext.scaleX.range()
-  let yRange = $sectionContext.scaleY.range()
 
   let colorXStartCoords
   let colorXEndCoords
@@ -109,13 +107,12 @@
   let yCoords
   let addTitleSize
   
-  $: {
-    if (usePadding === true) {
-      _padding = $sectionContext.padding
-      xRange = removePadding(xRange, _padding.left, _padding.right)
-      yRange = removePadding(yRange, _padding.top, _padding.bottom)
-    }
-  }
+  $: bbox = usePadding === true
+    ? $sectionContext.bbox
+    : $sectionContext.paddedBbox
+
+  $: xRange = [bbox.minX, bbox.maxX]
+  $: yRange = [bbox.minY, bbox.maxY]
   
   // Section positioning wrt section/graphic context
   $: {

@@ -1,13 +1,13 @@
 import { calculateCentroid } from '../../../../utils/geometryUtils'
 import bboxPoint from './utils/bboxPoint.js'
-import createItemFromBBox from '../../utils/createItemFromBBox.js'
+import createItemFromBbox from '../../utils/createItemFromBbox.js'
 
 export function indexPolygon (markData) {
   const polygonAttributes = markData.attributes
 
   const centroid = calculateCentroid(polygonAttributes.screenGeometry)
   const bbox = bboxPoint(centroid)
-  const item = createItemFromBBox(bbox)
+  const item = createItemFromBbox(bbox)
 
   item.attributes = polygonAttributes
   item.markType = 'Polygon'
@@ -26,7 +26,7 @@ export function indexPolygonLayer ({ layerAttributes, keyArray, layerId }) {
 
     const centroid = calculateCentroid(polygonAttributes.screenGeometry)
     const bbox = bboxPoint(centroid)
-    const item = createItemFromBBox(bbox)
+    const item = createItemFromBbox(bbox)
 
     item.key = key
     item.index = i

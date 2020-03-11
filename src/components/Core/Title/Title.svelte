@@ -57,18 +57,12 @@
   // Private variables
   let totalFontSize
 
-  $: xRange = 
-  // let _padding
-  // let xRange = $sectionContext.rangeX
-  // let yRange = $sectionContext.rangeY
+  $: bbox = usePadding === true
+    ? $sectionContext.bbox
+    : $sectionContext.paddedBbox
 
-  // $: {
-  //   if (usePadding === true) {
-  //     _padding = $sectionContext.padding
-  //     xRange = removePadding(xRange, _padding.left, _padding.right)
-  //     yRange = removePadding(yRange, _padding.top, _padding.bottom)
-  //   }
-  // }
+  $: xRange = [bbox.minX, bbox.maxX]
+  $: yRange = [bbox.minY, bbox.maxY]
 
   // Title text positioning wrt section/graphic context
   $: {

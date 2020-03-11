@@ -110,7 +110,7 @@ function geometryCompletelyOffScreen (geometry, totalTransformation, sectionCont
 }
 
 function pointIsInRange (point, sectionContext) {
-  const bbox = sectionContext.paddedBBox
+  const bbox = sectionContext.paddedBbox
 
   return (
     point[0] >= bbox.minX &&
