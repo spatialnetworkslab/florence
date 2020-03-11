@@ -128,7 +128,7 @@ tr > td {
 .csbp-tabs {
   flex: 1;
   position: relative;
-  min-height: 500px; /* This part sucks */
+  min-height: 500px;
 }
 .csbp-tab {
   display: inline;
