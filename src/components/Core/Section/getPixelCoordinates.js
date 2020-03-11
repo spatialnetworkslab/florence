@@ -12,12 +12,12 @@ export function getPixelCoordinates ({ x1, x2, y1, y2 }, sectionContext) {
 
   const totalTransformation1 = sectionContext.getTotalTransformation({
     xNeedsScaling: x1NeedsScaling,
-    y1NeedsScaling: y1NeedsScaling
+    yNeedsScaling: y1NeedsScaling
   })
 
   const totalTransformation2 = sectionContext.getTotalTransformation({
     xNeedsScaling: x2NeedsScaling,
-    y1NeedsScaling: y2NeedsScaling
+    yNeedsScaling: y2NeedsScaling
   })
 
   const [x1Scaled, y1Scaled] = totalTransformation1([x1, y1])

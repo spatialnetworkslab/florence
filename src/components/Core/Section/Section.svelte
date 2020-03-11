@@ -82,7 +82,6 @@
     }
 
     SectionContext.update(newSectionContext, sectionData)
-
     $interactionManagerContext.loadSection($newSectionContext)
   }
 

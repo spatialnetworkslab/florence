@@ -28,8 +28,6 @@
   const sectionContext = SectionContext.init()
   const eventManagerContext = EventManagerContext.init()
   const interactionManagerContext = InteractionManagerContext.init()
-  CoordinateTransformationContext.init()
-  ZoomContext.init()
 
   $: {
     GraphicContext.update(graphicContext, { renderer })
@@ -52,7 +50,7 @@
 
   $: {
     const sectionData = {
-      sectionId,
+      sectionId: 'graphic',
       coordinates,
       scaleX,
       scaleY,

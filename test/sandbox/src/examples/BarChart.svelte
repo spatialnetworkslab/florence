@@ -69,7 +69,7 @@
         y1={0}
         y2={row.meanQuantity}
         fill={transformation === 'identity' ? 'green' : 'blue'}
-        transition={2000}
+        transition={duration}
         onClick={handler}
       />
 
