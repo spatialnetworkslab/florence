@@ -732,25 +732,31 @@ tr > td {
 
 .csbp-container {
   display: flex;
-  height: 16rem;
-  width: auto;
-  height: auto;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
   margin-top: 2.5rem;
-  @media (min-width: 640px) {
-    flex-direction: column;
-  }
-  @media (min-width: 768px) {
-    flex-direction: column;
-  }
-  @media (min-width: 1024px) {
-    flex-direction: column;
-  }
 }
 
 .csbp-rendered {
-  align-self: center;
   flex: 1 1 0%;
   margin: 0.25rem;
+  align-self: center;
+  @media (min-width: 640px) {
+    width: 100%;
+
+    flex: 1 1 0%;
+  }
+  @media (min-width: 768px) {
+    width: 50%;
+
+    flex: 1 1 0%;
+  }
+  @media (min-width: 1024px) {
+    width: 50%;
+
+    flex: 0 1 auto;
+  }
 }
 
 .csbp-rendered svg {
@@ -758,10 +764,25 @@ tr > td {
 }
 
 .csbp-code-tabs {
-  flex: 1 1 0%;
+  flex: 1 1 auto;
   position: relative;
   margin: 0.5rem;
   font-size: 0.75rem;
+  @media (min-width: 640px) {
+    width: 100%;
+
+    flex: 1 1 0%;
+  }
+  @media (min-width: 768px) {
+    width: 50%;
+
+    flex: 1 1 0%;
+  }
+  @media (min-width: 1024px) {
+    width: 50%;
+
+    flex: 0 1 auto;
+  }
 }
 
 .csbp-tabs {
@@ -794,7 +815,8 @@ tr > td {
 .csbp-content {
   height: 500px;
   position: absolute;
-  overflow: scroll;
+  overflow: auto;
+  overflow-x: auto;
   border-width: 1px;
   border-width: 1px;
   border-radius: 0.125rem;

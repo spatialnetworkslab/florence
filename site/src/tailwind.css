@@ -92,22 +92,21 @@ tr > td {
 }
 
 .csbp-container {
-  @apply flex h-64 w-auto h-auto mt-10;
-  @screen sm {
-    @apply flex-col;
-  }
-
-  @screen md {
-    @apply flex-col;
-  }
-
-  @screen lg {
-    @apply flex-col;
-  }
+  @apply flex flex-wrap w-full h-full mt-10;
 }
 
 .csbp-rendered {
-  @apply self-center flex-1 m-1;
+  @apply flex-1 m-1;
+  align-self: center;
+  @screen sm {
+    @apply w-full flex-1;
+  }
+  @screen md {
+    @apply w-1/2 flex-1;
+  }
+  @screen lg {
+    @apply w-1/2 flex-initial;
+  }
 }
 
 .csbp-rendered svg {
@@ -115,7 +114,16 @@ tr > td {
 }
 
 .csbp-code-tabs {
-  @apply flex-1 relative m-2 text-xs;
+  @apply flex-auto relative m-2 text-xs;
+  @screen sm {
+    @apply w-full flex-1;
+  }
+  @screen md {
+    @apply w-1/2 flex-1;
+  }
+  @screen lg {
+    @apply w-1/2 flex-initial;
+  }
 }
 
 .csbp-tabs {
@@ -138,7 +146,7 @@ tr > td {
 
 .csbp-content {
   height: 500px;
-  @apply absolute overflow-scroll border border rounded-sm border-gray-400 bg-codegray left-0 right-0 bottom-0 mb-4;
+  @apply absolute overflow-auto overflow-x-auto border border rounded-sm border-gray-400 bg-codegray left-0 right-0 bottom-0 mb-4;
   top: 28px;
 }
 
