@@ -29,6 +29,9 @@
   import Title from './examples/Title.svelte'
   import LegendsDocs from './examples/LegendsDocs.svelte'
 
+  // Tutorials
+  import BasicTutorial from './examples/BasicTutorial.svelte'
+
   // and add them to this component array
   const components = [
     {
@@ -156,11 +159,11 @@
       url: 'legendsdocs',
       component: LegendsDocs
     },
-    // {
-    //   name: 'Legends',
-    //   url: '/legends',
-    //   component: Legends
-    // },
+    {
+      name: 'Basic Tutorial',
+      url: 'basictutorial',
+      component: BasicTutorial
+    }
   ]
 </script>
 <Router url="">
