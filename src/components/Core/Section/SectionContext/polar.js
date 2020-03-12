@@ -20,7 +20,9 @@ export function createPolarTransformation (
 
   const invert = function invert ([x, y]) {
     const smallCoords = [fitX.invert(x), fitY.invert(y)]
-    return cartesianToPolar(...smallCoords)
+    const [theta, radius] = cartesianToPolar(...smallCoords)
+
+    return [toTheta.invert(theta), toRadius.invert(radius)]
   }
 
   transform.invert = invert

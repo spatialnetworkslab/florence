@@ -9,7 +9,7 @@ export function createScales ({ scaleX, scaleY }, { rangeX, rangeY }) {
 function createScale (scale, range) {
   if (scale) {
     const newScale = scale.copy().range(range)
-    newScale.invert = createInvertMethod(scale)
+    newScale.invert = createInvertMethod(newScale)
 
     return newScale
   }
