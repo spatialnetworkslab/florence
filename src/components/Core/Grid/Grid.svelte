@@ -35,6 +35,8 @@
 
   // Get named cells
   $: allSpecs = mergeNameSpecs(areaNames, allCells, numCols)
+
+  $: { console.log(allSpecs) }
 </script>
 
 <g>

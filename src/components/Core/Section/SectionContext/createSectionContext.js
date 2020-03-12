@@ -56,7 +56,7 @@ function getBbox ({ rangeX, rangeY }) {
 function getpaddedBbox ({ rangeX, rangeY }, { left, right, top, bottom }) {
   return {
     minX: Math.min(...rangeX) + left,
-    maxX: Math.max(...rangeY) - right,
+    maxX: Math.max(...rangeX) - right,
     minY: Math.min(...rangeY) + top,
     maxY: Math.max(...rangeY) - bottom
   }
