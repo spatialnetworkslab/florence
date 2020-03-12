@@ -1,7 +1,6 @@
 import { interpolate } from 'd3-interpolate'
 import { transformGeometry } from '../../../utils/geometryUtils'
 import { isDefined, isUndefined } from '../../../utils/equals.js'
-import { warn } from '../../../utils/logging.js'
 
 export default function createScreenGeometry (
   { func, x },
@@ -10,7 +9,12 @@ export default function createScreenGeometry (
 ) {
   ensureValidInput(func, x)
 
-  const dataPoints = generateDataPoints(func, x, sectionContext)
+  const dataPoints = generateDataPoints(
+    func,
+    x,
+    sectionContext,
+    renderSettings.interpolationTreshold
+  )
 
   const geometry = {
     type: 'LineString',
@@ -19,15 +23,7 @@ export default function createScreenGeometry (
 
   const totalTransformation = sectionContext.getTotalTransformation()
 
-  if (geometryCompletelyOffScreen(geometry, totalTransformation, sectionContext)) {
-    warn('FuncLine was completely out of Section window. Please check your Section settings and FuncLine props.')
-    return {
-      type: 'LineString',
-      coordinates: [[0, 0], [0, 1]]
-    }
-  }
-
-  return transformGeometry(geometry, totalTransformation, { interpolate: true })
+  return transformGeometry(geometry, totalTransformation, renderSettings)
 }
 
 function ensureValidInput (func, x) {
@@ -41,9 +37,13 @@ function ensureValidInput (func, x) {
   throw new Error('FuncLine: invalid geometry props')
 }
 
-function generateDataPoints (func, x, sectionContext) {
+function generateDataPoints (func, x, sectionContext, interpolationTreshold) {
   const domainX = x || getDomainX(sectionContext)
-  return interpolatePointsFromFunc(func, domainX)
+
+  const finalRangeX = sectionContext.finalRangeX
+  const resolution = Math.abs(finalRangeX[0] - finalRangeX[1]) / interpolationTreshold
+
+  return interpolatePointsFromFunc(func, domainX, resolution)
 }
 
 function getDomainX (sectionContext) {
@@ -64,13 +64,13 @@ function isValidScale (scale) {
       return true
     }
 
-    throw new Error('FuncLine can only be used with functions that have numeric domains')
+    throw new Error('FuncLine can only be used with a scaleX that has a numeric domain')
   } else {
     return false
   }
 }
 
-function interpolatePointsFromFunc (func, domainX, resolution = 10) {
+function interpolatePointsFromFunc (func, domainX, resolution) {
   const points = []
 
   const interpolator = interpolate(...domainX)
@@ -87,26 +87,4 @@ function interpolatePointsFromFunc (func, domainX, resolution = 10) {
   }
 
   return points
-}
-
-function geometryCompletelyOffScreen (geometry, totalTransformation, sectionContext) {
-  const transformedGeometry = transformGeometry(geometry, totalTransformation)
-
-  for (let i = 0; i < transformedGeometry.coordinates.length; i++) {
-    const point = transformedGeometry.coordinates[i]
-    if (pointIsInRange(point, sectionContext)) return false
-  }
-
-  return true
-}
-
-function pointIsInRange (point, sectionContext) {
-  const bbox = sectionContext.paddedBbox
-
-  return (
-    point[0] >= bbox.minX &&
-    point[0] <= bbox.maxX &&
-    point[1] >= bbox.minY &&
-    point[1] <= bbox.maxY
-  )
 }

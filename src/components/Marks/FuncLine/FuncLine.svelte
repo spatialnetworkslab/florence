@@ -63,9 +63,7 @@
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
-  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.subscribe()
-  const zoomContext = ZoomContext.subscribe()
 
   let screenGeometry = createScreenGeometry(
     { func, x },
