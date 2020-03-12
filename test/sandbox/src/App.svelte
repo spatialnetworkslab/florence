@@ -30,6 +30,7 @@
   import LegendsDocs from './examples/LegendsDocs.svelte'
   import GeoEx from './examples/GeoEx.svelte'
   import GeoFacet from './examples/GeoFacet.svelte'
+  import Heatmap from './examples/Heatmap.svelte'
 
   // and add them to this component array
   const components = [
@@ -167,6 +168,11 @@
       name: 'GeoFacet',
       url: 'geofacet',
       component: GeoFacet
+    },
+    {
+      name: 'Heatmap',
+      url: 'heatmap',
+      component: Heatmap
     }
   ]
 </script>

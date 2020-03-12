@@ -20,7 +20,7 @@
   const scaleY = scaleLinear().domain(data.domain('b'))
 
   function getRandomSymbol () {
-    const symbols = ['circle', 'star4', 'star5', 'star', 'star6', 'star8']
+    const symbols = ['circle', 'star4', 'star5', 'star', 'star6', 'star8', 'square']
 
     return symbols[Math.floor(Math.random() * symbols.length)]
   }

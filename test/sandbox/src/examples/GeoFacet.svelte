@@ -8,18 +8,20 @@
   import DataContainer from '@snlab/florence-datacontainer'
 
   // geodata
-  import sg from '../data/planning_areas.json'
-  import hexagons from '../data/hex_grid.json'
+  import geo from '../data/planning_areas_lonlat.json'
+  import metadata from '../data/test.json'
   
-  // data storage
+  // data storage / props
   let background
-  let hex
+  let base
+  let baseGeometry
   let geoScale
-  let hexGeom
+  let geometry
+
+  // private variables
   let meanPriceDomain
   let meanLeaseDomain
   let meanFloorDomain
-  let bgGeom
 
   let processedGeom
 
@@ -27,30 +29,53 @@
   let leaseScale
   let floorScale
 
-  let processedHex
+  let postBg
   let priceColors
   let leaseColors
   let floorColors
 
-  // upload data
   $: {
-    background = new DataContainer(sg)
-    const bbox = background.domain('$geometry')
-    geoScale = createGeoScales(bbox)
-    bgGeom = background.column('$geometry')
+    base = new DataContainer(geo)
+    baseGeometry = base.column('$geometry')
   }
 
-  // process relevant data to get hexagons with mean price data
+  // process relevant data to get backgroundagons with mean price data
   $: {
-    hex = new DataContainer(hexagons)
-    // const hexBbox = hex.domain('$geometry')
-    hexGeom = hex.column('$geometry')
-    processedHex = hex.dropNA(['mean_price', 'mean_lease', 'mean_floor_area']) // remove na values
-    processedGeom = processedHex.column('$geometry')
-    meanPriceDomain = processedHex.domain('mean_price')
-    meanLeaseDomain = processedHex.domain('mean_lease')
-    meanFloorDomain = processedHex.domain('mean_floor_area')
+    background = new DataContainer(metadata)
+    const bbox = background.domain('$geometry')
+    geoScale = createGeoScales(bbox)
+    geometry = background.column('$geometry')
+    postBg = background.dropNA(['resale_price_sqm', 'remaining_lease', 'floor_area_sqm']) // remove na values
+    processedGeom = postBg.column('$geometry')
+    meanPriceDomain = postBg.domain('resale_price_sqm')
+    meanLeaseDomain = postBg.domain('remaining_lease')
+    meanFloorDomain = postBg.domain('floor_area_sqm')
   }
+
+  $: {
+    // create scale for coloring backgroundagons
+    const items = 5
+    const colors = ['#FFF5EB', '#FDD1A5', '#FD9243', '#DE4F05', '#7F2704']
+
+    let priceDomain = [...Array(items)].map((x, y) => +(Math.floor(meanPriceDomain[0] / 1000) * 1000 + ((meanPriceDomain[1] - meanPriceDomain[0]) / items) * y).toFixed(0))
+    let leaseDomain = [...Array(items)].map((x, y) => +(Math.floor(meanLeaseDomain[0] / 10) * 10 + ((meanLeaseDomain[1] - meanLeaseDomain[0]) / items) * y).toFixed(0))
+    let floorDomain = [...Array(items)].map((x, y) => +(Math.floor(meanFloorDomain[0] / 10) * 10 + ((meanFloorDomain[1] - meanFloorDomain[0]) / items) * y).toFixed(0))
+
+    priceScale = scaleThreshold()
+      .domain(priceDomain)
+      .range(colors)
+    leaseScale = scaleThreshold()
+      .domain(leaseDomain)
+      .range(colors)
+    floorScale = scaleThreshold()
+      .domain(floorDomain)
+      .range(colors)
+
+    priceColors = postBg.map('resale_price_sqm', priceScale)
+    leaseColors = postBg.map('remaining_lease', leaseScale)
+    floorColors = postBg.map('floor_area_sqm', floorScale)
+  }
+
 </script>
 
 <Graphic width={500} height={1000}
@@ -59,10 +84,25 @@
     x1={20} x2={480}
     y1={50} y2={300}
     {...geoScale}
-    padding={20}
+    padding={30}
     flipY
   > 
-    <PolygonLayer geometry={bgGeom} fill={'#d3d3d3'} stroke={'white'} strokeWidth={1} />
+    <PolygonLayer geometry={baseGeometry} fill={'#d3d3d3'} stroke={'white'} strokeWidth={2} />
+    <PolygonLayer geometry={geometry} fill={priceColors} stroke={'white'} strokeWidth={2} />
+
+    <DiscreteLegend
+      fill={priceScale}
+      vjust={'bottom'}
+      hjust={'right'}
+      labelAnchorPoint={'bl'}
+      usePadding={true}
+      title={'Mean Price (SGD)'}
+      titlePaddingY={-8}
+      orient={'horizontal'}
+      height={30}
+      width={150}
+      stroke={'white'}
+    />
   </Section>
 
   <!-- <Section 
@@ -72,7 +112,22 @@
     padding={20}
     flipY
   > 
-    <PolygonLayer geometry={bgGeom} fill={'#d3d3d3'} stroke={'white'} strokeWidth={1} />
+    <PolygonLayer geometry={geometry} fill={'#d3d3d3'} stroke={'white'} strokeWidth={2} />
+    <PolygonLayer geometry={processedGeom} fill={leaseColors} stroke={'white'} strokeWidth={2} />
+    <DiscreteLegend
+      fill={leaseScale}
+      vjust={'top'}
+      hjust={'right'}
+      labelAnchorPoint={'bl'}
+      labelPaddingX={-5}
+      usePadding={true}
+      title={'Mean Lease (Years)'}
+      titlePaddingY={-8}
+      orient={'horizontal'}
+      height={30}
+      width={150}
+      stroke={'white'}
+    />
   </Section>
 
   <Section 
@@ -82,6 +137,22 @@
     padding={20}
     flipY
   > 
-    <PolygonLayer geometry={bgGeom} fill={'#d3d3d3'} stroke={'white'} strokeWidth={1} />
+    <PolygonLayer geometry={geometry} fill={'#d3d3d3'} stroke={'white'} strokeWidth={2} />
+    <PolygonLayer geometry={processedGeom} fill={floorColors} stroke={'white'} strokeWidth={2} />
+
+    <DiscreteLegend
+      fill={floorScale}
+      vjust={'top'}
+      hjust={'right'}
+      labelAnchorPoint={'bl'}
+      labelPaddingX={-5}
+      usePadding={true}
+      title={'Mean Floor Area (m2)'}
+      titlePaddingY={-8}
+      orient={'horizontal'}
+      height={30}
+      width={150}
+      stroke={'white'}
+    />
   </Section> -->
 </Graphic>
