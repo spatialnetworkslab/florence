@@ -8,11 +8,11 @@ export const posts = [
         path: '/gallery/basic/barchart'
       },
       {
-        title: 'Scatterplot Chart',
+        title: 'Scatterplot',
         path: '/gallery/basic/scatterplot'
       },
       {
-        title: 'Contour Chart',
+        title: 'Density Contours',
         path: '/gallery/basic/contour'
       }
     ]

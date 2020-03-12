@@ -12,7 +12,8 @@
     PointLayer,
     Polygon,
     XAxis,
-    YAxis
+    YAxis,
+    Title
   } from '@snlab/florence/src/index.js'
   import DataContainer from '@snlab/florence-datacontainer'
 
@@ -59,7 +60,6 @@
         .size([width, height])
         .bandwidth(30)
         .thresholds(30)(data)
-      console.log(contours)
     }
   }
 </script>
@@ -69,10 +69,10 @@
   {height}
 >
 
-  <Label
+  <!-- <Label
     x={450}
     y={10}
-    text={'Density Contours'}
+    text={'Density Contours'} -->
   />
 
   <Section

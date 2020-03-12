@@ -584,11 +584,16 @@ video {
 
 /* global font styles */
 
+body {
+  color: #4a5568;
+}
+
 h1 {
   font-size: 1.5rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
   margin-bottom: 1rem;
+  color: #1a202c;
 }
 
 h2 {
@@ -599,14 +604,16 @@ h2 {
   margin-bottom: 0.75rem;
   border-bottom-width: 1px;
   border-color: #cbd5e0;
+  color: #1a202c;
 }
 
 h3 {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
+  color: #1a202c;
 }
 
 p {
@@ -689,12 +696,14 @@ tr > td {
 .content {
   display: flex;
   flex-direction: row;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 4rem;
+  width: 100%
 }
 
 .left-col {
   width: 12rem;
-  border-right-width: 1px;
-  border-color: #cbd5e0;
   padding-right: 1rem;
   white-space: nowrap;
   flex: none;
@@ -740,22 +749,23 @@ tr > td {
 
 .csbp-rendered {
   flex: 1 1 0%;
-  margin: 0.25rem;
-  padding-bottom: 1rem;
-  align-self: center;
+  padding: 1rem;
+  border-style: dashed;
+  border-color: #cbd5e0;
+  border-width: 1px;
   @media (min-width: 640px) {
     width: 100%;
 
     flex: 1 1 0%;
 
-    padding-bottom: 1rem;
+    padding: 1rem;
   }
   @media (min-width: 768px) {
     width: 50%;
 
     flex: 1 1 0%;
 
-    padding-bottom: 1rem;
+    padding: 1rem;
   }
   @media (min-width: 1024px) {
     width: 50%;
@@ -772,7 +782,7 @@ tr > td {
   flex: 1 1 auto;
   position: relative;
   margin: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 1rem;
   @media (min-width: 640px) {
     width: 100%;
 
@@ -790,10 +800,8 @@ tr > td {
   }
 }
 
-.csbp-tabs {
-  flex: 1 1 0%;
-  position: relative;
-  min-height: 500px;
+.csbp-code code, .csbp-code-snippets code {
+  font-size: 0.875rem;
 }
 
 .csbp-tab {
@@ -803,14 +811,16 @@ tr > td {
 .csbp-tab label {
   background-color: #fff;
   position: relative;
-  border-width: 1px;
-  border-width: 1px;
-  border-radius: 0.125rem;
+  border-top-width: 1px;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 0;
+  border-top-left-radius: 0.125rem;
+  border-top-right-radius: 0.125rem;
   border-color: #cbd5e0;
-  padding: 1rem;
-  margin-left: -0.25rem;
   margin: -1px;
   left: 1px;
+  padding: 10px;
 }
 
 .csbp-tab [type="radio"] {
@@ -821,31 +831,24 @@ tr > td {
   height: 500px;
   position: absolute;
   overflow: auto;
-  overflow-x: auto;
   border-width: 1px;
-  border-width: 1px;
-  border-radius: 0.125rem;
+  border-top-right-radius: 0.125rem;
+  border-bottom-right-radius: 0.125rem;
+  border-bottom-left-radius: 0.125rem;
   border-color: #cbd5e0;
   background-color: #f5f2f0;
-  left: 0;
   right: 0;
+  left: 0;
   bottom: 0;
-  margin-bottom: 1rem;
   top: 28px;
 }
 
 .csbp-content > * {
-  opacity: 0;
-  /* transform: translateX(-100%);
-  transition: all 0.1s ease; */
+  /* opacity: 0; */
 }
 
 [type="radio"]:checked ~ label {
   background-color: #f5f2f0;
-  border-width: 1px;
-  border-style: solid;
-  font-weight: 700;
-  border-bottom: #f5f2f0;
   z-index: 2;
 }
 
@@ -865,8 +868,14 @@ tr > td {
   transition: color 0.75s;
 }
 
-.csbp-csb-link:hover {
-  color: #c53030;
+.csbp-csb-link a {
+  text-decoration: none;
+  color: #2b6cb0;
+}
+
+.csbp-csb-link a:hover {
+  text-decoration: underline;
+  color: #2c5282;
 }
 
 @media only screen and (max-width: 800px) {

@@ -13,11 +13,11 @@
 /* nav bars */
 
 .selected {
-  @apply relative border-b-2 border-red-600 no-underline text-black;
+  @apply relative border-b-2 border-red-600 no-underline;
 }
 
 .top-nav {
-  @apply h-full py-2 px-4 w-screen border-b border-gray-400 bg-white;
+  @apply w-full px-4 py-3 border-b border-gray-200 bg-white fixed h-12 z-10;
 }
 
 .nav-li {
@@ -25,7 +25,7 @@
 }
 
 .nav-a {
-  @apply no-underline py-2 px-0 mr-4 font-normal text-black;
+  @apply no-underline py-1 px-0 mr-4 font-normal text-black;
   transition: border-color 1s; 
 }
 

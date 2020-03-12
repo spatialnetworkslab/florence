@@ -2,16 +2,20 @@
 
 /* global font styles */
 
+body {
+ @apply text-gray-700;
+}
+
 h1 {
-  @apply text-2xl font-sans font-semibold mb-4;
+  @apply text-2xl font-sans font-semibold mb-4 text-gray-900;
 }
 
 h2 {
-  @apply text-xl font-sans font-semibold mt-3 mb-3 border-b border-gray-400;
+  @apply text-xl font-sans font-semibold mt-3 mb-3 border-b border-gray-400 text-gray-900;
 }
 
 h3 {
-  @apply text-base font-sans font-semibold mt-1 mb-1;
+  @apply text-lg font-sans font-semibold mt-1 mb-1 text-gray-900;
 }
 
 p {
@@ -68,11 +72,11 @@ tr > td {
 
 /* docs, gallery */
 .content {
-  @apply flex flex-row;
+  @apply flex flex-row px-6 pt-16 w-full
 }
 
 .left-col {
-  @apply w-48 border-r border-gray-400 pr-4 whitespace-no-wrap flex-none;
+  @apply w-48 pr-4 whitespace-no-wrap flex-none;
 }
 
 .right-col {
@@ -96,13 +100,12 @@ tr > td {
 }
 
 .csbp-rendered {
-  @apply flex-1 m-1 pb-4;
-  align-self: center;
+  @apply flex-1 p-4 border-dashed border-gray-400 border;
   @screen sm {
-    @apply w-full flex-1 pb-4;
+    @apply w-full flex-1 p-4;
   }
   @screen md {
-    @apply w-1/2 flex-1 pb-4;
+    @apply w-1/2 flex-1 p-4;
   }
   @screen lg {
     @apply w-1/2 flex-initial;
@@ -114,7 +117,7 @@ tr > td {
 }
 
 .csbp-code-tabs {
-  @apply flex-auto relative m-2 text-xs;
+  @apply flex-auto relative m-2 text-base;
   @screen sm {
     @apply w-full flex-1;
   }
@@ -126,9 +129,8 @@ tr > td {
   }
 }
 
-.csbp-tabs {
-  @apply flex-1 relative;
-  min-height: 500px;
+.csbp-code code, .csbp-code-snippets code {
+  @apply text-sm;
 }
 
 .csbp-tab {
@@ -136,8 +138,9 @@ tr > td {
 }
 
 .csbp-tab label {
-  @apply bg-white relative border border rounded-sm border-gray-400 p-4 -ml-1 -m-px;
+  @apply bg-white relative border-t border-l border-r border-b-0 rounded-t-sm border-gray-400 -m-px;
   left: 1px;
+  padding: 10px;
 }
 
 .csbp-tab [type="radio"] {
@@ -146,19 +149,16 @@ tr > td {
 
 .csbp-content {
   height: 500px;
-  @apply absolute overflow-auto overflow-x-auto border border rounded-sm border-gray-400 bg-codegray left-0 right-0 bottom-0 mb-4;
+  @apply absolute overflow-auto border rounded-tr-sm rounded-b-sm border-gray-400 bg-codegray inset-x-0 bottom-0;
   top: 28px;
 }
 
 .csbp-content > * {
-  opacity: 0;
-  /* transform: translateX(-100%);
-  transition: all 0.1s ease; */
+  /* opacity: 0; */
 }
 
 [type="radio"]:checked ~ label {
-  @apply bg-codegray border border-solid font-bold;
-  border-bottom: #f5f2f0;
+  @apply bg-codegray;
   z-index: 2;
 }
 
@@ -177,8 +177,12 @@ tr > td {
   transition: color 0.75s;
 }
 
-.csbp-csb-link:hover {
-  @apply text-red-700;
+.csbp-csb-link a {
+  @apply no-underline text-blue-700;
+}
+
+.csbp-csb-link a:hover {
+  @apply underline text-blue-800;
 }
 
 @media only screen and (max-width: 800px) {
