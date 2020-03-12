@@ -170,10 +170,10 @@
   }
 
   // Check if mark must be represented as polygon
-  let asPolygon = _asPolygon === true && representAsPolygon !== undefined
+  let asPolygon = _asPolygon === true && markRepresentAsPolygonFuncs[type] !== undefined
   $: {
     if (initDone()) {
-      asPolygon = _asPolygon === true && representAsPolygon !== undefined
+      asPolygon = _asPolygon === true && markRepresentAsPolygonFuncs[type] !== undefined
     }
   }
 
