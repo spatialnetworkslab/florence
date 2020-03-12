@@ -25,7 +25,9 @@ see allowed prop combinations below.
 ```
 
 ```js exec
-import { Graphic, Point } from '@snlab/florence'
+import { Graphic, PointLayer, Point, Section } from '@snlab/florence'
+import RadiusExample from './examples/_Radius.svelte'
+import FillExample from './examples/_Fill.svelte'
 ```
 
 The `Point` mark draws a circular dot on screen with position defined by `x` and `y` props respectively.
@@ -55,8 +57,8 @@ Positioning
 
 | Property      | Type(s) | Description                                                               | Representation             |
 | ------------- | ------- | ------------------------------------------------------------------------- | -------------------------- |
-| radius        | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/r)              | <Graphic width={50} height={50}><Point x={20} y={25} radius={7} /> <Point x={45} y={25} radius={5}  /></Graphic>  |
-| fill          | String  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)           | <Graphic width={50} height={50}><Point x={20} y={25} radius={5}/> <Point x={40} y={25} radius={5} fill={'red'}  /></Graphic> |
+| radius        | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/r)              | <RadiusExample/>|
+| fill          | String  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)           | <FillExample /> |
 | stroke        | String  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)         |                            |
 | strokeWidth   | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)   |                            |
 | strokeOpacity | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) |                            |
@@ -70,5 +72,3 @@ Positioning
 ### Scatter plot Chart
 
 
-::: codesandboxplus ../../../../../src/gallery/colored-scatterplot/App.svelte 1-3
-:::
