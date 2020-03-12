@@ -14,6 +14,20 @@ export const posts = [
       {
         title: 'Local coordinates',
         path: '/docs/core/local-coordinates'
+      },
+      {
+        title: 'Title',
+        path: '/docs/core/title'
+      }
+    ]
+  },
+  {
+    title: 'Guides',
+    path: '/docs/guides/legend',
+    children: [
+      {
+        title: 'Legend',
+        path: '/docs/guides/legend'
       }
     ]
   }

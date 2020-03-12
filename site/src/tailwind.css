@@ -24,6 +24,11 @@ strong {
 
 a {
   @apply underline;
+  transition: color 0.75s;
+}
+
+a:hover {
+  @apply text-red-600;
 }
 
 ul {
@@ -64,6 +69,10 @@ tr > th {
 
 tr > td {
   @apply border border-gray-400 px-2 py-1;
+}
+
+tr:nth-child(even) {
+	background: #efefef;
 }
 
 /* docs, gallery */

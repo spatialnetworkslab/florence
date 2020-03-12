@@ -268,7 +268,6 @@
   $: { if (initDone()) textObject = generatePropObject(aesthetics.text, keyArray) }
   $: { if (initDone()) fontFamilyObject = generatePropObject(aesthetics.fontFamily, keyArray) }
   $: { if (initDone()) anchorPointObject = generatePropObject(aesthetics.anchorPoint, keyArray) }
-
   let previousTransition
 
   let coordSysGeometryObjectRecalculationNecessary = false

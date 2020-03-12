@@ -3,8 +3,6 @@
   // d3
   import { scaleLinear, scaleThreshold } from 'd3-scale'
 
-  import { schemeBlues } from 'd3-scale-chromatic'
-
   // florence
   import { Graphic, Section, createGeoScales, PolygonLayer, DiscreteLegend } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
@@ -18,7 +16,6 @@
   let hex
   let geoScale
   let hexGeom
-  let bgGeom
   let meanPriceDomain
   let meanLeaseDomain
   let meanFloorDomain
@@ -39,7 +36,6 @@
     background = new DataContainer(sg)
     const bbox = background.domain('$geometry')
     geoScale = createGeoScales(bbox)
-    bgGeom = background.column('$geometry')
   }
 
   // process relevant data to get hexagons with mean price data
@@ -56,7 +52,8 @@
 
   $: {
     // create scale for coloring hexagons
-    const items = 6
+    const items = 5
+    const colors = ['#FFF5EB', '#FDD1A5', '#FD9243', '#DE4F05', '#7F2704']
 
     let priceDomain = [...Array(items)].map((x, y) => +(Math.floor(meanPriceDomain[0] / 1000) * 1000 + ((meanPriceDomain[1] - meanPriceDomain[0]) / items) * y).toFixed(0))
     let leaseDomain = [...Array(items)].map((x, y) => +(Math.floor(meanLeaseDomain[0] / 10) * 10 + ((meanLeaseDomain[1] - meanLeaseDomain[0]) / items) * y).toFixed(0))
@@ -65,13 +62,13 @@
     console.log(leaseDomain, floorDomain)
     priceScale = scaleThreshold()
       .domain(priceDomain)
-      .range(['#FFF5EB', '#FDD1A5', '#FD9243', '#DE4F05', '#7F2704'])
+      .range(colors)
     leaseScale = scaleThreshold()
       .domain(leaseDomain)
-      .range(['#FFF5EB', '#FDD1A5', '#FD9243', '#DE4F05', '#7F2704'])
+      .range(colors)
     floorScale = scaleThreshold()
       .domain(floorDomain)
-      .range(['#FFF5EB', '#FDD1A5', '#FD9243', '#DE4F05', '#7F2704'])
+      .range(colors)
 
     priceColors = processedHex.map('mean_price', priceScale)
     leaseColors = processedHex.map('mean_lease', leaseScale)
@@ -83,47 +80,77 @@
 >     
    <Section 
     x1={20} x2={480}
-    y1={300} y2={50}
+    y1={50} y2={300}
     {...geoScale}
-    padding={10}
+    padding={20}
+    flipY
   > 
     <PolygonLayer geometry={hexGeom} fill={'#d3d3d3'} stroke={'white'} strokeWidth={2} />
     <PolygonLayer geometry={processedGeom} fill={priceColors} stroke={'white'} strokeWidth={2} />
-
     <DiscreteLegend
       fill={priceScale}
+      vjust={'top'}
+      hjust={'right'}
+      labelAnchorPoint={'bl'}
+
       usePadding={true}
+      title={'Mean Price (SGD)'}
+      titlePaddingY={-8}
+      orient={'horizontal'}
+      height={30}
+      width={150}
+      stroke={'white'}
     />
   </Section>
 
   <Section 
     x1={20} x2={480}
-    y1={600} y2={350}
+    y1={350} y2={600}
     {...geoScale}
-    padding={10}
+    padding={20}
+    flipY
   > 
     <PolygonLayer geometry={hexGeom} fill={'#d3d3d3'} stroke={'white'} strokeWidth={2} />
     <PolygonLayer geometry={processedGeom} fill={leaseColors} stroke={'white'} strokeWidth={2} />
+    <DiscreteLegend
+      fill={leaseScale}
+      vjust={'top'}
+      hjust={'right'}
+      labelAnchorPoint={'bl'}
+      labelPaddingX={-5}
+      usePadding={true}
+      title={'Mean Lease (Years)'}
+      titlePaddingY={-8}
+      orient={'horizontal'}
+      height={30}
+      width={150}
+      stroke={'white'}
+    />
   </Section>
 
   <Section 
     x1={20} x2={480}
-    y1={900} y2={650}
+    y1={650} y2={900}
     {...geoScale}
-    padding={10}
+    padding={20}
+    flipY
   > 
     <PolygonLayer geometry={hexGeom} fill={'#d3d3d3'} stroke={'white'} strokeWidth={2} />
     <PolygonLayer geometry={processedGeom} fill={floorColors} stroke={'white'} strokeWidth={2} />
-  </Section>
-<!-- 
-  <Section 
-    x1={20} x2={480}
-    y1={900} y2={500}
-    {...geoScale}
-    padding={10}
-  > 
-    <PolygonLayer geometry={hexGeom} fill={'#d3d3d3'} stroke={'white'} strokeWidth={2} />
-    <PolygonLayer geometry={processedGeom} fill={processedHex.map('mean_lease', leaseScale)} stroke={'white'} strokeWidth={2} />
 
-  </Section> -->
+    <DiscreteLegend
+      fill={floorScale}
+      vjust={'top'}
+      hjust={'right'}
+      labelAnchorPoint={'bl'}
+      labelPaddingX={-5}
+      usePadding={true}
+      title={'Mean Floor Area (m2)'}
+      titlePaddingY={-8}
+      orient={'horizontal'}
+      height={30}
+      width={150}
+      stroke={'white'}
+    />
+  </Section>
 </Graphic>

@@ -28,7 +28,14 @@
   import ViolinPlot from './examples/ViolinPlot.svelte'
   import Title from './examples/Title.svelte'
   import LegendsDocs from './examples/LegendsDocs.svelte'
+<<<<<<< HEAD
   import GeoEx from './examples/GeoEx.svelte'
+=======
+  import TitleDocs from './examples/TitleDocs.svelte'
+
+  // Tutorials
+  import BasicTutorial from './examples/BasicTutorial.svelte'
+>>>>>>> 8f4381ec4306522bcd107544f6663f5dd1fd1b9e
 
   // and add them to this component array
   const components = [
@@ -157,6 +164,7 @@
       url: 'legendsdocs',
       component: LegendsDocs
     },
+<<<<<<< HEAD
     // {
     //   name: 'Legends',
     //   url: '/legends',
@@ -166,6 +174,17 @@
       name: 'GeoEx',
       url: 'geoex',
       component: GeoEx
+=======
+    {
+      name: 'Title: Docs',
+      url: 'titledocs',
+      component: TitleDocs
+    },
+    {
+      name: 'Basic Tutorial',
+      url: 'basictutorial',
+      component: BasicTutorial
+>>>>>>> 8f4381ec4306522bcd107544f6663f5dd1fd1b9e
     }
   ]
 </script>

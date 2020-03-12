@@ -1,0 +1,183 @@
+# Legends
+
+```svelte
+<Graphic>
+  <!-- Legends can be placed inside or outside the `Section` component -->
+   <DiscreteLegend
+      ...
+      />
+
+  <GradientLegend
+    ...
+    />
+  <Section>
+    <DiscreteLegend
+      ...
+      />
+
+    <GradientLegend
+      ...
+      />
+  </Section>
+</Graphic>
+```
+
+## Description
+Legends are guides used to show mappings for aesthetics like color, shape, size, opacity to a given domain. Each legend is mapped to a single dimension or variable. Florence supports two types of legends that map values to color and/or opacity – gradient and discrete legends.
+
+## Props
+
+### Positioning
+
+::: warning Caveats
+`Legend` components cannot be used outside of a `Graphic` component
+:::
+
+| Prop       | Type(s)                                  | Description                                                                                                                                                    | Required | Default      | Units                                                   |
+|------------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|--------------|---------------------------------------------------------|
+| x1         | `Number`, `Object`, `Function`, `String` | Left x coordinate                                                                                                                                              | ❌        | `undefined`  | local coordinates (`Number`), pixel values (`Function`) |
+| x2         | `Number`, `Object`, `Function`, `String` | Right x coordinate                                                                                                                                             | ❌        | `undefined`  | local coordinates (`Number`), pixel values (`Function`) |
+| y1         | `Number`, `Object`, `Function`, `String` | Bottom y coordinate                                                                                                                                            | ❌        | `undefined`  | local coordinates (`Number`), pixel values (`Function`) |
+| y2         | `Number`, `Object`, `Function`, `String` | Top y coordinate                                                                                                                                               | ❌        | `undefined`  | local coordinates (`Number`), pixel values (`Function`) |
+| orient     | `String`                                 | Orientation of legend                                                                                                                                          | ❌        | `horizontal` | `horizontal`, `vertical`                                |
+| vjust      | `String`                                 | Vertical position of legend                                                                                                                                    | ❌        | `center`     | `top`, `center`/`centre`, `bottom`                      |
+| hjust      | `String`                                 | Horizontal position of legend                                                                                                                                  | ❌        | `left`       | `left`, `center`/`centre`, `right`                      |
+| height     | `Number`                                 | If `vertical`, automatically computed according to 35% of parent section height + titleFontSize (screen pixels); if `horizontal`, 10% of parent section height | ❌        | `undefined`  | local coordinates (`Number`), pixel values (`Function`) |
+| width      | `Number`                                 | If `horizontal`, automatically computed according to 35% of parent section width + titleFontSize (screen pixels); if `vertical`, 10% of parent section width   | ❌        | `0`          | local coordinates (`Number`), pixel values (`Function`) |
+| xOffset    | `Number`                                 | Offsets horizontal position of the legend by pixel values                                                                                                      | ❌        | `0`          | local coordinates (`Number`), pixel values (`Function`) |
+| yOffset    | `Number`                                 | Offsets vertical position of the legend by pixel values                                                                                                        | ❌        | `0`          | local coordinates (`Number`), pixel values (`Function`) |
+| usePadding | `Boolean`                                | Positions title either within parent Section/Graphic (`usePadding=false`) or within padding of parent (`usePadding=true`)                                      | ❌        | `false`      |                                                         |
+
+Legends may be positioned and their sizes set using the following combinations:
+
+|   Combintation    |   Explanation     |
+| ----------------- | ----------------- |
+| `x1, x2, y1, y2` only | Manually positions and creates the `height` and `width` of the legend. If functions (i.e. `() => {}`) are passed to these props, then these are treated as pixel values. Otherwise, all values given to these properties are computed as local coordinates. |
+| `vjust` only | The legend will be positioned at either the leftmost, center or rightmost edge of the viewport (either the `Graphic` or the `Section`) along the center of the viewport's vertical axis, with enough space to accommodate the default settings for width, height, title, and labels. |
+| `hjust` only | The legend will be positioned at either the topmost, center or bottom-most edge of the viewport (either the `Graphic` or the `Section`) along the center of the viewport's horizontal axis, with enough space to accommodate the default settings for width, height, title, and labels. |
+| `vjust` and/or `hjust` | `vjust` positions the legend along the vertical axis of the viewport; `hjust` positions the legend along the horizontal axis of the viewport. |
+| `height` | The legend will be positioned at the leftmost edge the viewport (either the `Graphic` or the `Section`) along the center of the viewport's vertical axis, with enough space to accommodate the height (which is split in two along the vertical center). |
+| `width`  | The legend will be positioned at the leftmost edge the viewport (either the `Graphic` or the `Section`) along the center of the viewport's vertical axis, with enough space to accommodate the width (which is split in two along the horizontal center). |
+
+### Aesthetics
+
+| Prop |     Type(s)     | Description |    Required     |   Default   |       Units       |
+| ---- | --------------- | --------------- | ----------- | ----------------- | --------------- |
+| fill   | `Function`, `String`  | Color scale to which the gradient section/discrete colors is/are mapped | ✅ | `black` |  If `String`, valid HEX/RGBA color  |
+| fillOpacity   | `Function`, `Number`  | Fill opacity of color in fill | ❌ |   `undefined` |  If number, between 0 and 1 |
+| stroke   | `String` | Applies to discrete legend only -- stroke color surrounding individual color boxes | ❌  |   `none` |  If `String`, valid HEX/RGBA col   |
+| strokeWidth   | `Number`  |  Applies to discrete legend only -- stroke width surrounding individual color boxes |  ❌ | `2` |  Pixels   | 
+| flip   | Boolean |  Flips direction of labels and aesthetics (horizontal: right to left; vertical: bottom to top) | ❌ | `false` | 
+
+### Title
+
+| Prop |     Type(s)     |  Description |  Required     |   Default   |       Units       |
+| ---- | --------------- | --------------- | --------------- | ----------- | ----------------- |
+| title   | `String`  | Title text | ❌  | `Legend` |     |
+| titleX   |`Function`, `Number` | Horizontal position of legend title | ❌  | `undefined` |  local coordinates (`Number`), pixel values (`Function`)  |
+| titleY   | `Function`, `Number` | Vertical position of legend title | ❌  | `undefined` |  local coordinates (`Number`), pixel values (`Function`)  |
+| titleXOffset   | `Number` | Offsets horizontal position of the legend title by pixel values | ❌  | `0` |  Pixel values   |
+| titleYOffset   | `Number` | Offsets vertical position of the title by pixel values | ❌  | `0` |  Pixel values    |
+| titleHjust   | `String`  | Horizontal position of legend title | ❌ | `left` |  `left`, `center`/`centre`, `right`  |
+| titleVjust   | `String`  | Vertical position of legend title | ❌ | `center` |  `top`, `center`/`centre`, `bottom`   |
+| titleFont   | `String`  | Font family of legend text | ❌ | `Helvetica` |    |
+| titleFontSize   | `Number`  | Font size of legend text  | ❌ | `12` |  Pixel values   |
+| titleFontWeight   | `String`, `Number`  | Font weight of legend text  | ❌ | `bold` |    |
+| titleOpacity   | `Number`  | Opacity of legend text   | ❌ | `1` |  0 to 1   |
+| titleColor   | `String`  | Color of title text letters  | ❌ | `black` |  Valid HEX/RGBA color   |
+| titleRotation   | `Number`  |  Rotation angle of legend text | ❌ | `0` |  Degrees  |
+| titleAnchorPoint   | `String` | Anchor point of legend text  | ❌ | `t` |  'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc'   |
+| titlePaddingX   | `Number`  |  Horizontal space between title and legend -- the origin point is the center of the legend | ❌ | `0` |  Pixel values   |
+| titlePaddingY   | `Number`  |  Vertical space between title and legend -- the origin point is the topmost part of the legend  | ❌ | `-3` |  Pixel values   |
+
+### Labels
+
+| Prop |     Type(s)     | Description |   Required     |   Default   |       Units       |
+| ---- | --------------- | --------------- | ----------- | ----------------- | --------------- |
+| labels   | `Array`, `Function`  | Label values to render, if you want to manually control what gets shown in the legend  | ❌  |  `undefined` |     |
+| labelFormat   | `Function`  |  formatting of legend labels, i.e. rounding off/down | ❌ |   `undefined` |     |
+| labelX   | `Number`  | Horizontal positioning of labels  | ❌ |   `undefined` |  Pixel values   |
+| labelY   | `Number`  | Vertical positioning of labels  | ❌  |   `undefined` | Pixel values  |
+| labelPaddingX   | `Number`  |  Horizontal space between labels and legend | ❌ | `0` |  Pixel values   |
+| labelPaddingY   | `Number`  |  Vertical space between labels and legend  | ❌ | `0` |  Pixel values   |
+| labelRotate   | `Number` | Rotation angle of all legend tick labels  | ❌ | `0` |  Degrees   |
+| labelFont   | `String`  |  Font family of labels |  ❌ |   `Helvetica` |     |
+| labelFontSize   | `Number`  |  Font size of labels | ❌ |   `10` |  Pixel values   |
+| labelFontWeight   | `Number`, `String`  |  Font weight of labels | ❌  |   `normal` |    |
+| labelOpacity   | `Number`  |  Opacity of labels | ❌ |   `1` |  0 to 1  |
+| labelColor   | `String`  |  Fill color of labels | ❌  | `black` |  Valid HEX/RGBA color   |
+| labelAnchorPoint   | `String`  |  Anchor point of label points | ❌ |   `center` | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc'   |
+| labelCount   | `Number`  |  Number of ticks/labels to render  | ❌ |   `10` |  Integers   |
+| labelExtra   | `Boolean`  |  If set to `true`, then renders an extra label based on `labelCount` value | ❌ |   `false` |     |
+| firstLabel   | `String`, `Number`  | Sets first label of legend manually  | ❌ |   `undefined` |     |
+| flipLabels   | `Boolean`  | Flips placement of labels  | ❌ |   `false` |     |
+
+## Examples
+
+### Simple discrete and gradient legends with continuous linear scales for `fill`
+
+Changing from a discrete to a gradient legend is as simple as changing the component name. The positioning and aesthetic
+property names for both are the same.
+
+```js exec
+import SimpleLegends from './utils/_SimpleLegends.svelte'
+```
+
+<SimpleLegends/>
+
+### Using `fillOpacity`
+
+To use `fillOpacity`, set the d3 scale input to a range of `[0,1]`. The color can be customised by inputting it to `fill`.
+
+```js exec
+import FillOpacity from './utils/_FillOpacity.svelte'
+```
+
+<FillOpacity/>
+
+### Setting legends to bin values
+
+Legend components can also accommodate binned values (as an `Array` or `Function`) and their corresponding positioning. 
+
+```js exec
+import Bins from './utils/_Bins.svelte'
+```
+
+<Bins/>
+
+
+### Positioning 
+
+In this example, note the use of different systems for positioning the legends. The discrete legend is automatically positioned to `vjust=center`, `hjust=left` using smart defaults (based on the dimensions of the container component it is in), while the gradient legend is positioned manually using pixel values (indicated by the fat arrow functions `() => <pixelvalues>`). 
+
+The positioning according to `vjust`, `hjust` persists even when Section/Graphic is set to `flipX = true` and/or `flipY = true`. When using a positioning system, make sure to follow only one per legend component in order to avoid confusion.
+
+```js exec
+import Positioning from './utils/_Positioning.svelte'
+```
+
+<Positioning/>
+
+
+### Using `Section`/`Graphic` padding as part of the positioning canvas
+
+Setting `usePadding` to `true` allows the legend components to include either the `Section` or `Graphic` padding as part of its canvas for positioning according to preset smart defaults. In this example, `GradientLegend` is positioned inside the parent `Section` while `DiscreteLegend` is positioned in the padding.
+
+```js exec
+import UsePadding from './utils/_UsePadding.svelte'
+```
+
+As above, the positioning according to `vjust`, `hjust` persists (even when `usePadding = true`) when Section/Graphic is set to `flipX = true` and/or `flipY = true`.
+
+<UsePadding/>
+
+### Categorical scales
+
+While categorical scales can be inputted through d3 scales, they can also be inputted as lists of values to the
+corresponding properties, i.e. `fill=['orange', 'blue', 'yellow']`.
+
+```js exec
+import CategoricalScales from './utils/_CategoricalScales.svelte'
+```
+
+<CategoricalScales/>

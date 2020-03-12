@@ -620,6 +620,11 @@ strong {
 
 a {
   text-decoration: underline;
+  transition: color 0.75s;
+}
+
+a:hover {
+  color: #e53e3e;
 }
 
 ul {
@@ -682,6 +687,10 @@ tr > td {
   padding-right: 0.5rem;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+}
+
+tr:nth-child(even) {
+  background: #efefef;
 }
 
 /* docs, gallery */

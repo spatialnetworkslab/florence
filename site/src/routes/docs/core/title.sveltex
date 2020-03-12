@@ -1,0 +1,85 @@
+# Plot title
+
+```html
+  <Graphic>
+    <Title
+        ...
+      />
+      
+    <Section>
+      <Title
+        ...
+      />
+    </Section>
+
+  </Graphic>
+```
+
+## Description
+
+The `Title` component is used to create a plot title and has smart defaults for positioning and aesthetics/visual properties. 
+
+## Props
+
+
+### Positioning
+| Prop       | Type(s)              | Description | Required | Default     | Units                                             |
+|------------|----------------------|-------------|----------|-------------|---------------------------------------------------|
+| x          | `Number`, `Function` | Horizontal position of title | ✅        | `undefined` | local coordinates (`Number`), pixels (`Function`) |
+| y          | `Number`, `Function` | Vertical position of title   | ✅        | `undefined` | local coordinates (`Number`), pixels (`Function`) |
+| vjust      | `String`             | Vertical position of title          | ❌        | `top`       | `top`, `center`/`centre`, `bottom`                |
+| hjust      | `String`             | Horizontal orientation of the title relative to the chart.   | ❌        | `center`    | `left`, `center`/`centre`, `right`                |
+| xOffset    | `String`             | Offsets position of the title by pixel values   | ❌        | `0`         | pixels                                            |
+| yOffset    | `String`             | Offsets position of the title by pixel values    | ❌        | `10`        | pixels                                            |
+| usePadding | `Boolean`            | Positions title either within parent Section/Graphic (`usePadding=false`) or within padding of parent (`usePadding=true`) | ❌        | `false`     | boolean                                                  |
+| subtitleX   |  `Number`  | Horizontal position of subtitle | ❌  | `undefined` |  pixels  |
+| subtitleY   |  `Number`  | Vertical position of title | ❌  | `undefined` |  pixels  |
+
+### Title 
+
+| Prop               | Type(s)  | Description                                   | Required | Default      | Units                                                                          |
+|--------------------|----------|-----------------------------------------------|----------|--------------|--------------------------------------------------------------------------------|
+| title              | `String` | Title text                                    | ✅        | `Title Text` |                                                                                |
+| titleFill          | `String` | Fill color of text                            | ❌        | `black`      |RGB, HEX, accepted HTML colors|
+| titleStroke        | `String` | Stroke color of text                          | ❌        | `undefined`  |RGB, HEX, accepted HTML colors|
+| titleStrokeWidth   | `Number` | Stroke width of letters of text               | ❌        | `undefined`  | pixels                                                                         |
+| titleStrokeOpacity | `Number` | Opacity of stroke of text                     | ❌        | `undefined`  | 0 to 1                                                                         |
+| titleFillOpacity   | `Number` | Fill opacity of text                          | ❌        | `undefined`  | 0 to 1                                                                         |
+| titleOpacity       | `Number` | Opacity of entire text (both fill and stroke) | ❌        | `1`          | 0 to 1                                                                         |
+| titleFontFamily    | `String` | Font family of text                           | ❌        | `Helvetica`  |                                                                                |
+| titleFontSize      | `Number` | Font size of text                             | ❌        | `18`         | pixels                                                                         |
+| titleFontWeight    | `Number` | Font weight of text                           | ❌        | `bold`       |                                                                                |
+| titleRotation      | `Number` | Rotation angle of text                        | ❌        | `0`          | degrees                                                                        |
+| titleAnchorPoint   | `Number` | Anchor point of text                          | ❌        | `center`     | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc' |
+
+
+### Subtitle 
+| Prop                  | Type(s)  | Description                                            | Required | Default     | Units                                                                          |
+|-----------------------|----------|--------------------------------------------------------|----------|-------------|--------------------------------------------------------------------------------|
+| subtitle              | `String` | Subtitle text                                          | ❌        | ''          |                                                                                |
+| subtitleFill          | `String` | Fill color of subtitle text                            | ❌        | `black`     | RGB, HEX, accepted HTML colors                                                 |
+| subtitleStroke        | `Number` | Stroke color of subtitle text                          | ❌        | `undefined` | RGB, HEX, accepted HTML colors                                                 |
+| subtitleStrokeWidth   | `Number` | Stroke width of letters of subtitle text               | ❌        | `undefined` | pixels                                                                         |
+| subtitleStrokeOpacity | `Number` | Stroke opacity of letters of subtitle text             | ❌        | `undefined` | 0 to 1                                                                         |
+| subtitleFillOpacity   | `Number` | Fill opacity of letters of subtitle text               | ❌        | `undefined` | 0 to 1                                                                         |
+| subtitleOpacity       | `Number` | Opacity of entire subtitle text (both fill and stroke) | ❌        | `1`         | 0 to 1                                                                         |
+| subtitleFontFamily    | `String` | Font family of subtitle text                           | ❌        | `Helvetica` |                                                                                |
+| subtitleFontSize      | `Number` | Font size of subtitle text                             | ❌        | `14`        | pixels                                                                         |
+| subtitleFontWeight    | `Number` | Font weight of subtitle text                           | ❌        | `normal`    |                                                                                |
+| subtitleRotation      | `Number` | Rotation angle of subtitle text                        | ❌        | `0`         | degrees                                                                        |
+| subtitleAnchorPoint   | `String` | Anchor point of subtitle text                          | ❌        | `center`    | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc' |
+
+## Examples
+This example shows how to position and customize the title (and subtitle).
+
+```js exec
+import Title from './utils/_Title.svelte'
+```
+
+<Title />
+
+The property `usePadding` can be switched to `true` (its default setting is `false`) to make use of the space set for 
+padding for both `Section` and `Graphic`.
+
+The positioning according to `vjust`, `hjust` persists (even when `usePadding = true`) when Section/Graphic is set to `flipX = true` and/or `flipY = true`.
+
