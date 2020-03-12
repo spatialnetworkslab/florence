@@ -36,7 +36,7 @@
   <Section 
     x1={50} x2={450}
     y1={50} y2={450}
-    padding={30}
+    padding={25}
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
     {zoomIdentity}

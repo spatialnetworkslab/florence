@@ -47,7 +47,7 @@ function constructSectionContext (
 function getBbox ({ rangeX, rangeY }) {
   return {
     minX: Math.min(...rangeX),
-    maxX: Math.max(...rangeY),
+    maxX: Math.max(...rangeX),
     minY: Math.min(...rangeY),
     maxY: Math.max(...rangeY)
   }
