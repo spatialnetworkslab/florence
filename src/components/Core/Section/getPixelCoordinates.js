@@ -1,32 +1,36 @@
-import propNeedsScaling from '../../Marks/utils/propNeedsScaling.js'
+import { scaleCoordinates } from '../../Marks/Rectangle/createPixelGeometry.js'
 
-export function getPixelCoordinates ({ x1, x2, y1, y2 }, sectionContext) {
+export function getPixelCoordinates (coordinates, sectionContext) {
   if (sectionContext.transformation) {
     throw new Error('Cannot nest coordinate transformations')
   }
 
-  const x1NeedsScaling = propNeedsScaling(x1)
-  const x2NeedsScaling = propNeedsScaling(x2)
-  const y1NeedsScaling = propNeedsScaling(y1)
-  const y2NeedsScaling = propNeedsScaling(y2)
+  const scaledCoordinates = scaleCoordinates(coordinates, sectionContext)
+  const finalCoordinates = getFinalCoordinates(scaledCoordinates, sectionContext)
 
-  const totalTransformation1 = sectionContext.getTotalTransformation({
-    xNeedsScaling: x1NeedsScaling,
-    yNeedsScaling: y1NeedsScaling
-  })
+  return finalCoordinates
+}
 
-  const totalTransformation2 = sectionContext.getTotalTransformation({
-    xNeedsScaling: x2NeedsScaling,
-    yNeedsScaling: y2NeedsScaling
-  })
+function getFinalCoordinates ({ x1, x2, y1, y2 }, { padding, zoomIdentity }) {
+  const { left, right, top, bottom } = padding
 
-  const [x1Scaled, y1Scaled] = totalTransformation1([x1, y1])
-  const [x2Scaled, y2Scaled] = totalTransformation2([x2, y2])
+  if (zoomIdentity) {
+    const { x, y, kx, ky } = zoomIdentity
 
-  return {
-    x1: x1Scaled,
-    x2: x2Scaled,
-    y1: y1Scaled,
-    y2: y2Scaled
+    return {
+      x1: (x1 + left) * kx + x,
+      x2: (x2 - right) * kx + x,
+      y1: (y1 + top) * ky + y,
+      y2: (y2 - bottom) * ky + y
+    }
+  }
+
+  if (!zoomIdentity) {
+    return {
+      x1: x1 + left,
+      x2: x2 - right,
+      y1: y1 + top,
+      y2: y2 - bottom
+    }
   }
 }
