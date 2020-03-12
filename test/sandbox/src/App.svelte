@@ -28,6 +28,7 @@
   import ViolinPlot from './examples/ViolinPlot.svelte'
   import Title from './examples/Title.svelte'
   import LegendsDocs from './examples/LegendsDocs.svelte'
+  import GeoEx from './examples/GeoEx.svelte'
 
   // and add them to this component array
   const components = [
@@ -161,6 +162,11 @@
     //   url: '/legends',
     //   component: Legends
     // },
+    {
+      name: 'GeoEx',
+      url: 'geoex',
+      component: GeoEx
+    }
   ]
 </script>
 <Router url="">

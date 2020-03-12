@@ -66,7 +66,7 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
   if (labelExtra && 'domain' in scale && tickValues[0] !== scale.domain()[0]) {
     tickValues.unshift(scale.domain()[0])
   }
-
+  console.log(tickValues, labelCount)
   return tickValues
 }
 

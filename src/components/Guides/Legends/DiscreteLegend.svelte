@@ -244,6 +244,7 @@
       if (typeof fillOpacity === 'function') {
         scale = fillOpacity
       }
+
       if (scale) {
         if (Object.prototype.hasOwnProperty.call(scale, 'domain')) {
           if (typeof scale.domain === 'function') {
@@ -272,7 +273,7 @@
   // and that either fill or fillOpacity can used (it will look at fill first)
   $: {
     if (labels === undefined) {
-      tickLabelText = getTicks(scaleDomain, labelCount, labelExtra, firstLabel)
+      tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
       tickLabelText = format !== undefined ? tickLabelText.map(format) : tickLabelText
     } else {
       tickLabelText = format !== undefined ? labels.map(format) : labels
