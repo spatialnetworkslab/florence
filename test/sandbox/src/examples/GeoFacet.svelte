@@ -4,7 +4,7 @@
   import { scaleLinear, scaleThreshold } from 'd3-scale'
 
   // florence
-  import { Graphic, Section, createGeoScales, PolygonLayer, DiscreteLegend } from '../../../../src/'
+  import { Graphic, Section, createGeoScales, PolygonLayer, Polygon, DiscreteLegend } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   // geodata
@@ -76,6 +76,17 @@
     floorColors = postBg.map('floor_area_sqm', floorScale)
   }
 
+  let hoverKey
+
+  function onMouseover ({ key }) {
+    hoverKey = key
+    console.log(hoverKey)
+  }
+
+  function onMouseout ({ key }) {
+    if (hoverKey === key) hoverKey = undefined
+  }
+
 </script>
 
 <Graphic width={500} height={1000}
@@ -88,7 +99,19 @@
     flipY
   > 
     <PolygonLayer geometry={baseGeometry} fill={'#d3d3d3'} stroke={'white'} strokeWidth={2} />
-    <PolygonLayer geometry={geometry} fill={priceColors} stroke={'white'} strokeWidth={2} />
+    <PolygonLayer geometry={geometry} fill={'white'} stroke={'white'} strokeWidth={2} />
+    {#each background.rows() as row, i (row.$key)}
+      <Polygon geometry={row.$geometry} 
+        fillOpacity={hoverKey === row.$key ? 1 : 0.5} 
+        transition={750}
+        stroke={'white'} 
+        strokeWidth={2} 
+        key={row.$key}
+        fill={priceColors[row.$key]}
+        onMouseover={() => { onMouseover({ key: row.$key }) }}
+        onMouseout={() => { onMouseout({ key: row.$key }) }}
+        />
+    {/each}
 
     <DiscreteLegend
       fill={priceScale}
