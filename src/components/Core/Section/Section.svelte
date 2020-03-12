@@ -16,7 +16,7 @@
   import { getClipPropsNoPadding, getClipPropsPadding } from './getClipProps.js'
 
   const sectionId = getId()
-  
+
   // Props
   export let x1 = undefined
   export let x2 = undefined
@@ -43,7 +43,7 @@
   export let onMouseover = undefined
   export let onMouseout = undefined
   export let onMousemove = undefined
-  
+
   // Touch interactions
   export let onPinch = undefined
   export let onTouchdown = undefined
@@ -62,7 +62,10 @@
   const interactionManager = new InteractionManager()
   interactionManager.setId(sectionId)
   interactionManager.linkEventManager($eventManagerContext)
-  InteractionManagerContext.update(interactionManagerContext, interactionManager)
+  InteractionManagerContext.update(
+    interactionManagerContext,
+    interactionManager
+  )
 
   // Keep SectionContext and InteractionManagerContext up to date
   $: coordinates = getPixelCoordinates({ x1, x2, y1, y2 }, $sectionContext)
@@ -91,8 +94,18 @@
   // Change callbacks if necessary
   $: {
     removeSectionInteractionsIfNecessary(
-      onWheel, onClick, onMousedown, onMouseup, onMouseover, onMouseout,
-      onTouchdown, onTouchmove, onTouchup, onTouchover, onTouchout, onPinch
+      onWheel,
+      onClick,
+      onMousedown,
+      onMouseup,
+      onMouseover,
+      onMouseout,
+      onTouchdown,
+      onTouchmove,
+      onTouchup,
+      onTouchover,
+      onTouchout,
+      onPinch
     )
   }
 
@@ -103,59 +116,57 @@
 
       if (onWheel) sectionInterface.addInteraction('wheel', onWheel)
       if (onClick) sectionInterface.addInteraction('click', onClick)
-      if (onMousedown) sectionInterface.addInteraction('mousedown', onMousedown)
+      if (onMousedown) { sectionInterface.addInteraction('mousedown', onMousedown) }
       if (onMouseup) sectionInterface.addInteraction('mouseup', onMouseup)
-      if (onMouseover) sectionInterface.addInteraction('mouseover', onMouseover)
+      if (onMouseover) { sectionInterface.addInteraction('mouseover', onMouseover) }
       if (onMouseout) sectionInterface.addInteraction('mouseout', onMouseout)
-      if (onMousemove) sectionInterface.addInteraction('mousemove', onMousemove)
+      if (onMousemove) { sectionInterface.addInteraction('mousemove', onMousemove) }
     }
 
     if (detectIt.hasTouch) {
       const sectionInterface = $interactionManagerContext.touch().section()
       sectionInterface.removeAllInteractions()
 
-      if (onTouchdown) sectionInterface.addInteraction('touchdown', onTouchdown)
-      if (onTouchmove) sectionInterface.addInteraction('touchmove', onTouchmove)
+      if (onTouchdown) { sectionInterface.addInteraction('touchdown', onTouchdown) }
+      if (onTouchmove) { sectionInterface.addInteraction('touchmove', onTouchmove) }
       if (onTouchup) sectionInterface.addInteraction('touchup', onTouchup)
-      if (onTouchover) sectionInterface.addInteraction('touchover', onTouchover)
+      if (onTouchover) { sectionInterface.addInteraction('touchover', onTouchover) }
       if (onTouchout) sectionInterface.addInteraction('touchout', onTouchout)
       if (onPinch) sectionInterface.addInteraction('pinch', onPinch)
     }
   }
-
-  // Selection API
-  const selectManager = $interactionManagerContext.select()
-
   export function selectRectangle (rectangle) {
-    selectManager.selectRectangle(rectangle)
+    $interactionManagerContext.select().selectRectangle(rectangle)
   }
 
   export function updateSelectRectangle (rectangle) {
-    selectManager.updateSelectRectangle(rectangle)
+    $interactionManagerContext.select().updateSelectRectangle(rectangle)
   }
 
   export function resetSelectRectangle () {
-    selectManager.resetSelectRectangle()
+    $interactionManagerContext.select().resetSelectRectangle()
   }
 
   export function startSelectPolygon (startCoordinates) {
-    selectManager.startSelectPolygon(startCoordinates)
+    $interactionManagerContext.select().startSelectPolygon(startCoordinates)
   }
 
   export function addPointToSelectPolygon (pointCoordinates) {
-    selectManager.addPointToSelectPolygon(pointCoordinates)
+    $interactionManagerContext
+      .select()
+      .addPointToSelectPolygon(pointCoordinates)
   }
 
   export function moveSelectPolygon (delta) {
-    selectManager.moveSelectPolygon(delta)
+    $interactionManagerContext.select().moveSelectPolygon(delta)
   }
 
   export function getSelectPolygon () {
-    return selectManager.getSelectPolygon()
+    return $interactionManagerContext.select().getSelectPolygon()
   }
 
   export function resetSelectPolygon () {
-    selectManager.resetSelectPolygon()
+    $interactionManagerContext.select().resetSelectPolygon()
   }
 </script>
 
@@ -183,9 +194,8 @@
       class="padding-background"
       mask={`url(#clip-${sectionId}-data)`}
       width="100%"
-      height="100%" 
-      fill={paddingColor}
-    />
+      height="100%"
+      fill={paddingColor} />
   {/if}
   <slot />
 </g>
