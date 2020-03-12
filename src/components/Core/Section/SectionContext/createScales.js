@@ -1,43 +1,21 @@
 import { scaleLinear } from 'd3-scale'
 
-export function createScales (sectionData, { rangeX, rangeY }) {
+export function createScales ({ scaleX, scaleY }, { rangeX, rangeY }) {
   return {
-    scaleX: createScaleX(sectionData, rangeX),
-    scaleY: createScaleY(sectionData, rangeY)
+    scaleX: createScale(scaleX, rangeX),
+    scaleY: createScale(scaleY, rangeY)
   }
 }
+function createScale (scale, range) {
+  if (scale) {
+    const newScale = scale.copy().range(range)
+    newScale.invert = createInvertMethod(scale)
 
-function createScaleX ({ coordinates, transformation, scaleX }, rangeX) {
-  const range = transformation === 'polar'
-    ? [0, 2 * Math.PI]
-    : rangeX
-
-  if (scaleX) {
-    const scale = scaleX.copy().range(range)
-    scale.invert = createInvertMethod(scale)
-
-    return scale
+    return newScale
   }
 
-  if (!scaleX) {
-    return scaleLinear().domain(rangeX).range(range)
-  }
-}
-
-function createScaleY ({ coordinates, transformation, scaleY }, rangeY) {
-  const range = transformation === 'polar'
-    ? [0, 1]
-    : rangeY
-
-  if (scaleY) {
-    const scale = scaleY.copy().range(range)
-    scale.invert = createInvertMethod(scale)
-
-    return scale
-  }
-
-  if (!scaleY) {
-    return scaleLinear().domain(rangeY).range(range)
+  if (!scale) {
+    return scaleLinear().domain(range).range(range)
   }
 }
 

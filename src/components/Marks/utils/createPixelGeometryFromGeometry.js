@@ -11,7 +11,7 @@ export function createPixelGeometryFromGeometry (
   ensureValidGeometry(geometry)
 
   const interpolationNecessary = (
-    sectionContext.type === 'polar' &&
+    sectionContext.transformation === 'polar' &&
     renderSettings.interpolate === true
   )
 

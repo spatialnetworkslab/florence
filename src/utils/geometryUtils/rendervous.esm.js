@@ -1,3 +1,5 @@
+import { scaleLinear } from 'd3-scale';
+
 const invalidInputError = new Error('Invalid input');
 
 function getInput (geometry) {
@@ -284,55 +286,15 @@ function transformMultiPolygon (multiPolygon, transformation, settings) {
   }
 }
 
-function createDownScaler ({ scaleX, scaleY }) {
-  const sX = scaleX.copy().range([0, 2 * Math.PI]);
-  const sY = scaleY.copy().range([0, 1]);
-
-  return ([x, y]) => [sX(x), sY(y)]
-}
-
-function createScaleTransformation ({ scaleX, scaleY }) {
-  return ([x, y]) => [scaleX(x), scaleY(y)]
-}
-
-function createPostScaleTransformation ({
-  coordinateTransformation,
-  zoomIdentity
-}, decimals) {
-  if (zoomIdentity) {
-    if (decimals !== undefined) {
-      return point => roundPoint(
-        zoomIdentity.transformation(coordinateTransformation(point)), decimals
-      )
-    }
-
-    if (decimals === undefined) {
-      return point => zoomIdentity.transformation(coordinateTransformation(point))
-    }
-  }
-
-  if (!zoomIdentity) {
-    if (decimals !== undefined) {
-      return point => roundPoint(
-        coordinateTransformation(point), decimals
-      )
-    }
-
-    if (decimals === undefined) {
-      return coordinateTransformation
-    }
-  }
-}
-
 function getNumberOfInterpolatedPoints (
   from,
   to,
-  scaleDown,
+  toPolar,
   context,
   { interpolationTreshold = 1 }
 ) {
-  const fromScaledDown = scaleDown(from);
-  const toScaledDown = scaleDown(to);
+  const fromScaledDown = toPolar(from);
+  const toScaledDown = toPolar(to);
 
   const totalScaleFactor = getTotalScaleFactor(context);
 
@@ -368,14 +330,10 @@ function straightInYDimension (from, to, totalScaleFactor) {
 }
 
 function getPolarLength ({ a, b, interval }) {
-  if (a === 0 && b === 0) {
-    return 0
-  }
-
   const [c, d] = interval;
 
-  if (a === 0 && b === 1) {
-    return d - c
+  if (a === 0) {
+    return (d - c) * b
   }
 
   const aSq = a ** 2;
@@ -394,12 +352,9 @@ function getPolarLength ({ a, b, interval }) {
   ) / (2 * a)
 }
 
-function getTotalScaleFactor ({ rangeX, rangeY, zoomIdentity }) {
-  const kx = zoomIdentity ? zoomIdentity.kx : 1;
-  const ky = zoomIdentity ? zoomIdentity.ky : 1;
-
-  const totalScaleFactorX = Math.abs(Math.abs(rangeX[1] - rangeX[0]) * kx);
-  const totalScaleFactorY = Math.abs(Math.abs(rangeY[1] - rangeY[0]) * ky);
+function getTotalScaleFactor ({ finalRangeX, finalRangeY }) {
+  const totalScaleFactorX = Math.abs(finalRangeX[0] - finalRangeX[1]) / 2;
+  const totalScaleFactorY = Math.abs(finalRangeY[0] - finalRangeY[1]) / 2;
 
   return Math.max(totalScaleFactorX, totalScaleFactorY)
 }
@@ -447,8 +402,7 @@ function interpolateLinearRing (linearRing, context, transformations, settings) 
 
 function interpolateLinearRingUnsimplified (linearRing, context, transformations, settings) {
   const interpolatedLinearRing = [];
-  const scaleDown = createDownScaler(context);
-  const { scaleTransformation, postScaleTransformation } = transformations;
+  const { scaleTransformation, postScaleTransformation, toPolar } = transformations;
 
   for (let i = 0; i < linearRing.length - 1; i++) {
     const from = linearRing[i];
@@ -461,7 +415,7 @@ function interpolateLinearRingUnsimplified (linearRing, context, transformations
     const numberOfPointsNeeded = getNumberOfInterpolatedPoints(
       from,
       to,
-      scaleDown,
+      toPolar,
       context,
       settings
     );
@@ -512,8 +466,7 @@ function interpolateXYArrays ({ x, y }, context, transformations, settings) {
 
 function interpolateXYArraysUnsimplified (x, y, context, transformations, settings) {
   const interpolatedLinearRing = [];
-  const scaleDown = createDownScaler(context);
-  const { scaleTransformation, postScaleTransformation } = transformations;
+  const { scaleTransformation, postScaleTransformation, toPolar } = transformations;
 
   for (let i = 0; i < x.length - 1; i++) {
     const from = [x[i], y[i]];
@@ -526,7 +479,7 @@ function interpolateXYArraysUnsimplified (x, y, context, transformations, settin
     const numberOfPointsNeeded = getNumberOfInterpolatedPoints(
       from,
       to,
-      scaleDown,
+      toPolar,
       context,
       settings
     );
@@ -563,16 +516,20 @@ const interpolateFunctions = {
   interpolateMultiPolygon
 };
 
-function interpolateGeometry (geometry, context, settings = {}) {
+function interpolateGeometry (geometry, context, _transformations, settings = {}) {
   const functionName = 'interpolate' + geometry.type;
 
-  const scaleTransformation = createScaleTransformation(context);
-  const postScaleTransformation = createPostScaleTransformation(context, settings.decimals);
+  const { scaleTransformation, postScaleTransformation: _postScaleTransformation } = _transformations;
 
-  const transformations = {
-    scaleTransformation,
-    postScaleTransformation
-  };
+  const postScaleTransformation = settings.decimals !== undefined
+    ? point => roundPoint(_postScaleTransformation(point), settings.decimals)
+    : _postScaleTransformation;
+
+  const toTheta = scaleLinear().domain(context.rangeX).range([0, 2 * Math.PI]);
+  const toRadius = scaleLinear().domain(context.rangeY).range([0, 1]);
+  const toPolar = ([x, y]) => ([toTheta(x), toRadius(y)]);
+
+  const transformations = { scaleTransformation, postScaleTransformation, toPolar };
 
   return interpolateFunctions[functionName](geometry, context, transformations, settings)
 }

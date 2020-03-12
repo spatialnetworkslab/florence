@@ -1,4 +1,3 @@
-import { scaleLinear } from 'd3-scale'
 import { createPolarTransformation } from './polar.js'
 
 export function attachTransformations (sectionContext) {
@@ -34,16 +33,16 @@ export function attachTransformations (sectionContext) {
     const getScaleTransformation = needsScaling => {
       const { xNeedsScaling, yNeedsScaling } = parseNeedsScaling(needsScaling)
 
-      const toTheta = scaleLinear().domain(rangeX).range([0, 2 * Math.PI])
-      const toRadius = scaleLinear().domain(rangeY).range([0, 1])
-
       return ([x, y]) => ([
-        xNeedsScaling ? scaleX(x) : toTheta(x),
-        yNeedsScaling ? scaleY(y) : toRadius(y)
+        xNeedsScaling ? scaleX(x) : x,
+        yNeedsScaling ? scaleY(y) : y
       ])
     }
 
-    const postScaleTransformation = createPolarTransformation({ finalRangeX, finalRangeY })
+    const postScaleTransformation = createPolarTransformation(
+      { rangeX, rangeY },
+      { finalRangeX, finalRangeY }
+    )
 
     sectionContext.getScaleTransformation = getScaleTransformation
     sectionContext.postScaleTransformation = postScaleTransformation
