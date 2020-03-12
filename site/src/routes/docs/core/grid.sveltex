@@ -1,0 +1,162 @@
+<script>
+import { onMount } from 'svelte';
+import { scaleLinear, scaleBand } from "d3-scale";
+import { Graphic, Section, RectangleLayer } from "@snlab/florence";
+import Grid from "./utils/_Grid.svelte"
+
+
+let columns = 1
+let rows = 1
+let rowGap = 50
+let columnGap = 0
+const range = 0
+const width = 1200
+const height = 600
+const padding = { top: 20, bottom: 30, left: 40, right: 30 }
+
+</script>
+
+# Grid
+___
+
+
+
+```html
+<Grid>
+
+  ...
+
+</Grid>
+```
+
+The `Grid` component can help you parition `Section` (s) into a grid-like formation.
+
+
+## Props
+___ 
+
+### Positioning
+
+| Prop             | Type(s)   | Required | Default | Units         | Description |
+| ---------------- | --------- | -------- | ------- | ------------- | ------------|
+| x1               | `Number`  | ✅        |         | screen pixels | Option to console log grid layout |
+| x2               | `Number`  | ✅        |         | screen pixels | Option to console log grid layout |
+| y1               | `Number`  | ✅        |         | screen pixels | Option to console log grid layout |
+| y2               | `Number`  | ✅        |         | screen pixels | Option to console log grid layout |
+
+The `Grid` positioning props work the same way as the [Section](/docs/02-section#positioning)
+positioning props.
+
+
+### Grid settings
+
+| Prop             | Type(s)   | Required | Default | Units         | Description |                 
+| ---------------- | --------- | -------- | ------- | ------------- | ----------- | 
+| rows             | `Number`  | ✅        | `1`     | Integer       | Number of rows in grid |
+| columns          | `Number`  | ✅        | `1`     | Integer       | Number of columns in grid |
+| rowGap           | `Number`  | ✅        | `0`     | Integer       | Option to console log grid layout |
+| columnGap        | `Number`  | ✅        | `0`     | Integer       | Option to console log grid layout |
+| areaNames        | `String`  | ✅        | `false` |               | Option to console log grid layout |
+
+
+### Other
+
+| Prop             | Type(s)   | Required | Default | Units         | Description                       | Try                                                       |
+| ---------------- | --------- | -------- | ------- | ------------- | --------------------------------- | --------------------------------------------------------- |
+| viewGridTemplate | `Boolean` |          | `false` |               | Option to console log grid layout | <button>Toggle</button>                                   |
+| viewGridShape    | `Boolean` |          | `false` |               | Option to console log grid layout | <button>Toggle</button>                                   |
+
+
+### Slot Scope
+
+Grid expose a slot scope `cells` which stored an array of key-value pair in which key is `areaNames` and value is potision object
+
+```svelte
+{
+  "plot-1":{
+    x1,
+    y1,
+    x2,
+    y2
+  },
+  "plot-2":{
+    x1,
+    y1,
+    x2,
+    y2
+  },
+  ....
+}
+```
+
+
+## Examples
+___
+
+Below example demonstrate use of `Grid` component to create facet views.
+Faceting makes it easy to create small multiples of different subsets of an entire dataset.
+Faceting is a powerful tool when investigating whether patterns are the same or different across conditions.
+
+<Grid {columns} {rows} {rowGap} {columnGap} />
+
+### Positioning
+
+| Prop             | Type(s)   | Try |
+| ---------------- | --------- | ----| 
+| x1               | `Number`  | <input type="range" max="600" bind:value={width}>         |
+| x2               | `Number`  | <input type="range" max="600" bind:value={height}>        |
+
+### Grid settings
+
+{rows} x {columns}
+
+| Prop             | Type(s)   | Try  |
+| ---------------- | --------- | -----|
+| rows             | `Number`  | <input type="range" min="1" max="4" bind:value={rows}>    |
+| columns          | `Number`  | <input type="range" min="1" max="4" bind:value={columns}> |
+| rowGap           | `Number`  | <input type="range" min="0" max="40" bind:value={rowGap}> |
+| columnGap        | `Number`  | <input type="range" min="0" max="40" bind:value={columnGap}> | 
+| areaNames        | `String`  | <button>Toggle</button>                                   |
+
+Interactivity unleashes the full power of linked views. One of the most common forms of linking is linked highlighting, 
+where items that are interactively selected in one view are immediately highlighted in all other views using in the same highlight color. 
+Linked highlighting is a special case of a shared visual encoding in the color channel.
+The central benefit of the linked highlighting idiom is in seeing how a region that is contiguous in one view is distributed within another.
+
+
+## Code
+___
+
+The `Grid` implementation can be found at [Github](https://github.com/spatialnetworkslab/florence/blob/master/src/components/Core/Grid/Grid.svelte).
+
+<style>
+a {
+  font-weight: 500;
+  color: #ed8936 !important;
+}
+
+a:hover {
+  text-decoration: underline !important;
+}
+
+li {
+  list-style-type: disc;
+  list-style-position: inside;
+	position: relative;
+	margin-bottom: 1em;
+}
+
+li:after {
+	position: absolute;
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	margin-right: 0.5em;
+	background-color: #B53C2C;
+	border-radius: 50%;
+}
+
+h2, h3, h4, h5, h6 {
+  margin-top: 1.5em;
+}
+</style> 

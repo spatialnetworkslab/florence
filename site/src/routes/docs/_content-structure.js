@@ -12,6 +12,10 @@ export const posts = [
         path: '/docs/core/section'
       },
       {
+        title: 'Grid',
+        path: '/docs/core/grid'
+      },
+      {
         title: 'Local coordinates',
         path: '/docs/core/local-coordinates'
       }
