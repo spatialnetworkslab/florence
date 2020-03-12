@@ -363,14 +363,10 @@ function interpolatePoints (
   transformedLinearRing,
   from,
   to,
-  scaleTransformation,
   postScaleTransformation,
   numberOfPointsNeeded
 ) {
-  const fromScaled = scaleTransformation(from);
-  const toScaled = scaleTransformation(to);
-
-  const interpolator = interpolate(fromScaled, toScaled);
+  const interpolator = interpolate(from, to);
 
   for (let i = 0; i < numberOfPointsNeeded; i++) {
     const t = (i + 1) / (numberOfPointsNeeded + 1);
@@ -407,14 +403,14 @@ function interpolateLinearRingUnsimplified (linearRing, context, transformations
   for (let i = 0; i < linearRing.length - 1; i++) {
     const from = linearRing[i];
     const to = linearRing[i + 1];
+    const fromScaled = scaleTransformation(from);
+    const toScaled = scaleTransformation(to);
 
-    interpolatedLinearRing.push(postScaleTransformation(
-      scaleTransformation(from)
-    ));
+    interpolatedLinearRing.push(postScaleTransformation(fromScaled));
 
     const numberOfPointsNeeded = getNumberOfInterpolatedPoints(
-      from,
-      to,
+      fromScaled,
+      toScaled,
       toPolar,
       context,
       settings
@@ -423,9 +419,8 @@ function interpolateLinearRingUnsimplified (linearRing, context, transformations
     if (numberOfPointsNeeded > 0) {
       interpolatePoints(
         interpolatedLinearRing,
-        from,
-        to,
-        scaleTransformation,
+        fromScaled,
+        toScaled,
         postScaleTransformation,
         numberOfPointsNeeded
       );
@@ -471,14 +466,14 @@ function interpolateXYArraysUnsimplified (x, y, context, transformations, settin
   for (let i = 0; i < x.length - 1; i++) {
     const from = [x[i], y[i]];
     const to = [x[i + 1], y[i + 1]];
+    const fromScaled = context.scaleX(from);
+    const toScaled = context.scaleY(to);
 
-    interpolatedLinearRing.push(postScaleTransformation(
-      scaleTransformation(from)
-    ));
+    interpolatedLinearRing.push(postScaleTransformation(fromScaled));
 
     const numberOfPointsNeeded = getNumberOfInterpolatedPoints(
-      from,
-      to,
+      fromScaled,
+      toScaled,
       toPolar,
       context,
       settings
@@ -487,9 +482,8 @@ function interpolateXYArraysUnsimplified (x, y, context, transformations, settin
     if (numberOfPointsNeeded > 0) {
       interpolatePoints(
         interpolatedLinearRing,
-        from,
-        to,
-        scaleTransformation,
+        fromScaled,
+        toScaled,
         postScaleTransformation,
         numberOfPointsNeeded
       );

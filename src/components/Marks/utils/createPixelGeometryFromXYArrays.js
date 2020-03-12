@@ -13,7 +13,7 @@ export function createPixelGeometryFromXYArrays (
   const rendervousInput = createRendervousInput(x, y, geometryType)
 
   const interpolationNecessary = (
-    sectionContext.type === 'polar' &&
+    sectionContext.transformation === 'polar' &&
     renderSettings.interpolate === true
   )
 
