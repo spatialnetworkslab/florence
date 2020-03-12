@@ -234,10 +234,10 @@ Since we have already specified the scale values in `Section`, our raw values wi
 The graph should now look like this:
 <!-- TODO replace with codeboxes -->
 ```js exec
-import Basic1 from './utils/_Basic1.svelte'
+import Basic from './utils/_Basic.svelte'
 ```
 
-<Basic1 />
+<Basic switch0 />
 
 ## Axes
 
@@ -277,11 +277,8 @@ We also add padding to `Section` such that the axis labels show up.
 
 The graph should now look like this:
 <!-- TODO replace with codeboxes -->
-```js exec
-import Basic2 from './utils/_Basic2.svelte'
-```
 
-<Basic2 />
+<Basic switch0 switch1 />
 
 ## Plot Title (Optional)
 
@@ -295,11 +292,8 @@ Graphs usually come with titles describing the subject of the graph. This can be
   />
 ```
 <!-- TODO replace with codeboxes -->
-```js exec
-import Basic3 from './utils/_Basic3.svelte'
-```
 
-<Basic3 />
+<Basic switch0 switch1 switch2 />
 
 For further details, refer to the [Title documentation](docs/core/title).
 
@@ -310,12 +304,10 @@ We have briefly discussed the necessity of scales in the part on `Section` above
 However, scaling is not limited to changing data values into screen coordinates/pixels. Scaling can be done for a wide range of appearance aesthetics, such as color, shape and opacity. Different marks allow different aesthetics to be scaled. For details of each, refer to the Marks and Scales documentation.
 
 In this case, the points on the graph can be scaled to display a different color for each category of fruit, or a different radius for its diameter. To do so, the `fill` property on the `PointLayer` component can be changed from a single color to a scale, similar to the x and y properties. The same can be done to the `radius` property.
-<!-- TODO replace with codeboxes -->
-```js exec
-import Basic4 from './utils/_Basic4.svelte'
-```
 
-<Basic4 />
+<!-- TODO replace with codeboxes -->
+
+<Basic switch1 switch2 switch3 />
 
 Note that there is an extra type: `schemeCategory10` specification passed to the scale. This simply tells the mark to use the 'category10' color scheme. This is one of many predefined color schemes from d3. However, do note that certain color schemes can only be used with categorical variables/certain scale types, while others can only be used with numerical variables. 
 
@@ -335,24 +327,20 @@ Similar to the plot title, titles can be added to the axes for additional readab
 ```
 
 The title-vjust and title-hjust properties are used to position the axis title relative to the vertical and horizontal size of the axis.
-<!-- TODO replace with codeboxes -->
-```js exec
-import Basic5 from './utils/_Basic5.svelte'
-```
 
-<Basic5 />
+<!-- TODO replace with codeboxes -->
+
+<Basic switch2 switch3 switch4 />
 
 For further details, refer to the axes component documentation. [TODO ADD LINK]
 
 ## Legend (Optional)
 
 Adding a legend to our chart can help increase the viewer's understanding of the data. We can manually add a `DiscreteLegend` to our chart to better explain the colors mapped to our marks. 
-<!-- TODO replace with codeboxes -->
-```js exec
-import Basic6 from './utils/_Basic6.svelte'
-```
 
-<Basic6 />
+<!-- TODO replace with codeboxes -->
+
+<Basic switch2 switch3 switch4 switch5 />
 
 For further details, refer to the [Legend documentation](docs/guides/legend).
 

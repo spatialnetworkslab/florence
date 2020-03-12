@@ -8,10 +8,17 @@
     XAxis,
     YAxis,
     Title,
-    LabelLayer,
     DiscreteLegend
   } from '../../../../src/'
-  import DataContainer from "@snlab/florence-datacontainer";
+  import DataContainer from '@snlab/florence-datacontainer'
+
+  // switches for steps
+  export let switch0 = true
+  export let switch1 = true
+  export let switch2 = true
+  export let switch3 = true
+  export let switch4 = true
+  export let switch5 = true
 
   let data = new DataContainer({
     diameter: [
@@ -36,58 +43,53 @@
       8.9,
       9.1,
       10.3,
-      9.4,
-      10.1
+      9.4
     ],
     fruit: [
-      "lime",
-      "lemon",
-      "grapefruit",
-      "lemon",
-      "orange",
-      "lemon",
-      "pomelo",
-      "grapefruit",
-      "lime",
-      "pomelo",
-      "lemon",
-      "lime",
-      "grapefruit",
-      "pomelo",
-      "grapefruit",
-      "grapefruit",
-      "pomelo",
-      "lime",
-      "orange",
-      "grapefruit",
-      "pomelo",
-      "grapefruit",
-      "anchovies"
+      'lime',
+      'lemon',
+      'grapefruit',
+      'lemon',
+      'orange',
+      'lemon',
+      'pomelo',
+      'grapefruit',
+      'lime',
+      'pomelo',
+      'lemon',
+      'lime',
+      'grapefruit',
+      'pomelo',
+      'grapefruit',
+      'grapefruit',
+      'pomelo',
+      'lime',
+      'orange',
+      'grapefruit',
+      'pomelo',
+      'grapefruit'
     ]
-  });
+  })
 
   const processedData = data
     .dropNA()
-    .filter(row => row.fruit !== "anchovies")
-    .groupBy("fruit")
-    .summarise({ meanDiameter: { diameter: "mean" } })
-    .arrange({ meanDiameter: "descending" });
+    .groupBy('fruit')
+    .summarise({ meanDiameter: { diameter: 'mean' } })
+    .arrange({ meanDiameter: 'descending' })
 
-  const fruitDomain = processedData.domain("fruit");
+  const fruitDomain = data.domain("fruit");
   const scaleFruit = scalePoint()
     .domain(fruitDomain)
-    .padding(0.2)
-
+    .padding(0.2);
   const meanDiameterDomain = [0, processedData.domain("meanDiameter")[1] * 1.5]
   const scaleMeanDiameter = scaleLinear().domain(meanDiameterDomain)
-
   const scaleFruitColor = scaleOrdinal()
     .domain(fruitDomain)
-    .range(schemeCategory10)
+    .range(schemeCategory10);
 
   const scaleRadius = scaleLinear()
     .domain(meanDiameterDomain)
-    .range([2, 10])
+    .range([2, 10]);
 </script>
 
 
@@ -102,45 +104,45 @@
     scaleX={scaleFruit}
     scaleY={scaleMeanDiameter}
   >
-
-    <Title 
-      title={'Fruit Sizes'} 
-      titleFontFamily={'Baskerville'}
-      usePadding={true}
+    {#if switch0 || switch3}
+      <PointLayer
+        x={data.column('fruit')}
+        y={data.column('diameter')}
+        key={data.column('$key')}
+        fill={switch3 ? data.column('fruit').map(d => scaleFruitColor(d)) : 'black'}
+        radius={switch3 ? scaleRadius : 3}
       />
+    {/if}
 
-    <PointLayer
-      x={data.column('fruit')}
-      y={data.column('diameter')}
-      key={data.column('$key')}
-      fill={data.column('fruit').map(d => scaleFruitColor(d))}
-      radius={scaleRadius}
-    />
+    {#if switch1 || switch4}
+      <XAxis
+        title={switch4 ? 'fruit' : ''}
+      />
+      <YAxis 
+        title={switch4 ? 'diameter/cm' : ''}
+      />
+    {/if}
 
-    <!-- <LabelLayer
-      x={data.column('fruit')}
-      y={data.column('diameter')}
-      text={data.column('fruit')}
-      key={data.column('$key')}
-    /> -->
+    {#if switch2}
+      <Title 
+        title={'Fruit Sizes'} 
+        titleFontFamily={'Baskerville'}
+        usePadding={true}
+        />
+    {/if}
 
-    <XAxis
-      title={'fruit'}
-    />
-    <YAxis 
-      title={'diameter/cm'}
-    />
-
-    <DiscreteLegend
-      fill={scaleFruitColor}
-      hjust={'right'}
-      vjust={'top'}
-      stroke={'white'}
-      strokeWidth={2}
-      labelPaddingX={-12}
-      labelAnchorPoint={'left'}
-      usePadding={true}
-    />
+    {#if switch5}
+      <DiscreteLegend
+        fill={scaleFruitColor}
+        hjust={'right'}
+        vjust={'top'}
+        stroke={'white'}
+        strokeWidth={2}
+        labelPaddingX={-12}
+        labelAnchorPoint={'left'}
+        usePadding={true}
+      /> 
+    {/if}
   </Section>
 
 </Graphic>

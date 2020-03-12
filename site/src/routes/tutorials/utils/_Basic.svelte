@@ -12,6 +12,14 @@
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
+  // switches for steps
+  export let switch0 = false
+  export let switch1 = false
+  export let switch2 = false
+  export let switch3 = false
+  export let switch4 = false
+  export let switch5 = false
+
   let data = new DataContainer({
     diameter: [
       4.7,
@@ -73,8 +81,8 @@
   const scaleFruit = scalePoint()
     .domain(fruitDomain)
     .padding(0.2);
-  const meanDiameterDomain = [0, processedData.domain("meanDiameter")[1] * 1.5];
-  const scaleMeanDiameter = scaleLinear().domain(meanDiameterDomain);
+  const meanDiameterDomain = [0, processedData.domain("meanDiameter")[1] * 1.5]
+  const scaleMeanDiameter = scaleLinear().domain(meanDiameterDomain)
   const scaleFruitColor = scaleOrdinal()
     .domain(fruitDomain)
     .range(schemeCategory10);
@@ -96,38 +104,45 @@
     scaleX={scaleFruit}
     scaleY={scaleMeanDiameter}
   >
-
-    <Title 
-      title={'Fruit Sizes'} 
-      titleFontFamily={'Baskerville'}
-      usePadding={true}
+    {#if switch0 || switch3}
+      <PointLayer
+        x={data.column('fruit')}
+        y={data.column('diameter')}
+        key={data.column('$key')}
+        fill={switch3 ? data.column('fruit').map(d => scaleFruitColor(d)) : 'black'}
+        radius={switch3 ? scaleRadius : 3}
       />
+    {/if}
 
-    <PointLayer
-      x={data.column('fruit')}
-      y={data.column('diameter')}
-      key={data.column('$key')}
-      fill={data.column('fruit').map(d => scaleFruitColor(d))}
-      radius={scaleRadius}
-    />
+    {#if switch1 || switch4}
+      <XAxis
+        title={switch4 ? 'fruit' : ''}
+      />
+      <YAxis 
+        title={switch4 ? 'diameter/cm' : ''}
+      />
+    {/if}
 
-    <XAxis
-      title={'fruit'}
-    />
-    <YAxis 
-      title={'diameter/cm'}
-    />
+    {#if switch2}
+      <Title 
+        title={'Fruit Sizes'} 
+        titleFontFamily={'Baskerville'}
+        usePadding={true}
+        />
+    {/if}
 
-    <DiscreteLegend
-      fill={scaleFruitColor}
-      hjust={'right'}
-      vjust={'top'}
-      stroke={'white'}
-      strokeWidth={2}
-      labelPaddingX={-12}
-      labelAnchorPoint={'left'}
-      usePadding={true}
-    />
+    {#if switch5}
+      <DiscreteLegend
+        fill={scaleFruitColor}
+        hjust={'right'}
+        vjust={'top'}
+        stroke={'white'}
+        strokeWidth={2}
+        labelPaddingX={-12}
+        labelAnchorPoint={'left'}
+        usePadding={true}
+      /> 
+    {/if}
   </Section>
 
 </Graphic>
