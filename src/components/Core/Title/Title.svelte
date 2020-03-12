@@ -101,7 +101,7 @@
 
     // Title text positioning wrt section/graphic context
     totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize / 2 : titleFontSize
-
+    
     // Autopositioning
     if (!isValid(x, y)) {
       if (sectionContext.flipX) xRange.reverse()
