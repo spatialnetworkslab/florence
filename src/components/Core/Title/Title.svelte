@@ -69,11 +69,8 @@
     totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize : titleFontSize
     // Autopositioning
     if (!isValid(x, y)) {
-      if (sectionContext.flipX) xRange.reverse()
-      x = createTitleXCoord(hjust, xRange, x, xOffset, totalFontSize, sectionContext.flipX, _padding)
-
-      if (sectionContext.flipY) yRange.reverse()
-      y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize, sectionContext.flipY, _padding)
+      x = createTitleXCoord(hjust, xRange, x, xOffset, totalFontSize)
+      y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize)
     } else {
       let _x, _y
       /** If function, uses pixel values based on padding/no padding setting
