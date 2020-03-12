@@ -281,7 +281,7 @@
   $: {
     let useScale = false
     if (labels === undefined) {
-      tickLabelText = getTicks(scaleDomain, labelCount, labelExtra, firstLabel)
+      tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
       tickLabelText = format !== undefined ? tickLabelText.map(format) : tickLabelText
     } else {
       tickLabelText = format !== undefined ? labels.map(format) : labels
