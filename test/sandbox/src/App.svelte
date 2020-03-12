@@ -29,6 +29,7 @@
   import Title from './examples/Title.svelte'
   import LegendsDocs from './examples/LegendsDocs.svelte'
   import GeoEx from './examples/GeoEx.svelte'
+  import GeoFacet from './examples/GeoFacet.svelte'
 
   // and add them to this component array
   const components = [
@@ -157,15 +158,15 @@
       url: 'legendsdocs',
       component: LegendsDocs
     },
-    // {
-    //   name: 'Legends',
-    //   url: '/legends',
-    //   component: Legends
-    // },
     {
       name: 'GeoEx',
       url: 'geoex',
       component: GeoEx
+    },
+    {
+      name: 'GeoFacet',
+      url: 'geofacet',
+      component: GeoFacet
     }
   ]
 </script>
