@@ -1,8 +1,9 @@
 <script>
-  import { Line, LineLayer, Label, LabelLayer } from '../../../index.js'
+  import { LineLayer, Label, LabelLayer } from '../../../index.js'
   import * as SectionContext from '../../Core/Section/SectionContext'
 
-  import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord } from './createXAxisCoords.js'
+  import { createBaseLineXPath } from './createBaseLine.js'
+  import { createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord } from './createXAxisCoords.js'
   import { getTickPositions, getFormat } from './utils.js'
 
   // global properties
@@ -17,7 +18,6 @@
 
   // axis positioning
   export let vjust = 'bottom'
-  export let y = undefined
   export let yOffset = 0
 
   // tick marks
@@ -75,12 +75,10 @@
   let titleYCoord
   let axisHeight
   let labelAnchorPoint = 't'
-  let scaleX
+  
+  $: scaleX = (typeof scale === 'undefined') ? $sectionContext.scaleX : scale
+  $: baseLinePath = createBaseLineXPath(vjust, yOffset, $sectionContext)
 
-  $: {
-    scaleX = (typeof scale === 'undefined') ? $sectionContext.scaleX : scale;
-    ({ xCoords, yCoords } = createXAxisCoords(vjust, y, yOffset, scaleX, $sectionContext.scaleY, $sectionContext))
-  }
   $: {
     tickPositions = getTickPositions(tickValues, scaleX, tickCount, tickExtra);
     ({ tickXCoords, tickYCoords } = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
@@ -102,13 +100,17 @@
 <g class="x-axis">
     
   {#if baseLine}
-    <Line 
-      x={xCoords} y={yCoords} strokeWidth={baseLineWidth} opacity={baseLineOpacity} stroke={baseLineColor}
+    <path
+      d={baseLinePath}
+      fill="none"
+      stroke-width={baseLineWidth}
+      stroke={baseLineColor}
+      opacity={baseLineOpacity}
     />
   {/if}
 
   {#if ticks}
-    <LineLayer 
+    <!-- <LineLayer 
       x={tickXCoords} y={tickYCoords} strokeWidth={tickWidth} opacity={tickOpacity} stroke={tickColor}
       {transition}
     />
@@ -117,15 +119,15 @@
       rotation={labelRotate} fontFamily={labelFont} fontSize={labelFontSize}
       fontWeight={labelFontWeight} opacity={labelOpacity} fill={labelColor}
       {transition}
-    />
+    /> -->
   {/if}
 
   {#if title.length > 0}
-    <Label 
+    <!-- <Label 
       x={titleXCoord} y={titleYCoord} text={title} anchorPoint={titleAnchorPoint}
       rotation={titleRotation} fontFamily={titleFont} fontSize={titleFontSize}
       fontWeight={titleFontWeight} opacity={titleOpacity} fill={titleColor}
-    />
+    /> -->
   {/if}
 
 </g>
