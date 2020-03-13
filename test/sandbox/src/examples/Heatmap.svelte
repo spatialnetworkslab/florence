@@ -35,7 +35,6 @@
   priceDomain = data.domain('resale_price_sqm')
   leaseDomain = data.domain('remaining_lease')
   floorDomain = data.domain('floor_area_sqm')
-  console.log(years, months)
   // }
 
   const yearScale = scalePoint().domain([2015, 2016, 2017, 2018, 2019]).padding(0.2)
