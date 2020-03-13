@@ -73,7 +73,7 @@ positioning props.
 
 ### Slot Scope
 
-Grid expose a slot scope `cells` which stored an array of key-value pair in which key is `areaNames` and value is potision object
+Grid expose a slot scope `cells` which stored an array of key-value pair in which key is `areaNames` and value is potision object.
 
 ```svelte
 {
@@ -92,6 +92,8 @@ Grid expose a slot scope `cells` which stored an array of key-value pair in whic
   ....
 }
 ```
+
+The idea of slots can be found [here](https://svelte.dev/tutorial/slots)
 
 
 ## Examples
