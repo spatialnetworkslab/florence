@@ -3,6 +3,7 @@ import { onMount } from 'svelte';
 import { scaleLinear, scaleBand } from "d3-scale";
 import { Graphic, Section, RectangleLayer } from "@snlab/florence";
 import Grid from "./utils/_Grid.svelte"
+import SimpleGrid from "./utils/_SimpleGrid.svelte"
 
 
 let columns = 1
@@ -30,6 +31,9 @@ ___
 ```
 
 The `Grid` component can help you parition `Section` (s) into a grid-like formation.
+
+
+<SimpleGrid/>
 
 
 ## Props
