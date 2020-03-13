@@ -17,7 +17,7 @@
 }
 
 .top-nav {
-  @apply w-full px-4 py-3 border-b border-gray-200 bg-white fixed h-12 z-10;
+  @apply h-full py-2 px-4 w-screen border-b border-gray-200 bg-white;
 }
 
 .nav-li {

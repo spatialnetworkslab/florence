@@ -696,14 +696,12 @@ tr > td {
 .content {
   display: flex;
   flex-direction: row;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  padding-top: 4rem;
-  width: 100%
 }
 
 .left-col {
   width: 12rem;
+  border-right-width: 1px;
+  border-color: #cbd5e0;
   padding-right: 1rem;
   white-space: nowrap;
   flex: none;
@@ -721,7 +719,7 @@ tr > td {
   padding-left: 1rem;
   padding-right: 1rem;
   margin-top: 1rem;
-  max-width: 64rem;
+  max-width: 72rem;
 }
 
 /* codesandbox */
@@ -748,30 +746,13 @@ tr > td {
 }
 
 .csbp-rendered {
-  flex: 1 1 0%;
+  width: 100%;
+  flex-shrink: 0;
   padding: 1rem;
+  margin-bottom: 0.5rem;
   border-style: dashed;
   border-color: #cbd5e0;
   border-width: 1px;
-  @media (min-width: 640px) {
-    width: 100%;
-
-    flex: 1 1 0%;
-
-    padding: 1rem;
-  }
-  @media (min-width: 768px) {
-    width: 50%;
-
-    flex: 1 1 0%;
-
-    padding: 1rem;
-  }
-  @media (min-width: 1024px) {
-    width: 50%;
-
-    flex: 0 1 auto;
-  }
 }
 
 .csbp-rendered svg {
@@ -779,24 +760,15 @@ tr > td {
 }
 
 .csbp-code-tabs {
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   position: relative;
   margin: 0.5rem;
   font-size: 1rem;
-  @media (min-width: 640px) {
-    width: 100%;
+}
 
-    flex: 1 1 0%;
-  }
-  @media (min-width: 768px) {
+@media (min-width: 1024px) {
+  .csbp-rendered {
     width: 50%;
-
-    flex: 1 1 0%;
-  }
-  @media (min-width: 1024px) {
-    width: 50%;
-
-    flex: 0 1 auto;
   }
 }
 
@@ -872,17 +844,6 @@ tr > td {
 .csbp-csb-link a:hover {
   text-decoration: underline;
   color: #2c5282;
-}
-
-@media only screen and (max-width: 800px) {
-  .csbp-container {
-    flex-wrap: wrap;
-    margin-bottom: 500px;
-  }
-
-  .csbp-rendered {
-    margin: auto;
-  }
 }
 
 .container {
