@@ -13,7 +13,6 @@
   "dependencies": {
     "@polka/send": "^1.0.0-next.3",
     "compression": "^1.7.1",
-    "d3-contour": "^1.3.2",
     "polka": "^1.0.0-next.4",
     "sirv": "^0.4.0"
   },
@@ -27,6 +26,7 @@
     "@snlab/florence": "^0.1.8",
     "@snlab/florence-datacontainer": "^0.1.3",
     "@snlab/sveltex-unified": "0.0.14",
+    "d3-contour": "^1.3.2",
     "d3-scale": "^3.0.0",
     "npm-run-all": "^4.1.5",
     "postcss-cli": "^7.1.0",

@@ -148,13 +148,10 @@ tr > td {
 }
 
 .csbp-content {
-  height: 500px;
+  min-height: 250px;
+  max-height: 500px;
   @apply absolute overflow-auto border rounded-tr-sm rounded-b-sm border-gray-400 bg-codegray inset-x-0 bottom-0;
   top: 28px;
-}
-
-.csbp-content > * {
-  /* opacity: 0; */
 }
 
 [type="radio"]:checked ~ label {
@@ -174,7 +171,6 @@ tr > td {
 .csbp-csb-link {
   @apply flex-auto p-3;
   min-width: 200px;
-  transition: color 0.75s;
 }
 
 .csbp-csb-link a {

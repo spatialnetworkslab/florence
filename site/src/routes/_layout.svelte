@@ -8,6 +8,6 @@
 
 <Nav {segment}/>
 
-<main class='container'>
+<main class='main-body'>
 	<slot></slot>
 </main>
