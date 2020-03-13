@@ -60,6 +60,7 @@
   // Other
   export let zoomIdentity = undefined
   export let blockReindexing = false
+  export let clipped = true
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -213,7 +214,7 @@
 
 {#if $graphicContext.output() === 'svg'}
 
-  <path
+  <path clip-path={clipped ? `url(#clip-${$sectionContext.sectionId}-data)` : 'none'}
     class="line"
     d={generatePath($tr_screenGeometry)}
     fill="none"
