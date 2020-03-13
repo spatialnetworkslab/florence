@@ -2,21 +2,14 @@
   import { scaleLinear, scaleLog, scaleBand } from 'd3-scale'
   import { timeDay, timeMonday } from 'd3-time'
   import { timeFormat } from 'd3-time-format'
-  import {
-    Section,
-    Label,
-    LineLayer,
-    XAxis,
-    YAxis
-  } from '@snlab/florence'
+  import { Section, Label, LineLayer, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
   export let data
-  export let padding = { top: 20, bottom: 30, left: 40, right: 30 }
+  export let padding = { top: 20, bottom: 30, left: 30, right: 30 }
   export let width = 800
   export let height = 600
-  export let x1 = 0
-  export let x2 = 600
+
   export let y1 = 0
   export let y2 = 500
   export let chartTitle = ''
@@ -48,7 +41,7 @@
   const onPan = e => console.log(e)
 </script>
 
-<Section {x1} {x2} {y1} {y2} {onPan} {scaleX} {scaleY} {padding} flipY>
+<Section {y1} {y2} {onPan} {scaleX} {scaleY} {padding} flipY>
   <!-- <Label x={0} y={0} text={chartTitle} /> -->
   <LineLayer
     x={dataContainer.map('date', d => [d, d])}

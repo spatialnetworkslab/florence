@@ -3,7 +3,6 @@ import { onMount } from 'svelte';
 import { scaleLinear, scaleBand } from "d3-scale";
 import { Graphic, Section, RectangleLayer } from "@snlab/florence";
 import Grid from "./utils/_Grid.svelte"
-import SimpleGrid from "./utils/_SimpleGrid.svelte"
 
 
 let columns = 1
@@ -33,7 +32,8 @@ ___
 The `Grid` component can help you parition `Section` (s) into a grid-like formation.
 
 
-<SimpleGrid/>
+::: codesandboxplus ./src/gallery/colored-scatterplot/App.svelte 42-64
+:::
 
 
 ## Props
@@ -43,10 +43,10 @@ ___
 
 | Prop             | Type(s)   | Required | Default | Units         | Description |
 | ---------------- | --------- | -------- | ------- | ------------- | ------------|
-| x1               | `Number`  | ✅        |         | screen pixels | Option to console log grid layout |
-| x2               | `Number`  | ✅        |         | screen pixels | Option to console log grid layout |
-| y1               | `Number`  | ✅        |         | screen pixels | Option to console log grid layout |
-| y2               | `Number`  | ✅        |         | screen pixels | Option to console log grid layout |
+| x1               | `Number`  | ✅        |         | screen pixels | Adjust Grid x1 |
+| x2               | `Number`  | ✅        |         | screen pixels | Adjust Grid x2 |
+| y1               | `Number`  | ✅        |         | screen pixels | Adjust Grid y1 |
+| y2               | `Number`  | ✅        |         | screen pixels | Adjust Grid y2 |
 
 The `Grid` positioning props work the same way as the [Section](/docs/02-section#positioning)
 positioning props.
@@ -58,9 +58,9 @@ positioning props.
 | ---------------- | --------- | -------- | ------- | ------------- | ----------- | 
 | rows             | `Number`  | ✅        | `1`     | Integer       | Number of rows in grid |
 | columns          | `Number`  | ✅        | `1`     | Integer       | Number of columns in grid |
-| rowGap           | `Number`  | ✅        | `0`     | Integer       | Option to console log grid layout |
-| columnGap        | `Number`  | ✅        | `0`     | Integer       | Option to console log grid layout |
-| areaNames        | `String`  | ✅        | `false` |               | Option to console log grid layout |
+| rowGap           | `Number`  | ✅        | `0`     | Integer       | Margin between rows |
+| columnGap        | `Number`  | ✅        | `0`     | Integer       | Margin between columns |
+| areaNames        | []`String`  | ✅      | [] |               | An array of facet names |
 
 
 ### Other
@@ -73,7 +73,7 @@ positioning props.
 
 ### Slot Scope
 
-Grid expose a slot scope `cells` which stored an array of key-value pair in which key is `areaNames` and value is potision object.
+Grid expose a slot scope `cells` which stored an array of key-value pair in which key is area name element in `areaNames` array and value is potision object.
 
 ```svelte
 {
@@ -103,31 +103,7 @@ Below example demonstrate use of `Grid` component to create facet views.
 Faceting makes it easy to create small multiples of different subsets of an entire dataset.
 Faceting is a powerful tool when investigating whether patterns are the same or different across conditions.
 
-<Grid {columns} {rows} {rowGap} {columnGap} />
-
-### Positioning
-
-| Prop             | Type(s)   | Try |
-| ---------------- | --------- | ----| 
-| x1               | `Number`  | <input type="range" max="600" bind:value={width}>         |
-| x2               | `Number`  | <input type="range" max="600" bind:value={height}>        |
-
-### Grid settings
-
-{rows} x {columns}
-
-| Prop             | Type(s)   | Try  |
-| ---------------- | --------- | -----|
-| rows             | `Number`  | <input type="range" min="1" max="4" bind:value={rows}>    |
-| columns          | `Number`  | <input type="range" min="1" max="4" bind:value={columns}> |
-| rowGap           | `Number`  | <input type="range" min="0" max="40" bind:value={rowGap}> |
-| columnGap        | `Number`  | <input type="range" min="0" max="40" bind:value={columnGap}> | 
-| areaNames        | `String`  | <button>Toggle</button>                                   |
-
-Interactivity unleashes the full power of linked views. One of the most common forms of linking is linked highlighting, 
-where items that are interactively selected in one view are immediately highlighted in all other views using in the same highlight color. 
-Linked highlighting is a special case of a shared visual encoding in the color channel.
-The central benefit of the linked highlighting idiom is in seeing how a region that is contiguous in one view is distributed within another.
+<Grid {width} {height} {columns} {rows} {rowGap} {columnGap} />
 
 
 ## Code
