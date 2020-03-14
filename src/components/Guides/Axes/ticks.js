@@ -25,23 +25,21 @@ export function getTicks (tickValuesArray, scale, tickCount, tickExtra) {
 export function getTickCoordinatesXAxis (
   ticks,
   yAbsolute,
-  sectionContext,
+  { scaleX, finalScaleY },
   tickSize,
   flip
 ) {
   const offset = flip ? -tickSize : tickSize
-  const scale = sectionContext.scaleX
-  const bandOffset = scale.bandwidth ? scale.bandwidth() / 2 : 0
+  const bandOffset = scaleX.bandwidth ? scaleX.bandwidth() / 2 : 0
 
   const yEndAbsolute = yAbsolute + offset
 
-  const finalScale = sectionContext.finalScaleY
   const yCoordsTick = [
-    finalScale.invert(yAbsolute),
-    finalScale.invert(yEndAbsolute)
+    finalScaleY.invert(yAbsolute),
+    finalScaleY.invert(yEndAbsolute)
   ]
 
-  const x = ticks.map(t => scale(t) + bandOffset).map(t => [t, t])
+  const x = ticks.map(t => scaleX(t) + bandOffset).map(t => [t, t])
   const y = generateArrayOfLength(yCoordsTick, ticks.length)
 
   return {
@@ -53,24 +51,22 @@ export function getTickCoordinatesXAxis (
 export function getTickCoordinatesYAxis (
   ticks,
   xAbsolute,
-  sectionContext,
+  { scaleY, finalScaleX },
   tickSize,
   flip
 ) {
   const offset = flip ? -tickSize : tickSize
-  const scale = sectionContext.scaleX
-  const bandOffset = scale.bandwidth ? scale.bandwidth() / 2 : 0
+  const bandOffset = scaleY.bandwidth ? scaleY.bandwidth() / 2 : 0
 
   const xEndAbsolute = xAbsolute + offset
 
-  const finalScale = sectionContext.finalScaleX
   const xCoordsTick = [
-    finalScale.invert(xAbsolute),
-    finalScale.invert(xEndAbsolute)
+    finalScaleX.invert(xAbsolute),
+    finalScaleX.invert(xEndAbsolute)
   ]
 
   const x = generateArrayOfLength(xCoordsTick, ticks.length)
-  const y = ticks.map(t => scale(t) + bandOffset).map(t => [t, t])
+  const y = ticks.map(t => scaleY(t) + bandOffset).map(t => [t, t])
 
   return {
     x: () => x,
