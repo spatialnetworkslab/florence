@@ -2,7 +2,8 @@
   import { LineLayer, Label, LabelLayer } from '../../../index.js'
   import * as SectionContext from '../../Core/Section/SectionContext'
 
-  import { createBaseLineXPath } from './createBaseLine.js'
+  import { getPositionXAxis } from './getAxisPosition.js'
+  import { createBaseLinePathXAxis } from './createBaseLine.js'
   import { createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord } from './createXAxisCoords.js'
   import { getTickPositions, getFormat } from './utils.js'
 
@@ -77,7 +78,8 @@
   let labelAnchorPoint = 't'
   
   $: scaleX = (typeof scale === 'undefined') ? $sectionContext.scaleX : scale
-  $: baseLinePath = createBaseLineXPath(vjust, yOffset, $sectionContext)
+  $: yPosition = getPositionXAxis(vjust, yOffset, $sectionContext)
+  $: baseLinePath = createBaseLinePathXAxis(yPosition, $sectionContext)
 
   $: {
     tickPositions = getTickPositions(tickValues, scaleX, tickCount, tickExtra);
