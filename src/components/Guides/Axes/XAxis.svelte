@@ -2,10 +2,11 @@
   import { Line, LineLayer, Label, LabelLayer } from '../../../index.js'
   import * as SectionContext from '../../Core/Section/SectionContext'
 
-  import { getAbsolutePositionXAxis, getBaseLineCoordinatesXAxis } from './baseline.js'
+  import { getAbsoluteYPosition } from './absolutePosition.js'
+  import { getBaseLineCoordinatesXAxis } from './baseline.js'
   import { getTicks, getTickPositionsXAxis, getFormat } from './ticks.js'
   import { getTickLabelCoordinatesXAxis } from './tickLabels.js'
-  // import { createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord } from './createXAxisCoords.js'
+  import { getTitleCoordinates } from './title.js'
 
   // global properties
   export let flip = false
@@ -43,10 +44,8 @@
   // axis title
   export let titleHjust = 'center'
   export let titleXOffset = 0
-  export let titleX = undefined
   export let titleVjust = 'axis'
   export let titleYOffset = 'axis'
-  export let titleY = undefined
   export let title = ''
   export let titleColor = 'black'
   export let titleFont = 'Helvetica'
@@ -63,7 +62,7 @@
   const sectionContext = SectionContext.subscribe()
   
   // Absolute position (in pixels)
-  $: yAbsolute = getAbsolutePositionXAxis(vjust, yOffset, $sectionContext)
+  $: yAbsolute = getAbsoluteYPosition(vjust, yOffset, $sectionContext)
 
   // Baseline
   $: baseLineCoordinates = getBaseLineCoordinatesXAxis(yAbsolute, $sectionContext)
@@ -85,24 +84,13 @@
   $: labelAnchorPoint = flip ? 'b' : 't'
 
   // Title
-  // TODO
-
-  // $: {
-  //   tickPositions = getTickPositions(tickValues, scaleX, tickCount, tickExtra);
-  //   ({ tickXCoords, tickYCoords } = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
-  //   ({ tickLabelXCoords, tickLabelYCoords } = createXLabelGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, labelOffset, flip))
-
-  //   format = getFormat(labelFormat, scaleX, tickPositions.length)
-  //   tickLabelText = tickPositions.map(format)
-  //   axisHeight = baseLineWidth + tickSize + labelOffset + labelFontSize
-  //   labelAnchorPoint = flip ? 'b' : 't'
-  // }
-  // $: {
-  //   if (title.length > 0) {
-  //     titleXCoord = createTitleXCoord(titleHjust, xCoords, titleX, scaleX, $sectionContext.scaleY, titleXOffset, axisHeight, flip, titleFontSize, $sectionContext)
-  //     titleYCoord = createTitleYCoord(titleVjust, yCoords, titleY, scaleX, $sectionContext.scaleY, titleYOffset, axisHeight, flip, titleFontSize, $sectionContext)
-  //   }
-  // }
+  $: titleCoordinates = getTitleCoordinates(
+    titleHjust,
+    titleXOffset,
+    titleVjust,
+    titleYOffset,
+    sectionContext
+  )
 </script>
 
 <g class="x-axis">
@@ -140,11 +128,17 @@
   {/if}
 
   {#if title.length > 0}
-    <!-- <Label 
-      x={titleXCoord} y={titleYCoord} text={title} anchorPoint={titleAnchorPoint}
-      rotation={titleRotation} fontFamily={titleFont} fontSize={titleFontSize}
-      fontWeight={titleFontWeight} opacity={titleOpacity} fill={titleColor}
-    /> -->
+    <Label 
+      {...titleCoordinates}
+      text={title}
+      anchorPoint={titleAnchorPoint}
+      rotation={titleRotation}
+      fontFamily={titleFont}
+      fontSize={titleFontSize}
+      fontWeight={titleFontWeight}
+      opacity={titleOpacity}
+      fill={titleColor}
+    />
   {/if}
 
 </g>
