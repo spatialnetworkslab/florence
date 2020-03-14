@@ -4,9 +4,9 @@
 
   import { getAbsoluteYPosition } from './absolutePosition.js'
   import { getBaseLineCoordinatesXAxis } from './baseline.js'
-  import { getTicks, getTickPositionsXAxis, getFormat } from './ticks.js'
+  import { getTicks, getTickCoordinatesXAxis, getFormat } from './ticks.js'
   import { getTickLabelCoordinatesXAxis } from './tickLabels.js'
-  import { getTitleCoordinates } from './title.js'
+  import { getTitleCoordinatesXAxis } from './title.js'
 
   // global properties
   export let flip = false
@@ -84,12 +84,17 @@
   $: labelAnchorPoint = flip ? 'b' : 't'
 
   // Title
-  $: titleCoordinates = getTitleCoordinates(
+  $: axisHeight = baseLineWidth + tickSize + labelOffset + labelFontSize
+  $: titleCoordinates = getTitleCoordinatesXAxis(
     titleHjust,
     titleXOffset,
     titleVjust,
     titleYOffset,
-    sectionContext
+    sectionContext,
+    flip,
+    axisHeight,
+    titleFontSize,
+    yAbsolute
   )
 </script>
 
