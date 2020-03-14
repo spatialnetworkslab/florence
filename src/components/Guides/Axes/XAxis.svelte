@@ -2,8 +2,9 @@
   import { Line, LineLayer, Label, LabelLayer } from '../../../index.js'
   import * as SectionContext from '../../Core/Section/SectionContext'
 
-  import { getAbsolutePositionXAxis, getBaseLineCoordinatesXAxis } from './createBaseLine.js'
+  import { getAbsolutePositionXAxis, getBaseLineCoordinatesXAxis } from './baseline.js'
   import { getTicks, getTickPositionsXAxis, getFormat } from './ticks.js'
+  import { getTickLabelCoordinatesXAxis } from './tickLabels.js'
   // import { createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord } from './createXAxisCoords.js'
 
   // global properties
@@ -61,20 +62,6 @@
   // Contexts
   const sectionContext = SectionContext.subscribe()
   
-  let xCoords
-  let yCoords
-  let tickPositions
-  let tickXCoords
-  let tickYCoords
-  let tickLabelXCoords
-  let tickLabelYCoords
-  let format
-  let tickLabelText
-  let titleXCoord
-  let titleYCoord
-  let axisHeight
-  let labelAnchorPoint = 't'
-  
   // Absolute position (in pixels)
   $: yAbsolute = getAbsolutePositionXAxis(vjust, yOffset, $sectionContext)
 
@@ -94,7 +81,8 @@
   // Tick labels
   $: format = getFormat(labelFormat, scaleX, ticks.length)
   $: tickLabelText = ticks.map(format)
-  $: tickLabelCoordinates = null // TODO
+  $: tickLabelCoordinates = getTickLabelCoordinatesXAxis(tickCoordinates, $sectionContext, labelOffset, flip)
+  $: labelAnchorPoint = flip ? 'b' : 't'
 
   // Title
   // TODO
@@ -137,12 +125,18 @@
       {transition}
     />
     
-    <!-- <LabelLayer
-      x={tickLabelXCoords} y={tickLabelYCoords} text={tickLabelText} anchorPoint={labelAnchorPoint}
-      rotation={labelRotate} fontFamily={labelFont} fontSize={labelFontSize}
-      fontWeight={labelFontWeight} opacity={labelOpacity} fill={labelColor}
+    <LabelLayer
+      {...tickLabelCoordinates}
+      text={tickLabelText} 
+      anchorPoint={labelAnchorPoint}
+      rotation={labelRotate}
+      fontFamily={labelFont}
+      fontSize={labelFontSize}
+      fontWeight={labelFontWeight}
+      opacity={labelOpacity}
+      fill={labelColor}
       {transition}
-    /> -->
+    />
   {/if}
 
   {#if title.length > 0}
