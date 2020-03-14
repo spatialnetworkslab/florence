@@ -9,8 +9,6 @@
   import EventManager from '../../../interactivity/events/EventManager.js'
   import InteractionManager from '../../../interactivity/interactions/InteractionManager.js'
 
-  import { parsePadding, applyPadding } from '../utils/padding.js'
-
   export let renderer = undefined
   
   export let width = undefined
