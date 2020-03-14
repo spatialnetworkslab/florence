@@ -1,14 +1,12 @@
 <script>
-  import { LineLayer, Label, LabelLayer } from '../../../index.js'
+  import { Line, LineLayer, Label, LabelLayer } from '../../../index.js'
   import * as SectionContext from '../../Core/Section/SectionContext'
 
-  import { getPositionXAxis } from './getAxisPosition.js'
-  import { createBaseLinePathXAxis } from './createBaseLine.js'
-  import { createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord } from './createXAxisCoords.js'
-  import { getTickPositions, getFormat } from './utils.js'
+  import { getAbsolutePositionXAxis, getBaseLineCoordinatesXAxis } from './createBaseLine.js'
+  import { getTicks, getTickPositionsXAxis, getFormat } from './ticks.js'
+  // import { createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord } from './createXAxisCoords.js'
 
   // global properties
-  export let scale = undefined
   export let flip = false
 
   // axis baseline
@@ -77,46 +75,69 @@
   let axisHeight
   let labelAnchorPoint = 't'
   
-  $: scaleX = (typeof scale === 'undefined') ? $sectionContext.scaleX : scale
-  $: yPosition = getPositionXAxis(vjust, yOffset, $sectionContext)
-  $: baseLinePath = createBaseLinePathXAxis(yPosition, $sectionContext)
+  // Absolute position (in pixels)
+  $: yAbsolute = getAbsolutePositionXAxis(vjust, yOffset, $sectionContext)
 
-  $: {
-    tickPositions = getTickPositions(tickValues, scaleX, tickCount, tickExtra);
-    ({ tickXCoords, tickYCoords } = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
-    ({ tickLabelXCoords, tickLabelYCoords } = createXLabelGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, labelOffset, flip))
+  // Baseline
+  $: baseLineCoordinates = getBaseLineCoordinatesXAxis(yAbsolute, $sectionContext)
+  
+  // Ticks
+  $: ticks = getTicks(tickValues, $sectionContext.scaleX, tickCount, tickExtra)
+  $: tickCoordinates = getTickCoordinatesXAxis(
+    ticks,
+    yAbsolute,
+    $sectionContext,
+    tickSize,
+    flip
+  )
 
-    format = getFormat(labelFormat, scaleX, tickPositions.length)
-    tickLabelText = tickPositions.map(format)
-    axisHeight = baseLineWidth + tickSize + labelOffset + labelFontSize
-    labelAnchorPoint = flip ? 'b' : 't'
-  }
-  $: {
-    if (title.length > 0) {
-      titleXCoord = createTitleXCoord(titleHjust, xCoords, titleX, scaleX, $sectionContext.scaleY, titleXOffset, axisHeight, flip, titleFontSize, $sectionContext)
-      titleYCoord = createTitleYCoord(titleVjust, yCoords, titleY, scaleX, $sectionContext.scaleY, titleYOffset, axisHeight, flip, titleFontSize, $sectionContext)
-    }
-  }
+  // Tick labels
+  $: format = getFormat(labelFormat, scaleX, ticks.length)
+  $: tickLabelText = ticks.map(format)
+  $: tickLabelCoordinates = null // TODO
+
+  // Title
+  // TODO
+
+  // $: {
+  //   tickPositions = getTickPositions(tickValues, scaleX, tickCount, tickExtra);
+  //   ({ tickXCoords, tickYCoords } = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
+  //   ({ tickLabelXCoords, tickLabelYCoords } = createXLabelGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, labelOffset, flip))
+
+  //   format = getFormat(labelFormat, scaleX, tickPositions.length)
+  //   tickLabelText = tickPositions.map(format)
+  //   axisHeight = baseLineWidth + tickSize + labelOffset + labelFontSize
+  //   labelAnchorPoint = flip ? 'b' : 't'
+  // }
+  // $: {
+  //   if (title.length > 0) {
+  //     titleXCoord = createTitleXCoord(titleHjust, xCoords, titleX, scaleX, $sectionContext.scaleY, titleXOffset, axisHeight, flip, titleFontSize, $sectionContext)
+  //     titleYCoord = createTitleYCoord(titleVjust, yCoords, titleY, scaleX, $sectionContext.scaleY, titleYOffset, axisHeight, flip, titleFontSize, $sectionContext)
+  //   }
+  // }
 </script>
 
 <g class="x-axis">
     
   {#if baseLine}
-    <path
-      d={baseLinePath}
-      fill="none"
-      stroke-width={baseLineWidth}
-      stroke={baseLineColor}
+    <Line 
+      {...baseLineCoordinates}
+      strokeWidth={baseLineWidth}
       opacity={baseLineOpacity}
+      stroke={baseLineColor}
     />
   {/if}
 
   {#if ticks}
-    <!-- <LineLayer 
-      x={tickXCoords} y={tickYCoords} strokeWidth={tickWidth} opacity={tickOpacity} stroke={tickColor}
+    <LineLayer 
+      {...tickCoordinates}
+      strokeWidth={tickWidth}
+      opacity={tickOpacity}
+      stroke={tickColor}
       {transition}
     />
-    <LabelLayer
+    
+    <!-- <LabelLayer
       x={tickLabelXCoords} y={tickLabelYCoords} text={tickLabelText} anchorPoint={labelAnchorPoint}
       rotation={labelRotate} fontFamily={labelFont} fontSize={labelFontSize}
       fontWeight={labelFontWeight} opacity={labelOpacity} fill={labelColor}
