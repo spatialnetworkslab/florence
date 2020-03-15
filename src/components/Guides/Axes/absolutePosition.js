@@ -1,5 +1,5 @@
-export function getAbsoluteXPosition (hjust, xOffset, paddedBbox) {
-  const { x1, x2 } = paddedBbox
+export function getAbsoluteXPosition (hjust, xOffset, { paddedBbox }) {
+  const { minX: x1, maxX: x2 } = paddedBbox
 
   if (hjust === 'left') {
     return x1 - xOffset
@@ -18,8 +18,8 @@ export function getAbsoluteXPosition (hjust, xOffset, paddedBbox) {
   }
 }
 
-export function getAbsoluteYPosition (vjust, yOffset, paddedBbox) {
-  const { y1, y2 } = paddedBbox
+export function getAbsoluteYPosition (vjust, yOffset, { paddedBbox }) {
+  const { minY: y1, maxY: y2 } = paddedBbox
 
   if (vjust === 'top') {
     return y1 - yOffset

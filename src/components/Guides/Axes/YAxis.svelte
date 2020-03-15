@@ -3,7 +3,7 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
 
   import { getAbsoluteXPosition } from './absolutePosition.js'
-  import { getBaseLineCoordinatesYAxis } from './baseline.js'
+  import { getBaseLineCoordinatesYAxis } from './baseLine.js'
   import { getTicks, getTickCoordinatesYAxis, getFormat } from './ticks.js'
   import { getTickLabelCoordinatesYAxis } from './tickLabels.js'
   import { getTitleCoordinatesYAxis } from './title.js'
@@ -18,7 +18,7 @@
   export let baseLineWidth = 1
 
   // axis positioning
-  export let hjust = 'left'
+  export let hjust = 'right'
   export let xOffset = 0
 
   // tick marks
@@ -78,23 +78,23 @@
   )
 
   // Tick labels
-  $: format = getFormat(labelFormat, scaleX, ticks.length)
+  $: format = getFormat(labelFormat, $sectionContext.scaleY, ticks.length)
   $: tickLabelText = ticks.map(format)
   $: tickLabelCoordinates = getTickLabelCoordinatesYAxis(tickCoordinates, $sectionContext, labelOffset, flip)
-  $: labelAnchorPoint = flip ? 'l' : 'r'
+  $: labelAnchorPoint = flip ? 'r' : 'l'
 
   // Title
   $: axisWidth = baseLineWidth + tickSize + labelOffset + labelFontSize
-  $: titleCoordinates = getTitleCoordinatesXAxis(
+  $: titleCoordinates = getTitleCoordinatesYAxis(
     titleHjust,
     titleXOffset,
     titleVjust,
     titleYOffset,
-    sectionContext,
+    $sectionContext,
     flip,
     axisWidth,
     titleFontSize,
-    yAbsolute
+    xAbsolute
   )
 </script>
 

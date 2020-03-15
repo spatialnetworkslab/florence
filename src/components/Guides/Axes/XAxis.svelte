@@ -3,7 +3,7 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
 
   import { getAbsoluteYPosition } from './absolutePosition.js'
-  import { getBaseLineCoordinatesXAxis } from './baseline.js'
+  import { getBaseLineCoordinatesXAxis } from './baseLine.js'
   import { getTicks, getTickCoordinatesXAxis, getFormat } from './ticks.js'
   import { getTickLabelCoordinatesXAxis } from './tickLabels.js'
   import { getTitleCoordinatesXAxis } from './title.js'
@@ -78,7 +78,7 @@
   )
 
   // Tick labels
-  $: format = getFormat(labelFormat, scaleX, ticks.length)
+  $: format = getFormat(labelFormat, $sectionContext.scaleX, ticks.length)
   $: tickLabelText = ticks.map(format)
   $: tickLabelCoordinates = getTickLabelCoordinatesXAxis(tickCoordinates, $sectionContext, labelOffset, flip)
   $: labelAnchorPoint = flip ? 'b' : 't'
@@ -90,7 +90,7 @@
     titleXOffset,
     titleVjust,
     titleYOffset,
-    sectionContext,
+    $sectionContext,
     flip,
     axisHeight,
     titleFontSize,

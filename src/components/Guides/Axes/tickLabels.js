@@ -29,7 +29,7 @@ export function getTickLabelCoordinatesYAxis (
   labelOffset,
   flip
 ) {
-  const x = tickCoordinates.y().map(x => {
+  const x = tickCoordinates.x().map(x => {
     const xEnd = x[1]
     const xEndAbsolute = finalScaleX(xEnd)
 
