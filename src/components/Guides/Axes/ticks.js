@@ -1,12 +1,12 @@
 import generateArrayOfLength from '../../Marks/utils/generateArrayOfLength.js'
 
-export function getTicks (tickValuesArray, scale, tickCount, tickExtra) {
+export function getTicks (tickValuesArray, scale, tickCount, tickExtra, zoomIdentity) {
   let ticks
 
   if (Array.isArray(tickValuesArray) && tickValuesArray.length > 0) {
     ticks = tickValuesArray
-  } else if ('ticks' in scale) {
-    ticks = scale.ticks(tickCount)
+  } else if (isContinuous(scale)) {
+    ticks = getContinuousTicks(scale, tickCount, zoomIdentity)
   } else if ('domain' in scale) {
     ticks = scale.domain()
   } else {
@@ -19,6 +19,26 @@ export function getTicks (tickValuesArray, scale, tickCount, tickExtra) {
   }
 
   return ticks
+}
+
+function isContinuous (scale) {
+  return 'ticks' in scale
+}
+
+function getContinuousTicks (scale, tickCount, zoomIdentity) {
+  if (zoomIdentity) {
+    const rescaledDomain = rescale(scale, zoomIdentity)
+    return scale.copy().domain(rescaledDomain).ticks(tickCount)
+  }
+
+  return scale.ticks(tickCount)
+}
+
+// https://github.com/d3/d3-zoom#transform_rescaleX
+function rescale (scale, { k, t }) {
+  const rescaledRange = scale.range().map(r => (r - t) / k)
+  const rescaledDomain = rescaledRange.map(scale.invert)
+  return rescaledDomain
 }
 
 export function getTickCoordinatesXAxis (

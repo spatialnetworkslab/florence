@@ -68,7 +68,15 @@
   $: baseLineCoordinates = getBaseLineCoordinatesYAxis(xAbsolute, $sectionContext)
   
   // Ticks
-  $: ticks = getTicks(tickValues, $sectionContext.scaleY, tickCount, tickExtra)
+  $: ticks = getTicks(
+    tickValues,
+    $sectionContext.scaleY,
+    tickCount,
+    tickExtra,
+    $sectionContext.zoomIdentity 
+      ? { t: $sectionContext.zoomIdentity.y, k: $sectionContext.zoomIdentity.ky }
+      : undefined
+  )
   $: tickCoordinates = getTickCoordinatesYAxis(
     ticks,
     xAbsolute,
