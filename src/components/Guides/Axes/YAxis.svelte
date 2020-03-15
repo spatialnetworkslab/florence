@@ -4,7 +4,7 @@
 
   import { getAbsoluteXPosition } from './absolutePosition.js'
   import { getBaseLineCoordinatesYAxis } from './baseLine.js'
-  import { getTicks, getTickCoordinatesYAxis, getFormat } from './ticks.js'
+  import { getTickPositions, getTickCoordinatesYAxis, getFormat } from './ticks.js'
   import { getTickLabelCoordinatesYAxis } from './tickLabels.js'
   import { getTitleCoordinatesYAxis } from './title.js'
 
@@ -75,7 +75,7 @@
   $: baseLineCoordinates = getBaseLineCoordinatesYAxis(xAbsolute, $sectionContext)
   
   // Ticks
-  $: ticks = getTicks(
+  $: tickPositions = getTickPositions(
     tickValues,
     $sectionContext.scaleY,
     tickCount,
@@ -85,7 +85,7 @@
       : undefined
   )
   $: tickCoordinates = getTickCoordinatesYAxis(
-    ticks,
+    tickPositions,
     xAbsolute,
     $sectionContext,
     tickSize,
@@ -94,7 +94,7 @@
 
   // Tick labels
   $: format = getFormat(labelFormat, $sectionContext.scaleY, ticks.length)
-  $: tickLabelText = ticks.map(format)
+  $: tickLabelText = tickPositions.map(format)
   $: tickLabelCoordinates = getTickLabelCoordinatesYAxis(tickCoordinates, $sectionContext, labelOffset, flip)
   $: labelAnchorPoint = flip ? 'r' : 'l'
 

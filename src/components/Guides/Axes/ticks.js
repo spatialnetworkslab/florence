@@ -1,6 +1,6 @@
 import generateArrayOfLength from '../../Marks/utils/generateArrayOfLength.js'
 
-export function getTicks (tickValuesArray, scale, tickCount, tickExtra, zoomIdentity) {
+export function getTickPositions (tickValuesArray, scale, tickCount, tickExtra, zoomIdentity) {
   let ticks
 
   if (Array.isArray(tickValuesArray) && tickValuesArray.length > 0) {
