@@ -42,13 +42,3 @@ function applyZoom (range, k, translate) {
     range[1] * k + translate
   ]
 }
-
-export function createFinalRangeConverter (
-  { rangeX, rangeY },
-  { finalRangeX, finalRangeY }
-) {
-  const applyX = scaleLinear().domain(rangeX).range(finalRangeX)
-  const applyY = scaleLinear().domain(rangeY).range(finalRangeY)
-
-  return ([x, y]) => ([applyX(x), applyY(y)])
-}
