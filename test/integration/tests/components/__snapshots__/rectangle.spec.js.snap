@@ -20,7 +20,7 @@ exports[`Assertions > Rectangle Tests > [render] rectangles snapshot correctly #
       ></path>
       <path
         class="rectangle"
-        d="M200,50L300,50L300,263.3333333333333L200,263.3333333333333Z"
+        d="M200,50L300,50L300,263.33L200,263.33Z"
         fill="yellow"
         stroke="none"
         stroke-width="0"
@@ -28,7 +28,7 @@ exports[`Assertions > Rectangle Tests > [render] rectangles snapshot correctly #
       ></path>
       <path
         class="rectangle"
-        d="M325,50L425,50L425,183.33333333333334L325,183.33333333333334Z"
+        d="M325,50L425,50L425,183.33L325,183.33Z"
         fill="yellow"
         stroke="none"
         stroke-width="0"

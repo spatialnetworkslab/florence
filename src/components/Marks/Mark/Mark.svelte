@@ -19,7 +19,7 @@
   import { createDataNecessaryForIndexingMark } from './createDataNecessaryForIndexing.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import any from '../utils/any.js'
-  import parseRenderSettings from '../utils/parseRenderSettings.js' 
+  import parseRenderSettings from '../utils/parseRenderSettings.js'
 
   import generatePath from '../utils/generatePath.js'
 
@@ -286,8 +286,7 @@
       tr_fontSize = createTransitionable('fontSize', $tr_fontSize, transition)
       tr_fontWeight = createTransitionable('fontWeight', $tr_fontWeight, transition)
       tr_rotation = createTransitionable('rotation', $tr_rotation, transition)
-
-   }
+    }
   })
 
   afterUpdate(() => {

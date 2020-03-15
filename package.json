@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "dependencies": {
+    "@snlab/rendervous": "0.0.1",
     "@snlab/transshape": "^0.1.2",
     "d3-geo": "^1.11.9",
     "d3-interpolate": "^1.4.0",
