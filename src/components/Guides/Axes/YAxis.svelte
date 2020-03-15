@@ -61,6 +61,13 @@
   // Contexts
   const sectionContext = SectionContext.subscribe()
   
+  // Make sure not polar
+  $: {
+    if ($sectionContext.transformation === 'polar') {
+      throw new Error('Axes do\'nt work with polar coordinates (for now)')
+    }
+  }
+
     // Absolute position (in pixels)
   $: xAbsolute = getAbsoluteXPosition(hjust, xOffset, $sectionContext)
 
