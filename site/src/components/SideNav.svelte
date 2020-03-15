@@ -6,16 +6,17 @@
 
 <style>
 .sidenav-first{
-  @apply text-xl font-semibold no-underline;
+  @apply text-lg no-underline;
 }
 
 .sidenav-second{
-  @apply text-base font-normal pl-6;
-  transition: border-color 1s;
+  @apply text-base font-normal pl-4;
 }
-
-.sidenav-second:hover, .sidenav-second-selected {
-  @apply border-l-2 border-red-600;
+.sidenav-second:hover {
+  @apply text-indigo-500;
+}
+.sidenav-second-selected {
+  @apply text-indigo-500 font-medium;
 }
 
 .sidenav-a{
