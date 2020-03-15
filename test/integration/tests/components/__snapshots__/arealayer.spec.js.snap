@@ -12,7 +12,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
     <g class="area-layer">
       <path
         class="area"
-        d="M62.5,416L95,416L127.5,402.5L160,402.5L192.5,393.49999999999994L225,398L257.5,407L290,389.00000000000006L322.5,380L355,402.5L387.50000000000006,389.00000000000006L420,380L452.5,380L484.99999999999994,375.5L517.5,402.5L550,375.5L582.5,384.50000000000006L615,362L647.5,398L680,371L680,470L647.5,470L615,470L582.5,470L550,470L517.5,470L484.99999999999994,470L452.5,470L420,470L387.50000000000006,470L355,470L322.5,470L290,470L257.5,470L225,470L192.5,470L160,470L127.5,470L95,470L62.5,470Z"
+        d="M62.5,416L95,416L127.5,402.5L160,402.5L192.5,393.5L225,398L257.5,407L290,389L322.5,380L355,402.5L387.5,389L420,380L452.5,380L485,375.5L517.5,402.5L550,375.5L582.5,384.5L615,362L647.5,398L680,371L680,470L647.5,470L615,470L582.5,470L550,470L517.5,470L485,470L452.5,470L420,470L387.5,470L355,470L322.5,470L290,470L257.5,470L225,470L192.5,470L160,470L127.5,470L95,470L62.5,470Z"
         fill="#af8dc3"
         stroke="none"
         stroke-width="0"
@@ -20,7 +20,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
       ></path>
       <path
         class="area"
-        d="M62.5,348.49999999999994L95,362L127.5,325.99999999999994L160,325.99999999999994L192.5,339.5L225,330.49999999999994L257.5,353L290,335L322.5,290L355,276.50000000000006L387.50000000000006,308L420,308L452.5,325.99999999999994L484.99999999999994,312.5L517.5,312.5L550,285.5L582.5,303.5L615,317L647.5,308L680,317L680,371L647.5,398L615,362L582.5,384.50000000000006L550,375.5L517.5,402.5L484.99999999999994,375.5L452.5,380L420,380L387.50000000000006,389.00000000000006L355,402.5L322.5,380L290,389.00000000000006L257.5,407L225,398L192.5,393.49999999999994L160,402.5L127.5,402.5L95,416L62.5,416Z"
+        d="M62.5,348.5L95,362L127.5,326L160,326L192.5,339.5L225,330.5L257.5,353L290,335L322.5,290L355,276.5L387.5,308L420,308L452.5,326L485,312.5L517.5,312.5L550,285.5L582.5,303.5L615,317L647.5,308L680,317L680,371L647.5,398L615,362L582.5,384.5L550,375.5L517.5,402.5L485,375.5L452.5,380L420,380L387.5,389L355,402.5L322.5,380L290,389L257.5,407L225,398L192.5,393.5L160,402.5L127.5,402.5L95,416L62.5,416Z"
         fill="#7fbf7b"
         stroke="none"
         stroke-width="0"
@@ -31,7 +31,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
       <g class="line-layer">
         <path
           class="line"
-          d="M30,469.5L30,475.5"
+          d="M30,470.45L30,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -39,7 +39,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M95,469.5L95,475.5"
+          d="M95,470.45L95,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -47,7 +47,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M160,469.5L160,475.5"
+          d="M160,470.45L160,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -55,7 +55,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M225,469.5L225,475.5"
+          d="M225,470.45L225,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -63,7 +63,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M290,469.5L290,475.5"
+          d="M290,470.45L290,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -71,7 +71,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M355,469.5L355,475.5"
+          d="M355,470.45L355,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -79,7 +79,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M420,469.5L420,475.5"
+          d="M420,470.45L420,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -87,7 +87,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M484.99999999999994,469.5L484.99999999999994,475.5"
+          d="M485,470.45L485,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -95,7 +95,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M550,469.5L550,475.5"
+          d="M550,470.45L550,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -103,7 +103,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M615,469.5L615,475.5"
+          d="M615,470.45L615,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -111,7 +111,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M680,469.5L680,475.5"
+          d="M680,470.45L680,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -121,7 +121,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
       <g class="label-layer">
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -130,7 +130,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           transform="
           rotate(0, 
           30, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -142,7 +142,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -151,7 +151,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           transform="
           rotate(0, 
           95, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -163,7 +163,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -172,7 +172,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           transform="
           rotate(0, 
           160, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -184,7 +184,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -193,7 +193,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           transform="
           rotate(0, 
           225, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -205,7 +205,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -214,7 +214,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           transform="
           rotate(0, 
           290, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -226,7 +226,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -235,7 +235,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           transform="
           rotate(0, 
           355, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -247,7 +247,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -256,7 +256,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           transform="
           rotate(0, 
           420, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -268,7 +268,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -277,7 +277,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           transform="
           rotate(0, 
           484.99999999999994, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -289,7 +289,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -298,7 +298,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           transform="
           rotate(0, 
           550, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -310,7 +310,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -319,7 +319,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           transform="
           rotate(0, 
           615, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -331,7 +331,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -340,7 +340,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           transform="
           rotate(0, 
           680, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -356,7 +356,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
       <g class="line-layer">
         <path
           class="line"
-          d="M29.5,470L23.5,470"
+          d="M29.54,470L23.96,470"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -364,7 +364,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M29.5,425L23.5,425"
+          d="M29.54,425L23.96,425"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -372,7 +372,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M29.5,380L23.5,380"
+          d="M29.54,380L23.96,380"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -380,7 +380,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M29.5,335L23.5,335"
+          d="M29.54,335L23.96,335"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -388,7 +388,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M29.5,290L23.5,290"
+          d="M29.54,290L23.96,290"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -396,7 +396,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M29.5,245L23.5,245"
+          d="M29.54,245L23.96,245"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -404,7 +404,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M29.5,200L23.5,200"
+          d="M29.54,200L23.96,200"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -412,7 +412,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M29.5,155.00000000000003L23.5,155.00000000000003"
+          d="M29.54,155L23.96,155"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -420,7 +420,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M29.5,109.99999999999999L23.5,109.99999999999999"
+          d="M29.54,110L23.96,110"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -428,7 +428,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M29.5,65L23.5,65"
+          d="M29.54,65L23.96,65"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -436,7 +436,7 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
         ></path>
         <path
           class="line"
-          d="M29.5,20L23.5,20"
+          d="M29.54,20L23.96,20"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -450,11 +450,11 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           470)
         "
           font-family="Helvetica"
@@ -471,11 +471,11 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           425)
         "
           font-family="Helvetica"
@@ -492,11 +492,11 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           380)
         "
           font-family="Helvetica"
@@ -513,11 +513,11 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           335)
         "
           font-family="Helvetica"
@@ -534,11 +534,11 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           290)
         "
           font-family="Helvetica"
@@ -555,11 +555,11 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           245)
         "
           font-family="Helvetica"
@@ -576,11 +576,11 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           200)
         "
           font-family="Helvetica"
@@ -597,11 +597,11 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           155.00000000000003)
         "
           font-family="Helvetica"
@@ -618,11 +618,11 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           109.99999999999999)
         "
           font-family="Helvetica"
@@ -639,11 +639,11 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           65)
         "
           font-family="Helvetica"
@@ -660,11 +660,11 @@ exports[`Assertions > AreaLayer Tests > [render] area layer snapshot correctly #
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           20)
         "
           font-family="Helvetica"

@@ -1,5 +1,5 @@
 <script>
-   import * as SectionContext from '../Section/SectionContext'
+  import * as SectionContext from '../Section/SectionContext'
 
   import { getPixelCoordinates } from '../Section/getPixelCoordinates.js'
   import { getAllCells, mergeNameSpecs } from './gridUtils.js'
@@ -35,8 +35,6 @@
 
   // Get named cells
   $: allSpecs = mergeNameSpecs(areaNames, allCells, numCols)
-
-  $: { console.log(allSpecs) }
 </script>
 
 <g>
