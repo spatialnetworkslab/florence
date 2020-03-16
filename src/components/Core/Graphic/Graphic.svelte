@@ -72,18 +72,18 @@
   let originalViewBoxArray
   
   if (originalViewBox !== undefined) {
-      originalViewBoxArray = originalViewBox.split(' ')
+    originalViewBoxArray = originalViewBox.split(' ')
   }
   $: {
     if (width.constructor === Number && height.constructor === Number) {
       numberWidth = width
       numberHeight = height
     } else if (originalViewBox !== undefined) {
-        numberWidth = Number(originalViewBoxArray[2])
-        numberHeight = Number(originalViewBoxArray[3])
+      numberWidth = Number(originalViewBoxArray[2])
+      numberHeight = Number(originalViewBoxArray[3])
     } else if (originalViewBox === undefined) {
-        numberWidth = 100
-        numberHeight = 100
+      numberWidth = 100
+      numberHeight = 100
     }
   }
   $: {
