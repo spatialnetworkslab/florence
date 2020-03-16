@@ -1,15 +1,17 @@
 exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
 <svg width="700" height="500">
   <defs>
-    <clipPath id="clip-sc0">
-      <rect x="0" y="0" width="700" height="500"></rect>
-    </clipPath>
+    <mask id="mask-sc0-padding-bg">
+      <rect width="100%" height="100%" fill="white"></rect>
+      <rect x="30" y="20" width="650" height="450" fill="black"></rect>
+    </mask>
     <clipPath id="clip-sc0-data">
-      <rect x="30" y="20" width="650" height="450" fill="white"></rect>
+      <rect x="30" y="20" width="650" height="450"></rect>
     </clipPath>
   </defs>
-  <g class="section" clip-path="url(#clip-sc0)">
+  <g class="section">
     <path
+      clip-path="url(#clip-sc0-data)"
       class="area"
       d="M30,470L64.21052631578948,470L98.42105263157895,470L132.6315789473684,470L166.8421052631579,470L201.05263157894737,470L235.26315789473682,470L269.4736842105263,470L303.6842105263158,470L337.89473684210526,470L372.10526315789474,470L406.3157894736842,470L440.52631578947364,470L474.7368421052632,470L508.9473684210526,470L543.1578947368421,470L577.3684210526316,470L611.578947368421,470L645.7894736842105,470L680,470L680,395.8241758241758L645.7894736842105,227.6923076923077L611.578947368421,390.8791208791208L577.3684210526316,133.73626373626374L543.1578947368421,336.48351648351644L508.9473684210526,385.9340659340659L474.7368421052632,143.62637362637363L440.52631578947364,39.78021978021976L406.3157894736842,227.6923076923077L372.10526315789474,198.02197802197804L337.89473684210526,232.63736263736263L303.6842105263158,212.85714285714286L269.4736842105263,39.78021978021976L235.26315789473682,376.04395604395603L201.05263157894737,207.91208791208788L166.8421052631579,69.45054945054947L132.6315789473684,20L98.42105263157895,257.3626373626374L64.21052631578948,198.02197802197804L30,331.5384615384615Z"
       fill="steelblue"
@@ -18,7 +20,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
       opacity="1"
     ></path>
     <g class="x-axis">
-      <g class="line-layer">
+      <g class="line-layer" clip-path="none">
         <path
           class="line"
           d="M64.21052631578948,469.5L64.21052631578948,475.5"
@@ -100,14 +102,14 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           style="opacity: 1"
         ></path>
       </g>
-      <g class="label-layer">
+      <g class="label-layer" clip-path="none">
         <text
           class="label"
+          x="64.21052631578948"
           y="478"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="64.21052631578948"
           opacity="1"
           transform="
           rotate(0, 
@@ -124,11 +126,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="132.6315789473684"
           y="478"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="132.6315789473684"
           opacity="1"
           transform="
           rotate(0, 
@@ -145,11 +147,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="201.05263157894737"
           y="478"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="201.05263157894737"
           opacity="1"
           transform="
           rotate(0, 
@@ -166,11 +168,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="269.4736842105263"
           y="478"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="269.4736842105263"
           opacity="1"
           transform="
           rotate(0, 
@@ -187,11 +189,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="337.89473684210526"
           y="478"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="337.89473684210526"
           opacity="1"
           transform="
           rotate(0, 
@@ -208,11 +210,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="406.3157894736842"
           y="478"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="406.3157894736842"
           opacity="1"
           transform="
           rotate(0, 
@@ -229,11 +231,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="474.7368421052632"
           y="478"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="474.7368421052632"
           opacity="1"
           transform="
           rotate(0, 
@@ -250,11 +252,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="543.1578947368421"
           y="478"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="543.1578947368421"
           opacity="1"
           transform="
           rotate(0, 
@@ -271,11 +273,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="611.578947368421"
           y="478"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="611.578947368421"
           opacity="1"
           transform="
           rotate(0, 
@@ -292,11 +294,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="680"
           y="478"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="680"
           opacity="1"
           transform="
           rotate(0, 
@@ -314,7 +316,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
       </g>
     </g>
     <g class="y-axis">
-      <g class="line-layer">
+      <g class="line-layer" clip-path="none">
         <path
           class="line"
           d="M29.5,470L23.5,470"
@@ -396,14 +398,14 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           style="opacity: 1"
         ></path>
       </g>
-      <g class="label-layer">
+      <g class="label-layer" clip-path="none">
         <text
           class="label"
+          x="22"
           y="470"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
           opacity="1"
           transform="
           rotate(0, 
@@ -420,11 +422,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="22"
           y="420.54945054945057"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
           opacity="1"
           transform="
           rotate(0, 
@@ -441,11 +443,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="22"
           y="371.0989010989011"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
           opacity="1"
           transform="
           rotate(0, 
@@ -462,11 +464,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="22"
           y="321.6483516483517"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
           opacity="1"
           transform="
           rotate(0, 
@@ -483,11 +485,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="22"
           y="272.1978021978022"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
           opacity="1"
           transform="
           rotate(0, 
@@ -504,11 +506,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="22"
           y="222.7472527472527"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
           opacity="1"
           transform="
           rotate(0, 
@@ -525,11 +527,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="22"
           y="173.2967032967033"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
           opacity="1"
           transform="
           rotate(0, 
@@ -546,11 +548,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="22"
           y="123.84615384615383"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
           opacity="1"
           transform="
           rotate(0, 
@@ -567,11 +569,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="22"
           y="74.39560439560441"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
           opacity="1"
           transform="
           rotate(0, 
@@ -588,11 +590,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
+          x="22"
           y="24.945054945054927"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
           opacity="1"
           transform="
           rotate(0, 

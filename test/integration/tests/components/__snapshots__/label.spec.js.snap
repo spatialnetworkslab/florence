@@ -1,21 +1,23 @@
 exports[`Assertions > Label Mark Tests > [render] labels snapshot correctly #0`] = `
 <svg width="500" height="500">
   <defs>
-    <clipPath id="clip-sc0">
+    <mask id="mask-sc0-padding-bg">
+      <rect width="100%" height="100%" fill="white"></rect>
+      <rect x="50" y="50" width="400" height="400" fill="black"></rect>
+    </mask>
+    <clipPath id="clip-sc0-data">
       <rect x="50" y="50" width="400" height="400"></rect>
     </clipPath>
-    <clipPath id="clip-sc0-data">
-      <rect x="50" y="50" width="400" height="400" fill="white"></rect>
-    </clipPath>
   </defs>
-  <g class="section" clip-path="url(#clip-sc0)">
+  <g class="section">
     <text
+      clip-path="url(#clip-sc0-data)"
       class="label"
+      x="210"
       y="310"
       fill="yellow"
       stroke="none"
       stroke-width="0"
-      x="210"
       opacity="1"
       transform="rotate(45, 210, 310)"
       font-family="Georgia"
@@ -26,14 +28,14 @@ exports[`Assertions > Label Mark Tests > [render] labels snapshot correctly #0`]
     >
       Testing1
     </text>
-    <g class="label-layer">
+    <g class="label-layer" clip-path="url(#clip-sc0-data)">
       <text
         class="label"
+        x="150"
         y="250"
         fill="black"
         stroke="none"
         stroke-width="0"
-        x="150"
         opacity="1"
         transform="
           rotate(45, 
@@ -50,11 +52,11 @@ exports[`Assertions > Label Mark Tests > [render] labels snapshot correctly #0`]
       </text>
       <text
         class="label"
+        x="110"
         y="150"
         fill="black"
         stroke="none"
         stroke-width="0"
-        x="110"
         opacity="1"
         transform="
           rotate(10, 
@@ -71,11 +73,11 @@ exports[`Assertions > Label Mark Tests > [render] labels snapshot correctly #0`]
       </text>
       <text
         class="label"
+        x="90"
         y="90"
         fill="black"
         stroke="none"
         stroke-width="0"
-        x="90"
         opacity="1"
         transform="
           rotate(90, 

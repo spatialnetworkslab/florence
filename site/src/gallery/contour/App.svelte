@@ -8,12 +8,10 @@
   import {
     Graphic,
     Section,
-    Label,
     PointLayer,
     Polygon,
     XAxis,
     YAxis,
-    Title
   } from '@snlab/florence/src/index.js'
   import DataContainer from '@snlab/florence-datacontainer'
 
@@ -69,15 +67,7 @@
   {height}
 >
 
-  <!-- <Label
-    x={450}
-    y={10}
-    text={'Density Contours'} -->
-  />
-
-  <Section
-    {padding}
-  >  
+  <Section {padding} >  
     {#if done}
       {#each contours as c, i}
         <Polygon
