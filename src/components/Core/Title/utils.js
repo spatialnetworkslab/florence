@@ -97,7 +97,7 @@ export function createTitleYCoord (vjust, range, y, offset, fontSize, flipY) {
   }
 
   if (vjust === 'bottom') {
-    justification = 1 - (fontSize / sectionHeight)
+    justification = flipY ? 1 : 1 - (fontSize / sectionHeight)
   }
 
   if (vjust === 'top') {
@@ -115,8 +115,9 @@ export function createTitleYCoord (vjust, range, y, offset, fontSize, flipY) {
   if (!['center', 'bottom', 'top'].includes(vjust) && isNaN(vjust)) {
     throw Error('Please specify either `top`, `center`, `bottom` or a number for `vjust`')
   }
-
-  const posY = flipY ? y2 - (sectionHeight * justification + offset) : y1 + sectionHeight * justification + offset
+  console.log(y1, y2)
+  //const posY = flipY ? y2 - (sectionHeight * justification + offset) : y1 + sectionHeight * justification + offset
+  const posY = y1 + sectionHeight * justification + offset
   // const posY = y1 + sectionHeight * justification + offset
   return posY
 }

@@ -8,7 +8,6 @@
 
 <Graphic width={500} height={500}
   padding={graphicPadding}
-  flipX
 >
 
  <Section
@@ -40,7 +39,7 @@
   
   </Section>
 
-  <Title 
+  <!-- <Title 
     title={'This title is placed inside of the graphic'} 
     subtitle={'Its parent is the Graphic'}
     titleFill={'coral'}
@@ -53,5 +52,5 @@
     subtitle={'Its parent is the Graphic'}
     subtitleFontFamily={'Baskerville'}
     usePadding={true}
-    />
+    /> -->
 </Graphic>
