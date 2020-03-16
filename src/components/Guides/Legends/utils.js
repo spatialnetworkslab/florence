@@ -70,7 +70,7 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
   return tickValues
 }
 
-export function getTickPositions (tickValuesArray, domain, tickExtra, coordinates, flip, orient, padding, useScale) {
+export function getTickPositions (tickValuesArray, domain, tickExtra, coordinates, flip, orient, padding, useScale, flipScale) {
   let tickPositions
 
   // Bins
@@ -105,6 +105,10 @@ export function getTickPositions (tickValuesArray, domain, tickExtra, coordinate
 
   if (tickExtra && tickPositions[0] !== domain[0] && useScale) {
     tickPositions.unshift(domain[0])
+  }
+
+  if (flipScale) {
+    tickPositions.reverse()
   }
 
   return tickPositions
@@ -239,7 +243,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
   return { colorXStartCoords, colorXEndCoords, colorYStartCoords, colorYEndCoords }
 }
 
-export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize, labels) {
+export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize, labels, flipScale) {
   let offsets
   let gradX
   let gradY
@@ -250,7 +254,7 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
 
   if (orient === 'vertical') {
     gradX = { x1: '0%', x2: '0%' }
-    gradY = flip ? { y1: '100%', y2: '0%' } : { y1: '0%', y2: '100%' }
+    gradY = flip || !flipScale ? { y1: '100%', y2: '0%' } : { y1: '0%', y2: '100%' }
     y1 = yCoords.y1
     y2 = yCoords.y2
 
@@ -263,7 +267,7 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
       x2 = tickAlign + labelFontSize * 2 + colorBarWidth * xCoords.width
     }
   } else if (orient === 'horizontal') {
-    gradX = flip ? { x1: '100%', x2: '0%' } : { x1: '0%', x2: '100%' }
+    gradX = flip || !flipScale ? { x1: '100%', x2: '0%' } : { x1: '0%', x2: '100%' }
     gradY = { y1: '0%', y2: '0%' }
     x1 = xCoords.x1
     x2 = xCoords.x2
@@ -310,6 +314,10 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
     throw new Error(`Couldn't construct legend. Please provide 'tickValues' or a scale with
         either a 'ticks' or a 'domain' method.`)
   }
+
+  // if (flipScale) {
+  //   offsets.reverse()
+  // }
 
   return { offsets, gradX, gradY, rectCoords }
 }

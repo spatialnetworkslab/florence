@@ -6,7 +6,7 @@
 </script>
 
 <script>
-  import { Label, LabelLayer, Rectangle, Section } from '../../../index.js'
+  import { Label, LabelLayer, Rectangle, Section, Point } from '../../../index.js'
   import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from './createLegendCoordinates.js'
   import { removePadding } from '../../Core/utils/padding.js'
 
@@ -214,7 +214,7 @@
     if (title.length > 0) {
       // if titleX is not a function or a data scale value
       if (!titleX && titleX !== 0) {
-        titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleOffsetX, addTitleSize, labelFontSize, orient)
+        titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleOffsetX, addTitleSize, _flipX)
       } else {
         // if titleX is a function/data scale value
         if ({}.toString.call(titleX) === '[object Function]') {
@@ -226,7 +226,7 @@
   
       // if titleY is not a function or a data scale value
       if (!titleY && titleY !== 0) {
-        titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleOffsetY, addTitleSize, labelFontSize, orient)
+        titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleOffsetY, addTitleSize, _flipY)
       } else {
         // if titleY is a function/data scale value
         if ({}.toString.call(titleY) === '[object Function]') {
@@ -288,7 +288,7 @@
     }
 
     if (orient === 'vertical') {
-      tickLabelYCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, yCoords, flip, orient, labelPaddingY, useScale)
+      tickLabelYCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, yCoords, flip, orient, labelPaddingY, useScale, _flipY)
       tickLabelXCoords = flipLabels ? x1 + colorBarHeight * xCoords.width : x1 + (1 - colorBarHeight) * xCoords.width
       tickLabelXCoords = labelX || tickLabelXCoords
       if (labelPaddingX !== undefined) {
@@ -297,7 +297,7 @@
 
       format = getFormat(labelFormat, scaleDomain, tickLabelYCoords.length)
     } else if (orient === 'horizontal') {
-      tickLabelXCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, xCoords, flip, orient, labelPaddingX, useScale)
+      tickLabelXCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, xCoords, flip, orient, labelPaddingX, useScale, _flipX)
       tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * yCoords.height : yCoords.y2 - colorBarWidth * yCoords.height
       tickLabelYCoords = labelY || tickLabelYCoords
 
@@ -332,7 +332,8 @@
           tickAlign = tickLabelYCoords
         }
 
-        colorGeoms = getGradientGeoms(tickColors, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize)
+        const flipScale = orient === 'horizontal' ? _flipX : _flipY
+        colorGeoms = getGradientGeoms(tickColors, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize, labels, flipScale)
 
         if (!tickOpacities) {
           tickOpacities = fillOpacity !== undefined ? fillOpacity : 1
@@ -363,7 +364,8 @@
         tickAlign = tickLabelYCoords - labelPaddingY
       }
 
-      colorGeoms = getGradientGeoms(tickOpacities, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize, labels)
+      const flipScale = orient === 'horizontal' ? _flipX : _flipY
+      colorGeoms = getGradientGeoms(tickOpacities, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize, labels, flipScale)
   
       if (!tickColors) {
         tickColors = fill !== undefined ? fill : 'black'
@@ -399,7 +401,7 @@
       {/each}
     </linearGradient>
   </defs>
-  
+
   <!-- Florence components-->
   <Rectangle
       x1 = { () => { return rectCoords.x1 } }

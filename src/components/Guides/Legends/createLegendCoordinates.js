@@ -13,7 +13,7 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   const heightRatio = orient === 'vertical' ? 0.3 : 0.1
   const addTitleSize = titleFontSize
   height = (height === 0 || height === undefined) ? (y2Range - y1Range) * heightRatio : height
-  console.log(y1Range, y2Range, height)
+
   // if (parentPadding !== undefined) {
   //   y1Range = !flip ? y1Range - parentPadding.top : y1Range - parentPadding.bottom
   //   y2Range = !flip ? y2Range + parentPadding.bottom : y2Range + parentPadding.top
@@ -122,7 +122,7 @@ export function createTitleXCoord (hjust, xCoords, x, offset) {
   return x1 + Math.abs(x1 - x2) * justification + offset
 }
 
-export function createTitleYCoord (vjust, yCoords, y, offset, addTitleSize) {
+export function createTitleYCoord (vjust, yCoords, y, offset, addTitleSize, flipY) {
   if (y) {
     return () => y
   }
@@ -159,5 +159,6 @@ export function createTitleYCoord (vjust, yCoords, y, offset, addTitleSize) {
     throw Error('Please specify either `top`, `center`, `bottom` or a number for `vjust`')
   }
 
-  return y1 + Math.abs(y1 - y2) * justification + addFontSize + offset
+  const titleY = flipY ? y2 - (Math.abs(y1 - y2) * justification + addFontSize + offset) : y1 + Math.abs(y1 - y2) * justification + addFontSize + offset
+  return titleY
 }

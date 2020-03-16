@@ -51,12 +51,29 @@
     />
     <!-- usePadding = false -->
     <GradientLegend
-      title={'Gradient'}
+      title={'Test'}
       fill={linearColorScale}
-      orient={'horizontal'}
       labelCount={5}
       hjust={'right'}
       vjust={'bottom'}
+      usePadding={false}
+    />
+
+    <GradientLegend
+      title={'Gradient'}
+      fill={linearColorScale}
+      labelCount={5}
+      hjust={'right'}
+      vjust={'top'}
+      usePadding={false}
+    />
+
+    <GradientLegend
+      title={'Gradient'}
+      fill={linearColorScale}
+      labelCount={5}
+      hjust={'right'}
+      vjust={'center'}
       usePadding={false}
     />
 
