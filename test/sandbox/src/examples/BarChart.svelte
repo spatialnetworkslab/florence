@@ -71,7 +71,7 @@ const meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
         y1={0}
         y2={row.meanQuantity}
         fill={transformation === 'identity' ? 'green' : 'blue'}
-        transition={2000}
+        transition={duration}
         onClick={handler}
       />
 

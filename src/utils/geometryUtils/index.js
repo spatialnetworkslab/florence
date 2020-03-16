@@ -1,4 +1,4 @@
-export { calculateBBoxGeometries, calculateBBoxGeometry } from './calculateBBox.js'
+export { calculateBboxGeometries, calculateBboxGeometry } from './calculateBbox.js'
 
 export { default as calculateCentroid } from './calculateCentroid.js'
 
@@ -12,15 +12,8 @@ export { pointDistance, linearRingLength } from './distance.js'
 
 export { default as pointInPolygon } from './pointInPolygon.js'
 
-export {
-  scaleGeometries,
-  transformGeometries,
-  scaleGeometry,
-  transformGeometry
-} from './transform.js'
+export { transformGeometry, polarGeometry } from '@snlab/rendervous'
 
-export { interpolateGeometry } from './interpolate'
-
-export { transitionGeometry, transitionGeometries } from './transition'
+export { transitionGeometry, transitionGeometries } from './transition.js'
 
 export { polygonArea, linearRingIsClockwise } from './polygonArea.js'

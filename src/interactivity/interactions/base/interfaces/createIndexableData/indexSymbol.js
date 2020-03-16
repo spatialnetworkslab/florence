@@ -1,11 +1,11 @@
-import { calculateBBoxGeometry } from '../../../../../utils/geometryUtils'
-import createItemFromBBox from '../../../utils/createItemFromBBox.js'
+import { calculateBboxGeometry } from '../../../../../utils/geometryUtils'
+import createItemFromBbox from '../../../utils/createItemFromBbox.js'
 
 export function indexSymbol (markData) {
   const symbolAttributes = markData.attributes
 
-  const bbox = calculateBBoxGeometry(symbolAttributes.screenGeometry)
-  const item = createItemFromBBox(bbox)
+  const bbox = calculateBboxGeometry(symbolAttributes.screenGeometry)
+  const item = createItemFromBbox(bbox)
 
   item.attributes = symbolAttributes
   item.markType = 'Symbol'
@@ -21,8 +21,8 @@ export function indexSymbolLayer ({ layerAttributes, keyArray, layerId }) {
     const key = keyArray[i]
 
     const symbolAttributes = getSymbolAttributes(layerAttributes, key)
-    const bbox = calculateBBoxGeometry(symbolAttributes.screenGeometry)
-    const item = createItemFromBBox(bbox)
+    const bbox = calculateBboxGeometry(symbolAttributes.screenGeometry)
+    const item = createItemFromBbox(bbox)
 
     item.key = key
     item.index = i

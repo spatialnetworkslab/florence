@@ -1,11 +1,11 @@
-import { calculateBBoxGeometry } from '../../../../../utils/geometryUtils'
-import createItemFromBBox from '../../../utils/createItemFromBBox.js'
+import { calculateBboxGeometry } from '../../../../../utils/geometryUtils'
+import createItemFromBbox from '../../../utils/createItemFromBbox.js'
 
 export function indexPolygon (markData) {
   const polygonAttributes = markData.attributes
 
-  const bbox = calculateBBoxGeometry(polygonAttributes.screenGeometry)
-  const item = createItemFromBBox(bbox)
+  const bbox = calculateBboxGeometry(polygonAttributes.screenGeometry)
+  const item = createItemFromBbox(bbox)
 
   item.attributes = polygonAttributes
   item.markType = 'Polygon'
@@ -21,8 +21,8 @@ export function indexPolygonLayer ({ layerAttributes, keyArray, layerId }) {
     const key = keyArray[i]
 
     const polygonAttributes = getPolygonAttributes(layerAttributes, key)
-    const bbox = calculateBBoxGeometry(polygonAttributes.screenGeometry)
-    const item = createItemFromBBox(bbox)
+    const bbox = calculateBboxGeometry(polygonAttributes.screenGeometry)
+    const item = createItemFromBbox(bbox)
 
     item.key = key
     item.index = i

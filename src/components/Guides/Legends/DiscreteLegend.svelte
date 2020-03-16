@@ -1,7 +1,6 @@
 <script>
   import { Label, LabelLayer, RectangleLayer } from '../../../index.js'
   import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from './createLegendCoordinates.js'
-  import { removePadding } from '../../Core/utils/padding.js'
 
   // Contexts
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -73,7 +72,6 @@
 
   // transition
   export let transition = undefined
-  export let zoomIdentity = undefined
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -95,8 +93,6 @@
   let _padding
   let rangeCoordsX
   let rangeCoordsY
-  let xRange = $sectionContext.scaleX.range()
-  let yRange = $sectionContext.scaleY.range()
 
   let colorXStartCoords
   let colorXEndCoords
@@ -110,13 +106,12 @@
   let yCoords
   let addTitleSize
   
-  $: {
-    if (usePadding === true) {
-      _padding = $sectionContext.padding
-      xRange = removePadding(xRange, _padding.left, _padding.right)
-      yRange = removePadding(yRange, _padding.top, _padding.bottom)
-    }
-  }
+  $: bbox = usePadding === true
+    ? $sectionContext.bbox
+    : $sectionContext.paddedBbox
+
+  $: xRange = [bbox.minX, bbox.maxX]
+  $: yRange = [bbox.minY, bbox.maxY]
   
   // Section positioning wrt section/graphic context
   $: {
@@ -361,7 +356,6 @@
     {transition} 
     {stroke}
     {strokeWidth}
-    {zoomIdentity}
   />
 
   <LabelLayer
@@ -375,8 +369,7 @@
     fontWeight={labelFontWeight} 
     opacity={labelOpacity} 
     fill={labelColor}
-    {transition} 
-    {zoomIdentity}
+    {transition}
   />
 
   {#if title.length > 0}
@@ -391,8 +384,7 @@
       anchorPoint={titleAnchorPoint}
       opacity={titleOpacity} 
       fill={titleColor}
-      {transition} 
-      {zoomIdentity}
+      {transition}
     />
   {/if}
 </g>

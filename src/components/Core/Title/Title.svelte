@@ -1,7 +1,6 @@
 <script>
   import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
   import { isValid, createTitleXCoord, createTitleYCoord } from './utils.js'
-  import { removePadding } from '../utils/padding.js'
   
   // Contexts
   import * as SectionContext from '../Section/SectionContext'
@@ -52,36 +51,26 @@
   export let onMouseover = undefined
   export let onMouseout = undefined
 
-  // Other
-  export let zoomIdentity = undefined
-
   // Contexts
   const sectionContext = SectionContext.subscribe()
 
   // Private variables
-  let _padding
-  let xRange = $sectionContext.scaleX.range()
-  let yRange = $sectionContext.scaleY.range()
   let totalFontSize
 
-  $: {
-    if (usePadding === true) {
-      _padding = $sectionContext.padding
-      xRange = removePadding(xRange, _padding.left, _padding.right)
-      yRange = removePadding(yRange, _padding.top, _padding.bottom)
-    }
-  }
+  $: bbox = usePadding === true
+    ? $sectionContext.bbox
+    : $sectionContext.paddedBbox
+
+  $: xRange = [bbox.minX, bbox.maxX]
+  $: yRange = [bbox.minY, bbox.maxY]
 
   // Title text positioning wrt section/graphic context
   $: {
     totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize : titleFontSize
     // Autopositioning
     if (!isValid(x, y)) {
-      if (sectionContext.flipX) xRange.reverse()
-      x = createTitleXCoord(hjust, xRange, x, xOffset, totalFontSize, sectionContext.flipX, _padding)
-
-      if (sectionContext.flipY) yRange.reverse()
-      y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize, sectionContext.flipY, _padding)
+      x = createTitleXCoord(hjust, xRange, x, xOffset, totalFontSize)
+      y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize)
     } else {
       let _x, _y
       /** If function, uses pixel values based on padding/no padding setting
@@ -130,7 +119,7 @@
   text={title}
   fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {zoomIdentity} _asPolygon={false}
+  _asPolygon={false}
 />
 <!-- {/if} -->
 
@@ -146,6 +135,6 @@
   text={subtitle}
   fontFamily={subtitleFontFamily} fontSize={subtitleFontSize} fontWeight={subtitleFontWeight} rotation={subtitleRotation} anchorPoint={subtitleAnchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {zoomIdentity} _asPolygon={false}
+  _asPolygon={false}
 />
 <!-- {/if} -->

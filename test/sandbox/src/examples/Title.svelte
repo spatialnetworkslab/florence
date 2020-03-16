@@ -36,8 +36,8 @@
       usePadding={true}
       />
 
-    <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
-    <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
+    <XAxis />
+    <YAxis />
   
   </Section>
 
