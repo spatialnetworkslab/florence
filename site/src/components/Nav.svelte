@@ -13,7 +13,7 @@
 /* nav bars */
 
 .selected {
-  @apply relative border-b-2 border-red-600 no-underline;
+  @apply relative border-b-2 border-indigo-600 no-underline;
 }
 
 .top-nav {
@@ -30,7 +30,7 @@
 }
 
 .nav-a:hover {
-  @apply border-b-2 border-red-600;
+  @apply border-b-2 border-indigo-800;
 }
 
 @screen md {

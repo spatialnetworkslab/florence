@@ -119,11 +119,14 @@ Legends may be positioned and their sizes set using the following combinations:
 Changing from a discrete to a gradient legend is as simple as changing the component name. The positioning and aesthetic
 property names for both are the same.
 
-```js exec
+<!-- ```js exec
 import SimpleLegends from './utils/_SimpleLegends.svelte'
 ```
 
-<SimpleLegends/>
+<SimpleLegends/> -->
+
+::: codesandboxplus ./src/routes/docs/guides/utils/_SimpleLegends.svelte 5-10
+:::
 
 ### Using `fillOpacity`
 
@@ -135,6 +138,9 @@ import FillOpacity from './utils/_FillOpacity.svelte'
 
 <FillOpacity/>
 
+<!-- ::: codesandboxplus ./src/routes/docs/guides/utils/_FillOpacity.svelte 5-10
+::: -->
+
 ### Setting legends to bin values
 
 Legend components can also accommodate binned values (as an `Array` or `Function`) and their corresponding positioning. 
@@ -145,6 +151,8 @@ import Bins from './utils/_Bins.svelte'
 
 <Bins/>
 
+<!-- ::: codesandboxplus ./src/routes/docs/guides/utils/_Bins.svelte 5-10
+::: -->
 
 ### Positioning 
 
@@ -158,6 +166,8 @@ import Positioning from './utils/_Positioning.svelte'
 
 <Positioning/>
 
+<!-- ::: codesandboxplus ./src/routes/docs/guides/utils/_Positioning.svelte 5-10
+::: -->
 
 ### Using `Section`/`Graphic` padding as part of the positioning canvas
 
@@ -166,6 +176,9 @@ Setting `usePadding` to `true` allows the legend components to include either th
 ```js exec
 import UsePadding from './utils/_UsePadding.svelte'
 ```
+<!-- 
+::: codesandboxplus ./src/routes/docs/guides/utils/_UsePadding.svelte 5-10
+::: -->
 
 As above, the positioning according to `vjust`, `hjust` persists (even when `usePadding = true`) when Section/Graphic is set to `flipX = true` and/or `flipY = true`.
 
@@ -181,3 +194,6 @@ import CategoricalScales from './utils/_CategoricalScales.svelte'
 ```
 
 <CategoricalScales/>
+<!-- 
+::: codesandboxplus ./src/routes/docs/guides/utils/_CategoricalScales.svelte 5-10
+::: -->

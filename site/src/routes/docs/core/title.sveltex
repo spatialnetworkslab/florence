@@ -72,11 +72,14 @@ The `Title` component is used to create a plot title and has smart defaults for 
 ## Examples
 This example shows how to position and customize the title (and subtitle).
 
-```js exec
+<!-- ```js exec
 import Title from './utils/_Title.svelte'
 ```
 
-<Title />
+<Title /> -->
+
+::: codesandboxplus ./src/routes/docs/core/utils/_Title.svelte 5-10
+:::
 
 The property `usePadding` can be switched to `true` (its default setting is `false`) to make use of the space set for 
 padding for both `Section` and `Graphic`.
