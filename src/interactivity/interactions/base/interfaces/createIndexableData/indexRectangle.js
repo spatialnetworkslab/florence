@@ -1,11 +1,11 @@
-import { calculateBBoxGeometry } from '../../../../../utils/geometryUtils'
-import createItemFromBBox from '../../../utils/createItemFromBBox.js'
+import { calculateBboxGeometry } from '../../../../../utils/geometryUtils'
+import createItemFromBbox from '../../../utils/createItemFromBbox.js'
 
 export function indexRectangle (markData) {
   const rectangleAttributes = markData.attributes
 
-  const bbox = calculateBBoxGeometry(rectangleAttributes.screenGeometry)
-  const item = createItemFromBBox(bbox)
+  const bbox = calculateBboxGeometry(rectangleAttributes.screenGeometry)
+  const item = createItemFromBbox(bbox)
 
   item.attributes = rectangleAttributes
   item.markType = 'Rectangle'
@@ -21,8 +21,8 @@ export function indexRectangleLayer ({ layerAttributes, keyArray, layerId }) {
     const key = keyArray[i]
 
     const rectangleAttributes = getRectangleAttributes(layerAttributes, key)
-    const bbox = calculateBBoxGeometry(rectangleAttributes.screenGeometry)
-    const item = createItemFromBBox(bbox)
+    const bbox = calculateBboxGeometry(rectangleAttributes.screenGeometry)
+    const item = createItemFromBbox(bbox)
 
     item.key = key
     item.index = i

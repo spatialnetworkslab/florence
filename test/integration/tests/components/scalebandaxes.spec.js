@@ -7,13 +7,13 @@ context('Assertions', () => {
 
   describe('Axes Tests', () => {
     it('[render] tick marks are centred', () => {
-      cy.get('g.x-axis > .line-layer > .line').eq(0).invoke('attr', 'd').should('be.equal', 'M151.73913043478257,475.5L151.73913043478257,481.5')
-      cy.get('g.x-axis > .line-layer > .line').eq(1).invoke('attr', 'd').should('be.equal', 'M348.26086956521743,475.5L348.26086956521743,481.5')
-    }) 
+      cy.get('g.x-axis > .line-layer > .line').eq(0).invoke('attr', 'd').should('be.equal', 'M151.74,475.55L151.74,480.97')
+      cy.get('g.x-axis > .line-layer > .line').eq(1).invoke('attr', 'd').should('be.equal', 'M348.26,475.55L348.26,480.97')
+    })
 
     it('[render] tick labels are centred', () => {
-      cy.get('g.x-axis > .label-layer > .label').eq(0).invoke('attr', 'x').should('be.equal', '151.73913043478257')
-      cy.get('g.x-axis > .label-layer > .label').eq(1).invoke('attr', 'x').should('be.equal', '348.26086956521743')
+      cy.get('g.x-axis > .label-layer > .label').eq(0).invoke('attr', 'x').should('be.equal', '151.73913043478262')
+      cy.get('g.x-axis > .label-layer > .label').eq(1).invoke('attr', 'x').should('be.equal', '348.2608695652174')
     })
 
     it('[interaction] mousing down and up over rectangle changes stroke and stroke-width', () => {

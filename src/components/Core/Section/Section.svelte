@@ -6,17 +6,14 @@
 </script>
 
 <script>
-  import { beforeUpdate } from 'svelte'
   import detectIt from 'detect-it'
   import * as SectionContext from './SectionContext'
-  import * as CoordinateTransformationContext from './CoordinateTransformationContext'
   import * as EventManagerContext from '../Graphic/EventManagerContext'
   import * as InteractionManagerContext from './InteractionManagerContext'
-  import * as ZoomContext from './ZoomContext'
 
   import InteractionManager from '../../../interactivity/interactions/InteractionManager'
-  import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
-  import { parsePadding, applyPadding } from '../utils/padding.js'
+  import { getPixelCoordinates } from './getPixelCoordinates.js'
+  import { getClipPropsNoPadding, getClipPropsPadding } from './getClipProps.js'
 
   const sectionId = getId()
 
@@ -58,16 +55,9 @@
   // Contexts
   const sectionContext = SectionContext.subscribe()
   const newSectionContext = SectionContext.init()
-  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
-  const newCoordinateTransformationContext = CoordinateTransformationContext.init()
   const eventManagerContext = EventManagerContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.init()
-  const zoomContext = ZoomContext.init()
-
-  let scaledCoordinates
-  let rangeX
-  let rangeY
-
+  
   // Set up InteractionManager
   const interactionManager = new InteractionManager()
   interactionManager.setId(sectionId)
@@ -77,46 +67,29 @@
     interactionManager
   )
 
-  // Keep SectionContext and CoordinateTransformationContext up to date
-  let _padding
+  // Keep SectionContext and InteractionManagerContext up to date
+  $: coordinates = getPixelCoordinates({ x1, x2, y1, y2 }, $sectionContext)
 
   $: {
-    scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-    rangeX = [scaledCoordinates.x1, scaledCoordinates.x2]
-    rangeY = [scaledCoordinates.y1, scaledCoordinates.y2]
-
-    if (flipX) rangeX.reverse()
-    if (flipY) rangeY.reverse()
-
-    _padding = parsePadding(padding)
-    rangeX = applyPadding(rangeX, _padding.left, _padding.right)
-    rangeY = applyPadding(rangeY, _padding.top, _padding.bottom)
-
-    const updatedSectionContext = {
+    const sectionData = {
       sectionId,
-      rangeX,
-      rangeY,
+      coordinates,
       scaleX,
       scaleY,
-      padding: _padding,
+      padding,
       flipX,
       flipY,
-      blockReindexing
+      blockReindexing,
+      transformation,
+      zoomIdentity
     }
 
-    SectionContext.update(newSectionContext, updatedSectionContext)
-
-    CoordinateTransformationContext.update(newCoordinateTransformationContext, {
-      rangeX,
-      rangeY,
-      transformation
-    })
-
+    SectionContext.update(newSectionContext, sectionData)
     $interactionManagerContext.loadSection($newSectionContext)
-    $interactionManagerContext.loadCoordinateTransformation(
-      $newCoordinateTransformationContext
-    )
   }
+
+  $: clipPropsNoPadding = getClipPropsNoPadding(coordinates)
+  $: clipPropsPadding = getClipPropsPadding(coordinates, padding)
 
   // Change callbacks if necessary
   $: {
@@ -135,18 +108,6 @@
       onPinch
     )
   }
-
-  // Update zooming and panning
-  $: {
-    ZoomContext.update(zoomContext, zoomIdentity)
-    $interactionManagerContext.loadZoom($zoomContext)
-  }
-
-  beforeUpdate(() => {
-    CoordinateTransformationContext.ensureNotParent(
-      $coordinateTransformationContext
-    )
-  })
 
   function removeSectionInteractionsIfNecessary () {
     if (detectIt.hasMouse) {
@@ -211,39 +172,30 @@
 
 <defs>
   <clipPath id={`clip-${sectionId}`}>
-    <rect
-      x={Math.min(scaledCoordinates.x1, scaledCoordinates.x2)}
-      y={Math.min(scaledCoordinates.y1, scaledCoordinates.y2)}
-      width={Math.abs(scaledCoordinates.x2 - scaledCoordinates.x1)}
-      height={Math.abs(scaledCoordinates.y2 - scaledCoordinates.y1)} />
+    <rect {...clipPropsNoPadding} />
   </clipPath>
+
   <clipPath id={`clip-${sectionId}-data`}>
-    <rect
-      x={Math.min(...rangeX)}
-      y={Math.min(...rangeY)}
-      width={Math.abs(rangeX[0] - rangeX[1])}
-      height={Math.abs(rangeY[0] - rangeY[1])}
-      fill="white" />
+    <rect {...clipPropsPadding} fill="white" />
   </clipPath>
 </defs>
 
-<g class="section" clip-path={`url(#clip-${sectionId})`}>
+<g class="section" clip-path={`url(#clip-${sectionId})`} >
+  {#if backgroundColor}
+    <rect 
+      class="content-background"
+      {...clipPropsNoPadding}
+      fill={backgroundColor}
+    />
+  {/if}
+
   {#if paddingColor}
-    <rect
+    <rect 
       class="padding-background"
       mask={`url(#clip-${sectionId}-data)`}
       width="100%"
       height="100%"
       fill={paddingColor} />
-  {/if}
-  {#if backgroundColor}
-    <rect
-      class="content-background"
-      x={Math.min(...rangeX)}
-      y={Math.min(...rangeY)}
-      width={Math.abs(rangeX[0] - rangeX[1])}
-      height={Math.abs(rangeY[0] - rangeY[1])}
-      fill={backgroundColor} />
   {/if}
   <slot />
 </g>

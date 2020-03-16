@@ -1,24 +1,27 @@
-import { createCoordSysGeometry } from '../utils/createCoordSysGeometry.js'
-import { isInvalid, isUndefined, isDefined } from '../../../utils/equals.js'
+import { createPixelGeometryFromGeometry } from '../utils/createPixelGeometryFromGeometry.js'
+import { isDefined, isUndefined, isInvalid } from '../../../utils/equals.js'
 
-export default function (coordinateProps, sectionContext, coordinateTransformationContext, interpolate) {
-  const scaledCoordinates = scaleCoordinates(coordinateProps, sectionContext)
+export default function createPixelGeometry (
+  geometryProps,
+  sectionContext,
+  renderSettings
+) {
+  const scaledCoordinates = scaleCoordinates(geometryProps, sectionContext)
   const scaledGeometry = createScaledGeometry(scaledCoordinates)
 
-  const coordSysGeometry = createCoordSysGeometry(
+  return createPixelGeometryFromGeometry(
     scaledGeometry,
-    coordinateTransformationContext,
-    interpolate
+    sectionContext,
+    renderSettings,
+    false
   )
-
-  return coordSysGeometry
 }
 
-export function scaleCoordinates (coordinateProps, sectionContext) {
-  ensureValidCombination(coordinateProps)
-  validateTypes(coordinateProps)
+export function scaleCoordinates (geometryProps, sectionContext) {
+  ensureValidCombination(geometryProps)
+  validateTypes(geometryProps)
 
-  const { x1, x2, y1, y2 } = coordinateProps
+  const { x1, x2, y1, y2 } = geometryProps
 
   const scaledCoordinates = {}
 
@@ -26,16 +29,16 @@ export function scaleCoordinates (coordinateProps, sectionContext) {
     scaledCoordinates.x1 = scaleCoordinate(x1, 'x1', sectionContext)
     scaledCoordinates.x2 = scaleCoordinate(x2, 'x2', sectionContext)
   } else {
-    scaledCoordinates.x1 = sectionContext.minX
-    scaledCoordinates.x2 = sectionContext.maxX
+    scaledCoordinates.x1 = sectionContext.bbox.minX
+    scaledCoordinates.x2 = sectionContext.bbox.maxX
   }
 
   if (wereSpecified(y1, y2)) {
     scaledCoordinates.y1 = scaleCoordinate(y1, 'y1', sectionContext)
     scaledCoordinates.y2 = scaleCoordinate(y2, 'y2', sectionContext)
   } else {
-    scaledCoordinates.y1 = sectionContext.minY
-    scaledCoordinates.y2 = sectionContext.maxY
+    scaledCoordinates.y1 = sectionContext.bbox.minY
+    scaledCoordinates.y2 = sectionContext.bbox.maxY
   }
 
   return scaledCoordinates
@@ -59,9 +62,9 @@ function onlyOne (a, b) {
 
 const invalidCoordinateValueError = (value, name) => new Error(`Rectangle: invalid coordinate value for '${name}': ${s(value)}`)
 
-function validateTypes (coordinates) {
-  for (const coordinateName in coordinates) {
-    const coordinate = coordinates[coordinateName]
+function validateTypes (geometryProps) {
+  for (const coordinateName in geometryProps) {
+    const coordinate = geometryProps[coordinateName]
 
     if (isDefined(coordinate)) {
       if (isInvalid(coordinate)) throw invalidCoordinateValueError(coordinate, coordinateName)

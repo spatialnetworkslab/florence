@@ -1,8 +1,12 @@
-import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
-import { validateProps, augmentProps, scaleCoordinates, createScaledGeometry } from './createCoordSysGeometry.js'
-import getKeyArray from '../utils/getKeyArray.js'
+import { createPixelGeometryObjectFromGeometry } from '../utils/createPixelGeometryFromGeometry.js'
+import { validateProps, augmentProps, scaleCoordinates, createScaledGeometry } from './createPixelGeometry.js'
 
-export default function (positioningProps, sectionContext, coordinateTransformationContext, keyProp, interpolate) {
+export default function createPixelGeometryObject (
+  geometryProps,
+  keyProp,
+  sectionContext,
+  renderSettings
+) {
   // filter for allowed props; leave any undefined props in place
   const allowedProps =
     (({
@@ -11,7 +15,7 @@ export default function (positioningProps, sectionContext, coordinateTransformat
       x2 = undefined,
       y2 = undefined,
       independentAxis = undefined
-    }) => ({ x1, y1, x2, y2, independentAxis }))(positioningProps)
+    }) => ({ x1, y1, x2, y2, independentAxis }))(geometryProps)
 
   const { numAreas, independentAxis, ...augmentedAreas } =
     augmentAreas(
@@ -46,15 +50,13 @@ export default function (positioningProps, sectionContext, coordinateTransformat
         sectionContext))
   })
 
-  const keyArray = getKeyArray(keyProp, numAreas)
-
-  const coordSysGeometryObject =
-    createCoordSysGeometryObject(
-      scaledGeometryArray,
-      coordinateTransformationContext,
-      keyArray,
-      interpolate)
-  return coordSysGeometryObject
+  return createPixelGeometryObjectFromGeometry(
+    scaledGeometryArray,
+    keyProp,
+    sectionContext,
+    renderSettings,
+    false
+  )
 }
 
 function normalizeAreas ({ independentAxis, ...coordinateProps }, sectionContext) {

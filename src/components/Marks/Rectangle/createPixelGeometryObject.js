@@ -1,20 +1,24 @@
-import { createCoordSysGeometryObject } from '../utils/createCoordSysGeometry.js'
-import { createScaledGeometry, ensureValidCombination } from './createCoordSysGeometry.js'
+import { createPixelGeometryObjectFromGeometry } from '../utils/createPixelGeometryFromGeometry.js'
+import { createScaledGeometry, ensureValidCombination } from './createPixelGeometry.js'
 import generateArrayOfLength from '../utils/generateArrayOfLength.js'
-import getKeyArray from '../utils/getKeyArray.js'
 import { isDefined, isUndefined } from '../../../utils/equals.js'
 
-export default function (
-  coordinateProps, sectionContext, coordinateTransformationContext, keyProp, interpolate
+export default function createPixelGeometryObject (
+  geometryProps,
+  keyProp,
+  sectionContext,
+  renderSettings
 ) {
-  const { scaledCoordinates, length } = scaleCoordinates(coordinateProps, sectionContext)
-  const keyArray = getKeyArray(keyProp, length)
+  const { scaledCoordinates, length } = scaleCoordinates(geometryProps, sectionContext)
   const scaledGeometryArray = createScaledGeometryArray(scaledCoordinates, length)
-  const coordSysGeometryObject = createCoordSysGeometryObject(
-    scaledGeometryArray, coordinateTransformationContext, keyArray, interpolate
-  )
 
-  return coordSysGeometryObject
+  return createPixelGeometryObjectFromGeometry(
+    scaledGeometryArray,
+    keyProp,
+    sectionContext,
+    renderSettings,
+    false
+  )
 }
 
 function scaleCoordinates (coordinateProps, sectionContext) {
@@ -69,7 +73,7 @@ function getMissingCoordinatesFromContext (coordinates, sectionContext) {
 const coordMap = { x1: 'minX', x2: 'maxX', y1: 'minY', y2: 'maxY' }
 
 function getMissingCoordinateFromContext (coordinateName, sectionContext) {
-  return sectionContext[coordMap[coordinateName]]
+  return sectionContext.paddedBbox[coordMap[coordinateName]]
 }
 
 function getCoordinateValues (nonMissingCoordinates, sectionContext) {

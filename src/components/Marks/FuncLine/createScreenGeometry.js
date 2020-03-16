@@ -1,28 +1,29 @@
 import { interpolate } from 'd3-interpolate'
-import { transformGeometry, interpolateGeometry } from '../../../utils/geometryUtils'
+import { transformGeometry } from '../../../utils/geometryUtils'
 import { isDefined, isUndefined } from '../../../utils/equals.js'
-import { warn } from '../../../utils/logging.js'
 
-export default function createScreenGeometry ({ func, x }, sectionContext, coordinateTransformationContext, zoomContext) {
+export default function createScreenGeometry (
+  { func, x },
+  sectionContext,
+  renderSettings
+) {
   ensureValidInput(func, x)
 
-  const dataPoints = generateDataPoints(func, x, sectionContext)
+  const dataPoints = generateDataPoints(
+    func,
+    x,
+    sectionContext,
+    renderSettings.interpolationTreshold
+  )
+
   const geometry = {
     type: 'LineString',
     coordinates: dataPoints
   }
 
-  const totalTransformation = createTotalTransformation(sectionContext, coordinateTransformationContext, zoomContext)
+  const totalTransformation = sectionContext.getTotalTransformation()
 
-  if (geometryCompletelyOffScreen(geometry, totalTransformation, sectionContext)) {
-    warn('FuncLine was completely out of Section window. Please check your Section scales and FuncLine props.')
-    return {
-      type: 'LineString',
-      coordinates: [[0, 0], [0, 1]]
-    }
-  }
-
-  return interpolateGeometry(geometry, totalTransformation)
+  return transformGeometry(geometry, totalTransformation, renderSettings)
 }
 
 function ensureValidInput (func, x) {
@@ -33,12 +34,16 @@ function ensureValidInput (func, x) {
     }
   }
 
-  throw new Error('FuncLine: invalid positioning props')
+  throw new Error('FuncLine: invalid geometry props')
 }
 
-function generateDataPoints (func, x, sectionContext) {
+function generateDataPoints (func, x, sectionContext, interpolationTreshold) {
   const domainX = x || getDomainX(sectionContext)
-  return interpolatePointsFromFunc(func, domainX)
+
+  const finalRangeX = sectionContext.finalRangeX
+  const resolution = Math.abs(finalRangeX[0] - finalRangeX[1]) / interpolationTreshold
+
+  return interpolatePointsFromFunc(func, domainX, resolution)
 }
 
 function getDomainX (sectionContext) {
@@ -59,13 +64,13 @@ function isValidScale (scale) {
       return true
     }
 
-    throw new Error('FuncLine can only be used with functions that have numeric domains')
+    throw new Error('FuncLine can only be used with a scaleX that has a numeric domain')
   } else {
     return false
   }
 }
 
-function interpolatePointsFromFunc (func, domainX, resolution = 100) {
+function interpolatePointsFromFunc (func, domainX, resolution) {
   const points = []
 
   const interpolator = interpolate(...domainX)
@@ -82,52 +87,4 @@ function interpolatePointsFromFunc (func, domainX, resolution = 100) {
   }
 
   return points
-}
-
-function createTotalTransformation (sectionContext, coordinateTransformationContext, zoomContext) {
-  const { scaleX, scaleY } = sectionContext
-
-  const sectionTransformation = ([x, y]) => ([scaleX(x), scaleY(y)])
-  const coordinateTransformation = createCoordinateTransformation(coordinateTransformationContext)
-  const zoomTransformation = createZoomTransformation(zoomContext)
-
-  const totalTransformation = position => zoomTransformation(
-    coordinateTransformation(
-      sectionTransformation(position)
-    )
-  )
-
-  return totalTransformation
-}
-
-function createCoordinateTransformation (coordinateTransformationContext) {
-  if (coordinateTransformationContext) {
-    return coordinateTransformationContext.transform.bind(coordinateTransformationContext)
-  } else {
-    return position => position
-  }
-}
-
-function createZoomTransformation (zoomContext) {
-  if (zoomContext) {
-    return zoomContext
-  } else {
-    return position => position
-  }
-}
-
-function geometryCompletelyOffScreen (geometry, totalTransformation, sectionContext) {
-  const transformedGeometry = transformGeometry(geometry, totalTransformation)
-
-  for (let i = 0; i < transformedGeometry.coordinates.length; i++) {
-    const point = transformedGeometry.coordinates[i]
-    if (pointIsInRange(point, sectionContext)) return false
-  }
-
-  return true
-}
-
-function pointIsInRange (point, s) {
-  return point[0] >= s.minX && point[0] <= s.maxX &&
-    point[1] >= s.minY && point[1] <= s.maxY
 }

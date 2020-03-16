@@ -1,7 +1,6 @@
 <script>
   import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
   import { isValid, createTitleXCoord, createTitleYCoord } from './utils.js'
-  import { removePadding } from '../utils/padding.js'
   
   // Contexts
   import * as SectionContext from '../Section/SectionContext'
@@ -52,9 +51,6 @@
   export let onClick = undefined
   export let onMouseover = undefined
   export let onMouseout = undefined
-
-  // Other
-  export let zoomIdentity = undefined
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -173,6 +169,6 @@
   text={subtitle}
   fontFamily={subtitleFontFamily} fontSize={subtitleFontSize} fontWeight={subtitleFontWeight} rotation={subtitleRotation} anchorPoint={subtitleAnchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
-  {zoomIdentity} _asPolygon={false}
+  _asPolygon={false}
 />
 <!-- {/if} -->

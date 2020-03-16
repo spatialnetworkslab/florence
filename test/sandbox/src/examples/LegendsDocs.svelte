@@ -55,7 +55,7 @@
     />
 
     <!-- usePadding = true -->
-    <DiscreteLegend
+    <!-- <DiscreteLegend
       title={'Discrete'}
       vjust={'top'}
       hjust={'center'}
@@ -63,7 +63,7 @@
       fill={linearColorScale}
       labelCount={5}
       usePadding={true}
-    />
+    /> -->
     
     <XAxis />
     <YAxis />
