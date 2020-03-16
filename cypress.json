@@ -9,7 +9,8 @@
     ],
     "env": {
         "cypress-plugin-snapshots": {
-          "normalizeJson": true
+          "normalizeJson": true,
+          "prettier": true
         }
       }
 }

@@ -37,5 +37,5 @@ workflows:
     jobs:
       # - unit_test # running unit tests from cypress workspace to save time
       - cypress/run:
-          command: npm run test:unit && npm run test:integration
+          command: npm run test:unit && npm run test:ci
 
