@@ -6,8 +6,9 @@
 </script>
 
 <script>
-  import { Label, LabelLayer, Rectangle } from '../../../index.js'
+  import { Label, LabelLayer, Rectangle, Section } from '../../../index.js'
   import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from './createLegendCoordinates.js'
+  import { removePadding } from '../../Core/utils/padding.js'
 
   // Contexts
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -65,10 +66,10 @@
 
   // legend title
   export let titleHjust = 'center'
-  export let titleXOffset = 0
+  export let titleOffsetX = 0
   export let titleX = undefined
   export let titleVjust = 'top'
-  export let titleYOffset = 0
+  export let titleOffsetY = 0
   export let titleY = undefined
   export let title = 'Legend'
   export let titleColor = 'black'
@@ -78,8 +79,8 @@
   export let titleOpacity = 1
   export let titleRotation = 0
   export let titleAnchorPoint = 't'
-  export let titlePaddingX = 0
-  export let titlePaddingY = -3
+  // export let titlePaddingX = 0
+  // export let titlePaddingY = 0
 
   // transition
   export let transition = undefined
@@ -102,6 +103,8 @@
   let _padding
   let rangeCoordsX
   let rangeCoordsY
+  let xRange = $sectionContext.scaleX.range()
+  let yRange = $sectionContext.scaleY.range()
 
   let colorGeoms
   let offsets
@@ -211,7 +214,7 @@
     if (title.length > 0) {
       // if titleX is not a function or a data scale value
       if (!titleX && titleX !== 0) {
-        titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, addTitleSize, labelFontSize, orient, titlePaddingX)
+        titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleOffsetX, addTitleSize, labelFontSize, orient)
       } else {
         // if titleX is a function/data scale value
         if ({}.toString.call(titleX) === '[object Function]') {
@@ -223,7 +226,7 @@
   
       // if titleY is not a function or a data scale value
       if (!titleY && titleY !== 0) {
-        titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, labelFontSize, orient, titlePaddingY)
+        titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleOffsetY, addTitleSize, labelFontSize, orient)
       } else {
         // if titleY is a function/data scale value
         if ({}.toString.call(titleY) === '[object Function]') {
@@ -288,7 +291,6 @@
       tickLabelYCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, yCoords, flip, orient, labelPaddingY, useScale)
       tickLabelXCoords = flipLabels ? x1 + colorBarHeight * xCoords.width : x1 + (1 - colorBarHeight) * xCoords.width
       tickLabelXCoords = labelX || tickLabelXCoords
-  
       if (labelPaddingX !== undefined) {
         tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPaddingX : tickLabelXCoords - labelPaddingX
       }

@@ -1,6 +1,7 @@
 <script>
   import { Label, LabelLayer, RectangleLayer } from '../../../index.js'
   import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from './createLegendCoordinates.js'
+  import { removePadding } from '../../Core/utils/padding.js'
 
   // Contexts
   import * as SectionContext from '../../Core/Section/SectionContext'
@@ -73,6 +74,7 @@
 
   // transition
   export let transition = undefined
+  export let zoomIdentity = undefined
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -95,6 +97,8 @@
   let _padding
   let rangeCoordsX
   let rangeCoordsY
+  let xRange = $sectionContext.scaleX.range()
+  let yRange = $sectionContext.scaleY.range()
 
   let colorXStartCoords
   let colorXEndCoords
@@ -381,6 +385,7 @@
     {transition} 
     {stroke}
     {strokeWidth}
+    {zoomIdentity}
   />
 
   <LabelLayer
@@ -394,7 +399,8 @@
     fontWeight={labelFontWeight} 
     opacity={labelOpacity} 
     fill={labelColor}
-    {transition}
+    {transition} 
+    {zoomIdentity}
   />
 
   {#if title.length > 0}
@@ -409,7 +415,8 @@
       anchorPoint={titleAnchorPoint}
       opacity={titleOpacity} 
       fill={titleColor}
-      {transition}
+      {transition} 
+      {zoomIdentity}
     />
   {/if}
 </g>

@@ -127,17 +127,17 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
     // x coords
     colorXStartCoords = tickLabelText.map(i => {
       if (flipLabels) {
-        return tickAlign - labelFontSize - colorBarWidth * xCoords.width
+        return tickAlign - labelFontSize * 2 - colorBarWidth * xCoords.width
       } else {
-        return tickAlign + labelFontSize
+        return tickAlign + labelFontSize * 2
       }
     })
 
     colorXEndCoords = tickLabelText.map((value, i) => {
       if (flipLabels) {
-        return tickAlign - labelFontSize
+        return tickAlign - labelFontSize * 2
       } else {
-        return tickAlign + labelFontSize + colorBarWidth * xCoords.width
+        return tickAlign + labelFontSize * 2 + colorBarWidth * xCoords.width
       }
     })
 
@@ -175,17 +175,17 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
 
     colorYStartCoords = tickLabelText.map(i => {
       if (flipLabels) {
-        return tickAlign + labelFontSize
+        return tickAlign + labelFontSize * 2
       } else {
-        return tickAlign - labelFontSize
+        return tickAlign - labelFontSize * 2
       }
     })
 
     colorYEndCoords = tickLabelText.map((value, i) => {
       if (flipLabels) {
-        return tickAlign + labelFontSize + colorBarHeight * yCoords.height
+        return tickAlign + labelFontSize * 2 + colorBarHeight * yCoords.height
       } else {
-        return tickAlign - labelFontSize - colorBarHeight * yCoords.height
+        return tickAlign - labelFontSize * 2 - colorBarHeight * yCoords.height
       }
     })
 
@@ -256,11 +256,11 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
 
     // Color bar dimensions
     if (flipLabels) {
-      x1 = tickAlign - labelFontSize - colorBarWidth * xCoords.width
-      x2 = tickAlign - labelFontSize
+      x1 = tickAlign - labelFontSize * 2 - colorBarWidth * xCoords.width
+      x2 = tickAlign - labelFontSize * 2
     } else {
-      x1 = tickAlign + labelFontSize
-      x2 = tickAlign + labelFontSize + colorBarWidth * xCoords.width
+      x1 = tickAlign + labelFontSize * 2
+      x2 = tickAlign + labelFontSize * 2 + colorBarWidth * xCoords.width
     }
   } else if (orient === 'horizontal') {
     gradX = flip ? { x1: '100%', x2: '0%' } : { x1: '0%', x2: '100%' }
@@ -270,11 +270,11 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
 
     // Color bar dimensions
     if (flipLabels) {
-      y1 = tickAlign + labelFontSize
-      y2 = tickAlign + colorBarHeight * yCoords.height + labelFontSize
+      y1 = tickAlign + labelFontSize * 2
+      y2 = tickAlign + colorBarHeight * yCoords.height + labelFontSize * 2
     } else {
-      y1 = tickAlign - colorBarHeight * yCoords.height - labelFontSize
-      y2 = tickAlign - labelFontSize
+      y1 = tickAlign - colorBarHeight * yCoords.height - labelFontSize * 2
+      y2 = tickAlign - labelFontSize * 2
     }
   }
 
