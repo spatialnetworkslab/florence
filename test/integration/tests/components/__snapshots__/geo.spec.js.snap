@@ -2,7 +2,7 @@ exports[`Assertions > Geo Tests > [render] geo polygons correctly #0`] = `
 <svg width="500" height="500">
   <defs>
     <mask id="mask-sc0-padding-bg">
-      <rect width="100%" height="100%" fill="white"></rect>
+      <rect x="0" y="0" width="500" height="500" fill="white"></rect>
       <rect x="0" y="0" width="500" height="500" fill="black"></rect>
     </mask>
     <clipPath id="clip-sc0-data">

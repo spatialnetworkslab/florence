@@ -2,7 +2,7 @@ exports[`Assertions > Label Mark Tests > [render] labels snapshot correctly #0`]
 <svg width="500" height="500">
   <defs>
     <mask id="mask-sc0-padding-bg">
-      <rect width="100%" height="100%" fill="white"></rect>
+      <rect x="50" y="50" width="400" height="400" fill="white"></rect>
       <rect x="50" y="50" width="400" height="400" fill="black"></rect>
     </mask>
     <clipPath id="clip-sc0-data">

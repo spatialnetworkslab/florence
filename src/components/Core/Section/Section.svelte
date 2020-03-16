@@ -212,8 +212,10 @@
 <defs>
   <mask id={`mask-${sectionId}-padding-bg`}>
     <rect
-      width="100%"
-      height="100%"
+      x={Math.min(scaledCoordinates.x1, scaledCoordinates.x2)}
+      y={Math.min(scaledCoordinates.y1, scaledCoordinates.y2)}
+      width={Math.abs(scaledCoordinates.x2 - scaledCoordinates.x1)}
+      height={Math.abs(scaledCoordinates.y2 - scaledCoordinates.y1)}
       fill="white" />
     <rect
       x={Math.min(...rangeX)}

@@ -75,7 +75,7 @@
   let highlightLine
 </script>
 
-<Graphic width={500} height={500}>
+<Graphic width={500} height={500} padding={30}>
 
   <Section
     bind:this={section}

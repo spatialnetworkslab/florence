@@ -79,11 +79,10 @@
   let highlightLine
 </script>
 
-<Graphic width={500} height={500}>
+<Graphic width={500} height={500} padding={30}>
 
   <Section
     bind:this={section}
-    padding={30}
     scaleX={scaleLinear().domain([0, 10])}
     scaleY={scaleLinear().domain([0, 10])}
     {onMousedown}
