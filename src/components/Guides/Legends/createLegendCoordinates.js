@@ -138,11 +138,11 @@ export function createTitleYCoord (vjust, yCoords, y, offset, addTitleSize, flip
   }
   if (vjust === 'bottom') {
     justification = 1
-    addFontSize = addTitleSize
+    addFontSize = addTitleSize * 1.5
   }
   if (vjust === 'top') {
     justification = 0
-    addFontSize = -addTitleSize
+    addFontSize = -addTitleSize * 1.5
   }
 
   if (!isNaN(vjust)) {

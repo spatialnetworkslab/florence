@@ -59,7 +59,7 @@
   export let titleXOffset = 0
   export let titleX = undefined
   export let titleVjust = 'top'
-  export let titleYOffset = 0
+  export let titleYOffset = -3
   export let titleY = undefined
   export let title = 'Legend'
   export let titleColor = 'black'
@@ -69,8 +69,6 @@
   export let titleOpacity = 1
   export let titleRotation = 0
   export let titleAnchorPoint = 't'
-  export let titlePaddingX = 0
-  export let titlePaddingY = -3
 
   // transition
   export let transition = undefined
@@ -208,7 +206,7 @@
     if (title.length > 0) {
       // if titleX is not a function or a data scale value
       if (!titleX && titleX !== 0) {
-        titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, addTitleSize, labelFontSize, orient, titlePaddingX)
+        titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, addTitleSize, _flipX)
       } else {
         // if titleX is a function/data scale value
         if ({}.toString.call(titleX) === '[object Function]') {
@@ -220,7 +218,7 @@
   
       // if titleY is not a function or a data scale value
       if (!titleY && titleY !== 0) {
-        titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, labelFontSize, orient, titlePaddingY)
+        titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, _flipY)
       } else {
         // if titleY is a function/data scale value
         if ({}.toString.call(titleY) === '[object Function]') {
@@ -280,7 +278,7 @@
     }
 
     if (orient === 'vertical') {
-      tickLabelYCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, yCoords, flip, orient, labelPaddingY, useScale)
+      tickLabelYCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, yCoords, flip, orient, labelPaddingY, useScale, _flipY)
       tickLabelXCoords = flipLabels ? x1 + colorBarHeight * xCoords.width : x1 + (1 - colorBarHeight) * xCoords.width
       tickLabelXCoords = labelX || tickLabelXCoords
 
@@ -290,7 +288,7 @@
 
       format = getFormat(labelFormat, scaleDomain, tickLabelYCoords.length)
     } else if (orient === 'horizontal') {
-      tickLabelXCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, xCoords, flip, orient, labelPaddingX, useScale)
+      tickLabelXCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, xCoords, flip, orient, labelPaddingX, useScale, _flipX)
       tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * yCoords.height : yCoords.y2 - colorBarWidth * yCoords.height
       tickLabelYCoords = labelY || tickLabelYCoords
   
@@ -323,9 +321,11 @@
         } else {
           tickLabelPositions = tickLabelXCoords
           tickAlign = tickLabelYCoords - labelPaddingY
-        }
+        } 
+
+        const flipScale = orient === 'horizontal' ? _flipX : _flipY
   
-        colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale)
+        colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale, flipScale)
         if (!tickOpacities) {
           tickOpacities = 1
         }
@@ -354,7 +354,9 @@
           tickAlign = tickLabelYCoords
         }
 
-        colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale)
+        const flipScale = orient === 'horizontal' ? _flipX : _flipY
+
+        colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale, flipScale)
   
         if (!tickColors) {
           tickColors = fill

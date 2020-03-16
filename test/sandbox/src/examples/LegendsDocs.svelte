@@ -50,12 +50,13 @@
       y={()=> 0}
     />
     <!-- usePadding = false -->
-    <GradientLegend
+    <DiscreteLegend
       title={'Test'}
       fill={linearColorScale}
       labelCount={5}
       hjust={'right'}
       vjust={'bottom'}
+      orient={'vertical'}
       usePadding={false}
     />
 
@@ -65,6 +66,7 @@
       labelCount={5}
       hjust={'right'}
       vjust={'top'}
+      orient={'vertical'}
       usePadding={false}
     />
 
@@ -74,6 +76,7 @@
       labelCount={5}
       hjust={'right'}
       vjust={'center'}
+      orient={'vertical'}
       usePadding={false}
     />
 

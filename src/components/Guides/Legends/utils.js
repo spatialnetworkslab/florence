@@ -121,12 +121,15 @@ export function getFormat (labelFormat, scale, numberOfTicks) {
   return x => x
 }
 
-export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale) {
+export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale, flipScale) {
   let colorXStartCoords = []
   let colorXEndCoords = []
   let colorYStartCoords = []
   let colorYEndCoords = []
-
+  
+  // if (flipScale) {
+  //   tickLabelPositions.
+  // }
   if (orient === 'vertical') {
     // x coords
     colorXStartCoords = tickLabelText.map(i => {
@@ -173,6 +176,11 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       })
 
       colorYEndCoords.push(start + interval)
+    }
+
+    if (flipScale) {
+      colorYStartCoords.reverse()
+      colorYEndCoords.reverse()
     }
   } else if (orient === 'horizontal') {
     const coordsLength = Math.abs(yCoords.y2 - yCoords.y1)
@@ -237,6 +245,10 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       })
 
       colorXEndCoords.push(start + interval)
+      if (flipScale) {
+        colorYStartCoords.reverse()
+        colorYEndCoords.reverse()
+      }
     }
   }
 
@@ -314,10 +326,6 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
     throw new Error(`Couldn't construct legend. Please provide 'tickValues' or a scale with
         either a 'ticks' or a 'domain' method.`)
   }
-
-  // if (flipScale) {
-  //   offsets.reverse()
-  // }
 
   return { offsets, gradX, gradY, rectCoords }
 }
