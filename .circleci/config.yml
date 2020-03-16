@@ -37,5 +37,7 @@ workflows:
     jobs:
       # - unit_test # running unit tests from cypress workspace to save time
       - cypress/run:
+          executor: cypress/browsers-chrome78-ff70
+          browser: chrome
           command: npm run test:unit && npm run test:ci
 

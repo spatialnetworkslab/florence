@@ -59,7 +59,7 @@
     "start:ci": "sirv test/integration/testing-app/public -s --port 3009",
     "start:dev": "sirv test/sandbox/public --dev -s",
     "start:test": "sirv test/integration/testing-app/public --dev -s --port 3009",
-    "cy:run": "cypress run",
+    "cy:run": "cypress run --headless --browser chrome",
     "cy:open": "cypress open",
     "test:integration": "run-p --race dev:test cy:run",
     "test:ci": "run-p --race dev:ci cy:run",
