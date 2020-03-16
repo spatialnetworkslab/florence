@@ -55,7 +55,7 @@
     "build:ci": "rollup -c test/integration/testing-app/rollup.config.js",
     "dev": "run-p start:dev autobuild",
     "dev:test": "run-p start:test autobuild:test",
-    "dev:ci": "run-p start:ci build:ci",
+    "dev:ci": "run-s build:ci start:ci",
     "start:ci": "sirv test/integration/testing-app/public -s --port 3009",
     "start:dev": "sirv test/sandbox/public --dev -s",
     "start:test": "sirv test/integration/testing-app/public --dev -s --port 3009",
