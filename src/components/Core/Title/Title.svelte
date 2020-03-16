@@ -1,6 +1,7 @@
 <script>
   import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
   import { isValid, createTitleXCoord, createTitleYCoord } from './utils.js'
+  import { removePadding } from '../utils/padding.js'
   
   // Contexts
   import * as SectionContext from '../Section/SectionContext'
@@ -96,8 +97,8 @@
     }
 
     // Title text positioning wrt section/graphic context
-    totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize / 2 : titleFontSize
-    
+    totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize : titleFontSize
+  
     // Autopositioning
     if (!isValid(x, y)) {
       if (sectionContext.flipX) xRange.reverse()
@@ -133,7 +134,7 @@
       if (!isValid(subtitleX, subtitleY)) {
         yRange = $sectionContext.scaleY.range()
         subtitleX = x
-        subtitleY = y + titleFontSize
+        subtitleY = _flipY ? y - titleFontSize * 1.5 : y + titleFontSize * 1.5
       }
     }
   }
@@ -153,7 +154,7 @@
     text={title}
     fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
     {transition} {onClick} {onMouseover} {onMouseout}
-    {zoomIdentity} _asPolygon={false}
+    _asPolygon={false}
   />
 {/if}
 

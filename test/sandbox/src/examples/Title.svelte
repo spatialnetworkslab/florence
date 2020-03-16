@@ -8,6 +8,7 @@
 
 <Graphic width={500} height={500}
   padding={graphicPadding}
+  flipX
 >
 
  <Section
