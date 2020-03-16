@@ -77,7 +77,7 @@
     </Section>
 
     <XAxis />
-    <YAxis hjust="left" flip />
+    <YAxis />
   
   </Section>
 
