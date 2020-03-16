@@ -7,8 +7,8 @@ context('Assertions', () => {
 
   describe('Axes Tests', () => {
     it('[render] tick marks are centred', () => {
-      cy.get('g.x-axis > .line-layer > .line').eq(0).invoke('attr', 'd').should('be.equal', 'M151.74,475.55L151.74,480.97')
-      cy.get('g.x-axis > .line-layer > .line').eq(1).invoke('attr', 'd').should('be.equal', 'M348.26,475.55L348.26,480.97')
+      cy.get('g.x-axis > .line-layer > .line').eq(0).invoke('attr', 'd').should('be.equal', 'M151.74,476L151.74,481')
+      cy.get('g.x-axis > .line-layer > .line').eq(1).invoke('attr', 'd').should('be.equal', 'M348.26,476L348.26,481')
     })
 
     it('[render] tick labels are centred', () => {
