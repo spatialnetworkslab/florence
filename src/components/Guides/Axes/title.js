@@ -78,8 +78,8 @@ export function getTitleCoordinatesYAxis (
 function getWidthOffset (offset, flip, axisWidth, fontSize) {
   if (offset === 'axis') {
     return flip
-      ? -(axisWidth * 1.65) - fontSize
-      : axisWidth * 1.65
+      ? axisWidth * 1.65
+      : -(axisWidth * 1.65) - fontSize
   }
 
   if (offset.constructor !== Number) {

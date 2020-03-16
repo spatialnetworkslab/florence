@@ -34,8 +34,8 @@ export function getTickLabelCoordinatesYAxis (
     const xEndAbsolute = finalScaleX(xEnd)
 
     const xLabelAbsolute = flip
-      ? xEndAbsolute - labelOffset
-      : xEndAbsolute + labelOffset
+      ? xEndAbsolute + labelOffset
+      : xEndAbsolute - labelOffset
 
     return finalScaleX.invert(xLabelAbsolute)
   })

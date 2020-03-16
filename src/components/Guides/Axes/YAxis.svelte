@@ -18,7 +18,7 @@
   export let baseLineWidth = 1
 
   // axis positioning
-  export let hjust = 'right'
+  export let hjust = 'left'
   export let xOffset = 0
 
   // tick marks
@@ -96,7 +96,7 @@
   $: format = getFormat(labelFormat, $sectionContext.scaleY, ticks.length)
   $: tickLabelText = tickPositions.map(format)
   $: tickLabelCoordinates = getTickLabelCoordinatesYAxis(tickCoordinates, $sectionContext, labelOffset, flip)
-  $: labelAnchorPoint = flip ? 'r' : 'l'
+  $: labelAnchorPoint = flip ? 'l' : 'r'
 
   // Title
   $: axisWidth = baseLineWidth + tickSize + labelOffset + labelFontSize

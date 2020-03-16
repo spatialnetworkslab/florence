@@ -74,7 +74,7 @@ export function getTickCoordinatesYAxis (
   tickSize,
   flip
 ) {
-  const offset = flip ? -tickSize : tickSize
+  const offset = flip ? tickSize : -tickSize
   const bandOffset = scaleY.bandwidth ? scaleY.bandwidth() / 2 : 0
 
   const xEndAbsolute = xAbsolute + offset
