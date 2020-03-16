@@ -2,16 +2,20 @@
 
 /* global font styles */
 
+body {
+ @apply text-gray-700;
+}
+
 h1 {
-  @apply text-2xl font-sans font-semibold mb-4;
+  @apply text-2xl font-sans font-semibold mb-4 text-gray-900;
 }
 
 h2 {
-  @apply text-xl font-sans font-semibold mt-3 mb-3 border-b border-gray-400;
+  @apply text-xl font-sans font-semibold mt-3 mb-3 border-b border-gray-400 text-gray-900;
 }
 
 h3 {
-  @apply text-base font-sans font-semibold mt-1 mb-1;
+  @apply text-lg font-sans font-semibold mt-1 mb-1 text-gray-900;
 }
 
 p {
@@ -27,7 +31,7 @@ a {
 }
 
 ul {
-  @apply list-disc list-inside mb-2; 
+  @apply list-disc list-inside mb-2;
 }
 
 ol > li > ul {
@@ -39,7 +43,7 @@ li {
 }
 
 ul > li > ul {
-  @apply list-circle list-inside ml-5; 
+  @apply list-circle list-inside ml-5;
 }
 
 ol {
@@ -75,7 +79,6 @@ tr:nth-child(even) {
   @apply flex flex-row;
 }
 
-
 .left-col {
   @apply w-48 border-r border-gray-400 pr-4 whitespace-no-wrap flex-none;
 }
@@ -87,7 +90,87 @@ tr:nth-child(even) {
 /* main */
 
 .main-body {
-  @apply bg-white px-4 mt-4 max-w-5xl;
+  @apply bg-white px-4 mt-4 max-w-6xl;
+}
+
+/* codesandbox */
+
+.csbp-render-fullscreen {
+  @apply z-10 absolute bg-transparent inset-0 flex items-center m-auto; 
+}
+
+.csbp-container {
+  @apply flex flex-wrap w-full h-full mt-10;
+}
+
+.csbp-rendered {
+  @apply w-full flex-shrink-0 p-4 mb-2 border-dashed border-gray-400 border;
+}
+
+.csbp-rendered svg {
+  @apply m-auto;
+}
+
+.csbp-code-tabs {
+  @apply flex-1 relative m-2 text-base;
+}
+
+@screen lg {
+  .csbp-rendered {
+    @apply w-6/12;
+  }
+}
+
+.csbp-code code, .csbp-code-snippets code {
+  @apply text-sm;
+}
+
+.csbp-tab {
+  @apply inline;
+}
+
+.csbp-tab label {
+  @apply bg-white relative border-t border-l border-r border-b-0 rounded-t-sm border-gray-400 -m-px;
+  left: 1px;
+  padding: 10px;
+}
+
+.csbp-tab [type="radio"] {
+  @apply hidden;
+}
+
+.csbp-content {
+  min-height: 250px;
+  max-height: 500px;
+  @apply absolute overflow-auto border rounded-tr-sm rounded-b-sm border-gray-400 bg-codegray inset-x-0 bottom-0;
+  top: 28px;
+}
+
+[type="radio"]:checked ~ label {
+  @apply bg-codegray;
+  z-index: 2;
+}
+
+[type="radio"]:checked ~ label ~ .csbp-content {
+  z-index: 1;
+}
+
+[type="radio"]:checked ~ label ~ .csbp-content > * {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.csbp-csb-link {
+  @apply flex-auto p-3;
+  min-width: 200px;
+}
+
+.csbp-csb-link a {
+  @apply no-underline text-blue-700;
+}
+
+.csbp-csb-link a:hover {
+  @apply underline text-blue-800;
 }
 
 @tailwind components;

@@ -1,11 +1,11 @@
-import { calculateBBoxGeometry } from '../../../../../utils/geometryUtils'
-import createItemFromBBox from '../../../utils/createItemFromBBox.js'
+import { calculateBboxGeometry } from '../../../../../utils/geometryUtils'
+import createItemFromBbox from '../../../utils/createItemFromBbox.js'
 
 export function indexArea (markData) {
   const areaAttributes = markData.attributes
 
-  const bbox = calculateBBoxGeometry(areaAttributes.screenGeometry)
-  const item = createItemFromBBox(bbox)
+  const bbox = calculateBboxGeometry(areaAttributes.screenGeometry)
+  const item = createItemFromBbox(bbox)
 
   item.attributes = areaAttributes
   item.markType = 'Area'
@@ -21,8 +21,8 @@ export function indexAreaLayer ({ layerAttributes, keyArray, layerId }) {
     const key = keyArray[i]
 
     const areaAttributes = getAreaAttributes(layerAttributes, key)
-    const bbox = calculateBBoxGeometry(areaAttributes.screenGeometry)
-    const item = createItemFromBBox(bbox)
+    const bbox = calculateBboxGeometry(areaAttributes.screenGeometry)
+    const item = createItemFromBbox(bbox)
 
     item.key = key
     item.index = i

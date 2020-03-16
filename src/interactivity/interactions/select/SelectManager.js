@@ -2,7 +2,7 @@ import SpatialIndex from '../SpatialIndex'
 import { markIndexing, layerIndexing } from './createIndexableData'
 import { hitIsMark, hitIsInLayer, getHitId } from '../utils/hitUtils.js'
 import { createSelectMarkEvent, createSelectLayerEvent } from '../utils/createEvent.js'
-import { calculateBBoxGeometry, pointInPolygon } from '../../../utils/geometryUtils'
+import { calculateBboxGeometry, pointInPolygon } from '../../../utils/geometryUtils'
 
 export default class SelectManager {
   constructor () {
@@ -77,7 +77,7 @@ export default class SelectManager {
 
   // Rectangle
   selectRectangle (rectangle) {
-    const hits = this._spatialIndex.queryBoundingBox(rectangleToRBushBBox(rectangle))
+    const hits = this._spatialIndex.queryBoundingBox(rectangleToRBushBbox(rectangle))
 
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
@@ -93,7 +93,7 @@ export default class SelectManager {
     this._previousSelection = this._currentSelection
     this._currentSelection = {}
 
-    const hits = this._spatialIndex.queryBoundingBox(rectangleToRBushBBox(rectangle))
+    const hits = this._spatialIndex.queryBoundingBox(rectangleToRBushBbox(rectangle))
 
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
@@ -136,9 +136,9 @@ export default class SelectManager {
 
     if (this._selectPolygon.points.length > 1) {
       const lastThreePointsPolygon = this._getLastThreePointsPolygon()
-      const bbox = calculateBBoxGeometry(lastThreePointsPolygon)
+      const bbox = calculateBboxGeometry(lastThreePointsPolygon)
 
-      const hits = this._spatialIndex.queryBoundingBox(bboxToRBushBBox(bbox))
+      const hits = this._spatialIndex.queryBoundingBox(bboxToRBushBbox(bbox))
 
       for (let i = 0; i < hits.length; i++) {
         const hit = hits[i]
@@ -172,9 +172,9 @@ export default class SelectManager {
     this._selectPolygon.points = points.map(point => [point[0] + delta[0], point[1] + delta[1]])
 
     const polygon = this.getSelectPolygon()
-    const bbox = calculateBBoxGeometry(polygon)
+    const bbox = calculateBboxGeometry(polygon)
 
-    const hits = this._spatialIndex.queryBoundingBox(bboxToRBushBBox(bbox))
+    const hits = this._spatialIndex.queryBoundingBox(bboxToRBushBbox(bbox))
 
     for (let i = 0; i < hits.length; i++) {
       const hit = hits[i]
@@ -270,7 +270,7 @@ export default class SelectManager {
   }
 }
 
-function rectangleToRBushBBox (rectangle) {
+function rectangleToRBushBbox (rectangle) {
   return {
     minX: Math.min(rectangle.x1, rectangle.x2),
     maxX: Math.max(rectangle.x1, rectangle.x2),
@@ -298,7 +298,7 @@ function isXYObject (coordinates) {
     coordinates.y.constructor === Number
 }
 
-function bboxToRBushBBox (bbox) {
+function bboxToRBushBbox (bbox) {
   return {
     minX: Math.min(...bbox.x),
     maxX: Math.max(...bbox.x),

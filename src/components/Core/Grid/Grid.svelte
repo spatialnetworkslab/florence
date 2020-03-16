@@ -1,9 +1,7 @@
 <script>
-  import { beforeUpdate } from 'svelte'
   import * as SectionContext from '../Section/SectionContext'
-  import * as CoordinateTransformationContext from '../Section/CoordinateTransformationContext'
 
-  import { scaleCoordinates } from '../../Marks/Rectangle/createCoordSysGeometry.js'
+  import { getPixelCoordinates } from '../Section/getPixelCoordinates.js'
   import { getAllCells, mergeNameSpecs } from './gridUtils.js'
   import { printGrid } from './viewGrid.js'
 
@@ -21,16 +19,15 @@
   export let viewGridShape = false // Option to console log rows in cols in grid
 
   // Contexts
-  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const sectionContext = SectionContext.subscribe()
 
-  let scaledCoordinates
-  $: scaledCoordinates = scaleCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+  let pixelCoordinates
+  $: pixelCoordinates = getPixelCoordinates({ x1, x2, y1, y2 }, $sectionContext)
 
   let allCells
 
   // Get cells
-  $: [allCells, rowSizes, colSizes, numRows, numCols] = getAllCells(rows, columns, rowGap, columnGap, scaledCoordinates)
+  $: [allCells, rowSizes, colSizes, numRows, numCols] = getAllCells(rows, columns, rowGap, columnGap, pixelCoordinates)
 
   // Console log grid specification as necessary
   $: if (viewGridTemplate) { printGrid(rowSizes, colSizes) }
@@ -38,10 +35,6 @@
 
   // Get named cells
   $: allSpecs = mergeNameSpecs(areaNames, allCells, numCols)
-
-  beforeUpdate(() => {
-    CoordinateTransformationContext.ensureNotParent($coordinateTransformationContext)
-  })
 </script>
 
 <g>

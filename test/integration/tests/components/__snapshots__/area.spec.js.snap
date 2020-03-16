@@ -11,7 +11,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
   <g class="section" clip-path="url(#clip-sc0)">
     <path
       class="area"
-      d="M30,470L64.21052631578948,470L98.42105263157895,470L132.6315789473684,470L166.8421052631579,470L201.05263157894737,470L235.26315789473682,470L269.4736842105263,470L303.6842105263158,470L337.89473684210526,470L372.10526315789474,470L406.3157894736842,470L440.52631578947364,470L474.7368421052632,470L508.9473684210526,470L543.1578947368421,470L577.3684210526316,470L611.578947368421,470L645.7894736842105,470L680,470L680,395.8241758241758L645.7894736842105,227.6923076923077L611.578947368421,390.8791208791208L577.3684210526316,133.73626373626374L543.1578947368421,336.48351648351644L508.9473684210526,385.9340659340659L474.7368421052632,143.62637362637363L440.52631578947364,39.78021978021976L406.3157894736842,227.6923076923077L372.10526315789474,198.02197802197804L337.89473684210526,232.63736263736263L303.6842105263158,212.85714285714286L269.4736842105263,39.78021978021976L235.26315789473682,376.04395604395603L201.05263157894737,207.91208791208788L166.8421052631579,69.45054945054947L132.6315789473684,20L98.42105263157895,257.3626373626374L64.21052631578948,198.02197802197804L30,331.5384615384615Z"
+      d="M30,470L64.21,470L98.42,470L132.63,470L166.84,470L201.05,470L235.26,470L269.47,470L303.68,470L337.89,470L372.11,470L406.32,470L440.53,470L474.74,470L508.95,470L543.16,470L577.37,470L611.58,470L645.79,470L680,470L680,395.82L645.79,227.69L611.58,390.88L577.37,133.74L543.16,336.48L508.95,385.93L474.74,143.63L440.53,39.78L406.32,227.69L372.11,198.02L337.89,232.64L303.68,212.86L269.47,39.78L235.26,376.04L201.05,207.91L166.84,69.45L132.63,20L98.42,257.36L64.21,198.02L30,331.54Z"
       fill="steelblue"
       stroke="none"
       stroke-width="0"
@@ -21,7 +21,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
       <g class="line-layer">
         <path
           class="line"
-          d="M64.21052631578948,469.5L64.21052631578948,475.5"
+          d="M64.21,470.45L64.21,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -29,7 +29,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M132.6315789473684,469.5L132.6315789473684,475.5"
+          d="M132.63,470.45L132.63,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -37,7 +37,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M201.05263157894737,469.5L201.05263157894737,475.5"
+          d="M201.05,470.45L201.05,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -45,7 +45,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M269.4736842105263,469.5L269.4736842105263,475.5"
+          d="M269.47,470.45L269.47,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -53,7 +53,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M337.89473684210526,469.5L337.89473684210526,475.5"
+          d="M337.89,470.45L337.89,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -61,7 +61,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M406.3157894736842,469.5L406.3157894736842,475.5"
+          d="M406.32,470.45L406.32,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -69,7 +69,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M474.7368421052632,469.5L474.7368421052632,475.5"
+          d="M474.74,470.45L474.74,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -77,7 +77,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M543.1578947368421,469.5L543.1578947368421,475.5"
+          d="M543.16,470.45L543.16,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -85,7 +85,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M611.578947368421,469.5L611.578947368421,475.5"
+          d="M611.58,470.45L611.58,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -93,7 +93,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M680,469.5L680,475.5"
+          d="M680,470.45L680,465.05"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -103,16 +103,16 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
       <g class="label-layer">
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="64.21052631578948"
+          x="64.21052631578947"
           opacity="1"
           transform="
           rotate(0, 
-          64.21052631578948, 
-          478)
+          64.21052631578947, 
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -124,7 +124,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -133,7 +133,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           transform="
           rotate(0, 
           132.6315789473684, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -145,7 +145,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -154,7 +154,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           transform="
           rotate(0, 
           201.05263157894737, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -166,7 +166,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -175,7 +175,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           transform="
           rotate(0, 
           269.4736842105263, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -187,7 +187,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -196,7 +196,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           transform="
           rotate(0, 
           337.89473684210526, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -208,7 +208,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -217,7 +217,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           transform="
           rotate(0, 
           406.3157894736842, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -229,7 +229,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -238,7 +238,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           transform="
           rotate(0, 
           474.7368421052632, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -250,7 +250,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -259,7 +259,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           transform="
           rotate(0, 
           543.1578947368421, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -271,16 +271,16 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="611.578947368421"
+          x="611.5789473684209"
           opacity="1"
           transform="
           rotate(0, 
-          611.578947368421, 
-          478)
+          611.5789473684209, 
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -292,7 +292,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
-          y="478"
+          y="462.8"
           fill="black"
           stroke="none"
           stroke-width="0"
@@ -301,7 +301,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           transform="
           rotate(0, 
           680, 
-          478)
+          462.8)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -317,7 +317,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
       <g class="line-layer">
         <path
           class="line"
-          d="M29.5,470L23.5,470"
+          d="M29.54,470L23.96,470"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -325,7 +325,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M29.5,420.54945054945057L23.5,420.54945054945057"
+          d="M29.54,420.55L23.96,420.55"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -333,7 +333,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M29.5,371.0989010989011L23.5,371.0989010989011"
+          d="M29.54,371.1L23.96,371.1"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -341,7 +341,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M29.5,321.6483516483517L23.5,321.6483516483517"
+          d="M29.54,321.65L23.96,321.65"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -349,7 +349,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M29.5,272.1978021978022L23.5,272.1978021978022"
+          d="M29.54,272.2L23.96,272.2"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -357,7 +357,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M29.5,222.7472527472527L23.5,222.7472527472527"
+          d="M29.54,222.75L23.96,222.75"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -365,7 +365,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M29.5,173.2967032967033L23.5,173.2967032967033"
+          d="M29.54,173.3L23.96,173.3"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -373,7 +373,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M29.5,123.84615384615383L23.5,123.84615384615383"
+          d="M29.54,123.85L23.96,123.85"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -381,7 +381,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M29.5,74.39560439560441L23.5,74.39560439560441"
+          d="M29.54,74.4L23.96,74.4"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -389,7 +389,7 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         ></path>
         <path
           class="line"
-          d="M29.5,24.945054945054927L23.5,24.945054945054927"
+          d="M29.54,24.95L23.96,24.95"
           fill="none"
           stroke-width="0.5"
           stroke="black"
@@ -403,11 +403,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           470)
         "
           font-family="Helvetica"
@@ -424,11 +424,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           420.54945054945057)
         "
           font-family="Helvetica"
@@ -445,11 +445,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           371.0989010989011)
         "
           font-family="Helvetica"
@@ -462,16 +462,16 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
-          y="321.6483516483517"
+          y="321.64835164835165"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
-          321.6483516483517)
+          22.57142857142857, 
+          321.64835164835165)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -487,11 +487,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           272.1978021978022)
         "
           font-family="Helvetica"
@@ -508,11 +508,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           222.7472527472527)
         "
           font-family="Helvetica"
@@ -525,16 +525,16 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
         </text>
         <text
           class="label"
-          y="173.2967032967033"
+          y="173.29670329670327"
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
-          173.2967032967033)
+          22.57142857142857, 
+          173.29670329670327)
         "
           font-family="Helvetica"
           font-size="10px"
@@ -550,11 +550,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           123.84615384615383)
         "
           font-family="Helvetica"
@@ -571,11 +571,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           74.39560439560441)
         "
           font-family="Helvetica"
@@ -592,11 +592,11 @@ exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
           fill="black"
           stroke="none"
           stroke-width="0"
-          x="22"
+          x="22.57142857142857"
           opacity="1"
           transform="
           rotate(0, 
-          22, 
+          22.57142857142857, 
           24.945054945054927)
         "
           font-family="Helvetica"

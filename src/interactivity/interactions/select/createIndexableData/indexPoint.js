@@ -1,11 +1,11 @@
 import bboxPoint from './utils/bboxPoint.js'
-import createItemFromBBox from '../../utils/createItemFromBBox.js'
+import createItemFromBbox from '../../utils/createItemFromBbox.js'
 
 export function indexPoint (markData) {
   const pointAttributes = markData.attributes
 
   const bbox = bboxPoint(pointAttributes.pixelGeometry.coordinates)
-  const item = createItemFromBBox(bbox)
+  const item = createItemFromBbox(bbox)
 
   item.attributes = pointAttributes
   item.markType = 'Point'
@@ -22,7 +22,7 @@ export function indexPointLayer ({ layerAttributes, keyArray, layerId }) {
 
     const pointAttributes = getPointAttributes(layerAttributes, key)
     const bbox = bboxPoint(pointAttributes.pixelGeometry.coordinates)
-    const item = createItemFromBBox(bbox)
+    const item = createItemFromBbox(bbox)
 
     item.key = key
     item.index = i

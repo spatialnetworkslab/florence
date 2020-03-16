@@ -1,13 +1,13 @@
 import { calculateCentroid } from '../../../../utils/geometryUtils'
 import bboxPoint from './utils/bboxPoint.js'
-import createItemFromBBox from '../../utils/createItemFromBBox.js'
+import createItemFromBbox from '../../utils/createItemFromBbox.js'
 
 export function indexArea (markData) {
   const areaAttributes = markData.attributes
 
   const centroid = calculateCentroid(areaAttributes.screenGeometry)
   const bbox = bboxPoint(centroid)
-  const item = createItemFromBBox(bbox)
+  const item = createItemFromBbox(bbox)
 
   item.attributes = areaAttributes
   item.markType = 'Area'
@@ -26,7 +26,7 @@ export function indexAreaLayer ({ layerAttributes, keyArray, layerId }) {
 
     const centroid = calculateCentroid(areaAttributes.screenGeometry)
     const bbox = bboxPoint(centroid)
-    const item = createItemFromBBox(bbox)
+    const item = createItemFromBbox(bbox)
 
     item.key = key
     item.index = i

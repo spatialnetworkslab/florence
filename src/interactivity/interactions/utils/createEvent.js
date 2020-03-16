@@ -1,6 +1,6 @@
 export function createMarkEvent (eventType, eventOptions, hit, nativeEvent) {
   eventOptions.markType = hit.markType
-  eventOptions.hitBBox = extractBBox(hit)
+  eventOptions.hitBbox = extractBbox(hit)
   eventOptions.hitSource = 'mark'
 
   return createEvent(eventType, eventOptions, nativeEvent)
@@ -8,7 +8,7 @@ export function createMarkEvent (eventType, eventOptions, hit, nativeEvent) {
 
 export function createLayerEvent (eventType, eventOptions, hit, nativeEvent) {
   eventOptions.markType = hit.markType
-  eventOptions.hitBBox = extractBBox(hit)
+  eventOptions.hitBbox = extractBbox(hit)
   eventOptions.key = hit.key
   eventOptions.index = hit.index
   eventOptions.hitSource = 'layer'
@@ -22,7 +22,7 @@ export function createSectionEvent (eventType, eventOptions, nativeEvent) {
   return createEvent(eventType, eventOptions, nativeEvent)
 }
 
-function extractBBox (hit) {
+function extractBbox (hit) {
   return { minX: hit.minX, maxX: hit.maxX, minY: hit.minY, maxY: hit.maxY }
 }
 
