@@ -1,11 +1,14 @@
 import { scaleLinear } from 'd3-scale'
 
-export function createPolarTransformation (rangeX, rangeY) {
-  const toTheta = scaleLinear().domain(rangeX).range([0, 2 * Math.PI]).clamp(true)
-  const toRadius = scaleLinear().domain(rangeY).range([0, 1]).clamp(true)
+export function createPolarTransformation (
+  { rangeX, rangeY },
+  { finalRangeX, finalRangeY }
+) {
+  const toTheta = scaleLinear().domain(rangeX).range([0, 2 * Math.PI])
+  const toRadius = scaleLinear().domain(rangeY).range([0, 1])
 
-  const fitX = scaleLinear().domain([-1, 1]).range(rangeX)
-  const fitY = scaleLinear().domain([-1, 1]).range(rangeY)
+  const fitX = scaleLinear().domain([-1, 1]).range(finalRangeX)
+  const fitY = scaleLinear().domain([-1, 1]).range(finalRangeY)
 
   const transform = function transform ([x, y]) {
     const theta = toTheta(x)

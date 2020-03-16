@@ -42,7 +42,7 @@ function checkValidType (value) {
   return false
 }
 
-export function createTitleXCoord (hjust, range, x, offset, fontSize, padding) {
+export function createTitleXCoord (hjust, range, x, offset, fontSize) {
   if (x) {
     return x
   }
@@ -80,7 +80,7 @@ export function createTitleXCoord (hjust, range, x, offset, fontSize, padding) {
   return x1 + sectionWidth * justification + offset
 }
 
-export function createTitleYCoord (vjust, range, y, offset, fontSize, padding) {
+export function createTitleYCoord (vjust, range, y, offset, fontSize) {
   if (y) {
     return y
   }

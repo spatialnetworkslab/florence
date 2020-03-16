@@ -1,9 +1,17 @@
-import createCoordSysGeometryObjectPoint from '../Point/createCoordSysGeometryObject.js'
-import { createSymbolGeometry } from './createCoordSysGeometry.js'
+import createPixelGeometryObjectPoint from '../Point/createPixelGeometryObject.js'
+import { createSymbolGeometry } from './createPixelGeometry.js'
 
-export default function (geometryProps, sectionContext, coordinateTransformationContext, keyProp) {
-  const pointGeometryObject = createCoordSysGeometryObjectPoint(
-    geometryProps, sectionContext, coordinateTransformationContext, keyProp
+export default function createPixelGeometryObject (
+  geometryProps,
+  keyProp,
+  sectionContext,
+  renderSettings
+) {
+  const pointGeometryObject = createPixelGeometryObjectPoint(
+    geometryProps,
+    keyProp,
+    sectionContext,
+    renderSettings
   )
 
   const symbolGeometryObject = createSymbolGeometryObject(pointGeometryObject, geometryProps)
@@ -16,9 +24,6 @@ function createSymbolGeometryObject (pointGeometryObject, geometryProps) {
 
   const shapeGetter = createPropGetter(geometryProps.shape, keys)
   const sizeGetter = createPropGetter(geometryProps.size, keys)
-
-  // const shapeArray = getPropArray(geometryProps.shape, length, sectionContext)
-  // const sizeArray = getPropArray(geometryProps.size, length, sectionContext)
 
   const symbolGeometryObject = {}
 
@@ -63,20 +68,6 @@ function createPropObject (prop, keys) {
 
   return propObject
 }
-
-// function getPropArray (prop, length, sectionContext) {
-//   if (prop === undefined) {
-//     return generateArrayOfLength(prop, length)
-//   }
-
-//   if (prop.constructor === Array) {
-//     validateArray(prop, length)
-
-//     return prop
-//   }
-
-//   return generateArrayOfLength(prop, length)
-// }
 
 function validatePropArrayLength (prop, length) {
   if (prop.length !== length) {
