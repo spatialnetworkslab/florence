@@ -66,6 +66,7 @@
   $: xRange = [bbox.minX, bbox.maxX]
   $: yRange = [bbox.minY, bbox.maxY]
 
+  $: {
     // Title text positioning wrt section/graphic context
     totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize / 2 : titleFontSize
 

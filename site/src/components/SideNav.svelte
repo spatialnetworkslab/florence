@@ -11,7 +11,9 @@
 
 .sidenav-second{
   @apply text-base font-normal pl-4;
+  transition: color 0.75s;
 }
+
 .sidenav-second:hover {
   @apply text-indigo-500;
 }
