@@ -1,5 +1,10 @@
 exports[`Assertions > Area Tests > [render] area snapshot correctly #0`] = `
-<svg width="700" height="500">
+<svg
+  width="700"
+  height="500"
+  viewBox="0 0 700 500"
+  preserveAspectRatio="xMidYMid meet"
+>
   <defs>
     <clipPath id="clip-sc0">
       <rect x="0" y="0" width="700" height="500"></rect>
