@@ -19,7 +19,7 @@
 const meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
   const scaleMeanQuantity = scaleLinear().domain(meanQuantityDomain)
 
-  const height = 500
+  let height = 500
   let transformation = 'identity'
   let duration = 2000
 
@@ -47,9 +47,8 @@ const meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
 </div>
 
 <Graphic 
-  width={500} {height}
-  displayHeight="100%"
-  displayWidth="100%"
+  width={'50%'} {height}
+  viewBox="0 0 50 200"
   scaleX={scaleLinear().domain([0, 500])}
   scaleY={scaleLinear().domain([0, 500])}
 >

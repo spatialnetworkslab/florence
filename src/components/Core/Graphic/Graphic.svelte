@@ -47,7 +47,9 @@
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
   // Keep SectionContext and InteractionManagerContext up to date
-  $: coordinates = { x1: 0, y1: 0, x2: width, y2: height }
+  let numberWidth = width
+  let numberHeight = height
+  $: coordinates = { x1: 0, y1: 0, x2: numberWidth, y2: numberHeight }
 
   $: {
     const sectionData = {
@@ -66,14 +68,27 @@
     SectionContext.update(sectionContext, sectionData)
     $interactionManagerContext.loadSection($sectionContext)
   }
-
+  const originalViewBox = viewBox
+  let originalViewBoxArray
+  
+  if (originalViewBox !== undefined) {
+      originalViewBoxArray = originalViewBox.split(' ')
+  }
   $: {
-    if (viewBox === undefined) {
-      if (width.constructor === Number && height.constructor === Number) {
-        viewBox = `0 0 ${width} ${height}`
-      } else {
-        viewBox = `0 0 100 100`
-      }
+    if (width.constructor === Number && height.constructor === Number) {
+      numberWidth = width
+      numberHeight = height
+    } else if (originalViewBox !== undefined) {
+        numberWidth = Number(originalViewBoxArray[2])
+        numberHeight = Number(originalViewBoxArray[3])
+    } else if (originalViewBox === undefined) {
+        numberWidth = 100
+        numberHeight = 100
+    }
+  }
+  $: {
+    if (originalViewBox === undefined) {
+      viewBox = `0 0 ${numberWidth} ${numberHeight}`
     }
   }
 
