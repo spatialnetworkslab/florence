@@ -126,7 +126,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
   let colorXEndCoords = []
   let colorYStartCoords = []
   let colorYEndCoords = []
-  
+  console.log(flipScale, orient)
   // if (flipScale) {
   //   tickLabelPositions.
   // }
@@ -232,6 +232,11 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       colorXEndCoords.shift()
       tickMappable.pop()
 
+      if (flipScale) {
+        colorXStartCoords.reverse()
+        colorXEndCoords.reverse()
+      }
+
     // One to one
     } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
       const interval = Math.abs(xCoords.x2 - xCoords.x1) / tickMappable.length
@@ -245,10 +250,11 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       })
 
       colorXEndCoords.push(start + interval)
-      if (flipScale) {
-        colorYStartCoords.reverse()
-        colorYEndCoords.reverse()
-      }
+    }
+
+    if (flipScale) {
+      colorXStartCoords.reverse()
+      colorXEndCoords.reverse()
     }
   }
 
@@ -266,7 +272,7 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
 
   if (orient === 'vertical') {
     gradX = { x1: '0%', x2: '0%' }
-    gradY = flip || !flipScale ? { y1: '100%', y2: '0%' } : { y1: '0%', y2: '100%' }
+    gradY = flip || flipScale ? { y1: '100%', y2: '0%' } : { y1: '0%', y2: '100%' }
     y1 = yCoords.y1
     y2 = yCoords.y2
 

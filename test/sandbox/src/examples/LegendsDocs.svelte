@@ -43,7 +43,7 @@
     scaleY={scaleLinear().domain(data.domain('b'))}
     backgroundColor={background}
     paddingColor={padding}
-    flipY
+    flipX
   >
     <Point
       x={()=> 0}
@@ -56,7 +56,7 @@
       labelCount={5}
       hjust={'right'}
       vjust={'bottom'}
-      orient={'vertical'}
+      orient={'horizontal'}
       usePadding={false}
     />
 
@@ -66,7 +66,7 @@
       labelCount={5}
       hjust={'right'}
       vjust={'top'}
-      orient={'vertical'}
+      orient={'horizontal'}
       usePadding={false}
     />
 
@@ -76,7 +76,7 @@
       labelCount={5}
       hjust={'right'}
       vjust={'center'}
-      orient={'vertical'}
+      orient={'horizontal'}
       usePadding={false}
     />
 

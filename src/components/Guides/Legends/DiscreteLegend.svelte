@@ -324,7 +324,7 @@
         } 
 
         const flipScale = orient === 'horizontal' ? _flipX : _flipY
-  
+
         colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale, flipScale)
         if (!tickOpacities) {
           tickOpacities = 1
