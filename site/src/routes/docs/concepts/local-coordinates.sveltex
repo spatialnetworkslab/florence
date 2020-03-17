@@ -21,8 +21,71 @@ components. The following props are used to create local coordinate systems:
 | padding        | `Number`, `Object`                         | no       | `undefnied`  | screen pixels |
 | zoomIdentity   | `Object`                                   | no       | `undefined`  | -             |
 
-The purpose of a local coordinate system is to convert coordinates, given to components within a `Graphic` or `Section`, to pixel values that end up on your screen. All marks and layers have so-called 'positioning props'. // TODO explain this a bit more.
+The purpose of a local coordinate system is to convert coordinates, given to components within a `Graphic` or `Section`, to pixel values that end up on your screen. All marks and layers have so-called 'positioning props'. Below is a schematic representation of how `florence` converts local coordinates to pixel values:
 
-Below is a schematic representation of how `florence` converts local coordinates to pixel values:
+![coordinates](/coordinates.png)
 
-![coordinates](/static/coordinates.png)
+The three main steps in this process are:
+
+1. Scaling
+2. Applying the coordinate transformation
+3. Applying the 'final' transformation, which encompasses padding, zooming and flipping.
+
+These three concepts will be explained in depth in the next paragraphs.
+
+## Scaling
+
+Scaling is the process of ["mapping a dimension of abstract data to a visual representation"](https://github.com/d3/d3-scale). In `florence`, this is not always true. The output of the scaling step is not necessarily the final 'visual representation' (a pixel value). If the user chooses to apply a coordinate transformation, the output of the scaling step goes through another step of processing. Or, if the user specifies the `padding`, `flipX`, `flipY` or `zoomIdentity` props, there will be another ('final') step before we have obtain a pixel value. But for now, let's forget about coordinate transformations and things like padding and flipping, and look at how scaling works in isolation.
+
+To scale coordinates in a local coordinate system, pass a [d3 scale](https://github.com/d3/d3-scale) to `scaleX` or `scaleY`. D3 scales are functions that map domains to ranges, where a domain is the 'abstract data dimension' and the range is the output-dimensions. In `florence`, the range will be taken care of for you, so you only need to define the domain.
+
+Say that we have the following point:
+
+```js echo
+const point = { x: 5, y: 5 }
+```
+
+And we want to position this point in the middle of the following `Graphic`:
+
+```js echo
+import { Graphic } from '@snlab/florence'
+```
+
+```html echo
+<Graphic 
+  width={500}
+  height={500}
+>
+
+</Graphic>
+```
+
+If we want to use the point's original coordinates, we can position it in the center using d3's [scaleLinear](https://github.com/d3/d3-scale#scaleLinear).
+
+```js echo
+import { Graphic, Point } from '@snlab/florence'
+import { scaleLinear } from 'd3-scale'
+```
+
+```html echo
+<Graphic 
+  width={500}
+  height={500}
+  scaleX={scaleLinear().domain([0, 10])}
+  scaleY={scaleLinear().domain([0, 10])}
+>
+
+  <Point x={point.x} y={point.y} radius={10} fill="red" />
+
+</Graphic>
+```
+
+```js exec
+import CenterPoint from './examples/_CenterPoint.svelte'
+```
+
+<CenterPoint />
+
+## Coordinate transformation
+
+## Final transformation
