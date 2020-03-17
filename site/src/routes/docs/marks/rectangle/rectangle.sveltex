@@ -1,0 +1,71 @@
+# Rectangle
+
+## Description
+
+```svelte
+<!--
+This is a sample specification intended to show data structure.
+For a list of required props and permitted combinations,
+see allowed prop combinations below.
+-->
+
+<Graphic ...>
+  <Rectangle
+    x1={x1}
+    y1={y1}
+    x2={x2}
+    y2={y2}
+  />
+<Graphic>
+
+<Graphic ...>
+  <RectangleLayer
+    x1={()=>(// )}
+    y1={()=>(// )}
+    x2={()=>(// )}
+    y2={()=>(// )}
+  />
+<Graphic>
+```
+
+
+The `Rectangle` mark draws a rectangle shape on screen with four corner defined by `x1`,`x2`, `y1` and `y2` props respectively.
+
+All SVG attributes on a 'rectangle' are supported in `Rectangle` in the form of props.
+
+To create rectangle plots, either loop over the dataset to generate one `Point` per iteration or use the `PointLayer`. The `RectangleLayer` shares all of the `Rectangle`'s props, but takes an array of arrays per positional prop instead of an array.
+
+## Props
+
+Positioning
+
+| Property | Type(s) | Description                    | Representation |
+| -------- | ------- | ------------------------------ | -------------- |
+| x1       | Number  | X1 coordinate of the rectangle |                |
+| y1       | Number  | Y1 coordinate of the rectangle |                |
+| x2       | Number  | X2 coordinate of the rectangle |                |
+| y2       | Number  | Y2 coordinate of the rectangle |                |
+
+
+| Property      | Type(s) | Description                                                                      | Representation |
+| ------------- | ------- | -------------------------------------------------------------------------------- | -------------- |
+| fill          | String  | [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)           |                |
+| stroke        | String  | [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)         |                |
+| strokeWidth   | Number  | [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)   |                |
+| strokeOpacity | Number  | [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) |                |
+| fillOpacity   | Number  | [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)   |                |
+| opacity       | Number  | [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)        |                |
+
+
+## Examples
+
+```js exec
+import StackedBar from "./examples/_StackedBar.svelte";
+import SimpleBar from "./examples/_SimpleBar.svelte";
+```
+
+<SimpleBar/>
+
+### Scatter plot Chart
+
+<StackedBar/>
