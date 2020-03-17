@@ -1,5 +1,10 @@
 exports[`Assertions > Geo Tests > [render] geo polygons correctly #0`] = `
-<svg width="500" height="500">
+<svg
+  width="500"
+  height="500"
+  viewBox="0 0 500 500"
+  preserveAspectRatio="xMidYMid meet"
+>
   <defs>
     <clipPath id="clip-sc0">
       <rect x="0" y="0" width="500" height="500"></rect>

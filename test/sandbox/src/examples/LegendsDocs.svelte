@@ -1,11 +1,9 @@
 <script>
   // d3
   import { scaleLinear } from 'd3-scale'
-
   // florence
-  import { Graphic, Section, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
+  import { Graphic, Section, DiscreteLegend, Point, GradientLegend, YAxis, XAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
-
   export let N = 100
   
   function generateData (N, error) {
@@ -17,16 +15,13 @@
     }
     return data
   }
-
   const data = new DataContainer(generateData(N, 0.25))
   const threshold = 0
   let filteredData = undefined
-
   $: {
     filteredData = data
       .filter(row => row.a > threshold)
   }
-
   // fill scales
   const linearColorScale = scaleLinear().domain(data.domain('a')).range(['red', 'blue'])
   const sectionPadding = 75
@@ -47,26 +42,42 @@
     scaleX={scaleLinear().domain(data.domain('a'))}
     scaleY={scaleLinear().domain(data.domain('b'))}
     backgroundColor={background}
-    paddingColor={padding} 
+    paddingColor={padding}
+    flipX
   >
-
-    <!-- Vjust -->
-    <GradientLegend
-      title={'Gradient'}
+    <!-- usePadding = false -->
+    <DiscreteLegend
+      title={'Test'}
       fill={linearColorScale}
       labelCount={5}
+      hjust={'right'}
+      vjust={'top'}
+      orient={'vertical'}
+      usePadding={false}
       flip
     />
 
-    <!-- Pixels -->
-    <DiscreteLegend
-      title={'Discrete'}
-      vjust={'top'}
-      hjust={'center'}
+    <GradientLegend
+      title={'Test 2'}
       fill={linearColorScale}
-      orient={'horizontal'}
       labelCount={5}
+      hjust={'right'}
+      vjust={'bottom'}
+      orient={'vertical'}
+      usePadding={false}
+      flip
+      flipLabels
     />
+
+    <!-- usePadding = true -->
+    <!-- <DiscreteLegend
+      title={'Discrete'}
+      hjust={'right'}
+      vjust={'bottom'}
+      fill={linearColorScale}
+      labelCount={5}
+      usePadding={true}
+    /> -->
     
     <XAxis />
     <YAxis />

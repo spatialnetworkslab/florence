@@ -1,6 +1,5 @@
 <script>
   import { Graphic, Section, XAxis, YAxis, Title } from '../../../../src'
-
   const sectionPadding = 75
   const graphicPadding = 50
   const background = '#808080'
@@ -17,22 +16,23 @@
     padding={sectionPadding}
     backgroundColor={background}
     paddingColor={padding} 
-    flipY
+    
   > 
     <Title 
       title={'Title is inside of the padding of the section'} 
+      titleFontFamily={'Baskerville'}
       subtitle={'Its parent is the Section'}
       subtitleFill={'steelblue'}
-      titleFontFamily={'Baskerville'}
+      vjust={'bottom'}
       usePadding={true}
       />
 
     <Title 
       title={'Title is outside of the padding of the section'} 
+      titleFontFamily={'Baskerville'}
       subtitle={'Its parent is the Section'}
       subtitleFill={'coral'}
-      titleFontFamily={'Baskerville'}
-      usePadding={false}
+      vjust={'bottom'}
       />
 
     <XAxis />
@@ -45,7 +45,6 @@
     subtitle={'Its parent is the Graphic'}
     titleFill={'coral'}
     subtitleFontFamily={'Baskerville'}
-    usePadding={false}
     />
 
   <Title 

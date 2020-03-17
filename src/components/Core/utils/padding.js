@@ -25,3 +25,11 @@ export function applyPadding (range, offsetMin, offsetMax) {
     return [range[0] - offsetMax, range[1] + offsetMin]
   }
 }
+
+export function removePadding (range, offsetMin, offsetMax) {
+  if (range[0] < range[1]) {
+    return [range[0] - offsetMin, range[1] + offsetMax]
+  } else {
+    return [range[0] + offsetMax, range[1] - offsetMin]
+  }
+}
