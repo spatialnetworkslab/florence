@@ -1,6 +1,6 @@
 # Graphic
 
-```html
+```svelte
 <Graphic width={500} height={500}>
 
   ...
@@ -20,11 +20,31 @@ it as a supercharged `svg` root element.
 
 ## Props
 
-|  Prop   |      Type(s)       | Required |   Default   |     Units     |
-| ------- | ------------------ | -------- | ----------- | ------------- |
-| width   | `Number`           | yes      |             | screen pixels |
-| height  | `Number`           | yes      |             | screen pixels |
+### Positioning
 
-The `width` and `height` props are self-explanatory. 
-For more information on the other props, see the [local coordinates](/docs/03-local-coordinates) 
-documentation.
+|  Prop  | Type(s)  | Required | Default |     Units     |
+| ------ | -------- | -------- | ------- | ------------- |
+| width  | `Number` | yes      | -       | screen pixels |
+| height | `Number` | yes      | -       | screen pixels |
+
+### Local coordinate system
+
+|      Prop      |                  Type(s)                   | Required |   Default    |     Units     |
+| -------------- | ------------------------------------------ | -------- | ------------ | ------------- |
+| scaleX         | [d3 scale](https://github.com/d3/d3-scale) | no       | `undefined`  | -             |
+| scaleY         | [d3 scale](https://github.com/d3/d3-scale) | no       | `undefined`  | -             |
+| transformation | `String`: `'identity'` or `'polar'`        | no       | `'identity'` | -             |
+| flipX          | `Boolean`                                  | no       | `false`      | -             |
+| flipY          | `Boolean`                                  | no       | `false`      | -             |
+| padding        | `Number`, `Object`                         | no       | `undefnied`  | screen pixels |
+| zoomIdentity   | `Object`                                   | no       | `undefined`  | -             |
+
+For more how to use these props, see the [local coordinates](/docs/03-local-coordinates) documentation.
+
+### Other
+
+|      Prop       |  Type(s)  | Required | Default | Units |
+| --------------- | --------- | -------- | ------- | ----- |
+| blockReindexing | `Boolean` | no       | `false` | -     |
+
+The purpose of `blockReindexing` is explained in the `interactivity` documentation.

@@ -16,13 +16,13 @@
   export let viewBox = undefined
   export let preserveAspectRatio = 'xMidYMid meet'
 
-  export let padding = 0
   export let scaleX = undefined
   export let scaleY = undefined
+  export let transformation = undefined
   export let flipX = false
   export let flipY = false
+  export let padding = 0
   export let zoomIdentity = undefined
-  export let transformation = undefined
   export let blockReindexing = false
 
   const graphicContext = GraphicContext.init()
