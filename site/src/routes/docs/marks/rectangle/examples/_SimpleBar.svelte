@@ -16,11 +16,9 @@
 
   var scaleX = scaleBand()
     .domain(x)
-    .range([0, WIDTH])
+    .padding(0.5)
 
-  var scaleY = scaleLinear()
-    .domain([0, Math.max(...y)])
-    .range([0, HEIGHT])
+  var scaleY = scaleLinear().domain([0, Math.max(...y)])
 </script>
 
 <Graphic width={WIDTH} height={HEIGHT}>
