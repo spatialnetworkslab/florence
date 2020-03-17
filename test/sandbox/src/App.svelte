@@ -28,6 +28,7 @@
   import ViolinPlot from './examples/ViolinPlot.svelte'
   import Title from './examples/Title.svelte'
   import LegendsDocs from './examples/LegendsDocs.svelte'
+  import PolarShowcase from './examples/PolarShowcase.svelte'
 
   // and add them to this component array
   const components = [
@@ -160,6 +161,11 @@
       name: 'Legends: Docs',
       url: 'legendsdocs',
       component: LegendsDocs
+    },
+    {
+      name: 'Polar showcase',
+      url: 'polarshowcase',
+      component: PolarShowcase
     }
   ]
 </script>

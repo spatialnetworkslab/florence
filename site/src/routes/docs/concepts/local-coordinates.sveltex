@@ -25,6 +25,8 @@ The purpose of a local coordinate system is to convert coordinates, given to com
 
 ![coordinates](/coordinates.png)
 
+(Made with [draw.io](https://draw.io))
+
 The three main steps in this process are:
 
 1. Scaling
@@ -62,7 +64,7 @@ import { Graphic } from '@snlab/florence'
 </Graphic>
 ```
 
-If we want to use the point's original coordinates, we can position it in the center using d3's [scaleLinear](https://github.com/d3/d3-scale#scaleLinear). We will also add a `Rectangle` the full size of the `Graphic`, so that the `Graphic` has a background color.
+If we want to use the point's original coordinates, we can position it in the center using d3's [scaleLinear](https://github.com/d3/d3-scale#scaleLinear). We will also add a `Rectangle` the full size of the `Graphic`, so that the `Graphic` has a background color. This makes it easier to see that the `Point` is actually in the middle.
 
 ```js
 import { Graphic, Point, Rectangle } from '@snlab/florence'
@@ -139,11 +141,43 @@ const domainY = [new Date(2020, 1, 1), new Date(2020, 1, 10)])
 
 ### Function syntax
 
+Even when `scaleX` and `scaleY` are used, it is possible to bypass them. To do this, pass the positioning prop a function that returns a coordinate, instead of a coordinate:
+
+```js exec
+import CenterPointFunc from './examples/_CenterPointFunc.svelte'
+```
+
+```html
+<Graphic 
+  width={200}
+  height={200}
+  scaleX={scaleLinear().domain([0, 10])}
+  scaleY={scaleLinear().domain([0, 10])}
+>
+  <Rectangle fill="green" opacity={0.2} />
+
+  <Point x={point.x} y={point.y} radius={20} fill="red" />
+
+  <Point x={() => 100} y={() => 100} radius={10} fill="green" />
+
+</Graphic>
+```
+
+<CenterPointFunc />
+
 ## Coordinate transformation
+
+Currently, the only supported coordinate transformation is `'polar'`. More transformations will be supported in the future. When using a polar transformation, `x` values will be displayed as converted to theta, and `y` to radius. In polar coordinate systems usually encountered in mathematics, the coordinate system begins on the right and turns counterclockwise. In `florence`, however, the polar coordinate system starts at the top of the `Section` and turns clockwise:
+
+```js exec
+import PolarShowcase from './examples/_PolarShowcase.svelte'
+```
+
+<PolarShowcase />
 
 ## Final transformation
 
-## Working with Sections
+## Nesting Sections
 
 ## Examples
 
