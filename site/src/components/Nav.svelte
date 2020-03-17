@@ -14,7 +14,7 @@
 /* nav bars */
 
 .selected {
-  @apply relative border-b-2 border-red-600 no-underline;
+  @apply relative border-b-2 border-indigo-600 no-underline;
 }
 
 .top-nav {
@@ -22,7 +22,7 @@
 }
 
 .nav-li {
-  @apply list-none;
+  @apply list-none text-gray-700;;
 }
 
 .nav-a {
@@ -31,7 +31,7 @@
 }
 
 .nav-a:hover {
-  @apply border-b-2 border-red-600;
+  @apply border-b-2 border-indigo-600;
 }
 
 @screen md {

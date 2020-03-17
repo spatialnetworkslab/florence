@@ -89,6 +89,11 @@ tr > td {
   @apply bg-white px-4 mt-4 max-w-6xl;
 }
 
+/* infoboxes */
+.callout {
+  @apply bg-green-100 border-green-500 border-l-8 my-4 px-10 py-3 font-sans leading-snug;
+}
+
 /* codesandbox */
 
 .csbp-render-fullscreen {

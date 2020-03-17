@@ -239,6 +239,9 @@ import Basic from './utils/_Basic.svelte'
 
 <Basic switch0 />
 
+<!-- ::: codesandboxplus ./src/routes/tutorials/utils/_basic0/App.svelte 1-3
+::: -->
+
 ## Axes
 
 Axes are always good to include as a reference for viewers to extract values from the graph.
@@ -309,7 +312,7 @@ In this case, the points on the graph can be scaled to display a different color
 
 <Basic switch1 switch2 switch3 />
 
-Note that there is an extra type: `schemeCategory10` specification passed to the scale. This simply tells the mark to use the 'category10' color scheme. This is one of many predefined color schemes from d3. However, do note that certain color schemes can only be used with categorical variables/certain scale types, while others can only be used with numerical variables. 
+Note that there is an extra type: `schemeCategory10` specification passed to the scale. This simply tells the mark to use the 'category10' color scheme. This is one of [many predefined color schemes from d3](https://github.com/d3/d3-scale-chromatic). However, do note that certain color schemes can only be used with categorical variables/certain scale types, while others can only be used with numerical variables. 
 
 
 ## Axis Title (Optional)
@@ -333,17 +336,3 @@ The title-vjust and title-hjust properties are used to position the axis title r
 <Basic switch2 switch3 switch4 />
 
 For further details, refer to the axes component documentation. [TODO ADD LINK]
-
-## Legend (Optional)
-
-Adding a legend to our chart can help increase the viewer's understanding of the data. We can manually add a `DiscreteLegend` to our chart to better explain the colors mapped to our marks. 
-
-<!-- TODO replace with codeboxes -->
-
-<Basic switch2 switch3 switch4 switch5 />
-
-For further details, refer to the [Legend documentation](docs/guides/legend).
-
-
-## X/Y Grid (TODO)
-
