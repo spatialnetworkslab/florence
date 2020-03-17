@@ -43,7 +43,7 @@
     scaleY={scaleLinear().domain(data.domain('b'))}
     backgroundColor={background}
     paddingColor={padding}
-    flipY
+    flipX
   >
     <!-- usePadding = false -->
     <DiscreteLegend

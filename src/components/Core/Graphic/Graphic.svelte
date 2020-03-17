@@ -4,12 +4,17 @@
   import * as SectionContext from '../Section/SectionContext'
   import * as EventManagerContext from './EventManagerContext'
   import * as InteractionManagerContext from '../Section/InteractionManagerContext'
+
   import EventManager from '../../../interactivity/events/EventManager.js'
   import InteractionManager from '../../../interactivity/interactions/InteractionManager.js'
+
   export let renderer = undefined
   
-  export let width = undefined
-  export let height = undefined
+  export let width = 500
+  export let height = 500
+  export let viewBox = undefined
+  export let preserveAspectRatio = 'xMidYMid meet'
+
   export let padding = 0
   export let scaleX = undefined
   export let scaleY = undefined
@@ -39,7 +44,9 @@
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
   // Keep SectionContext and InteractionManagerContext up to date
-  $: coordinates = { x1: 0, y1: 0, x2: width, y2: height }
+  let numberWidth = width
+  let numberHeight = height
+  $: coordinates = { x1: 0, y1: 0, x2: numberWidth, y2: numberHeight }
 
   $: {
     const sectionData = {
@@ -58,6 +65,30 @@
     SectionContext.update(sectionContext, sectionData)
     $interactionManagerContext.loadSection($sectionContext)
   }
+  const originalViewBox = viewBox
+  let originalViewBoxArray
+  
+  if (originalViewBox !== undefined) {
+    originalViewBoxArray = originalViewBox.split(' ')
+  }
+  $: {
+    if (width.constructor === Number && height.constructor === Number) {
+      numberWidth = width
+      numberHeight = height
+    } else if (originalViewBox !== undefined) {
+      numberWidth = Number(originalViewBoxArray[2])
+      numberHeight = Number(originalViewBoxArray[3])
+    } else if (originalViewBox === undefined) {
+      numberWidth = 100
+      numberHeight = 100
+    }
+  }
+  $: {
+    if (originalViewBox === undefined) {
+      viewBox = `0 0 ${numberWidth} ${numberHeight}`
+    }
+  }
+
   onMount(() => {
     // only on mount can we bind the svg root node and attach actual event listeners
     eventManager.addRootNode(rootNode)
@@ -65,9 +96,11 @@
   })
 </script>
 
-<svg 
-  {width} 
+<svg
+  {width}
   {height}
+  {viewBox}
+  {preserveAspectRatio}
   bind:this={rootNode}
 >
   <slot />

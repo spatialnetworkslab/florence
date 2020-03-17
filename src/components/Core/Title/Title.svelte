@@ -1,5 +1,5 @@
 <script>
-  import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
+  import Mark from '../../Marks/Mark/Mark.svelte'
   import { isValid, createTitleXCoord, createTitleYCoord } from './utils.js'
   import { removePadding } from '../utils/padding.js'
   
