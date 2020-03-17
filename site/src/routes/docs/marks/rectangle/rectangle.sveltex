@@ -28,6 +28,8 @@ see allowed prop combinations below.
 <Graphic>
 ```
 
+<SimpleBar/>
+
 
 The `Rectangle` mark draws a rectangle shape on screen with four corner defined by `x1`,`x2`, `y1` and `y2` props respectively.
 
@@ -37,24 +39,52 @@ To create rectangle plots, either loop over the dataset to generate one `Point` 
 
 ## Props
 
-Positioning
 
-| Property | Type(s) | Description                    | Representation |
-| -------- | ------- | ------------------------------ | -------------- |
-| x1       | Number  | X1 coordinate of the rectangle |                |
-| y1       | Number  | Y1 coordinate of the rectangle |                |
-| x2       | Number  | X2 coordinate of the rectangle |                |
-| y2       | Number  | Y2 coordinate of the rectangle |                |
+| Prop | Required | Types                  | Default   | Description          | Unit(s)           |
+| ---- | -------- | ---------------------- | --------- | -------------------- | ----------------- |
+| x1   | depends  | [Number, String, Date] | undefined | Left x coordinate    | Local coordinates |
+| x2   | depends  | [Number, String, Date] | undefined | Right x coordinate   | Local coordinates |
+| y1   | depends  | [Number, String, Date] | undefined | Bottom y coordinate  | Local coordinates |
+| y2   | depends  | [Number, String, Date] | undefined | Top y coordinate     | Local coordinates |
+| x    | depends  | [Number, String, Date] | undefined | Central x coordinate | Local coordinates |
+| y    | depends  | [Number, String, Date] | undefined | Central y coordinate | Local coordinates |
+| w    | depends  | Number                 | undefined | Width                | Local coordinates |
+| h    | depends  | Number                 | undefined | Height               | Local coordinates |
+
+#### Allowed combinations of positioning props
+The positioning properties of the Rectangle can only be used in certain combinations.
+
+| Combination | Explanation                                                                                                                    |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `x1` + `x2` | `x1` refers to x-coordinate of the left side of the rectangle, `x2` refers to x-coordinate of the right side of the rectangle. |
+| `x` + `w`   | `x` is the center of the rectangle in the x-dimension, `w` is the width. Here, `x1 = x - w / 2`, and `x2 = x + w / 2`.         |
+| `x1` + `w`  | `x2 = x1 + w`                                                                                                                  |
+| `x2` + `w`  | `x1 = x2 - w`                                                                                                                  |
+| `y1` + `y2` | `y1` refers to y-coordinate of the bottom side of the rectangle, `y2` refers to y-coordinate of the top side of the rectangle. |
+| `y` + `h`   | `y` is the center of the rectangle in the x-dimension, `h` is the width. Here, `y1 = y - h / 2`, and `y2 = y + h / 2`.         |
+| `y1` + `h`  | `y2 = y1 + h`                                                                                                                  |
+| `y2` + `h`  | `y1 = y2 - h`                                                                                                                  |
 
 
-| Property      | Type(s) | Description                                                                      | Representation |
-| ------------- | ------- | -------------------------------------------------------------------------------- | -------------- |
-| fill          | String  | [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)           |                |
-| stroke        | String  | [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)         |                |
-| strokeWidth   | Number  | [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)   |                |
-| strokeOpacity | Number  | [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) |                |
-| fillOpacity   | Number  | [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)   |                |
-| opacity       | Number  | [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)        |                |
+### Other aesthetics
+
+| Prop           | Required | Types  | Default   | Description                                                                                     | Unit(s)                    |
+| -------------- | -------- | ------ | --------- | ----------------------------------------------------------------------------------------------- | -------------------------- |
+| stroke         | false    | String | undefined | Stroke color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)           | Named color, hex, rgb, hsl |
+| stroke-width   | false    | Number | undefined | Stroke width [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)     | Screen pixel               |
+| stroke-opacity | false    | Number | undefined | Stroke opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) | Number between 0 to 1      |
+| fill           | false    | String | '#000000' | Fill color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)               | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number | undefined | Fill opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)     | Number between 0 and 1     |
+| opacity        | false    | Number | undefined | Mark opacity  [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)         | Number between 0 and 1     |
+
+
+
+
+        
+
+
+
+
 
 
 ## Examples
@@ -63,8 +93,6 @@ Positioning
 import StackedBar from "./examples/_StackedBar.svelte";
 import SimpleBar from "./examples/_SimpleBar.svelte";
 ```
-
-<SimpleBar/>
 
 ### Scatter plot Chart
 
