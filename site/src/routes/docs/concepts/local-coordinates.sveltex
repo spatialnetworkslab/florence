@@ -167,7 +167,7 @@ import CenterPointFunc from './examples/_CenterPointFunc.svelte'
 
 ## Coordinate transformation
 
-Currently, the only supported coordinate transformation is `'polar'`. More transformations will be supported in the future. When using a polar transformation, `x` values will be displayed as converted to theta, and `y` to radius. In polar coordinate systems usually encountered in mathematics, the coordinate system begins on the right and turns counterclockwise. In `florence`, however, the polar coordinate system starts at the top of the `Section` and turns clockwise:
+Currently, the only supported coordinate transformation is `'polar'`. More transformations will be supported in the future. When using a polar transformation, `x` values will be displayed as converted to theta, and `y` to radius. In polar coordinate systems usually encountered in mathematics, the coordinate system begins on the right and turns counterclockwise. In `florence`, however, the polar coordinate system starts at the bottom of the `Section`:
 
 ```js exec
 import PolarShowcase from './examples/_PolarShowcase.svelte'

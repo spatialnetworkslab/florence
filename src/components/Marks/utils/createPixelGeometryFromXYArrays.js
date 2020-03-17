@@ -21,8 +21,6 @@ export function createPixelGeometryFromXYArrays (
     const scaleTransformation = sectionContext.getScaleTransformation(needsScaling)
     const postScaleTransformation = sectionContext.postScaleTransformation
 
-    console.log(rendervousInput)
-
     return polarGeometry(
       rendervousInput,
       sectionContext,
