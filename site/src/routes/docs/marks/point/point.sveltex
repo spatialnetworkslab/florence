@@ -58,15 +58,15 @@ Positioning
 | ✓  |   | ✓  | ❌      |                          |
 
 
-| Property      | Type(s) | Description                                                               | Representation             |
-| ------------- | ------- | ------------------------------------------------------------------------- | -------------------------- |
-| radius        | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/r)              | <RadiusExample/>|
-| fill          | String  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)           | <FillExample /> |
-| stroke        | String  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)         |                            |
-| strokeWidth   | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)   |                            |
-| strokeOpacity | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) |                            |
-| fillOpacity   | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)   |                            |
-| opacity       | Number  | [more on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)        |                            |
+| Property      | Type(s) | Defaults |Description                                                               | 
+| ------------- | ------- |   ----       |------------------------------------------------------------------------- | 
+| radius        | Number  |      1    |Controls the radius of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/r)              | 
+| fill          | String  |   'black'       |Controls the fill color of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)           | 
+| stroke        | String  |   'none'       |Controls the outline color of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)         | 
+| strokeWidth   | Number  |      0    |Controls the outline width of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)   | 
+| strokeOpacity | Number  |      'none'    |Controls the opacity applied to the stroke of a point. [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) | 
+| fillOpacity   | Number  |  'none'        |Controls the opacity of fill applied to a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)   | 
+| opacity       | Number  |     1     |Controls the transparency of a point, the degree to which the background behind the point is overlaid. [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)        | 
 
 
 ## Examples
