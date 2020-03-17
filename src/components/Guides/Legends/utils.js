@@ -126,10 +126,7 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
   let colorXEndCoords = []
   let colorYStartCoords = []
   let colorYEndCoords = []
-  console.log(flipScale, orient)
-  // if (flipScale) {
-  //   tickLabelPositions.
-  // }
+
   if (orient === 'vertical') {
     // x coords
     colorXStartCoords = tickLabelText.map(i => {
@@ -272,7 +269,7 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
 
   if (orient === 'vertical') {
     gradX = { x1: '0%', x2: '0%' }
-    gradY = flip || flipScale ? { y1: '100%', y2: '0%' } : { y1: '0%', y2: '100%' }
+    gradY = flip || flipScale ? { y1: '0%', y2: '100%' } : { y1: '100%', y2: '0%' }
     y1 = yCoords.y1
     y2 = yCoords.y2
 

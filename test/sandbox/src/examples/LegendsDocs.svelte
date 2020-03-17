@@ -43,41 +43,30 @@
     scaleY={scaleLinear().domain(data.domain('b'))}
     backgroundColor={background}
     paddingColor={padding}
-    flipX
+    flipY
   >
-    <Point
-      x={()=> 0}
-      y={()=> 0}
-    />
     <!-- usePadding = false -->
     <DiscreteLegend
       title={'Test'}
       fill={linearColorScale}
       labelCount={5}
       hjust={'right'}
-      vjust={'bottom'}
-      orient={'horizontal'}
-      usePadding={false}
-    />
-
-    <GradientLegend
-      title={'Gradient'}
-      fill={linearColorScale}
-      labelCount={5}
-      hjust={'right'}
       vjust={'top'}
-      orient={'horizontal'}
+      orient={'vertical'}
       usePadding={false}
+      flipLabels
     />
 
     <GradientLegend
-      title={'Gradient'}
+      title={'Test 2'}
       fill={linearColorScale}
       labelCount={5}
       hjust={'right'}
-      vjust={'center'}
-      orient={'horizontal'}
+      vjust={'bottom'}
+      orient={'vertical'}
       usePadding={false}
+      flip
+      flipLabels
     />
 
     <!-- usePadding = true -->

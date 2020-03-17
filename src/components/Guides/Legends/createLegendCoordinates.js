@@ -61,8 +61,8 @@ export function createPosXCoords (hjust, xRange, orient, width, offset, labelFon
   // }
 
   if (hjust === 'left') {
-    x1 = x1Range + offset //+ labelFontSize * 1.05
-    x2 = x1Range + width + offset //+ labelFontSize * 1.05
+    x1 = x1Range + offset + labelFontSize * 1.05
+    x2 = x1Range + width + offset + labelFontSize * 1.05
   }
 
   if (hjust === 'center' || hjust === 'centre') {
@@ -72,8 +72,8 @@ export function createPosXCoords (hjust, xRange, orient, width, offset, labelFon
   }
 
   if (hjust === 'right') {
-    x1 = x2Range - width + offset //- labelFontSize * 1.05
-    x2 = x2Range + offset //- labelFontSize * 1.05
+    x1 = x2Range - width + offset - labelFontSize * 1.05
+    x2 = x2Range + offset - labelFontSize * 1.05
   }
 
   if (!isNaN(hjust)) {

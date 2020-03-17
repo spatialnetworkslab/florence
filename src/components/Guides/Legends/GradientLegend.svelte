@@ -294,7 +294,7 @@
       if (labelPaddingX !== undefined) {
         tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPaddingX : tickLabelXCoords - labelPaddingX
       }
-      console.log(tickLabelXCoords)
+
       format = getFormat(labelFormat, scaleDomain, tickLabelYCoords.length)
     } else if (orient === 'horizontal') {
       tickLabelXCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, xCoords, flip, orient, labelPaddingX, useScale, _flipX)
