@@ -28,6 +28,7 @@ see allowed prop combinations below.
 import { Graphic, PointLayer, Point, Section } from '@snlab/florence'
 import RadiusExample from './examples/_Radius.svelte'
 import FillExample from './examples/_Fill.svelte'
+import SimpleExample from './examples/_Simple.svelte'
 ```
 
 The `Point` mark draws a circular dot on screen with position defined by `x` and `y` props respectively.
@@ -35,6 +36,8 @@ The `Point` mark draws a circular dot on screen with position defined by `x` and
 All SVG attributes on a 'circle' are supported in `Point` in the form of props.
 
 To create scatter plots, either loop over the dataset to generate one `Point` per iteration or use the `PointLayer`. The `PointLayer` shares all of the `Point`'s props, but takes an array of arrays per prop instead of an array.
+
+<SimpleExample />
 
 ## Props
 
