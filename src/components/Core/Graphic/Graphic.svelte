@@ -9,6 +9,8 @@
   import EventManager from '../../../interactivity/events/EventManager.js'
   import InteractionManager from '../../../interactivity/interactions/InteractionManager.js'
 
+  import { getClipPropsPadding } from '../Section/getClipProps.js'
+
   export let renderer = undefined
   
   export let width = 500
@@ -24,6 +26,9 @@
   export let zoomIdentity = undefined
   export let transformation = undefined
   export let blockReindexing = false
+
+  export let backgroundColor = undefined
+  export let paddingColor = undefined
 
   const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
@@ -68,6 +73,13 @@
     SectionContext.update(sectionContext, sectionData)
     $interactionManagerContext.loadSection($sectionContext)
   }
+
+  $: clipPropsPadding = getClipPropsPadding(coordinates, padding)
+
+  $: {
+    console.log(clipPropsPadding)
+  }
+
   const originalViewBox = viewBox
   let originalViewBoxArray
   
@@ -106,5 +118,22 @@
   {preserveAspectRatio}
   bind:this={rootNode}
 >
+  {#if backgroundColor}
+    <rect 
+      class="content-background"
+      width="100%"
+      height="100%"
+      fill={backgroundColor}
+    />
+  {/if}
+
+  {#if paddingColor}
+    <rect 
+      class="padding-background"
+      {...clipPropsPadding}
+      fill={paddingColor} 
+    />
+  {/if}
+
   <slot />
 </svg>
