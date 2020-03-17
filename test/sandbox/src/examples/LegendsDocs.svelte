@@ -43,7 +43,6 @@
     scaleY={scaleLinear().domain(data.domain('b'))}
     backgroundColor={background}
     paddingColor={padding}
-    flipY
   >
     <!-- usePadding = false -->
     <DiscreteLegend
@@ -53,7 +52,7 @@
       hjust={'right'}
       vjust={'top'}
       orient={'vertical'}
-      usePadding={false}
+      usePadding={true}
       flipLabels
     />
 
@@ -64,7 +63,7 @@
       hjust={'right'}
       vjust={'bottom'}
       orient={'vertical'}
-      usePadding={false}
+      usePadding={true}
       flip
       flipLabels
     />

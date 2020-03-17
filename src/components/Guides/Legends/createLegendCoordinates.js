@@ -43,7 +43,7 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   if (!['top', 'bottom', 'center'].includes(vjust) && y1 === undefined) {
     throw Error('Please specify either `top`, `center`, `bottom` or a number in the range [-1, 1] for `vjust`')
   }
-    
+
   return { y1, y2, height }
 }
 
