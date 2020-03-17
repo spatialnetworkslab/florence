@@ -16,6 +16,7 @@
     padding={sectionPadding}
     backgroundColor={background}
     paddingColor={padding} 
+    
   > 
     <Title 
       title={'Title is inside of the padding of the section'} 
@@ -39,7 +40,7 @@
   
   </Section>
 
-  <!-- <Title 
+  <Title 
     title={'This title is placed inside of the graphic'} 
     subtitle={'Its parent is the Graphic'}
     titleFill={'coral'}
@@ -52,5 +53,5 @@
     subtitle={'Its parent is the Graphic'}
     subtitleFontFamily={'Baskerville'}
     usePadding={true}
-    /> -->
+    />
 </Graphic>
