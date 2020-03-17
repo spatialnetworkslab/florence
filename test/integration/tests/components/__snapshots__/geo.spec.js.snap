@@ -1,5 +1,10 @@
 exports[`Assertions > Geo Tests > [render] geo polygons correctly #0`] = `
-<svg width="500" height="500">
+<svg
+  width="500"
+  height="500"
+  viewBox="0 0 500 500"
+  preserveAspectRatio="xMidYMid meet"
+>
   <defs>
     <clipPath id="clip-sc0">
       <rect x="0" y="0" width="500" height="500"></rect>
@@ -12,7 +17,7 @@ exports[`Assertions > Geo Tests > [render] geo polygons correctly #0`] = `
     <g class="polygon-layer">
       <path
         class="polygon"
-        d="M0,333.3333333333333L500,333.3333333333333L500,166.66666666666669L0,166.66666666666669Z"
+        d="M0,333.33L500,333.33L500,166.67L0,166.67Z"
         fill="black"
         stroke="none"
         stroke-width="0"
@@ -20,7 +25,7 @@ exports[`Assertions > Geo Tests > [render] geo polygons correctly #0`] = `
       ></path>
       <path
         class="polygon"
-        d="M166.66666666666666,333.3333333333333L250,291.6666666666667L83.33333333333333,291.6666666666667Z"
+        d="M166.67,333.33L250,291.67L83.33,291.67Z"
         fill="black"
         stroke="none"
         stroke-width="0"
@@ -28,7 +33,7 @@ exports[`Assertions > Geo Tests > [render] geo polygons correctly #0`] = `
       ></path>
       <path
         class="polygon"
-        d="M333.3333333333333,166.66666666666669L250,208.33333333333334L416.6666666666667,208.33333333333334Z"
+        d="M333.33,166.67L250,208.33L416.67,208.33Z"
         fill="black"
         stroke="none"
         stroke-width="0"

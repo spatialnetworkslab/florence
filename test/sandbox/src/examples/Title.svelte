@@ -16,6 +16,7 @@
     padding={sectionPadding}
     backgroundColor={background}
     paddingColor={padding} 
+    
   > 
     <Title 
       title={'Title is inside of the padding of the section'} 

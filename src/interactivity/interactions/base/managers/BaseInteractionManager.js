@@ -4,8 +4,6 @@ export default class BaseInteractionManager {
     this._eventManager = undefined
 
     this._section = undefined
-    this._coordinateTransformation = undefined
-    this._zoom = undefined
 
     this._markInteractionInterface = undefined
     this._sectionInteractionInterface = undefined
@@ -23,14 +21,6 @@ export default class BaseInteractionManager {
   // Section context loading
   loadSection (sectionData) {
     this._section = sectionData
-  }
-
-  loadCoordinateTransformation (coordinateTransformation) {
-    this._coordinateTransformation = coordinateTransformation
-  }
-
-  loadZoom (zoom) {
-    this._zoom = zoom
   }
 
   // Mark and layer interactions interface

@@ -6,8 +6,10 @@
 export function createPosYCoords (vjust, yRange, orient, height, offset, titleFontSize, flip, flipY) {
   let y1
   let y2
-  const y1Range = yRange[0]
-  const y2Range = yRange[1]
+  // const y1Range = flipY ? yRange[1] : yRange[0]
+  // const y2Range = flipY ? yRange[0] : yRange[1]
+  const y1Range = flipY ? yRange[1] : yRange[0]
+  const y2Range = flipY ? yRange[0] : yRange[1]
   const heightRatio = orient === 'vertical' ? 0.3 : 0.1
   const addTitleSize = titleFontSize
   height = (height === 0 || height === undefined) ? (y2Range - y1Range) * heightRatio : height
@@ -28,7 +30,7 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   }
 
   if (vjust === 'bottom') {
-    y1 = y2Range - height + offset //+ addTitleSize * 0.5
+    y1 = y2Range - height + offset
     y2 = y2Range + offset - addTitleSize * 0.25
   }
 
@@ -48,8 +50,8 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
 export function createPosXCoords (hjust, xRange, orient, width, offset, labelFontSize, flip, flipX) {
   let x1
   let x2
-  const x1Range = xRange[0]
-  const x2Range = xRange[1]
+  const x1Range = flipX ? xRange[1] : xRange[0]
+  const x2Range = flipX ? xRange[0] : xRange[1]
   const widthRatio = orient === 'vertical' ? 0.1 : 0.3
   width = width === 0 ? (x2Range - x1Range) * widthRatio : width
 
@@ -87,7 +89,7 @@ export function createPosXCoords (hjust, xRange, orient, width, offset, labelFon
   return { x1, x2, width }
 }
 
-export function createTitleXCoord (hjust, xCoords, x, offset, addTitleSize, addLabelSize, orient, padding) {
+export function createTitleXCoord (hjust, xCoords, x, offset) {
   if (x) {
     return () => x
   }
@@ -117,10 +119,10 @@ export function createTitleXCoord (hjust, xCoords, x, offset, addTitleSize, addL
     throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `hjust`')
   }
 
-  return x1 + Math.abs(x1 - x2) * justification + padding + offset
+  return x1 + Math.abs(x1 - x2) * justification + offset
 }
 
-export function createTitleYCoord (vjust, yCoords, y, offset, addTitleSize, addLabelSize, orient, padding) {
+export function createTitleYCoord (vjust, yCoords, y, offset, addTitleSize, flipY) {
   if (y) {
     return () => y
   }
@@ -136,11 +138,11 @@ export function createTitleYCoord (vjust, yCoords, y, offset, addTitleSize, addL
   }
   if (vjust === 'bottom') {
     justification = 1
-    addFontSize = addTitleSize / 2
+    addFontSize = addTitleSize * 1.5
   }
   if (vjust === 'top') {
     justification = 0
-    addFontSize = -addTitleSize / 2
+    addFontSize = -addTitleSize * 1.5
   }
 
   if (!isNaN(vjust)) {
@@ -157,5 +159,6 @@ export function createTitleYCoord (vjust, yCoords, y, offset, addTitleSize, addL
     throw Error('Please specify either `top`, `center`, `bottom` or a number for `vjust`')
   }
 
-  return y1 + Math.abs(y1 - y2) * justification + addFontSize + padding + offset
+  const titleY = flipY ? y2 - (Math.abs(y1 - y2) * justification + addFontSize + offset) : y1 + Math.abs(y1 - y2) * justification + addFontSize + offset
+  return titleY
 }
