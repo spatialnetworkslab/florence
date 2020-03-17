@@ -76,10 +76,6 @@
 
   $: clipPropsPadding = getClipPropsPadding(coordinates, padding)
 
-  $: {
-    console.log(clipPropsPadding)
-  }
-
   const originalViewBox = viewBox
   let originalViewBoxArray
   
