@@ -43,30 +43,30 @@ To create scatter plots, either loop over the dataset to generate one `Point` pe
 
 Positioning
 
-| Property | Type(s) | Description               | Representation |
-| -------- | ------- | ------------------------- | -------------- |
-| x        | Number  | X coordinate of the point | <Graphic width={50} height={50}><Point x={25} y={25}  /></Graphic>  |
-| y        | Number  | Y coordinate of the point | <Graphic width={50} height={50}><Point x={25} y={30}  /></Graphic>               |
-| geometry | Object  | Type of geometry          |                |
+| Property | Type(s) | Description               | Representation                                                     |
+| -------- | ------- | ------------------------- | ------------------------------------------------------------------ |
+| x        | Number  | X coordinate of the point | <Graphic width={50} height={50}><Point x={25} y={25}  /></Graphic> |
+| y        | Number  | Y coordinate of the point | <Graphic width={50} height={50}><Point x={25} y={30}  /></Graphic> |
+| geometry | Object  | Type of geometry          |                                                                    |
 
 ### Allowed prop combinations
 
-| x  | y | geometry  | valid? | comments                                                 |
-|----|---| -- |--------|----------------------------------------------------------|
-| ✓  |✓  |    | ✅      | x,y pair                         |
-|    | ✓ | ✓  | ❌      |                          |
-| ✓  |   | ✓  | ❌      |                          |
+| x   | y   | geometry | valid? | comments |
+| --- | --- | -------- | ------ | -------- |
+| ✓   | ✓   |          | ✅      | x,y pair |
+|     | ✓   | ✓        | ❌      |          |
+| ✓   |     | ✓        | ❌      |          |
 
 
-| Property      | Type(s) | Defaults |Description                                                               | 
-| ------------- | ------- |   ----       |------------------------------------------------------------------------- | 
-| radius        | Number  |      1    |Controls the radius of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/r)              | 
-| fill          | String  |   'black'       |Controls the fill color of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)           | 
-| stroke        | String  |   'none'       |Controls the outline color of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)         | 
-| strokeWidth   | Number  |      0    |Controls the outline width of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)   | 
-| strokeOpacity | Number  |      'none'    |Controls the opacity applied to the stroke of a point. [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) | 
-| fillOpacity   | Number  |  'none'        |Controls the opacity of fill applied to a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)   | 
-| opacity       | Number  |     1     |Controls the transparency of a point, the degree to which the background behind the point is overlaid. [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)        | 
+| Property      | Required | Type(s) | Defaults | Description                                                                                                                                                                      | Unit(s) |
+| ------------- | -------- | ------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -----  | 
+| radius        |    ❌    | Number  | 3        | Controls the radius of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/r)                                                                               | Screen pixel  |
+| fill          |    ❌    | String  | 'black'  | Controls the fill color of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)                                                                        | Named color, hex, rgb, hsl  |
+| stroke        |    ❌    | String  | 'none'   | Controls the outline color of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)                                                                   | Screen pixel  |
+| strokeWidth   |    ❌    | Number  | 0        | Controls the outline width of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)                                                             | Number between 0 and 1  |
+| strokeOpacity |    ❌    | Number  |          | Controls the opacity applied to the stroke of a point. [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity)                                          | Named color, hex, rgb, hsl  |
+| fillOpacity   |    ❌    | Number  |          | Controls the opacity of fill applied to a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)                                                   | Number between 0 and 1  |
+| opacity       |    ❌    | Number  | 1        | Controls the transparency of a point, the degree to which the background behind the point is overlaid. [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity) | Number between 0 and 1  |
 
 
 ## Examples
