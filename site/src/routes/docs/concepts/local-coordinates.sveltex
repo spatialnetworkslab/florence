@@ -175,6 +175,10 @@ import PolarShowcase from './examples/_PolarShowcase.svelte'
 
 <PolarShowcase />
 
+Polar coordinates can be used either with or without scales:
+
+
+
 ## Final transformation
 
 ## Nesting Sections
