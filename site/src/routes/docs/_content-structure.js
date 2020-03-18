@@ -30,5 +30,19 @@ export const posts = [
         path: '/docs/guides/legend'
       }
     ]
+  },
+  {
+    title: 'Marks',
+    path: '/docs/marks/point',
+    children: [
+      {
+        title: 'Rectangle',
+        path: '/docs/marks/rectangle'
+      },
+      {
+        title: 'Point',
+        path: '/docs/marks/point'
+      }
+    ]
   }
 ]
