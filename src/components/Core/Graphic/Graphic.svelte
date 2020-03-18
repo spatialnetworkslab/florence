@@ -1,3 +1,10 @@
+<script context="module">
+  let idCounter = 0
+  function getId () {
+    return 'gr' + idCounter++
+  }
+</script>
+
 <script>
   import { onMount } from 'svelte'
   import * as GraphicContext from './GraphicContext'
@@ -9,6 +16,8 @@
   import InteractionManager from '../../../interactivity/interactions/InteractionManager.js'
 
   import { getClipPropsPadding, getClipPropsNoPadding } from '../Section/getClipProps.js'
+
+  const graphicId = getId()
 
   export let renderer = undefined
   
@@ -45,7 +54,7 @@
   EventManagerContext.update(eventManagerContext, eventManager)
   const interactionManager = new InteractionManager()
 
-  interactionManager.setId('graphic')
+  interactionManager.setId(graphicId)
   interactionManager.linkEventManager(eventManager)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
@@ -56,7 +65,7 @@
 
   $: {
     const sectionData = {
-      sectionId: 'graphic',
+      sectionId: graphicId,
       coordinates,
       scaleX,
       scaleY,
@@ -114,7 +123,7 @@
   bind:this={rootNode}
 >
   <defs>
-    <mask id="mask-padding-bg">
+    <mask id={`${graphicId}-mask-padding-bg`}>
       <rect {...clipPropsNoPadding} fill="white" />
       <rect {...clipPropsPadding} fill="black" />
     </mask>
@@ -131,7 +140,7 @@
   {#if paddingColor}
     <rect 
       class="padding-background"
-      mask="url(#mask-padding-bg)"
+      mask={`url(#${graphicId}-mask-padding-bg)`}
       {...clipPropsNoPadding}
       fill={paddingColor} 
     />
