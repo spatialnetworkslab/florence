@@ -1,4 +1,3 @@
-import { scaleLinear } from 'd3-scale'
 import { applyPadding } from '../../utils/padding.js'
 
 export function getRanges ({ coordinates }) {
