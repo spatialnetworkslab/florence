@@ -39,9 +39,9 @@ These three concepts will be explained in depth in the next paragraphs.
 
 ### Basics
 
-Scaling is the process of ["mapping a dimension of abstract data to a visual representation"](https://github.com/d3/d3-scale). In `florence`, this is not always true. The output of the scaling step is not necessarily the final 'visual representation' (a pixel value). If the user chooses to apply a coordinate transformation, the output of the scaling step goes through another step of processing. Or, if the user specifies the `padding`, `flipX`, `flipY` or `zoomIdentity` props, there will be another ('final') step before we have obtain a pixel value. But for now, let's forget about coordinate transformations and things like padding and flipping, and look at how scaling works in isolation.
+Scaling is the process of ["mapping a dimension of abstract data to a visual representation"](https://github.com/d3/d3-scale). In `florence`, this is not always true. The output of the scaling step is not necessarily the final 'visual representation' (a pixel value). If the user chooses to apply a coordinate transformation, the output of the scaling step goes through another step of processing. Or, if the user specifies the `padding`, `flipX`, `flipY` or `zoomIdentity` props, there will be another ('final') step before we obtain a pixel value. But for now, let's forget about coordinate transformations and things like padding and flipping, and look at how scaling works in isolation.
 
-To scale coordinates in a local coordinate system, pass a [d3 scale](https://github.com/d3/d3-scale) to `scaleX` or `scaleY`. D3 scales are functions that map domains to ranges, where a domain is the 'abstract data dimension' and the range is the output-dimensions. In `florence`, the range will be taken care of for you, so you only need to define the domain.
+To scale coordinates in a local coordinate system, pass a [d3 scale](https://github.com/d3/d3-scale) to `scaleX` or `scaleY`. D3 scales are functions that map domains to ranges, where a domain is the 'abstract data dimension' and the range is the output dimension. In `florence`, the range will be taken care of for you, so you only need to define the domain.
 
 Say that we have the following point:
 
@@ -167,7 +167,7 @@ import CenterPointFunc from './examples/_CenterPointFunc.svelte'
 
 ## Coordinate transformation
 
-Currently, the only supported coordinate transformation is `'polar'`. More transformations will be supported in the future. When using a polar transformation, `x` values will be displayed as converted to theta, and `y` to radius. In polar coordinate systems usually encountered in mathematics, the coordinate system begins on the right and turns counterclockwise. In `florence`, however, the polar coordinate system starts at the bottom of the `Section`. Check out the following code and the resulting output, and try switching the transformation from identity to polar:
+Currently, the only supported coordinate transformation is `'polar'`. More transformations will be supported in the future. When using a polar transformation, `x` values will be displayed as if they were converted to theta, and `y` values will appear like the radius. In polar coordinate systems usually encountered in mathematics, the coordinate system begins on the right and turns counterclockwise. In `florence`, however, the polar coordinate system starts at the bottom of the `Section`. Check out the following code and the resulting output, and try switching the transformation from identity to polar:
 
 ```js exec
 import PolarShowcase from './examples/_PolarShowcase.svelte'
@@ -261,7 +261,9 @@ The last step in going from local coordinates to pixel values is the 'final' tra
 
 ### Flipping
 
-'Flipping' refers to using the `flipX` and `flipY` props to 'flip' to inverse the final output. `flipY` is particularly useful. Web coordinates run from top to bottom by default, but when making graphics, we usually expect coordinates to run from bottom to top. Without using `flipX` and `flipY`, the following point will be in the top left corner:
+'Flipping' refers to using the `flipX` and `flipY` props to 'flip' to inverse the final output. `flipY` is particularly useful. Web coordinates run from top to bottom by default, but when making graphics, we usually expect coordinates to run from bottom to top. `flipY` provides a convenient way to invert this behavior.
+
+Without using `flipX` and `flipY`, the following point will be in the top left corner:
 
 ```js exec
 import Flip from './examples/_Flip.svelte'
@@ -464,7 +466,7 @@ import { scaleLinear } from 'd3-scale'
 
 ### Scaling example
 
-This example will illustrate working with `String`s and d3's [scalePoint](https://github.com/d3/d3-scale#scalePoint). Let's say that a street artist has three favorite locations to play: the square, the park, and the mall. Every day she randomly picks a location where she plays all day, and at the end of the day she writes down the location and how much money she made. To have some insight in which locations yield the best results, she decides to visualize the data of the last 100 days, which is stored in two `Array`s: `location` and `money`. How would she accomplish this in `florence`? For this example, we will also use padding and axes, to make the result a bit easier to interpret.
+This example will illustrate working with `String`s and d3's [scalePoint](https://github.com/d3/d3-scale#scalePoint). Let's say that a street artist has three favorite locations to play: the square, the park, and the mall. Every day she randomly picks a location where she plays all day, and at the end of the day she writes down the location and how much money she made. To have some insight in which locations yield the best results, she decides to visualize the data of the last 100 days, which is stored in two `Array`s: `location` and `money`. How would she accomplish this in `florence`? For this example, we will also use axes, to make the result a bit easier to interpret.
 
 ```js exec
 import StreetArtist from './examples/_StreetArtist.svelte'
@@ -498,5 +500,3 @@ const locations = ['square', 'park', 'mall']
 ```
 
 <StreetArtist />
-
-Note that the domain for `scaleY` is `[100, 0]`. If the domain would be `[0, 100]` instead, the y dimension would be upside down, which would be unintuitive.
