@@ -55,7 +55,7 @@ And we want to position this point in the middle of the following `Graphic`:
 import { Graphic } from '@snlab/florence'
 ```
 
-```html
+```
 <Graphic 
   width={200}
   height={200}
@@ -71,7 +71,7 @@ import { Graphic, Point } from '@snlab/florence'
 import { scaleLinear } from 'd3-scale'
 ```
 
-```html
+```
 <Graphic 
   width={200}
   height={200}
@@ -112,7 +112,7 @@ const domainX = ['a', 'b', 'c', 'd', 'e']
 const domainY = [new Date(2020, 1, 1), new Date(2020, 1, 10)])
 ```
 
-```html
+```
 <Graphic
   width={200}
   height={200}
@@ -147,7 +147,7 @@ Even when `scaleX` and `scaleY` are used, it is possible to bypass them. To do t
 import CenterPointFunc from './examples/_CenterPointFunc.svelte'
 ```
 
-```html
+```
 <Graphic 
   width={200}
   height={200}
@@ -177,7 +177,7 @@ import PolarShowcase from './examples/_PolarShowcase.svelte'
 let transformation = 'identity'
 ```
 
-```html
+```
 <div>
   <label for="coordinate-select">Coordinates:</label>
   <select name="coordinate-select" bind:value={transformation}>
@@ -224,7 +224,7 @@ Polar coordinates can be used either with or without scales. In the examples abo
 import PolarScalingShowcase from './examples/_PolarScalingShowcase.svelte'
 ```
 
-```html
+```
 <Graphic
   width={500}
   height={500}
@@ -269,7 +269,7 @@ Without using `flipX` and `flipY`, the following point will be in the top left c
 import Flip from './examples/_Flip.svelte'
 ```
 
-```html
+```
 <Graphic
   width={200}
   height={200}
@@ -283,7 +283,7 @@ import Flip from './examples/_Flip.svelte'
 
 With `flipX` and `flipY`, it is moved to the bottom right corner instead:
 
-```html
+```
 <Graphic
   width={200}
   height={200}
@@ -331,7 +331,7 @@ import Padding from './examples/_Padding.svelte'
 import { Graphic, Rectangle } from '@snlab/florence'
 ```
 
-```html
+```
 <Graphic 
   width={200}
   height={200}
@@ -386,7 +386,7 @@ const zoomIdentity = {
 }
 ```
 
-```html
+```
 <Graphic
   width={200}
   height={200}
@@ -414,7 +414,7 @@ import { Graphic, Section, Point } from '@snlab/florence'
 import { scaleLinear } from 'd3-scale'
 ```
 
-```html
+```
 <Graphic
   width={500}
   height={500}
@@ -481,7 +481,7 @@ const { location, money } = getData()
 const locations = ['square', 'park', 'mall']
 ```
 
-```html
+```
 <Graphic
   width={200}
   height={200}

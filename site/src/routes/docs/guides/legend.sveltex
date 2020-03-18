@@ -1,6 +1,6 @@
 # Legends
 
-```markup
+```
 <Graphic>
   <!-- Legends can be placed inside or outside the `Section` component -->
    <DiscreteLegend
@@ -125,7 +125,7 @@ import SimpleLegends from './utils/_SimpleLegends.svelte'
 
 <SimpleLegends/>
 
-```markup
+```
 <script>
   // d3
   import { scaleLinear } from 'd3-scale'
@@ -219,7 +219,7 @@ import FillOpacity from './utils/_FillOpacity.svelte'
 <!-- ::: codesandboxplus ./src/routes/docs/guides/utils/_FillOpacity.svelte 5-10
 ::: -->
 
-```markup
+```
 <script>
   // same imports and data as above, but we use fillOpacity here instead
 </script>
@@ -285,7 +285,7 @@ import Bins from './utils/_Bins.svelte'
 <!-- ::: codesandboxplus ./src/routes/docs/guides/utils/_Bins.svelte 5-10
 ::: -->
 
-```markup
+```
   <script>
     // same imports and data as above in previous two examples
   </script>
@@ -354,7 +354,7 @@ import Positioning from './utils/_Positioning.svelte'
 <!-- ::: codesandboxplus ./src/routes/docs/guides/utils/_Positioning.svelte 5-10
 ::: -->
 
-```markup
+```
   <Graphic width={500} height={500}
     padding={50}
   >     
@@ -413,7 +413,7 @@ import UsePadding from './utils/_UsePadding.svelte'
 
 <UsePadding/>
 
-```markup
+```
   <script>
     // similar data processing as previous examples
   </script>
@@ -479,7 +479,7 @@ import CategoricalScales from './utils/_CategoricalScales.svelte'
 ::: codesandboxplus ./src/routes/docs/guides/utils/_CategoricalScales.svelte 5-10
 ::: -->
 
-```markup
+```
   <script>
     // d3
     import { scaleBand, scaleLinear, scaleOrdinal} from 'd3-scale'
