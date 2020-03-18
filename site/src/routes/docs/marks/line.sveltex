@@ -53,17 +53,16 @@ To create plots with multiple lines, we can either loop over the dataset (with `
 | x        | depends  | [Array, Function] | undefined | x-coordinates of line | Data value to be scaled by Section's scaleX. If Function then local coordinates.  |
 | y        | depends  | [Array, Function] | undefined | y-coordinates of line | Data value to be scaled by Section's scaleY. If Function then local coordinates. |
 | geometry | depends  | [Object, Function]                 | undefined | GeoJSON object of type Line    | Data value to be scaled by Section's scaleX/scaleY. If Function then local coordinates. |
-                                                               |
 
 
 ### Other aesthetics
 | Prop           | Required | Types  | Default   | Description             | Unit(s)                    |
 | -------------- | -------- | ------ | --------- | ----------------------- | -------------------------- |
 | stroke         | false    | String | '#000000' | Stroke color            | Named color, hex, rgb, hsl |
-| stroke-width   | false    | Number | 2         | Stroke width            | Screen pixels              |
-| stroke-opacity | false    | Number | 1         | Stroke opacity          | Number between 0 and 1     |
-| fill           | false    | String | 'none'    | Fill color (under line) | Named color, hex, rgb, hsl |
-| fill-opacity   | false    | Number | 1         | Fill opacity            | Number between 0 and 1     |
+| stroke-width   | false    | Number | 3         | Stroke width            | Screen pixels              |
+| stroke-opacity | false    | Number | undefined | Stroke opacity          | Number between 0 and 1     |
+| fill           | false    | String | none      | Fill color (under line) | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number | undefined | Fill opacity            | Number between 0 and 1     |
 | opacity        | false    | Number | 1         | Mark opacity            | Number between 0 and 1     |
 
 These are analogous to the CSS properties of the same names.
