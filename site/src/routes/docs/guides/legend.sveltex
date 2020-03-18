@@ -220,56 +220,56 @@ import FillOpacity from './utils/_FillOpacity.svelte'
 ::: -->
 
 ```markup
-  <script>
-    // same imports and data as above, but we use fillOpacity here instead
-  </script>
+<script>
+  // same imports and data as above, but we use fillOpacity here instead
+</script>
 
-  <Graphic width={500} height={500}
-  >     
-    <GradientLegend
-      labels={[0, 15, 50, 90, 120]}
+<Graphic width={500} height={500}
+>     
+  <!-- Vjust -->
+  <GradientLegend
+    title={'Gradient'}
+    fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+    fill={'goldenrod'}
+    labelCount={5}
+    vjust={'top'}
+    hjust={'right'}
+    flip
+  />
+
+  <!-- Pixels -->
+  <DiscreteLegend
+    title={'Discrete'}
+    fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+    fill={'goldenrod'}
+    orient={'horizontal'}
+    labelCount={5}
+    vjust={'top'}
+    hjust={'center'}
+  /> 
+
+  <!-- Basic example + continuous scales -->
+  <Section 
+    x1={0} x2={500}
+    y1={0} y2={500}
+    padding={80}
+    scaleX={scaleLinear().domain(data.domain('a'))}
+    scaleY={scaleLinear().domain(data.domain('b'))}
+  >
+
+    <PointLayer
+      x={filteredData.column('a')}
+      y={filteredData.column('b')}
+      key={filteredData.column('$key')}
       fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
-      fill={'steelblue'}
-      labelCount={5}
-      title={'Gradient'}
-      titlePaddingY={-7}
-      vjust={'top'}
-      hjust={'right'}
-      flip
+      fill={'goldenrod'}
     />
+    <XAxis />
+    <YAxis />
+  
+  </Section>
 
-    <DiscreteLegend
-      labels={[0, 15, 50, 90, 120]}
-      title={'Discrete'}
-      fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
-      fill={'steelblue'}
-      orient={'horizontal'}
-      labelCount={5}
-      vjust={'top'}
-      hjust={'center'}
-    /> 
-
-    <Section 
-      x1={0} x2={500}
-      y1={0} y2={500}
-      padding={80}
-      scaleX={scaleLinear().domain(data.domain('a'))}
-      scaleY={scaleLinear().domain(data.domain('b'))}
-    >
-
-      <PointLayer
-        x={filteredData.column('a')}
-        y={filteredData.column('b')}
-        key={filteredData.column('$key')}
-        fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
-        fill={'steelblue'}
-      />
-      <XAxis />
-      <YAxis />
-    
-    </Section>
-
-  </Graphic>
+</Graphic>
 ```
 
 ### Setting legends to bin values
