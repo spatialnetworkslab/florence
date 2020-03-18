@@ -233,14 +233,14 @@ Since we have already specified the scale values in `Section`, our raw values wi
 
 The graph should now look like this:
 <!-- TODO replace with codeboxes -->
-<!-- ```js exec
+```js exec
 import Basic from './utils/_Basic.svelte'
-``` -->
+```
 
-<!-- <Basic switch0 /> -->
+<Basic switch0 />
 
-::: codesandboxplus ./src/routes/tutorials/utils/_basic0/App.svelte 1-3
-:::
+<!-- ::: codesandboxplus ./src/routes/tutorials/utils/_basic0/App.svelte 1-3
+::: -->
 
 ## Axes
 
@@ -281,22 +281,48 @@ We also add padding to `Section` such that the axis labels show up.
 The graph should now look like this:
 <!-- TODO replace with codeboxes -->
 
-<!-- <Basic switch0 switch1 /> -->
+<Basic switch0 switch1 />
 
 ## Plot Title (Optional)
 
 Graphs usually come with titles describing the subject of the graph. This can be added using the `Title` component.
 
+<Basic switch0 switch1 switch2 />
+
 ```svelte
-  <Title 
-    title={'Fruit Sizes'} 
-    titleFontFamily={'Baskerville'}
-    usePadding={true}
-  />
+<Graphic 
+  width={500} height={500}
+>
+
+  <Section
+    x1={50} x2={450}
+    y1={50} y2={450}
+    padding={40}
+    scaleX={scaleFruit}
+    scaleY={scaleMeanDiameter}
+  >
+
+    <PointLayer
+      x={data.column('fruit')}
+      y={data.column('diameter')}
+      key={data.column('$key')}
+    />
+
+    <XAxis
+    />
+    <YAxis 
+    />
+
+    <Title 
+      title={'Fruit Sizes'} 
+      titleFontFamily={'Baskerville'}
+      usePadding={true}
+    />
+  </Section>
+</Graphic>
+
 ```
 <!-- TODO replace with codeboxes -->
-
-<!-- <Basic switch0 switch1 switch2 /> -->
 
 For further details, refer to the [Title documentation](docs/core/title).
 
@@ -310,7 +336,43 @@ In this case, the points on the graph can be scaled to display a different color
 
 <!-- TODO replace with codeboxes -->
 
-<!-- <Basic switch1 switch2 switch3 /> -->
+<Basic switch1 switch2 switch3 />
+
+```svelte
+<Graphic 
+  width={500} height={500}
+>
+
+  <Section
+    x1={50} x2={450}
+    y1={50} y2={450}
+    padding={40}
+    scaleX={scaleFruit}
+    scaleY={scaleMeanDiameter}
+  >
+
+    <PointLayer
+      x={data.column('fruit')}
+      y={data.column('diameter')}
+      key={data.column('$key')}
+      fill={data.column('fruit').map(d => scaleFruitColor(d))}
+      radius={scaleLinear().domain(meanDiameterDomain).range([2, 10])}
+    />
+
+    <XAxis
+    />
+    <YAxis 
+    />
+
+    <Title 
+      title={'Fruit Sizes'} 
+      titleFontFamily={'Baskerville'}
+      usePadding={true}
+    />
+  </Section>
+</Graphic>
+
+```
 
 Note that there is an extra type: `schemeCategory10` specification passed to the scale. This simply tells the mark to use the 'category10' color scheme. This is one of [many predefined color schemes from d3](https://github.com/d3/d3-scale-chromatic). However, do note that certain color schemes can only be used with categorical variables/certain scale types, while others can only be used with numerical variables. 
 
@@ -319,20 +381,48 @@ Note that there is an extra type: `schemeCategory10` specification passed to the
 
 Similar to the plot title, titles can be added to the axes for additional readability. This can be specified as properties of the `XAxis` and `YAxis` components.
 
-```svelte
-  <XAxis
-    title={'fruit'}
-  />
-  <YAxis 
-    title={'diameter/cm'}
-  />
-
-```
+<Basic switch2 switch3 switch4 />
 
 The title-vjust and title-hjust properties are used to position the axis title relative to the vertical and horizontal size of the axis.
 
 <!-- TODO replace with codeboxes -->
 
-<!-- <Basic switch2 switch3 switch4 /> -->
+```svelte
+  <Graphic 
+    width={500} height={500}
+  >
+
+    <Section
+      x1={50} x2={450}
+      y1={50} y2={450}
+      padding={40}
+      scaleX={scaleFruit}
+      scaleY={scaleMeanDiameter}
+    >
+
+      <PointLayer
+        x={data.column('fruit')}
+        y={data.column('diameter')}
+        key={data.column('$key')}
+        fill={data.column('fruit').map(d => scaleFruitColor(d))}
+        radius={scaleLinear().domain(meanDiameterDomain).range([2, 10])}
+      />
+
+      <XAxis
+        title={'fruit'}
+      />
+      <YAxis 
+        title={'diameter/cm'}
+      />
+      <Title 
+        title={'Fruit Sizes'} 
+        titleFontFamily={'Baskerville'}
+        usePadding={true}
+      />
+    </Section>
+  </Graphic>
+
+
+```
 
 For further details, refer to the axes component documentation. [TODO ADD LINK]
