@@ -60,6 +60,10 @@ export const posts = [
         path: '/docs/guides/xaxis'
       },
       {
+        title: 'Y-axis',
+        path: '/docs/guides/yaxis'
+      },
+      {
         title: 'Legend',
         path: '/docs/guides/legend'
       }
