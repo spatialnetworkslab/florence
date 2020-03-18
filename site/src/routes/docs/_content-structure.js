@@ -25,6 +25,50 @@ export const posts = [
       {
         title: 'Interactivity',
         path: '/docs/concepts/interactivity'
+      },
+      {
+        title: 'Title',
+        path: '/docs/core/title'
+      }
+    ]
+  },
+  {
+    title: 'Marks',
+    path: '/docs/marks/point',
+    children: [
+      {
+        title: 'Point',
+        path: '/docs/marks/point'
+      },
+      {
+        title: 'Symbol',
+        path: '/docs/marks/symbol'
+      },
+      {
+        title: 'Line',
+        path: '/docs/marks/line'
+      },
+      {
+        title: 'Rectangle',
+        path: '/docs/marks/rectangle'
+      },
+      {
+        title: 'Area',
+        path: '/docs/marks/area'
+      },
+      {
+        title: 'Label',
+        path: '/docs/marks/label'
+      }
+    ]
+  },
+  {
+    title: 'Guides',
+    path: '/docs/guides/legend',
+    children: [
+      {
+        title: 'Legend',
+        path: '/docs/guides/legend'
       }
     ]
   }

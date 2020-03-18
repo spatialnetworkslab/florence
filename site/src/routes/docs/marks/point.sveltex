@@ -1,0 +1,70 @@
+# Point
+The `Point` mark is used to plot simple point elements. It is a special case of the more general `Symbol` mark that is made available on its own for convenience.
+
+```js exec
+import SimpleExample from './examples/_PointSimple.svelte'
+```
+<SimpleExample />
+
+```markup
+<script>
+ const x = [
+    new Date(2002, 0, 1),
+    new Date(2004, 0, 1),
+    new Date(2006, 0, 1)
+  ]
+  const y = [20, 40, 10]
+</script>
+<Graphic>
+  <PointLayer {x} {y} />
+</Graphic>
+```
+
+To render the Point mark, you will need to provide the `x` and `y` or the `geometry` props. The two uses are mutually exclusive.
+
+`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scale used in the parent Section. `geometry` accepts GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) objects only. Values will be scaled according to the `scaleX` and `scaleY` of the parent Section. Alternatively a function can be supplied that return a coordinate in the local coordinate system directly, bypassing any active scales.
+
+To create plots with multiple points, we can either loop over the dataset (with `{#each}`) to generate one `Point` per iteration, or use the `PointLayer`. The `PointLayer` shares all of the `Point`'s props, but takes an array of arrays per prop instead of a single value.
+
+```markup
+<Graphic>
+  <Point
+    x={🥝}
+    y={🍇}
+  />
+</Graphic>
+
+<Graphic>
+  <!-- this draws 3 points -->
+  <PointLayer
+    x={[🥝, 🍋, 🍉]}
+    y={[🍇, 🍇, 🍇]}
+  />
+</Graphic>
+```
+
+
+## Properties
+### Positioning
+
+| Prop     | Required | Types                  | Default   | Description                     | Unit(s)           |
+| -------- | -------- | ---------------------- | --------- | ------------------------------- | ----------------- |
+| x        | depends  | [Number, String, Date, Function] | undefined | x-coordinate of center of point | Data value to be scaled by Section's scaleX. If Function then local coordinates.  |
+| y        | depends  | [Number, String, Date, Function] | undefined | y-coordinate of center of point | Data value to be scaled by Section's scaleY. If Function then local coordinates. |
+| geometry | depends  | [Object, Function]                 | undefined | GeoJSON object of type Point    | Data value to be scaled by Section's scaleX/scaleY. If Function then local coordinates. |
+                                                               |
+
+### Other aesthetics
+| Prop           | Required | Types  | Default   | Description    | Unit(s)                    |
+| -------------- | -------- | ------ | --------- | -------------- | -------------------------- |
+| radius         | false    | Number | 3         | Radius length  | Screen pixel               |
+| stroke         | false    | String | 'none'    | Stroke color   | Named color, hex, rgb, hsl |
+| stroke-width   | false    | Number | 0         | Stroke width   | Screen pixel               |
+| stroke-opacity | false    | Number | 1         | Stroke opacity | Number between 0 and 1     |
+| fill           | false    | String | '#000000' | Fill color     | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number | 1         | Fill opacity   | Number between 0 and 1     |
+| opacity        | false    | Number | 1         | Mark opacity   | Number between 0 and 1     |
+
+These are analogous to the CSS properties of the same names.
+
+## Examples
