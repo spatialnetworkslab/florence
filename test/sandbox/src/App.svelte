@@ -155,7 +155,7 @@
       name: 'Legends: Docs',
       url: 'legendsdocs',
       component: LegendsDocs
-    },
+    }
     // {
     //   name: 'Legends',
     //   url: '/legends',

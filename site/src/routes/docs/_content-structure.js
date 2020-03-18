@@ -1,6 +1,6 @@
 export const posts = [
   {
-    title: 'Core',
+    title: 'Core components',
     path: '/docs/core/graphic',
     children: [
       {
@@ -10,10 +10,21 @@ export const posts = [
       {
         title: 'Section',
         path: '/docs/core/section'
-      },
+      }
+    ]
+  },
+
+  {
+    title: 'Concepts',
+    path: '/docs/concepts/local-coordinates',
+    children: [
       {
         title: 'Local coordinates',
-        path: '/docs/core/local-coordinates'
+        path: '/docs/concepts/local-coordinates'
+      },
+      {
+        title: 'Interactivity',
+        path: '/docs/concepts/interactivity'
       },
       {
         title: 'Title',
