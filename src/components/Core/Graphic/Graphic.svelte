@@ -1,6 +1,5 @@
 <script>
   import { onMount } from 'svelte'
-
   import * as GraphicContext from './GraphicContext'
   import * as SectionContext from '../Section/SectionContext'
   import * as EventManagerContext from './EventManagerContext'
@@ -8,6 +7,8 @@
 
   import EventManager from '../../../interactivity/events/EventManager.js'
   import InteractionManager from '../../../interactivity/interactions/InteractionManager.js'
+
+  import { getClipPropsPadding, getClipPropsNoPadding } from '../Section/getClipProps.js'
 
   export let renderer = undefined
   
@@ -25,6 +26,9 @@
   export let zoomIdentity = undefined
   export let blockReindexing = false
 
+  export let backgroundColor = undefined
+  export let paddingColor = undefined
+
   const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
   const eventManagerContext = EventManagerContext.init()
@@ -39,11 +43,10 @@
   // set up event and interaction manager
   const eventManager = new EventManager()
   EventManagerContext.update(eventManagerContext, eventManager)
-
   const interactionManager = new InteractionManager()
+
   interactionManager.setId('graphic')
   interactionManager.linkEventManager(eventManager)
-
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
   // Keep SectionContext and InteractionManagerContext up to date
@@ -68,6 +71,10 @@
     SectionContext.update(sectionContext, sectionData)
     $interactionManagerContext.loadSection($sectionContext)
   }
+
+  $: clipPropsPadding = getClipPropsPadding(coordinates, padding)
+  $: clipPropsNoPadding = getClipPropsNoPadding(coordinates)
+
   const originalViewBox = viewBox
   let originalViewBoxArray
   
@@ -106,5 +113,29 @@
   {preserveAspectRatio}
   bind:this={rootNode}
 >
+  <defs>
+    <mask id="mask-padding-bg">
+      <rect {...clipPropsNoPadding} fill="white" />
+      <rect {...clipPropsPadding} fill="black" />
+    </mask>
+  </defs>
+
+  {#if backgroundColor}
+    <rect 
+      class="content-background"
+      {...clipPropsPadding}
+      fill={backgroundColor}
+    />
+  {/if}
+
+  {#if paddingColor}
+    <rect 
+      class="padding-background"
+      mask="url(#mask-padding-bg)"
+      {...clipPropsNoPadding}
+      fill={paddingColor} 
+    />
+  {/if}
+
   <slot />
 </svg>

@@ -175,16 +175,17 @@
     <rect {...clipPropsNoPadding} />
   </clipPath>
 
-  <clipPath id={`clip-${sectionId}-data`}>
-    <rect {...clipPropsPadding} fill="white" />
-  </clipPath>
+  <mask id={`mask-${sectionId}-padding-bg`}>
+    <rect {...clipPropsNoPadding} fill="white" />
+    <rect {...clipPropsPadding} fill="black" />
+  </mask>
 </defs>
 
 <g class="section" clip-path={`url(#clip-${sectionId})`} >
   {#if backgroundColor}
     <rect 
       class="content-background"
-      {...clipPropsNoPadding}
+      {...clipPropsPadding}
       fill={backgroundColor}
     />
   {/if}
@@ -192,9 +193,8 @@
   {#if paddingColor}
     <rect 
       class="padding-background"
-      mask={`url(#clip-${sectionId}-data)`}
-      width="100%"
-      height="100%"
+      mask={`url(#mask-${sectionId}-padding-bg)`}
+      {...clipPropsNoPadding}
       fill={paddingColor} />
   {/if}
   <slot />

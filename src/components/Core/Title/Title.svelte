@@ -1,9 +1,11 @@
 <script>
-  import Mark from '../../Marks/Mark/Mark.svelte' // src/components/Marks/Mark/Mark.svelte
+  import Mark from '../../Marks/Mark/Mark.svelte'
   import { isValid, createTitleXCoord, createTitleYCoord } from './utils.js'
+  import { removePadding } from '../utils/padding.js'
   
   // Contexts
   import * as SectionContext from '../Section/SectionContext'
+  import * as GraphicContext from '../Graphic/GraphicContext'
 
   // Aesthetics: positioning
   export let x = undefined
@@ -12,7 +14,7 @@
   export let vjust = 'top'
   export let hjust = 'center'
   export let xOffset = 0
-  export let yOffset = 10
+  export let yOffset = 0
   export let usePadding = false
 
   // Aesthetics: Title
@@ -53,31 +55,65 @@
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
+  const graphicContext = GraphicContext.subscribe()
 
   // Private variables
+  let _padding
+  let _flipY = false
+  let _flipX = false
+  let xRange = $sectionContext.scaleX.range()
+  let yRange = $sectionContext.scaleY.range()
   let totalFontSize
 
-  $: bbox = usePadding === true
-    ? $sectionContext.bbox
-    : $sectionContext.paddedBbox
-
-  $: xRange = [bbox.minX, bbox.maxX]
-  $: yRange = [bbox.minY, bbox.maxY]
-
-  // Title text positioning wrt section/graphic context
   $: {
+    if ($sectionContext.flipY) {
+      _flipY = true
+    }
+
+    if ($graphicContext.flipY) {
+      _flipY = true
+    }
+  }
+
+  $: {
+    if ($sectionContext.flipX) {
+      _flipX = true
+    }
+
+    if ($graphicContext.flipX) {
+      _flipX = true
+    }
+  }
+
+  $: {
+    // Removal of padding from pixel value range, if necessary
+    if (usePadding === true) {
+      _padding = $sectionContext.padding
+      if (_padding === undefined) {
+        _padding = $graphicContext.padding
+      }
+      xRange = removePadding(xRange, _padding.left, _padding.right)
+      yRange = removePadding(yRange, _padding.top, _padding.bottom)
+    }
+
+    // Title text positioning wrt section/graphic context
     totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize : titleFontSize
+  
     // Autopositioning
     if (!isValid(x, y)) {
-      x = createTitleXCoord(hjust, xRange, x, xOffset, totalFontSize)
-      y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize)
+      if (sectionContext.flipX) xRange.reverse()
+      x = createTitleXCoord(hjust, xRange, x, xOffset, _flipX)
+  
+      if (sectionContext.flipY) yRange.reverse()
+      y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize, _flipY)
     } else {
       let _x, _y
+
       /** If function, uses pixel values based on padding/no padding setting
        * (does not rely on section/graphic scale)
        * else if value, uses data scale => convert to pixel values
       **/
-
+  
       if ({}.toString.call(x) === '[object Function]') {
         _x = x()
       } else {
@@ -94,34 +130,33 @@
       x = _x
       y = _y
     }
-
     if (subtitle.length > 0) {
       if (!isValid(subtitleX, subtitleY)) {
         yRange = $sectionContext.scaleY.range()
         subtitleX = x
-        subtitleY = y + titleFontSize
+        subtitleY = _flipY ? y - titleFontSize * 1.5 : y + titleFontSize * 1.5
       }
     }
   }
 </script>
 
 <!-- TITLE -->
-<!-- {#if isValid(x, y) && title.length > 0} -->
-<Mark
-  type="Label"
-  x={ () => { return x } } 
-  y={ () => { return y } } 
-  {geometry} 
-  fill={titleFill} 
-  stroke={titleStroke} 
-  strokeWidth={titleStrokeWidth}
-  strokeOpacity={titleStrokeOpacity} fillOpacity={titleFillOpacity} opacity={titleOpacity}
-  text={title}
-  fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
-  {transition} {onClick} {onMouseover} {onMouseout}
-  _asPolygon={false}
-/>
-<!-- {/if} -->
+{#if isValid(x, y) && title.length > 0}
+  <Mark
+    type="Label"
+    x={ () => { return x } } 
+    y={ () => { return y } } 
+    {geometry} 
+    fill={titleFill} 
+    stroke={titleStroke} 
+    strokeWidth={titleStrokeWidth}
+    strokeOpacity={titleStrokeOpacity} fillOpacity={titleFillOpacity} opacity={titleOpacity}
+    text={title}
+    fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
+    {transition} {onClick} {onMouseover} {onMouseout}
+    _asPolygon={false}
+  />
+{/if}
 
 <!-- SUBTITLE -->
 <!-- {#if isValid(subtitleX, subtitleY) && subtitle.length > 0} -->
