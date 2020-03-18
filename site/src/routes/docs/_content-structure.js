@@ -34,6 +34,10 @@ export const posts = [
         path: '/docs/marks/rectangle'
       },
       {
+        title: 'Area',
+        path: '/docs/marks/area'
+      },
+      {
         title: 'Label',
         path: '/docs/marks/label'
       }

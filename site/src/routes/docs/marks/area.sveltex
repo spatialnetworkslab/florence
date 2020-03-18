@@ -1,0 +1,86 @@
+# Area
+The `Area` mark is used to plot filled areas. This is useful to visualize change over time. It can either be used by itself or in a 'stacked' configuration.
+
+```js exec
+import SimpleExample from './examples/_AreaSimple.svelte'
+```
+<SimpleExample />
+
+```markup
+<script>
+ const x = [
+    new Date(2002, 0, 1),
+    new Date(2004, 0, 1),
+    new Date(2006, 0, 1)
+  ]
+  const y = [20, 40, 10]
+</script>
+<Graphic>
+  <Area x1={x} y1={y} y2={[0, 0, 0]} />
+</Graphic>
+```
+
+The `Area` is defined by the region between two bounding polylines, which are like Line marks defined with `x1` `y1` and `x2` `y2` props respectively. 
+
+How an area is bounded is determined by the independent variable, which is either derived implicitly from the combination of props or specified with the `independentAxis`.
+
+When x is the independent variable, only the `x1` prop should be specified, with `x2`=`x1`. `y1` represents the upper bound and `y2` the lower bound, which is set to 0 if unspecified. 
+
+Similarly, when y is the independent variable, only the `y1` prop should be specified, with `y2`=`y1`. `x1` represents the right bound and `x2` the left bound, which is set to 0 if unspecified.
+
+To create stacked areas, either loop over the dataset to generate one `Area` per iteration or use the `AreaLayer`. The `AreaLayer` shares all of the `Area`'s props, but takes an array of arrays per prop instead of an array.
+
+```js exec
+import HorizontalAreaBoth from './utils/_HorizontalAreaBoth.svelte'
+import VerticalAreaRight from './utils/_VerticalAreaRight.svelte'
+import VerticalAreaLeft from './utils/_VerticalAreaLeft.svelte'
+import HorizontalAreaUpper from './utils/_HorizontalAreaUpper.svelte'
+import VerticalAreaBoth from './utils/_VerticalAreaBoth.svelte'
+import HorizontalAreaLower from './utils/_HorizontalAreaLower.svelte'
+```
+
+## Properties
+### Positioning
+
+| Property        | Type(s)                         | Description                                                                                                                                                                    | Representation                               |
+|-----------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|
+| x1              | Number \|<br>String \|<br>Date  | X coordinates of both upper and lower bounds of an area when x is the independent variable;<br>x coordinates of the right bound of an area when y is the independent variable. | <HorizontalAreaBoth /> <VerticalAreaRight /> |
+| x2              | Number \|<br>String \|<br>Date  | X coordinates of the left bound of an area when y is the independent variable.                                                                                                 | <VerticalAreaLeft />                         |
+| y1              | Number \|<br>String \|<br>Date  | Y coordinates of the upper bound of an area when x is the independent variable;<br>y coordinates of both left and right bounds of an area when y is the independent variable.  | <HorizontalAreaUpper /> <VerticalAreaBoth /> |
+| y2              | Number \|<br>String \|<br>Date  | Y coordinates of the lower bound of an area when x is the independent variable.                                                                                                | <HorizontalAreaLower />                      |
+| independentAxis | String                          | The independent variable.                                                                                                                                                      |                                              |
+
+### Allowed prop combinations
+
+| x1 | y1 | x2  | y2  | independentAxis  | valid?  | comments                                                 |
+|----|----|-----|-----|------------------|---------|----------------------------------------------------------|
+|    |    | any | any | any              | ❌      | at least x1 and y1 must be given                         |
+|    | ✓  | any | any | any              | ❌      | at least x1 and y1 must be given                         |
+| ✓  |    | any | any | any              | ❌      | at least x1 and y1 must be given                         |
+| ✓  | ✓  |     |     | 'x' \| undefined | ✅      | y2 is set to 0 and broadcasted                           |
+| ✓  | ✓  |     |     | 'y'              | ✅      | x2 is set to 0 and broadcasted                           |
+| ✓  | ✓  |     |     | otherwise        | ❌      | independentAxis must be passed 'x' or 'y' or left blank  |
+| ✓  | ✓  |     | ✓   | 'x' \| undefined | ✅      |                                                          |
+| ✓  | ✓  |     | ✓   | 'y'              | ❌      | independentAxis must be 'x' when x1, y1 and y2 are given |
+| ✓  | ✓  |     | ✓   | otherwise        | ❌      | independentAxis must be passed 'x' or 'y' or left blank  |
+| ✓  | ✓  | ✓   |     | 'x' \| undefined | ❌      | independentAxis must be 'y' when x1, y1 and x2 are given |
+| ✓  | ✓  | ✓   |     | 'y'              | ✅      |                                                          |
+| ✓  | ✓  | ✓   |     | otherwise        | ❌      | independentAxis must be passed 'x' or 'y' or left blank  |
+| ✓  | ✓  | ✓   | ✓   | 'x' \| undefined | ✅      | x2 is ignored                                            |
+| ✓  | ✓  | ✓   | ✓   | 'y'              | ✅      | y2 is ignored                                            |
+| ✓  | ✓  | ✓   | ✓   | otherwise        | ❌      | independentAxis must be passed 'x' or 'y' or left blank  |
+n.b. `independentAxis` defaults to 'x' when its value is undefined
+
+### Other aesthetics
+| Prop           | Required | Types  | Default   | Description             | Unit(s)                    |
+| -------------- | -------- | ------ | --------- | ----------------------- | -------------------------- |
+| stroke         | false    | String | '#000000' | Stroke color            | Named color, hex, rgb, hsl |
+| stroke-width   | false    | Number | 2         | Stroke width            | Screen pixels              |
+| stroke-opacity | false    | Number | 1         | Stroke opacity          | Number between 0 and 1     |
+| fill           | false    | String | 'none'    | Fill color (under line) | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number | 1         | Fill opacity            | Number between 0 and 1     |
+| opacity        | false    | Number | 1         | Mark opacity            | Number between 0 and 1     |
+
+These are analogous to the CSS properties of the same names.
+
+## Examples
