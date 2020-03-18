@@ -34,7 +34,7 @@ it as a supercharged `svg` root element.
 | backgroundColor | `String` | no       | `undefined` | Color value |
 | paddingColor    | `String` | no       | `undefined` | Color value |
 
-Where `backgroundColor` is the area within the padded area, and `paddingColor` is the background of the `Graphic` including the padded area (see `padding` below).
+Where `backgroundColor` is the area within the padded area, and `paddingColor` is the background of the padded area (see `padding` below).
 
 ### Local coordinate system
 
