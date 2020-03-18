@@ -6,12 +6,19 @@ exports[`Assertions > Rectangle Tests > [render] rectangles snapshot correctly #
   preserveAspectRatio="xMidYMid meet"
 >
   <defs>
+    <mask id="mask-padding-bg">
+      <rect x="0" y="0" width="500" height="500" fill="white"></rect>
+      <rect x="0" y="0" width="500" height="500" fill="black"></rect>
+    </mask>
+  </defs>
+  <defs>
     <clipPath id="clip-sc0">
       <rect x="50" y="50" width="400" height="400"></rect>
     </clipPath>
-    <clipPath id="clip-sc0-data">
+    <mask id="mask-sc0-padding-bg">
       <rect x="50" y="50" width="400" height="400" fill="white"></rect>
-    </clipPath>
+      <rect x="50" y="50" width="400" height="400" fill="black"></rect>
+    </mask>
   </defs>
   <g class="section" clip-path="url(#clip-sc0)">
     <g class="rectangle-layer">
