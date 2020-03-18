@@ -18,7 +18,7 @@ components. The following props are used to create local coordinate systems:
 | transformation | `String`: `'identity'` or `'polar'`        | no       | `'identity'` | -             |
 | flipX          | `Boolean`                                  | no       | `false`      | -             |
 | flipY          | `Boolean`                                  | no       | `false`      | -             |
-| padding        | `Number`, `Object`                         | no       | `undefnied`  | screen pixels |
+| padding        | `Number`, `Object`                         | no       | `undefined`  | screen pixels |
 | zoomIdentity   | `Object`                                   | no       | `undefined`  | -             |
 
 The purpose of a local coordinate system is to convert coordinates, given to components within a `Graphic` or `Section`, to pixel values that end up on your screen. All marks and layers have so-called 'positioning props'. Below is a schematic representation of how `florence` converts local coordinates to pixel values:
@@ -167,7 +167,7 @@ import CenterPointFunc from './examples/_CenterPointFunc.svelte'
 
 ## Coordinate transformation
 
-Currently, the only supported coordinate transformation is `'polar'`. More transformations will be supported in the future. When using a polar transformation, `x` values will be displayed as converted to theta, and `y` to radius. In polar coordinate systems usually encountered in mathematics, the coordinate system begins on the right and turns counterclockwise. In `florence`, however, the polar coordinate system starts at the bottom of the `Section`:
+Currently, the only supported coordinate transformation is `'polar'`. More transformations will be supported in the future. When using a polar transformation, `x` values will be displayed as converted to theta, and `y` to radius. In polar coordinate systems usually encountered in mathematics, the coordinate system begins on the right and turns counterclockwise. In `florence`, however, the polar coordinate system starts at the bottom of the `Section`. Check out the following code and the resulting output, and try switching the transformation from identity to polar:
 
 ```js exec
 import PolarShowcase from './examples/_PolarShowcase.svelte'
@@ -256,6 +256,93 @@ import PolarScalingShowcase from './examples/_PolarScalingShowcase.svelte'
 <PolarScalingShowcase />
 
 ## Final transformation
+
+The last step in going from local coordinates to pixel values is the 'final' transformation. `florence` internally treats this as a single step, but conceptually it can be divided into three sub-steps: flipping, padding and zooming.
+
+### Flipping
+
+'Flipping' refers to using the `flipX` and `flipY` props to 'flip' to inverse the final output. `flipY` is particularly useful. Web coordinates run from top to bottom by default, but when making graphics, we usually expect coordinates to run from bottom to top. Without using `flipX` and `flipY`, the following point will be in the top left corner:
+
+```js exec
+import Flip from './examples/_Flip.svelte'
+```
+
+```html
+<Graphic
+  width={200}
+  height={200}
+  backgroundColor="#b2ffb2"
+>
+  <Point x={10} y={10} radius={10} />
+</Graphic>
+```
+
+<Flip />
+
+With `flipX` and `flipY`, it is moved to the bottom right corner instead:
+
+```html
+<Graphic
+  width={200}
+  height={200}
+  flipX
+  flipY
+  backgroundColor="#b2ffb2"
+>
+  <Point x={10} y={10} radius={10} />
+</Graphic>
+```
+
+<Flip flip={true} />
+
+### Padding
+
+Padding is used to create space between the `Graphic` or `Section`'s outer borders and their contents. The `padding` prop can be used in to ways: by giving it a `Number` or an `Object`. If given an `Object`, it must have the following structure:
+
+```js
+{
+  left: <Number>,
+  right: <Number>,
+  top: <Number>,
+  bottom: <Number>
+}
+```
+
+If given a `Number`, for example `20`, the padding will internally be converted to
+
+```js
+{
+  left: 20,
+  right: 20,
+  top: 20,
+  bottom: 20
+}
+```
+
+An example:
+
+```js exec
+import Padding from './examples/_Padding.svelte'
+```
+
+```js
+import { Graphic, Rectangle } from '@snlab/florence'
+```
+
+```html
+<Graphic 
+  width={200}
+  height={200}
+  padding={25}
+  paddingColor="blue"
+>
+  <Rectangle x1={0} x2={200} y1={0} y2={200} fill="red" />
+</Graphic>
+```
+
+<Padding />
+
+### Zooming
 
 ## Nesting Sections
 
