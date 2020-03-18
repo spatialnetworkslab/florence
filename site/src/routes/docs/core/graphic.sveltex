@@ -27,6 +27,15 @@ it as a supercharged `svg` root element.
 | width  | `Number` | yes      | -       | screen pixels |
 | height | `Number` | yes      | -       | screen pixels |
 
+### Aesthetic props
+
+|      Prop       | Type(s)  | Required |   Default   |    Units    |
+| --------------- | -------- | -------- | ----------- | ----------- |
+| backgroundColor | `String` | no       | `undefined` | Color value |
+| paddingColor    | `String` | no       | `undefined` | Color value |
+
+Where `backgroundColor` is the area within the padded area, and `paddingColor` is the background of the `Graphic` including the padded area (see `padding` below).
+
 ### Local coordinate system
 
 |      Prop      |                  Type(s)                   | Required |   Default    |     Units     |

@@ -143,7 +143,7 @@ would be equivalent to:
 | backgroundColor | `String` | no       | `undefined` | Color value |
 | paddingColor    | `String` | no       | `undefined` | Color value |
 
-Where `backgroundColor` is self explanatory, and `paddingColor` is the background of the `Section` within the padded area (see `padding` below).
+Where `backgroundColor` is the area within the padded area, and `paddingColor` is the background of the `Section` including the padded area (see `padding` below).
 
 ### Local coordinate system
 
