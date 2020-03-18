@@ -3,7 +3,7 @@
     XAxis,
     YAxis,
     Graphic,
-    PointLayer,
+    Line,
     Section
   } from '@snlab/florence'
   import { scaleLinear, scaleTime } from 'd3-scale'
@@ -27,7 +27,7 @@
     flipY
     padding={20}
   >
-    <PointLayer {x} {y} />
+    <Line {x} {y} />
     <XAxis />
     <YAxis />
   </Section>

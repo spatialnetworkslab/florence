@@ -23,7 +23,7 @@ import SimpleBar from "./examples/_RectangleSimple.svelte";
 
 The `Rectangle` mark draws a rectangle shape on screen with four corner defined by the `x1`,`x2`, `y1` and `y2` props respectively. In many use cases (i.e. bar charts), this involves making use of the `bandwidth` of [the band scale](https://github.com/d3/d3-scale#band-scales).
 
-To create plots with multiple rectangles, we can either loop over the dataset (with `{#each}`) to generate one `Rectangle` per iteration, or use the `RectangleLayer`. The `RectangleLayer` shares all of the `Rectangle`'s props, but takes an array of arrays per prop instead of an array.
+To create plots with multiple rectangles, we can either loop over the dataset (with `{#each}`) to generate one `Rectangle` per iteration, or use the `RectangleLayer`. The `RectangleLayer` shares all of the `Rectangle`'s props, but takes an array of arrays per prop instead of a single value.
 
 ```markup
 <Graphic>

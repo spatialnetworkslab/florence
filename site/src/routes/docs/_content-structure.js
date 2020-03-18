@@ -22,12 +22,16 @@ export const posts = [
     path: '/docs/marks/point',
     children: [
       {
-        title: 'Rectangle',
-        path: '/docs/marks/rectangle'
-      },
-      {
         title: 'Point',
         path: '/docs/marks/point'
+      },
+      {
+        title: 'Line',
+        path: '/docs/marks/line'
+      },
+      {
+        title: 'Rectangle',
+        path: '/docs/marks/rectangle'
       }
     ]
   }
