@@ -1,0 +1,72 @@
+# Rectangle
+The `Rectangle` mark is used to plot rectangular elements.
+
+```js exec
+import SimpleBar from "./examples/_RectangleSimple.svelte";
+```
+<SimpleBar/>
+
+```markup
+<script>
+ const x = [2002, 2004, 2006]
+ const y = [20, 40, 10]
+</script>
+<Graphic>
+  <RectangleLayer
+      x1={x}
+      x2={({ scaleX }) => x.map(value => scaleX(value) + scaleX.bandwidth())}
+      y1={y}
+      y2={0}
+  />
+</Graphic>
+```
+
+The `Rectangle` mark draws a rectangle shape on screen with four corner defined by the `x1`,`x2`, `y1` and `y2` props respectively. In many use cases (i.e. bar charts), this involves making use of the `bandwidth` of [the band scale](https://github.com/d3/d3-scale#band-scales).
+
+To create plots with multiple rectangles, we can either loop over the dataset (with `{#each}`) to generate one `Rectangle` per iteration, or use the `RectangleLayer`. The `RectangleLayer` shares all of the `Rectangle`'s props, but takes an array of arrays per prop instead of a single value.
+
+```markup
+<Graphic>
+  <Rectangle
+    x1={🥝}
+    x2={🍇}
+    y1={🍋}
+    y2={🍉}
+  />
+</Graphic>
+
+<Graphic>
+  <!-- this draws 3 rectangles -->
+  <RectangleLayer
+    x1={[🥝, 🥝, 🥝]}
+    x2={[🍇, 🍇, 🍇]}
+    y1={[🍋, 🍋, 🍋]}
+    y2={[🍉, 🍉, 🍉]}
+  />
+</Graphic>
+```
+
+## Properties
+### Positioning
+| Prop | Required | Types                  | Default   | Description          | Unit(s)           |
+| ---- | -------- | ---------------------- | --------- | -------------------- | ----------------- |
+| x1   | depends  | [Number, String, Date, Function] | undefined | Left x coordinate    | Data value to be scaled by Section's scaleX. If Function then local coordinates. |
+| x2   | depends  | [Number, String, Date, Function] | undefined | Right x coordinate   | Data value to be scaled by Section's scaleX. If Function then local coordinates. |
+| y1   | depends  | [Number, String, Date, Function] | undefined | Bottom y coordinate  | Data value to be scaled by Section's scaleY. If Function then local coordinates. |
+| y2   | depends  | [Number, String, Date, Function] | undefined | Top y coordinate     | Data value to be scaled by Section's scaleY. If Function then local coordinates. |
+
+
+### Other aesthetics
+
+| Prop           | Required | Types  | Default   | Description                                                                                     | Unit(s)                    |
+| -------------- | -------- | ------ | --------- | ----------------------------------------------------------------------------------------------- | -------------------------- |
+| stroke         | false    | String | none      | Stroke color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)           | Named color, hex, rgb, hsl |
+| stroke-width   | false    | Number | 0         | Stroke width [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)     | Screen pixel               |
+| stroke-opacity | false    | Number | undefined | Stroke opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) | Number between 0 to 1      |
+| fill           | false    | String | '#000000' | Fill color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)               | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number | undefined | Fill opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)     | Number between 0 and 1     |
+| opacity        | false    | Number | 1         | Mark opacity  [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)         | Number between 0 and 1     |
+
+These are analogous to the CSS properties of the same names.
+
+## Examples

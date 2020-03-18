@@ -17,16 +17,13 @@
 
   <div class="intro">
     <p>
-      A short text introducing Florence and its specific approach, key tenets.
+      This is just a place holder for a short text introducing Florence
+      and its specific approach, key tenets.
     </p>
     <p>
       For a sense of the range of visualizations made possible 
-      using the library, check out these some examples in the gallery below
+      using the library, check out these some examples in the gallery
       or visit the examples & documentation.
     </p>
-  </div>
-
-  <div class="gallery">
-    Placeholder for gallery
   </div>
 </div>

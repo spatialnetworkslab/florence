@@ -1,3 +1,7 @@
+/**
+ * Point props default and required or not are defined here.
+ */
+
 export default {
   x: {
     required: false

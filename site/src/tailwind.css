@@ -52,8 +52,18 @@ ol {
 
 /* code layout */
 
-code {
-  @apply bg-codegray text-xs p-1;
+code, code[class*="language-"], pre[class*="language-"] {
+  @apply bg-codegray text-sm p-1;
+}
+
+pre {
+  background: #f5f2f0;
+}
+
+pre {
+  padding: 1em;
+  margin: .5em 0;
+  overflow: auto;
 }
 
 /* table layout */
@@ -87,6 +97,11 @@ tr > td {
 
 .main-body {
   @apply bg-white px-4 mt-4 max-w-6xl;
+}
+
+/* infoboxes */
+.callout {
+  @apply bg-green-100 border-green-500 border-l-8 my-4 px-10 py-3 font-sans leading-snug;
 }
 
 /* codesandbox */

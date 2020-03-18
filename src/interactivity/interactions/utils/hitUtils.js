@@ -1,5 +1,5 @@
 export function coordinatesAreInsideSection (hit, section) {
-  const bbox = section.paddedBbox
+  const bbox = section.bbox
 
   return (
     hit.x >= bbox.minX &&
