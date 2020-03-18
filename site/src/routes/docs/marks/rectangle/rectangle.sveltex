@@ -85,6 +85,6 @@ import StackedBar from "./examples/_StackedBar.svelte";
 import SimpleBar from "./examples/_SimpleBar.svelte";
 ```
 
-### Scatter plot Chart
+### Stacked bar chart
 
 <StackedBar/>
