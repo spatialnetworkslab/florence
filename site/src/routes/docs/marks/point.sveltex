@@ -2,7 +2,7 @@
 The `Point` mark is used to plot simple point elements. It is a special case of the more general `Symbol` mark that is made available on its own for convenience.
 
 ```js exec
-import SimpleExample from './examples/_Simple.svelte'
+import SimpleExample from './examples/_PointSimple.svelte'
 ```
 <SimpleExample />
 

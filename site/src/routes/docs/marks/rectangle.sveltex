@@ -2,7 +2,7 @@
 The `Rectangle` mark is used to plot rectangular elements.
 
 ```js exec
-import SimpleBar from "./examples/_SimpleBar.svelte";
+import SimpleBar from "./examples/_RectangleSimple.svelte";
 ```
 <SimpleBar/>
 
