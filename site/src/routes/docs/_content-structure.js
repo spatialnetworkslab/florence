@@ -16,5 +16,15 @@ export const posts = [
         path: '/docs/core/local-coordinates'
       }
     ]
+  },
+  {
+    title: 'Marks',
+    path: '/docs/marks/area',
+    children: [
+      {
+        title: 'Point',
+        path: '/docs/marks/point/point'
+      }
+    ]
   }
 ]

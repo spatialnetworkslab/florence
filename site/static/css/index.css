@@ -858,6 +858,117 @@ tr > td {
   color: #2c5282;
 }
 
+.csbp-render-fullscreen {
+  z-index: 10;
+  position: absolute;
+  background-color: white;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  margin: auto;
+}
+
+.csbp-container {
+  /* background-color: yellow;
+  height: 200px; */
+  display: flex;
+  height: 500px;
+  max-width: 500px;
+  /* max-width: 500px;
+  overflow: scroll; */
+  /* position: relative; */
+}
+
+.csbp-rendered {
+  align-self: center;
+  flex: 1;
+  border: 1px solid;
+  margin: 5px;
+}
+
+.csbp-code-tabs {
+  position: relative;
+  min-width: 800px;
+  margin: 5px;
+}
+
+.csbp-tabs {
+  flex: 1;
+  position: relative;
+  min-height: 500px; /* This part sucks */
+}
+
+.csbp-tab {
+  display: inline;
+}
+
+.csbp-tab label {
+  background: #eee;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-left: -1px;
+  position: relative;
+  left: 1px;
+}
+
+.csbp-tab [type="radio"] {
+  display: none;
+}
+
+.csbp-content {
+  height: 500px;
+  width: 750px;
+  position: absolute;
+  overflow: scroll;
+  top: 28px;
+  left: 0;
+  background: white;
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  overflow: scroll;
+}
+
+.csbp-content > * {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: all 0.6s ease;
+}
+
+[type="radio"]:checked ~ label {
+  background: white;
+  border-bottom: 1px solid white;
+  z-index: 2;
+}
+
+[type="radio"]:checked ~ label ~ .csbp-content {
+  z-index: 1;
+}
+
+[type="radio"]:checked ~ label ~ .csbp-content > * {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.csbp-csb-link {
+  flex: 1;
+  min-width: 200px;
+}
+
+@media only screen and (max-width: 800px) {
+  .csbp-container {
+    flex-wrap: wrap;
+  }
+
+  .csbp-rendered {
+    margin: auto;
+  }
+}
+
 .container {
   width: 100%;
 }
