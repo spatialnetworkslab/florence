@@ -1,0 +1,423 @@
+# Creating Basic Graphs
+The Florence library comes with a range of components that can be used to compose common graph types easily. Generally, most graphs use the following components:
+
+- [Graphic](docs/core/graphic)
+- [Section](docs/core/section)
+- Scales
+- A selection of the available Marks
+- Axes
+
+You may further customise your graph using the following components:
+
+- [Plot Title](docs/core/title)
+- Axis Title
+- [Legend](docs/guides/legend)
+- X/Y Grid
+
+For scaling, we rely on [d3 scales](https://github.com/d3/d3-scale).
+
+## Dataset
+
+The following tutorial will walk through the steps needed to create a basic dot plot of this dataset.
+
+|fruit|	diameter|		|fruit|	diameter|
+| ---- | ---- | ---- | ---- | ---- |
+|lime|	4.7	|	| lime |	4.7 |
+|lemon|	6.1	| |	grapefruit |	8.8 |
+|grapefruit|	7.9 |	|	pomelo |	12.5 |
+|lemon|	6.6	| |	grapefruit |	12.7 |
+|orange|	6.7	| |	grapefruit |	8.6 |
+|lemon|	5.3	| |	pomelo |	13.1 |
+|pomelo|	11.6	|	 | lime |	5.8 |
+|grapefruit|	11.1	| |	orange	| 8.9 |
+|lime|	5.5	|	 | grapefruit |	9.1 |
+|pomelo|	10.6	| |	pomelo	| 10.3 |
+|lemon|	6.4	| |	grapefruit |	9.4 |
+
+## Formatting the dataset
+
+Data can either be organized by row or by column. To pass in data by row, the data should take the form of an array of objects, where each object contains the column_name:value pairs per instance (row).
+
+To pass in data by column, the data should be a single object of `column_name:[ value1, value2, value3 ...]` where all the values in a column are included in an array accessible by column name.
+
+**Passing in data by column is the preferred format as it reduces the amount of pre-processing needed.** The above data, for example, should be pre-processed into the following structure:
+
+```js
+let data = {
+    diameter: [
+      4.7, 6.1, 7.9, 6.6, 6.7, 5.3, 11.6, 11.1, 5.5, 10.6, 6.4,
+      4.9, 8.8, 12.5, 12.7, 8.6, 13.1, 5.8, 8.9, 9.1, 10.3, 9.4, 10.1
+    ],
+    fruit: [
+      "lime", "lemon","grapefruit", "lemon", "orange", "lemon", 
+      "pomelo", "grapefruit", "lime", "pomelo", "lemon",
+      "lime", "grapefruit", "pomelo", "grapefruit", "grapefruit",
+      "pomelo", "lime", "orange", "grapefruit", "pomelo", 
+      "grapefruit", "anchovies"
+    ]
+  }
+```
+
+### Using a `DataContainer`
+
+When using Florence, we can also use the sidecar `florence-dataContainer` library, that lets us store data as either rows or columns and perform
+pre-processing operations on it. Take a look at the example below for examples of 
+such operations.
+
+```js
+import DataContainer from "@snlab/florence-datacontainer";
+
+let data = new DataContainer({
+    diameter: [
+      4.7, 6.1, 7.9, 6.6, 6.7, 5.3, 11.6, 11.1, 5.5, 10.6, 6.4,
+      4.9, 8.8, 12.5, 12.7, 8.6, 13.1, 5.8, 8.9, 9.1, 10.3, 9.4, 10.1
+    ],
+    fruit: [
+      "lime", "lemon","grapefruit", "lemon", "orange", "lemon", 
+      "pomelo", "grapefruit", "lime", "pomelo", "lemon",
+      "lime", "grapefruit", "pomelo", "grapefruit", "grapefruit",
+      "pomelo", "lime", "orange", "grapefruit", "pomelo", 
+      "grapefruit", "anchovies"
+    ]
+  });
+
+data = data
+    .dropNA() // drops NA values
+    .filter(row => row.fruit !== "anchovies") // filters out unwanted values
+    .groupBy("fruit") // groups data by common categorical values
+    .summarise({ meanQuantity: { diameter: "mean" } }) // gets mean of groups
+    .arrange({ meanQuantity: "descending" }); // arranges a variable by ascending/descending order
+```
+
+For further details on data loading and formatting using `Data Container`, refer to its [documentation](https://github.com/spatialnetworkslab/florence-datacontainer).
+
+
+## Graphic
+The `Graphic` component is used in all Florence graphs. The component is declared first, and takes the width, height and data properties.
+
+This creates an empty svg canvas of the given width and height.
+
+```markup
+<Graphic 
+  width={500} height={500}
+>
+
+</Graphic>
+```
+
+For further details on `Graphic`, refer to the [documentation](docs/core/graphic).
+
+## Section
+The `Section` component divides the `Graphic` (or canvas) up into subsections. Each subsection can contain its own graph with its own variables, axes etc.
+
+It is sometimes convenient to use `Section` instead of declaring `Graphic` multiple times when the sub-graphs use the same dataset (faceting), or when user interactions are meant to be reflected across multiple graphs.
+
+In this example, we declare a single `Section` since only a single graph is being created.
+
+```markup
+<Graphic 
+  width={500} height={500}
+>
+  <Section
+    x1={50} x2={450}
+    y1={50} y2={450}
+  >
+
+  </Section>
+
+</Graphic>
+```
+
+For further details on `Section`, refer to the [documentation](docs/core/section).
+
+## Scales
+
+In our example, let's say we'd like to plot the column `fruit` to the x-axis, and `diameter` to the y-axis.
+
+Considering that the x value of each point we'd like to plot is some fruit name, it makes no sense to position the corresponding point at x coordinate 'lemon' or 'grapefruit' if these values are not first scaled to a reasonable screen coordinate in pixels. 
+
+If we think of the `Section` as our chart plotting space, this means we need to apply scaling such that the x-axis of the `Section` plots fruits (categorical values), and the y-axis plots diameter (continuous values) in pixel space. This means we need to add scales, one for X (`scaleX`) and one for Y (`scaleY`), to our `Section`.
+
+Since we are using Svelte, we first create our scales in the `<script>` section of the component.
+
+```js
+const processedData = data
+    .dropNA()
+    .filter(row => row.fruit !== 'anchovies')
+    .groupBy('fruit')
+    .summarise({ meanDiameter: { diameter: 'mean' } })
+    .arrange({ meanDiameter: 'descending' })
+
+const fruitDomain = data.domain('fruit')
+const scaleFruit = scalePoint().domain(fruitDomain).padding(0.2)
+const meanDiameterDomain = [0, processedData.domain('meanDiameter')[1] * 1.5]
+const scaleMeanDiameter = scaleLinear().domain(meanDiameterDomain)
+
+```
+
+We then use our scales as input to `scaleX, scaleY` of Section.
+
+```markup
+<Graphic 
+  width={500} height={500}
+>
+  <Section
+    x1={50} x2={450}
+    y1={50} y2={450}
+    scaleX={scaleFruit}
+    scaleY={scaleMeanDiameter}
+  >
+
+  </Section>
+
+</Graphic>
+```
+
+We can also directly create scales as inputs. 
+
+```markup
+<Graphic 
+  width={500} height={500}
+>
+  <Section
+    x1={50} x2={450}
+    y1={50} y2={450}
+    padding={40}
+    scaleX={scalePoint().domain(fruitDomain).padding(0.2)}
+    scaleY={scaleLinear().domain(meanDiameterDomain)}
+  >
+
+  </Section>
+
+</Graphic>
+```
+
+For further details on d3-scales, refer to the [documentation](https://github.com/d3/d3-scale).
+
+## Marks
+In order to actually render one point per row in the dataset, we need to specify our chosen mark. Since we are plotting multiple points in this example, the `PointLayer` component is sufficient for our purposes. However, there are a wide range of marks that are available. For details of each, refer to the Marks section of the documentation.
+
+```markup
+<Graphic 
+  width={500} height={500}
+>
+  <Section
+    x1={50} x2={450}
+    y1={50} y2={450}
+    padding={40}
+    scaleX={scalePoint().domain(fruitDomain).padding(0.2)}
+    scaleY={scaleLinear().domain(meanDiameterDomain)}
+  >
+      <PointLayer
+      x={data.column('fruit')}
+      y={data.column('diameter')}
+      key={data.column('$key')}
+      fill={scaleFruitColor}
+      radius={test}
+    />
+  </Section>
+
+</Graphic>
+```
+
+::: div callout
+If we are plotting only a single point, we would use `Point`.
+:::
+
+Note that the `PointLayer` component requires the x and y properties to be specified. This tells the component which data variable to use as the x and y coordinates of each point. As such, we specify these to be `data.column('fruit')` and `data.column('diameter')`, respectively.
+
+::: div callout
+Since we have already specified the scale values in `Section`, our raw values will now be scaled to screen coordinates.
+:::
+
+
+The graph should now look like this:
+<!-- TODO replace with codeboxes -->
+```js exec
+import Basic from './utils/_Basic.svelte'
+```
+
+<Basic switch0 />
+
+## Axes
+Axes are always good to include as a reference for viewers to read specific values on the graph.
+
+Axes are added by using the `XAxis` and `YAxis` components. They immediately take on the values of the scales specified by your `Section` component, or revert to smart defaults (0 to 1).
+
+We also add padding to `Section` so that the axis labels have some room to show up.
+
+```markup
+<Graphic 
+  width={500} height={500}
+>
+
+  <Section
+    x1={50} x2={450}
+    y1={50} y2={450}
+    padding={40}
+    scaleX={scaleFruit}
+    scaleY={scaleMeanDiameter}
+  >
+
+    <PointLayer
+      x={data.column('fruit')}
+      y={data.column('diameter')}
+      key={data.column('$key')}
+    />
+
+    <XAxis
+    />
+    <YAxis 
+    />
+  </Section>
+
+</Graphic>
+```
+
+The graph should now look like this:
+<!-- TODO replace with codeboxes -->
+
+<Basic switch0 switch1 />
+
+## Plot Title (Optional)
+Graphs usually come with titles describing the subject of the graph. This can be added using the `Title` component.
+
+<Basic switch0 switch1 switch2 />
+
+```markup
+<Graphic 
+  width={500} height={500}
+>
+
+  <Section
+    x1={50} x2={450}
+    y1={50} y2={450}
+    padding={40}
+    scaleX={scaleFruit}
+    scaleY={scaleMeanDiameter}
+  >
+
+    <PointLayer
+      x={data.column('fruit')}
+      y={data.column('diameter')}
+      key={data.column('$key')}
+    />
+
+    <XAxis
+    />
+    <YAxis 
+    />
+
+    <Title 
+      title={'Fruit Sizes'} 
+      titleFontFamily={'Baskerville'}
+      usePadding={true}
+    />
+  </Section>
+</Graphic>
+
+```
+<!-- TODO replace with codeboxes -->
+
+For further details, refer to the [Title documentation](docs/core/title).
+
+## Adding scales to marks (Optional)
+We have briefly discussed the necessity of scales in the part on `Section` above. Scales are necessary for converting raw values in the dataset (e.g. fruit name) into values that can be rendered on a screen (e.g. pixels).
+
+However, scaling is not limited to changing data values into screen coordinates/pixels. Scaling can be done for a wide range of appearance aesthetics, such as color, shape and opacity. Different marks allow different aesthetics to be scaled. For details of each, refer to the Marks and Scales documentation.
+
+In this case, the points on the graph can be scaled to display a different color for each category of fruit, or a different radius for its diameter. To do so, the `fill` property on the `PointLayer` component can be changed from a single color to a scale, similar to the x and y properties. The same can be done to the `radius` property.
+
+<!-- TODO replace with codeboxes -->
+
+<Basic switch1 switch2 switch3 />
+
+```markup
+<Graphic 
+  width={500} height={500}
+>
+
+  <Section
+    x1={50} x2={450}
+    y1={50} y2={450}
+    padding={40}
+    scaleX={scaleFruit}
+    scaleY={scaleMeanDiameter}
+  >
+
+    <PointLayer
+      x={data.column('fruit')}
+      y={data.column('diameter')}
+      key={data.column('$key')}
+      fill={data.column('fruit').map(d => scaleFruitColor(d))}
+      radius={scaleLinear().domain(meanDiameterDomain).range([2, 10])}
+    />
+
+    <XAxis
+    />
+    <YAxis 
+    />
+
+    <Title 
+      title={'Fruit Sizes'} 
+      titleFontFamily={'Baskerville'}
+      usePadding={true}
+    />
+  </Section>
+</Graphic>
+
+```
+
+Note that there is an extra type: `schemeCategory10` specification passed to the scale. This simply tells the mark to use the 'category10' color scheme. This is one of [many predefined color schemes from d3](https://github.com/d3/d3-scale-chromatic). However, do note that certain color schemes can only be used with categorical variables/certain scale types, while others can only be used with numerical variables. 
+
+
+## Axis Title (Optional)
+Similar to the plot title, titles can be added to the axes for additional readability. This can be specified as properties of the `XAxis` and `YAxis` components.
+
+<Basic switch2 switch3 switch4 />
+
+The title-vjust and title-hjust properties are used to position the axis title relative to the vertical and horizontal size of the axis.
+
+<!-- TODO replace with codeboxes -->
+
+```markup
+  <Graphic 
+    width={500} height={500}
+  >
+
+    <Section
+      x1={50} x2={450}
+      y1={50} y2={450}
+      padding={40}
+      scaleX={scaleFruit}
+      scaleY={scaleMeanDiameter}
+    >
+
+      <PointLayer
+        x={data.column('fruit')}
+        y={data.column('diameter')}
+        key={data.column('$key')}
+        fill={data.column('fruit').map(d => scaleFruitColor(d))}
+        radius={scaleLinear().domain(meanDiameterDomain).range([2, 10])}
+      />
+
+      <XAxis
+        title={'fruit'}
+      />
+      <YAxis 
+        title={'diameter/cm'}
+      />
+      <Title 
+        title={'Fruit Sizes'} 
+        titleFontFamily={'Baskerville'}
+        usePadding={true}
+      />
+    </Section>
+  </Graphic>
+
+
+```
+For further details, refer to the axes component documentation. You can play around with the final graph in the CodeSandbox below.
+
+::: codesandbox sandboxes/basic-tutorial codemirror=1&view=split&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
+:::
