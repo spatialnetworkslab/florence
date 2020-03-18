@@ -3,7 +3,7 @@
     XAxis,
     YAxis,
     Graphic,
-    PointLayer,
+    SymbolLayer,
     Section
   } from '@snlab/florence'
   import { scaleLinear, scaleTime } from 'd3-scale'
@@ -15,6 +15,7 @@
     new Date(2006, 0, 1)
   ]
   const y = [20, 40, 10]
+  const shapes = ['star5', 'triangle-up', 'diamond']
   const scaleX = scaleTime()
     .domain([new Date(2001, 0, 1), new Date(2007, 0, 1)])
   const scaleY = scaleLinear()
@@ -27,7 +28,7 @@
     flipY
     padding={20}
   >
-    <PointLayer {x} {y} />
+    <SymbolLayer {x} {y} shape={shapes} />
     <XAxis />
     <YAxis />
   </Section>

@@ -36,12 +36,28 @@ export const posts = [
     path: '/docs/marks/point',
     children: [
       {
+        title: 'Point',
+        path: '/docs/marks/point'
+      },
+      {
+        title: 'Symbol',
+        path: '/docs/marks/symbol'
+      },
+      {
+        title: 'Line',
+        path: '/docs/marks/line'
+      },
+      {
         title: 'Rectangle',
         path: '/docs/marks/rectangle'
       },
       {
-        title: 'Point',
-        path: '/docs/marks/point'
+        title: 'Area',
+        path: '/docs/marks/area'
+      },
+      {
+        title: 'Label',
+        path: '/docs/marks/label'
       }
     ]
   }
