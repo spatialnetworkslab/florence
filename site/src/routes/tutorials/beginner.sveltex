@@ -99,7 +99,7 @@ The `Graphic` component is used in all Florence graphs. The component is declare
 
 This creates an empty svg canvas of the given width and height.
 
-```svelte
+```markup
 <Graphic 
   width={500} height={500}
 >
@@ -116,7 +116,7 @@ It is sometimes convenient to use `Section` instead of declaring `Graphic` multi
 
 In this example, we declare a single `Section` since only a single graph is being created.
 
-```svelte
+```markup
 <Graphic 
   width={500} height={500}
 >
@@ -159,7 +159,7 @@ const scaleMeanDiameter = scaleLinear().domain(meanDiameterDomain)
 
 We then use our scales as input to `scaleX, scaleY` of Section.
 
-```svelte
+```markup
 <Graphic 
   width={500} height={500}
 >
@@ -177,7 +177,7 @@ We then use our scales as input to `scaleX, scaleY` of Section.
 
 We can also directly create scales as inputs. 
 
-```svelte
+```markup
 <Graphic 
   width={500} height={500}
 >
@@ -200,7 +200,7 @@ For further details on d3-scales, refer to the [documentation](https://github.co
 
 Now in order to actually render a point per row in the dataset, we need to specify our chosen mark. Since we are plotting multiple points in this example, the `PointLayer` component is sufficient for our purposes. However, there are a wide range of marks that are available. For details of each, refer to the Marks section of the documentation. [TODO ADD LINK]
 
-```svelte
+```markup
 <Graphic 
   width={500} height={500}
 >
@@ -247,7 +247,7 @@ Axes are manually added using the `XAxis` and `YAxis` components. They immediate
 
 We also add padding to `Section` such that the axis labels show up.
 
-```svelte
+```markup
 <Graphic 
   width={500} height={500}
 >
@@ -286,7 +286,7 @@ Graphs usually come with titles describing the subject of the graph. This can be
 
 <Basic switch0 switch1 switch2 />
 
-```svelte
+```markup
 <Graphic 
   width={500} height={500}
 >
@@ -335,7 +335,7 @@ In this case, the points on the graph can be scaled to display a different color
 
 <Basic switch1 switch2 switch3 />
 
-```svelte
+```markup
 <Graphic 
   width={500} height={500}
 >
@@ -384,7 +384,7 @@ The title-vjust and title-hjust properties are used to position the axis title r
 
 <!-- TODO replace with codeboxes -->
 
-```svelte
+```markup
   <Graphic 
     width={500} height={500}
   >
