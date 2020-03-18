@@ -117,12 +117,8 @@
 >
   <defs>
     <mask id="mask-padding-bg">
-      <rect
-        {...clipPropsNoPadding}
-        fill="white" />
-      <rect
-        {...clipPropsPadding}
-        fill="black" />
+      <rect {...clipPropsNoPadding} fill="white" />
+      <rect {...clipPropsPadding} fill="black" />
     </mask>
   </defs>
 
