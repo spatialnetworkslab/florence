@@ -1,80 +1,72 @@
 # Point
-
-## Description
-
-```svelte
-<!--
-This is a sample specification intended to show data structure.
-For a list of required props and permitted combinations,
-see allowed prop combinations below.
--->
-
-<Graphic ...>
-  <Point
-    x={x}
-    y={y}
-  />
-<Graphic>
-
-<Graphic ...>
-  <PointLayer
-    x={()=>// array of x}
-    y={()=>// array of y}
-  />
-<Graphic>
-```
+The `Point` mark is used to plot simple point elements. It is a special case of the more general `Symbol` mark that is made available on its own for convenience.
 
 ```js exec
-import { Graphic, PointLayer, Point, Section } from '@snlab/florence'
-import RadiusExample from './examples/_Radius.svelte'
-import FillExample from './examples/_Fill.svelte'
 import SimpleExample from './examples/_Simple.svelte'
 ```
-
-The `Point` mark draws a circular dot on screen with position defined by `x` and `y` props respectively.
-
-All SVG attributes on a 'circle' are supported in `Point` in the form of props.
-
-To create scatter plots, either loop over the dataset to generate one `Point` per iteration or use the `PointLayer`. The `PointLayer` shares all of the `Point`'s props, but takes an array of arrays per prop instead of an array.
-
 <SimpleExample />
 
-## Props
+```markup
+<script>
+ const x = [
+    new Date(2002, 0, 1),
+    new Date(2004, 0, 1),
+    new Date(2006, 0, 1)
+  ]
+  const y = [20, 40, 10]
+</script>
+<Graphic>
+  <PointLayer {x} {y} />
+  <XAxis />
+  <YAxis />
+</Graphic>
+```
 
-Positioning for Point Mark
+To render the Point mark, you will need to provide the `x` and `y` or the `geometry` props. The two uses are mutually exclusive.
 
-| Property | Type(s)                  | Description               | Representation                                                     |
-| -------- | ------------------------ | ------------------------- | ------------------------------------------------------------------ |
-| x        | number \| string \| Date | X coordinate of the point | <Graphic width={50} height={50}><Point x={25} y={25}  /></Graphic> |
-| y        | number \| string \| Date | Y coordinate of the point | <Graphic width={50} height={50}><Point x={25} y={30}  /></Graphic> |
-| geometry | Object                   | Type of geometry          |                                                                    |
+`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scale used in the parent Section. `geometry` accepts GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) objects only. Values will be scaled according to the `scaleX` and `scaleY` of the parent Section. Alternatively a function can be supplied that return a coordinate in the local coordinate system directly, bypassing any active scales.
+
+To create plots with multiple points, we can either loop over the dataset(with `{#each}`) to generate one `Point` per iteration, or use the `PointLayer`. The `PointLayer` shares all of the `Point`'s props, but takes an array of arrays per prop instead of an array.
+
+```markup
+<Graphic>
+  <Point
+    x={🥝}
+    y={🍇}
+  />
+</Graphic>
+
+<Graphic>
+  <!-- this draws 3 points -->
+  <PointLayer
+    x={[🥝, 🍋, 🍉]}
+    y={[🍇, 🍇, 🍇]}
+  />
+</Graphic>
+```
 
 
-### Allowed prop combinations
+## Properties
+### Positioning
 
-| x   | y   | geometry | valid? | comments |
-| --- | --- | -------- | ------ | -------- |
-| ✓   | ✓   |          | ✅      | x,y pair |
-|     | ✓   | ✓        | ❌      |          |
-| ✓   |     | ✓        | ❌      |          |
+| Prop     | Required | Types                  | Default   | Description                     | Unit(s)           |
+| -------- | -------- | ---------------------- | --------- | ------------------------------- | ----------------- |
+| x        | depends  | [Number, String, Date, Function] | undefined | x-coordinate of center of point | Data value to be scaled by Section's scaleX. If Function then local coordinates.  |
+| y        | depends  | [Number, String, Date, Function] | undefined | y-coordinate of center of point | Data value to be scaled by Section's scaleY. If Function then local coordinates. |
+| geometry | depends  | [Object, Function]                 | undefined | GeoJSON object of type Point    | Data value to be scaled by Section's scaleX/scaleY. If Function then local coordinates. |
+                                                               |
 
+### Other aesthetics
+| Prop           | Required | Types  | Default   | Description    | Unit(s)                    |
+| -------------- | -------- | ------ | --------- | -------------- | -------------------------- |
+| radius         | false    | Number | 3         | Radius length  | Screen pixel               |
+| stroke         | false    | String | 'none'    | Stroke color   | Named color, hex, rgb, hsl |
+| stroke-width   | false    | Number | 0         | Stroke width   | Screen pixel               |
+| stroke-opacity | false    | Number | 1         | Stroke opacity | Number between 0 and 1     |
+| fill           | false    | String | '#000000' | Fill color     | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number | 1         | Fill opacity   | Number between 0 and 1     |
+| opacity        | false    | Number | 1         | Mark opacity   | Number between 0 and 1     |
 
-| Property      | Required | Type(s) | Defaults | Description                                                                                                                                                                      | Unit(s)                    |
-| ------------- | -------- | ------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| radius        | ❌        | Number  | 3        | Controls the radius of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/r)                                                                               | Screen pixel               |
-| fill          | ❌        | String  | 'black'  | Controls the fill color of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)                                                                        | Named color, hex, rgb, hsl |
-| stroke        | ❌        | String  | 'none'   | Controls the outline color of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)                                                                   | Screen pixel               |
-| strokeWidth   | ❌        | Number  | 0        | Controls the outline width of a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)                                                             | Number between 0 and 1     |
-| strokeOpacity | ❌        | Number  |          | Controls the opacity applied to the stroke of a point. [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity)                                          | Named color, hex, rgb, hsl |
-| fillOpacity   | ❌        | Number  |          | Controls the opacity of fill applied to a point [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)                                                   | Number between 0 and 1     |
-| opacity       | ❌        | Number  | 1        | Controls the transparency of a point, the degree to which the background behind the point is overlaid. [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity) | Number between 0 and 1     |
-
+These are analogous to the CSS properties of the same names.
 
 ## Examples
-
-
-### Scatter plot Chart
-
-
-<RadiusExample/>
-<FillExample /> 
