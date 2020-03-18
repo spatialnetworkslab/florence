@@ -26,6 +26,10 @@ export const posts = [
         path: '/docs/marks/point'
       },
       {
+        title: 'Symbol',
+        path: '/docs/marks/symbol'
+      },
+      {
         title: 'Line',
         path: '/docs/marks/line'
       },
