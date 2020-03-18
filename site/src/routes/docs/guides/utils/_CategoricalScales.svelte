@@ -34,45 +34,42 @@
     .range(schemeTableau10)
 </script>
 
-<div>
-	<Graphic 
-    height={400} width={400}
-  >         
+<Graphic 
+  height={400} width={400}
+>         
 
-    <!-- Categorical -->
-    <Section 
-      scaleX={scaleBand().domain(fruitDomain).padding(0.3)}
-      scaleY={scaleLinear().domain([0, 1])}
-      padding={75}
-    > 
-      <DiscreteLegend
-        fill={nutrientColorScale}
-        strokeWidth={2}
-        stroke={'white'}
-        orient={'vertical'}
-        vjust={'centre'}
-        hjust={'left'}
-        flipLabels
-        labelPaddingX={10}
-        usePadding={true}
-      />
+  <!-- Categorical -->
+  <Section 
+    scaleX={scaleBand().domain(fruitDomain).padding(0.3)}
+    scaleY={scaleLinear().domain([0, 1])}
+    padding={75}
+  > 
+    <DiscreteLegend
+      fill={nutrientColorScale}
+      strokeWidth={2}
+      stroke={'white'}
+      orient={'vertical'}
+      vjust={'centre'}
+      hjust={'left'}
+      flipLabels
+      labelPaddingX={10}
+      usePadding={true}
+    />
 
-      {#each containerPerFruit as container}
-        {#each container.rows() as row, i}
-          <Rectangle 
-            x1={row.fruit}
-            x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
-            y1={i === 0 ? 0 : container.prevRow(row.$key).cumsum_value}
-            y2={row.cumsum_value}
-            fill={nutrientColorScale(row.nutrient)}
-          />
-        {/each}
+    {#each containerPerFruit as container}
+      {#each container.rows() as row, i}
+        <Rectangle 
+          x1={row.fruit}
+          x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
+          y1={i === 0 ? 0 : container.prevRow(row.$key).cumsum_value}
+          y2={row.cumsum_value}
+          fill={nutrientColorScale(row.nutrient)}
+        />
       {/each}
+    {/each}
 
-      <XAxis labelFontSize={15} />
-    
-    </Section>
+    <XAxis labelFontSize={15} />
+  
+  </Section>
 
-	</Graphic>
-
-</div>
+</Graphic>

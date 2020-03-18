@@ -31,24 +31,24 @@
 </script>
 
 <Graphic width={500} height={500}
-  padding={graphicPadding}
+  paddingColor={'#a8a8a8'}
 >     
 
   <!-- Basic example + continuous scales -->
   <Section 
     x1={0} x2={500}
     y1={0} y2={500}
-    padding={sectionPadding}
+    padding={75}
     scaleX={scaleLinear().domain(data.domain('a'))}
     scaleY={scaleLinear().domain(data.domain('b'))}
     backgroundColor={background}
-    paddingColor={padding}
+    paddingColor={'#E8E8E8'}
   >
 
     <!-- usePadding = false -->
     <GradientLegend
       title={'Gradient'}
-      fill={linearColorScale}
+      fill={scaleLinear().domain(data.domain('a')).range(['red', 'blue'])}
       labelCount={5}
       hjust={'right'}
       flip
@@ -60,7 +60,7 @@
       vjust={'top'}
       hjust={'center'}
       orient={'horizontal'}
-      fill={linearColorScale}
+      fill={scaleLinear().domain(data.domain('a')).range(['red', 'blue'])}
       labelCount={5}
       usePadding={true}
     />

@@ -1,6 +1,6 @@
 # Legends
 
-```svelte
+```markup
 <Graphic>
   <!-- Legends can be placed inside or outside the `Section` component -->
    <DiscreteLegend
@@ -125,7 +125,7 @@ import SimpleLegends from './utils/_SimpleLegends.svelte'
 
 <SimpleLegends/>
 
-```svelte
+```markup
 <script>
   // d3
   import { scaleLinear } from 'd3-scale'
@@ -162,7 +162,6 @@ import SimpleLegends from './utils/_SimpleLegends.svelte'
 
 <Graphic width={500} height={500}
 >     
-  <!-- Vjust -->
   <GradientLegend
     title={'Gradient'}
     fill={linearColorScale}
@@ -172,7 +171,6 @@ import SimpleLegends from './utils/_SimpleLegends.svelte'
     flip
   />
 
-  <!-- Pixels -->
   <DiscreteLegend
     title={'Discrete'}
     fill={linearColorScale}
@@ -221,51 +219,58 @@ import FillOpacity from './utils/_FillOpacity.svelte'
 <!-- ::: codesandboxplus ./src/routes/docs/guides/utils/_FillOpacity.svelte 5-10
 ::: -->
 
-<!-- ```svelte
-<Graphic width={500} height={500}
->     
-  <GradientLegend
-    title={'Gradient'}
-    fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
-    fill={'goldenrod'}
-    labelCount={5}
-    vjust={'top'}
-    hjust={'right'}
-    flip
-  />
+```markup
+  <script>
+    // same imports and data as above, but we use fillOpacity here instead
+  </script>
 
-  <DiscreteLegend
-    title={'Discrete'}
-    fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
-    fill={'goldenrod'}
-    orient={'horizontal'}
-    labelCount={5}
-    vjust={'top'}
-    hjust={'center'}
-  /> 
-
-  <Section 
-    x1={0} x2={500}
-    y1={0} y2={500}
-    padding={80}
-    scaleX={scaleLinear().domain(data.domain('a'))}
-    scaleY={scaleLinear().domain(data.domain('b'))}
-  >
-
-    <PointLayer
-      x={filteredData.column('a')}
-      y={filteredData.column('b')}
-      key={filteredData.column('$key')}
+  <Graphic width={500} height={500}
+  >     
+    <GradientLegend
+      labels={[0, 15, 50, 90, 120]}
       fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
-      fill={'goldenrod'}
+      fill={'steelblue'}
+      labelCount={5}
+      title={'Gradient'}
+      titlePaddingY={-7}
+      vjust={'top'}
+      hjust={'right'}
+      flip
     />
-    <XAxis />
-    <YAxis />
-  
-  </Section>
 
-</Graphic>
-``` -->
+    <DiscreteLegend
+      labels={[0, 15, 50, 90, 120]}
+      title={'Discrete'}
+      fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+      fill={'steelblue'}
+      orient={'horizontal'}
+      labelCount={5}
+      vjust={'top'}
+      hjust={'center'}
+    /> 
+
+    <Section 
+      x1={0} x2={500}
+      y1={0} y2={500}
+      padding={80}
+      scaleX={scaleLinear().domain(data.domain('a'))}
+      scaleY={scaleLinear().domain(data.domain('b'))}
+    >
+
+      <PointLayer
+        x={filteredData.column('a')}
+        y={filteredData.column('b')}
+        key={filteredData.column('$key')}
+        fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+        fill={'steelblue'}
+      />
+      <XAxis />
+      <YAxis />
+    
+    </Section>
+
+  </Graphic>
+```
 
 ### Setting legends to bin values
 
@@ -280,92 +285,65 @@ import Bins from './utils/_Bins.svelte'
 <!-- ::: codesandboxplus ./src/routes/docs/guides/utils/_Bins.svelte 5-10
 ::: -->
 
-<!-- ```svelte
-<script>
-  // d3
-  import { scaleLinear } from 'd3-scale'
-  
-  // florence
-  import { Graphic, Section, PointLayer, DiscreteLegend, GradientLegend, XAxis, YAxis } from '@snlab/florence'
-  import DataContainer from '@snlab/florence-datacontainer'
+```markup
+  <script>
+    // same imports and data as above in previous two examples
+  </script>
 
-  export let N = 100
-  
-  function generateData (N, error) {
-    const getError = () => -error + (Math.random() * (2 * error)) * N
-    const data = { a: [], b: [] }
-    for (let i = 0; i < N; i++) {
-      data.a.push(i + getError())
-      data.b.push(i + getError())
-    }
-    return data
-  }
-  
-  const data = new DataContainer(generateData(N, 0.25))
-  const threshold = 0
-  let filteredData
-
-  $: {
-    filteredData = data
-      .filter(row => row.a > threshold)
-  }
-</script>
-
-<Graphic width={500} height={500}
->     
-  <GradientLegend
-    labels={[0, 15, 50, 90, 120]}
-    fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
-    fill={'steelblue'}
-    labelCount={5}
-    title={'Gradient'}
-    titlePaddingY={-7}
-    vjust={'top'}
-    hjust={'right'}
-    flip
-  />
-
-  <DiscreteLegend
-    labels={[0, 15, 50, 90, 120]}
-    title={'Discrete'}
-    fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
-    fill={'steelblue'}
-    orient={'horizontal'}
-    labelCount={5}
-    vjust={'top'}
-    hjust={'center'}
-  /> 
-
-  <Section 
-    x1={0} x2={500}
-    y1={0} y2={500}
-    padding={80}
-    scaleX={scaleLinear().domain(data.domain('a'))}
-    scaleY={scaleLinear().domain(data.domain('b'))}
-  >
-
-    <PointLayer
-      x={filteredData.column('a')}
-      y={filteredData.column('b')}
-      key={filteredData.column('$key')}
+  <Graphic width={500} height={500}
+  >     
+    <!-- Vjust -->
+    <GradientLegend
+      labels={[0, 15, 50, 90, 120]}
       fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
       fill={'steelblue'}
+      labelCount={5}
+      title={'Gradient'}
+      titlePaddingY={-7}
+      vjust={'top'}
+      hjust={'right'}
+      flip
     />
-    <XAxis />
-    <YAxis />
-  
-  </Section>
 
-</Graphic>
-``` -->
+    <!-- Pixels -->
+    <DiscreteLegend
+      labels={[0, 15, 50, 90, 120]}
+      title={'Discrete'}
+      fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+      fill={'steelblue'}
+      orient={'horizontal'}
+      labelCount={5}
+      vjust={'top'}
+      hjust={'center'}
+    /> 
+
+    <!-- Basic example + continuous scales -->
+    <Section 
+      x1={0} x2={500}
+      y1={0} y2={500}
+      padding={80}
+      scaleX={scaleLinear().domain(data.domain('a'))}
+      scaleY={scaleLinear().domain(data.domain('b'))}
+    >
+
+      <PointLayer
+        x={filteredData.column('a')}
+        y={filteredData.column('b')}
+        key={filteredData.column('$key')}
+        fillOpacity={scaleLinear().domain([0, 120]).range([0, 1])}
+        fill={'steelblue'}
+      />
+      <XAxis />
+      <YAxis />
+    
+    </Section>
+
+  </Graphic>
+```
 
 ### Positioning 
 
 In this example, note the use of different systems for positioning the legends. The discrete legend is automatically positioned to `vjust=center`, `hjust=left` using smart defaults (based on the dimensions of the container component it is in), while the gradient legend is positioned manually using pixel values (indicated by the fat arrow functions `() => <pixelvalues>`). 
-
-INFO: When using a positioning system, make sure to follow only one per legend component in order to avoid confusion.
-
-The positioning according to `vjust`, `hjust` flips completely even when Section/Graphic is set to `flipX = true` and/or `flipY = true`. 
 
 ```js exec
 import Positioning from './utils/_Positioning.svelte'
@@ -375,6 +353,52 @@ import Positioning from './utils/_Positioning.svelte'
 
 <!-- ::: codesandboxplus ./src/routes/docs/guides/utils/_Positioning.svelte 5-10
 ::: -->
+
+```markup
+  <Graphic width={500} height={500}
+    padding={50}
+  >     
+
+    <!-- Basic example + continuous scales -->
+    <Section 
+      x1={0} x2={500}
+      y1={0} y2={500}
+      padding={75}
+      scaleX={scaleLinear().domain(data.domain('a'))}
+      scaleY={scaleLinear().domain(data.domain('b'))}
+      backgroundColor={'#a8a8a8'}
+      paddingColor={'#E8E8E8'} 
+    >
+
+      <!-- Vjust -->
+      <GradientLegend
+        title={'Gradient'}
+        fill={scaleLinear().domain(data.domain('a')).range(['red', 'blue'])}
+        labelCount={5}
+        flip
+      />
+
+      <!-- Pixels -->
+      <DiscreteLegend
+        title={'Discrete'}
+        x1={() => { return 200 }} x2={() => { return 300 }}
+        y1={() => { return 60 }} y2={() => { return 100 }}
+        fill={scaleLinear().domain(data.domain('a')).range(['red', 'blue'])}
+        orient={'horizontal'}
+        labelCount={5}
+        titleX={() => { return 150 }}
+        titleY={() => { return 70 }}
+      />
+      
+      <XAxis />
+      <YAxis />
+    
+    </Section>
+
+  </Graphic>
+```
+
+When using a positioning system, make sure to follow only one per legend component in order to avoid confusion. The positioning according to `vjust`, `hjust` flips completely even when Section/Graphic is set to `flipX = true` and/or `flipY = true`. 
 
 ### Using `Section`/`Graphic` padding as part of the positioning canvas
 
@@ -387,9 +411,59 @@ import UsePadding from './utils/_UsePadding.svelte'
 ::: codesandboxplus ./src/routes/docs/guides/utils/_UsePadding.svelte 5-10
 ::: -->
 
-As above, the positioning according to `vjust`, `hjust` persists (even when `usePadding = true`) when Section/Graphic is set to `flipX = true` and/or `flipY = true`.
-
 <UsePadding/>
+
+```markup
+  <script>
+    // similar data processing as previous examples
+  </script>
+
+  <Graphic width={500} height={500}
+    padding={'#a8a8a8'}
+  >     
+
+    <!-- Basic example + continuous scales -->
+    <Section 
+      x1={0} x2={500}
+      y1={0} y2={500}
+      padding={75}
+      scaleX={scaleLinear().domain(data.domain('a'))}
+      scaleY={scaleLinear().domain(data.domain('b'))}
+      backgroundColor={background}
+      paddingColor={'#E8E8E8'}
+    >
+
+      <!-- usePadding = false -->
+      <GradientLegend
+        title={'Gradient'}
+        fill=scaleLinear().domain(data.domain('a')).range(['red', 'blue'])
+        labelCount={5}
+        hjust={'right'}
+        flip
+      />
+
+      <!-- usePadding = true -->
+      <DiscreteLegend
+        title={'Discrete'}
+        vjust={'top'}
+        hjust={'center'}
+        orient={'horizontal'}
+        fill=scaleLinear().domain(data.domain('a')).range(['red', 'blue'])
+        labelCount={5}
+        usePadding={true}
+      />
+      
+      <XAxis />
+      <YAxis />
+    
+    </Section>
+
+  </Graphic>
+
+```
+
+As above, the positioning according to `vjust`, `hjust` flips when Section/Graphic is set to `flipX = true` and/or `flipY = true`.
+
 
 ### Categorical scales
 
@@ -405,48 +479,48 @@ import CategoricalScales from './utils/_CategoricalScales.svelte'
 ::: codesandboxplus ./src/routes/docs/guides/utils/_CategoricalScales.svelte 5-10
 ::: -->
 
-<!-- ```svelte
-<script>
-  // d3
-  import { scaleBand, scaleLinear, scaleOrdinal} from 'd3-scale'
-  import * as d3 from 'd3-scale-chromatic'
-  import { schemeTableau10 } from 'd3-scale-chromatic'
+```markup
+  <script>
+    // d3
+    import { scaleBand, scaleLinear, scaleOrdinal} from 'd3-scale'
+    import * as d3 from 'd3-scale-chromatic'
+    import { schemeTableau10 } from 'd3-scale-chromatic'
 
-  // florence
-  import { Rectangle, Graphic, Section, DiscreteLegend, XAxis } from '@snlab/florence'
-  import DataContainer from '@snlab/florence-datacontainer'
+    // florence
+    import { Rectangle, Graphic, Section, DiscreteLegend, XAxis } from '@snlab/florence'
+    import DataContainer from '@snlab/florence-datacontainer'
 
-  // categorical data
-  let catData = new DataContainer({
-    fruit: ['apple', 'banana', 'apple', 'banana', 'apple', 'banana'],
-    nutrient: ['carbs', 'carbs', 'fibre', 'fibre', 'protein', 'protein'],
-    value: [3, 5, 1, 3, 4, 2]
-  })
+    // categorical data
+    let catData = new DataContainer({
+      fruit: ['apple', 'banana', 'apple', 'banana', 'apple', 'banana'],
+      nutrient: ['carbs', 'carbs', 'fibre', 'fibre', 'protein', 'protein'],
+      value: [3, 5, 1, 3, 4, 2]
+    })
 
-  const fruitDomain = catData.domain('fruit')
-  const nutrientDomain = catData.domain('nutrient')
+    const fruitDomain = catData.domain('fruit')
+    const nutrientDomain = catData.domain('nutrient')
 
-  catData = catData
-    .groupBy('fruit')
-    .mutarise({ totalValuePerFruit: { value: 'sum' } })
-    .mutate({ valueFraction: row => row.value / row.totalValuePerFruit })
-    .select(['fruit', 'nutrient', 'valueFraction'])
-    .groupBy('fruit')
+    catData = catData
+      .groupBy('fruit')
+      .mutarise({ totalValuePerFruit: { value: 'sum' } })
+      .mutate({ valueFraction: row => row.value / row.totalValuePerFruit })
+      .select(['fruit', 'nutrient', 'valueFraction'])
+      .groupBy('fruit')
 
-  const containerPerFruit = catData.column('$grouped').map(container => {
-    return container.cumsum({ cumsum_value: 'valueFraction' })
-  })
+    const containerPerFruit = catData.column('$grouped').map(container => {
+      return container.cumsum({ cumsum_value: 'valueFraction' })
+    })
 
-  const nutrientColorScale = scaleOrdinal()
-    .domain(nutrientDomain)
-    .range(schemeTableau10)
-</script>
+    const nutrientColorScale = scaleOrdinal()
+      .domain(nutrientDomain)
+      .range(schemeTableau10)
+  </script>
 
-<div>
-	<Graphic 
+  <Graphic 
     height={400} width={400}
   >         
 
+    <!-- Categorical -->
     <Section 
       scaleX={scaleBand().domain(fruitDomain).padding(0.3)}
       scaleY={scaleLinear().domain([0, 1])}
@@ -480,7 +554,5 @@ import CategoricalScales from './utils/_CategoricalScales.svelte'
     
     </Section>
 
-	</Graphic>
-
-</div>
-``` -->
+  </Graphic>
+```

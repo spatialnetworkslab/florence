@@ -23,7 +23,7 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/runtime": "^7.0.0",
     "@fullhuman/postcss-purgecss": "^2.0.5",
-    "@snlab/florence": "^0.1.8",
+    "@snlab/florence": "^0.1.15",
     "@snlab/florence-datacontainer": "^0.1.3",
     "@snlab/sveltex-unified": "0.0.14",
     "d3-contour": "^1.3.2",
