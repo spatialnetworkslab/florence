@@ -239,9 +239,6 @@ import Basic from './utils/_Basic.svelte'
 
 <Basic switch0 />
 
-<!-- ::: codesandboxplus ./src/routes/tutorials/utils/_basic0/App.svelte 1-3
-::: -->
-
 ## Axes
 
 Axes are always good to include as a reference for viewers to extract values from the graph.
