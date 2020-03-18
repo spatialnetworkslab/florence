@@ -9,7 +9,7 @@
   import EventManager from '../../../interactivity/events/EventManager.js'
   import InteractionManager from '../../../interactivity/interactions/InteractionManager.js'
 
-  import { getClipPropsPadding } from '../Section/getClipProps.js'
+  import { getClipPropsPadding, getClipPropsNoPadding } from '../Section/getClipProps.js'
 
   export let renderer = undefined
   
@@ -75,6 +75,7 @@
   }
 
   $: clipPropsPadding = getClipPropsPadding(coordinates, padding)
+  $: clipPropsNoPadding = getClipPropsNoPadding(coordinates)
 
   const originalViewBox = viewBox
   let originalViewBoxArray
@@ -114,11 +115,21 @@
   {preserveAspectRatio}
   bind:this={rootNode}
 >
+  <defs>
+    <mask id="mask-padding-bg">
+      <rect
+        {...clipPropsNoPadding}
+        fill="white" />
+      <rect
+        {...clipPropsPadding}
+        fill="black" />
+    </mask>
+  </defs>
+
   {#if backgroundColor}
     <rect 
       class="content-background"
-      width="100%"
-      height="100%"
+      {...clipPropsPadding}
       fill={backgroundColor}
     />
   {/if}
@@ -126,7 +137,8 @@
   {#if paddingColor}
     <rect 
       class="padding-background"
-      {...clipPropsPadding}
+      mask="url(#mask-padding-bg)"
+      {...clipPropsNoPadding}
       fill={paddingColor} 
     />
   {/if}
