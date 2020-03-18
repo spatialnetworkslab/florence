@@ -34,7 +34,7 @@
     scaleX={scalePoint().domain(planetName)}
     scaleY={scaleLinear().domain([0, 100])}
     flipY
-    padding={{ top: 10, bottom: 30, left: 40, right: 10 }}>
+    padding={{ top: 10, bottom: 30, left: 40, right: 40 }}>
     <PointLayer
       x={planetName}
       y={[50, 50, 50, 50, 50, 50, 50, 50]}
