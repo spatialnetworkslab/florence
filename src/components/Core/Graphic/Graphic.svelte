@@ -1,6 +1,5 @@
 <script>
   import { onMount } from 'svelte'
-
   import * as GraphicContext from './GraphicContext'
   import * as SectionContext from '../Section/SectionContext'
   import * as EventManagerContext from './EventManagerContext'
@@ -24,7 +23,6 @@
   export let zoomIdentity = undefined
   export let transformation = undefined
   export let blockReindexing = false
-
   const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
   const eventManagerContext = EventManagerContext.init()
@@ -39,11 +37,10 @@
   // set up event and interaction manager
   const eventManager = new EventManager()
   EventManagerContext.update(eventManagerContext, eventManager)
-
   const interactionManager = new InteractionManager()
+
   interactionManager.setId('graphic')
   interactionManager.linkEventManager(eventManager)
-
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
 
   // Keep SectionContext and InteractionManagerContext up to date
