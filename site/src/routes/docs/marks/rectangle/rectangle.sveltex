@@ -1,60 +1,59 @@
 # Rectangle
+The `Rectangle` mark is used to plot rectangular elements.
 
-## Description
-
-```svelte
-<!--
-This is a sample specification intended to show data structure.
-For a list of required props and permitted combinations,
-see allowed prop combinations below.
--->
-
-<Graphic ...>
-  <Rectangle
-    x1={x1}
-    y1={y1}
-    x2={x2}
-    y2={y2}
-  />
-<Graphic>
-
-<Graphic ...>
-  <RectangleLayer
-    x1={()=>(// )}
-    y1={()=>(// )}
-    x2={()=>(// )}
-    y2={()=>(// )}
-  />
-<Graphic>
+```js exec
+import SimpleBar from "./examples/_SimpleBar.svelte";
 ```
-
 <SimpleBar/>
 
+```markup
+<script>
+ const x = [2002, 2004, 2006]
+ const y = [20, 40, 10]
+</script>
+<Graphic>
+  <RectangleLayer
+      x1={x}
+      x2={({ scaleX }) => x.map(value => scaleX(value) + scaleX.bandwidth())}
+      y1={y}
+      y2={0}
+  />
+</Graphic>
+```
 
-The `Rectangle` mark draws a rectangle shape on screen with four corner defined by `x1`,`x2`, `y1` and `y2` props respectively.
+The `Rectangle` mark draws a rectangle shape on screen with four corner defined by the `x1`,`x2`, `y1` and `y2` props respectively. In many use cases (i.e. bar charts), this involves making use of the `bandwidth` of [the band scale](https://github.com/d3/d3-scale#band-scales).
 
-All SVG attributes on a 'rectangle' are supported in `Rectangle` in the form of props.
+To create plots with multiple rectangles, we can either loop over the dataset (with `{#each}`) to generate one `Rectangle` per iteration, or use the `RectangleLayer`. The `RectangleLayer` shares all of the `Rectangle`'s props, but takes an array of arrays per prop instead of an array.
 
-To create rectangle plots, either loop over the dataset to generate one `Rectangle` per iteration or use the `RectangleLayer`. The `RectangleLayer` shares all of the `Rectangle`'s props, but takes an array of arrays per positional prop instead of an array.
+```markup
+<Graphic>
+  <Rectangle
+    x1={🥝}
+    x2={🍇}
+    y1={🍋}
+    y2={🍉}
+  />
+</Graphic>
 
-## Props
+<Graphic>
+  <!-- this draws 3 rectangles -->
+  <RectangleLayer
+    x1={[🥝, 🥝, 🥝]}
+    x2={[🍇, 🍇, 🍇]}
+    y1={[🍋, 🍋, 🍋]}
+    y2={[🍉, 🍉, 🍉]}
+  />
+</Graphic>
+```
 
-
-| Prop | Required | Types                    | Default   | Description         | Unit(s)           |
-| ---- | -------- | ------------------------ | --------- | ------------------- | ----------------- |
-| x1   | depends  | number \| string \| Date | undefined | Left x coordinate   | Local coordinates |
-| x2   | depends  | number \| string \| Date | undefined | Right x coordinate  | Local coordinates |
-| y1   | depends  | number \| string \| Date | undefined | Bottom y coordinate | Local coordinates |
-| y2   | depends  | number \| string \| Date | undefined | Top y coordinate    | Local coordinates |
-
-#### Allowed combinations of positioning props
-The positioning properties of the Rectangle can only be used in certain combinations.
-
-| Combination | Explanation                                                                                                                    |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `x1` + `x2` | `x1` refers to x-coordinate of the left side of the rectangle, `x2` refers to x-coordinate of the right side of the rectangle. |
-| `y1` + `y2` | `y1` refers to y-coordinate of the bottom side of the rectangle, `y2` refers to y-coordinate of the top side of the rectangle. |
-
+## Properties
+### Positioning
+| Prop | Required | Types                  | Default   | Description          | Unit(s)           |
+| ---- | -------- | ---------------------- | --------- | -------------------- | ----------------- |
+| x1   | depends  | [Number, String, Date, Function] | undefined | Left x coordinate    | Data value to be scaled by Section's scaleX. If Function then local coordinates. |
+| x2   | depends  | [Number, String, Date, Function] | undefined | Right x coordinate   | Data value to be scaled by Section's scaleX. If Function then local coordinates. |
+| y1   | depends  | [Number, String, Date, Function] | undefined | Bottom y coordinate  | Data value to be scaled by Section's scaleY. If Function then local coordinates. |
+| y2   | depends  | [Number, String, Date, Function] | undefined | Top y coordinate     | Data value to be scaled by Section's scaleY. If Function then local coordinates. |
 
 
 ### Other aesthetics
@@ -68,23 +67,6 @@ The positioning properties of the Rectangle can only be used in certain combinat
 | fill-opacity   | false    | Number | undefined | Fill opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)     | Number between 0 and 1     |
 | opacity        | false    | Number | undefined | Mark opacity  [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)         | Number between 0 and 1     |
 
-
-
-
-        
-
-
-
-
-
+These are analogous to the CSS properties of the same names.
 
 ## Examples
-
-```js exec
-import StackedBar from "./examples/_StackedBar.svelte";
-import SimpleBar from "./examples/_SimpleBar.svelte";
-```
-
-### Stacked bar chart
-
-<StackedBar/>

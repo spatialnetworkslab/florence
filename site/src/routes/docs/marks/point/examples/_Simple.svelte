@@ -16,12 +16,15 @@
     new Date(2006, 0, 1)
   ]
   const y = [20, 40, 10]
+  const scaleX = scaleTime()
+    .domain([new Date(2001, 0, 1), new Date(2007, 0, 1)])
+  const scaleY = scaleLinear()
+    .domain([0, Math.max(...y)])
 </script>
 
 <Graphic {width} {height}>
   <Section
-    scaleX={scaleTime().domain([new Date(2001, 0, 1), new Date(2007, 0, 1)])}
-    scaleY={scaleLinear().domain([0, Math.max(...y)])}
+    {scaleX} {scaleY}
     flipY
     padding={20}
   >
