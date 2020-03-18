@@ -23,8 +23,8 @@
   {height}
   scaleX={scaleLinear().domain([0, 10])}
   scaleY={scaleLinear().domain([0, 10])}
+  backgroundColor="#b2ffb2"
 >
-  <Rectangle fill="green" opacity={0.2} />
 
   <Point x={point.x} y={point.y} radius={10} fill="red" />
 
