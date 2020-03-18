@@ -40,12 +40,12 @@ To create rectangle plots, either loop over the dataset to generate one `Rectang
 ## Props
 
 
-| Prop | Required | Types                  | Default   | Description          | Unit(s)           |
-| ---- | -------- | ---------------------- | --------- | -------------------- | ----------------- |
-| x1   | depends  | [Number, String, Date] | undefined | Left x coordinate    | Local coordinates |
-| x2   | depends  | [Number, String, Date] | undefined | Right x coordinate   | Local coordinates |
-| y1   | depends  | [Number, String, Date] | undefined | Bottom y coordinate  | Local coordinates |
-| y2   | depends  | [Number, String, Date] | undefined | Top y coordinate     | Local coordinates |
+| Prop | Required | Types                    | Default   | Description         | Unit(s)           |
+| ---- | -------- | ------------------------ | --------- | ------------------- | ----------------- |
+| x1   | depends  | number \| string \| Date | undefined | Left x coordinate   | Local coordinates |
+| x2   | depends  | number \| string \| Date | undefined | Right x coordinate  | Local coordinates |
+| y1   | depends  | number \| string \| Date | undefined | Bottom y coordinate | Local coordinates |
+| y2   | depends  | number \| string \| Date | undefined | Top y coordinate    | Local coordinates |
 
 #### Allowed combinations of positioning props
 The positioning properties of the Rectangle can only be used in certain combinations.
