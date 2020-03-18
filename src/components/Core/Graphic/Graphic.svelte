@@ -8,6 +8,8 @@
   import EventManager from '../../../interactivity/events/EventManager.js'
   import InteractionManager from '../../../interactivity/interactions/InteractionManager.js'
 
+  import { getClipPropsPadding, getClipPropsNoPadding } from '../Section/getClipProps.js'
+
   export let renderer = undefined
   
   export let width = 500
@@ -23,6 +25,10 @@
   export let zoomIdentity = undefined
   export let transformation = undefined
   export let blockReindexing = false
+
+  export let backgroundColor = undefined
+  export let paddingColor = undefined
+
   const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
   const eventManagerContext = EventManagerContext.init()
@@ -65,6 +71,10 @@
     SectionContext.update(sectionContext, sectionData)
     $interactionManagerContext.loadSection($sectionContext)
   }
+
+  $: clipPropsPadding = getClipPropsPadding(coordinates, padding)
+  $: clipPropsNoPadding = getClipPropsNoPadding(coordinates)
+
   const originalViewBox = viewBox
   let originalViewBoxArray
   
@@ -103,5 +113,29 @@
   {preserveAspectRatio}
   bind:this={rootNode}
 >
+  <defs>
+    <mask id="mask-padding-bg">
+      <rect {...clipPropsNoPadding} fill="white" />
+      <rect {...clipPropsPadding} fill="black" />
+    </mask>
+  </defs>
+
+  {#if backgroundColor}
+    <rect 
+      class="content-background"
+      {...clipPropsPadding}
+      fill={backgroundColor}
+    />
+  {/if}
+
+  {#if paddingColor}
+    <rect 
+      class="padding-background"
+      mask="url(#mask-padding-bg)"
+      {...clipPropsNoPadding}
+      fill={paddingColor} 
+    />
+  {/if}
+
   <slot />
 </svg>
