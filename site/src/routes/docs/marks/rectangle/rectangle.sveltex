@@ -35,7 +35,7 @@ The `Rectangle` mark draws a rectangle shape on screen with four corner defined 
 
 All SVG attributes on a 'rectangle' are supported in `Rectangle` in the form of props.
 
-To create rectangle plots, either loop over the dataset to generate one `Point` per iteration or use the `PointLayer`. The `RectangleLayer` shares all of the `Rectangle`'s props, but takes an array of arrays per positional prop instead of an array.
+To create rectangle plots, either loop over the dataset to generate one `Rectangle` per iteration or use the `RectangleLayer`. The `RectangleLayer` shares all of the `Rectangle`'s props, but takes an array of arrays per positional prop instead of an array.
 
 ## Props
 
@@ -46,10 +46,6 @@ To create rectangle plots, either loop over the dataset to generate one `Point` 
 | x2   | depends  | [Number, String, Date] | undefined | Right x coordinate   | Local coordinates |
 | y1   | depends  | [Number, String, Date] | undefined | Bottom y coordinate  | Local coordinates |
 | y2   | depends  | [Number, String, Date] | undefined | Top y coordinate     | Local coordinates |
-| x    | depends  | [Number, String, Date] | undefined | Central x coordinate | Local coordinates |
-| y    | depends  | [Number, String, Date] | undefined | Central y coordinate | Local coordinates |
-| w    | depends  | Number                 | undefined | Width                | Local coordinates |
-| h    | depends  | Number                 | undefined | Height               | Local coordinates |
 
 #### Allowed combinations of positioning props
 The positioning properties of the Rectangle can only be used in certain combinations.
@@ -57,13 +53,8 @@ The positioning properties of the Rectangle can only be used in certain combinat
 | Combination | Explanation                                                                                                                    |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `x1` + `x2` | `x1` refers to x-coordinate of the left side of the rectangle, `x2` refers to x-coordinate of the right side of the rectangle. |
-| `x` + `w`   | `x` is the center of the rectangle in the x-dimension, `w` is the width. Here, `x1 = x - w / 2`, and `x2 = x + w / 2`.         |
-| `x1` + `w`  | `x2 = x1 + w`                                                                                                                  |
-| `x2` + `w`  | `x1 = x2 - w`                                                                                                                  |
 | `y1` + `y2` | `y1` refers to y-coordinate of the bottom side of the rectangle, `y2` refers to y-coordinate of the top side of the rectangle. |
-| `y` + `h`   | `y` is the center of the rectangle in the x-dimension, `h` is the width. Here, `y1 = y - h / 2`, and `y2 = y + h / 2`.         |
-| `y1` + `h`  | `y2 = y1 + h`                                                                                                                  |
-| `y2` + `h`  | `y1 = y2 - h`                                                                                                                  |
+
 
 
 ### Other aesthetics
