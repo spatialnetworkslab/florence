@@ -33,3 +33,4 @@ export function removePadding (range, offsetMin, offsetMax) {
     return [range[0] + offsetMax, range[1] - offsetMin]
   }
 }
+
