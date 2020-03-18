@@ -12,14 +12,6 @@
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  // switches for steps
-  export let switch0 = true
-  export let switch1 = true
-  export let switch2 = true
-  export let switch3 = true
-  export let switch4 = true
-  export let switch5 = true
-
   const data = new DataContainer({
     diameter: [
       4.7,
@@ -104,45 +96,37 @@
     scaleX={scaleFruit}
     scaleY={scaleMeanDiameter}
   >
-    {#if switch0 || switch3}
-      <PointLayer
-        x={data.column('fruit')}
-        y={data.column('diameter')}
-        key={data.column('$key')}
-        fill={switch3 ? data.column('fruit').map(d => scaleFruitColor(d)) : 'black'}
-        radius={switch3 ? scaleRadius : 3}
-      />
-    {/if}
+    <PointLayer
+      x={data.column('fruit')}
+      y={data.column('diameter')}
+      key={data.column('$key')}
+      fill={data.column('fruit').map(d => scaleFruitColor(d))}
+      radius={scaleRadius}
+    />
 
-    {#if switch1 || switch4}
-      <XAxis
-        title={switch4 ? 'fruit' : ''}
-      />
-      <YAxis 
-        title={switch4 ? 'diameter/cm' : ''}
-      />
-    {/if}
+    <XAxis
+      title={'fruit'}
+    />
+    <YAxis 
+      title={'diameter/cm'}
+    />
 
-    {#if switch2}
-      <Title 
-        title={'Fruit Sizes'} 
-        titleFontFamily={'Baskerville'}
-        usePadding={true}
-        />
-    {/if}
+    <Title 
+      title={'Fruit Sizes'} 
+      titleFontFamily={'Baskerville'}
+      usePadding={true}
+      />
 
-    {#if switch5}
-      <DiscreteLegend
-        fill={scaleFruitColor}
-        hjust={'right'}
-        vjust={'top'}
-        stroke={'white'}
-        strokeWidth={2}
-        labelPaddingX={-12}
-        labelAnchorPoint={'left'}
-        usePadding={true}
-      /> 
-    {/if}
+    <DiscreteLegend
+      fill={scaleFruitColor}
+      hjust={'right'}
+      vjust={'top'}
+      stroke={'white'}
+      strokeWidth={2}
+      labelPaddingX={-12}
+      labelAnchorPoint={'left'}
+      usePadding={true}
+    /> 
   </Section>
 
 </Graphic>
