@@ -178,12 +178,12 @@ If we want to customize our map, we can do so by feeding appropriate values to a
 ```
 
 Our map now looks like this:
-
+<!-- 
 ```js exec
 import Inter1 from './utils/_Inter1.svelte'
 ```
 
-<Inter1/>
+<Inter1/> -->
 
 All Florence `Marks` can be used alongside maps, with a similar property called `geometry` for plotting. For details of each, refer to the [Marks](docs/marks) documentation.
 
@@ -192,8 +192,7 @@ As you can see, it is easy to make a base map made of polygons using Florence co
 
 When we look back at our [dataset](../utils/planning_areas.json) using `console.log` and checking `Inspect` (on Google Chrome or its analogues on other browsers), we see that we have another column called `resale_price`:
 
-TODO add picture but not sure if sveltex supports it
-<!-- ![A picture of our data, showing that we have another property called `resale_price_sqm`](data.png "Summary of planning_areas_data.json") --> 
+<!-- TODO add picture but not sure if sveltex supports it -->
 
 We will use this as the basis for our choropleth. Notice that some values are `NaN`, meaning to say these areas don't have anything for us to plot. We need to take that into account when assigning colors to our planning area polygons. 
 
@@ -205,7 +204,7 @@ For this tutorial, we will use five (5) colors to denote thresholds in the data.
   const colors = ['#d3d3d3', '#FFF5EB', '#FDD1A5', '#FD9243', '#DE4F05', '#7F2704']
 ```
 
-We use the d3 scale `scaleThreshold` to help us assign colors to our data. This means that we need to know what thresholds or breakpoint values within our data to use for each color. This is computed using the domain of `resale_price_sqm` and a bit of javascript that lets us break the domain into equal intervals based on the length of the `colors` array above. Note that we also use `Math.floor()` to make sure we get integer values for our thresholds<!-- should we explain this more? -->
+We use the d3 scale `scaleThreshold` to help us assign colors to our data. This means that we need to know what thresholds or breakpoint values within our data to use for each color. This is computed using the domain of `resale_price_sqm` and a bit of javascript that lets us break the domain into equal intervals based on the length of the `colors` array above. Note that we also use `Math.floor()` to make sure we get integer values for our thresholds.
 
 ```js
   const resalePriceDomain = data.domain('resale_price_sqm')
@@ -228,13 +227,13 @@ Lastly, we create the color scale named `priceColorScale` and map our data to it
 In summary, the JS part of our code should now look like this:
 
 ```js
-  import { Graphic, Section, PolygonLayer, createGeoScales, DiscreteLegend } from '../../../../src/'
+  import { Graphic, Section, PolygonLayer, createGeoScales, DiscreteLegend } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
   import { scaleThreshold } from 'd3-scale'
 
   // import data
   // step1
-  import geo from '../data/planning_areas_data.json'
+  import geo from './planning_areas_data.json'
   const data = new DataContainer(geo)
   const geoScales = createGeoScales(data.domain('$geometry'))
 
@@ -262,6 +261,15 @@ The variable `priceColors` now contains an array that houses our colors for our 
 
 We are now ready to plot our choropleth map. Just replace the input to `fill` with `priceColors` and _voila_! Our simple map of Singapore is now a choropleth that shows us each planning area's mean resale price per square meter.
 
+```markup
+  <PolygonLayer 
+    geometry={data.column('$geometry')}
+    fill={priceColors}
+    stroke={'white'} 
+    strokeWidth={1}
+  />
+```
+
 <!-- ```js exec
 import Inter2 from './utils/_Inter2.svelte'
 ```
@@ -270,9 +278,36 @@ import Inter2 from './utils/_Inter2.svelte'
 
 ## Add a legend (optional)
 
+Adding a legend to our chart can help increase our understanding of the data, specifically the values of our price thresholds. We manually add a `DiscreteLegend` to our chart to better explain the colors mapped to our planning areas. 
+
+<!-- ```js exec
+import Inter3 from './utils/_Inter3.svelte'
+```
+
+<Inter3/> -->
+
+```markup
+  <DiscreteLegend
+  fill={priceColorScale}
+  vjust={'top'}
+  hjust={'right'}
+  labelAnchorPoint={'r'}
+  usePadding={true}
+  title={'Mean Resale Price / m2 (SGD)'}
+  labelFontSize={12}
+  orient={'horizontal'}
+  height={25}
+  width={250}
+  stroke={'white'}
+  flipLabels
+  />
+```
+
+For further details, refer to the [Legend documentation](docs/guides/legend).
+
 
 ## Sandbox
 You can play around with the final map in the CodeSandbox below.
 
-::: codesandbox sandboxes/basic-tutorial codemirror=1&view=split&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
+::: codesandbox sandboxes/intermediate-tutorial codemirror=1&view=split&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
 :::

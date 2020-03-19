@@ -17,7 +17,7 @@
   const interval = Math.floor((resalePriceDomain[1] - resalePriceDomain[0]) / colors.length)
   let start = Math.floor(resalePriceDomain[0])
 
-  for (let i = 0; i < colors.length; i += 1) {
+  for (let i = 0; i < colors.length - 1; i += 1) {
     thresholds.push(start + interval * i)
   }
 
