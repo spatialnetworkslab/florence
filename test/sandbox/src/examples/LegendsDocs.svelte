@@ -2,11 +2,7 @@
   // d3
   import { scaleLinear } from 'd3-scale'
   // florence
-<<<<<<< HEAD
-  import { Graphic, Section, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
-=======
   import { Graphic, Section, DiscreteLegend, Point, GradientLegend, YAxis, XAxis } from '../../../../src/'
->>>>>>> bc661994189a14d1fcfd67c0ca84f54a141710ee
   import DataContainer from '@snlab/florence-datacontainer'
   export let N = 100
   
@@ -47,29 +43,6 @@
     scaleY={scaleLinear().domain(data.domain('b'))}
     backgroundColor={background}
     paddingColor={padding}
-<<<<<<< HEAD
-  >
-
-    <!-- usePadding = false -->
-    <GradientLegend
-      title={'Gradient'}
-      fill={linearColorScale}
-      labelCount={5}
-      hjust={'right'}
-      flip
-    />
-
-    <!-- usePadding = true -->
-    <DiscreteLegend
-      title={'Discrete'}
-      vjust={'top'}
-      hjust={'center'}
-      orient={'horizontal'}
-      fill={linearColorScale}
-      labelCount={5}
-      usePadding={true}
-    />
-=======
     flipX
   >
     <!-- usePadding = false -->
@@ -105,7 +78,6 @@
       labelCount={5}
       usePadding={true}
     /> -->
->>>>>>> bc661994189a14d1fcfd67c0ca84f54a141710ee
     
     <XAxis />
     <YAxis />

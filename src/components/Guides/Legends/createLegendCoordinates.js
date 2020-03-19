@@ -30,11 +30,7 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   }
 
   if (vjust === 'bottom') {
-<<<<<<< HEAD
-    y1 = y2Range - height + offset //+ addTitleSize * 0.5
-=======
     y1 = y2Range - height + offset
->>>>>>> bc661994189a14d1fcfd67c0ca84f54a141710ee
     y2 = y2Range + offset - addTitleSize * 0.25
   }
 

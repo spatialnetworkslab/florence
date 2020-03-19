@@ -95,7 +95,7 @@ tr:nth-child(even) {
 }
 
 .left-col {
-  @apply w-48 border-r border-gray-400 pr-4 whitespace-no-wrap flex-none;
+  @apply w-1/6 border-r border-gray-400 pr-4 whitespace-no-wrap flex-none;
 }
 
 .right-col {

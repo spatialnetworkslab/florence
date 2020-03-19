@@ -97,13 +97,8 @@
     }
 
     // Title text positioning wrt section/graphic context
-<<<<<<< HEAD
-    totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize / 2 : titleFontSize
-
-=======
     totalFontSize = subtitle.length > 0 ? titleFontSize + subtitleFontSize : titleFontSize
   
->>>>>>> bc661994189a14d1fcfd67c0ca84f54a141710ee
     // Autopositioning
     if (!isValid(x, y)) {
       if (sectionContext.flipX) xRange.reverse()
@@ -159,11 +154,7 @@
     text={title}
     fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
     {transition} {onClick} {onMouseover} {onMouseout}
-<<<<<<< HEAD
-    {zoomIdentity} _asPolygon={false}
-=======
     _asPolygon={false}
->>>>>>> bc661994189a14d1fcfd67c0ca84f54a141710ee
   />
 {/if}
 

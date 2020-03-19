@@ -75,7 +75,7 @@
   priceColors = postBg.map('resale_price_sqm', priceScale)
   leaseColors = postBg.map('remaining_lease', leaseScale)
   floorColors = postBg.map('floor_area_sqm', floorScale)
-
+  console.log(priceColors)
   let hoverKey
   let hoverTown
 

@@ -11,12 +11,13 @@
 
 .sidenav-second{
   @apply text-base font-normal pl-4;
+  word-wrap: break-word;
 }
 .sidenav-second:hover {
-  @apply text-indigo-500;
+  @apply text-red-500;
 }
 .sidenav-second-selected {
-  @apply text-indigo-500 font-medium;
+  @apply text-red-500 font-medium;
 }
 
 .sidenav-a{
