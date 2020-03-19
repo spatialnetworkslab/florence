@@ -50,7 +50,6 @@
         x={point.difficulty}
         y={point.flexibility}
         text={point.name}
-        zoomIdentity={{ x: 0, y: -20, kx: 1, ky: 1 }}
       />
 
     {/each}

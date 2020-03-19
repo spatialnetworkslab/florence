@@ -1,13 +1,13 @@
 import { calculateCentroid } from '../../../../utils/geometryUtils'
 import bboxPoint from './utils/bboxPoint.js'
-import createItemFromBBox from '../../utils/createItemFromBBox.js'
+import createItemFromBbox from '../../utils/createItemFromBbox.js'
 
 export function indexRectangle (markData) {
   const rectangleAttributes = markData.attributes
 
   const centroid = calculateCentroid(rectangleAttributes.screenGeometry)
   const bbox = bboxPoint(centroid)
-  const item = createItemFromBBox(bbox)
+  const item = createItemFromBbox(bbox)
 
   item.attributes = rectangleAttributes
   item.markType = 'Rectangle'
@@ -26,7 +26,7 @@ export function indexRectangleLayer ({ layerAttributes, keyArray, layerId }) {
 
     const centroid = calculateCentroid(rectangleAttributes.screenGeometry)
     const bbox = bboxPoint(centroid)
-    const item = createItemFromBBox(bbox)
+    const item = createItemFromBbox(bbox)
 
     item.key = key
     item.index = i

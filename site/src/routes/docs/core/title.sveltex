@@ -1,4 +1,5 @@
 # Plot title
+The `Title` component is used to create a plot title and has smart defaults for positioning and aesthetics/visual properties. 
 
 ```html
   <Graphic>
@@ -15,12 +16,7 @@
   </Graphic>
 ```
 
-## Description
-
-The `Title` component is used to create a plot title and has smart defaults for positioning and aesthetics/visual properties. 
-
-## Props
-
+## Properties
 
 ### Positioning
 | Prop       | Type(s)              | Description | Required | Default     | Units                                             |
@@ -70,16 +66,3 @@ The `Title` component is used to create a plot title and has smart defaults for 
 | subtitleAnchorPoint   | `String` | Anchor point of subtitle text                          | ❌        | `center`    | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc' |
 
 ## Examples
-This example shows how to position and customize the title (and subtitle).
-
-```js exec
-import Title from './utils/_Title.svelte'
-```
-
-<Title />
-
-The property `usePadding` can be switched to `true` (its default setting is `false`) to make use of the space set for 
-padding for both `Section` and `Graphic`.
-
-The positioning according to `vjust`, `hjust` persists (even when `usePadding = true`) when Section/Graphic is set to `flipX = true` and/or `flipY = true`.
-

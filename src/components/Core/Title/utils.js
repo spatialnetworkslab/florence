@@ -77,7 +77,11 @@ export function createTitleXCoord (hjust, range, x, offset, flipX) {
     throw Error('Please specify either `left`, `center`, `right` or a number from 0 to 1 for `hjust`')
   }
 
+<<<<<<< HEAD
   const posX = flipX ? x1 - (sectionWidth * justification + offset) : x1 + (sectionWidth * justification + offset)
+=======
+  const posX = flipX ? x2 - (sectionWidth * justification + offset) : x1 + (sectionWidth * justification + offset)
+>>>>>>> bc661994189a14d1fcfd67c0ca84f54a141710ee
   return posX
 }
 
@@ -97,11 +101,15 @@ export function createTitleYCoord (vjust, range, y, offset, fontSize, flipY) {
   }
 
   if (vjust === 'bottom') {
-    justification = 1 - (fontSize / sectionHeight)
+    justification = flipY ? 1 : 1 - (fontSize / sectionHeight)
   }
 
   if (vjust === 'top') {
+<<<<<<< HEAD
     justification = fontSize / sectionHeight
+=======
+    justification = fontSize / sectionHeight * 0.5
+>>>>>>> bc661994189a14d1fcfd67c0ca84f54a141710ee
   }
 
   if (!isNaN(vjust)) {
@@ -116,6 +124,12 @@ export function createTitleYCoord (vjust, range, y, offset, fontSize, flipY) {
     throw Error('Please specify either `top`, `center`, `bottom` or a number for `vjust`')
   }
 
+<<<<<<< HEAD
   const posY = flipY ? y1 - (sectionHeight * justification + offset) : y1 + sectionHeight * justification + offset
+=======
+  // const posY = flipY ? y2 - (sectionHeight * justification + offset) : y1 + sectionHeight * justification + offset
+  const posY = y1 + sectionHeight * justification + offset
+
+>>>>>>> bc661994189a14d1fcfd67c0ca84f54a141710ee
   return posY
 }

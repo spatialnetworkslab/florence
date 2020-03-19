@@ -4,7 +4,7 @@
 #
 version: 2.1
 orbs:
-  cypress: cypress-io/cypress@1.8.0
+  cypress: cypress-io/cypress@1.19.1
 jobs:
   unit_test:
     docker:
@@ -23,7 +23,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: yarn install
+      - run: npm install
 
       - save_cache:
           paths:
@@ -31,12 +31,13 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: yarn run test:unit
+      - run: npm run test:unit
 workflows:
   unit_and_integration:
     jobs:
       # - unit_test # running unit tests from cypress workspace to save time
       - cypress/run:
-          yarn: true
-          command: yarn run test:unit && yarn run test:integration
+          executor: cypress/browsers-chrome78-ff70
+          browser: chrome
+          command: npm run test:unit && npm run test:ci
 

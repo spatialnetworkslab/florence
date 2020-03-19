@@ -37,37 +37,37 @@
 
 <div>
   <Graphic width={500} height={500}
-    padding={graphicPadding}
+    padding={50}
   >     
 
     <!-- Basic example + continuous scales -->
     <Section 
       x1={0} x2={500}
       y1={0} y2={500}
-      padding={sectionPadding}
+      padding={75}
       scaleX={scaleLinear().domain(data.domain('a'))}
       scaleY={scaleLinear().domain(data.domain('b'))}
-      backgroundColor={background}
-      paddingColor={padding} 
+      backgroundColor={'#a8a8a8'}
+      paddingColor={'#E8E8E8'} 
     >
 
       <!-- Vjust -->
-      <GradientLegend
-        title={'Gradient'}
-        fill={linearColorScale}
+      <DiscreteLegend
+        title={'Discrete'}
+        fill={scaleLinear().domain(data.domain('a')).range(['red', 'blue'])}
         labelCount={5}
         flip
       />
 
       <!-- Pixels -->
-      <DiscreteLegend
-        title={'Discrete'}
+      <GradientLegend
+        title={'Gradient'}
         x1={() => { return 200 }} x2={() => { return 300 }}
         y1={() => { return 60 }} y2={() => { return 100 }}
-        fill={linearColorScale}
+        fill={scaleLinear().domain(data.domain('a')).range(['red', 'blue'])}
         orient={'horizontal'}
         labelCount={5}
-        titleX={() => { return 170 }}
+        titleX={() => { return 150 }}
         titleY={() => { return 70 }}
       />
       

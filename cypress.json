@@ -6,5 +6,11 @@
     "ignoreTestFiles": [
         "**/__snapshots__/*",
         "**/__image_snapshots__/*"
-    ]
+    ],
+    "env": {
+        "cypress-plugin-snapshots": {
+          "normalizeJson": true,
+          "prettier": true
+        }
+      }
 }

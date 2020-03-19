@@ -78,9 +78,15 @@ const scaleA = scaleLinear().domain(data.domain('a'))
     .groupBy('fruit')
 <script>
   // d3
+<<<<<<< HEAD
   import { scaleBand, scaleSequential, scaleLinear, scaleOrdinal } from 'd3-scale'
   import * as d3 from 'd3-scale-chromatic'
   import { schemeCategory10, schemeAccent, schemeDark2,} from 'd3-scale-chromatic'
+=======
+  import { scaleBand, scaleThreshold, scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
+  import * as d3 from 'd3-scale-chromatic'
+  import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3 } from 'd3-scale-chromatic'
+>>>>>>> bc661994189a14d1fcfd67c0ca84f54a141710ee
 
   // florence
 	import { Rectangle, Graphic, Section, PointLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
@@ -234,8 +240,8 @@ const scaleA = scaleLinear().domain(data.domain('a'))
           fill={linearColorScale}
         />
 
-      <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
-      <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
+      <XAxis />
+      <YAxis />
     
     </Section>
 
@@ -292,8 +298,8 @@ const scaleA = scaleLinear().domain(data.domain('a'))
           fill={seqScale}
         />
 
-      <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
-      <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
+      <XAxis />
+      <YAxis />
     
     </Section>
 

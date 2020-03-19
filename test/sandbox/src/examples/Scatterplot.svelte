@@ -82,6 +82,7 @@
         key={filteredData.column('$key')}
         fill={transformation === 'identity' ? 'black' : 'blue'}
         radius={transformation === 'identity' ? 4 : 6}
+        transition={duration}
       />
 
 		</Section>

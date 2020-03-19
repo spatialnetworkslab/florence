@@ -2,11 +2,13 @@
   import { Line, LineLayer, Label, LabelLayer } from '../../../index.js'
   import * as SectionContext from '../../Core/Section/SectionContext'
 
-  import { createXAxisCoords, createXTickGeoms, createXLabelGeoms, createTitleXCoord, createTitleYCoord } from './createXAxisCoords.js'
-  import { getTickPositions, getFormat } from './utils.js'
+  import { getAbsoluteYPosition } from './absolutePosition.js'
+  import { getBaseLineCoordinatesXAxis } from './baseLine.js'
+  import { getTickPositions, getTickCoordinatesXAxis, getFormat } from './ticks.js'
+  import { getTickLabelCoordinatesXAxis } from './tickLabels.js'
+  import { getTitleCoordinatesXAxis } from './title.js'
 
   // global properties
-  export let scale = undefined
   export let flip = false
 
   // axis baseline
@@ -17,7 +19,6 @@
 
   // axis positioning
   export let vjust = 'bottom'
-  export let y = undefined
   export let yOffset = 0
 
   // tick marks
@@ -43,10 +44,8 @@
   // axis title
   export let titleHjust = 'center'
   export let titleXOffset = 0
-  export let titleX = undefined
   export let titleVjust = 'axis'
   export let titleYOffset = 'axis'
-  export let titleY = undefined
   export let title = ''
   export let titleColor = 'black'
   export let titleFont = 'Helvetica'
@@ -58,76 +57,107 @@
 
   // transition
   export let transition = undefined
-  export let zoomIdentity = undefined
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
-  
-  let xCoords
-  let yCoords
-  let tickPositions
-  let tickXCoords
-  let tickYCoords
-  let tickLabelXCoords
-  let tickLabelYCoords
-  let format
-  let tickLabelText
-  let titleXCoord
-  let titleYCoord
-  let axisHeight
-  let labelAnchorPoint = 't'
-  let scaleX
 
+  // Make sure not polar
   $: {
-    scaleX = (typeof scale === 'undefined') ? $sectionContext.scaleX : scale;
-    ({ xCoords, yCoords } = createXAxisCoords(vjust, y, yOffset, scaleX, $sectionContext.scaleY, $sectionContext))
-  }
-  $: {
-    tickPositions = getTickPositions(tickValues, scaleX, tickCount, tickExtra);
-    ({ tickXCoords, tickYCoords } = createXTickGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, flip));
-    ({ tickLabelXCoords, tickLabelYCoords } = createXLabelGeoms(tickPositions, yCoords, scaleX, baseLineWidth, tickSize, labelOffset, flip))
-
-    format = getFormat(labelFormat, scaleX, tickPositions.length)
-    tickLabelText = tickPositions.map(format)
-    axisHeight = baseLineWidth + tickSize + labelOffset + labelFontSize
-    labelAnchorPoint = flip ? 'b' : 't'
-  }
-  $: {
-    if (title.length > 0) {
-      titleXCoord = createTitleXCoord(titleHjust, xCoords, titleX, scaleX, $sectionContext.scaleY, titleXOffset, axisHeight, flip, titleFontSize, $sectionContext)
-      titleYCoord = createTitleYCoord(titleVjust, yCoords, titleY, scaleX, $sectionContext.scaleY, titleYOffset, axisHeight, flip, titleFontSize, $sectionContext)
+    if ($sectionContext.transformation === 'polar') {
+      throw new Error('Axes do\'nt work with polar coordinates (for now)')
     }
   }
+  
+  // Absolute position (in pixels)
+  $: yAbsolute = getAbsoluteYPosition(vjust, yOffset, $sectionContext)
+
+  // Baseline
+  $: baseLineCoordinates = getBaseLineCoordinatesXAxis(yAbsolute, $sectionContext)
+  
+  // Ticks
+  $: tickPositions = getTickPositions(
+    tickValues,
+    $sectionContext.scaleX,
+    tickCount,
+    tickExtra,
+    $sectionContext.zoomIdentity 
+      ? { t: $sectionContext.zoomIdentity.x, k: $sectionContext.zoomIdentity.kx }
+      : undefined
+  )
+  $: tickCoordinates = getTickCoordinatesXAxis(
+    tickPositions,
+    yAbsolute,
+    $sectionContext,
+    tickSize,
+    flip
+  )
+
+  // Tick labels
+  $: format = getFormat(labelFormat, $sectionContext.scaleX, ticks.length)
+  $: tickLabelText = tickPositions.map(format)
+  $: tickLabelCoordinates = getTickLabelCoordinatesXAxis(tickCoordinates, $sectionContext, labelOffset, flip)
+  $: labelAnchorPoint = flip ? 'b' : 't'
+
+  // Title
+  $: axisHeight = baseLineWidth + tickSize + labelOffset + labelFontSize
+  $: titleCoordinates = getTitleCoordinatesXAxis(
+    titleHjust,
+    titleXOffset,
+    titleVjust,
+    titleYOffset,
+    $sectionContext,
+    flip,
+    axisHeight,
+    titleFontSize,
+    yAbsolute
+  )
 </script>
 
 <g class="x-axis">
     
   {#if baseLine}
     <Line 
-      x={xCoords} y={yCoords} strokeWidth={baseLineWidth} opacity={baseLineOpacity} stroke={baseLineColor}
-      {zoomIdentity}
+      {...baseLineCoordinates}
+      strokeWidth={baseLineWidth}
+      opacity={baseLineOpacity}
+      stroke={baseLineColor}
     />
   {/if}
 
   {#if ticks}
     <LineLayer 
-      x={tickXCoords} y={tickYCoords} strokeWidth={tickWidth} opacity={tickOpacity} stroke={tickColor}
-      {transition} {zoomIdentity}
+      {...tickCoordinates}
+      strokeWidth={tickWidth}
+      opacity={tickOpacity}
+      stroke={tickColor}
+      {transition}
     />
+    
     <LabelLayer
-      x={tickLabelXCoords} y={tickLabelYCoords} text={tickLabelText} anchorPoint={labelAnchorPoint}
-      rotation={labelRotate} fontFamily={labelFont} fontSize={labelFontSize}
-      fontWeight={labelFontWeight} opacity={labelOpacity} fill={labelColor}
-      {transition} {zoomIdentity}
+      {...tickLabelCoordinates}
+      text={tickLabelText} 
+      anchorPoint={labelAnchorPoint}
+      rotation={labelRotate}
+      fontFamily={labelFont}
+      fontSize={labelFontSize}
+      fontWeight={labelFontWeight}
+      opacity={labelOpacity}
+      fill={labelColor}
+      {transition}
     />
   {/if}
 
   {#if title.length > 0}
     <Label 
-      x={titleXCoord} y={titleYCoord} text={title} anchorPoint={titleAnchorPoint}
-      rotation={titleRotation} fontFamily={titleFont} fontSize={titleFontSize}
-      fontWeight={titleFontWeight} opacity={titleOpacity} fill={titleColor}
-      {zoomIdentity}
+      {...titleCoordinates}
+      text={title}
+      anchorPoint={titleAnchorPoint}
+      rotation={titleRotation}
+      fontFamily={titleFont}
+      fontSize={titleFontSize}
+      fontWeight={titleFontWeight}
+      opacity={titleOpacity}
+      fill={titleColor}
     />
   {/if}
 

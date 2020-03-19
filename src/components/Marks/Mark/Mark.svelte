@@ -11,17 +11,15 @@
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
-  import * as CoordinateTransformationContext from '../../Core/Section/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
-  import * as ZoomContext from '../../Core/Section/ZoomContext'
   
   import validateAesthetics from './validateAesthetics.js'
-  import { markCoordSysGeometryFuncs } from './coordSysGeometryFuncs.js'
+  import { markPixelGeometryFuncs } from './pixelGeometryFuncs.js'
   import { markRepresentAsPolygonFuncs } from './representAsPolygonFuncs.js'
   import { createDataNecessaryForIndexingMark } from './createDataNecessaryForIndexing.js'
-  import { transformGeometry } from '../../../utils/geometryUtils/index.js'
   import { createTransitionable, transitionsEqual } from '../utils/transitions'
   import any from '../utils/any.js'
+  import parseRenderSettings from '../utils/parseRenderSettings.js'
 
   import generatePath from '../utils/generatePath.js'
 
@@ -86,10 +84,9 @@
   export let onDeselect = undefined
 
   // Other
-  export let interpolate = false
-  export let _asPolygon = true
-  export let zoomIdentity = undefined
+  export let renderSettings = undefined
   export let blockReindexing = false
+  export let _asPolygon = true
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
@@ -162,29 +159,33 @@
   }
 
   // Select appriopriate geometry conversion functions
-  let createCoordSysGeometry = markCoordSysGeometryFuncs[type]
+  let createPixelGeometry = markPixelGeometryFuncs[type]
   let representAsPolygon = markRepresentAsPolygonFuncs[type]
 
   $: {
     if (initDone()) {
-      createCoordSysGeometry = markCoordSysGeometryFuncs[type]
+      createPixelGeometry = markPixelGeometryFuncs[type]
       representAsPolygon = markRepresentAsPolygonFuncs[type]
+    }
+  }
+
+  // Check if mark must be represented as polygon
+  let asPolygon = _asPolygon === true && markRepresentAsPolygonFuncs[type] !== undefined
+  $: {
+    if (initDone()) {
+      asPolygon = _asPolygon === true && markRepresentAsPolygonFuncs[type] !== undefined
     }
   }
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
-  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.subscribe()
-  const zoomContext = ZoomContext.subscribe()
 
   // Initiate geometries
-  let coordSysGeometry
   let pixelGeometry
   let screenGeometry
 
-  updateCoordSysGeometry()
   updatePixelGeometry()
   updateScreenGeometry()
 
@@ -203,34 +204,26 @@
   let tr_fontWeight = createTransitionable('fontWeight', aesthetics.fontWeight, transition)
   let tr_rotation = createTransitionable('rotation', aesthetics.rotation, transition)
 
-  // Handle coordSysGeometry changes
+  // Handle changes to geometry
   $: {
     if (initDone()) {
-      scheduleUpdateCoordSysGeometry(
+      scheduleUpdatePixelGeometry(
         positioningAesthetics,
         $sectionContext,
-        $coordinateTransformationContext,
-        interpolate
+        parseRenderSettings(renderSettings)
       )
     }
   }
 
-  // Handle zooming changes
+  // Handle radius and strokeWidth changes if Point or Line is not represented as Polygon
   $: {
     if (initDone()) {
-      scheduleUpdatePixelGeometry($zoomContext)
-    }
-  }
-
-  // Handle radius and strokeWidth changes
-  $: {
-    if (initDone()) {
-      if (!_asPolygon) {
+      if (!asPolygon) {
         tr_radius.set(aesthetics.radius)
         tr_strokeWidth.set(aesthetics.strokeWidth)
       }
 
-      if (_asPolygon) {
+      if (asPolygon) {
         scheduleUpdateScreenGeometry()
       }
     }
@@ -255,14 +248,11 @@
 
   let previousTransition
 
-  let coordSysGeometryRecalculationNecessary = false
   let pixelGeometryRecalculationNecessary = false
   let screenGeometryRecalculationNecessary = false
 
   $: {
     if (initDone()) {
-      if (coordSysGeometryRecalculationNecessary) updateCoordSysGeometry()
-
       if (pixelGeometryRecalculationNecessary) updatePixelGeometry()
 
       if (screenGeometryRecalculationNecessary) {
@@ -272,7 +262,6 @@
         updateInteractionManagerIfNecessary()
       }
 
-      coordSysGeometryRecalculationNecessary = false
       pixelGeometryRecalculationNecessary = false
       screenGeometryRecalculationNecessary = false
     }
@@ -297,8 +286,7 @@
       tr_fontSize = createTransitionable('fontSize', $tr_fontSize, transition)
       tr_fontWeight = createTransitionable('fontWeight', $tr_fontWeight, transition)
       tr_rotation = createTransitionable('rotation', $tr_rotation, transition)
-
-   }
+    }
   })
 
   afterUpdate(() => {
@@ -320,34 +308,17 @@
   })
 
   // Helpers
-  function scheduleUpdateCoordSysGeometry () {
-    coordSysGeometryRecalculationNecessary = true
-    pixelGeometryRecalculationNecessary = true
-    screenGeometryRecalculationNecessary = true
-  }
-
-  function updateCoordSysGeometry () {
-    coordSysGeometry = createCoordSysGeometry(
-      positioningAesthetics,
-      $sectionContext,
-      $coordinateTransformationContext,
-      interpolate
-    )
-  }
-
   function scheduleUpdatePixelGeometry () {
     pixelGeometryRecalculationNecessary = true
     screenGeometryRecalculationNecessary = true
   }
 
   function updatePixelGeometry () {
-    const zoomTransformation = ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
-
-    if (zoomTransformation) {
-      pixelGeometry = transformGeometry(coordSysGeometry, zoomTransformation)
-    } else {
-      pixelGeometry = coordSysGeometry
-    }
+    pixelGeometry = createPixelGeometry(
+      positioningAesthetics,
+      $sectionContext,
+      parseRenderSettings(renderSettings)
+    )
   }
 
   function scheduleUpdateScreenGeometry () {
@@ -355,7 +326,7 @@
   }
 
   function updateScreenGeometry () {
-    if (_asPolygon) {
+    if (asPolygon) {
       screenGeometry = representAsPolygon(pixelGeometry, aesthetics)
     } else {
       screenGeometry = pixelGeometry
@@ -437,9 +408,9 @@
     )
   }
 
-  $: renderPolygon = !['Point', 'Line', 'Label'].includes(type) || _asPolygon
-  $: renderCircle = type === 'Point' && !_asPolygon
-  $: renderLine = type === 'Line' && !_asPolygon
+  $: renderPolygon = !['Point', 'Line', 'Label'].includes(type) || asPolygon
+  $: renderCircle = type === 'Point' && !asPolygon
+  $: renderLine = type === 'Line' && !asPolygon
   $: renderLabel = type === 'Label'
 </script>
 

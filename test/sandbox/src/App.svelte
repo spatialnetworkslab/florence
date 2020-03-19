@@ -174,6 +174,11 @@
       url: 'heatmap',
       component: Heatmap
     }
+    // {
+    //   name: 'Legends',
+    //   url: '/legends',
+    //   component: Legends
+    // },
   ]
 </script>
 <Router url="">

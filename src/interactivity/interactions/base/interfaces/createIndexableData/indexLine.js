@@ -1,5 +1,5 @@
-import { calculateBBoxGeometry } from '../../../../../utils/geometryUtils'
-import createItemFromBBox from '../../../utils/createItemFromBBox.js'
+import { calculateBboxGeometry } from '../../../../../utils/geometryUtils'
+import createItemFromBbox from '../../../utils/createItemFromBbox.js'
 
 export function indexLine (markData) {
   const lineAttributes = markData.attributes
@@ -49,8 +49,8 @@ function indexMultiLineString (lineStringCoords, lineAttributes, markId) {
 
 function createSegmentItem (segment, attributes, i) {
   const segmentGeometry = { type: 'LineString', coordinates: segment }
-  const bbox = calculateBBoxGeometry(segmentGeometry)
-  let item = createItemFromBBox(bbox)
+  const bbox = calculateBboxGeometry(segmentGeometry)
+  let item = createItemFromBbox(bbox)
   item = takeIntoAccountStrokeWidth(item, attributes.strokeWidth)
 
   item.attributes = {}

@@ -1,13 +1,13 @@
 import { calculateCentroid } from '../../../../utils/geometryUtils'
 import bboxPoint from './utils/bboxPoint.js'
-import createItemFromBBox from '../../utils/createItemFromBBox.js'
+import createItemFromBbox from '../../utils/createItemFromBbox.js'
 
 export function indexLine (markData) {
   const lineAttributes = markData.attributes
 
   const centroid = calculateCentroid(lineAttributes.pixelGeometry)
   const bbox = bboxPoint(centroid)
-  const item = createItemFromBBox(bbox)
+  const item = createItemFromBbox(bbox)
 
   item.attributes = lineAttributes
   item.markType = 'Line'
@@ -26,7 +26,7 @@ export function indexLineLayer ({ layerAttributes, keyArray, layerId }) {
 
     const centroid = calculateCentroid(lineAttributes.screenGeometry)
     const bbox = bboxPoint(centroid)
-    const item = createItemFromBBox(bbox)
+    const item = createItemFromBbox(bbox)
 
     item.key = key
     item.index = i

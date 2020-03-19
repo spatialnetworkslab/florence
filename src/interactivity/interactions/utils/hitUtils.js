@@ -1,9 +1,11 @@
 export function coordinatesAreInsideSection (hit, section) {
+  const bbox = section.bbox
+
   return (
-    hit.x >= section.minX &&
-    hit.x <= section.maxX &&
-    hit.y >= section.minY &&
-    hit.y <= section.maxY
+    hit.x >= bbox.minX &&
+    hit.x <= bbox.maxX &&
+    hit.y >= bbox.minY &&
+    hit.y <= bbox.maxY
   )
 }
 
