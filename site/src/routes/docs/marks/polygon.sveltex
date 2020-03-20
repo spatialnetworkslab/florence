@@ -18,14 +18,13 @@ import SimplePolygon from "./examples/_PolygonSimple.svelte"
 
 To render the Polygon mark, you will need to provide the `x` and `y` or the `geometry` props. The two uses are mutually exclusive.
 
-`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scale used in the parent Section. `geometry` accepts GeoJSON [Polygon](https://tools.ietf.org/html/rfc7946#section-3.1.6) objects only. Values will be scaled according to the `scaleX` and `scaleY` of the parent Section. Alternatively, a function can be supplied that returns a coordinate in the local coordinate system directly, bypassing any active scales.
+`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scale used in the parent Section. `geometry` accepts GeoJSON [Polygon](https://tools.ietf.org/html/rfc7946#section-3.1.6) objects only. Values will be scaled according to the `scaleX` and `scaleY` of the parent Section. Alternatively, a function can be supplied that returns a coordinate in the viewBox coordinate system directly, bypassing any active scales.
 
-To create plots with multiple polygons, we can either loop over the dataset (with `{#each}`) to generate one `Polygon` per iteration, or use the `PolygonLayer`. The `PolygonLayer` shares all of the `Polygon`'s props, but takes an array of arrays per prop instead of an array.
+To create multiple polygons, we can either loop over the dataset (with `{#each}`) to generate one `Polygon` per iteration, or use the `PolygonLayer`. The `PolygonLayer` shares all of the `Polygon`'s props, but takes an array of arrays per prop instead of an array.
 
 ```markup
 <Graphic>
   <!-- this denotes a polygon enclosed by three points -->
-  <!-- see that the first and last fruits are the same -->
   <Polygon
     x={[🍓, 🍋, 🍏, 🍓]}
     y={[🥑, 🍊, 🥭, 🥑]}
@@ -43,17 +42,17 @@ To create plots with multiple polygons, we can either loop over the dataset (wit
 
 ## Properties
 ### Positioning
-| Prop     | Required | Types                            | Default   | Description                                       | Unit(s)                                                                                 |
-| -------- | -------- | -------------------------------- | --------- | ------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| x        | depends  | [Array, Function]                | undefined | X coordinates of each point enclosing the polygon | Data value to be scaled by Section's scaleX. If Function then local coordinates.        |
-| y        | depends  | [Array, Function]                | undefined | Y coordinates of each point enclosing the polygon | Data value to be scaled by Section's scaleY. If Function then local coordinates.        |
-| geometry | depends  | [Object, Function]               | undefined | GeoJSON object of type Polygon                    | Data value to be scaled by Section's scaleX/scaleY. If Function then local coordinates. |
+| Prop     | Required | Types              | Default   | Description                                       | Unit(s)                                                                                   |
+| -------- | -------- | -------------------| --------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| x        | depends  | Array \| Function  | undefined | X coordinates of each point enclosing the polygon | Data value to be scaled by Section's scaleX. If Function then viewBox coordinates.        |
+| y        | depends  | Array \| Function  | undefined | Y coordinates of each point enclosing the polygon | Data value to be scaled by Section's scaleY. If Function then viewBox coordinates.        |
+| geometry | depends  | Object \| Function | undefined | GeoJSON object of type Polygon                    | Data value to be scaled by Section's scaleX/scaleY. If Function then viewBox coordinates. |
 
 ### Other aesthetics
 
 | Prop           | Required | Types  | Default   | Description                                                                                     | Unit(s)                    |
 | -------------- | -------- | ------ | --------- | ----------------------------------------------------------------------------------------------- | -------------------------- |
-| stroke         | false    | String | none      | Stroke color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)           | Named color, hex, rgb, hsl |
+| stroke         | false    | String | 'none'    | Stroke color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)           | Named color, hex, rgb, hsl |
 | stroke-width   | false    | Number | 0         | Stroke width [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)     | Screen pixel               |
 | stroke-opacity | false    | Number | undefined | Stroke opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) | Number between 0 to 1      |
 | fill           | false    | String | '#000000' | Fill color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)               | Named color, hex, rgb, hsl |
