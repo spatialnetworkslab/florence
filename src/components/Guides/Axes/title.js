@@ -57,7 +57,7 @@ export function getTitleCoordinatesYAxis (
   fontSize,
   xAbsoluteAxis
 ) {
-  const widthOffset = getWidthOffset(yOffset, flip, axisWidth, fontSize)
+  const widthOffset = getWidthOffset(xOffset, flip, axisWidth, fontSize)
 
   const xAbsolute = hjust === 'axis'
     ? xAbsoluteAxis + widthOffset
