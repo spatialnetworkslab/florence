@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
-    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-env": "^7.9.0",
     "@snlab/florence-datacontainer": "^0.1.4",
     "babel-jest": "^25.1.0",
     "cypress": "^4.2.0",
