@@ -5,7 +5,7 @@
   import { getAbsoluteXPosition } from './absolutePosition.js'
   import { getBaseLineCoordinatesYAxis } from './baseLine.js'
   import { getTickPositions, getTickCoordinatesYAxis, getFormat } from './ticks.js'
-  import { getTickLabelCoordinatesYAxis } from './tickLabels.js'
+  import { getTickLabelCoordinatesYAxis, getTextWidth } from './tickLabels.js'
   import { getTitleCoordinatesYAxis } from './title.js'
 
   // global properties
@@ -68,7 +68,7 @@
     }
   }
 
-    // Absolute position (in pixels)
+  // Absolute position (in pixels)
   $: xAbsolute = getAbsoluteXPosition(hjust, xOffset, $sectionContext)
 
   // Baseline
@@ -80,7 +80,7 @@
     $sectionContext.scaleY,
     tickCount,
     tickExtra,
-    $sectionContext.zoomIdentity 
+    $sectionContext.zoomIdentity
       ? { t: $sectionContext.zoomIdentity.y, k: $sectionContext.zoomIdentity.ky }
       : undefined
   )
@@ -97,9 +97,10 @@
   $: tickLabelText = tickPositions.map(format)
   $: tickLabelCoordinates = getTickLabelCoordinatesYAxis(tickCoordinates, $sectionContext, labelOffset, flip)
   $: labelAnchorPoint = flip ? 'l' : 'r'
+  $: tickLabelWidth = getTextWidth(tickLabelText[tickLabelText.length - 1], labelFontSize, labelFont)
 
   // Title
-  $: axisWidth = baseLineWidth + tickSize + labelOffset + labelFontSize
+  $: axisWidth = baseLineWidth + tickSize + labelOffset + tickLabelWidth
   $: titleCoordinates = getTitleCoordinatesYAxis(
     titleHjust,
     titleXOffset,
