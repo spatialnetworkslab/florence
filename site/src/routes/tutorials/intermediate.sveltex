@@ -178,12 +178,12 @@ If we want to customize our map, we can do so by feeding appropriate values to a
 ```
 
 Our map now looks like this:
-<!-- 
+
 ```js exec
 import Inter1 from './utils/_Inter1.svelte'
 ```
 
-<Inter1/> -->
+<Inter1/>
 
 All Florence `Marks` can be used alongside maps, with a similar property called `geometry` for plotting. For details of each, refer to the [Marks](docs/marks) documentation.
 
