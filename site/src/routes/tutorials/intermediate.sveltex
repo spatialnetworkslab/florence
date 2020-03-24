@@ -259,7 +259,7 @@ The variable `priceColors` now contains an array that houses our colors for our 
 
 ### Add colors to your polygons
 
-We are now ready to plot our choropleth map. Just replace the input to `fill` with `priceColors` and _voila_! Our simple map of Singapore is now a choropleth that shows us each planning area's mean resale price per square meter.
+We are now ready to plot our choropleth map. Just replace the input to `fill` with `priceColors` and _voila_! Our simple map of Singapore is now a choropleth that shows us each planning area's mean HDB flat resale price per square meter.
 
 ```markup
   <PolygonLayer 
