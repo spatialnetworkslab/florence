@@ -13,7 +13,7 @@ export const posts = [
       },
       {
         title: 'Creating linked views between maps and other charts',
-        path: '/tutorials/beginner'
+        path: '/tutorials/advanced'
       },
     ]
   }
