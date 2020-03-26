@@ -8,7 +8,7 @@ export const posts = [
         path: '/tutorials/beginner'
       },
       {
-        title: 'Creating maps (and choropleths)',
+        title: 'Creating choropleth maps',
         path: '/tutorials/intermediate'
       }
     ]
