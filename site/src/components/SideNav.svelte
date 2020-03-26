@@ -11,7 +11,6 @@
 
 .sidenav-second{
   @apply text-base font-normal pl-4;
-  word-wrap: break-word;
 }
 .sidenav-second:hover {
   @apply text-red-500;

@@ -29,7 +29,7 @@ We selectively import these into our application.
   import DataContainer from '@snlab/florence-datacontainer'
 ```
 
-## Import and prepare the dataset
+## What data do we need?
 
 To make data spatial we need some way to encode the spatial attributes of each observation (often referred to as geometry). In online mapping, [GeoJSON](geojson.org) is the defacto standard. It is an extension of regular json according to a specific specification. For example, a spatial point might look like this:
 
@@ -48,6 +48,7 @@ To make data spatial we need some way to encode the spatial attributes of each o
 
 Each feature has two keys: geometry, holding information about the spatial attributes; and properties, holding any additional non-spatial attributes. Florence, by way of [DataContainer](https://github.com/spatialnetworkslab/florence-datacontainer), can interpret any GeoJSON straight out of the box.
 
+## Importing and preparing the dataset
 For this tutorial, we import a GeoJSON file of Singapore's planning areas and mean resale prices per square meter from the Housing & Development Board. [You can download the dataset here.](../utils/planning_areas.js) 
 
 We get started by making it available to the Svelte application. 

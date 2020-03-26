@@ -41,7 +41,7 @@
       stroke={'white'} 
       strokeWidth={1}
     />
-<!-- 
+  <!-- 
     <DiscreteLegend
       fill={priceColorScale}
       vjust={'top'}
