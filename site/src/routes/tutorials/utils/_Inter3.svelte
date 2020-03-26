@@ -41,7 +41,7 @@
       stroke={'white'} 
       strokeWidth={1}
     />
-
+<!-- 
     <DiscreteLegend
       fill={priceColorScale}
       vjust={'top'}
@@ -56,7 +56,7 @@
       width={250}
       stroke={'white'}
       flipLabels
-    />
+    /> -->
 
   </Section>
 
