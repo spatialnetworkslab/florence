@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, Section, PolygonLayer, createGeoScales, DiscreteLegend } from '@snlab/florence'
+  import { Graphic, Section, PolygonLayer, createGeoScales, Title, DiscreteLegend } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
   import { scaleThreshold } from 'd3-scale'
 
@@ -25,7 +25,6 @@
   // assign colors
   const priceColorScale = scaleThreshold().domain(thresholds).range(colors)
   const priceColors = data.map('resale_price_sqm', priceColorScale)
-  console.log(priceColorScale.domain(), thresholds)
 </script>
 
 
@@ -35,7 +34,7 @@
     {...geoScales}
     flipY
   >
-    <!-- step 1 and 2 -->
+    <!-- steps 1, 2 and 3 -->
     <PolygonLayer 
       geometry={data.column('$geometry')}
       fill={priceColors}
@@ -43,8 +42,6 @@
       strokeWidth={1}
     />
 
-
-    <!-- step 4 (optional) -->
     <DiscreteLegend
       fill={priceColorScale}
       vjust={'top'}
@@ -54,12 +51,18 @@
       title={'Mean Resale Price / m2 (SGD)'}
       labelFontSize={12}
       orient={'horizontal'}
+      labelCount={5}
       height={25}
       width={250}
       stroke={'white'}
       flipLabels
     />
+
   </Section>
 
-
+  <!-- step 4 (optional) -->
+  <Title
+    title={'Mean resale price per m2 (S$)'} 
+    titleFontFamily={'Montserrat'}
+  />
 </Graphic>

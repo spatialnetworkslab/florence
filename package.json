@@ -11,6 +11,7 @@
     "d3-interpolate": "^1.4.0",
     "d3-scale": "^3.2.1",
     "detect-it": "^3.0.5",
+    "florence": "^0.0.1",
     "rbush": "^3.0.1",
     "robust-point-in-polygon": "^1.0.3"
   },

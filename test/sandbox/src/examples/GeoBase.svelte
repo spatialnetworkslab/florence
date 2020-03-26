@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, Section, PolygonLayer, createGeoScales, DiscreteLegend } from '../../../../src/'
+  import { Graphic, Section, PolygonLayer, createGeoScales, DiscreteLegend, Title } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
   import { scaleThreshold } from 'd3-scale'
 
@@ -57,5 +57,10 @@
       flipLabels
     />
   </Section>
+
+  <Title
+    title={'Mean resale price per m2 (S$)'} 
+    titleFontFamily={'Montserrat'}
+  />
 
 </Graphic>

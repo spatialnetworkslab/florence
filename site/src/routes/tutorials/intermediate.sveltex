@@ -19,15 +19,13 @@ To manage our data, we use the following library:
 As in the previous tutorial, you may further customise your visualization using the following components:
 
 - [Plot Title](docs/core/title)
-- Axis Title
-- [Legend](docs/guides/legend)
 
 For scaling, we rely on [d3 scales](https://github.com/d3/d3-scale).
 
 We selectively import these into our application.
 
 ```js
-  import { Graphic, Section, PolygonLayer, createGeoScales } from '@snlab/florence'
+  import { Graphic, Section, PolygonLayer } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 ```
 
@@ -55,10 +53,14 @@ For this tutorial, we import a GeoJSON file of Singapore's planning areas and me
 We get started by making it available to the Svelte application. 
 
 ```js
-  import { geo } from '../planning_areas_data.js' // TODO CHANGE TO FULL MAP - one file with NaNs
+  import { geo } from '../planning_areas_data.js' 
 ```
 
-To create a simple map, we will use only the spatial attributes, which are called `geometry` inside the GeoJSON. 
+To create a simple map, we will use only the spatial attributes, which are called `geometry` inside the GeoJSON. For this we will need to import another Florence function called `createGeoScales`, alongside our other imports:
+
+```js
+  import { Graphic, Section, PolygonLayer, createGeoScales } from '@snlab/florence'
+```
 
 ### Using a `DataContainer`
 
@@ -276,9 +278,8 @@ import Inter2 from './utils/_Inter2.svelte'
 
 <Inter2/>
 
-## Add a legend (optional)
-
-Adding a legend to our chart can help increase our understanding of the data, specifically the values of our price thresholds. We manually add a `DiscreteLegend` to our chart to better explain the colors mapped to our planning areas. 
+## Plot Title (Optional)
+Graphs usually come with titles describing the subject of the graph. This can be added using the `Title` component.
 
 ```js exec
 import Inter3 from './utils/_Inter3.svelte'
@@ -286,25 +287,32 @@ import Inter3 from './utils/_Inter3.svelte'
 
 <Inter3/>
 
+Our code now looks like this:
+
 ```markup
-  <DiscreteLegend
-  fill={priceColorScale}
-  vjust={'top'}
-  hjust={'right'}
-  labelAnchorPoint={'r'}
-  usePadding={true}
-  title={'Mean Resale Price / m2 (SGD)'}
-  labelFontSize={12}
-  orient={'horizontal'}
-  height={25}
-  width={250}
-  stroke={'white'}
-  flipLabels
+<Graphic width={500} height={500}>
+
+  <Section
+    {...geoScales}
+    flipY
+  >
+    <!-- steps 1, 2 and 3 -->
+    <PolygonLayer 
+      geometry={data.column('$geometry')}
+      fill={priceColors}
+      stroke={'white'} 
+      strokeWidth={1}
+    />
+
+  </Section>
+
+  <!-- step 4 (optional) -->
+  <Title
+    title={'Mean resale price per m2 (S$)'} 
+    titleFontFamily={'Montserrat'}
   />
+</Graphic>
 ```
-
-For further details, refer to the [Legend documentation](docs/guides/legend).
-
 
 ## Sandbox
 You can play around with the final map in the CodeSandbox below.
