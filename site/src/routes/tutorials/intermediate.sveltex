@@ -50,12 +50,12 @@ To make data spatial we need some way to encode the spatial attributes of each o
 
 Each feature has two keys: geometry, holding information about the spatial attributes; and properties, holding any additional non-spatial attributes. Florence, by way of [DataContainer](https://github.com/spatialnetworkslab/florence-datacontainer), can interpret any GeoJSON straight out of the box.
 
-For this tutorial, we import a GeoJSON file of Singapore's planning areas and mean resale prices per square meter from the Housing & Development Board. [You can download the dataset here.](../utils/planning_areas.json) 
+For this tutorial, we import a GeoJSON file of Singapore's planning areas and mean resale prices per square meter from the Housing & Development Board. [You can download the dataset here.](../utils/planning_areas.js) 
 
 We get started by making it available to the Svelte application. 
 
 ```js
-  import geo from '../planning_areas_data.json' // TODO CHANGE TO FULL MAP - one file with NaNs
+  import { geo } from '../planning_areas_data.js' // TODO CHANGE TO FULL MAP - one file with NaNs
 ```
 
 To create a simple map, we will use only the spatial attributes, which are called `geometry` inside the GeoJSON. 
@@ -270,21 +270,21 @@ We are now ready to plot our choropleth map. Just replace the input to `fill` wi
   />
 ```
 
-<!-- ```js exec
+```js exec
 import Inter2 from './utils/_Inter2.svelte'
 ```
 
-<Inter2/> -->
+<Inter2/>
 
 ## Add a legend (optional)
 
 Adding a legend to our chart can help increase our understanding of the data, specifically the values of our price thresholds. We manually add a `DiscreteLegend` to our chart to better explain the colors mapped to our planning areas. 
 
-<!-- ```js exec
+```js exec
 import Inter3 from './utils/_Inter3.svelte'
 ```
 
-<Inter3/> -->
+<Inter3/>
 
 ```markup
   <DiscreteLegend
@@ -309,5 +309,5 @@ For further details, refer to the [Legend documentation](docs/guides/legend).
 ## Sandbox
 You can play around with the final map in the CodeSandbox below.
 
-<!-- ::: codesandbox sandboxes/intermediate-tutorial codemirror=1&view=split&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
-::: -->
+::: codesandbox sandboxes/intermediate-tutorial codemirror=1&view=split&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
+:::

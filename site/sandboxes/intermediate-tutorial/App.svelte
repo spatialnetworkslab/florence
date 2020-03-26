@@ -5,8 +5,8 @@
 
   // import data
   // step1
-  import geo from './planning_areas_data.json'
-  const data = new DataContainer(geo)
+  import { geodata } from './planning_areas_data.js'
+  const data = new DataContainer(geodata)
   const geoScales = createGeoScales(data.domain('$geometry'))
 
   // step 2

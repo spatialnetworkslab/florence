@@ -5,8 +5,8 @@
 
   // import data
   // step1
-  import geo from './planning_areas_data.json'
-  const data = new DataContainer(geo)
+  import { geodata } from './planning_areas_data.js'
+  const data = new DataContainer(geodata)
   const geoScales = createGeoScales(data.domain('$geometry'))
 
   // step 2
@@ -25,6 +25,7 @@
   // assign colors
   const priceColorScale = scaleThreshold().domain(thresholds).range(colors)
   const priceColors = data.map('resale_price_sqm', priceColorScale)
+  console.log(priceColorScale.domain(), thresholds)
 </script>
 
 
@@ -42,6 +43,7 @@
       strokeWidth={1}
     />
 
+
     <!-- step 4 (optional) -->
     <DiscreteLegend
       fill={priceColorScale}
@@ -58,5 +60,6 @@
       flipLabels
     />
   </Section>
+
 
 </Graphic>
