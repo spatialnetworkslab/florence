@@ -10,6 +10,10 @@ export const posts = [
       {
         title: 'Section',
         path: '/docs/core/section'
+      },
+      {
+        title: 'Title',
+        path: '/docs/core/title'
       }
     ]
   },
@@ -27,8 +31,8 @@ export const posts = [
         path: '/docs/concepts/interactivity'
       },
       {
-        title: 'Title',
-        path: '/docs/core/title'
+        title: 'Zooming',
+        path: '/docs/concepts/zooming'
       }
     ]
   },

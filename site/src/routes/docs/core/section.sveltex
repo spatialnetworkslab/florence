@@ -167,7 +167,7 @@ For more how to use these props, see the [local coordinates](/docs/concepts/loca
 
 The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation.
 
-### Mouse interactions
+### Mouse events
 
 |    Prop     |                                       Description                                       |
 | ----------- | --------------------------------------------------------------------------------------- |
@@ -179,7 +179,7 @@ The purpose of `blockReindexing` is explained in the [interactivity](/docs/conce
 | onMouseout  | Fires once when a user moves the mouse out of a `Section`                               |
 | onMousemove | Fires every time the mouse moves while it is over a `Section`                           |
 
-### Touch interactions
+### Touch events
 
 |    Prop     |                              Description                               |
 | ----------- | ---------------------------------------------------------------------- |
