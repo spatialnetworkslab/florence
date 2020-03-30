@@ -74,7 +74,7 @@ n.b. `independentAxis` defaults to 'x' when its value is undefined
 ### Other aesthetics
 | Prop           | Required | Types  | Default   | Description             | Unit(s)                    |
 | -------------- | -------- | ------ | --------- | ----------------------- | -------------------------- |
-| stroke         | false    | String | none      | Stroke color            | Named color, hex, rgb, hsl |
+| stroke         | false    | String | 'none'    | Stroke color            | Named color, hex, rgb, hsl |
 | stroke-width   | false    | Number | 0         | Stroke width            | Screen pixels              |
 | stroke-opacity | false    | Number | undefined | Stroke opacity          | Number between 0 and 1     |
 | fill           | false    | String | '#000000' | Fill color (under line) | Named color, hex, rgb, hsl |
