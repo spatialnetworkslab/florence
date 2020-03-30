@@ -19,6 +19,10 @@ export const posts = [
     path: '/docs/concepts/local-coordinates',
     children: [
       {
+        title: 'Grid',
+        path: '/docs/core/grid'
+      },
+      {
         title: 'Local coordinates',
         path: '/docs/concepts/local-coordinates'
       },
