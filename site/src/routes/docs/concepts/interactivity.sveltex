@@ -254,10 +254,12 @@ import Drag from './examples/_Drag.svelte'
 
 The `blockReindexing` prop is a bit ugly, but necessary for now. If it is omitted, every time the `drag` event fires, the changed `Point` will be added again to `florence`s internal spatial index, which can cause significant lags. A more elegant solution to this problem will be implemented in a future version.
 
-## Zooming
+## Zooming and panning
 
-See the [Zooming](/docs/concepts/zooming) documentation for simple and advanced zooming techniques.
+See the [zooming and panning](/docs/concepts/zoom-pan) documentation for an example of how to set up zooming and panning.
 
 ## Selection
+
+
 
 ## Brushing

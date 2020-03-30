@@ -52,10 +52,12 @@ export default function createZoomHandler (
 
   // Brings viewport back to specified center point
   const center = function () {
-    zoomIdentity.x = centerPt.x
-    zoomIdentity.y = centerPt.y
+    if (centerPt) {
+      zoomIdentity.x = centerPt.x
+      zoomIdentity.y = centerPt.y
 
-    setZoomIdentity(zoomIdentity)
+      setZoomIdentity(zoomIdentity)
+    }
   }
 
   return {

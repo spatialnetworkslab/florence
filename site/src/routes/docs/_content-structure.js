@@ -31,8 +31,8 @@ export const posts = [
         path: '/docs/concepts/interactivity'
       },
       {
-        title: 'Zooming',
-        path: '/docs/concepts/zooming'
+        title: 'Zooming and panning',
+        path: '/docs/concepts/zoom-pan'
       }
     ]
   },
