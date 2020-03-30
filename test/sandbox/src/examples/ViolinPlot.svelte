@@ -7,7 +7,7 @@
   import { scaleLinear, scaleBand } from 'd3-scale'
   import { mean, max } from 'd3-array'
 
-  const padding = {top: 20, right: 20, bottom: 30, left: 30}
+  const padding = { top: 20, right: 20, bottom: 30, left: 30 }
 
   // set to true once data is loaded
   let done
@@ -44,7 +44,7 @@
 
       // domain of inner section
       let maxNum = 0
-      for (const i in density){
+      for (const i in density) {
         const allBins = density[i]
         const kdeValues = allBins.map(a => a[1])
         const biggest = max(kdeValues)
@@ -56,18 +56,18 @@
     }
   }
 
-function kernelDensityEstimator(kernel, X) {
-  return function(V) {
-    return X.map(function(x) {
-      return [x, mean(V, v => kernel(x - v))]
-    })
-  }
+function kernelDensityEstimator (kernel, X) {
+    return function (V) {
+      return X.map(function (x) {
+        return [x, mean(V, v => kernel(x - v))]
+      })
+    }
 }
 
-function kernelEpanechnikov(k) {
-  return function(v) {
-    return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0
-  }
+function kernelEpanechnikov (k) {
+    return function (v) {
+      return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0
+    }
 }
 </script>
 
@@ -85,13 +85,11 @@ function kernelEpanechnikov(k) {
     >
 
     {#each density as d, i}
-      <!-- maximum width of a violin = bandwidth of scaleSpecies -->
       <Section
         scaleX={violinScaleX}
         scaleY={scaleDimension}
-        flipY
         x1={groupedCols[i]}
-        x2={({scaleX}) => scaleX(groupedCols[i]) + scaleX.bandwidth()}
+        x2={({ scaleX }) => scaleX(groupedCols[i]) + scaleX.bandwidth()}
       >
         <Area
           x1={d.map(v => (v[1]))}

@@ -16,6 +16,7 @@ export function getFinalRanges (sectionContext, ranges, padding) {
   finalRangeX = applyPadding(finalRangeX, left, right)
 
   if (zoomIdentity) {
+    validateZoomFactor(zoomIdentity.kx)
     finalRangeX = applyZoom(finalRangeX, zoomIdentity.kx, zoomIdentity.x)
   }
 
@@ -23,6 +24,7 @@ export function getFinalRanges (sectionContext, ranges, padding) {
   finalRangeY = applyPadding(finalRangeY, top, bottom)
 
   if (zoomIdentity) {
+    validateZoomFactor(zoomIdentity.ky)
     finalRangeY = applyZoom(finalRangeY, zoomIdentity.ky, zoomIdentity.y)
   }
 
@@ -40,4 +42,8 @@ function applyZoom (range, k, translate) {
     range[0] * k + translate,
     range[1] * k + translate
   ]
+}
+
+function validateZoomFactor (k) {
+  if (k < 0) throw new Error('Zoom factors have to be positive')
 }
