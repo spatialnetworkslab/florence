@@ -187,9 +187,6 @@
       class="content-background"
       {...clipPropsPadding}
       fill={backgroundColor}
-      stroke-width={1}
-      stroke='black'
-      opacity={0.5}
     />
   {/if}
 

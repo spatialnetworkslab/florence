@@ -121,7 +121,6 @@
   {viewBox}
   {preserveAspectRatio}
   bind:this={rootNode}
-  style="border: 2px dashed;"
 >
   <defs>
     <mask id={`${graphicId}-mask-padding-bg`}>
