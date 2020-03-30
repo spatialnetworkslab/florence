@@ -182,9 +182,77 @@ import Highlight from './examples/_Highlight.svelte'
 
 ## Dragging
 
-To make it easy to create dragging behavior, `florence` provides an `onDrag` event listening prop for all `Mark`s and `Layer`s. The `onDrag` prop is, in fact, three event listeners in one:
+To make it easy to create dragging behavior, `florence` provides `onMousedrag` and `onTouchdrag` event listening props for all `Mark`s and `Layer`s. These props are, in fact, three listeners in one: 
 
+- `start`, for when the end user starts dragging
+- `drag` for during dragging
+- `end` for when the end user stops dragging 
 
+Here is an example of how to use `onMousedrag`. `onTouchdrag` works similarly.
+
+```js
+import { Graphic, Section, Point } from '@snlab/florence'
+import { scaleLinear } from 'd3-scale'
+
+const points = new Array(5).fill(0).map(_ => ({
+  x: Math.round(Math.random() * 10),
+  y: Math.round(Math.random() * 10)
+}))
+
+$: center = {
+  x: points.map(p => p.x).reduce((a, c) => a + c) / points.length,
+  y: points.map(p => p.y).reduce((a, c) => a + c) / points.length
+}
+
+let blockReindexing
+
+function drag ({ dragType, localCoordinates }, index) {
+  if (dragType === 'start') {
+    blockReindexing = true
+  }
+
+  if (dragType === 'drag' && blockReindexing) {
+    points[index] = localCoordinates
+  }
+
+  if (dragType === 'end') {
+    blockReindexing = false
+  }
+}
+```
+
+```html
+<Graphic width={300} height={300}>
+
+  <Section 
+    scaleX={scaleLinear().domain([0, 10])}
+    scaleY={scaleLinear().domain([0, 10])}
+    padding={20}
+    {blockReindexing}
+  >
+
+    {#each points as point, i}
+      <Point 
+        {...point}
+        radius={10}
+        onMousedrag={e => drag(e, i)}
+      />
+    {/each}
+
+    <Point {...center} radius={7} fill="blue" />
+  
+  </Section>
+
+</Graphic>
+```
+
+```js exec
+import Drag from './examples/_Drag.svelte'
+```
+
+<Drag />
+
+The `blockReindexing` prop is a bit ugly, but necessary for now. If it is omitted, every time the `drag` event fires, the changed `Point` will be added again to `florence`s internal spatial index, which can cause significant lags. A more elegant solution to this problem will be implemented in a future version.
 
 ## Zooming
 
