@@ -1,0 +1,75 @@
+# X-axis
+
+```html
+<Graphic width={500} height={500}>
+
+  <XAxis />
+
+</Graphic>
+```
+
+## Description
+
+Component that creates an x-axis in reference to its parent `Graphic` or `Section`'s local coordinate system.
+
+## Props
+
+### Positioning
+
+|  Prop   |      Type(s)       | Required |  Default   |      Units      |
+| ------- | ------------------ | -------- | ---------- | --------------- |
+| vjust   | `String`, `Number` | no       | `'bottom'` | See explanation |
+| yOffset | `Number`           | no       | `0`        | Pixels          |
+| flip    | `Boolean`          | no       | `false`    | -               |
+
+### Baseline
+
+|      Prop       |  Type(s)  | Required |  Default  |         Units          |
+| --------------- | --------- | -------- | --------- | ---------------------- |
+| baseLine        | `Boolean` | no       | `true`    | -                      |
+| baseLineColor   | `String`  | no       | `'black'` | Color value            |
+| baseLineOpacity | `Number`  | no       | 1         | Number between 0 and 1 |
+| baseLineWidth   | `Number`  | no       | 1         | Pixels                 |
+
+### Ticks
+
+|    Prop     |  Type(s)  | Required |   Default   |         Units          |
+| ----------- | --------- | -------- | ----------- | ---------------------- |
+| ticks       | `Boolean` | no       | `true`      | -                      |
+| tickCount   | `Number`  | no       | `10`        | -                      |
+| tickExtra   | `Boolean` | no       | `false`     | -                      |
+| tickValues  | `Array`   | no       | `undefined` | Local coordinates      |
+| tickSize    | `Number`  | no       | `5`         | Pixels                 |
+| tickWidth   | `Number`  | no       | `0.5`       | Pixels                 |
+| tickColor   | `String`  | no       | `'black'`   | Color value            |
+| tickOpacity | `Number`  | no       | `1`         | Number between 0 and 1 |
+
+### Tick labels
+
+|      Prop       |  Type(s)   | Required |    Default    |         Units          |
+| --------------- | ---------- | -------- | ------------- | ---------------------- |
+| labelFormat     | `Function` | no       | `undefined`   | -                      |
+| labelOffset     | `Number`   | no       | `2`           | Pixels                 |
+| labelRotate     | `Number`   | no       | `0`           | Degrees                |
+| labelFont       | `String`   | no       | `'Helvetica'` | Font                   |
+| labelFontSize   | `Number`   | no       | `10`          | Pixels                 |
+| labelFontWeight | `String`   | no       | `'normal'`    | See explanation        |
+| labelOpacity    | `Number`   | no       | `1`           | Number between 0 and 1 |
+| labelColor      | `String`   | no       | `'black'`     | Color value            |
+
+### Title
+
+|       Prop       |      Type(s)       | Required |    Default    |         Units          |
+| ---------------- | ------------------ | -------- | ------------- | ---------------------- |
+| titleHjust       | `String`, `Number` | no       | `'center'`    | See explanation        |
+| titleXOffset     | `Number`           | no       | `0`           | Pixels                 |
+| titleVjust       | `String`, `Number` | no       | `'axis'`      | See explanation        |
+| titleYOffset     | `String`, `Number` | no       | `'axis'`      | See explanation        |
+| title            | `String`           | no       | `''`          | -                      |
+| titleColor       | `String`           | no       | `'black'`     | Color value            |
+| titleFont        | `String`           | no       | `'Helvetica'` | Font                   |
+| titleFontSize    | `Number`           | no       | `12`          | Pixels                 |
+| titleFontWeight  | `String`           | no       | `'normal'`    | See explanation        |
+| titleOpacity     | `Number`           | no       | `1`           | Number between 0 and 1 |
+| titleRotation    | `Number`           | no       | `0`           | Degrees                |
+| titleAnchorPoint | `String`           | no       | `'t'`         | See explanation        |
