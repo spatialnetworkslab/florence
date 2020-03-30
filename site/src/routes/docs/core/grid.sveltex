@@ -1,56 +1,42 @@
-<script>
-import { onMount } from 'svelte';
-import { scaleLinear, scaleBand } from "d3-scale";
-import { Graphic, Section, RectangleLayer } from "@snlab/florence";
-import Grid from "./utils/_Grid.svelte"
-
-
-let columns = 1
-let rows = 1
-let rowGap = 50
-let columnGap = 0
-const range = 0
-const width = 1200
-const height = 600
-const padding = { top: 20, bottom: 30, left: 40, right: 30 }
-
-</script>
-
 # Grid
-___
+The Grid component is used to quickly position and align 'square' components in a grid format. 'Square' here refers to any component that has x1, x2, y1 and y2 props. This includes the Section component, the Rectangle mark, and any custom component that you would want to create, given it has the props mentioned above.
 
+```js exec
+import SimpleExample from './examples/_GridSimple.svelte'
+```
+<SimpleExample />
 
-
-```html
-<Grid>
-
-  ...
-
-</Grid>
+```markup
+<script>
+ const colors = ['red', 'blue', 'green', 'orange']
+</script>
+<Graphic {width} {height}>
+  <Grid
+      {columns}
+      {rows}
+      areaNames={colors}
+      let:cells
+  >
+      {#each colors as color}
+          <Section {...cells[color]} backGroundColor={color}>
+          </Section>
+      {/each}
+  </Grid>
+</Graphic>
 ```
 
-The `Grid` component can help you parition `Section` (s) into a grid-like formation.
-
-
-::: codesandboxplus ./src/gallery/colored-scatterplot/App.svelte 42-64
-:::
-
-
-## Props
-___ 
-
+## Properties
 ### Positioning
 
-| Prop             | Type(s)   | Required | Default | Units         | Description |
-| ---------------- | --------- | -------- | ------- | ------------- | ------------|
-| x1               | `Number`  | ✅        |         | screen pixels | Adjust Grid x1 |
-| x2               | `Number`  | ✅        |         | screen pixels | Adjust Grid x2 |
-| y1               | `Number`  | ✅        |         | screen pixels | Adjust Grid y1 |
-| y2               | `Number`  | ✅        |         | screen pixels | Adjust Grid y2 |
+| Prop |     Type(s)     |    Required     |   Default   |       Units       |
+| ---- | --------------- | --------------- | ----------- | ----------------- |
+| x1   | see Section | see Section | `undefined` | local coordinates |
+| x2   | see Section | see Section | `undefined` | local coordinates |
+| y1   | see Section | see Section | `undefined` | local coordinates |
+| y2   | see Section | see Section | `undefined` | local coordinates |
 
-The `Grid` positioning props work the same way as the [Section](/docs/02-section#positioning)
+The `Grid` positioning props work the same way as the [Section](/docs/core/section)
 positioning props.
-
 
 ### Grid settings
 
@@ -60,20 +46,18 @@ positioning props.
 | columns          | `Number`  | ✅        | `1`     | Integer       | Number of columns in grid |
 | rowGap           | `Number`  | ✅        | `0`     | Integer       | Margin between rows |
 | columnGap        | `Number`  | ✅        | `0`     | Integer       | Margin between columns |
-| areaNames        | []`String`  | ✅      | [] |               | An array of facet names |
+| areaNames        | []`String`  | ✅      | [] |               | An array of cell or facet names |
 
 
 ### Other
-
-| Prop             | Type(s)   | Required | Default | Units         | Description                       | Try                                                       |
+| Prop             | Type(s)   | Required | Default | Units         | Description                                                                              |
 | ---------------- | --------- | -------- | ------- | ------------- | --------------------------------- | --------------------------------------------------------- |
-| viewGridTemplate | `Boolean` |          | `false` |               | Option to console log grid layout | <button>Toggle</button>                                   |
-| viewGridShape    | `Boolean` |          | `false` |               | Option to console log grid layout | <button>Toggle</button>                                   |
+| viewGridTemplate | `Boolean` |          | `false` |               | Option to console log grid layout 
+| viewGridShape    | `Boolean` |          | `false` |               | Option to console log grid layout 
 
 
 ### Slot Scope
-
-Grid expose a slot scope `cells` which stored an array of key-value pair in which key is area name element in `areaNames` array and value is potision object.
+Grid exposes value called `cells` using the `let:cells` syntax. The `cells` object holds a series of objects in which the key is the 'area name' element in `areaNames` array and the value is a position object that will be used to position the cells of the grid. This uses the [native Svelte slot syntax](https://svelte.dev/docs#slot_let). It is this `cells` object that can be used to position the children or cells of the Grid (i.e. `Section` components) in their corresponding cell. 
 
 ```svelte
 {
@@ -92,53 +76,3 @@ Grid expose a slot scope `cells` which stored an array of key-value pair in whic
   ....
 }
 ```
-
-The idea of slots can be found [here](https://svelte.dev/tutorial/slots)
-
-
-## Examples
-___
-
-Below example demonstrate use of `Grid` component to create facet views.
-Faceting makes it easy to create small multiples of different subsets of an entire dataset.
-Faceting is a powerful tool when investigating whether patterns are the same or different across conditions.
-
-<Grid {width} {height} {columns} {rows} {rowGap} {columnGap} />
-
-
-## Code
-___
-
-The `Grid` implementation can be found at [Github](https://github.com/spatialnetworkslab/florence/blob/master/src/components/Core/Grid/Grid.svelte).
-
-<style>
-a {
-  font-weight: 500;
-  color: #ed8936 !important;
-}
-
-a:hover {
-  text-decoration: underline !important;
-}
-
-li {
-  list-style-type: disc;
-  list-style-position: inside;
-	position: relative;
-	margin-bottom: 1em;
-}
-
-li:after {
-	position: absolute;
-	display: inline-block;
-	width: 22px;
-	height: 22px;
-	margin-right: 0.5em;
-	background-color: #B53C2C;
-	border-radius: 50%;
-}
-
-h2, h3, h4, h5, h6 {
-  margin-top: 1.5em;
-}
-</style> 
