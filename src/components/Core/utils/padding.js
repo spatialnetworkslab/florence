@@ -1,4 +1,8 @@
-export function parsePadding (padding) {
+export function parsePadding (_padding) {
+  const padding = _padding === undefined
+    ? 0
+    : _padding
+
   if (padding.constructor === Number) {
     return { left: padding, right: padding, top: padding, bottom: padding }
   }

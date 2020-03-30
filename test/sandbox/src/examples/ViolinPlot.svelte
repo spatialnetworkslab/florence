@@ -7,7 +7,8 @@
   import { scaleLinear, scaleBand } from 'd3-scale'
   import { mean, max } from 'd3-array'
 
-  const padding = {top: 20, right: 20, bottom: 30, left: 30}
+  // const padding = {top: 20, right: 20, bottom: 30, left: 30}
+  const padding = 0
 
   // set to true once data is loaded
   let done
@@ -80,12 +81,11 @@ function kernelEpanechnikov(k) {
     <Section
       scaleX={scaleSpecies}
       scaleY={scaleDimension}
-      flipY
+      flipY={false}
       {padding}
     >
 
     {#each density as d, i}
-      <!-- maximum width of a violin = bandwidth of scaleSpecies -->
       <Section
         scaleX={violinScaleX}
         scaleY={scaleDimension}
