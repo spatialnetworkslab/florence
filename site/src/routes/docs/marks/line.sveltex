@@ -1,0 +1,69 @@
+# Line
+The `Line` mark plots a line element by taking one or more x/y coordinate pairs. In this way, it can also be used as a rule mark.
+
+```js exec
+import SimpleExample from './examples/_LineSimple.svelte'
+```
+<SimpleExample />
+
+```markup
+<script>
+ const x = [
+    new Date(2002, 0, 1),
+    new Date(2004, 0, 1),
+    new Date(2006, 0, 1)
+  ]
+  const y = [20, 40, 10]
+</script>
+<Graphic>
+  <Line {x} {y} />
+</Graphic>
+```
+
+To render the Line mark, you will need to provide the `x` and `y` or the `geometry` props. The two uses are mutually exclusive.
+
+`x` and `y` have to be an array of `Number`, `String` or `Date` values, depending on the scale used in the parent Section. `geometry` accepts GeoJSON [LineString](https://tools.ietf.org/html/rfc7946#section-3.1.4) objects only. Values will be scaled according to the `scaleX` and `scaleY` of the parent Section. Alternatively, a function can be supplied that returns a coordinate in the viewBox coordinate system directly, bypassing any active scales.
+
+To create plots with multiple lines, we can either loop over the dataset (with `{#each}`) to generate one `Line` per iteration, or use the `LineLayer`. The `LineLayer` shares all of the `Line`'s props, but takes an array of arrays per prop instead of an array.
+
+```markup
+<Graphic>
+  <!-- this denotes a line segment -->
+  <Line
+    x={[🍉, 🍐]}
+    y={[🍊, 🍇]}
+  />
+</Graphic>
+
+<Graphic>
+  <!-- this denotes 2 line segments -->
+  <LineLayer
+    x={[[🍉, 🍐], [🍉, 🍐]]}
+    y={[[🍊, 🍇], [🍊, 🍇]]}
+  />
+</Graphic>
+```
+
+## Properties
+### Positioning
+
+| Prop     | Required | Types              | Default   | Description                        | Unit(s)                                                                                   |
+| -------- | -------- | ------------------ | --------- | ---------------------------------- | ----------------------------------------------------------------------------------------- |
+| x        | depends  | [Array, Function]  | undefined | X coordinates of line              | Data value to be scaled by Section's scaleX. If Function then viewBox coordinates.        |
+| y        | depends  | [Array, Function]  | undefined | Y coordinates of line              | Data value to be scaled by Section's scaleY. If Function then viewBox coordinates.        |
+| geometry | depends  | [Object, Function] | undefined | GeoJSON object of type LineString  | Data value to be scaled by Section's scaleX/scaleY. If Function then viewBox coordinates. |
+
+
+### Other aesthetics
+| Prop           | Required | Types  | Default   | Description             | Unit(s)                    |
+| -------------- | -------- | ------ | --------- | ----------------------- | -------------------------- |
+| stroke         | false    | String | '#000000' | Stroke color            | Named color, hex, rgb, hsl |
+| stroke-width   | false    | Number | 3         | Stroke width            | Screen pixels              |
+| stroke-opacity | false    | Number | undefined | Stroke opacity          | Number between 0 and 1     |
+| fill           | false    | String | 'none'    | Fill color (under line) | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number | undefined | Fill opacity            | Number between 0 and 1     |
+| opacity        | false    | Number | 1         | Mark opacity            | Number between 0 and 1     |
+
+These are analogous to the CSS properties of the same names.
+
+## Examples

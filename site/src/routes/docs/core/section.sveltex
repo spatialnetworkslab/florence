@@ -1,6 +1,6 @@
 # Section
 
-```html
+```svelte
 <Section>
 
     ...
@@ -39,7 +39,7 @@ It is possible to use the `Section` without providing any of the positioning pro
 This will result in the `Section` inheriting the extents of the parent `Section` or
 `Graphic`, taking padding into account. For example,
 
-```html
+```svelte
 <Graphic width={500} height={500}>
   
   <Section padding={20}>
@@ -57,7 +57,7 @@ This will result in the `Section` inheriting the extents of the parent `Section`
 
 is equivalent to
 
-```html
+```svelte
 <Graphic width={500} height={500}>
   
   <Section
@@ -87,45 +87,109 @@ is equivalent to
 It is also allowed to provide just the `x1` and `x2`, or just the `y1` and `y2` props.
 But providing only `x1` and `x2`, for example, is not allowed:
 
-```html
+```svelte
 <Section x1={50} x2={450}></Section> <!-- Fine -->
 <Section x1={50}></Section> <!-- Not allowed -->
 ```
 
 In the examples above, no local coordinate systems are being used, so everything is in
 screen pixels. If the parent `Graphic` or `Section` has specified a local coordinate system,
-the positioning props would have to be defined in local coordinates. See the 
-[local coordinates](/docs/03-local-coordinates) documentation for an in-depth explanation of 
-local coordinate systems.
+the positioning props would have to be defined in local coordinates. For example:
 
-### Other aesthetic props
+```svelte
+<Graphic
+  width={500}
+  height={500}
+  scaleX={scaleLinear().domain([0, 10])}
+  scaleY={scaleLinear().domain([0, 10])}
+>
+
+  <Section
+    x1={1} x2={9}
+    y1={1} y2={9}
+  >
+
+    ...
+
+  </Section>
+
+</Graphic>
+```
+
+would be equivalent to:
+
+```svelte
+<Graphic
+  width={500}
+  height={500}
+>
+
+  <Section
+    x1={50} x2={450}
+    y1={50} y2={450}
+  >
+
+    ...
+
+  </Section>
+
+</Graphic>
+```
+
+### Aesthetic props
 
 |      Prop       | Type(s)  | Required |   Default   |    Units    |
 | --------------- | -------- | -------- | ----------- | ----------- |
 | backgroundColor | `String` | no       | `undefined` | Color value |
 | paddingColor    | `String` | no       | `undefined` | Color value |
 
-### Local coordinate specification
+Where `backgroundColor` is the area within the padded area, and `paddingColor` is the background of the padded area (see `padding` below).
 
-|      Prop      |      Type(s)       | Required |   Default   |     Units     |
-| -------------- | ------------------ | -------- | ----------- | ------------- |
-| padding        | `Number`, `Object` | no       | `0`         | screen pixels |
-| scaleX         | `Function`         | no       | `undefined` |               |
-| scaleY         | `Function`         | no       | `undefined` |               |
-| flipX          | `Boolean`          | no       | `false`     |               |
-| flipY          | `Boolean`          | no       | `false`     |               |
-| zoomIdentity   | `Object`           | no       | `undefined` |               |
-| transformation | `String`           | no       | `undefined` |               |
+### Local coordinate system
 
-For more information on these props, see the [local coordinates](/docs/03-local-coordinates) 
-documentation.
+|      Prop      |                  Type(s)                   | Required |   Default    |     Units     |
+| -------------- | ------------------------------------------ | -------- | ------------ | ------------- |
+| scaleX         | [d3 scale](https://github.com/d3/d3-scale) | no       | `undefined`  | -             |
+| scaleY         | [d3 scale](https://github.com/d3/d3-scale) | no       | `undefined`  | -             |
+| transformation | `String`: `'identity'` or `'polar'`        | no       | `'identity'` | -             |
+| flipX          | `Boolean`                                  | no       | `false`      | -             |
+| flipY          | `Boolean`                                  | no       | `false`      | -             |
+| padding        | `Number`, `Object`                         | no       | `undefnied`  | screen pixels |
+| zoomIdentity   | `Object`                                   | no       | `undefined`  | -             |
 
-### Interactivity
+For more how to use these props, see the [local coordinates](/docs/concepts/local-coordinates) documentation.
 
-|  Prop   |  Type(s)   |                          Description                          |
-| ------- | ---------- | ------------------------------------------------------------- |
-| onWheel | `Function` | Fired on mousewheel or two finger scroll inside the `Section` |
-| onPan   | `Function` | Fired when dragging around the area inside the `Section`      |
+### Other
 
-See the [zooming and panning](/docs/05-zooming-panning) documentation for more information
-on how to use these props.
+|      Prop       |  Type(s)  | Required | Default | Units |
+| --------------- | --------- | -------- | ------- | ----- |
+| blockReindexing | `Boolean` | no       | `false` | -     |
+
+The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation.
+
+### Mouse interactions
+
+|    Prop     |                                       Description                                       |
+| ----------- | --------------------------------------------------------------------------------------- |
+| onClick     | Fires when a user clicks anywhere in the `Section`                                      |
+| onWheel     | Fires when a user uses a mouse wheel or two-finger touchpad zoom while over a `Section` |
+| onMousedown | Fires when a user presses the mouse button down while over a `Section`                  |
+| onMouseup   | Fires when a user releases the mouse button while over a `Section`                      |
+| onMouseover | Fires once when a user moves the mouse over a `Section`                                 |
+| onMouseout  | Fires once when a user moves the mouse out of a `Section`                               |
+| onMousemove | Fires every time the mouse moves while it is over a `Section`                           |
+
+### Touch interactions
+
+|    Prop     |                              Description                               |
+| ----------- | ---------------------------------------------------------------------- |
+| onPinch     | Fires when a user makes a 'pinch' gesture with two fingers             |
+| onTouchdown | Fires when a user touches the area in a `Section`                      |
+| onTouchup   | Fires when a user lifts his or her finger from the `Section`           |
+| onTouchover | Fires when a user moves his or her finger into the `Section`           |
+| onTouchout  | Fires when a user moves his or her finger out of the `Section`         |
+| onTouchmove | Fires every time the user moves his or her finger within the `Section` |
+
+## Interactivity
+
+For more information on how to create advanced interactions like selection or brushing, check out the [interactivity](/docs/concepts/interactivity) documentation.

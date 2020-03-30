@@ -36,7 +36,7 @@
   const log = console.log
 </script>
 
-<Graphic width={500} height={500}>
+<Graphic width={500} height={500} backgroundColor="red" paddingColor="blue" padding={50}>
 
   <Section 
     {scaleX} {scaleY} padding={20}

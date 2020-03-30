@@ -25,7 +25,7 @@
   export let titleStrokeOpacity = undefined
   export let titleFillOpacity = undefined
   export let titleOpacity = 1
-  export let titleFontFamily = undefined
+  export let titleFontFamily = 'Helvetica'
   export let titleFontSize = 18
   export let titleFontWeight = 'bold'
   export let titleRotation = 0
@@ -39,7 +39,7 @@
   export let subtitleStrokeOpacity = undefined
   export let subtitleFillOpacity = undefined
   export let subtitleOpacity = 1
-  export let subtitleFontFamily = undefined
+  export let subtitleFontFamily = 'Helvetica'
   export let subtitleFontSize = 14
   export let subtitleFontWeight = 'normal'
   export let subtitleRotation = 0
@@ -59,31 +59,9 @@
 
   // Private variables
   let _padding
-  let _flipY = false
-  let _flipX = false
   let xRange = $sectionContext.scaleX.range()
   let yRange = $sectionContext.scaleY.range()
   let totalFontSize
-
-  $: {
-    if ($sectionContext.flipY) {
-      _flipY = true
-    }
-
-    if ($graphicContext.flipY) {
-      _flipY = true
-    }
-  }
-
-  $: {
-    if ($sectionContext.flipX) {
-      _flipX = true
-    }
-
-    if ($graphicContext.flipX) {
-      _flipX = true
-    }
-  }
 
   $: {
     // Removal of padding from pixel value range, if necessary
@@ -101,11 +79,8 @@
   
     // Autopositioning
     if (!isValid(x, y)) {
-      if (sectionContext.flipX) xRange.reverse()
-      x = createTitleXCoord(hjust, xRange, x, xOffset, _flipX)
-  
-      if (sectionContext.flipY) yRange.reverse()
-      y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize, _flipY)
+      x = createTitleXCoord(hjust, xRange, x, xOffset, $sectionContext.flipX)
+      y = createTitleYCoord(vjust, yRange, y, yOffset, totalFontSize, $sectionContext.flipY)
     } else {
       let _x, _y
 
@@ -134,7 +109,7 @@
       if (!isValid(subtitleX, subtitleY)) {
         yRange = $sectionContext.scaleY.range()
         subtitleX = x
-        subtitleY = _flipY ? y - titleFontSize * 1.5 : y + titleFontSize * 1.5
+        subtitleY = $sectionContext.flipY ? y - titleFontSize * 1.5 : y + titleFontSize * 1.5
       }
     }
   }

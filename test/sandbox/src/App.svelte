@@ -28,6 +28,7 @@
   import ViolinPlot from './examples/ViolinPlot.svelte'
   import Title from './examples/Title.svelte'
   import LegendsDocs from './examples/LegendsDocs.svelte'
+  import NestedSections from './examples/NestedSections.svelte'
 
   // and add them to this component array
   const components = [
@@ -156,11 +157,11 @@
       url: 'legendsdocs',
       component: LegendsDocs
     },
-    // {
-    //   name: 'Legends',
-    //   url: '/legends',
-    //   component: Legends
-    // },
+    {
+      name: 'Nested sections',
+      url: '/nestedsections',
+      component: NestedSections
+    },
   ]
 </script>
 <Router url="">

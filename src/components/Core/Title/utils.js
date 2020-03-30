@@ -97,11 +97,11 @@ export function createTitleYCoord (vjust, range, y, offset, fontSize, flipY) {
   }
 
   if (vjust === 'bottom') {
-    justification = flipY ? 1 : 1 - (fontSize / sectionHeight)
+    justification = flipY ? fontSize / sectionHeight : 1 - (fontSize / sectionHeight)
   }
 
   if (vjust === 'top') {
-    justification = fontSize / sectionHeight * 0.5
+    justification = flipY ? 1 - (fontSize / sectionHeight) : fontSize / sectionHeight
   }
 
   if (!isNaN(vjust)) {

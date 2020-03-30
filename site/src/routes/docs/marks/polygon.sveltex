@@ -1,0 +1,62 @@
+# Polygon
+The `Polygon` mark is used to plot polygonal elements.
+
+```js exec
+import SimplePolygon from "./examples/_PolygonSimple.svelte"
+```
+<SimplePolygon/>
+
+```markup
+<script>
+  const x = [20, 50, 80, 20]
+  const y = [70, 21, 70, 70]
+</script>
+<Graphic>
+  <Polygon {x} {y} />
+</Graphic>
+```
+
+To render the Polygon mark, you will need to provide the `x` and `y` or the `geometry` props. The two uses are mutually exclusive.
+
+`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scale used in the parent Section. `geometry` accepts GeoJSON [Polygon](https://tools.ietf.org/html/rfc7946#section-3.1.6) objects only. Values will be scaled according to the `scaleX` and `scaleY` of the parent Section. Alternatively, a function can be supplied that returns a coordinate in the viewBox coordinate system directly, bypassing any active scales.
+
+To create multiple polygons, we can either loop over the dataset (with `{#each}`) to generate one `Polygon` per iteration, or use the `PolygonLayer`. The `PolygonLayer` shares all of the `Polygon`'s props, but takes an array of arrays per prop instead of an array.
+
+```markup
+<Graphic>
+  <!-- this denotes a polygon enclosed by three points -->
+  <Polygon
+    x={[🍓, 🍋, 🍏, 🍓]}
+    y={[🥑, 🍊, 🥭, 🥑]}
+  />
+</Graphic>
+
+<Graphic>
+  <!-- this denotes 3 polygons -->
+  <PolygonLayer
+    x={[[🍓, 🍋, 🍏, 🍓], [🍓, 🍋, 🍏, 🍓], [🍓, 🍋, 🍏, 🍓]]}
+    y={[[🥑, 🍊, 🥭, 🥑], [🥑, 🍊, 🥭, 🥑], [🥑, 🍊, 🥭, 🥑]]}
+  />
+</Graphic>
+```
+
+## Properties
+### Positioning
+| Prop     | Required | Types              | Default   | Description                                       | Unit(s)                                                                                   |
+| -------- | -------- | -------------------| --------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| x        | depends  | Array \| Function  | undefined | X coordinates of each point enclosing the polygon | Data value to be scaled by Section's scaleX. If Function then viewBox coordinates.        |
+| y        | depends  | Array \| Function  | undefined | Y coordinates of each point enclosing the polygon | Data value to be scaled by Section's scaleY. If Function then viewBox coordinates.        |
+| geometry | depends  | Object \| Function | undefined | GeoJSON object of type Polygon                    | Data value to be scaled by Section's scaleX/scaleY. If Function then viewBox coordinates. |
+
+### Other aesthetics
+
+| Prop           | Required | Types  | Default   | Description                                                                                     | Unit(s)                    |
+| -------------- | -------- | ------ | --------- | ----------------------------------------------------------------------------------------------- | -------------------------- |
+| stroke         | false    | String | 'none'    | Stroke color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)           | Named color, hex, rgb, hsl |
+| stroke-width   | false    | Number | 0         | Stroke width [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)     | Screen pixel               |
+| stroke-opacity | false    | Number | undefined | Stroke opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) | Number between 0 to 1      |
+| fill           | false    | String | '#000000' | Fill color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)               | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number | undefined | Fill opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)     | Number between 0 and 1     |
+| opacity        | false    | Number | 1         | Mark opacity  [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)         | Number between 0 and 1     |
+
+These are analogous to the CSS properties of the same names.
