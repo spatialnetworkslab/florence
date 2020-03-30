@@ -7,8 +7,7 @@
   import { scaleLinear, scaleBand } from 'd3-scale'
   import { mean, max } from 'd3-array'
 
-  // const padding = {top: 20, right: 20, bottom: 30, left: 30}
-  const padding = 0
+  const padding = {top: 20, right: 20, bottom: 30, left: 30}
 
   // set to true once data is loaded
   let done
