@@ -246,7 +246,7 @@ function validateGridSpec (a, direction) {
 
 // Checks that grid areas are rectangular
 // This function is quite inefficient, can be optimized at a later date
-// Only console throw new Errorings are issued, the graph is still rendered (but incorrectly)
+// Only console warnings are issued, the graph is still rendered (but incorrectly)
 function validateCellSpaces (spaces, indvCells, numCols) {
   for (const areaName in spaces) {
     const area = spaces[areaName]
