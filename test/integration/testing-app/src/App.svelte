@@ -13,6 +13,7 @@
   import Area from './pages/Area.svelte'
   import AreaLayer from './pages/AreaLayer.svelte'
   import Title from './pages/Title.svelte'
+  import NestedSections from './pages/NestedSections.svelte'
 
   // and add them to this component array
   const components = [
@@ -70,6 +71,11 @@
       name: 'Title',
       url: '/title',
       component: Title
+    },
+    {
+      name: 'NestedSections',
+      url: '/nestedsections',
+      component: NestedSections
     }
   ]
 </script>
