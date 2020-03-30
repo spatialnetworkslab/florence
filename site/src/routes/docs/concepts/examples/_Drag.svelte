@@ -29,7 +29,7 @@
   }
 </script>
 
-<Graphic width={300} height={300}>
+<Graphic width={300} height={300} backgroundColor="#b2ffb2">
 
   <Section 
     scaleX={scaleLinear().domain([0, 10])}

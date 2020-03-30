@@ -25,7 +25,7 @@
   })
 </script>
 
-<Graphic width={500} height={500}>
+<Graphic width={500} height={500} backgroundColor="#b2ffb2">
 
   <Section 
     padding={25}

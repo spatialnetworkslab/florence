@@ -252,7 +252,7 @@ import Drag from './examples/_Drag.svelte'
 
 <Drag />
 
-The `blockReindexing` prop is a bit ugly, but necessary for now. If it is omitted, every time the `drag` event fires, the changed `Point` will be added again to `florence`s internal spatial index, which can cause significant lags. A more elegant solution to this problem will be implemented in a future version.
+The `blockReindexing` prop is a bit ugly, but necessary for now. If it is omitted, every time the `drag` event fires, the changed `Point` will be removed from and added again to `florence`s internal spatial index. This is an expensive operation, and can cause significant lags. A more elegant solution to this problem will be implemented in a future version.
 
 ## Zooming and panning
 
@@ -260,6 +260,155 @@ See the [zooming and panning](/docs/concepts/zoom-pan) documentation for an exam
 
 ## Selection
 
+### Rectangle selection example
 
+```js
+import { scaleLinear } from 'd3-scale'
+import { Graphic, Section, Point, Rectangle } from '@snlab/florence'
 
-## Brushing
+let section
+let makingSelection = false
+let selectionRectangle
+
+function onMousedown ({ screenCoordinates }) {
+  section.resetSelectRectangle()
+
+  makingSelection = true
+  const { x, y } = screenCoordinates
+  selectionRectangle = { x1: x, x2: x, y1: y, y2: y }
+
+  section.selectRectangle(selectionRectangle)
+}
+
+function onMousemove ({ screenCoordinates }) {
+  if (makingSelection) {
+    const { x, y } = screenCoordinates
+    selectionRectangle.x2 = x
+    selectionRectangle.y2 = y
+
+    section.updateSelectRectangle(selectionRectangle)
+  }
+}
+
+function onMouseup () {
+  if (makingSelection) makingSelection = false
+}
+
+let pointInSelection = false
+```
+
+```html
+<Graphic width={300} height={300} backgroundColor="#b2ffb2">
+
+  <Section
+    bind:this={section}
+    padding={30}
+    scaleX={scaleLinear().domain([0, 10])}
+    scaleY={scaleLinear().domain([0, 10])}
+    {onMousedown}
+    {onMousemove}
+    {onMouseup}
+  >
+
+    <Point 
+      x={5} y={5} radius={7}
+      onSelect={() => { pointInSelection = true }}
+      onDeselect={() => { pointInSelection = false }}
+    />
+  
+  </Section>
+
+  <!-- Selection rectangle -->
+  {#if selectionRectangle}
+
+    <Rectangle 
+      {...selectionRectangle} 
+      fill="red" opacity={0.2}
+    />
+
+  {/if}
+
+</Graphic>
+
+<h1 style="color: blue;">{ pointInSelection ? 'Point in selection!' : 'Point not in selection...' }</h1>
+```
+
+```js exec
+import RectSelect from './examples/_RectSelect.svelte'
+```
+
+<RectSelect />
+
+### Polygon selection
+
+```js
+import { scaleLinear } from 'd3-scale'
+import { Graphic, Section, Point, Polygon } from '@snlab/florence'
+
+let section
+let selecting = false
+let selectionPolygon
+
+function onMousedown ({ screenCoordinates }) {
+  section.resetSelectPolygon()
+  selectionPolygon = undefined
+
+  section.startSelectPolygon(screenCoordinates)
+  selecting = true
+}
+
+function onMousemove ({ screenCoordinates }) {
+  if (selecting) {
+    section.addPointToSelectPolygon(screenCoordinates)
+    selectionPolygon = section.getSelectPolygon()
+  }
+}
+
+function onMouseup () {
+  selecting = false
+}
+
+let pointInSelection = false
+```
+
+```html
+<Graphic width={300} height={300} backgroundColor="#b2ffb2">
+
+  <Section
+    bind:this={section}
+    padding={30}
+    scaleX={scaleLinear().domain([0, 10])}
+    scaleY={scaleLinear().domain([0, 10])}
+    {onMousedown}
+    {onMousemove}
+    {onMouseup}
+  >
+
+    <Point 
+      x={5} y={5} radius={7}
+      onSelect={() => { pointInSelection = true }}
+      onDeselect={() => { pointInSelection = false }}
+    />
+  
+  </Section>
+
+  <!-- Selection polygon -->
+  {#if selectionPolygon}
+
+    <Polygon 
+      geometry={selectionPolygon} 
+      fill="red" opacity={0.2}
+    />
+
+  {/if}
+
+</Graphic>
+
+<h1 style="color: blue;">{ pointInSelection ? 'Point in selection!' : 'Point not in selection...' }</h1>
+```
+
+```js exec
+import PolygonSelect from './examples/_PolygonSelect.svelte'
+```
+
+<PolygonSelect />

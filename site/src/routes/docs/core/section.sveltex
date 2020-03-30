@@ -190,6 +190,28 @@ The purpose of `blockReindexing` is explained in the [interactivity](/docs/conce
 | onTouchout  | Fires when a user moves his or her finger out of the `Section`         |
 | onTouchmove | Fires every time the user moves his or her finger within the `Section` |
 
-## Interactivity
+## Methods
 
-For more information on how to create advanced interactions like selection or brushing, check out the [interactivity](/docs/concepts/interactivity) documentation.
+- `selectRectangle`
+- `updateSelectRectangle`
+- `resetSelectRectangle`
+- `startSelectPolygon`
+- `addPointToSelectPolygon`
+- `moveSelectPolygon`
+- `resetSelectPolygon`
+
+`Section` methods can be used as follows:
+
+```js
+let section
+
+section.selectRectangle(...)
+```
+
+```html
+<Section bind:this={section}>
+
+</Section>
+```
+
+For more information on `Section` methods and how to use them to create advanced interactions like selection or brushing, check out the [interactivity](/docs/concepts/interactivity) documentation.
