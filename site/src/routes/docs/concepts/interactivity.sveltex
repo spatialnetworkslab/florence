@@ -136,7 +136,55 @@ While the `Layer`'s `event` object also has:
 
 ## Highlighting
 
+Highlighting is a technique that allows the end user to request additional information about observations of interest. If we think about data as a set of observations, where each observation has a number of attributes, data visualization is the process of representing the attributes graphically. However, there is only so much information that can be encoded graphically without becoming overwhelmed by information, so only some attributes of each observation will be observable. Highlighting is one method to allow the user to request more, unobservable information about an observation on demand. For example, in this scatterplot, the `a` and `b` variables are mapped to the `x` and `y` dimensions of the points and are therefore visible to the user, but the name of each observation is not visible. By hovering the mouse over a point, its `name` attribute is requested, and displayed below the graphic:
+
+```js
+import { Graphic, Section, PointLayer } from '@snlab/florence'
+import { scaleLinear } from 'd3-scale'
+
+let selectedKey = null
+
+const a = [1, 3, 5, 3]
+const b = [3, 1, 3, 5]
+const name = ['West', 'North', 'East', 'South']
+```
+
+```html
+<Graphic width={300} height={300} backgroundColor="#b2ffb2">
+
+  <Section 
+    scaleX={scaleLinear().domain([1, 5])}
+    scaleY={scaleLinear().domain([1, 5])}
+    padding={20}
+  >
+
+    <PointLayer 
+      x={a}
+      y={b}
+      radius={10}
+      fill={({ key }) => key === selectedKey ? 'red' : 'black' }
+      onMouseover={({ key }) => selectedKey = key}
+      onMouseout={() => selectedKey = null}
+    />
+
+  </Section>
+
+</Graphic>
+
+<h1 style="color: blue;">{selectedKey === null ? 'None selected' : name[selectedKey]}</h1>
+```
+
+```js exec
+import Highlight from './examples/_Highlight.svelte'
+```
+
+<Highlight />
+
 ## Dragging
+
+To make it easy to create dragging behavior, `florence` provides an `onDrag` event listening prop for all `Mark`s and `Layer`s. The `onDrag` prop is, in fact, three event listeners in one:
+
+
 
 ## Zooming
 
