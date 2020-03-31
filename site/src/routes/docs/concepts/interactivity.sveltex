@@ -1,3 +1,414 @@
 # Interactivity
 
-TODO
+## Description
+
+`florence` takes a different approach to interactivity than other data visualization libraries. Where libraries like [Vega Lite](https://vega.github.io/vega-lite/) or [G6](https://g6.antv.vision/) use a high-level 'grammar' specifically designed for interactivity, `florence` takes a more low-level approach. Instead of explaining to `florence` through a special language how an event (like a mouse click) should trigger an action (like a Mark changing color), `florence` relies on plain JavaScript combined with Svelte's built-in reactivity system as much as possible. Although this approach can result in more boilerplate code, it does provide more control and flexibility for the end user to create tailored and innovative interactions. At the same time, many tricky aspects of interactivity have been abstracted away, so you do not need to reinvent the wheel either!
+
+## Caveats
+
+- Interactivity always requires a `Section` component
+
+## Events and actions
+
+To make interactivity easier to discuss, we will split up the concept into two parts:
+
+- Events
+- Actions
+
+Events are things done by the end user of the graphic, while actions are things that the graphic does in response to events. All simple (highlighting, dragging) and more complex (zooming, selection, brushing) interactions can be broken down into events and actions. For example, an interaction where a `Rectangle` is highlighted by clicking on it, can be broken down in an event (end user clicking on a `Rectangle` mark) and an action (the `Rectangle` mark changing color). `florence`'s approach to events is to provide the user with a convenient API to capture ('listen' for) events triggered by the end user. This event listening API is dicussed is the next paragraph. On the other hand, the number of actions that can be triggered as a result of events is potentially infinite- there is no exhaustive list of actions to document. There are, however, common interactions techniques that you might be familiar with from other libraries. While these interaction techniques are not supported out of the box with a single line of code, `florence` does provide handy abstractions for all the events and actions that these interaction techniques consist of. See the Highlighting, Dragging, Zooming and Selection paragraphs on this page for examples on how to set up these interactions.
+
+## Event listening
+
+To listen for an event, simply pass a function to one of the event listening props of a `Mark`, `Layer` or `Section`:
+
+```js
+function handleClick (event) {
+  ...
+}
+```
+
+```html
+<Point onClick={handleClick} />
+```
+
+Every time the end user clicks on this `Point`, the `handleClick` function will be called with an `event` object. The `event` object will be discussed below.
+
+### Mark and layer event listening props
+
+The following event listening props are available on all `Mark`s and `Layer`s. Whenever the description mentions `Mark`, read: `Mark` or `Layer`.
+
+#### Mouse events
+
+|    Prop     |                             Description                             |
+| ----------- | ------------------------------------------------------------------- |
+| onClick     | Fires when a user clicks on `Mark`                                  |
+| onMousedown | Fires when a user presses the mouse button down while over a `Mark` |
+| onMouseup   | Fires when a user releases the mouse button while over a `Mark`     |
+| onMouseover | Fires once when a user moves the mouse over a `Mark`                |
+| onMouseout  | Fires once when a user moves the mouse out of a `Mark`              |
+| onMousedrag | See 'Dragging' below                                                |
+
+#### Touch events
+
+|    Prop     |                         Description                         |
+| ----------- | ----------------------------------------------------------- |
+| onTouchdown | Fires when a user touches a `Mark`                          |
+| onTouchup   | Fires when a user lifts his or her finger from a `Mark`     |
+| onTouchover | Fires when a user moves his or her finger over a `Mark`     |
+| onTouchout  | Fires when a user moves his or her finger out of the `Mark` |
+| onTouchdrag | See 'Dragging' below                                        |
+
+#### Select events
+
+|    Prop    |      Description      |
+| ---------- | --------------------- |
+| onSelect   | See 'Selection' below |
+| onDeselect | See 'Selection' below |
+
+### Section event listening props
+
+#### Mouse events
+
+|    Prop     |                                       Description                                       |
+| ----------- | --------------------------------------------------------------------------------------- |
+| onClick     | Fires when a user clicks anywhere in the `Section`                                      |
+| onWheel     | Fires when a user uses a mouse wheel or two-finger touchpad zoom while over a `Section` |
+| onMousedown | Fires when a user presses the mouse button down while over a `Section`                  |
+| onMouseup   | Fires when a user releases the mouse button while over a `Section`                      |
+| onMouseover | Fires once when a user moves the mouse over a `Section`                                 |
+| onMouseout  | Fires once when a user moves the mouse out of a `Section`                               |
+| onMousemove | Fires every time the mouse moves while it is over a `Section`                           |
+
+#### Touch events
+
+|    Prop     |                              Description                               |
+| ----------- | ---------------------------------------------------------------------- |
+| onPinch     | Fires when a user makes a 'pinch' gesture with two fingers             |
+| onTouchdown | Fires when a user touches the area in a `Section`                      |
+| onTouchup   | Fires when a user lifts his or her finger from the `Section`           |
+| onTouchover | Fires when a user moves his or her finger into the `Section`           |
+| onTouchout  | Fires when a user moves his or her finger out of the `Section`         |
+| onTouchmove | Fires every time the user moves his or her finger within the `Section` |
+
+### The event object
+
+The `event` is nearly the same for `Mark`s, `Layer`s and `Section`s. The differences will be discussed here. For all three, the `event` object has the following properties:
+
+```js
+{
+  altKey: <Boolean>,
+  clientX: <Number>,
+  clientY: <Number>,
+  ctrlKey: <Boolean>,
+  hitSource: <String>,
+  localCoordinates: <Object>,
+  nativeType: <String>,
+  pageX: <Number>,
+  pageY: <Number>,
+  screenCoordinates: <Object>,
+  screenX: <Number>,
+  screenY: <Number>,
+  shiftKey: <Boolean>,
+  timeStamp: <Number>,
+  type: <String>
+}
+```
+
+In addition, the `Mark`'s `event` object also has:
+
+```js
+{
+  hitBbox: <Object>,
+  markType: <String>
+}
+```
+
+While the `Layer`'s `event` object also has:
+
+```js
+{
+  hitBbox: <Object>,
+  markType: <String>,
+  index: <Number>,
+  key: <String>
+}
+```
+
+## Highlighting
+
+Highlighting is a technique that allows the end user to request additional information about observations of interest. If we think about data as a set of observations, where each observation has a number of attributes, data visualization is the process of representing the attributes graphically. However, there is only so much information that can be encoded graphically without becoming overwhelmed by information, so only some attributes of each observation will be observable. Highlighting is one method to allow the user to request more, unobservable information about an observation on demand. For example, in this scatterplot, the `a` and `b` variables are mapped to the `x` and `y` dimensions of the points and are therefore visible to the user, but the name of each observation is not visible. By hovering the mouse over a point, its `name` attribute is requested, and displayed below the graphic:
+
+```js
+import { Graphic, Section, PointLayer } from '@snlab/florence'
+import { scaleLinear } from 'd3-scale'
+
+let selectedKey = null
+
+const a = [1, 3, 5, 3]
+const b = [3, 1, 3, 5]
+const name = ['West', 'North', 'East', 'South']
+```
+
+```html
+<Graphic width={300} height={300} backgroundColor="#b2ffb2">
+
+  <Section 
+    scaleX={scaleLinear().domain([1, 5])}
+    scaleY={scaleLinear().domain([1, 5])}
+    padding={20}
+  >
+
+    <PointLayer 
+      x={a}
+      y={b}
+      radius={10}
+      fill={({ key }) => key === selectedKey ? 'red' : 'black' }
+      onMouseover={({ key }) => selectedKey = key}
+      onMouseout={() => selectedKey = null}
+    />
+
+  </Section>
+
+</Graphic>
+
+<h1 style="color: blue;">{selectedKey === null ? 'None selected' : name[selectedKey]}</h1>
+```
+
+```js exec
+import Highlight from './examples/_Highlight.svelte'
+```
+
+<Highlight />
+
+## Dragging
+
+To make it easy to create dragging behavior, `florence` provides `onMousedrag` and `onTouchdrag` event listening props for all `Mark`s and `Layer`s. These props are, in fact, three listeners in one: 
+
+- `start`, for when the end user starts dragging
+- `drag` for during dragging
+- `end` for when the end user stops dragging 
+
+Here is an example of how to use `onMousedrag`. `onTouchdrag` works similarly.
+
+```js
+import { Graphic, Section, Point } from '@snlab/florence'
+import { scaleLinear } from 'd3-scale'
+
+const points = new Array(5).fill(0).map(_ => ({
+  x: Math.round(Math.random() * 10),
+  y: Math.round(Math.random() * 10)
+}))
+
+$: center = {
+  x: points.map(p => p.x).reduce((a, c) => a + c) / points.length,
+  y: points.map(p => p.y).reduce((a, c) => a + c) / points.length
+}
+
+let blockReindexing
+
+function drag ({ dragType, localCoordinates }, index) {
+  if (dragType === 'start') {
+    blockReindexing = true
+  }
+
+  if (dragType === 'drag' && blockReindexing) {
+    points[index] = localCoordinates
+  }
+
+  if (dragType === 'end') {
+    blockReindexing = false
+  }
+}
+```
+
+```html
+<Graphic width={300} height={300}>
+
+  <Section 
+    scaleX={scaleLinear().domain([0, 10])}
+    scaleY={scaleLinear().domain([0, 10])}
+    padding={20}
+    {blockReindexing}
+  >
+
+    {#each points as point, i}
+      <Point 
+        {...point}
+        radius={10}
+        onMousedrag={e => drag(e, i)}
+      />
+    {/each}
+
+    <Point {...center} radius={7} fill="blue" />
+  
+  </Section>
+
+</Graphic>
+```
+
+```js exec
+import Drag from './examples/_Drag.svelte'
+```
+
+<Drag />
+
+The `blockReindexing` prop is a bit ugly, but necessary for now. If it is omitted, every time the `drag` event fires, the changed `Point` will be removed from and added again to `florence`s internal spatial index. This is an expensive operation, and can cause significant lags. A more elegant solution to this problem will be implemented in a future version.
+
+## Zooming and panning
+
+See the [zooming and panning](/docs/concepts/zoom-pan) documentation for an example of how to set up zooming and panning.
+
+## Selection
+
+### Rectangle selection example
+
+```js
+import { scaleLinear } from 'd3-scale'
+import { Graphic, Section, Point, Rectangle } from '@snlab/florence'
+
+let section
+let makingSelection = false
+let selectionRectangle
+
+function onMousedown ({ screenCoordinates }) {
+  section.resetSelectRectangle()
+
+  makingSelection = true
+  const { x, y } = screenCoordinates
+  selectionRectangle = { x1: x, x2: x, y1: y, y2: y }
+
+  section.selectRectangle(selectionRectangle)
+}
+
+function onMousemove ({ screenCoordinates }) {
+  if (makingSelection) {
+    const { x, y } = screenCoordinates
+    selectionRectangle.x2 = x
+    selectionRectangle.y2 = y
+
+    section.updateSelectRectangle(selectionRectangle)
+  }
+}
+
+function onMouseup () {
+  if (makingSelection) makingSelection = false
+}
+
+let pointInSelection = false
+```
+
+```html
+<Graphic width={300} height={300} backgroundColor="#b2ffb2">
+
+  <Section
+    bind:this={section}
+    padding={30}
+    scaleX={scaleLinear().domain([0, 10])}
+    scaleY={scaleLinear().domain([0, 10])}
+    {onMousedown}
+    {onMousemove}
+    {onMouseup}
+  >
+
+    <Point 
+      x={5} y={5} radius={7}
+      onSelect={() => { pointInSelection = true }}
+      onDeselect={() => { pointInSelection = false }}
+    />
+  
+  </Section>
+
+  <!-- Selection rectangle -->
+  {#if selectionRectangle}
+
+    <Rectangle 
+      {...selectionRectangle} 
+      fill="red" opacity={0.2}
+    />
+
+  {/if}
+
+</Graphic>
+
+<h1 style="color: blue;">{ pointInSelection ? 'Point in selection!' : 'Point not in selection...' }</h1>
+```
+
+```js exec
+import RectSelect from './examples/_RectSelect.svelte'
+```
+
+<RectSelect />
+
+### Polygon selection
+
+```js
+import { scaleLinear } from 'd3-scale'
+import { Graphic, Section, Point, Polygon } from '@snlab/florence'
+
+let section
+let selecting = false
+let selectionPolygon
+
+function onMousedown ({ screenCoordinates }) {
+  section.resetSelectPolygon()
+  selectionPolygon = undefined
+
+  section.startSelectPolygon(screenCoordinates)
+  selecting = true
+}
+
+function onMousemove ({ screenCoordinates }) {
+  if (selecting) {
+    section.addPointToSelectPolygon(screenCoordinates)
+    selectionPolygon = section.getSelectPolygon()
+  }
+}
+
+function onMouseup () {
+  selecting = false
+}
+
+let pointInSelection = false
+```
+
+```html
+<Graphic width={300} height={300} backgroundColor="#b2ffb2">
+
+  <Section
+    bind:this={section}
+    padding={30}
+    scaleX={scaleLinear().domain([0, 10])}
+    scaleY={scaleLinear().domain([0, 10])}
+    {onMousedown}
+    {onMousemove}
+    {onMouseup}
+  >
+
+    <Point 
+      x={5} y={5} radius={7}
+      onSelect={() => { pointInSelection = true }}
+      onDeselect={() => { pointInSelection = false }}
+    />
+  
+  </Section>
+
+  <!-- Selection polygon -->
+  {#if selectionPolygon}
+
+    <Polygon 
+      geometry={selectionPolygon} 
+      fill="red" opacity={0.2}
+    />
+
+  {/if}
+
+</Graphic>
+
+<h1 style="color: blue;">{ pointInSelection ? 'Point in selection!' : 'Point not in selection...' }</h1>
+```
+
+```js exec
+import PolygonSelect from './examples/_PolygonSelect.svelte'
+```
+
+<PolygonSelect />

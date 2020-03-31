@@ -14,7 +14,10 @@
   let brushing = false
   let blockReindexing = false
 
-  const onMousedown = ({ screenCoordinates }) => {
+  const onMousedown = (e) => {
+    console.log(e)
+    const { screenCoordinates } = e
+
     tick().then(() => {
       if (!brushing) {
         section.resetSelectRectangle()
