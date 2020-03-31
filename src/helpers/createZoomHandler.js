@@ -55,8 +55,7 @@ export default function createZoomHandler (
       onPinch: zoom
     },
 
-    reset,
-    center
+    reset
   }
 }
 
