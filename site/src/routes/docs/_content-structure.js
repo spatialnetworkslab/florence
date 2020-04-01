@@ -37,6 +37,10 @@ export const posts = [
       {
         title: 'Zooming and panning',
         path: '/docs/concepts/zoom-pan'
+      },
+      {
+        title: 'Transitions',
+        path: '/docs/conceps/transitions'
       }
     ]
   },
