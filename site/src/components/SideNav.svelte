@@ -11,10 +11,10 @@
     @apply text-base font-normal pl-4;
   }
   .sidenav-second:hover {
-    @apply text-indigo-500;
+    @apply text-red-600;
   }
   .sidenav-second-selected {
-    @apply text-indigo-500 font-medium;
+    @apply text-red-600 font-medium;
   }
   .sidenav-a{
     @apply no-underline;

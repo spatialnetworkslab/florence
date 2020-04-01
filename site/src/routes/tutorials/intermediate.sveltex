@@ -233,7 +233,7 @@ In summary, the JS part of our code should now look like this:
   import { Graphic, Section, PolygonLayer, createGeoScales, Title, DiscreteLegend } from '@snlab/florence';
   import DataContainer from '@snlab/florence-datacontainer';
   import { scaleThreshold } from 'd3-scale';
-  
+
   // import data
   // step1
   import { geodata } from './planning_areas_data.js'
@@ -319,7 +319,7 @@ Our code now looks like this:
 
 Adding a legend to our plot will make it easier to understand what the colors mean. We can add a `DiscreteLegend` to explain the thresholds of each planning area's resale price per square meter.
 
-<Inter3 switch />
+<Inter3 switch0 />
 
 ```markup
   <Graphic width={500} height={500}>
@@ -335,8 +335,7 @@ Adding a legend to our plot will make it easier to understand what the colors me
         stroke={'white'} 
         strokeWidth={1}
       />
-    <!-- step 5 (optional) -->
-    {#if switch}
+      <!-- step 5 (optional) -->
       <DiscreteLegend
         fill={priceColorScale}
         vjust={'top'}
@@ -352,7 +351,6 @@ Adding a legend to our plot will make it easier to understand what the colors me
         stroke={'white'}
         flipLabels
       />
-    {/if}
     </Section>
 
     <!-- step 4 (optional) -->
