@@ -88,7 +88,7 @@ Our code now looks like this:
 
   // import data
   // step1
-  import geo from '../data/planning_areas.json'
+  import geodata from '../data/planning_areas.js'
   const background = new DataContainer(geo)
 
   // create geo scales
@@ -107,7 +107,7 @@ We are now ready to set up our canvas for creating our map with the `Graphic` an
 
   // import data
   // step1
-  import geo from '../data/planning_areas.json'
+  import geodata from '../data/planning_areas.js'
   const background = new DataContainer(geo)
 
   // create geo scales
@@ -230,14 +230,14 @@ Lastly, we create the color scale named `priceColorScale` and map our data to it
 In summary, the JS part of our code should now look like this:
 
 ```js
-  import { Graphic, Section, PolygonLayer, createGeoScales, DiscreteLegend } from '@snlab/florence'
-  import DataContainer from '@snlab/florence-datacontainer'
-  import { scaleThreshold } from 'd3-scale'
-
+  import { Graphic, Section, PolygonLayer, createGeoScales, Title, DiscreteLegend } from '@snlab/florence';
+  import DataContainer from '@snlab/florence-datacontainer';
+  import { scaleThreshold } from 'd3-scale';
+  
   // import data
   // step1
-  import geo from './planning_areas_data.json'
-  const data = new DataContainer(geo)
+  import { geodata } from './planning_areas_data.js'
+  const data = new DataContainer(geodata)
   const geoScales = createGeoScales(data.domain('$geometry'))
 
   // step 2
@@ -313,6 +313,54 @@ Our code now looks like this:
     titleFontFamily={'Montserrat'}
   />
 </Graphic>
+```
+
+## Legend (optional)
+
+Adding a legend to our plot will make it easier to understand what the colors mean. We can add a `DiscreteLegend` to explain the thresholds of each planning area's resale price per square meter.
+
+<Inter3 switch />
+
+```markup
+  <Graphic width={500} height={500}>
+
+    <Section
+      {...geoScales}
+      flipY
+    >
+      <!-- steps 1, 2 and 3 -->
+      <PolygonLayer 
+        geometry={data.column('$geometry')}
+        fill={priceColors}
+        stroke={'white'} 
+        strokeWidth={1}
+      />
+    <!-- step 5 (optional) -->
+    {#if switch}
+      <DiscreteLegend
+        fill={priceColorScale}
+        vjust={'top'}
+        hjust={'right'}
+        labelAnchorPoint={'r'}
+        usePadding={true}
+        title={'Mean Resale Price / m2 (SGD)'}
+        labelFontSize={12}
+        orient={'horizontal'}
+        labelCount={5}
+        height={25}
+        width={250}
+        stroke={'white'}
+        flipLabels
+      />
+    {/if}
+    </Section>
+
+    <!-- step 4 (optional) -->
+    <Title
+      title={'Mean resale price per m2 (S$)'} 
+      titleFontFamily={'Montserrat'}
+    />
+  </Graphic>
 ```
 
 ## Sandbox

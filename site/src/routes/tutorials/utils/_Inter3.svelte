@@ -1,7 +1,9 @@
 <script>
-  import { Graphic, Section, PolygonLayer, createGeoScales, Title, DiscreteLegend } from '@snlab/florence'
-  import DataContainer from '@snlab/florence-datacontainer'
+  import { Graphic, Section, PolygonLayer, createGeoScales, Title, DiscreteLegend } from '@snlab/florence';
+  import DataContainer from '@snlab/florence-datacontainer';
   import { scaleThreshold } from 'd3-scale'
+
+  export let switch0 = false
 
   // import data
   // step1
@@ -41,23 +43,23 @@
       stroke={'white'} 
       strokeWidth={1}
     />
-  <!-- 
-    <DiscreteLegend
-      fill={priceColorScale}
-      vjust={'top'}
-      hjust={'right'}
-      labelAnchorPoint={'r'}
-      usePadding={true}
-      title={'Mean Resale Price / m2 (SGD)'}
-      labelFontSize={12}
-      orient={'horizontal'}
-      labelCount={5}
-      height={25}
-      width={250}
-      stroke={'white'}
-      flipLabels
-    /> -->
-
+  <!-- step 5 (optional) -->
+    {#if switch0}
+      <DiscreteLegend
+        fill={priceColorScale}
+        vjust={'top'}
+        hjust={'right'}
+        labelAnchorPoint={'r'}
+        usePadding={true}
+        title={'Mean Resale Price / m2 (SGD)'}
+        labelFontSize={12}
+        orient={'horizontal'}
+        height={25}
+        width={250}
+        stroke={'white'}
+        flipLabels
+      />
+    {/if}
   </Section>
 
   <!-- step 4 (optional) -->

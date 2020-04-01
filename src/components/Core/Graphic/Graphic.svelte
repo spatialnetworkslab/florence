@@ -44,7 +44,7 @@
   const interactionManagerContext = InteractionManagerContext.init()
 
   $: {
-    GraphicContext.update(graphicContext, { renderer, flipY, flipX, padding })
+    GraphicContext.update(graphicContext, { renderer })
   }
 
   let rootNode

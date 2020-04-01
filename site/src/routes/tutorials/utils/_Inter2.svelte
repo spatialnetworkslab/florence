@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, Section, PolygonLayer, createGeoScales, DiscreteLegend } from '@snlab/florence'
+  import { Graphic, Section, PolygonLayer, createGeoScales } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
   import { scaleThreshold } from 'd3-scale'
 
