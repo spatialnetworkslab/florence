@@ -25,10 +25,7 @@
     setZoomIdentity,
     minZoom: 0.2,
     maxZoom: 3,
-    extentX: [-500, 500],
-    extentY: [-500, 500],
-    step,
-    center: { x: 0, y: 0 }
+    step
   })
 
   const handle = zoomId => { zoomIdentity = zoomId }
@@ -44,7 +41,6 @@ k:
 <div>
   <button on:click={e => zoomIdentity = pan.reset() }> Reset pan </button>
   <button on:click={e => zoomIdentity = zoom.reset() }> Reset zoom </button>
-  <button on:click={e => zoomIdentity = zoom.center() }> Center from Zoom </button>
 </div>
 
 <Graphic width={500} height={500}>

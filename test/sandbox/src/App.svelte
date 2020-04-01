@@ -28,6 +28,7 @@
   import ViolinPlot from './examples/ViolinPlot.svelte'
   import Title from './examples/Title.svelte'
   import LegendsDocs from './examples/LegendsDocs.svelte'
+  import NestedSections from './examples/NestedSections.svelte'
 
   // geo examples
   import GeoEx from './examples/GeoEx.svelte'
@@ -187,12 +188,17 @@
       name: 'Heatmap',
       url: 'heatmap',
       component: Heatmap
-    }
+    },
     // {
     //   name: 'Legends',
     //   url: '/legends',
     //   component: Legends
     // },
+    {
+      name: 'Nested sections',
+      url: '/nestedsections',
+      component: NestedSections
+    },
   ]
 </script>
 <Router url="">

@@ -10,6 +10,10 @@ export const posts = [
       {
         title: 'Section',
         path: '/docs/core/section'
+      },
+      {
+        title: 'Title',
+        path: '/docs/core/title'
       }
     ]
   },
@@ -19,6 +23,10 @@ export const posts = [
     path: '/docs/concepts/local-coordinates',
     children: [
       {
+        title: 'Grid',
+        path: '/docs/core/grid'
+      },
+      {
         title: 'Local coordinates',
         path: '/docs/concepts/local-coordinates'
       },
@@ -27,8 +35,8 @@ export const posts = [
         path: '/docs/concepts/interactivity'
       },
       {
-        title: 'Title',
-        path: '/docs/core/title'
+        title: 'Zooming and panning',
+        path: '/docs/concepts/zoom-pan'
       }
     ]
   },

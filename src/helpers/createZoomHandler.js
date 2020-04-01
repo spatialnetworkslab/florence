@@ -1,10 +1,9 @@
 export default function createZoomHandler (
   zoomIdentity,
   {
-    setZoomIdentity = () => {},
+    setZoomIdentity,
     minZoom, maxZoom,
     step = 1,
-    center: centerPt,
     dimension = 'both'
   }
 ) {
@@ -50,22 +49,13 @@ export default function createZoomHandler (
     setZoomIdentity(zoomIdentity)
   }
 
-  // Brings viewport back to specified center point
-  const center = function () {
-    zoomIdentity.x = centerPt.x
-    zoomIdentity.y = centerPt.y
-
-    setZoomIdentity(zoomIdentity)
-  }
-
   return {
     handlers: {
       onWheel: zoom,
       onPinch: zoom
     },
 
-    reset,
-    center
+    reset
   }
 }
 

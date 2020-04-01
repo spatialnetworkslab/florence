@@ -41,6 +41,8 @@
 
   let transformation = 'identity'
   let chosenGeometry = 'a'
+
+  const log = console.log
 </script>
 
 <div>
@@ -70,21 +72,21 @@
     {transformation}
   >
 
-    <!-- <Polygon
+    <Polygon
       geometry={geometries[chosenGeometry]}
-      onMouseover={() => isHovering = true}
+      onMouseover={e => { isHovering = true; log(e) }}
       onMouseout={() => isHovering = false}
       fill={isHovering ? 'blue' : 'yellow'}
-    /> -->
+    />
 
-    <PolygonLayer 
+    <!-- <PolygonLayer 
       geometry={[geometries[chosenGeometry]]}
-      onMouseover={() => isHovering = true}
+      onMouseover={e => { isHovering = true; log(e) }}
       onMouseout={() => isHovering = false}
       fill={isHovering ? 'blue' : 'yellow'}
       key={[0]}
       transition={2000}
-    />
+    /> -->
   
   </Section>
 
