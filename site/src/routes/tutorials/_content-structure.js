@@ -1,7 +1,7 @@
 export const posts = [
   {
     title: 'Tutorials',
-    path: '/tutorials/beginner',
+    path: '/tutorials/basic',
     children: [
       {
         title: 'Basic graphs',

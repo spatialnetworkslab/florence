@@ -13,7 +13,6 @@
   "dependencies": {
     "@polka/send": "^1.0.0-next.3",
     "compression": "^1.7.1",
-    "florence": "^0.0.1",
     "polka": "^1.0.0-next.4",
     "sirv": "^0.4.0"
   },
