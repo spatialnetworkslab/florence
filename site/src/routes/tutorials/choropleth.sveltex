@@ -193,7 +193,7 @@ All Florence `Marks` can be used alongside maps, with a similar property called 
 ## Map your data to color to create a choropleth 
 As you can see, it is easy to make a base map made of polygons using Florence components. Now we take it a step further – by creating a choropleth.
 
-When we look back at our [dataset](../utils/planning_areas.js) using `console.log(data)` and checking `Inspect` (on Google Chrome or its analogues on other browsers), we see that we have another column called `resale_price_sqm`:
+When we look back at our [dataset](../utils/planning_areas.js) using `console.log(data)` and checking `Inspect` (on Google Chrome or its analogues on other browsers), we see that we have our target column under `_data` called `resale_price_sqm`:
 
 <!-- TODO add picture but not sure if sveltex supports it -->
 ![resale_price_sqm](/images/resale_photo.png)
