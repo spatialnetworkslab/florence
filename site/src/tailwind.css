@@ -85,17 +85,13 @@ tr > td {
   @apply border border-gray-400 px-2 py-1;
 }
 
-tr:nth-child(even) {
-	background: #efefef;
-}
-
 /* docs, gallery */
 .content {
   @apply flex flex-row;
 }
 
 .left-col {
-  @apply w-1/6 border-r border-gray-400 pr-4 whitespace-no-wrap flex-none;
+  @apply w-48 border-r border-gray-400 pr-4 whitespace-no-wrap flex-none;
 }
 
 .right-col {
