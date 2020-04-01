@@ -40,7 +40,7 @@ export const posts = [
       },
       {
         title: 'Transitions',
-        path: '/docs/conceps/transitions'
+        path: '/docs/concepts/transitions'
       }
     ]
   },
