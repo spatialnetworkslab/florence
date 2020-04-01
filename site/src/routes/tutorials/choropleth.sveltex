@@ -3,13 +3,14 @@ Although the act of map making (cartography!) has much older roots than the conc
 
 Florence's coordinate systems and components support geospatial visualisations like maps (and a number of projections). In this tutorial, you will learn how to construct a map (and a map that encodes data through color – the choropleth) using GeoJSON data.
 
-## Import relevant components
+<!-- state the goal of the tutorial. e.g. make a map of average resale prices in different areas of SG -->
 
+## Import relevant components
 You will use the following components:
 
 - [Graphic](docs/core/graphic)
 - [Section](docs/core/section)
-- Scales - specifically, `createGeoScales`
+- Scales - specifically, a helper function from `florence` called `createGeoScales`
 - [Polygon](docs/marks/Polygon) - but as we may end up drawing multiple polygons in a map, we use its Layer form, `PolygonLayer`
 
 To manage our data, we use the following library:
@@ -30,8 +31,7 @@ We selectively import these into our application.
 ```
 
 ## What data do we need?
-
-To make data spatial we need some way to encode the spatial attributes of each observation (often referred to as geometry). In online mapping, [GeoJSON](geojson.org) is the defacto standard. It is an extension of regular json according to a specific specification. For example, a spatial point might look like this:
+To make data 'spatial', we need some way to encode the spatial attributes of each observation (often referred to as geometry). In online mapping, [GeoJSON](geojson.org) is the defacto standard. It is an extension of regular JSON according to a specific specification. For example, a spatial point might look like this:
 
 ``` js
 {
@@ -46,10 +46,10 @@ To make data spatial we need some way to encode the spatial attributes of each o
 }
 ```
 
-Each feature has two keys: geometry, holding information about the spatial attributes; and properties, holding any additional non-spatial attributes. Florence, by way of [DataContainer](https://github.com/spatialnetworkslab/florence-datacontainer), can interpret any GeoJSON straight out of the box.
+A 'Feature' has two additional keys: `geometry`, holding information about the spatial attributes; and `properties`, holding any additional non-spatial attributes. Florence, by way of [DataContainer](https://github.com/spatialnetworkslab/florence-datacontainer), can work with GeoJSON straight out of the box.
 
 ## Importing and preparing the dataset
-For this tutorial, we import a GeoJSON file of Singapore's planning areas and mean resale prices per square meter from the Housing & Development Board. [You can download the dataset here.](../utils/planning_areas.js) 
+For this tutorial, we import a GeoJSON file of Singapore's planning areas and mean resale prices per square meter from the Housing & Development Board.
 
 We get started by making it available to the Svelte application. 
 
@@ -57,27 +57,26 @@ We get started by making it available to the Svelte application.
   import { geodata } from '../planning_areas_data.js' 
 ```
 
-To create a simple map, we will use only the spatial attributes, which are called `geometry` inside the GeoJSON. For this we will need to import another Florence function called `createGeoScales`, alongside our other imports:
+To provide an easy starting point, you can use the below sandbox, which has all the necessary dependencies and data set up.
 
-```js
-  import { Graphic, Section, PolygonLayer, createGeoScales } from '@snlab/florence'
-```
+::: codesandbox sandboxes/intermediate-tutorial-init codemirror=1&view=split&runonclick=1&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
+:::
 
 ### Using a `DataContainer`
-
-When using Florence, we can also use the sidecar `florence-dataContainer` library, that lets us store data as either rows or columns and perform pre-processing operations on it. We use `DataContainer` here to extract the geometry we will use to plot our map from our imported GeoJSON.
+When using Florence, we can also use the sidecar `florence-dataContainer` library, that lets us store data as either rows or columns and perform pre-processing operations on it. We use `DataContainer` here to extract the geometry that we will use to plot the map based on the imported GeoJSON.
 
 ```js
   const data = new DataContainer(geodata)
 ```
-
-For further details on data loading and formatting using `Data Container`, refer to its [documentation](https://github.com/spatialnetworkslab/florence-datacontainer).
+<!-- include a note here on how the datacontainer treats geometry -- similar to sf in tidyverse -->
+<!-- also why does it use the $ sign -->
+For further details on data loading and formatting using `Data Container`, refer to its 
+[documentation](https://github.com/spatialnetworkslab/florence-datacontainer).
 
 ## Create your geospatial scales
-
 In the case of maps, some data may be recorded in three-dimensional 'earth' coordinates while in other cases data might already be pre-projected in a two-dimensional plane for you. Even in this latter case, you still need to ensure that the spatial coordinates translate neatly to screen coordinates. 
 
-To achieve this, we can no longer treat the x and y dimension separate but must take them into account together. Therefore, we need to set the scale-geo prop on a `Section` to create our `Section` scales, similar to how we used `scaleX` and `scaleY` to make a dot plot. To obtain our map scales, we take the geometry from our GeoJSON import and feed it into `createGeoScales`, which takes care of obtaining the bounding box and projection data for us.
+To achieve this, we can no longer treat the x and y dimension separate but must take them into account together. Therefore, we need to set both the `scaleX` and `scaleY` property on our `Section` simultaneously. To make that easier, we use a helper function that `florence` exports, called `createGeoScales`, to take the geometry column in the data container as input and create the correct scales. The function returns an object with a `scaleX` and `scaleY` key that we can [spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) on the `Section`. 
 
 Our code now looks like this:
 
@@ -97,8 +96,7 @@ Our code now looks like this:
 ```
 
 ## Set up your canvas for mapping
-
-We are now ready to set up our canvas for creating our map with the `Graphic` and `Section` components. After specifying the width and height of the parent `Graphic` (which creates an empty svg canvas of the given width and height), we use the `geoScales` from our previous step as the reference scale for the `Section`. 
+We are now ready to set up our 'canvas' for creating our map with the `Graphic` and `Section` components. After specifying the width and height of the `Graphic` (which creates an empty svg of the given width and height), we use the `geoScales` variable from our previous step to set the right scales for the `Section`. 
 
 ```markup
 <script>
@@ -127,12 +125,15 @@ We are now ready to set up our canvas for creating our map with the `Graphic` an
 ```
 
 For further details on:
-
 - `Section`, refer to the [documentation](docs/core/section).
 - `Graphic`, refer to the [documentation](docs/core/graphic).
 
 ## Map your data
-Now we have to draw the actual Marks, one for each planning area. Instead of setting the usual x/y type properties, we set a single geometry prop on the Polygon mark instead. Since we are plotting multiple points in this example, the `PolygonLayer` component meets our purposes.
+Next, we have to draw the actual Marks, one for each planning area. Instead of setting the usual `x` and `y` properties separately, we set a single `geometry` prop on the Polygon mark instead.
+
+<!-- insert short explanation on what this geometry prop expects -->
+
+Since we are plotting multiple points in this example, the `PolygonLayer` component meets our purposes.
 
 ::: div callout
 If we are plotting only a single polygon, we would use `Polygon`.
@@ -157,7 +158,7 @@ If we are plotting only a single polygon, we would use `Polygon`.
 ```
 
 ::: div callout
-If we want to customize our map, we can do so by feeding appropriate values to aesthetic properties like `fill`, `stroke`, and `strokeWidth`. Please refer to the [Polygon](docs/marks/Polygon) documentation for more details.
+If we want to customize our map, we can do so by feeding appropriate values to aesthetic properties like `fill`, `stroke`, and `strokeWidth`. Refer to the [Polygon](docs/marks/Polygon) documentation for more details.
 :::
 
 ```markup
@@ -193,22 +194,23 @@ All Florence `Marks` can be used alongside maps, with a similar property called 
 ## Map your data to color to create a choropleth 
 As you can see, it is easy to make a base map made of polygons using Florence components. Now we take it a step further – by creating a choropleth.
 
-When we look back at our [dataset](../utils/planning_areas.js) using `console.log(data)` and checking `Inspect` (on Google Chrome or its analogues on other browsers), we see that we have our target column under `_data` called `resale_price_sqm`:
+When we inspect our dataset (e.g. by using `console.log(data.data())`), we see that we have a column called `resale_price_sqm`:
 
-<!-- TODO add picture but not sure if sveltex supports it -->
 ![resale_price_sqm](/images/resale_photo.png)
 
-We will use this as the basis for our choropleth. Notice that some values are `NaN`, meaning to say these areas don't have anything for us to plot. We need to take that into account when assigning colors to our planning area polygons. 
+We will use this as the basis for our choropleth. Notice that some values are `NaN`, indicating that these areas don't have any data available. We need to take that into account when assigning colors to our planning area polygons. 
 
 ### Assign colors to your data
-
 For this tutorial, we will use five (5) colors to denote thresholds in the data. The color `#d3d3d3` is added to the start of our `colors` array (index 0) to assign a color to planning areas without data for `resale_price_sqm`.
 
 ```js
   const colors = ['#d3d3d3', '#FFF5EB', '#FDD1A5', '#FD9243', '#DE4F05', '#7F2704']
 ```
 
-We use the d3 scale `scaleThreshold` to help us assign colors to our data. This means that we need to know what thresholds or breakpoint values within our data to use for each color. This is computed using the domain of `resale_price_sqm` and a bit of javascript that lets us break the domain into equal intervals based on the length of the `colors` array above. Note that we also use `Math.floor()` to make sure we get integer values for our thresholds.
+We use the d3 scale `scaleThreshold` to help us assign colors to our data. This means that we need to know what thresholds or breakpoint values within our data to use for each color. This is computed using the domain of `resale_price_sqm` and a bit of JavaScript that lets us break the domain into equal intervals based on the length of the `colors` array above. Note that we also use `Math.floor()` to make sure we get integer values for our thresholds.
+
+<!-- why not use the datacontainer for this? its bin operation is cleaner, isn't it? -->
+<!-- if it isn't, perhaps the datacontainer can be enhanced/made more convenient because this is such a common thing that it shouldn't need custom treatment -->
 
 ```js
   const resalePriceDomain = data.domain('resale_price_sqm')
@@ -227,9 +229,9 @@ Lastly, we create the color scale named `priceColorScale` and map our data to it
   const priceColorScale = scaleThreshold().domain(thresholds).range(colors)
   const priceColors = data.map('resale_price_sqm', priceColorScale)
 ```
+<!-- since the priceColors is really setting a visual variable already, I'd suggest to do it in the florence markup instead, where you bind to the `fill` prop -->
 
 In summary, the JS part of our code should now look like this:
-
 ```js
   import { Graphic, Section, PolygonLayer, createGeoScales, Title, DiscreteLegend } from '@snlab/florence';
   import DataContainer from '@snlab/florence-datacontainer';
@@ -262,7 +264,6 @@ In summary, the JS part of our code should now look like this:
 The variable `priceColors` now contains an array that houses our colors for our planning areas – arranged in the same order as they are inside `DataContainer`.
 
 ### Add colors to your polygons
-
 We are now ready to plot our choropleth map. Just replace the input to `fill` with `priceColors` and _voila_! Our simple map of Singapore is now a choropleth that shows us each planning area's mean HDB flat resale price per square meter.
 
 ```markup
@@ -309,7 +310,6 @@ Our code now looks like this:
 ```
 
 ## Legend (optional)
-
 Adding a legend to our plot will make it easier to understand what the colors mean. We can add a `DiscreteLegend` to explain the thresholds of each planning area's resale price per square meter.
 
 <Choropleth switch1 switch3 />
@@ -353,9 +353,10 @@ Adding a legend to our plot will make it easier to understand what the colors me
     </Section>
   </Graphic>
 ```
+<!-- the legend has a lot of options active right now. can you simplify it to use mostly defaults for the tutorial? -->
 
 ## Sandbox
 You can play around with the final map in the CodeSandbox below.
 
-::: codesandbox sandboxes/intermediate-tutorial codemirror=1&view=split&runonclick=1&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
+::: codesandbox sandboxes/intermediate-tutorial-final codemirror=1&view=split&runonclick=1&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
 :::

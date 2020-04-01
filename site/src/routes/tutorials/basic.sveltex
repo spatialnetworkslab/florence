@@ -419,5 +419,5 @@ The title-vjust and title-hjust properties are used to position the axis title r
 ```
 For further details, refer to the axes component documentation. You can play around with the final graph in the CodeSandbox below.
 
-::: codesandbox sandboxes/basic-tutorial codemirror=1&view=split&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
+::: codesandbox sandboxes/basic-tutorial codemirror=1&view=split&runonclick=1&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
 :::
