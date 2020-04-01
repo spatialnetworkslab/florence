@@ -54,7 +54,7 @@ For this tutorial, we import a GeoJSON file of Singapore's planning areas and me
 We get started by making it available to the Svelte application. 
 
 ```js
-  import { geo } from '../planning_areas_data.js' 
+  import { geodata } from '../planning_areas_data.js' 
 ```
 
 To create a simple map, we will use only the spatial attributes, which are called `geometry` inside the GeoJSON. For this we will need to import another Florence function called `createGeoScales`, alongside our other imports:
@@ -68,7 +68,7 @@ To create a simple map, we will use only the spatial attributes, which are calle
 When using Florence, we can also use the sidecar `florence-dataContainer` library, that lets us store data as either rows or columns and perform pre-processing operations on it. We use `DataContainer` here to extract the geometry we will use to plot our map from our imported GeoJSON.
 
 ```js
-  const background = new DataContainer(geo)
+  const data = new DataContainer(geodata)
 ```
 
 For further details on data loading and formatting using `Data Container`, refer to its [documentation](https://github.com/spatialnetworkslab/florence-datacontainer).
@@ -89,10 +89,10 @@ Our code now looks like this:
   // import data
   // step1
   import geodata from '../data/planning_areas.js'
-  const background = new DataContainer(geo)
+  const data = new DataContainer(geo)
 
   // create geo scales
-  const geoScales = createGeoScales(background.domain('$geometry'))
+  const geoScales = createGeoScales(data.domain('$geometry'))
 </script>
 ```
 
@@ -108,10 +108,10 @@ We are now ready to set up our canvas for creating our map with the `Graphic` an
   // import data
   // step1
   import geodata from '../data/planning_areas.js'
-  const background = new DataContainer(geo)
+  const data = new DataContainer(geo)
 
   // create geo scales
-  const geoScales = createGeoScales(background.domain('$geometry'))
+  const geoScales = createGeoScales(data.domain('$geometry'))
 </script>
 
 <Graphic width={500} height={500}>
@@ -148,7 +148,7 @@ If we are plotting only a single polygon, we would use `Polygon`.
   >
     <!-- step 1 -->
     <PolygonLayer 
-      geometry={background.column('$geometry')}
+      geometry={data.column('$geometry')}
     />
 
   </Section>
@@ -169,7 +169,7 @@ If we want to customize our map, we can do so by feeding appropriate values to a
   >
     <!-- step 1 -->
     <PolygonLayer 
-      geometry={background.column('$geometry')}
+      geometry={data.column('$geometry')}
       fill={'#d3d3d3'} 
       stroke={'white'} 
       strokeWidth={1}
@@ -193,9 +193,10 @@ All Florence `Marks` can be used alongside maps, with a similar property called 
 ## Map your data to color to create a choropleth 
 As you can see, it is easy to make a base map made of polygons using Florence components. Now we take it a step further – by creating a choropleth.
 
-When we look back at our [dataset](../utils/planning_areas.json) using `console.log` and checking `Inspect` (on Google Chrome or its analogues on other browsers), we see that we have another column called `resale_price`:
+When we look back at our [dataset](../utils/planning_areas.js) using `console.log(data)` and checking `Inspect` (on Google Chrome or its analogues on other browsers), we see that we have another column called `resale_price_sqm`:
 
 <!-- TODO add picture but not sure if sveltex supports it -->
+![resale_price_sqm](../images/resale_photo.png)
 
 We will use this as the basis for our choropleth. Notice that some values are `NaN`, meaning to say these areas don't have anything for us to plot. We need to take that into account when assigning colors to our planning area polygons. 
 

@@ -8,7 +8,7 @@
   import geo from '../data/planning_areas_data.json'
   const data = new DataContainer(geo)
   const geoScales = createGeoScales(data.domain('$geometry'))
-
+  console.log(data)
   // step 2
   // compute color scaling
   const colors = ['#d3d3d3', '#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
