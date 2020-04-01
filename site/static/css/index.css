@@ -719,8 +719,9 @@ tr > td {
 }
 
 .right-col {
-  width: 100%;
   margin-left: 1.5rem;
+  flex: 1 1 0%;
+  min-width: 0;
 }
 
 /* main */

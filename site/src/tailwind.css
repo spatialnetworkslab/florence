@@ -95,7 +95,7 @@ tr > td {
 }
 
 .right-col {
-  @apply w-full ml-6;
+  @apply ml-6 flex-1 min-w-0;
 }
 
 /* main */
