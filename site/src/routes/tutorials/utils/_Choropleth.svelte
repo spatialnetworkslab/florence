@@ -1,7 +1,11 @@
 <script>
-  import { Graphic, Section, PolygonLayer, createGeoScales } from '@snlab/florence'
-  import DataContainer from '@snlab/florence-datacontainer'
+  import { Graphic, Section, PolygonLayer, createGeoScales, Title, DiscreteLegend } from '@snlab/florence';
+  import DataContainer from '@snlab/florence-datacontainer';
   import { scaleThreshold } from 'd3-scale'
+
+  export let switch1 = false
+  export let switch2 = false
+  export let switch3 = false
 
   // import data
   // step1
@@ -34,14 +38,38 @@
     {...geoScales}
     flipY
   >
-    <!-- step 1 and 2 -->
+    <!-- steps 1, 2 and 3 -->
     <PolygonLayer 
       geometry={data.column('$geometry')}
-      fill={priceColors}
+      fill={switch1 ? priceColors : '#d3d3d3'}
       stroke={'white'} 
       strokeWidth={1}
     />
-
+    
+    {#if switch2}
+      <!-- step 4 (optional) -->
+      <Title
+        title={'Mean resale price per m2 (S$)'} 
+        titleFontFamily={'Montserrat'}
+      />
+    {/if}
+    
+    <!-- step 5 (optional) -->
+    {#if switch3}
+      <DiscreteLegend
+        fill={priceColorScale}
+        vjust={'top'}
+        hjust={'right'}
+        labelAnchorPoint={'r'}
+        usePadding={true}
+        title={'Mean Resale Price / m2 (SGD)'}
+        labelFontSize={12}
+        orient={'horizontal'}
+        height={25}
+        width={250}
+        stroke={'white'}
+        flipLabels
+      />
+    {/if}
   </Section>
-
 </Graphic>

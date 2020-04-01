@@ -9,7 +9,7 @@ export const posts = [
       },
       {
         title: 'Choropleth maps',
-        path: '/tutorials/intermediate'
+        path: '/tutorials/choropleth'
       }
     ]
   }

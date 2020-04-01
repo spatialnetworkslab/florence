@@ -4,21 +4,21 @@
 </script>
 
 <style>
-  .sidenav-first{
-    @apply text-lg no-underline;
-  }
-  .sidenav-second{
-    @apply text-base font-normal pl-4;
-  }
-  .sidenav-second:hover {
-    @apply text-red-600;
-  }
-  .sidenav-second-selected {
-    @apply text-red-600 font-medium;
-  }
-  .sidenav-a{
-    @apply no-underline;
-  }
+.sidenav-first{
+  @apply text-lg no-underline;
+}
+.sidenav-second{
+  @apply text-base font-normal pl-4;
+}
+.sidenav-second:hover {
+  @apply text-red-500;
+}
+.sidenav-second-selected {
+  @apply text-red-500 font-medium;
+}
+.sidenav-a{
+  @apply no-underline;
+}
 </style>
 
 <nav>
