@@ -16,7 +16,7 @@ You may further customise your graph using the following components:
 
 For scaling, we rely on [d3 scales](https://github.com/d3/d3-scale).
 
-## Learning Goal(s)
+## ⭐️Learning Goal(s)
 In this tutorial, you will make a map of a basic dot plot (along with some optional customisations) of the fruit-diameter dataset below.
 
 ## Dataset

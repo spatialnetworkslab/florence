@@ -1,44 +1,60 @@
 <script>
-  import { Graphic, Section, PolygonLayer, createGeoScales, Title, DiscreteLegend } from '@snlab/florence';
-  import DataContainer from '@snlab/florence-datacontainer';
-  import { scaleThreshold } from 'd3-scale'
-
-  export let switch1 = false
-  export let switch2 = false
-  export let switch3 = false
+  import {
+    Graphic,
+    Section,
+    PolygonLayer,
+    createGeoScales,
+    Title,
+    DiscreteLegend
+  } from "@snlab/florence";
+  import DataContainer from "@snlab/florence-datacontainer";
+  import { scaleThreshold } from "d3-scale";
 
   // import data
   // step1
-  import { geodata } from './planning_areas_data.js'
-  const data = new DataContainer(geodata)
-  const geoScales = createGeoScales(data.domain('$geometry'))
+  import { geodata } from "./planning_areas_data.js";
+  const data = new DataContainer(geodata);
+  const geoScales = createGeoScales(data.domain("$geometry"));
 
   // step 2
   // compute color scaling
-  const colors = ['#d3d3d3', '#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
+  const colors = [
+    "#d3d3d3",
+    "#fff0d2",
+    "#FDD1A5",
+    "#FD9243",
+    "#982f05",
+    "#4e1802"
+  ];
 
   // obtain bins from DataContainer method
-  const binsData = data.dropNA('resale_price_sqm').bin({ groupBy: 'resale_price_sqm', method: 'EqualInterval', numClasses: colors.length - 2 })
-  
+  const binsData = data.dropNA("resale_price_sqm").bin({
+    groupBy: "resale_price_sqm",
+    method: "EqualInterval",
+    numClasses: colors.length - 2
+  });
+
   // Obtain bins from data container
-  const bins = binsData.column('bins')
+  const bins = binsData.column("bins");
 
   // Flatten bins array into individual numbers: [[a, b], [b, c], [c, d]...] => [a, b, b, c, c, d...]
   // Get unique values from array and turn them into integers
-  let thresholds = []
+  let thresholds = [];
   for (let i = 0; i < bins.length; i += 1) {
     if (i === 0) {
-      thresholds.push(Math.floor(bins[i][0]))
-      thresholds.push(Math.floor(bins[i][1]))
+      thresholds.push(Math.floor(bins[i][0]));
+      thresholds.push(Math.floor(bins[i][1]));
     } else {
-      thresholds.push(Math.floor(bins[i][1]))
+      thresholds.push(Math.floor(bins[i][1]));
     }
   }
-
+  console.log(thresholds);
   // step 3
   // assign colors
-  const priceColorScale = scaleThreshold().domain(thresholds).range(colors)
-  const priceColors = data.map('resale_price_sqm', priceColorScale)
+  const priceColorScale = scaleThreshold()
+    .domain(thresholds)
+    .range(colors);
+  const priceColors = data.map("resale_price_sqm", priceColorScale);
 </script>
 
 
@@ -46,13 +62,13 @@
 
   <Section
     {...geoScales}
-    padding={switch2 ? 30 : 0}
+    padding={30}
     flipY
   >
     <!-- steps 1, 2 and 3 -->
     <PolygonLayer 
       geometry={data.column('$geometry')}
-      fill={priceColors}}
+      fill={priceColors}
       stroke={'white'} 
       strokeWidth={1}
     />

@@ -3,7 +3,7 @@ Although the act of map making (cartography!) has much older roots than the conc
 
 Florence's coordinate systems and components support geospatial visualisations like maps (and a number of projections). In this tutorial, you will learn how to construct a map (and a map that encodes data through color – the choropleth) using GeoJSON data.
 
-## Learning Goal(s)
+## ⭐️Learning Goal(s)
 In this tutorial, you will make a map of average resale prices in different planning areas of Singapore.
 
 ## Import relevant components
@@ -374,7 +374,9 @@ Our code now looks like this:
 Adding a legend to our plot will make it easier to understand what the colors mean. We can add a `DiscreteLegend` to explain the thresholds of each planning area's resale price per square meter.
 
 Since our parent `Section` has `flipY` on, we also need to give our `DiscreteLegend` a `flipLabels` property so that our labels show up in the right order. For the same reason, we need to set `vjust='top'`
-so that the legend positions itself at the bottom of the parent Section instead.
+so that the legend positions itself at the bottom of the parent Section instead. Furthermore, we set `usePadding=true` so that our legend is positioned away from our map a bit more.
+
+We are using thresholds to denote color, so we set our `labelAnchorPoint` to `r` so that it's clear that values above each number get colored a certain way.
 
 <Choropleth switch1 switch2 switch3 />
 
