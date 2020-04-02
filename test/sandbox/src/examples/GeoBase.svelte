@@ -25,12 +25,21 @@
   // assign colors
   const priceColorScale = scaleThreshold().domain(thresholds).range(colors)
   const priceColors = data.map('resale_price_sqm', priceColorScale)
+
+  let binsData = data.bin({ groupBy: 'resale_price_sqm', method: 'EqualInterval', numClasses: colors.length - 1 })
+  let check = binsData.column('bins').flat()
+  check = [...new Set(check)].filter(number => number != null)
+  check.map(Math.floor())
+  // drop nan values
+  // math.floor values 
+  console.log(check, thresholds)
 </script>
 
 <Graphic width={500} height={500}>
 
   <Section
     {...geoScales}
+    padding={30}
     flipY
   >
     <!-- step 1 and 2 -->
@@ -44,23 +53,20 @@
     <!-- step 4 (optional) -->
     <DiscreteLegend
       fill={priceColorScale}
+      labelAnchorPoint={'r'}
+      title={'Mean Resale Price / m2 (SGD)'}
+      orient={'horizontal'}
       vjust={'top'}
       hjust={'right'}
-      labelAnchorPoint={'r'}
-      usePadding={true}
-      title={'Mean Resale Price / m2 (SGD)'}
-      labelFontSize={12}
-      orient={'horizontal'}
-      height={25}
-      width={250}
-      stroke={'white'}
       flipLabels
+      usePadding={true}
+    />
+    <Title
+      title={'Mean resale price per m2 (S$)'} 
+      titleFontFamily={'Montserrat'}
+      usePadding={true}
     />
   </Section>
 
-  <Title
-    title={'Mean resale price per m2 (S$)'} 
-    titleFontFamily={'Montserrat'}
-  />
 
 </Graphic>

@@ -1,9 +1,10 @@
-# Creating Simple Maps (and Choropleths)
+# Creating Simple Choropleth Maps
 Although the act of map making (cartography!) has much older roots than the concept of the 'grammar of graphics', the two are very much compatible. With some extensions, the grammar of graphics can also be used to create maps of any kind. 
 
 Florence's coordinate systems and components support geospatial visualisations like maps (and a number of projections). In this tutorial, you will learn how to construct a map (and a map that encodes data through color – the choropleth) using GeoJSON data.
 
-<!-- state the goal of the tutorial. e.g. make a map of average resale prices in different areas of SG -->
+## Learning Goal(s)
+In this tutorial, you will make a map of average resale prices in different planning areas of Singapore.
 
 ## Import relevant components
 You will use the following components:
@@ -20,6 +21,7 @@ To manage our data, we use the following library:
 As in the previous tutorial, you may further customise your visualization using the following components:
 
 - [Plot Title](docs/core/title)
+- [Discrete Legend](docs/guides/legend)
 
 For scaling, we rely on [d3 scales](https://github.com/d3/d3-scale).
 
@@ -129,9 +131,7 @@ For further details on:
 - `Graphic`, refer to the [documentation](docs/core/graphic).
 
 ## Map your data
-Next, we have to draw the actual Marks, one for each planning area. Instead of setting the usual `x` and `y` properties separately, we set a single `geometry` prop on the Polygon mark instead.
-
-<!-- insert short explanation on what this geometry prop expects -->
+Next, we have to draw the actual Marks, one for each planning area. Instead of setting the usual `x` and `y` properties separately, we set a single `geometry` prop on the `Polygon` mark instead. The `geometry` prop in `Polygon` (or any Mark type) exepcts a GeoJSON object of type 'Polygon' or a function. For more information on what data to feed into `Polygon`, please refer to [its documentation.](docs/marks/polygon)
 
 Since we are plotting multiple points in this example, the `PolygonLayer` component meets our purposes.
 
@@ -187,7 +187,7 @@ Our map now looks like this:
 import Choropleth from './utils/_Choropleth.svelte'
 ```
 
-<Choropleth switch1/>
+<Choropleth/>
 
 All Florence `Marks` can be used alongside maps, with a similar property called `geometry` for plotting. For details of each, refer to the [Marks](docs/marks) documentation.
 
@@ -207,7 +207,9 @@ For this tutorial, we will use five (5) colors to denote thresholds in the data.
   const colors = ['#d3d3d3', '#FFF5EB', '#FDD1A5', '#FD9243', '#DE4F05', '#7F2704']
 ```
 
-We use the d3 scale `scaleThreshold` to help us assign colors to our data. This means that we need to know what thresholds or breakpoint values within our data to use for each color. This is computed using the domain of `resale_price_sqm` and a bit of JavaScript that lets us break the domain into equal intervals based on the length of the `colors` array above. Note that we also use `Math.floor()` to make sure we get integer values for our thresholds.
+We use the d3 scale `scaleThreshold` to help us assign colors to our data. This means that we need to know what thresholds or breakpoint values within our data to use for each color. This is computed using the domain of `resale_price_sqm` and with the help of the `DataContainer`'s `bin` transformation, which helps us break the domain into equal intervals based on the length of the `colors` array above. 
+
+After getting the new bins, we extract them to become an array called `thresholds`. Note that we also use `Math.floor()` to make sure we get integer values for our thresholds.
 
 <!-- why not use the datacontainer for this? its bin operation is cleaner, isn't it? -->
 <!-- if it isn't, perhaps the datacontainer can be enhanced/made more convenient because this is such a common thing that it shouldn't need custom treatment -->
@@ -229,7 +231,6 @@ Lastly, we create the color scale named `priceColorScale` and map our data to it
   const priceColorScale = scaleThreshold().domain(thresholds).range(colors)
   const priceColors = data.map('resale_price_sqm', priceColorScale)
 ```
-<!-- since the priceColors is really setting a visual variable already, I'd suggest to do it in the florence markup instead, where you bind to the `fill` prop -->
 
 In summary, the JS part of our code should now look like this:
 ```js
@@ -266,7 +267,7 @@ The variable `priceColors` now contains an array that houses our colors for our 
 ### Add colors to your polygons
 We are now ready to plot our choropleth map. Just replace the input to `fill` with `priceColors` and _voila_! Our simple map of Singapore is now a choropleth that shows us each planning area's mean HDB flat resale price per square meter.
 
-```markup
+```svelte
   <PolygonLayer 
     geometry={data.column('$geometry')}
     fill={priceColors}
@@ -275,10 +276,12 @@ We are now ready to plot our choropleth map. Just replace the input to `fill` wi
   />
 ```
 
-<Choropleth/>
+<Choropleth switch1/>
 
 ## Plot Title (Optional)
 Graphs usually come with titles describing the subject of the graph. This can be added using the `Title` component.
+
+We also add some `padding` to the parent `Section` so that we can position our `Title` nicely.
 
 <Choropleth switch1 switch2/>
 
@@ -289,6 +292,7 @@ Our code now looks like this:
 
   <Section
     {...geoScales}
+    padding={30}
     flipY
   >
     <!-- steps 1, 2 and 3 -->
@@ -299,20 +303,23 @@ Our code now looks like this:
       strokeWidth={1}
     />
 
+    <!-- step 4 (optional) -->
+    <Title
+      title={'Mean resale price per m2 (S$)'} 
+      titleFontFamily={'Montserrat'}
+      usePadding={true}
+    />
   </Section>
-
-  <!-- step 4 (optional) -->
-  <Title
-    title={'Mean resale price per m2 (S$)'} 
-    titleFontFamily={'Montserrat'}
-  />
 </Graphic>
 ```
 
 ## Legend (optional)
 Adding a legend to our plot will make it easier to understand what the colors mean. We can add a `DiscreteLegend` to explain the thresholds of each planning area's resale price per square meter.
 
-<Choropleth switch1 switch3 />
+Since our parent `Section` has `flipY` on, we also need to give our `DiscreteLegend` a `flipLabels` property so that our labels show up in the right order. For the same reason, we need to set `vjust='top'`
+so that the legend positions itself at the bottom of the parent Section instead.
+
+<Choropleth switch1 switch2 switch3 />
 
 ```markup
   <Graphic width={500} height={500}>
@@ -333,27 +340,23 @@ Adding a legend to our plot will make it easier to understand what the colors me
       <Title
         title={'Mean resale price per m2 (S$)'} 
         titleFontFamily={'Montserrat'}
+        usePadding={true}
       />
+
       <!-- step 5 (optional) -->
       <DiscreteLegend
         fill={priceColorScale}
+        labelAnchorPoint={'r'}
+        title={'Mean Resale Price / m2 (SGD)'}
+        orient={'horizontal'}
         vjust={'top'}
         hjust={'right'}
-        labelAnchorPoint={'r'}
-        usePadding={true}
-        title={'Mean Resale Price / m2 (SGD)'}
-        labelFontSize={12}
-        orient={'horizontal'}
-        labelCount={5}
-        height={25}
-        width={250}
-        stroke={'white'}
         flipLabels
+        usePadding={true}
       />
     </Section>
   </Graphic>
 ```
-<!-- the legend has a lot of options active right now. can you simplify it to use mostly defaults for the tutorial? -->
 
 ## Sandbox
 You can play around with the final map in the CodeSandbox below.

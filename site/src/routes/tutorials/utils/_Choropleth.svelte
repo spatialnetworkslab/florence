@@ -36,6 +36,7 @@
 
   <Section
     {...geoScales}
+    padding={switch2 ? 30 : 0}
     flipY
   >
     <!-- steps 1, 2 and 3 -->
@@ -51,6 +52,7 @@
       <Title
         title={'Mean resale price per m2 (S$)'} 
         titleFontFamily={'Montserrat'}
+        usePadding={true}
       />
     {/if}
     
@@ -58,17 +60,13 @@
     {#if switch3}
       <DiscreteLegend
         fill={priceColorScale}
+        labelAnchorPoint={'r'}
+        title={'Mean Resale Price / m2 (SGD)'}
+        orient={'horizontal'}
         vjust={'top'}
         hjust={'right'}
-        labelAnchorPoint={'r'}
-        usePadding={true}
-        title={'Mean Resale Price / m2 (SGD)'}
-        labelFontSize={12}
-        orient={'horizontal'}
-        height={25}
-        width={250}
-        stroke={'white'}
         flipLabels
+        usePadding={true}
       />
     {/if}
   </Section>
