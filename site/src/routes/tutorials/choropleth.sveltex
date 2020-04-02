@@ -72,6 +72,11 @@ When using Florence, we can also use the sidecar `florence-dataContainer` librar
 ```
 <!-- include a note here on how the datacontainer treats geometry -- similar to sf in tidyverse -->
 <!-- also why does it use the $ sign -->
+
+::: div callout
+When feeding `GeoJSON` to a `DataContainer`, the latter treats geometry similar to how geometry is handled by `sf` in `tidyverse`.
+:::
+
 For further details on data loading and formatting using `Data Container`, refer to its 
 [documentation](https://github.com/spatialnetworkslab/florence-datacontainer).
 
@@ -201,27 +206,65 @@ When we inspect our dataset (e.g. by using `console.log(data.data())`), we see t
 We will use this as the basis for our choropleth. Notice that some values are `NaN`, indicating that these areas don't have any data available. We need to take that into account when assigning colors to our planning area polygons. 
 
 ### Assign colors to your data
-For this tutorial, we will use five (5) colors to denote thresholds in the data. The color `#d3d3d3` is added to the start of our `colors` array (index 0) to assign a color to planning areas without data for `resale_price_sqm`.
+For this tutorial, we will use five (5) colors to denote five thresholds in the data. The color `#d3d3d3` is added to the start of our `colors` array (index 0) to assign a color to planning areas *without data* for `resale_price_sqm`.
 
 ```js
   const colors = ['#d3d3d3', '#FFF5EB', '#FDD1A5', '#FD9243', '#DE4F05', '#7F2704']
 ```
 
-We use the d3 scale `scaleThreshold` to help us assign colors to our data. This means that we need to know what thresholds or breakpoint values within our data to use for each color. This is computed using the domain of `resale_price_sqm` and with the help of the `DataContainer`'s `bin` transformation, which helps us break the domain into equal intervals based on the length of the `colors` array above. 
+To assign colors to our data, we first need to know what thresholds or breakpoint values within our data to use for each color. This is computed using the domain of `resale_price_sqm` and with the help of the `DataContainer`'s `bin` transformation, which helps us break the domain into equal intervals based on the length of the `colors` array above. 
 
-After getting the new bins, we extract them to become an array called `thresholds`. Note that we also use `Math.floor()` to make sure we get integer values for our thresholds.
-
-<!-- why not use the datacontainer for this? its bin operation is cleaner, isn't it? -->
-<!-- if it isn't, perhaps the datacontainer can be enhanced/made more convenient because this is such a common thing that it shouldn't need custom treatment -->
+::: div callout
+We use `EqualInterval` here with __`numClasses` set to 4__ because we want to create 4 bins – this will give us `[[a, b], [b, c], [c, d], [d, e]]`. In turn, this gives us __5 threshold breakpoints__.
+:::
 
 ```js
-  const resalePriceDomain = data.domain('resale_price_sqm')
-  const thresholds = []
-  const interval = Math.floor((resalePriceDomain[1] - resalePriceDomain[0]) / colors.length)
-  let start = Math.floor(resalePriceDomain[0])
+  // obtain bins from DataContainer method
+  const binsData = data.dropNA('resale_price_sqm').bin({ groupBy: 'resale_price_sqm', method: 'EqualInterval', numClasses: colors.length - 2 })
+```
 
-  for (let i = 0; i < colors.length; i += 1) {
-    thresholds.push(start + interval * i)
+After computing the new bins, we have to extract them to from the `binsData` container and turn them into a flat array called `thresholds`. 
+
+```js
+  // Obtain bins from data container
+  let bins = binsData.column('bins')
+```
+
+We obtain the unique values from our flat array by enumerating through the bins and extracting values from the ends of the bins (and the start of the bin, for the first bin), such that we retain only unique values for our `thresholds` array. Note that we also use `Math.floor()` to make sure we get nice integer values for our thresholds.
+
+```js
+  // Flatten bins array into individual numbers: [[a, b], [b, c], [c, d]...] => [a, b, b, c, c, d...]
+  // Get unique values from array and turn them into integers
+  let thresholds = []
+  for (let i = 0; i < bins.length; i += 1) {
+    if (i === 0) {
+      thresholds.push(Math.floor(bins[i][0]))
+      thresholds.push(Math.floor(bins[i][1]))
+    } else {
+      thresholds.push(Math.floor(bins[i][1]))
+    }
+  }
+```
+
+In total, the process of obtaining our thresholds for creating our color scheme looks like this:
+
+```js
+  // obtain bins from DataContainer method
+  const binsData = data.dropNA('resale_price_sqm').bin({ groupBy: 'resale_price_sqm', method: 'EqualInterval', numClasses: colors.length - 2 })
+  
+  // Obtain bins from data container
+  const bins = binsData.column('bins')
+
+  // Flatten bins array into individual numbers: [[a, b], [b, c], [c, d]...] => [a, b, b, c, c, d...]
+  // Get unique values from array and turn them into integers
+  let thresholds = []
+  for (let i = 0; i < bins.length; i += 1) {
+    if (i === 0) {
+      thresholds.push(Math.floor(bins[i][0]))
+      thresholds.push(Math.floor(bins[i][1]))
+    } else {
+      thresholds.push(Math.floor(bins[i][1]))
+    }
   }
 ```
 
@@ -236,7 +279,11 @@ In summary, the JS part of our code should now look like this:
 ```js
   import { Graphic, Section, PolygonLayer, createGeoScales, Title, DiscreteLegend } from '@snlab/florence';
   import DataContainer from '@snlab/florence-datacontainer';
-  import { scaleThreshold } from 'd3-scale';
+  import { scaleThreshold } from 'd3-scale'
+
+  export let switch1 = false
+  export let switch2 = false
+  export let switch3 = false
 
   // import data
   // step1
@@ -247,13 +294,23 @@ In summary, the JS part of our code should now look like this:
   // step 2
   // compute color scaling
   const colors = ['#d3d3d3', '#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
-  const resalePriceDomain = data.domain('resale_price_sqm')
-  const thresholds = []
-  const interval = Math.floor((resalePriceDomain[1] - resalePriceDomain[0]) / colors.length)
-  let start = Math.floor(resalePriceDomain[0])
 
-  for (let i = 0; i < colors.length; i += 1) {
-    thresholds.push(start + interval * i)
+  // obtain bins from DataContainer method
+  const binsData = data.dropNA('resale_price_sqm').bin({ groupBy: 'resale_price_sqm', method: 'EqualInterval', numClasses: colors.length - 2 })
+  
+  // Obtain bins from data container
+  const bins = binsData.column('bins')
+
+  // Flatten bins array into individual numbers: [[a, b], [b, c], [c, d]...] => [a, b, b, c, c, d...]
+  // Get unique values from array and turn them into integers
+  let thresholds = []
+  for (let i = 0; i < bins.length; i += 1) {
+    if (i === 0) {
+      thresholds.push(Math.floor(bins[i][0]))
+      thresholds.push(Math.floor(bins[i][1]))
+    } else {
+      thresholds.push(Math.floor(bins[i][1]))
+    }
   }
 
   // step 3

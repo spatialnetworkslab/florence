@@ -16,13 +16,23 @@
   // step 2
   // compute color scaling
   const colors = ['#d3d3d3', '#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
-  const resalePriceDomain = data.domain('resale_price_sqm')
-  const thresholds = []
-  const interval = Math.floor((resalePriceDomain[1] - resalePriceDomain[0]) / colors.length)
-  let start = Math.floor(resalePriceDomain[0])
 
-  for (let i = 0; i < colors.length; i += 1) {
-    thresholds.push(start + interval * i)
+  // obtain bins from DataContainer method
+  const binsData = data.dropNA('resale_price_sqm').bin({ groupBy: 'resale_price_sqm', method: 'EqualInterval', numClasses: colors.length - 2 })
+  
+  // Obtain bins from data container
+  const bins = binsData.column('bins')
+
+  // Flatten bins array into individual numbers: [[a, b], [b, c], [c, d]...] => [a, b, b, c, c, d...]
+  // Get unique values from array and turn them into integers
+  let thresholds = []
+  for (let i = 0; i < bins.length; i += 1) {
+    if (i === 0) {
+      thresholds.push(Math.floor(bins[i][0]))
+      thresholds.push(Math.floor(bins[i][1]))
+    } else {
+      thresholds.push(Math.floor(bins[i][1]))
+    }
   }
 
   // step 3
