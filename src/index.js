@@ -31,4 +31,5 @@ export { default as createZoomHandler } from './helpers/createZoomHandler.js'
 
 export { default as DiscreteLegend } from './components/Guides/Legends/DiscreteLegend.svelte'
 export { default as GradientLegend } from './components/Guides/Legends/GradientLegend.svelte'
+export { default as Legend } from './components/Guides/Legends/Legend.svelte'
 

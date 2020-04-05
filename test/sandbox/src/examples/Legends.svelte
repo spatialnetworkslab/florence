@@ -1,11 +1,11 @@
 <script>
   // d3
-  import { scaleBand, scaleThreshold, scaleDiverging, scaleSequential, scaleLinear, scalePow, scaleQuantise, scaleOrdinal, scaleSqrt, scaleLog } from 'd3-scale'
+  import { scaleBand, scaleThreshold, scaleDiverging, scaleSequential, scaleLinear, scaleOrdinal } from 'd3-scale'
   import * as d3 from 'd3-scale-chromatic'
-  import { schemeCategory10, schemeAccent, schemeDark2, schemePaired, schemePastel1, schemePastel2, schemeSet1, schemeSet2, schemeSet3, interpolateHcl, rgb } from 'd3-scale-chromatic'
+  import { schemeCategory10, schemeAccent, schemeDark2 } from 'd3-scale-chromatic'
 
   // florence
-	import { Rectangle, Graphic, Grid, Section, PointLayer, Point, Label, LabelLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
+	import { Rectangle, Graphic, Section, PointLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
@@ -79,7 +79,6 @@
     .mutate({ valueFraction: row => row.value / row.totalValuePerFruit })
     .select(['fruit', 'nutrient', 'valueFraction'])
     .groupBy('fruit')
-
 
   const containerPerFruit = catData.column('$grouped').map(container => {
     return container.cumsum({ cumsum_value: 'valueFraction' })
