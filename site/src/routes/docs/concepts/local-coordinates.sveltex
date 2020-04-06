@@ -23,7 +23,7 @@ components. The following props are used to create local coordinate systems:
 
 The purpose of a local coordinate system is to convert coordinates, given to components within a `Graphic` or `Section`, to pixel values that end up on your screen. All marks and layers have so-called 'positioning props'. Below is a schematic representation of how `florence` converts local coordinates to pixel values:
 
-![coordinates](/coordinates.png)
+![coordinates](/images/coordinates.png)
 
 (Made with [draw.io](https://draw.io))
 

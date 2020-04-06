@@ -10,7 +10,7 @@
   import ZoomPan from './examples/ZoomPan.svelte'
   import BaseMark from './examples/BaseMark.svelte'
   import Line from './examples/Line.svelte'
-  import GeoPolygons from './examples/GeoPolygons.svelte'
+
   import FuncLines from './examples/FuncLines.svelte'
   // import Legends from './examples/Legends.svelte'
   import DragCategorical from './examples/DragCategorical.svelte'
@@ -29,6 +29,13 @@
   import Title from './examples/Title.svelte'
   import LegendsDocs from './examples/LegendsDocs.svelte'
   import NestedSections from './examples/NestedSections.svelte'
+
+  // geo examples
+  import GeoEx from './examples/GeoEx.svelte'
+  import GeoFacet from './examples/GeoFacet.svelte'
+  import GeoBase from './examples/GeoBase.svelte'
+  import GeoPolygons from './examples/GeoPolygons.svelte'
+  import Heatmap from './examples/Heatmap.svelte'
 
   // and add them to this component array
   const components = [
@@ -157,6 +164,36 @@
       url: 'legendsdocs',
       component: LegendsDocs
     },
+    {
+      name: 'GeoEx',
+      url: 'geoex',
+      component: GeoEx
+    },
+    {
+      name: 'GeoFacet',
+      url: 'geofacet',
+      component: GeoFacet
+    },
+    {
+      name: 'GeoBase',
+      url: 'geobase',
+      component: GeoBase
+    },
+    {
+      name: 'GeoPolygons',
+      url: 'geopolygons',
+      component: GeoPolygons
+    },
+    {
+      name: 'Heatmap',
+      url: 'heatmap',
+      component: Heatmap
+    },
+    // {
+    //   name: 'Legends',
+    //   url: '/legends',
+    //   component: Legends
+    // },
     {
       name: 'Nested sections',
       url: '/nestedsections',

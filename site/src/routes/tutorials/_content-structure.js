@@ -1,12 +1,16 @@
 export const posts = [
   {
     title: 'Tutorials',
-    path: '/tutorials/beginner',
+    path: '/tutorials/basic',
     children: [
       {
-        title: 'Creating basic graphs',
-        path: '/tutorials/beginner'
+        title: 'Basic graphs',
+        path: '/tutorials/basic'
       },
+      {
+        title: 'Choropleth maps',
+        path: '/tutorials/choropleth'
+      }
     ]
   }
 ]
