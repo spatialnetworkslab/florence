@@ -10,6 +10,7 @@
 
   // global properties
   export let flip = false
+  export let scale = undefined
 
   // axis baseline
   export let baseLine = true
@@ -68,6 +69,11 @@
     }
   }
 
+  // Scale
+  $: scaleY = scale
+    ? scale.copy().range($sectionContext.rangeY)
+    : $sectionContext.scaleY
+
   // Absolute position (in pixels)
   $: xAbsolute = getAbsoluteXPosition(hjust, xOffset, $sectionContext)
 
@@ -77,7 +83,7 @@
   // Ticks
   $: tickPositions = getTickPositions(
     tickValues,
-    $sectionContext.scaleY,
+    scaleY,
     tickCount,
     tickExtra,
     $sectionContext.zoomIdentity
@@ -87,7 +93,8 @@
   $: tickCoordinates = getTickCoordinatesYAxis(
     tickPositions,
     xAbsolute,
-    $sectionContext,
+    scaleY,
+    $sectionContext.finalScaleX,
     tickSize,
     flip
   )

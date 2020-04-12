@@ -10,6 +10,7 @@
 
   // global properties
   export let flip = false
+  export let scale = undefined
 
   // axis baseline
   export let baseLine = true
@@ -67,6 +68,11 @@
       throw new Error('Axes do\'nt work with polar coordinates (for now)')
     }
   }
+
+  // Scale
+  $: scaleX = scale
+    ? scale.copy().range($sectionContext.rangeX)
+    : $sectionContext.scaleX
   
   // Absolute position (in pixels)
   $: yAbsolute = getAbsoluteYPosition(vjust, yOffset, $sectionContext)
@@ -77,7 +83,7 @@
   // Ticks
   $: tickPositions = getTickPositions(
     tickValues,
-    $sectionContext.scaleX,
+    scaleX,
     tickCount,
     tickExtra,
     $sectionContext.zoomIdentity 
@@ -87,7 +93,8 @@
   $: tickCoordinates = getTickCoordinatesXAxis(
     tickPositions,
     yAbsolute,
-    $sectionContext,
+    scaleX,
+    $sectionContext.finalScaleY,
     tickSize,
     flip
   )

@@ -44,7 +44,8 @@ function rescale (scale, { k, t }) {
 export function getTickCoordinatesXAxis (
   ticks,
   yAbsolute,
-  { scaleX, finalScaleY },
+  scaleX,
+  finalScaleY,
   tickSize,
   flip
 ) {
@@ -70,7 +71,8 @@ export function getTickCoordinatesXAxis (
 export function getTickCoordinatesYAxis (
   ticks,
   xAbsolute,
-  { scaleY, finalScaleX },
+  scaleY,
+  finalScaleX,
   tickSize,
   flip
 ) {
