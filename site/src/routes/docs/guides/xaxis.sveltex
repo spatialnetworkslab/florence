@@ -33,16 +33,19 @@ Component that creates an x-axis in reference to its parent `Graphic` or `Sectio
 
 ### Ticks
 
-|    Prop     |  Type(s)  | Required |   Default   |         Units          |
-| ----------- | --------- | -------- | ----------- | ---------------------- |
-| ticks       | `Boolean` | no       | `true`      | -                      |
-| tickCount   | `Number`  | no       | `10`        | -                      |
-| tickExtra   | `Boolean` | no       | `false`     | -                      |
-| tickValues  | `Array`   | no       | `undefined` | Local coordinates      |
-| tickSize    | `Number`  | no       | `5`         | Pixels                 |
-| tickWidth   | `Number`  | no       | `0.5`       | Pixels                 |
-| tickColor   | `String`  | no       | `'black'`   | Color value            |
-| tickOpacity | `Number`  | no       | `1`         | Number between 0 and 1 |
+|    Prop     |                  Type(s)                   | Required |   Default   |         Units          |
+| ----------- | ------------------------------------------ | -------- | ----------- | ---------------------- |
+| scale       | [d3 scale](https://github.com/d3/d3-scale) | no       | `undefined` | -                      |
+| ticks       | `Boolean`                                  | no       | `true`      | -                      |
+| tickCount   | `Number`                                   | no       | `10`        | -                      |
+| tickExtra   | `Boolean`                                  | no       | `false`     | -                      |
+| tickValues  | `Array`                                    | no       | `undefined` | Local coordinates      |
+| tickSize    | `Number`                                   | no       | `5`         | Pixels                 |
+| tickWidth   | `Number`                                   | no       | `0.5`       | Pixels                 |
+| tickColor   | `String`                                   | no       | `'black'`   | Color value            |
+| tickOpacity | `Number`                                   | no       | `1`         | Number between 0 and 1 |
+
+The `scale` prop can be used to override the parent's `scaleX`.
 
 ### Tick labels
 
