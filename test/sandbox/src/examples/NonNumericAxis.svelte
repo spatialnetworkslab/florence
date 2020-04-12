@@ -1,5 +1,5 @@
 <script>
-  import { scalePoint } from 'd3-scale'
+  import { scalePoint, scaleBand } from 'd3-scale'
   import { Graphic, Section, Rectangle, XAxis, YAxis } from '../../../../src/'
 </script>
 
@@ -16,7 +16,7 @@
     <Rectangle x1={'a'} x2={'c'} y1={'b'} y2={'a'} fill="green" opacity={0.5} />
 
     <XAxis />
-    <YAxis />
+    <YAxis scale={scaleBand().domain(['a', 'b', 'c'])} />
 
   </Section>
 
