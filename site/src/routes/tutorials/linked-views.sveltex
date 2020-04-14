@@ -229,7 +229,7 @@ As a quick way to get started, you can use the below sandbox, which has all the 
 
 Now that our map is ready, let's switch our focus to creating the heatmap. We know that we are mapping with respect to time, i.e. `month` and `year`, based on a quick peek of the dataset with `console.log(timeData)`:
 
-![hdb_time_data](hdb_time_data.png)
+![hdb_time_data](/images/hdb_time_data.png)
 
 ### Create the section scale and axes
 
@@ -303,7 +303,7 @@ First, we create a variable that contains the planning area of interest. We use 
 
 This will give us back all rows in our data that correspond to the planning area specified in `town`. A quick check with `console.log(heatmapData`) shows us that we have 58 rows – this means we will have 58 rectangles to plot in our heatmap.
 
-<!-- ![town_inset](town_inset.png) -->
+![bedok_town_inset](/images/town_inset.png)
 
 ### Create the rectangles
 

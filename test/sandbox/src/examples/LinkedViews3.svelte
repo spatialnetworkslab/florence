@@ -20,7 +20,7 @@
   let timeData = new DataContainer(time)
   let heatmapData
   let heatmapColors
-
+  console.log(timeData)
   // time scales
   const yearScale = scaleBand().domain([2015, 2016, 2017, 2018, 2019]).padding(0.1)
   const monthScale = scaleBand().domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).padding(0.1)
@@ -67,8 +67,8 @@
       heatmapData = timeData.filter(row => row.town === hoverTown)
       heatmapColors = heatmapData.map('resale_price_sqm', priceColorScale)
     }
-  }
-
+  } 
+  console.log(timeData.filter(row => row.town === 'BEDOK'))
   function onMouseout ({ key, town }) {
     if (hoverKey === key) hoverKey = undefined
     if (hoverTown === town) hoverTown = undefined
@@ -96,10 +96,10 @@
     {#if heatmapData}
       {#each heatmapData.rows() as row, i (row.$key)}
         <Rectangle 
-          x1={row.adjMonth}
-          x2={({ scaleX }) => scaleX(row.adjMonth) + scaleX.bandwidth()}
-          y1={row.adjYear}
-          y2={({ scaleY }) => scaleY(row.adjYear) + scaleY.bandwidth()}
+          x1={row.month}
+          x2={({ scaleX }) => scaleX(row.month) + scaleX.bandwidth()}
+          y1={row.year}
+          y2={({ scaleY }) => scaleY(row.year) + scaleY.bandwidth()}
           fill={heatmapColors[i]}
           {transition}
         />

@@ -36,6 +36,7 @@
   import GeoBase from './examples/GeoBase.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
   import Heatmap from './examples/Heatmap.svelte'
+  import LinkedViews3 from './examples/LinkedViews3.svelte'
 
   // and add them to this component array
   const components = [
@@ -189,11 +190,11 @@
       url: 'heatmap',
       component: Heatmap
     },
-    // {
-    //   name: 'Legends',
-    //   url: '/legends',
-    //   component: Legends
-    // },
+    {
+      name: 'LinkedViews3',
+      url: '/linkedviews3',
+      component: LinkedViews3
+    },
     {
       name: 'Nested sections',
       url: '/nestedsections',
