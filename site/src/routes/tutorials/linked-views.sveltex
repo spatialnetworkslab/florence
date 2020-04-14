@@ -1,0 +1,617 @@
+# Creating linked views with maps and heatmaps
+You are now able to make two kinds of visualizations using Florence, the scatterplot and the map. While these charts can stand on their own, sometimes exploring and linking different types of visualization together can lead to new insights. With this in mind, Florence's interactivity system works across all Marks and a variety of mouse and keyboard interactions, with built-in support for different browsers and devices.
+
+## ⭐️Learning Goal(s)
+In this tutorial, you will:
+
+1. Construct a heatmap from temporal price data;
+2. Link this heatmap to the choropleth map of Singapore [from the previous tutorial](/choropleth) using interactions.
+
+## Import relevant components
+
+You will use the following components:
+
+- [Graphic](docs/core/graphic)
+- [Section](docs/core/section)
+- Scales - specifically, `createGeoScales`
+- [Polygon](docs/marks/Polygon)
+- [Rectangle](docs/marks/Rectangle) - this is for our heatmap
+- [XAxis](docs/guides/XAxis) and [YAxis](docs/guides/YAxis)
+
+To manage our data, we use the following library:
+
+- [DataContainer](https://github.com/spatialnetworkslab/florence-datacontainer)
+
+As in the previous tutorials, you may further customise your visualization using the following components/properties:
+
+- [Plot Title](docs/core/title)
+- [Legend](docs/guides/legend)
+- [Transitions](docs/concepts/transitions)
+
+For scaling, we rely on [d3 scales](https://github.com/d3/d3-scale).
+
+We now selectively import the relevant components into our applications.
+
+```js
+  import { Graphic, Section, PolygonLayer, Rectangle, XAxis, YAxis, createGeoScales, Title, DiscreteLegend } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
+```
+
+## Import and prepare the dataset
+
+Florence, by way of [DataContainer](https://github.com/spatialnetworkslab/florence-datacontainer), can interpret any GeoJSON straight out of the box. We will use the data and code setup from the last tutorial on choropleth maps [(you can download the GeoJSON here)](../utils/planning_areas_data.js)  to import our geospatial data and to obtain our map's geometry:
+
+```js
+  import { geo } from '../data/planning_areas_data.js'
+  const mapData = new DataContainer(geo)
+  const geoScales = createGeoScales(mapData.domain('$geometry'))
+```
+
+For this tutorial, we will also import a JSON file of mean resale prices per square meter with attributes for the planning area (`town`), month (`month`) and year (`year`) of the record. from Singapore's Housing & Development Board. [You can download the dataset here.](../utils/timeData.js) 
+
+We then make it available to the Svelte application by importing in the same way.
+
+```js
+  import { timeData } from '../data/timeData.js' 
+```
+
+Next, we store it in a `DataContainer`, to make it easier to manipulate later on. 
+
+```js 
+  let timeRecords = new DataContainer(timeData)
+```
+
+You code should now look like this:
+
+```markup
+  <script>
+  import { Graphic, Section, PolygonLayer, Rectangle, XAxis, YAxis, createGeoScales } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
+
+  // import the planning areas
+  import { geo } from '../data/planning_areas_data.js'
+  const mapData = new DataContainer(geo)
+  const geoScales = createGeoScales(mapData.domain('$geometry'))
+
+  // import the breakdown of transactions by year and month
+  import { time } from '../data/timeData.js'
+  let timeData = new DataContainer(time)
+  </script>
+```
+
+For further details on data loading and formatting using `Data Container`, refer to its [documentation](https://github.com/spatialnetworkslab/florence-datacontainer).
+
+## Create your charting canvas
+
+First, we set up our canvas for mapping, i.e. the `Graphic`. We are going to create our facets side by side, so let's set `width={1000}` and `height=400`.
+
+```markup
+<Graphic width={1000} height={400}></Graphic>
+```
+
+As we would like to create two facets of a larger data set, i.e. a map of Singapore and a heatmap that focuses on data from a specific planning area, we create two `Section`s in our `Graphic`. Because we already have the scale necessary for the map `Section` in `geoScales`, let's include it here too.
+
+```markup
+<Graphic width={1000} height={400}
+>      
+  // Singapore map
+  <Section
+    x1={50} x2={475}
+    y1={50} y2={350}
+    {...geoScales}
+    flipY
+  >
+  </Section>
+
+   // Heatmap facet
+  <Section 
+    x1={525} x2={950}
+    y1={50} y2={350}
+  > 
+  </Section>
+</Graphic>
+```
+
+Let's also add color to the `Section`s so that we know where each of their charting boundaries lie.
+
+```js exec
+  import LinkedViews from './utils/_LinkedViews.svelte'
+```
+
+<LinkedViews/>
+
+```markup
+<Graphic width={1000} height={400}
+>      
+  // Singapore map
+  <Section
+    x1={50} x2={475}
+    y1={50} y2={350}
+    {...geoScales}
+    backgroundColor={'orange'}
+    flipY
+  >
+  </Section>
+
+   // Heatmap facet
+  <Section 
+    x1={525} x2={950}
+    y1={50} y2={350}
+    padding={50}
+    backgroundColor={'steelblue'}
+  > 
+  </Section>
+</Graphic>
+```
+
+## Create the map
+
+We now create our map in the blue `Section`. First, let's copy over our code from the choropleth tutorial that:
+
+1. helps us create the necessary scales for the planning area data, and 
+2. that creates the map colors for each of Singapore's planning areas based on the average resale price per square meter.
+
+```js
+  ...// previous code
+  // compute color scaling
+  const colors = ['#d3d3d3', '#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
+
+  // obtain bins from DataContainer method
+  const binsData = data.dropNA('resale_price_sqm').bin({ groupBy: 'resale_price_sqm', method: 'EqualInterval', numClasses: colors.length - 2 })
+  
+  // Obtain bins from data container
+  const bins = binsData.column('bins')
+
+  // Flatten bins array into individual numbers: [[a, b], [b, c], [c, d]...] => [a, b, b, c, c, d...]
+  // Get unique values from array and turn them into integers
+  let thresholds = []
+  for (let i = 0; i < bins.length; i += 1) {
+    if (i === 0) {
+      thresholds.push(Math.floor(bins[i][0]))
+      thresholds.push(Math.floor(bins[i][1]))
+    } else {
+      thresholds.push(Math.floor(bins[i][1]))
+    }
+  }
+
+  // assign colors
+  const priceColorScale = scaleThreshold().domain(thresholds).range(colors)
+  const priceColors = mapData.map('resale_price_sqm', priceColorScale)
+```
+
+Now we add our map into the blue `Section`. Because of how we are going to integrate interactions that link the choropleth and the heatmap later on, we need to keep track of individual planning area `Polygon`s and their attributes. In such a case, we will use a loop to create our map with `Polygon` instead of `PolygonLayer`, so that we have access to the `row`s of our `mapData`. 
+
+Your components code should now look like this:
+
+```markup
+<Graphic width={1000} height={400}
+>      
+  // Singapore map
+  <Section
+    x1={50} x2={475}
+    y1={50} y2={350}
+    {...geoScales}
+    backgroundColor={'orange'}
+    flipY
+  >
+    {#each mapData.rows() as row, i (row.$key)}
+      <Polygon 
+        geometry={row.$geometry}
+        fill={priceColors[row.$key]}
+        stroke={'white'} 
+        strokeWidth={1}
+      />
+    {/each}
+  </Section>
+
+  // Heatmap facet
+  <Section 
+    x1={525} x2={950}
+    y1={50} y2={350}
+    padding={50}
+    backgroundColor={'steelblue'}
+  > 
+  
+  </Section>
+</Graphic>
+```
+
+<LinkedViews switch1/>
+
+## ⭐Checkpoint 1
+
+As a quick way to get started, you can use the below sandbox, which has all the necessary dependencies and data set up alongside the map of Singapore and the section where our heatmap will eventually go.
+
+::: codesandbox sandboxes/linked-views-tutorial-init codemirror=1&view=split&runonclick=1&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
+:::
+
+## Create the heatmap
+
+Now that our map is ready, let's switch our focus to creating the heatmap. We know that we are mapping with respect to time, i.e. `month` and `year`, based on a quick peek of the dataset with `console.log(timeData)`:
+
+![hdb_time_data](hdb_time_data.png)
+
+### Create the section scale and axes
+
+This means we should create scales for the `XAxis` and `YAxis` to follow. We can do that quite easily by manually specifying our time scales in our script:
+
+```js
+  // time scales
+  const yearScale = scaleBand().domain([2015, 2016, 2017, 2018, 2019]).padding(0.1)
+  const monthScale = scaleBand().domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).padding(0.1)
+```
+
+Then we input these to `scaleX` and `scaleY` to our target, the coral-colored `Section`:
+
+```markup
+  // Heatmap facet
+  <Section 
+    x1={525} x2={950}
+    y1={50} y2={350}
+    scaleY={yearScale}
+    scaleX={monthScale}
+    backgroundColor={'steelblue'}
+  > 
+  
+  </Section>
+```
+
+To create our axes, we add `XAxis` and `YAxis` components to the target `Section`:
+
+```markup
+  // Heatmap facet
+  <Section 
+    x1={525} x2={950}
+    y1={50} y2={350}
+    scaleY={yearScale}
+    scaleX={monthScale}
+    backgroundColor={'steelblue'}
+  > 
+  
+  </Section>
+```
+
+It looks like our axes are hiding somewhere – they don't show up without adding some padding to the section first. Let's do just that:
+
+```markup
+  // Heatmap facet
+  <Section 
+    x1={525} x2={950}
+    y1={50} y2={350}
+    scaleY={yearScale}
+    scaleX={monthScale}
+    padding={50}
+    backgroundColor={'steelblue'}
+  > 
+  
+  </Section>
+```
+
+<LinkedViews switch1 switch2 switch3/>
+
+### Filter a small section of the data to plot
+
+Our `DataContainer` for `timeData` covers multiple planning areas. We will focus on one planning area first and use this subset of the data to build the code structure of our heatmap.
+
+First, we create a variable that contains the planning area of interest. We use that to filter for the subset of transaction data inside `timeData` that corresponds to this planning area.
+
+```js
+  // previous script code
+  const town = 'BEDOK'
+  let heatmapData = timeData.filter(row => row.town === town)
+```
+
+This will give us back all rows in our data that correspond to the planning area specified in `town`. A quick check with `console.log(heatmapData`) shows us that we have 58 rows – this means we will have 58 rectangles to plot in our heatmap.
+
+<!-- ![town_inset](town_inset.png) -->
+
+### Create the rectangles
+
+Since our goal is create a heatmap where each rectangle meets the next rectangles sides, we will use a loop along with the `Rectangle` component as well as some special syntax involving each row's `month` and `year` data plus the parent `Section`'s `scaleX` and `scaleY` to create our rectangles. 
+
+<!-- prolly need to explain how this works more -->
+
+```markup
+  \\ Heatmap facet
+  <Section 
+      x1={525} x2={950}
+      y1={50} y2={350}
+      scaleY={yearScale}
+      scaleX={monthScale}
+      padding={50}
+      backgroundColor={'steelblue'}
+    > 
+
+    {#each heatmapData.rows() as row, i (row.$key)}
+      <Rectangle 
+        x1={row.month}
+        x2={({ scaleX }) => scaleX(row.month) + scaleX.bandwidth()}
+        y1={row.year}
+        y2={({ scaleY }) => scaleY(row.year) + scaleY.bandwidth()}
+      />
+    {/each}
+  </Section>
+```
+
+<LinkedViews switch1 switch2 switch3 switch4/>
+
+Our rectangles show up! However, they're all colored black, which means we need to input an array to the `fill` property in order to present the mean `resale_price_sqm` per month and year for that planning area.
+
+### Plot colors to the rectangles
+
+Using the same scale as what we colored our planning areas with, we create an array called `heatmapColors` in our script:
+
+```js
+  // previous steps
+  // const priceColorScale = scaleThreshold().domain(thresholds).range(colors)
+  // const priceColors = mapData.map('resale_price_sqm', priceColorScale)
+  const heatmapColors = heatmapData.map('resale_price_sqm', priceColorScale)
+```
+
+We then input `heatmapColors` to the `Rectangle`'s fill attribute, like so:
+
+```markup
+  {#each heatmapData.rows() as row, i (row.$key)}
+    <Rectangle 
+      x1={row.month}
+      x2={({ scaleX }) => scaleX(row.month) + scaleX.bandwidth()}
+      y1={row.year}
+      y2={({ scaleY }) => scaleY(row.year) + scaleY.bandwidth()}
+      fill=heatmapColors[row.$key]
+    />
+  {/each}
+```
+
+<LinkedViews switch1 switch2 switch3 switch4 switch5/>
+
+_Voila!_ Our rectangles now show the mean resale price per square meter for that year and month.
+
+As a bit of cleanup, let's remove the `backgroundColor`s assigned to each section. You can do this by deleting the `backgroundColor` props for both `Section`s.
+
+<LinkedViews switch1 switch2 switch3 switch4 switch5 switch6/>
+
+## Add a title to your heatmap
+
+Let's add a title to our graphic so that we know which town our heatmap data is showing. We place a `Title` component inside our `Heatmap` section, just after the axes.
+
+<LinkedViews switch1 switch2 switch3 switch4 switch5 switch6 switch7/>
+
+```markup
+  <Title 
+    title={town} 
+    titleFill={heatmapData ? 'black' : 'gray'}
+    titleFontSize={30}
+    titleFontFamily={'Montserrat'} 
+    yOffset={-40}
+    usePadding={true}/>
+```
+
+## Add a legend to your heatmap 
+
+With choropleth maps, it is important to have a guide for how to interpret the colors since they are the main visual variable of your visualisation. We can easily include a legend in the `Section` containing the map. Just place this code to create a `DiscreteLegend` right after your `Polygon` loop. We give the `fill` prop the `priceColorScale` that we used to create our colored planning areas. It will now construct a legend according to the bins you previously created!
+
+<LinkedViews switch1 switch2 switch3 switch4 switch5 switch6 switch7 switch10/>
+
+```markup
+ <DiscreteLegend
+  fill={priceColorScale}
+  labelAnchorPoint={'r'}
+  title={'Ave. Resale Price/m2 (S$)'}
+  orient={'horizontal'}
+  vjust={'top'}
+  hjust={'right'}
+  flipLabels
+  usePadding={true}
+/>
+```
+
+## ⭐️Checkpoint 2
+
+Let's stop here for a checkpoint. In the sandbox below, you can see how the code looks for the steps we've just completed. We're almost there!
+
+::: codesandbox sandboxes/linked-views-tutorial-med codemirror=1&view=split&runonclick=1&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
+:::
+
+## Add interactions to the map
+We now return to our map of Singapore. Our goal is to add a hover interaction (using `onmouseover` and `onmouseout`) that takes effect when our mouse cursor is over a specific planning area. 
+
+Interactivity is covered in detail in (this page)[docs/core/interactivity].
+
+To achieve this, we would need to keep track of what our mouse cursor is hovering over. Let us introduce two variables that will help us do just that:
+
+```js
+  let hoverTown // stores name of planning area
+  let hoverKey // stores index of row related to planning area from DataContainer
+```
+
+### On `mouseover`
+When hovering, we would like only the area our mouse cursor is over to respond. This means that within the callback function we are defining, we would need to receive the `town` name and `row` key/index data. Therefore, we define our `onmouseover` callback function as: 
+
+```js 
+  function onMouseover ({ key, town }) {
+    hoverKey = key
+    hoverTown = town
+    // you can test if the interactions is being triggered by adding a console.log(key, town) here
+  }
+```
+
+Correspondingly, let's add an `onmouseover` property to our target mark – the `Polygon` that is creating our map. We do two things here:
+
+1. We input the `onMouseover` function we have just defined as a input (i.e. a callback function) to `Polygon`'s `onMouseover` property.
+2. We pass the values `row.$key` and `row.PLN_AREA_N` (the town name) along to the `onMouseover` callback function.
+
+This means that whenever `onMouseover` is triggered for a certain planning area, that its specific data is passed along to `onMouseover`'s callback function.
+
+```markup
+  {#each mapData.rows() as row, i (row.$key)}
+    <Polygon 
+      geometry={row.$geometry}
+      fill={mapColors[row.$key]}
+      stroke={'white'} 
+      strokeWidth={1}
+      onMouseover={() => { onMouseover({ key: row.$key, town: row.PLN_AREA_N }) }}
+    />
+  {/each}
+```
+
+From here on, it is very easy to add a corresponding 'response' that occurs whenever `onMouseover` for a specific planning area is triggered. We choose the prop `fillOpacity`, and add a conditional statement to let the `Polygon` know that when it's not being hovered over, it should set `fillOpacity=0.5`. Otherwise, when our mouse cursor is over the target planning area `Polygon`, then `fillOpacity=1`.
+
+::: div callout
+You can do the same kind of conditional property setting for other aesthetic props like `fill`, `stroke`, `strokeWidth`, etc.
+:::
+
+```markup
+  {#each mapData.rows() as row, i (row.$key)}
+    <Polygon 
+      geometry={row.$geometry}
+      fill={mapColors[row.$key]}
+      fillOpacity={hoverKey === row.$key ? 1 : 0.5} 
+      stroke={'white'} 
+      strokeWidth={1}
+      onMouseover={() => { onMouseover({ key: row.$key, town: row.PLN_AREA_N }) }}
+    />
+  {/each}
+```
+
+### On `mouseout`
+When we move our cursor out of the planning area's `Polygon`, we'd like it to revert back to its original condition, and to set `hoverTown` and `hoverKey` back to `undefined`. First, let's define our function:
+
+```js
+  function onMouseout ({ key, town }) {
+    if (hoverKey === key) hoverKey = undefined
+    if (hoverTown === town) hoverTown = undefined
+  }
+```
+
+Then, let's add it as input the `onMouseout` prop of `Polygon`.
+
+```markup
+  {#each mapData.rows() as row, i (row.$key)}
+    <Polygon 
+      geometry={row.$geometry}
+      fill={mapColors[row.$key]}
+      fillOpacity={hoverKey === row.$key ? 1 : 0.5} 
+      stroke={'white'} 
+      strokeWidth={1}
+      onMouseover={() => { onMouseout({ key: row.$key, town: row.PLN_AREA_N }) }}
+      onMouseout={() => { onMouseout({ key: row.$key, town: row.PLN_AREA_N }) }}
+    />
+  {/each}
+```
+
+This means that whenever our cursor leaves a planning area or the map completely, it resets `hoverTown` and `hoverKey` back to undefined. Our map also goes back to its initial, `fillOpacity=0.5` state.
+
+<LinkedViews switch1 switch2 switch3 switch4 switch5 switch6 switch7 switch8 switch10/>
+
+## Link the interaction to the heatmap
+Linking our interactive map of Singapore and the heatmap require us to filter what data gets fed into the latter. We know that we have a variable called `heatmapData`, that currently gets filtered to a fixed variable called `town`. In order to connect the two, we would need to:
+
+1. Use `hoverTown` as our basis for filtering;
+2. Move the filtering of our `timeData` inside `onMouseover` and `onMouseout`
+
+In order to get our heatmap to change alongside the choropleth map. 
+
+::: div warning
+Before proceeding, delete the variable declaration for `town`, and declare:
+- `const heatmapData` as `let heatmapData` instead. 
+- `const heatmapColors` as `let heatmapColors` instead.
+
+This is because once you link the map and the heatmpa together, `heatmapData` and `heatmapColors` will react to whatever data is being fed into it based on your interaction with the map of Singapore.
+:::
+
+### On `mouseover`
+Inside our `onMouseover` function, we add a data filtering step as well as a color generation step to change the values inside `heatmapData` and thus, `heatmapColors`:
+
+```js
+  function onMouseover ({ key, town }) {
+    hoverKey = key
+    hoverTown = town
+    if (timeData.column('town').includes(hoverTown)) {
+      heatmapData = timeData.filter(row => row.town === hoverTown)
+      heatmapColors = heatmapData.map('resale_price_sqm', priceColorScale)
+    }
+  }
+```
+
+::: div warning
+We add the `if (timeData.column('town').includes(hoverTown))` statement so that we can first check if the planning area we're hovering over exists inside our `timeData`. 
+
+If it doesn't, nothing changes within `heatmapData` and `heatmapColors`. If it does, then we fill `heatmapData` and `heatmapColors` with the target planning area's data and colors corresponding to mean resale price.
+:::
+
+### On `mouseout`
+Inside our `onMouseout` function, we then add a reset step to turn `heatmapData` and `heatmapColors` back to `undefined` values:
+
+```js
+  function onMouseout ({ key, town }) {
+    if (hoverKey === key) hoverKey = undefined
+    if (hoverTown === town) hoverTown = undefined
+    heatmapData = undefined
+    heatmapColors = undefined
+  }
+```
+
+### Filter based on the interaction
+Based on the area we hover over in the map, the data inside `heatmapData` and therefore, `heatmapColors` changes. We link this data to our heatmap in two ways:
+
+1. Changing the title of the heatmap to indicate the planning area we are hovering over
+2. Changing the heatmap's colors to correspond to the data inside `heatmapData`.
+
+For the first point, we add a conditional statement (`condition ? outcome1 : outcome2`) to the property `title`, such that it shows us the name of the planning area when we are interacting with the map. We also add a conditional statement to the `titleFill` property in order to further distinguish the two interaction states.
+
+```markup
+<Title 
+  title={heatmapData ? hoverTown : 'Hover over an area in the map'} 
+  titleFill={hoverTown ? 'black' : 'gray'}
+  titleFontFamily={'Montserrat'} 
+  yOffset={-30}
+  usePadding={true}
+/>
+```
+
+Lastly, we add a conditional statement that encompasses the whole of the heatmap rendering code (i.e. the `Rectangle` loop). We tell it to render __only when there is `heatmapData` available__, by enclosing the `Rectangle` loop with an `{#if heatmapData} ... {/if}` statement. Since `heatmapColors` is already based on whatever is inside `heatmapData`, we don't need to take any further steps for it.
+
+```markup
+  {#if heatmapData}
+    {#each heatmapData.rows() as row, i (row.$key)}
+      <Rectangle 
+        x1={row.adjMonth}
+        x2={({ scaleX }) => scaleX(row.adjMonth) + scaleX.bandwidth()}
+        y1={row.adjYear}
+        y2={({ scaleY }) => scaleY(row.adjYear) + scaleY.bandwidth()}
+        fill={heatmapColors[i]}
+      />
+    {/each}
+
+    <YAxis baseLineOpacity={0} xOffset={3}/>
+    <XAxis flip vjust={'top'} baseLineOpacity={0} yOffset={3}/> 
+  {/if}
+```
+<LinkedViews switch1 switch2 switch3 switch4 switch5 switch6 switch7 switch8 switch9 switch10/>
+
+## Add transitions to your visualisation (optional)
+
+As mentioned in the [Transitions documentation](docs/concepts/transitions), all marks and layers support transitions. We can add a `transition` property to control how fast our planning areas change opacity, i.e. to the `Polygon` component (see below). Let's set it to 1000ms or 1s. Since we are giving the `transition` prop a `Number`, it will apply this transition time across all properties that change.
+
+<LinkedViews switch1 switch2 switch3 switch4 switch5 switch6 switch7 switch8 switch9 switch10 switch11/>
+
+```markup
+{#each mapData.rows() as row, i (row.$key)}
+  <Polygon 
+    geometry={row.$geometry}
+    fill={priceColors[i]}
+    fillOpacity={hoverKey === row.$key ? 1 : 0.4} 
+    stroke={'white'} 
+    strokeWidth={1}
+    onMouseover={() => { onMouseover({ key: i, town: row.PLN_AREA_N }) }}
+    onMouseout={() => { onMouseout({ key: i, town: row.PLN_AREA_N }) }}
+    transition={1000}
+  />
+{\each}
+```
+
+## Sandbox
+You can play around with the final visualisation in the CodeSandbox below.
+
+::: codesandbox sandboxes/linked-views-tutorial-final codemirror=1&view=split&runonclick=1&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
+:::
