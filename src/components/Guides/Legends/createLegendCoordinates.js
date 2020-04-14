@@ -10,8 +10,7 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   // const y2Range = flipY ? yRange[0] : yRange[1]
   const y1Range = flipY ? yRange[1] : yRange[0]
   const y2Range = flipY ? yRange[0] : yRange[1]
-  const heightRatio = orient === 'vertical' ? 0.3 : 0.1
-  const addTitleSize = titleFontSize
+  const heightRatio = orient === 'vertical' ? 1 / 3 : 0.175
   height = (height === 0 || height === undefined) ? (y2Range - y1Range) * heightRatio : height
 
   // if (parentPadding !== undefined) {
@@ -20,24 +19,24 @@ export function createPosYCoords (vjust, yRange, orient, height, offset, titleFo
   // }
 
   if (vjust === 'top') {
-    y1 = y1Range + offset + addTitleSize
-    y2 = y1Range + height + offset + addTitleSize
+    y1 = y1Range + offset
+    y2 = y1Range + height + offset
   }
   if (vjust === 'center' || vjust === 'centre') {
     const yCoord = (y2Range - y1Range) * 0.5 + y1Range
-    y1 = yCoord - height / 2 + offset + addTitleSize
-    y2 = yCoord + height / 2 + offset + addTitleSize
+    y1 = yCoord - height / 2 + offset
+    y2 = yCoord + height / 2 + offset
   }
 
   if (vjust === 'bottom') {
     y1 = y2Range - height + offset
-    y2 = y2Range + offset - addTitleSize * 0.25
+    y2 = y2Range + offset
   }
 
   if (!isNaN(vjust) && (vjust <= 1 && vjust >= -1)) {
     const yCoord = (y2Range - y1Range) * vjust + y1Range
-    y1 = yCoord + offset - addTitleSize
-    y2 = yCoord + height + offset - addTitleSize
+    y1 = yCoord + offset
+    y2 = yCoord + height + offset
   }
 
   if (!['top', 'bottom', 'center'].includes(vjust) && y1 === undefined) {
@@ -52,7 +51,7 @@ export function createPosXCoords (hjust, xRange, orient, width, offset, labelFon
   let x2
   const x1Range = flipX ? xRange[1] : xRange[0]
   const x2Range = flipX ? xRange[0] : xRange[1]
-  const widthRatio = orient === 'vertical' ? 0.1 : 0.3
+  const widthRatio = orient === 'vertical' ? 0.175 : 1 / 3
   width = width === 0 ? (x2Range - x1Range) * widthRatio : width
 
   // if (parentPadding !== undefined) {
@@ -61,8 +60,8 @@ export function createPosXCoords (hjust, xRange, orient, width, offset, labelFon
   // }
 
   if (hjust === 'left') {
-    x1 = x1Range + offset + labelFontSize * 1.05
-    x2 = x1Range + width + offset + labelFontSize * 1.05
+    x1 = x1Range + offset
+    x2 = x1Range + width + offset
   }
 
   if (hjust === 'center' || hjust === 'centre') {
@@ -72,8 +71,8 @@ export function createPosXCoords (hjust, xRange, orient, width, offset, labelFon
   }
 
   if (hjust === 'right') {
-    x1 = x2Range - width + offset - labelFontSize * 1.05
-    x2 = x2Range + offset - labelFontSize * 1.05
+    x1 = x2Range - width + offset
+    x2 = x2Range + offset
   }
 
   if (!isNaN(hjust)) {

@@ -5,7 +5,7 @@
   import { schemeAccent, schemeDark2 } from 'd3-scale-chromatic'
 
   // florence
-	import { Graphic, Section, Legend } from '../../../../src/'
+	import { Graphic, Section, Legend, Point, XAxis, YAxis, GradientLegend } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
@@ -99,8 +99,29 @@
     paddingColor={'#d3d3d3'}
     scaleX={scaleLinear().domain(data.domain('a'))}
     scaleY={scaleLinear().domain(data.domain('b'))}
+    flipY
   >
-    <Legend/>
+    <Point 
+      x={({ finalScaleX }) => finalScaleX.invert(0)}
+      y={({ finalScaleX }) => finalScaleX.invert(0)}
+    />
 
+    <GradientLegend
+      x1={20} x2={60}
+      y1={80} y2={100}
+      fill={linearColorScale}
+      orient={'horizontal'}
+      titleVjust={'top'}
+      labelCount={8}
+      />
+    <Legend vjust={'top'} hjust={'right'} color={'goldenrod'} flipY/>
+    <Legend vjust={'top'} hjust={'center'} color={'chartreuse'}/>
+    <Legend vjust={'top'} hjust={'left'}/>
+
+    <Legend vjust={'bottom'} hjust={'right'} color={'goldenrod'} orient={'vertical'} flipY/>
+    <Legend vjust={'bottom'} hjust={'center'} color={'chartreuse'} orient={'vertical'} flipX/>
+    <Legend vjust={'bottom'} hjust={'left'} orient={'vertical'}/>
+    <XAxis/>
+    <YAxis/>
   </Section>
 </Graphic>
