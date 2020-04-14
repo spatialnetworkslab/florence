@@ -33,16 +33,8 @@ export default class InteractionManager {
   }
 
   // Section context loading
-  loadSection (sectionData) {
-    this._forEachManager(manager => { manager.loadSection(sectionData) })
-  }
-
-  loadCoordinateTransformation (coordinateTransformation) {
-    this._forEachManager(manager => { manager.loadCoordinateTransformation(coordinateTransformation) })
-  }
-
-  loadZoom (zoom) {
-    this._forEachManager(manager => { manager.loadZoom(zoom) })
+  loadSection (sectionContext) {
+    this._forEachManager(manager => { manager.loadSection(sectionContext) })
   }
 
   mouse () {

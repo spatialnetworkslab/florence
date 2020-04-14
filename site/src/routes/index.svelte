@@ -1,46 +1,29 @@
 <style>
-	h1, figure, p {
-		text-align: center;
-		margin: 0 auto;
-	}
-
-	h1 {
-		font-size: 2.8em;
-		text-transform: uppercase;
-		font-weight: 700;
-		margin: 0 0 0.5em 0;
-	}
-
-	figure {
-		margin: 0 0 1em 0;
-	}
-
-	img {
-		width: 100%;
-		max-width: 400px;
-		margin: 0 0 1em 0;
-	}
-
-	p {
-		margin: 1em auto;
-	}
-
-	@media (min-width: 480px) {
-		h1 {
-			font-size: 4em;
-		}
-	}
 </style>
 
 <svelte:head>
-	<title>Sapper project template</title>
+	<title>Florence: A grammar of graphics, built on Svelte's template syntax.</title>
 </svelte:head>
 
-<h1>Great success!</h1>
+<div>
+  <div class="leader">
+    <h1>Florence</h1>
+    <h2>
+      A data visualization framework,
+      based on the grammar of graphics,
+      built on top of Svelte's template syntax
+    </h2>
+  </div>
 
-<figure>
-	<img alt='Borat' src='great-success.png'>
-	<figcaption>HIGH FIVE!</figcaption>
-</figure>
-
-<p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>
+  <div class="intro">
+    <p>
+      This is just a place holder for a short text introducing Florence
+      and its specific approach, key tenets.
+    </p>
+    <p>
+      For a sense of the range of visualizations made possible 
+      using the library, check out these some examples in the gallery
+      or visit the examples & documentation.
+    </p>
+  </div>
+</div>

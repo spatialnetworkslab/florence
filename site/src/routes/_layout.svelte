@@ -1,21 +1,17 @@
 <script>
-	import Nav from '../components/Nav.svelte';
-
-	export let segment;
+	import Nav from '../components/Nav.svelte'
+	export let segment
 </script>
 
 <style>
-	main {
-		position: relative;
-		background-color: white;
-		padding: 2em;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
 </style>
+
+<svelte:head>
+	<title>Florence: A grammar of graphics, built on Svelte's template syntax.</title>
+</svelte:head>
 
 <Nav {segment}/>
 
-<main>
+<main class='main-body'>
 	<slot></slot>
 </main>

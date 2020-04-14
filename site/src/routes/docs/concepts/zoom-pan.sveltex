@@ -1,0 +1,101 @@
+# Zooming and panning
+
+## Basics
+
+Setting up zooming and panning behavior in `florence` consists of two steps:
+
+1. Initializing a `zoomIdentity` and passing it to the appropriate `Section`
+2. Setting up event listeners on the `Section`, and make them update the `zoomIdentity` when events fire
+
+For more information on the `zoomIdentity`, check out the [local coordinates](./docs/concepts/local-coordinates) documentation. To make the second step easier, `florence` provides two helper functions: `createPanHandler` and `createZoomHandler`.
+
+### createPanHandler
+
+```js
+createPanHandler(zoomIdentity, options)
+```
+
+The `options` object for `createPanHandler` has/can have the following properties:
+
+|      Property      |  Type(s)   | Required |         Default         |
+| ------------------ | ---------- | -------- | ----------------------- |
+| setZoomIdentity    | `Function` | yes      | -                       |
+| setBlockReindexing | `Function` | no       | -                       |
+| extentX            | `Array`    | no       | `[-Infinity, Infinity]` |
+| extentY            | `Array`    | no       | `[-Infinity, Infinity]` |
+| dimension          | `String`   | no       | `'both'`                |
+
+### createZoomHandler
+
+```js
+createZoomHandler(zoomIdentity, options)
+```
+
+The `options` object for `createZoomHandler` has/can have the following properties:
+
+|    Property     |  Type(s)   | Required | Default  |
+| --------------- | ---------- | -------- | -------- |
+| setZoomIdentity | `Function` | yes      | -        |
+| minZoom         | `Number`   | yes      | -        |
+| maxZoom         | `Number`   | yes      | -        |
+| step            | `Number`   | no       | `1`      |
+| dimension       | `String`   | no       | `'both'` |
+
+## Example
+
+```js
+import { scaleLinear } from 'd3-scale'
+import {
+  Graphic, Section, Rectangle, XAxis, YAxis,
+  createPanHandler, createZoomHandler
+} from '@snlab/florence'
+
+let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
+let blockReindexing = false
+
+const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
+const setBlockReindexing = bool => { blockReindexing = bool }
+
+const pan = createPanHandler(zoomIdentity, {
+  setZoomIdentity,
+  setBlockReindexing,
+  extentX: [-500, 500],
+  extentY: [-500, 500]
+})
+
+const zoom = createZoomHandler(zoomIdentity, {
+  setZoomIdentity,
+  minZoom: 0.2,
+  maxZoom: 3
+})
+```
+
+```html
+<Graphic width={500} height={500}>
+
+  <Section 
+    padding={25}
+    scaleX={scaleLinear().domain([0, 4])}
+    scaleY={scaleLinear().domain([0, 4])}
+    {zoomIdentity}
+    {...pan.handlers}
+    {...zoom.handlers}
+    {blockReindexing}
+  >
+
+    <Rectangle x1={0} x2={2} fill="blue" opacity={0.3} />
+    <Rectangle x1={2} x2={4} fill="red" opacity={0.3} />
+
+    <XAxis />
+    <YAxis />
+  
+  </Section>
+
+</Graphic>
+```
+
+```js exec
+import ZoomPan from './examples/_ZoomPan.svelte'
+```
+
+<ZoomPan />

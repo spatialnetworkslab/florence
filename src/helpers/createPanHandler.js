@@ -1,6 +1,6 @@
 export default function createPanHandler (zoomIdentity, options) {
   const dimension = options.dimension || 'both'
-  const setZoomIdentity = options.setZoomIdentity || emptyFunc
+  const setZoomIdentity = options.setZoomIdentity
   const setBlockReindexing = options.setBlockReindexing || emptyFunc
 
   let panning = false
@@ -19,8 +19,8 @@ export default function createPanHandler (zoomIdentity, options) {
     const delta = calculateDelta(previousCoordinates, currentCoordinates)
     previousCoordinates = currentCoordinates
 
-    const extentX = options.extentX
-    const extentY = options.extentY
+    const extentX = options.extentX || [-Infinity, Infinity]
+    const extentY = options.extentY || [-Infinity, Infinity]
 
     // stops panning if past extents X and Y
     const tempX = zoomIdentity.x - delta.x

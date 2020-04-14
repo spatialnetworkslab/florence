@@ -1,0 +1,59 @@
+# Graphic
+
+```svelte
+<Graphic width={500} height={500}>
+
+  ...
+
+</Graphic>
+```
+
+## Description
+
+Every `florence` graphic starts with the `Graphic` component. Think of
+it as a supercharged `svg` root element.
+
+## Caveats
+
+- `florence` components cannot be used outside of a `Graphic` component
+- `Graphic` components cannot be nested
+
+## Props
+
+### Positioning
+
+|  Prop  | Type(s)  | Required | Default |     Units     |
+| ------ | -------- | -------- | ------- | ------------- |
+| width  | `Number` | yes      | -       | screen pixels |
+| height | `Number` | yes      | -       | screen pixels |
+
+### Aesthetic props
+
+|      Prop       | Type(s)  | Required |   Default   |    Units    |
+| --------------- | -------- | -------- | ----------- | ----------- |
+| backgroundColor | `String` | no       | `undefined` | Color value |
+| paddingColor    | `String` | no       | `undefined` | Color value |
+
+Where `backgroundColor` is the area within the padded area, and `paddingColor` is the background of the padded area (see `padding` below).
+
+### Local coordinate system
+
+|      Prop      |                  Type(s)                   | Required |   Default    |     Units     |
+| -------------- | ------------------------------------------ | -------- | ------------ | ------------- |
+| scaleX         | [d3 scale](https://github.com/d3/d3-scale) | no       | `undefined`  | -             |
+| scaleY         | [d3 scale](https://github.com/d3/d3-scale) | no       | `undefined`  | -             |
+| transformation | `String`: `'identity'` or `'polar'`        | no       | `'identity'` | -             |
+| flipX          | `Boolean`                                  | no       | `false`      | -             |
+| flipY          | `Boolean`                                  | no       | `false`      | -             |
+| padding        | `Number`, `Object`                         | no       | `undefnied`  | screen pixels |
+| zoomIdentity   | `Object`                                   | no       | `undefined`  | -             |
+
+For more how to use these props, see the [local coordinates](/docs/concepts/local-coordinates) documentation.
+
+### Other
+
+|      Prop       |  Type(s)  | Required | Default | Units |
+| --------------- | --------- | -------- | ------- | ----- |
+| blockReindexing | `Boolean` | no       | `false` | -     |
+
+The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation.

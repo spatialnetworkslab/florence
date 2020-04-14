@@ -66,11 +66,10 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
   if (labelExtra && 'domain' in scale && tickValues[0] !== scale.domain()[0]) {
     tickValues.unshift(scale.domain()[0])
   }
-
   return tickValues
 }
 
-export function getTickPositions (tickValuesArray, domain, tickExtra, coordinates, flip, orient, padding, useScale) {
+export function getTickPositions (tickValuesArray, domain, tickExtra, coordinates, flip, orient, padding, useScale, flipScale) {
   let tickPositions
 
   // Bins
@@ -107,6 +106,10 @@ export function getTickPositions (tickValuesArray, domain, tickExtra, coordinate
     tickPositions.unshift(domain[0])
   }
 
+  if (flipScale) {
+    tickPositions.reverse()
+  }
+
   return tickPositions
 }
 
@@ -117,7 +120,7 @@ export function getFormat (labelFormat, scale, numberOfTicks) {
   return x => x
 }
 
-export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale) {
+export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale, flipScale) {
   let colorXStartCoords = []
   let colorXEndCoords = []
   let colorYStartCoords = []
@@ -127,17 +130,17 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
     // x coords
     colorXStartCoords = tickLabelText.map(i => {
       if (flipLabels) {
-        return tickAlign - labelFontSize - colorBarWidth * xCoords.width
+        return tickAlign - labelFontSize * 2 - colorBarWidth * xCoords.width
       } else {
-        return tickAlign + labelFontSize
+        return tickAlign + labelFontSize * 2
       }
     })
 
     colorXEndCoords = tickLabelText.map((value, i) => {
       if (flipLabels) {
-        return tickAlign - labelFontSize
+        return tickAlign - labelFontSize * 2
       } else {
-        return tickAlign + labelFontSize + colorBarWidth * xCoords.width
+        return tickAlign + labelFontSize * 2 + colorBarWidth * xCoords.width
       }
     })
 
@@ -170,22 +173,27 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
 
       colorYEndCoords.push(start + interval)
     }
+
+    if (flipScale) {
+      colorYStartCoords.reverse()
+      colorYEndCoords.reverse()
+    }
   } else if (orient === 'horizontal') {
     const coordsLength = Math.abs(yCoords.y2 - yCoords.y1)
 
     colorYStartCoords = tickLabelText.map(i => {
       if (flipLabels) {
-        return tickAlign + labelFontSize
+        return tickAlign + labelFontSize * 2
       } else {
-        return tickAlign - labelFontSize
+        return tickAlign - labelFontSize * 2
       }
     })
 
     colorYEndCoords = tickLabelText.map((value, i) => {
       if (flipLabels) {
-        return tickAlign + labelFontSize + colorBarHeight * yCoords.height
+        return tickAlign + labelFontSize * 2 + colorBarHeight * yCoords.height
       } else {
-        return tickAlign - labelFontSize - colorBarHeight * yCoords.height
+        return tickAlign - labelFontSize * 2 - colorBarHeight * yCoords.height
       }
     })
 
@@ -220,6 +228,11 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       colorXEndCoords.shift()
       tickMappable.pop()
 
+      if (flipScale) {
+        colorXStartCoords.reverse()
+        colorXEndCoords.reverse()
+      }
+
     // One to one
     } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
       const interval = Math.abs(xCoords.x2 - xCoords.x1) / tickMappable.length
@@ -234,12 +247,17 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
 
       colorXEndCoords.push(start + interval)
     }
+
+    if (flipScale) {
+      colorXStartCoords.reverse()
+      colorXEndCoords.reverse()
+    }
   }
 
   return { colorXStartCoords, colorXEndCoords, colorYStartCoords, colorYEndCoords }
 }
 
-export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize, labels) {
+export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, tickAlign, labelFontSize, labels, flipScale) {
   let offsets
   let gradX
   let gradY
@@ -250,31 +268,31 @@ export function getGradientGeoms (tickMappable, orient, scale, colorBarHeight, c
 
   if (orient === 'vertical') {
     gradX = { x1: '0%', x2: '0%' }
-    gradY = flip ? { y1: '100%', y2: '0%' } : { y1: '0%', y2: '100%' }
+    gradY = flip || flipScale ? { y1: '0%', y2: '100%' } : { y1: '100%', y2: '0%' }
     y1 = yCoords.y1
     y2 = yCoords.y2
 
     // Color bar dimensions
     if (flipLabels) {
-      x1 = tickAlign - labelFontSize - colorBarWidth * xCoords.width
-      x2 = tickAlign - labelFontSize
+      x1 = tickAlign - labelFontSize * 2 - colorBarWidth * xCoords.width
+      x2 = tickAlign - labelFontSize * 2
     } else {
-      x1 = tickAlign + labelFontSize
-      x2 = tickAlign + labelFontSize + colorBarWidth * xCoords.width
+      x1 = tickAlign + labelFontSize * 2
+      x2 = tickAlign + labelFontSize * 2 + colorBarWidth * xCoords.width
     }
   } else if (orient === 'horizontal') {
-    gradX = flip ? { x1: '100%', x2: '0%' } : { x1: '0%', x2: '100%' }
+    gradX = flip || !flipScale ? { x1: '100%', x2: '0%' } : { x1: '0%', x2: '100%' }
     gradY = { y1: '0%', y2: '0%' }
     x1 = xCoords.x1
     x2 = xCoords.x2
 
     // Color bar dimensions
     if (flipLabels) {
-      y1 = tickAlign + labelFontSize
-      y2 = tickAlign + colorBarHeight * yCoords.height + labelFontSize
+      y1 = tickAlign + labelFontSize * 2
+      y2 = tickAlign + colorBarHeight * yCoords.height + labelFontSize * 2
     } else {
-      y1 = tickAlign - colorBarHeight * yCoords.height - labelFontSize
-      y2 = tickAlign - labelFontSize
+      y1 = tickAlign - colorBarHeight * yCoords.height - labelFontSize * 2
+      y2 = tickAlign - labelFontSize * 2
     }
   }
 

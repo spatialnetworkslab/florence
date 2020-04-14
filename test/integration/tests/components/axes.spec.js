@@ -16,11 +16,11 @@ context('Assertions', () => {
     })
 
     it('[render] axis has tick marks', () => {
-      cy.get('g.x-axis > .line-layer > .line').should('have.length.greaterThan', 6)
+      cy.get('g.x-axis > .line-layer > .line').should('have.length.greaterThan', 5)
     })
 
     it('[render] axis has tick labels', () => {
-      cy.get('g.x-axis > .label-layer > .label').should('have.length.greaterThan', 6)
+      cy.get('g.x-axis > .label-layer > .label').should('have.length.greaterThan', 5)
     })
   })
 })

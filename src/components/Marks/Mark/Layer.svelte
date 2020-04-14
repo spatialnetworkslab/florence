@@ -11,13 +11,10 @@
 
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
-  import * as CoordinateTransformationContext from '../../Core/Section/CoordinateTransformationContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
-  import * as ZoomContext from '../../Core/Section/ZoomContext'
   
   import validateAesthetics from './validateAesthetics.js'
-  import { transformGeometries } from '../../../utils/geometryUtils/index.js'
-  import { layerCoordSysGeometryFuncs } from './coordSysGeometryFuncs.js'
+  import { layerPixelGeometryFuncs } from './pixelGeometryFuncs.js'
   import { layerRepresentAsPolygonFuncs } from './representAsPolygonFuncs.js'
   import { createTransitionableLayer, transitionsEqual } from '../utils/transitions'
   import { generatePropObject } from '../utils/generatePropObject.js'
@@ -25,6 +22,7 @@
   import generatePath from '../utils/generatePath.js'
   import textAnchorPoint from '../utils/textAnchorPoint.js'
   import any from '../utils/any.js'
+  import parseRenderSettings from '../utils/parseRenderSettings.js' 
 
   const layerId = getId()
 
@@ -34,62 +32,61 @@
   export let type
 
   // Aesthetics: positioning
-  export let x
-  export let y
-  export let x1
-  export let x2
-  export let y1
-  export let y2
-  export let geometry
-  export let shape
-  export let size
-  export let independentAxis
+  export let x = undefined
+  export let y = undefined
+  export let x1 = undefined
+  export let x2 = undefined
+  export let y1 = undefined
+  export let y2 = undefined
+  export let geometry = undefined
+  export let shape = undefined
+  export let size = undefined
+  export let independentAxis = undefined
 
   // Aesthetics: other
-  export let radius
-  export let fill
-  export let stroke
-  export let strokeWidth
-  export let strokeOpacity
-  export let fillOpacity
-  export let opacity
+  export let radius = undefined
+  export let fill = undefined
+  export let stroke = undefined
+  export let strokeWidth = undefined
+  export let strokeOpacity = undefined
+  export let fillOpacity = undefined
+  export let opacity = undefined
 
   // Aesthetics: text-specific
-  export let text
-  export let fontFamily
-  export let fontSize
-  export let fontWeight
-  export let rotation
-  export let anchorPoint
+  export let text = undefined
+  export let fontFamily = undefined
+  export let fontSize = undefined
+  export let fontWeight = undefined
+  export let rotation = undefined
+  export let anchorPoint = undefined
 
   // Transitions
-  export let transition
+  export let transition = undefined
 
   // Mouse interactions
-  export let onClick
-  export let onMousedown
-  export let onMouseup
-  export let onMouseover
-  export let onMouseout
-  export let onMousedrag
+  export let onClick = undefined
+  export let onMousedown = undefined
+  export let onMouseup = undefined
+  export let onMouseover = undefined
+  export let onMouseout = undefined
+  export let onMousedrag = undefined
 
   // Touch interactions
-  export let onTouchdown
-  export let onTouchup
-  export let onTouchover
-  export let onTouchout
-  export let onTouchdrag
+  export let onTouchdown = undefined
+  export let onTouchup = undefined
+  export let onTouchover = undefined
+  export let onTouchout = undefined
+  export let onTouchdrag = undefined
 
   // Select interactions
-  export let onSelect
-  export let onDeselect
+  export let onSelect = undefined
+  export let onDeselect = undefined
 
   // Other
-  export let key
-  export let interpolate
-  export let _asPolygon = true
-  export let zoomIdentity
+  export let key = undefined
+  export let renderSettings = undefined
   export let blockReindexing = false
+  export let _asPolygon = true
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
@@ -162,32 +159,36 @@
   }
 
   // Select appriopriate geometry conversion functions
-  let createCoordSysGeometryObject = layerCoordSysGeometryFuncs[type]
+  let createPixelGeometryObject = layerPixelGeometryFuncs[type]
   let representAsPolygonObject = layerRepresentAsPolygonFuncs[type]
 
   $: {
     if (initDone()) {
-      createCoordSysGeometryObject = layerCoordSysGeometryFuncs[type]
+      createPixelGeometryObject = layerPixelGeometryFuncs[type]
       representAsPolygonObject = layerRepresentAsPolygonFuncs[type]
+    }
+  }
+
+  let asPolygon = _asPolygon === true && layerRepresentAsPolygonFuncs[type] !== undefined
+
+  $: {
+    if (initDone()) {
+      asPolygon = _asPolygon === true && layerRepresentAsPolygonFuncs[type] !== undefined
     }
   }
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
   const sectionContext = SectionContext.subscribe()
-  const coordinateTransformationContext = CoordinateTransformationContext.subscribe()
   const interactionManagerContext = InteractionManagerContext.subscribe()
-  const zoomContext = ZoomContext.subscribe()
 
   // Initiate geometry objects and key array
-  let coordSysGeometryObject
   let pixelGeometryObject
   let screenGeometryObject
 
-  updateCoordSysGeometryObject()
   updatePixelGeometryObject()
   
-  let keyArray = Object.keys(coordSysGeometryObject)
+  let keyArray = Object.keys(pixelGeometryObject)
 
   // Generate other prop objects
   let radiusObject = generatePropObject(aesthetics.radius, keyArray)
@@ -222,30 +223,22 @@
   let tr_fontWeightObject = createTransitionableLayer('fontWeight', fontWeightObject, transition)
   let tr_rotationObject = createTransitionableLayer('rotation', rotationObject, transition)
 
-  // Handle coordSysGeometryObject changes
+  // Handle changes to geometry
   $: {
     if (initDone()) {
-      scheduleUpdateCoordSysGeometryObject(
+      scheduleUpdatePixelGeometryObject(
         positioningAesthetics,
-        $sectionContext,
-        $coordinateTransformationContext,
         key,
-        interpolate
+        $sectionContext,
+        parseRenderSettings(renderSettings)
       )
     }
   }
 
-  // Handle zooming changes
+  // Handle radius and strokeWidth changes if Points or Lines are not represented as Polygons
   $: {
     if (initDone()) {
-      scheduleUpdatePixelGeometryObject($zoomContext)
-    }
-  }
-
-  // Handle radius/strokeWidth changes
-  $: {
-    if (initDone()) {
-      if (!_asPolygon) {
+      if (!asPolygon) {
         tr_radiusObject.set(generatePropObject(aesthetics.radius, keyArray))
         tr_strokeWidthObject.set(generatePropObject(aesthetics.strokeWidth, keyArray))
       }
@@ -268,25 +261,21 @@
   $: { if (initDone()) textObject = generatePropObject(aesthetics.text, keyArray) }
   $: { if (initDone()) fontFamilyObject = generatePropObject(aesthetics.fontFamily, keyArray) }
   $: { if (initDone()) anchorPointObject = generatePropObject(aesthetics.anchorPoint, keyArray) }
-
   let previousTransition
 
-  let coordSysGeometryObjectRecalculationNecessary = false
   let pixelGeometryObjectRecalculationNecessary = false
   let screenGeometryObjectRecalculationNecessary = false
 
   $: {
     tick().then(() => {
-      if (coordSysGeometryObjectRecalculationNecessary) {
-        updateCoordSysGeometryObject()
-        keyArray = Object.keys(coordSysGeometryObject)
+      if (pixelGeometryObjectRecalculationNecessary) {
+        updatePixelGeometryObject()
+        keyArray = Object.keys(pixelGeometryObject)
 
-        if (_asPolygon) {
+        if (asPolygon) {
           updateRadiusAndStrokeWidth()
         }
       }
-  
-      if (pixelGeometryObjectRecalculationNecessary) updatePixelGeometryObject()
 
       if (screenGeometryObjectRecalculationNecessary) {
         updateScreenGeometryObject()
@@ -295,7 +284,6 @@
         updateInteractionManagerIfNecessary()
       }
 
-      coordSysGeometryObjectRecalculationNecessary = false
       pixelGeometryObjectRecalculationNecessary = false
       screenGeometryObjectRecalculationNecessary = false
     })
@@ -340,35 +328,18 @@
   })
 
   // Helpers
-  function scheduleUpdateCoordSysGeometryObject () {
-    coordSysGeometryObjectRecalculationNecessary = true
-    pixelGeometryObjectRecalculationNecessary = true
-    screenGeometryObjectRecalculationNecessary = true
-  }
-
-  function updateCoordSysGeometryObject () {
-    coordSysGeometryObject = createCoordSysGeometryObject(
-      positioningAesthetics,
-      $sectionContext,
-      $coordinateTransformationContext,
-      key,
-      interpolate
-    )
-  }
-
   function scheduleUpdatePixelGeometryObject () {
     pixelGeometryObjectRecalculationNecessary = true
     screenGeometryObjectRecalculationNecessary = true
   }
 
   function updatePixelGeometryObject () {
-    const zoomTransformation = ZoomContext.createZoomTransformation($zoomContext, zoomIdentity)
-
-    if (zoomTransformation) {
-      pixelGeometryObject = transformGeometries(coordSysGeometryObject, zoomTransformation)
-    } else {
-      pixelGeometryObject = coordSysGeometryObject
-    }
+    pixelGeometryObject = createPixelGeometryObject(
+      positioningAesthetics,
+      key,
+      $sectionContext,
+      parseRenderSettings(renderSettings)
+    )
   }
 
   function scheduleUpdateScreenGeometryObject () {
@@ -376,7 +347,7 @@
   }
 
   function updateScreenGeometryObject () {
-    if (_asPolygon) {
+    if (asPolygon) {
       screenGeometryObject = representAsPolygonObject(pixelGeometryObject, { radiusObject, strokeWidthObject })
     } else {
       screenGeometryObject = pixelGeometryObject
@@ -467,9 +438,9 @@
     )
   }
 
-  $: renderPolygon = !['Point', 'Line', 'Label'].includes(type) || _asPolygon
-  $: renderCircle = type === 'Point' && !_asPolygon
-  $: renderLine = type === 'Line' && !_asPolygon
+  $: renderPolygon = !['Point', 'Line', 'Label'].includes(type) || asPolygon
+  $: renderCircle = type === 'Point' && !asPolygon
+  $: renderLine = type === 'Line' && !asPolygon
   $: renderLabel = type === 'Label'
 </script>
 

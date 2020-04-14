@@ -95,8 +95,22 @@ function numberOfKeys (obj) {
 
 function createOptionsFromOptions (aestheticName, transitionOptions) {
   if (aestheticName === 'geometry') {
-    return Object.assign({ interpolate: transitionGeometry }, transitionOptions)
+    const defaultOptions = {
+      delay: 0,
+      duration: 400,
+      easing: cubicOut,
+      interpolate: transitionGeometry
+    }
+
+    return Object.assign(defaultOptions, transitionOptions)
   } else {
-    return Object.assign({ interpolate }, transitionOptions)
+    const defaultOptions = {
+      delay: 0,
+      duration: 400,
+      easing: cubicOut,
+      interpolate
+    }
+
+    return Object.assign(defaultOptions, transitionOptions)
   }
 }

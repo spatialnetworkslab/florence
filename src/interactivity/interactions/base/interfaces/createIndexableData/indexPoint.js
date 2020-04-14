@@ -1,7 +1,7 @@
 export function indexPoint (markData) {
   const pointAttributes = markData.attributes
 
-  const item = calculateBBoxPoint(pointAttributes)
+  const item = calculateBboxPoint(pointAttributes)
 
   item.attributes = pointAttributes
   item.markType = 'Point'
@@ -17,7 +17,7 @@ export function indexPointLayer ({ layerAttributes, keyArray, layerId }) {
     const key = keyArray[i]
 
     const pointAttributes = getPointAttributes(layerAttributes, key)
-    const item = calculateBBoxPoint(pointAttributes)
+    const item = calculateBboxPoint(pointAttributes)
 
     item.key = key
     item.index = i
@@ -31,7 +31,7 @@ export function indexPointLayer ({ layerAttributes, keyArray, layerId }) {
   return items
 }
 
-function calculateBBoxPoint (pointAttributes) {
+function calculateBboxPoint (pointAttributes) {
   const x = pointAttributes.pixelGeometry.coordinates[0]
   const y = pointAttributes.pixelGeometry.coordinates[1]
 

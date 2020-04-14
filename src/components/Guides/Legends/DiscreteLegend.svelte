@@ -5,6 +5,7 @@
 
   // Contexts
   import * as SectionContext from '../../Core/Section/SectionContext'
+  import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   
   // Permanent
   import { getTickPositions, getFormat, getTicks, getColorGeoms, isValid } from './utils.js'
@@ -58,7 +59,7 @@
   export let titleXOffset = 0
   export let titleX = undefined
   export let titleVjust = 'top'
-  export let titleYOffset = 0
+  export let titleYOffset = -3
   export let titleY = undefined
   export let title = 'Legend'
   export let titleColor = 'black'
@@ -68,8 +69,6 @@
   export let titleOpacity = 1
   export let titleRotation = 0
   export let titleAnchorPoint = 't'
-  export let titlePaddingX = 0
-  export let titlePaddingY = -3
 
   // transition
   export let transition = undefined
@@ -77,6 +76,7 @@
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
+  const graphicContext = GraphicContext.subscribe()
 
   // Permanent
 
@@ -109,17 +109,40 @@
   let xCoords
   let yCoords
   let addTitleSize
+  let _flipX
+  let _flipY
+  
+  $: {
+    if ($sectionContext.flipY) {
+      _flipY = true
+    }
+
+    if ($graphicContext.flipY) {
+      _flipY = true
+    }
+  }
+
+  $: {
+    if ($sectionContext.flipX) {
+      _flipX = true
+    }
+
+    if ($graphicContext.flipX) {
+      _flipX = true
+    }
+  }
   
   $: {
     if (usePadding === true) {
       _padding = $sectionContext.padding
+      if (_padding === undefined) {
+        _padding = $graphicContext.padding
+      }
       xRange = removePadding(xRange, _padding.left, _padding.right)
       yRange = removePadding(yRange, _padding.top, _padding.bottom)
     }
-  }
-  
-  // Section positioning wrt section/graphic context
-  $: {
+
+    // Section positioning wrt section/graphic context
     if (!['horizontal', 'vertical'].includes(orient)) {
       throw Error('Invalid input for `orient` property. Please provide either `horizontal` or `vertical` as inputs.')
     }
@@ -128,21 +151,20 @@
 
     // Autopositioning
     if (!isValid(x1, x2, y1, y2) && ['horizontal', 'vertical'].includes(orient)) {
-      if (sectionContext.flipX) xRange.reverse()
-      rangeCoordsX = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip)
+      if (_flipX) xRange.reverse()
+      rangeCoordsX = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flip, _flipX)
       x1 = rangeCoordsX.x1
       x2 = rangeCoordsX.x2
       width = Math.abs(x2 - x1)
       xCoords = { x1, x2, width }
 
-      if (sectionContext.flipY) yRange.reverse()
-      rangeCoordsY = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flip)
+      if (_flipY) yRange.reverse()
+      rangeCoordsY = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flip, _flipY)
       y1 = rangeCoordsY.y1
       y2 = rangeCoordsY.y2
       height = Math.abs(y2 - y1)
       yCoords = { y1, y2, height }
-
-   } else {
+    } else {
       let _x1, _x2, _y1, _y2
 
       /** If function, uses pixel values based on padding/no padding setting
@@ -184,7 +206,7 @@
     if (title.length > 0) {
       // if titleX is not a function or a data scale value
       if (!titleX && titleX !== 0) {
-        titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, addTitleSize, labelFontSize, orient, titlePaddingX)
+        titleX = createTitleXCoord(titleHjust, xCoords, titleX, titleXOffset, addTitleSize, _flipX)
       } else {
         // if titleX is a function/data scale value
         if ({}.toString.call(titleX) === '[object Function]') {
@@ -196,7 +218,7 @@
   
       // if titleY is not a function or a data scale value
       if (!titleY && titleY !== 0) {
-        titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, labelFontSize, orient, titlePaddingY)
+        titleY = createTitleYCoord(titleVjust, yCoords, titleY, titleYOffset, addTitleSize, _flipY)
       } else {
         // if titleY is a function/data scale value
         if ({}.toString.call(titleY) === '[object Function]') {
@@ -220,6 +242,7 @@
       if (typeof fillOpacity === 'function') {
         scale = fillOpacity
       }
+
       if (scale) {
         if (Object.prototype.hasOwnProperty.call(scale, 'domain')) {
           if (typeof scale.domain === 'function') {
@@ -248,7 +271,7 @@
   // and that either fill or fillOpacity can used (it will look at fill first)
   $: {
     if (labels === undefined) {
-      tickLabelText = getTicks(scaleDomain, labelCount, labelExtra, firstLabel)
+      tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
       tickLabelText = format !== undefined ? tickLabelText.map(format) : tickLabelText
     } else {
       tickLabelText = format !== undefined ? labels.map(format) : labels
@@ -256,7 +279,7 @@
     }
 
     if (orient === 'vertical') {
-      tickLabelYCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, yCoords, flip, orient, labelPaddingY, useScale)
+      tickLabelYCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, yCoords, flip, orient, labelPaddingY, useScale, _flipY)
       tickLabelXCoords = flipLabels ? x1 + colorBarHeight * xCoords.width : x1 + (1 - colorBarHeight) * xCoords.width
       tickLabelXCoords = labelX || tickLabelXCoords
 
@@ -266,7 +289,7 @@
 
       format = getFormat(labelFormat, scaleDomain, tickLabelYCoords.length)
     } else if (orient === 'horizontal') {
-      tickLabelXCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, xCoords, flip, orient, labelPaddingX, useScale)
+      tickLabelXCoords = getTickPositions(tickLabelText, scaleDomain, labelExtra, xCoords, flip, orient, labelPaddingX, useScale, _flipX)
       tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * yCoords.height : yCoords.y2 - colorBarWidth * yCoords.height
       tickLabelYCoords = labelY || tickLabelYCoords
   
@@ -299,9 +322,11 @@
         } else {
           tickLabelPositions = tickLabelXCoords
           tickAlign = tickLabelYCoords - labelPaddingY
-        }
-  
-        colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale)
+        } 
+
+        const flipScale = orient === 'horizontal' ? _flipX : _flipY
+
+        colorGeoms = getColorGeoms(tickColors, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale, flipScale)
         if (!tickOpacities) {
           tickOpacities = 1
         }
@@ -330,7 +355,9 @@
           tickAlign = tickLabelYCoords
         }
 
-        colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale)
+        const flipScale = orient === 'horizontal' ? _flipX : _flipY
+
+        colorGeoms = getColorGeoms(tickOpacities, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale, flipScale)
   
         if (!tickColors) {
           tickColors = fill

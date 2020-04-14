@@ -1,58 +1,56 @@
 <script>
-	export let segment;
+  export let segment
+  
+  // maybe export this out
+  const links = [
+    // { name: 'Gallery', link: 'gallery' },
+    { name: 'Tutorials', link: 'tutorials' },
+    { name: 'Docs', link: 'docs' }
+    // { name: 'Inspiration', link: 'inspiration' }
+  ]
 </script>
 
 <style>
-	nav {
-		border-bottom: 1px solid rgba(255,62,0,0.1);
-		font-weight: 300;
-		padding: 0 1em;
-	}
+/* nav bars */
 
-	ul {
-		margin: 0;
-		padding: 0;
-	}
+.selected {
+  @apply relative border-b-2 border-red-600 no-underline;
+}
 
-	/* clearfix */
-	ul::after {
-		content: '';
-		display: block;
-		clear: both;
-	}
+.top-nav {
+  @apply h-full py-2 px-4 w-screen border-b border-gray-200 bg-white;
+}
 
-	li {
-		display: block;
-		float: left;
-	}
+.nav-li {
+  @apply list-none;
+}
 
-	.selected {
-		position: relative;
-		display: inline-block;
-	}
+.nav-a {
+  @apply no-underline py-1 px-0 mr-4 font-normal text-black;
+  transition: border-color 1s; 
+}
 
-	.selected::after {
-		position: absolute;
-		content: '';
-		width: calc(100% - 1em);
-		height: 2px;
-		background-color: rgb(255,62,0);
-		display: block;
-		bottom: -1px;
-	}
+.nav-a:hover {
+  @apply border-b-2 border-red-600;
+}
 
-	a {
-		text-decoration: none;
-		padding: 1em 0.5em;
-		display: block;
-	}
+@screen md {
+  ul {
+    @apply ml-0;
+  }
+}
 </style>
 
-<nav>
-	<ul>
-		<li><a class='{segment === undefined ? "selected" : ""}' href='.'>home</a></li>
-		<li><a rel=prefetch class='{segment === "examples" ? "selected" : ""}' href='examples'>examples</a></li>
-		<li><a rel=prefetch class='{segment === "docs" ? "selected" : ""}' href='docs'>docs</a></li>
-		<li><a rel=prefetch class='{segment === "repl" ? "selected" : ""}' href='repl'>repl</a></li>
-	</ul>
+<nav class='top-nav'>
+	<ul class='ml-8 flex flex-row mb-0'>
+    <li class='nav-li'>
+      <a class={`nav-a ${segment ===
+        undefined ? 'selected' : ''}`} href='.'>Home</a></li>
+
+    {#each links as item, index}
+      <li class='nav-li'><a class={`nav-a 
+        ${segment === item.link ? 'selected' : ''}`} 
+        href={item.link}> {item.name} </a> </li>
+    {/each}
+  </ul>
 </nav>

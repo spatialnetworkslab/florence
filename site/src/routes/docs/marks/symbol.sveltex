@@ -1,0 +1,84 @@
+# Symbol
+The Symbol mark is used for plotting point data, with each data instance represented as a symbol (or shape) element. The most common use for the Symbol mark is for creating points such as in a scatterplot.
+
+```js exec
+import SimpleExample from './examples/_SymbolSimple.svelte'
+```
+<SimpleExample />
+
+```markup
+<script>
+ const x = [
+    new Date(2002, 0, 1),
+    new Date(2004, 0, 1),
+    new Date(2006, 0, 1)
+  ]
+  const y = [20, 40, 10]
+  const shapes = ['star5', 'triangle-up', 'diamond']
+</script>
+<Graphic>
+  <SymbolLayer {x} {y} shape={shapes} />
+</Graphic>
+```
+
+To render the Symbol mark, you will need to provide the `x` and `y` or the `geometry` props. The two uses are mutually exclusive.
+
+::: div callout
+Note that the `Symbol` mark is imported/used as `Symbol_` to prevent conflicts with the native JavaScript `Symbol`.
+:::
+
+`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scale used in the parent Section. `geometry` accepts GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) objects only. Values will be scaled according to the `scaleX` and `scaleY` of the parent Section. Alternatively, a function can be supplied that returns a coordinate in the viewBox coordinate system directly, bypassing any active scales.
+
+To create multiple symbols, we can either loop over the dataset (with `{#each}`) to generate one `Symbol_` per iteration, or use the `SymbolLayer`. The `SymbolLayer` shares all of the `Symbol_`'s props, but takes an array per prop instead of a single value.
+
+```markup
+<Graphic>
+  <Symbol_
+    x={⭐️}
+    y={⭐️}
+  />
+</Graphic>
+
+<Graphic>
+  <!-- this denotes 3 symbols -->
+  <SymbolLayer
+    x={[🔺, ⭐️, 🔹]}
+    y={[🔺, ⭐️, 🔹]}
+  />
+</Graphic>
+```
+
+## Properties
+### Positioning
+
+| Prop     | Required | Types                                | Default   | Description                      | Unit(s)                                                                                   |
+| -------- | -------- | ------------------------------------ | --------- | -------------------------------- | ----------------------------------------------------------------------------------------- |
+| x        | depends  | Number \| String \| Date \| Function | undefined | x-coordinate of center of symbol | Data value to be scaled by Section's scaleX. If Function then viewBox coordinates.        |
+| y        | depends  | Number \| String \| Date \| Function | undefined | y-coordinate of center of symbol | Data value to be scaled by Section's scaleY. If Function then viewBox coordinates.        |
+| geometry | depends  | Object \| Function                   | undefined | GeoJSON object of type Point     | Data value to be scaled by Section's scaleX/scaleY. If Function then viewBox coordinates. |
+
+### Other aesthetics
+| Prop           | Required | Types  | Default   | Description                   | Unit(s)                    |
+| -------------- | -------- | ------ | --------- | ----------------------------- | -------------------------- |
+| stroke         | false    | String | 'none'    | Stroke color                  | Named color, hex, rgb, hsl |
+| stroke-width   | false    | Number | 0         | Stroke width                  | Screen pixel               |
+| stroke-opacity | false    | Number | undefined | Stroke opacity                | Number between 0 and 1     |
+| fill           | false    | String | '#000000' | Fill color                    | Named color, hex, rgb, hsl |
+| fill-opacity   | false    | Number | undefined | Fill opacity                  | Number between 0 and 1     |
+| opacity        | false    | Number | 1         | Mark opacity                  | Number between 0 and 1     |
+| shape          | false    | String | 'circle'  | Shape of the symbol           |                            |
+| size           | false    | Number | 10        | Length and width of the symbol| Screen pixel               |
+
+These are mostly analogous to the CSS properties of the same names.
+
+The `shape` prop sets the shape of the symbol mark. The value defaults to `circle`
+but can be set to any of the available options. Some pre-defined shapes include `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-left`, `triangle-right` and `star`.
+
+For a full list of options, refer to the [list of geometries](https://github.com/spatialnetworkslab/florence/blob/master/src/components/Marks/Symbol/geometryAlias.js). Additionally, it is possible to provide a custom shape, specified as a Polygon coordinate syntax with coordinates scaled to [-1, 1] both horizontally and vertically, see the built-in options for examples. 
+
+`size` defaults to 10px. This same value refers to both the height and width of
+the shape. In order to improve the accuracy when reading off the (x, y) values
+of the center point of each symbol instance, the height and width of the symbol
+mark are not allowed to take on different values.
+
+## Examples

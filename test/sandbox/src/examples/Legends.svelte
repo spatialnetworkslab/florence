@@ -1,46 +1,43 @@
 <script>
-  // d3
-  import { scaleBand, scaleThreshold, scaleDiverging, scaleSequential, scaleLinear, scaleOrdinal } from 'd3-scale'
+  import { scaleBand, scaleSequential, scaleLinear, scaleOrdinal } from 'd3-scale'
   import * as d3 from 'd3-scale-chromatic'
-  import { schemeCategory10, schemeAccent, schemeDark2 } from 'd3-scale-chromatic'
-
-  // florence
-	import { Rectangle, Graphic, Section, PointLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
+  import { schemeCategory10, schemeAccent, schemeDark2} from 'd3-scale-chromatic'
+  import { Rectangle, Graphic, Section, PointLayer, DiscreteLegend, GradientLegend, YAxis, XAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
-	export let N = 100
-	const data = new DataContainer(generateData(N, 0.25))
-	function generateData (N, error) {
-		const getError = () => -error + (Math.random() * (2 * error)) * N
-		let data = { a: [], b: [] }
-		for (let i = 0; i < N; i++) {
-			data.a.push(i + getError())
-			data.b.push(i + getError())
-		}
-		return data
+let N = 100
+const data = new DataContainer(generateData(N, 0.25))
+function generateData (N, error) {
+  const getError = () => -error + (Math.random() * (2 * error)) * N
+  let data = { a: [], b: [] }
+  for (let i = 0; i < N; i++) {
+    data.a.push(i + getError())
+    data.b.push(i + getError())
+  }
+  return data
   }
   
-  let threshold = 0
+  const threshold = 0
   let filteredData
 
   $: {
     filteredData = data
-    .filter(row => row.a > threshold)
+      .filter(row => row.a > threshold)
   }
 
-	const scaleA = scaleLinear().domain(data.domain('a'))
+const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scaleLinear().domain(data.domain('b'))
   
-  let height = 800
-  let transformation = 'identity'
-  let duration = 2000
+  const height = 800
+  const transformation = 'identity'
+  const duration = 2000
 
   const log = console.log
 
-  let x = 0
-  let y = 0
-  let k = 1
-  let zoomIdentity = { x, y, kx: k, ky: k }
+  const x = 0
+  const y = 0
+  const k = 1
+  const zoomIdentity = { x, y, kx: k, ky: k }
 
   // scatterplot scale
   const radiusScale = scaleLinear().domain(data.domain('b')).range([10, 0])
@@ -51,20 +48,20 @@
   const fruits = ['apple', 'banana', 'orange', 'pomelo']
 
   // fill scales
-  const linearColorScale = scaleLinear().domain(data.domain('a')).range(["red", "blue"])
-  const linearColorScaleBin = scaleLinear().domain(bins).range(["red", "blue"])
+  const linearColorScale = scaleLinear().domain(data.domain('a')).range(['red', 'blue'])
+  const linearColorScaleBin = scaleLinear().domain(bins).range(['red', 'blue'])
   const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateSinebow)
-  const linearColorScale2 =  scaleSequential().domain([0, 120]).interpolator(d3.interpolateViridis)
+  const linearColorScale2 = scaleSequential().domain([0, 120]).interpolator(d3.interpolateViridis)
   const fruitScale = scaleOrdinal().domain(fruits).range(schemeDark2)
   const binScale = scaleLinear().domain([0, 4]).range(['red', 'blue'])
 
   // fill opacity scales
   const alphaScale = scaleLinear().domain(data.domain('a')).range([0, 1])
-  const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
+  const fruitAlpha = scaleOrdinal().domain(fruits).range([0, 1, 0.4, 0.2])
   const binAlpha = scaleLinear().domain([0, 120]).range([0, 1])
 
- // categorical data
-   let catData = new DataContainer({
+// categorical data
+  let catData = new DataContainer({
     fruit: ['apple', 'banana', 'apple', 'banana', 'apple', 'banana'],
     nutrient: ['carbs', 'carbs', 'fibre', 'fibre', 'protein', 'protein'],
     value: [3, 5, 1, 3, 4, 2]
@@ -79,16 +76,7 @@
     .mutate({ valueFraction: row => row.value / row.totalValuePerFruit })
     .select(['fruit', 'nutrient', 'valueFraction'])
     .groupBy('fruit')
-
-  const containerPerFruit = catData.column('$grouped').map(container => {
-    return container.cumsum({ cumsum_value: 'valueFraction' })
-  })
-
-  const nutrientColorScale = scaleOrdinal()
-    .domain(nutrientDomain)
-    .range(schemeAccent)
-
-</script>
+<script>
 
 <div>
 	<Graphic 
@@ -110,14 +98,14 @@
 
       <!-- Pixels -->
       <DiscreteLegend
-        x1={() => {return 200}} x2={() => {return 300}}
-        y1={() => {return 60}} y2={() => {return 100}}
+        x1={() => { return 200 }} x2={() => { return 300 }}
+        y1={() => { return 60 }} y2={() => { return 100 }}
         fill={linearColorScale}
         orient={'horizontal'}
         titleVjust={'top'}
         labelCount={8}
-        titleX={() => {return 170}}
-        titleY={() => {return 70}}
+        titleX={() => { return 170 }}
+        titleY={() => { return 70 }}
       />
 
       <!-- Data scale -->
@@ -155,8 +143,8 @@
           fill={linearColorScale}
         />
 
-      <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
-      <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
+      <XAxis />
+      <YAxis />
     
     </Section>
 
@@ -213,8 +201,8 @@
           fill={seqScale}
         />
 
-      <XAxis zoomIdentity={{ y: 0, ky: 1 }} />
-      <YAxis zoomIdentity={{ x: 0, kx: 1 }} />
+      <XAxis />
+      <YAxis />
     
     </Section>
 

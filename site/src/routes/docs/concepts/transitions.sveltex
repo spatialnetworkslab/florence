@@ -1,0 +1,107 @@
+# Transitions
+
+## Description
+
+Every `Mark` and every `Layer` has a `transition` prop. TODO
+
+## Basics
+
+```html
+<Point
+  ...
+  transition={options}
+/>
+```
+
+Where the `options` object can be either a `Number`, or an `Object`. If `options` is a `Number`, the number is the transition duration in milliseconds, and the transition will be applied to all aesthetics. For example:
+
+```html
+<Point
+  fill="blue"
+  opacity="0.7"
+  transition={2000}
+/>
+```
+
+Here, if either the `fill` or the `opacity` changes, instead of changing instantly, they will change gradually over a period of 2000 milliseconds.
+
+If `options` is an `Object`, the keys correspond to the names of aesthetics. The values, then, are either `Number`s (transition durations), or `Object`s of transition settings. For example, we can set a transition for the `fill` but not the `opacity` like this:
+
+```html
+<Point
+  fill="blue"
+  opacity="0.7"
+  transition={{ fill: 2000 }}
+/>
+```
+
+In this case, only the `fill` will change gradually: the `opacity` will change instantaneously. If, instead of just specifying the transition duration, we want more control over the transition, we can use an `Object` of transition settings for each aesthetic. The `Object` of transition settings has the following structure:
+
+```js
+{
+  delay: <Number>,
+  duration: <Number>,
+  easing: <Function>,
+  interpolate: <Function>
+}
+```
+
+Where the 
+
+- `delay` is the delay before the transition starts (default `0`)
+- `duration` is the duration of the transition (default `400`)
+- `easing` is a `Svelte` [easing function](https://svelte.dev/docs#svelte_easing) (default `cubicOut`)
+- `interpolate` is an [interpolate function](https://svelte.dev/docs#tweened) (see explanation below for defaults)
+
+The default interpolate function used depends on the kind of aesthetic. For positioning aesthetics, [transshape](https://github.com/spatialnetworkslab/transshape) is currently used internally. However, it is at this moment not recommended to use other interpolate functions for transitions of positioning aesthetics. For other aesthetics, [d3-interpolate](https://github.com/d3/d3-interpolate) is used by default. 
+
+## Positioning aesthetic transitions
+
+Every `Mark` or `Layer` has number of positioning aesthetics. In `florence`, transitions on positioning aesthetics are specified by passing an `Object` with the key `geometry` to `transition`:
+
+```html
+<Point
+  x={10}
+  y={10}
+  transition={{ geometry: { duration: 2000, easing: bounceIn } }}
+/>
+```
+
+Note that setting individual transitions for `x` and `y` does not work. The user can, however, still set these up manually:
+
+```js
+import { tweened } from 'svelte/motion'
+import { cubicOut } from 'svelte/easing'
+
+const x = tweened(10, {
+  duration: 300,
+  easing: cubicOut
+})
+
+function move () {
+  $x += 5
+}
+```
+
+```html
+<Point
+  x={$x}
+  y={10}
+  onClick={move}
+/>
+```
+
+## Other aesthetic transitions
+
+For other aesthetics, transitions basically work as you would expect. Here is a full list of all other supported aesthetics:
+
+- radius
+- opacity
+- fill
+- fillOpacity
+- stroke
+- strokeWidth
+- strokeOpacity
+- fontSize
+- fontWeight
+- rotation
