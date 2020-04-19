@@ -6,7 +6,6 @@ import {
 } from '../utils/geometryPropTools.js'
 
 import { validateXYArrays } from '../utils/createPixelGeometryFromXYArrays.js'
-import { ensureValidGeometry } from '../utils/createPixelGeometryFromGeometry.js'
 import propNeedsScaling from '../utils/propNeedsScaling.js'
 import getKeyArray from '../utils/getKeyArray.js'
 
@@ -114,8 +113,6 @@ function createPixelGeometryObjectFromGeometry (
   const geometry = geometryNeedsScaling
     ? geometryProps.geometry
     : geometryProps.geometry(sectionContext)
-
-  ensureValidGeometry(geometry)
 
   const keyArray = getKeyArray(keyProp, geometry.length)
 
