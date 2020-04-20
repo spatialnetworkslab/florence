@@ -45,7 +45,7 @@ Where `backgroundColor` is the area within the padded area, and `paddingColor` i
 | transformation | `String`: `'identity'` or `'polar'`        | no       | `'identity'` | -             |
 | flipX          | `Boolean`                                  | no       | `false`      | -             |
 | flipY          | `Boolean`                                  | no       | `false`      | -             |
-| padding        | `Number`, `Object`                         | no       | `undefnied`  | screen pixels |
+| padding        | `Number`, `Object`                         | no       | `undefined`  | screen pixels |
 | zoomIdentity   | `Object`                                   | no       | `undefined`  | -             |
 
 For more how to use these props, see the [local coordinates](/docs/concepts/local-coordinates) documentation.

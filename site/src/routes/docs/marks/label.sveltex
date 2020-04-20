@@ -55,20 +55,20 @@ To create plots with multiple labels, we can either loop over the dataset (with 
 | geometry | depends  | Object \| Function                   | undefined | GeoJSON object of type Point    | Data value to be scaled by Section's scaleX/scaleY. If Function then viewBox coordinates. |
 
 ### Other aesthetics
-| Prop           | Required | Types                | Default     | Description                           | Unit(s)                                                       |
-| -------------- | -------- | -------------------- | ----------- | ------------------------------------- | ------------------------------------------------------------- |
-| text           | false    | Number <br>\| String | undefined   | Text to display                       | NA                                                            |
-| font-size      | false    | Number               | 16          | Font size                             | Screen pixel                                                  |
-| font-weight    | false    | Number <br>\| String | 'normal'    | Font weight                           | Either a number between 0 and 1000, or 'normal', 'bold', etc. |
-| font-family    | false    | String               | 'Helvetica' | Font family                           | Name of font family                                           |
-| rotation       | false    | Number               | 0           | Degrees with which to rotate the mark | Degrees                                                       |
-| anchor-point   | false    | String               | 'center'    | Anchor point for x/y coordinate       | One of ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'] |
-| stroke         | false    | String               | 'none'      | Stroke color                          | Named color, hex, rgb, hsl                                    |
-| stroke-width   | false    | Number               | 0           | Stroke width                          | Screen pixel                                                  |
-| stroke-opacity | false    | Number               | undefined   | Stroke opacity                        | Number between 0 and 1                                        |
-| fill           | false    | String               | '#000000'   | Fill color                            | Named color, hex, rgb, hsl                                    |
-| fill-opacity   | false    | Number               | undefined   | Fill opacity                          | Number between 0 and 1                                        |
-| opacity        | false    | Number               | 1           | Mark opacity                          | Number between 0 and 1                                        |
+| Prop          | Required | Types                | Default     | Description                           | Unit(s)                                                       |
+| ------------- | -------- | -------------------- | ----------- | ------------------------------------- | ------------------------------------------------------------- |
+| text          | false    | Number <br>\| String | undefined   | Text to display                       | NA                                                            |
+| fontSize      | false    | Number               | 16          | Font size                             | Screen pixel                                                  |
+| fontWeight    | false    | Number <br>\| String | 'normal'    | Font weight                           | Either a number between 0 and 1000, or 'normal', 'bold', etc. |
+| fontFamily    | false    | String               | 'Helvetica' | Font family                           | Name of font family                                           |
+| rotation      | false    | Number               | 0           | Degrees with which to rotate the mark | Degrees                                                       |
+| anchorPoint   | false    | String               | 'center'    | Anchor point for x/y coordinate       | One of ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'] |
+| stroke        | false    | String               | 'none'      | Stroke color                          | Named color, hex, rgb, hsl                                    |
+| strokeWidth   | false    | Number               | 0           | Stroke width                          | Screen pixel                                                  |
+| strokeOpacity | false    | Number               | undefined   | Stroke opacity                        | Number between 0 and 1                                        |
+| fill          | false    | String               | '#000000'   | Fill color                            | Named color, hex, rgb, hsl                                    |
+| fillOpacity   | false    | Number               | undefined   | Fill opacity                          | Number between 0 and 1                                        |
+| opacity       | false    | Number               | 1           | Mark opacity                          | Number between 0 and 1                                        |
 
 These are analogous to the CSS properties of the same names.
 

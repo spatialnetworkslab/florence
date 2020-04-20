@@ -50,13 +50,13 @@ To create multiple polygons, we can either loop over the dataset (with `{#each}`
 
 ### Other aesthetics
 
-| Prop           | Required | Types  | Default   | Description                                                                                     | Unit(s)                    |
-| -------------- | -------- | ------ | --------- | ----------------------------------------------------------------------------------------------- | -------------------------- |
-| stroke         | false    | String | 'none'    | Stroke color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)           | Named color, hex, rgb, hsl |
-| stroke-width   | false    | Number | 0         | Stroke width [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)     | Screen pixel               |
-| stroke-opacity | false    | Number | undefined | Stroke opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) | Number between 0 to 1      |
-| fill           | false    | String | '#000000' | Fill color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)               | Named color, hex, rgb, hsl |
-| fill-opacity   | false    | Number | undefined | Fill opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)     | Number between 0 and 1     |
-| opacity        | false    | Number | 1         | Mark opacity  [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)         | Number between 0 and 1     |
+| Prop          | Required | Types  | Default   | Description                                                                                     | Unit(s)                    |
+| ------------- | -------- | ------ | --------- | ----------------------------------------------------------------------------------------------- | -------------------------- |
+| stroke        | false    | String | 'none'    | Stroke color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)           | Named color, hex, rgb, hsl |
+| strokeWidth   | false    | Number | 0         | Stroke width [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)     | Screen pixel               |
+| strokeOpacity | false    | Number | undefined | Stroke opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) | Number between 0 to 1      |
+| fill          | false    | String | '#000000' | Fill color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)               | Named color, hex, rgb, hsl |
+| fillOpacity   | false    | Number | undefined | Fill opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)     | Number between 0 and 1     |
+| opacity       | false    | Number | 1         | Mark opacity  [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)         | Number between 0 and 1     |
 
 These are analogous to the CSS properties of the same names.
