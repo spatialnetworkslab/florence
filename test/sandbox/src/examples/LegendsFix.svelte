@@ -99,7 +99,6 @@
     paddingColor={'#d3d3d3'}
     scaleX={scaleLinear().domain(data.domain('a'))}
     scaleY={scaleLinear().domain(data.domain('b'))}
-    flipY
   >
     <Point 
       x={({ finalScaleX }) => finalScaleX.invert(0)}
@@ -114,13 +113,13 @@
       titleVjust={'top'}
       labelCount={8}
       />
-    <Legend vjust={'top'} hjust={'right'} color={'goldenrod'} flipY/>
+    <Legend vjust={'top'} hjust={'right'} color={'goldenrod'} flipY legend={'gradient'}/>
     <Legend vjust={'top'} hjust={'center'} color={'chartreuse'}/>
     <Legend vjust={'top'} hjust={'left'}/>
 
     <Legend vjust={'bottom'} hjust={'right'} color={'goldenrod'} orient={'vertical'} flipY/>
     <Legend vjust={'bottom'} hjust={'center'} color={'chartreuse'} orient={'vertical'} flipX/>
-    <Legend vjust={'bottom'} hjust={'left'} orient={'vertical'}/>
+    <Legend vjust={'bottom'} hjust={'left'} orient={'vertical'} legend={'gradient'}/>
     <XAxis/>
     <YAxis/>
   </Section>

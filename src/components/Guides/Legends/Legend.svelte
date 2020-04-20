@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Section, Point, Label, LabelLayer, RectangleLayer, Symbol_ } from '../../../index.js'
+  import { Section, Point, Label, LabelLayer, Rectangle, RectangleLayer, Symbol_ } from '../../../index.js'
   import { createPosYCoords, createPosXCoords, createTitleXCoord, createTitleYCoord } from './createLegendCoordinates.js'
   import { removePadding } from '../../Core/utils/padding.js'
 
@@ -11,7 +11,7 @@
   import { getTickPositions, getFormat, getTicks, getColorGeoms, isValid } from './utils.js'
 
   // General props
-  export let legend
+  export let legend = 'discrete'
   export let color = 'coral'
 
   // Aesthetics: positioning
@@ -123,19 +123,28 @@
   let colorYStartCoords
   let colorYEndCoords
   let colorGeoms
-  const colorBarHeight = orient === 'vertical' ? 0.85 : 0.75
-  const colorBarWidth = orient === 'vertical' ? 0.7 : 1
+  const graphicalBarHeight = orient === 'vertical' ? 0.85 : 0.75
+  const graphicalBarWidth = orient === 'vertical' ? 0.7 : 1
 
   let xCoords
   let yCoords
   let addTitleSize
 
-  let colorbarX = { x1: 0, x2: colorBarWidth }
-  let colorbarY = orient === 'vertical' ? { y1: 0, y2: colorBarHeight } : { y1: 1 - colorBarHeight, y2: colorBarHeight }
-  let ticksX = orient === 'vertical' ? { x1: colorBarWidth, x2: 1 } : { x1: 0, x2: colorBarWidth }
-  let ticksY = { y1: 0, y2: 1 - colorBarHeight }
+  let graphicalBarX = { x1: 0, x2: graphicalBarWidth }
+  let graphicalBarY = orient === 'vertical' ? { y1: 0, y2: graphicalBarHeight } : { y1: 1 - graphicalBarHeight, y2: graphicalBarHeight }
+  let ticksX = orient === 'vertical' ? { x1: graphicalBarWidth, x2: 1 } : { x1: 0, x2: graphicalBarWidth }
+  let ticksY = orient === 'vertical' ? { y1: 0, y2: graphicalBarHeight } : { y1: 0, y2: 1 - graphicalBarHeight }
+  
+  // graphical bar subsections
+  let colorBarX = orient === 'vertical' ? { x1: 0, x2: 0.8 } : { x1: 0, x2: 1 }
+  let colorBarY = orient === 'vertical' ? { y1: 0, y2: 1 } : { y1: 1, y2: 0.2 }
+
+  let tickBarX = orient === 'vertical' ? { x1: 0.8, x2: 1 } : { x1: 0, x2: 1 }
+  let tickBarY = orient === 'vertical' ? { y1: 0, y2: 1 } : { y1: 0.2, y2: 0 }
+  
+  // title positioning
   let titleSectionX = { x1: 0, x2: 1 }
-  let titleSectionY = { y1: colorBarHeight, y2: 1 }
+  let titleSectionY = { y1: graphicalBarHeight, y2: 1 }
 
   $: {
     if (usePadding === true) {
@@ -156,8 +165,11 @@
     if (!isValid(x1, x2, y1, y2) && ['horizontal', 'vertical'].includes(orient)) {
       if ($sectionContext.flipX) {
         if (orient === 'vertical') {
-          colorbarX = { x1: 1, x2: 1 - colorBarWidth }
-          ticksX = { x1: 1 - colorBarWidth, x2: 0 }
+          graphicalBarX = { x1: 1, x2: 1 - graphicalBarWidth }
+          ticksX = { x1: 1 - graphicalBarWidth, x2: 0 }
+          colorBarX = { x1: 1 - colorBarX.x2, x2: 1 }
+          tickBarX = { x1: 0, x2: 1 - tickBarX.x1 }
+
         }
       }
       rangeCoordsX = createPosXCoords(hjust, xRange, orient, width, xOffset, labelFontSize, flipX)
@@ -168,13 +180,13 @@
 
       if ($sectionContext.flipY) {
         if (orient === 'vertical') {
-          colorbarY = { y1: 1, y2: 1 - colorBarHeight }
-          ticksY = { y1: 1, y2: 1 - colorBarHeight }
-          titleSectionY = { y1: 0, y2: 1 - colorBarHeight }
+          graphicalBarY = { y1: 1, y2: 1 - graphicalBarHeight }
+          ticksY = { y1: 1, y2: 1 - graphicalBarHeight }
+          titleSectionY = { y1: 0, y2: 1 - graphicalBarHeight }
         } else {
-          colorbarY = { y1: colorBarHeight, y2: 1 - colorBarHeight }
-          ticksY = { y1: 1, y2: colorBarHeight }
-          titleSectionY = { y1: 0, y2: 1 - colorBarHeight }
+          graphicalBarY = { y1: graphicalBarHeight, y2: 1 - graphicalBarHeight }
+          ticksY = { y1: 1, y2: graphicalBarHeight }
+          titleSectionY = { y1: 0, y2: 1 - graphicalBarHeight }
         }
       }
       rangeCoordsY = createPosYCoords(vjust, yRange, orient, height, yOffset, addTitleSize, flipY)
@@ -222,15 +234,19 @@
   // Flip parts of legend
   $: {
     if (flipX) {
-      colorbarX = { x1: 1 - colorbarX.x2, x2: 1 - colorbarX.x1 }
+      graphicalBarX = { x1: 1 - graphicalBarX.x2, x2: 1 - graphicalBarX.x1 }
       ticksX = { x1: 1 - ticksX.x2, x2: 1 - ticksX.x1 }
       titleSectionX = { x1: 1 - titleSectionX.x2, x2: 1 - titleSectionX.x1 }
+      colorBarX = { x1: 1 - colorBarX.x2, x2: 1 - colorBarX.x1 }
+      tickBarX = { x1: 1 - tickBarX.x2, x2: 1 - tickBarX.x1 }
     }
 
     if (flipY) {
-      colorbarY = { y1: 1 - colorbarY.y2, y2: 1 - colorbarY.y1 }
+      graphicalBarY = { y1: 1 - graphicalBarY.y2, y2: 1 - graphicalBarY.y1 }
       ticksY = { y1: 1 - ticksY.y2, y2: 1 - ticksY.y1 }
       titleSectionY = { y1: 1 - titleSectionY.y2, y2: 1 - titleSectionY.y1 }
+      colorBarY = { y1: 1 - colorBarY.y2, y2: 1 - colorBarY.y1 }
+      tickBarY = { y1: 1 - tickBarY.y2, y2: 1 - tickBarY.y1 }
     }
   }
 </script>
@@ -244,16 +260,47 @@
   scaleX={scaleLinear().domain([0, 1])}
   scaleY={scaleLinear().domain([0, 1])}
 >
-  <!-- Color bar or symbols-->
+  <!-- Graphical section -->
   <Section
-    x1={colorbarX.x1}
-    x2={colorbarX.x2}
-    y1={colorbarY.y1}
-    y2={colorbarY.y2}
+    x1={graphicalBarX.x1}
+    x2={graphicalBarX.x2}
+    y1={graphicalBarY.y1}
+    y2={graphicalBarY.y2}
     backgroundColor={'#e8e8e8'}
     scaleX={scaleLinear().domain([0, 1])}
     scaleY={scaleLinear().domain([0, 1])}
   >
+    <!-- Ticks -->
+    <Section
+      x1={tickBarX.x1}
+      x2={tickBarX.x2}
+      y1={tickBarY.y1}
+      y2={tickBarY.y2}
+      backgroundColor={'coral'}
+      scaleX={scaleLinear().domain([0, 1])}
+      scaleY={scaleLinear().domain([0, 1])}
+    />
+    <!-- Color bar-->
+    {#if ['discrete', 'symbol'].includes(legend)}
+      <Section
+        x1={colorBarX.x1}
+        x2={colorBarX.x2}
+        y1={colorBarY.y1}
+        y2={colorBarY.y2}
+        backgroundColor={'dodgerblue'}
+        scaleX={scaleLinear().domain([0, 1])}
+        scaleY={scaleLinear().domain([0, 1])}
+      >
+      </Section>
+    {:else if legend === 'gradient'}
+      <Rectangle 
+        x1={colorBarX.x1}
+        x2={colorBarX.x2}
+        y1={colorBarY.y1}
+        y2={colorBarY.y2}
+        fill={'dodgerblue'}
+      />
+    {/if}
   </Section>
 
   <!-- Ticks-->
