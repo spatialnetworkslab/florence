@@ -32,8 +32,8 @@ function checkValidType (value) {
 
 export function getTicks (scale, labelCount, labelExtra, firstLabel) {
   let tickValues
-
   // Bins
+  console.log(scale)
   if (Array.isArray(scale[0]) && scale.length > 0) {
     tickValues = []
     tickValues.push(scale[0][0])
@@ -54,9 +54,9 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
     } else {
       tickValues = scale
     }
-  } else if ('ticks' in scale) {
+  } else if ((Object.prototype.hasOwnProperty.call(scale, 'ticks'))) {
     tickValues = scale.ticks(labelCount)
-  } else if ('domain' in scale) {
+  } else if ((Object.prototype.hasOwnProperty.call(scale, 'domain'))) {
     tickValues = scale.domain()
   } else {
     throw new Error(`Couldn't construct legend. Please provide 'tickValues' or a scale with
@@ -66,21 +66,22 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
   if (labelExtra && 'domain' in scale && tickValues[0] !== scale.domain()[0]) {
     tickValues.unshift(scale.domain()[0])
   }
+  console.log(tickValues)
   return tickValues
 }
 
-export function getTickPositions (tickValuesArray, domain, tickExtra, coordinates, flip, orient, padding, useScale, flipScale) {
+export function getTickPositions (tickValuesArray, scale, tickExtra, flip, padding, useScale, flipScale) {
   let tickPositions
-
   // Bins
-  if (useScale) {
+  console.log(typeof domain)
+  if (useScale || Object.prototype.hasOwnProperty.call(scale, 'domain')) {
     let posScale
-    const locRange = orient === 'vertical' ? [coordinates.y1, coordinates.y2] : [coordinates.x1, coordinates.x2]
+    const locRange = [0.05, 0.95]
 
     if (!flip) {
-      posScale = scaleLinear().domain(domain).range(locRange)
+      posScale = scaleLinear().domain(scale.domain).range(locRange)
     } else {
-      posScale = scaleLinear().domain(domain).range(locRange.reverse())
+      posScale = scaleLinear().domain(scale.domain).range(locRange.reverse())
     }
 
     tickPositions = tickValuesArray.map((value, i) => {
@@ -89,9 +90,9 @@ export function getTickPositions (tickValuesArray, domain, tickExtra, coordinate
 
   // Arrays
   // equal interval: works on both vertical and horizontal orientations
-  } else if (Array.isArray(domain)) {
-    const interval = orient === 'vertical' ? coordinates.height / (tickValuesArray.length) : coordinates.width / (tickValuesArray.length)
-    const firstVal = orient === 'vertical' ? coordinates.y1 : coordinates.x1
+  } else if (Array.isArray(scale)) {
+    const interval = 1 / (tickValuesArray.length)
+    const firstVal = 0
     tickValuesArray = flip ? tickValuesArray.reverse() : tickValuesArray
 
     tickPositions = tickValuesArray.map((value, i) => {

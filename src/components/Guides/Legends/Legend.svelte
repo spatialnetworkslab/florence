@@ -1,3 +1,10 @@
+<script context="module">
+  let idCounter = 0
+  function getId () {
+    return 'gradient' + idCounter++
+  }
+</script>
+
 <script>
   import { scaleLinear } from 'd3-scale'
   import { Section, Point, Label, LabelLayer, Rectangle, RectangleLayer, Symbol_ } from '../../../index.js'
@@ -13,6 +20,8 @@
   // General props
   export let legend = 'discrete'
   export let color = 'coral'
+  export let scale = scaleLinear().domain([0, 2, 5, 8, 9]).range(["red", "blue"])
+  let gradientId = getId()
 
   // Aesthetics: positioning
   export let x1 = undefined
@@ -52,12 +61,13 @@
   export let labelOpacity = 1
   export let labelColor = 'black'
   export let labelAnchorPoint = 'center'
-  export let labelCount = 10
+  export let labelCount = 5
   export let labelExtra = false
   export let firstLabel = undefined
   export let format = undefined
   export let labelPaddingY = 0
   export let labelPaddingX = 0
+  export let flipLabelOrder
 
   // legend title
   export let titleHjust = 'center'
@@ -101,9 +111,8 @@
   const sectionContext = SectionContext.subscribe()
 
   // Private variables
-  let scale
   let scaleDomain
-  const useScale = false
+  let useScale = false
   let tickLabelText
   let tickLabelPositions
   let tickLabelXCoords
@@ -130,8 +139,11 @@
   let yCoords
   let addTitleSize
 
+  // Graphical bar: color, symbols
   let graphicalBarX = { x1: 0, x2: graphicalBarWidth }
   let graphicalBarY = orient === 'vertical' ? { y1: 0, y2: graphicalBarHeight } : { y1: 1 - graphicalBarHeight, y2: graphicalBarHeight }
+  
+  // Line ticks
   let ticksX = orient === 'vertical' ? { x1: graphicalBarWidth, x2: 1 } : { x1: 0, x2: graphicalBarWidth }
   let ticksY = orient === 'vertical' ? { y1: 0, y2: graphicalBarHeight } : { y1: 0, y2: 1 - graphicalBarHeight }
   
@@ -146,6 +158,7 @@
   let titleSectionX = { x1: 0, x2: 1 }
   let titleSectionY = { y1: graphicalBarHeight, y2: 1 }
 
+  // Extract and remove padding if necessary
   $: {
     if (usePadding === true) {
       _padding = $sectionContext.padding
@@ -249,7 +262,90 @@
       tickBarY = { y1: 1 - tickBarY.y2, y2: 1 - tickBarY.y1 }
     }
   }
+
+  // Extract scaleDomain, if necessary
+  // CHECK:
+  // 1. that scale is provided,
+  // 2. that least one of the aesthetics has been specified
+  $: {
+    if (scale) {
+      // if (Object.prototype.hasOwnProperty.call(scale, 'domain')) {
+      //   if (typeof scale.domain === 'function') {
+      //     scaleDomain = scale.domain()
+      //   } else {
+      //     scaleDomain = scale.domain
+      //   }
+      // } else if (Array.isArray(scale)) {
+      //   scaleDomain = scale
+      // }
+    } else {
+      throw new Error(`Couldn't construct legend. Please provide at least 'scale' and one of the
+      aesthetic properties 'fill' or 'fillOpacity' with range properties or methods.`)
+    }
+  }
+
+  // TICK LABELS and POSITIONING
+  // Assumes that legend illustrates one dimensional scale,
+  // and that either fill or fillOpacity can used (it will look at fill first)
+  $: {
+    if (labels === undefined) {
+      tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
+      tickLabelText = format !== undefined ? tickLabelText.map(format) : tickLabelText
+    } else {
+      tickLabelText = format !== undefined ? labels.map(format) : labels
+      useScale = true
+    }
+
+    if (orient === 'vertical') {
+      tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, flipLabelOrder, labelPaddingY, useScale, $sectionContext.flipY)
+      tickLabelXCoords = Array(tickLabelText.length).fill(0.5)
+      // tickLabelXCoords = flipLabels ? x1 + colorBarHeight * xCoords.width : x1 + (1 - colorBarHeight) * xCoords.width
+      // tickLabelXCoords = labelX || tickLabelXCoords
+
+      // if (labelPaddingX !== undefined) {
+      //   tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPaddingX : tickLabelXCoords - labelPaddingX
+      // }
+
+      // format = getFormat(labelFormat, scaleDomain, tickLabelYCoords.length)
+    } else if (orient === 'horizontal') {
+      tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, flipLabelOrder, labelPaddingX, useScale, $sectionContext.flipY)
+      tickLabelYCoords = Array(tickLabelText.length).fill(0.5)
+      // tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * yCoords.height : yCoords.y2 - colorBarWidth * yCoords.height
+      // tickLabelYCoords = labelY || tickLabelYCoords
+  
+      // if (labelPaddingY !== undefined) {
+      //   tickLabelYCoords = flipLabels ? tickLabelYCoords - labelPaddingY : tickLabelYCoords + labelPaddingY
+      // }
+
+      // format = getFormat(labelFormat, scaleDomain, tickLabelXCoords.length)
+    } else {
+      throw new Error('Could not construct legend. Please provide either \'vertical\' or \'horizontal\' to \'orient\' prop.')
+    }
+}
 </script>
+
+<!-- 
+{#if legend='gradient'}
+  <g class="gradient-legend">
+  <defs>
+    <linearGradient
+      id={gradientId}
+      x1={gradX.x1}
+      y1={gradY.y1}
+      x2={gradX.x2}
+      y2={gradY.y2}
+      >
+      {#each offsets as o, i}
+          <stop
+          key={i}
+          offset={`${o * 100 + '%'}`}
+          style={`stop-color:${Array.isArray(tickColors) ? tickColors[i] : tickColors};stop-opacity:${Array.isArray(tickOpacities) ? tickOpacities[i] : tickOpacities}`}
+          />
+      {/each}
+    </linearGradient>
+  </defs>
+</g> 
+{/if}-->
 
 <Section
   x1={() => xCoords.x1}
@@ -312,8 +408,23 @@
     backgroundColor={'#DCDCDC'}
     scaleX={scaleLinear().domain([0, 1])}
     scaleY={scaleLinear().domain([0, 1])}
-  />
-  <Section/>
+  >
+
+    <LabelLayer
+      x={tickLabelXCoords}
+      y={tickLabelYCoords}
+      text={tickLabelText} 
+      anchorPoint={labelAnchorPoint}
+      rotation={labelRotate} 
+      fontFamily={labelFont}
+      fontSize={labelFontSize}
+      fontWeight={labelFontWeight} 
+      opacity={labelOpacity} 
+      fill={labelColor}
+      {transition} 
+    />
+
+  </Section>
 
   <!-- Title -->
   <Section
@@ -324,7 +435,22 @@
     backgroundColor={'silver'}
     scaleX={scaleLinear().domain([0, 1])}
     scaleY={scaleLinear().domain([0, 1])}
-  />
-  <Section/>
+    label={'title'}
+  >
+    {#if title.length > 0}
+      <Label 
+        x={0.5}
+        y={0.65}
+        text={title}
+        fontFamily={titleFont}
+        fontSize={titleFontSize}
+        fontWeight={titleFontWeight}
+        rotation={titleRotation}
+        anchorPoint={titleAnchorPoint}
+        opacity={titleOpacity} 
+        fill={titleColor}
+      />
+    {/if}
+  </Section>
 </Section>
 

@@ -105,21 +105,21 @@
       y={({ finalScaleX }) => finalScaleX.invert(0)}
     />
 
-    <GradientLegend
+    <!-- <GradientLegend
       x1={20} x2={60}
       y1={80} y2={100}
       fill={linearColorScale}
       orient={'horizontal'}
       titleVjust={'top'}
       labelCount={8}
-      />
-    <Legend vjust={'top'} hjust={'right'} color={'goldenrod'} flipY legend={'gradient'}/>
-    <Legend vjust={'top'} hjust={'center'} color={'chartreuse'}/>
-    <Legend vjust={'top'} hjust={'left'}/>
+      /> -->
+    <Legend scale={bins} vjust={'top'} hjust={'right'} color={'goldenrod'} flipY legend={'gradient'}/>
+    <Legend scale={linearColorScale} vjust={'top'} hjust={'center'} color={'chartreuse'}/>
+    <Legend scale={linearColorScale} vjust={'top'} hjust={'left'}/>
 
-    <Legend vjust={'bottom'} hjust={'right'} color={'goldenrod'} orient={'vertical'} flipY/>
-    <Legend vjust={'bottom'} hjust={'center'} color={'chartreuse'} orient={'vertical'} flipX/>
-    <Legend vjust={'bottom'} hjust={'left'} orient={'vertical'} legend={'gradient'}/>
+    <Legend scale={bins2} vjust={'bottom'} hjust={'right'} color={'goldenrod'} orient={'vertical'} flipY/>
+    <Legend scale={linearColorScale} vjust={'bottom'} hjust={'center'} color={'chartreuse'} orient={'vertical'} flipX/>
+    <Legend scale={linearColorScale} vjust={'bottom'} hjust={'left'} orient={'vertical'} legend={'gradient'}/>
     <XAxis/>
     <YAxis/>
   </Section>
