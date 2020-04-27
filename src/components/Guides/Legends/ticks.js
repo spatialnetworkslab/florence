@@ -63,7 +63,7 @@ function hasDomain (scale) {
 export function getTickPositions (tickValuesArray, scale, tickExtra, flip, padding, useScale, flipScale) {
   let tickPositions
   let domain = scale.domain()
-  console.log(useScale, domain)
+
   if (Array.isArray(domain[0])) {
     useScale = true
     domain = [domain[0][0], domain[domain.length - 1][1]]

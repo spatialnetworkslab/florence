@@ -110,13 +110,13 @@
       y={({ finalScaleX }) => finalScaleX.invert(0)}
     />
 
-    <!-- <Legend title={'bins'} scale={binScale1} vjust={'top'} hjust={'right'} color={'goldenrod'} flipY legend={'gradient'}/>
+    <Legend title={'bins'} scale={binScale1} vjust={'top'} hjust={'right'} color={'goldenrod'} flipY legend={'gradient'}/>
     <Legend title={'threshold'} labels={[0, 3, '5+', '9+', 10]} scale={thresholdScale} vjust={'top'} hjust={'center'} color={'chartreuse'}/>
-    <Legend title={'linear discrete'} scale={linearColorScale} vjust={'top'} hjust={'left'}/>-->
+    <Legend title={'linear discrete'} scale={linearColorScale} vjust={'top'} hjust={'left'}/>
 
     <Legend title={'bins2'} scale={binScale2} vjust={'bottom'} hjust={'right'} color={'goldenrod'} orient={'vertical'} flipY/>
-    <!-- <Legend title={'categorical'} scale={nutrientColorScale} vjust={'bottom'} hjust={'center'} color={'chartreuse'} orient={'vertical'} flipX/> 
-    <Legend title={'linear gradient'} scale={linearColorScale} vjust={'bottom'} hjust={'left'} orient={'vertical'} legend={'gradient'}/> -->
+    <Legend title={'categorical'} scale={nutrientColorScale} vjust={'bottom'} hjust={'center'} color={'chartreuse'} orient={'vertical'} flipX/> 
+    <Legend title={'linear gradient'} scale={linearColorScale} vjust={'bottom'} hjust={'left'} orient={'vertical'} legend={'gradient'}/>
     <XAxis/>
     <YAxis/>
   </Section>
