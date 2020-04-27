@@ -15,7 +15,8 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
   
   // Permanent
-  import { getTickPositions, getFormat, getTicks, getColorGeoms, isValid } from './utils.js'
+  import { getColorGeoms, isValid } from './utils.js'
+  import { getTickPositions, getFormat, getTicks } from './ticks.js'
 
   // General props
   export let legend = 'discrete'
@@ -288,16 +289,13 @@
   // Assumes that legend illustrates one dimensional scale,
   // and that either fill or fillOpacity can used (it will look at fill first)
   $: {
-    if (labels === undefined) {
-      tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
-      tickLabelText = format !== undefined ? tickLabelText.map(format) : tickLabelText
-    } else {
-      tickLabelText = format !== undefined ? labels.map(format) : labels
+    tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
+    if (labels) {
       useScale = true
     }
 
     if (orient === 'vertical') {
-      tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, flipLabelOrder, labelPaddingY, useScale, $sectionContext.flipY)
+      tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, flipLabelOrder, labelPaddingY, useScale)
       tickLabelXCoords = Array(tickLabelText.length).fill(0.5)
       // tickLabelXCoords = flipLabels ? x1 + colorBarHeight * xCoords.width : x1 + (1 - colorBarHeight) * xCoords.width
       // tickLabelXCoords = labelX || tickLabelXCoords
@@ -305,10 +303,8 @@
       // if (labelPaddingX !== undefined) {
       //   tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPaddingX : tickLabelXCoords - labelPaddingX
       // }
-
-      // format = getFormat(labelFormat, scaleDomain, tickLabelYCoords.length)
     } else if (orient === 'horizontal') {
-      tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, flipLabelOrder, labelPaddingX, useScale, $sectionContext.flipY)
+      tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, flipLabelOrder, labelPaddingX, useScale)
       tickLabelYCoords = Array(tickLabelText.length).fill(0.5)
       // tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * yCoords.height : yCoords.y2 - colorBarWidth * yCoords.height
       // tickLabelYCoords = labelY || tickLabelYCoords
@@ -316,12 +312,14 @@
       // if (labelPaddingY !== undefined) {
       //   tickLabelYCoords = flipLabels ? tickLabelYCoords - labelPaddingY : tickLabelYCoords + labelPaddingY
       // }
-
-      // format = getFormat(labelFormat, scaleDomain, tickLabelXCoords.length)
     } else {
       throw new Error('Could not construct legend. Please provide either \'vertical\' or \'horizontal\' to \'orient\' prop.')
     }
 }
+
+$: format = getFormat(labelFormat, scale, tickLabelXCoords.length)
+$: tickLabelText = tickLabelText.map(format)
+$: tickLabelText = labels ? labels : tickLabelText
 </script>
 
 <!-- 

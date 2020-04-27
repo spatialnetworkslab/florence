@@ -1,11 +1,11 @@
 <script>
   // d3
-  import { scaleSequential, scaleLinear, scaleOrdinal } from 'd3-scale'
+  import { scaleSequential, scaleLinear, scaleOrdinal, scaleThreshold } from 'd3-scale'
   import * as d3 from 'd3-scale-chromatic'
   import { schemeAccent, schemeDark2 } from 'd3-scale-chromatic'
 
   // florence
-	import { Graphic, Section, Legend, Point, XAxis, YAxis, GradientLegend } from '../../../../src/'
+	import { Graphic, Section, Legend, Point, XAxis, YAxis, GradientLegend, Label } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
@@ -42,7 +42,7 @@
 
   // scalar data
   const bins = [[0, 30], [30, 70], [70, 100], [100, 155], [55, 300]]
-  const bins2 = [0, 10, 20, 40, 90, 120]
+  const bins2 = [[0, 10], [10, 20], [20, 40], [40, 90], [90, 120]]
   const fruits = ['apple', 'banana', 'orange', 'pomelo']
 
   // fill scales
@@ -51,12 +51,17 @@
   const seqScale = scaleSequential().domain(data.domain('a')).interpolator(d3.interpolateSinebow)
   const linearColorScale2 =  scaleSequential().domain([0, 120]).interpolator(d3.interpolateViridis)
   const fruitScale = scaleOrdinal().domain(fruits).range(schemeDark2)
-  const binScale = scaleLinear().domain([0, 4]).range(['red', 'blue'])
+  const binScale1 = scaleOrdinal().domain(bins).range(['red', 'blue'])
+  const binScale2 = scaleOrdinal().domain(bins2).range('pink', 'green')
 
   // fill opacity scales
   const alphaScale = scaleLinear().domain(data.domain('a')).range([0, 1])
   const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
   const binAlpha = scaleLinear().domain([0, 120]).range([0, 1])
+
+  const thresholds = [[0, 3], [3, 5], [5, 9], [9, 10]]
+  const thresholdColors = ['#d3d3d3', '#FFF5EB', '#FDD1A5', '#FD9243', '#DE4F05', '#7F2704']
+  const thresholdScale = scaleThreshold().domain(thresholds).range(thresholdColors)
 
  // categorical data
    let catData = new DataContainer({
@@ -105,22 +110,15 @@
       y={({ finalScaleX }) => finalScaleX.invert(0)}
     />
 
-    <!-- <GradientLegend
-      x1={20} x2={60}
-      y1={80} y2={100}
-      fill={linearColorScale}
-      orient={'horizontal'}
-      titleVjust={'top'}
-      labelCount={8}
-      /> -->
-    <Legend scale={bins} vjust={'top'} hjust={'right'} color={'goldenrod'} flipY legend={'gradient'}/>
-    <Legend scale={linearColorScale} vjust={'top'} hjust={'center'} color={'chartreuse'}/>
-    <Legend scale={linearColorScale} vjust={'top'} hjust={'left'}/>
+    <!-- <Legend title={'bins'} scale={binScale1} vjust={'top'} hjust={'right'} color={'goldenrod'} flipY legend={'gradient'}/>
+    <Legend title={'threshold'} labels={[0, 3, '5+', '9+', 10]} scale={thresholdScale} vjust={'top'} hjust={'center'} color={'chartreuse'}/>
+    <Legend title={'linear discrete'} scale={linearColorScale} vjust={'top'} hjust={'left'}/>-->
 
-    <Legend scale={bins2} vjust={'bottom'} hjust={'right'} color={'goldenrod'} orient={'vertical'} flipY/>
-    <Legend scale={linearColorScale} vjust={'bottom'} hjust={'center'} color={'chartreuse'} orient={'vertical'} flipX/>
-    <Legend scale={linearColorScale} vjust={'bottom'} hjust={'left'} orient={'vertical'} legend={'gradient'}/>
+    <Legend title={'bins2'} scale={binScale2} vjust={'bottom'} hjust={'right'} color={'goldenrod'} orient={'vertical'} flipY/>
+    <!-- <Legend title={'categorical'} scale={nutrientColorScale} vjust={'bottom'} hjust={'center'} color={'chartreuse'} orient={'vertical'} flipX/> 
+    <Legend title={'linear gradient'} scale={linearColorScale} vjust={'bottom'} hjust={'left'} orient={'vertical'} legend={'gradient'}/> -->
     <XAxis/>
     <YAxis/>
   </Section>
+      
 </Graphic>

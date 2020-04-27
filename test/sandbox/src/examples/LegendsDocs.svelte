@@ -2,7 +2,7 @@
   // d3
   import { scaleLinear } from 'd3-scale'
   // florence
-  import { Graphic, Section, DiscreteLegend, Point, GradientLegend, YAxis, XAxis } from '../../../../src/'
+  import { Graphic, Section, DiscreteLegend, Point, GradientLegend, YAxis, XAxis, Label } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
   export let N = 100
   
@@ -78,7 +78,7 @@
       labelCount={5}
       usePadding={true}
     /> -->
-    
+
     <XAxis />
     <YAxis />
   

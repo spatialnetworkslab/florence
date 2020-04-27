@@ -15,7 +15,8 @@
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   
   // Permanent
-  import { getTickPositions, getFormat, getTicks, getGradientGeoms, isValid } from './utils.js'
+  import { getColorGeoms, isValid } from './utils.js'
+  import { getTickPositions, getFormat, getTicks } from './ticks.js'
 
   // global properties
   const gradientId = getId()

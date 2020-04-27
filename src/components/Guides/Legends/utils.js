@@ -1,4 +1,3 @@
-import { ticks as arrayTicks } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
 
 // if x1, x2, y1, y2 are values, functions => return true
@@ -28,97 +27,6 @@ function checkValidType (value) {
   }
 
   return false
-}
-
-export function getTicks (scale, labelCount, labelExtra, firstLabel) {
-  let tickValues
-  // Bins
-  console.log(scale)
-  if (Array.isArray(scale[0]) && scale.length > 0) {
-    tickValues = []
-    tickValues.push(scale[0][0])
-
-    for (let i = 0; i < scale.length; i++) {
-      tickValues.push(scale[i][1])
-    }
-  // Array
-  } else if (Array.isArray(scale)) {
-    if (scale[0].constructor === Number) {
-      tickValues = arrayTicks(...scale, labelCount)
-
-      if (firstLabel !== undefined) {
-        if (labelExtra && tickValues[0] !== firstLabel) {
-          tickValues.unshift(firstLabel)
-        }
-      }
-    } else {
-      tickValues = scale
-    }
-  } else if ((Object.prototype.hasOwnProperty.call(scale, 'ticks'))) {
-    tickValues = scale.ticks(labelCount)
-  } else if ((Object.prototype.hasOwnProperty.call(scale, 'domain'))) {
-    tickValues = scale.domain()
-  } else {
-    throw new Error(`Couldn't construct legend. Please provide 'tickValues' or a scale with
-        either a 'ticks' or a 'domain' method.`)
-  }
-
-  if (labelExtra && 'domain' in scale && tickValues[0] !== scale.domain()[0]) {
-    tickValues.unshift(scale.domain()[0])
-  }
-  console.log(tickValues)
-  return tickValues
-}
-
-export function getTickPositions (tickValuesArray, scale, tickExtra, flip, padding, useScale, flipScale) {
-  let tickPositions
-  // Bins
-  console.log(typeof domain)
-  if (useScale || Object.prototype.hasOwnProperty.call(scale, 'domain')) {
-    let posScale
-    const locRange = [0.05, 0.95]
-
-    if (!flip) {
-      posScale = scaleLinear().domain(scale.domain).range(locRange)
-    } else {
-      posScale = scaleLinear().domain(scale.domain).range(locRange.reverse())
-    }
-
-    tickPositions = tickValuesArray.map((value, i) => {
-      return posScale(value) + padding
-    })
-
-  // Arrays
-  // equal interval: works on both vertical and horizontal orientations
-  } else if (Array.isArray(scale)) {
-    const interval = 1 / (tickValuesArray.length)
-    const firstVal = 0
-    tickValuesArray = flip ? tickValuesArray.reverse() : tickValuesArray
-
-    tickPositions = tickValuesArray.map((value, i) => {
-      return firstVal + interval * (i + 0.5) + padding
-    })
-  } else {
-    throw new Error(`Couldn't construct legend. Please provide 'tickValues' or a scale with
-        either a 'ticks' or a 'domain' method.`)
-  }
-
-  if (tickExtra && tickPositions[0] !== domain[0] && useScale) {
-    tickPositions.unshift(domain[0])
-  }
-
-  if (flipScale) {
-    tickPositions.reverse()
-  }
-
-  return tickPositions
-}
-
-export function getFormat (labelFormat, scale, numberOfTicks) {
-  if (labelFormat) return labelFormat
-  if ('tickFormat' in scale) return scale.tickFormat(numberOfTicks)
-
-  return x => x
 }
 
 export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale, flipScale) {
