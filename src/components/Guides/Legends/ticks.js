@@ -52,11 +52,11 @@ export function getTicks (scale, labelCount, labelExtra, firstLabel) {
   return finalTicks
 }
 
-function isContinuous (scale) {
+export function isContinuous (scale) {
   return 'ticks' in scale
 }
 
-function hasDomain (scale) {
+export function hasDomain (scale) {
   return 'domain' in scale
 }
 

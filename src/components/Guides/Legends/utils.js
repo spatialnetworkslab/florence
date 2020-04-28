@@ -1,4 +1,5 @@
 import { scaleLinear } from 'd3-scale'
+import { isContinuous, hasDomain } from './ticks.js'
 
 // if x1, x2, y1, y2 are values, functions => return true
 // if x1, x2, y1, y2 are all undefined => return false
@@ -29,103 +30,127 @@ function checkValidType (value) {
   return false
 }
 
-export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickLabelPositions, tickAlign, labelFontSize, colorBarHeight, colorBarWidth, flipLabels, flip, xCoords, yCoords, useScale, flipScale) {
+export function getMappable(property, scale, mapRange, ticks) {
+  const mapRangeType = typeof mapRange
+
+  if (!mapRangeType in ['object', 'function', 'number', 'string']) {
+    throw new Error(`Couldn't construct legend. Please provide 'tickValues' or a scale with
+        either a 'ticks' or a 'domain' method.`)
+  }
+
+  if (scale && mapRange !== undefined && mapRangeType === 'object') {
+    if (typeof scale === 'function' && hasDomain(scale)) {
+      console.log(scale.domain())
+      const fullScale = scale.domain(ticks).range(mapRange)
+
+      // d3 scale or bins
+      const mapValues = ticks.map((value, i) => {
+        return (fullScale(value))
+      })
+      console.log('+++', mapValues, scale.domain())
+      return mapValues
+    }
+  } else {
+    return mapRange
+  }
+}
+
+// Check if color input is valid RGB/HTML color
+export function checkValidColor (color) {
+  let e = document.getElementById('divValidColor')
+
+  if (!e) {
+    e = document.createElement('div')
+    e.id = 'divValidColor'
+  }
+  e.style.borderColor = ''
+  e.style.borderColor = color
+
+  let tempcolor = e.style.borderColor
+
+  if (tempcolor.length === 0) {
+    return false
+  }
+  return true
+}
+
+export function getColorGeoms (mappableArray, orient, scale, tickLabelPositions, tickAlign, useScale, flipLabelOrder, flipX, flipY) {
   let colorXStartCoords = []
   let colorXEndCoords = []
   let colorYStartCoords = []
   let colorYEndCoords = []
+  let domain = scale.domain()
 
   if (orient === 'vertical') {
-    // x coords
-    colorXStartCoords = tickLabelText.map(i => {
-      if (flipLabels) {
-        return tickAlign - labelFontSize * 2 - colorBarWidth * xCoords.width
-      } else {
-        return tickAlign + labelFontSize * 2
-      }
-    })
+    console.log(orient)
+    // // x coords
+    // colorXStartCoords = tickLabelText.map(i => {
+    //   if (flipLabels) {
+    //     return tickAlign - labelFontSize * 2 - colorBarWidth * xCoords.width
+    //   } else {
+    //     return tickAlign + labelFontSize * 2
+    //   }
+    // })
 
-    colorXEndCoords = tickLabelText.map((value, i) => {
-      if (flipLabels) {
-        return tickAlign - labelFontSize * 2
-      } else {
-        return tickAlign + labelFontSize * 2 + colorBarWidth * xCoords.width
-      }
-    })
+    // colorXEndCoords = tickLabelText.map((value, i) => {
+    //   if (flipLabels) {
+    //     return tickAlign - labelFontSize * 2
+    //   } else {
+    //     return tickAlign + labelFontSize * 2 + colorBarWidth * xCoords.width
+    //   }
+    // })
 
-    // y coords
-    // Non-uniform distribution along linear scale
-    if (useScale) {
-      colorYStartCoords = tickLabelText.map((value, i) => {
-        return tickLabelPositions[i]
-      })
+    // // y coords
+    // // Non-uniform distribution along linear scale
+    // if (useScale) {
+    //   colorYStartCoords = tickLabelText.map((value, i) => {
+    //     return tickLabelPositions[i]
+    //   })
 
-      colorYEndCoords = JSON.parse(JSON.stringify(colorYStartCoords))
+    //   colorYEndCoords = JSON.parse(JSON.stringify(colorYStartCoords))
 
-      colorXStartCoords.pop()
-      colorXEndCoords.pop()
-      colorYStartCoords.pop()
-      colorYEndCoords.shift()
-      tickMappable.pop()
+    //   colorXStartCoords.pop()
+    //   colorXEndCoords.pop()
+    //   colorYStartCoords.pop()
+    //   colorYEndCoords.shift()
+    //   tickMappable.pop()
 
     // Arrays or one tick to one box
-    } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
-      const interval = Math.abs(yCoords.y2 - yCoords.y1) / tickMappable.length
-      let start = yCoords.y1
-      colorYStartCoords = tickMappable.map((value, i) => {
-        if (i > 0) {
-          start += interval
-          colorYEndCoords.push(start)
-        }
-        return start
-      })
+    // } else if (Array.isArray(scale) || ('ticks' in scale || 'domain' in scale)) {
+    //   const interval = 1 / tickMappable.length
+    //   let start = yCoords.y1
+    //   colorYStartCoords = tickMappable.map((value, i) => {
+    //     if (i > 0) {
+    //       start += interval
+    //       colorYEndCoords.push(start)
+    //     }
+    //     return start
+    //   })
 
-      colorYEndCoords.push(start + interval)
-    }
+    //   colorYEndCoords.push(start + interval)
+    // }
 
-    if (flipScale) {
-      colorYStartCoords.reverse()
-      colorYEndCoords.reverse()
-    }
+    // if (flipScale) {
+    //   colorYStartCoords.reverse()
+    //   colorYEndCoords.reverse()
+    // }
   } else if (orient === 'horizontal') {
-    const coordsLength = Math.abs(yCoords.y2 - yCoords.y1)
-
-    colorYStartCoords = tickLabelText.map(i => {
-      if (flipLabels) {
-        return tickAlign + labelFontSize * 2
-      } else {
-        return tickAlign - labelFontSize * 2
-      }
-    })
-
-    colorYEndCoords = tickLabelText.map((value, i) => {
-      if (flipLabels) {
-        return tickAlign + labelFontSize * 2 + colorBarHeight * yCoords.height
-      } else {
-        return tickAlign - labelFontSize * 2 - colorBarHeight * yCoords.height
-      }
-    })
-
-    tickLabelText.map((value, i) => {
-      if (flipLabels) {
-        return yCoords.y2
-      } else {
-        return yCoords.y1 + colorBarHeight * coordsLength
-      }
-    })
+    colorYStartCoords = tickLabelPositions.map(i => { return 0 })
+    colorYEndCoords = tickLabelPositions.map(i => { return 1 })
+    console.log('___', tickLabelPositions)
 
     // Bins: follows tick location
     // Non-uniform distribution along linear scale
     if (useScale) {
-      colorXStartCoords = tickLabelText.map((value, i) => {
+      colorXStartCoords = tickLabelPositions.map((value, i) => {
         if (i === 0) {
           return tickLabelPositions[i] - 0.02
         }
         return tickLabelPositions[i]
       })
 
-      colorXEndCoords = tickLabelText.map((value, i) => {
-        if (i === tickLabelText.length - 1) {
+      colorXEndCoords = tickLabelPositions.map((value, i) => {
+        if (i === tickLabelPositions.length - 1) {
           return tickLabelPositions[i] + 0.02
         }
         return tickLabelPositions[i]
@@ -135,9 +160,9 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       colorYEndCoords.pop()
       colorXStartCoords.pop()
       colorXEndCoords.shift()
-      tickMappable.pop()
-
-      if (flipScale) {
+      mappableArray.pop()
+      console.log(colorXStartCoords, colorXEndCoords, mappableArray)
+      if (flipLabelOrder) {
         colorXStartCoords.reverse()
         colorXEndCoords.reverse()
       }
@@ -157,10 +182,10 @@ export function getColorGeoms (tickMappable, orient, scale, tickLabelText, tickL
       colorXEndCoords.push(start + interval)
     }
 
-    if (flipScale) {
-      colorXStartCoords.reverse()
-      colorXEndCoords.reverse()
-    }
+    // if (flipScale) {
+    //   colorXStartCoords.reverse()
+    //   colorXEndCoords.reverse()
+    // }
   }
 
   return { colorXStartCoords, colorXEndCoords, colorYStartCoords, colorYEndCoords }

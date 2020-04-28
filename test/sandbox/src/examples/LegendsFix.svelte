@@ -3,9 +3,10 @@
   import { scaleSequential, scaleLinear, scaleOrdinal, scaleThreshold } from 'd3-scale'
   import * as d3 from 'd3-scale-chromatic'
   import { schemeAccent, schemeDark2 } from 'd3-scale-chromatic'
+  import { format } from 'd3-format'
 
   // florence
-	import { Graphic, Section, Legend, Point, XAxis, YAxis, GradientLegend, Label } from '../../../../src/'
+	import { Graphic, Section, Legend, Point, XAxis, YAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	export let N = 100
@@ -59,7 +60,7 @@
   const fruitAlpha = scaleOrdinal().domain(fruits).range([0,1, 0.4, 0.2])
   const binAlpha = scaleLinear().domain([0, 120]).range([0, 1])
 
-  const thresholds = [[0, 3], [3, 5], [5, 9], [9, 10]]
+  const thresholds = [[0, 3], [3, 5], [5, 9], [9, 10], [10, 20]]
   const thresholdColors = ['#d3d3d3', '#FFF5EB', '#FDD1A5', '#FD9243', '#DE4F05', '#7F2704']
   const thresholdScale = scaleThreshold().domain(thresholds).range(thresholdColors)
 
@@ -110,13 +111,13 @@
       y={({ finalScaleX }) => finalScaleX.invert(0)}
     />
 
-    <Legend title={'bins'} scale={binScale1} vjust={'top'} hjust={'right'} color={'goldenrod'} flipY legend={'gradient'}/>
-    <Legend title={'threshold'} labels={[0, 3, '5+', '9+', 10]} scale={thresholdScale} vjust={'top'} hjust={'center'} color={'chartreuse'}/>
-    <Legend title={'linear discrete'} scale={linearColorScale} vjust={'top'} hjust={'left'}/>
+    <!-- <Legend title={'bins'} scale={binScale1} vjust={'top'} hjust={'right'} color={'goldenrod'} flipY legend={'gradient'}/> -->
+    <Legend title={'threshold'} fill={thresholdColors} labels={[0, 3, '5+', '🥝', 10, '20+']} scale={thresholdScale} vjust={'top'} hjust={'center'} color={'chartreuse'}/>
+    <!-- <Legend title={'linear discrete'} scale={linearColorScale} vjust={'top'} hjust={'left'}/>
 
     <Legend title={'bins2'} scale={binScale2} vjust={'bottom'} hjust={'right'} color={'goldenrod'} orient={'vertical'} flipY/>
-    <Legend title={'categorical'} scale={nutrientColorScale} vjust={'bottom'} hjust={'center'} color={'chartreuse'} orient={'vertical'} flipX/> 
-    <Legend title={'linear gradient'} scale={linearColorScale} vjust={'bottom'} hjust={'left'} orient={'vertical'} legend={'gradient'}/>
+    <Legend title={'categorical'} scale={nutrientColorScale} fill={schemeDark2} vjust={'bottom'} hjust={'center'} color={'chartreuse'} orient={'vertical'} flipX/> 
+    <Legend title={'linear gradient'} scale={linearColorScale} vjust={'bottom'} hjust={'left'} orient={'vertical'} legend={'gradient'}/> -->
     <XAxis/>
     <YAxis/>
   </Section>

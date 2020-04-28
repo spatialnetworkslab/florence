@@ -15,7 +15,7 @@
   import * as SectionContext from '../../Core/Section/SectionContext'
   
   // Permanent
-  import { getColorGeoms, isValid } from './utils.js'
+  import { getColorGeoms, isValid, getMappable } from './utils.js'
   import { getTickPositions, getFormat, getTicks } from './ticks.js'
 
   // General props
@@ -42,13 +42,16 @@
   export let flipX = false
   export let flipY = false
 
-  // Aesthetics: colors
+  // Mappable aesthetics
+  export let fill = undefined
+  export let fillOpacity = 1
+  export let shape = undefined
   export let stroke = 'none'
   export let strokeWidth = 2
-
-  // Aesthetics
-  export let fill = undefined
-  export let fillOpacity = undefined
+  export let strokeLinecap = undefined
+  export let strokeFill = undefined
+  export let strokeOpacity = 1
+  export let strokeDash  = undefined
 
   // Tick label settings
   export let labels = undefined // enable no label render
@@ -118,9 +121,17 @@
   let tickLabelPositions
   let tickLabelXCoords
   let tickLabelYCoords
-  let tickColors
-  let tickOpacities
   let tickAlign
+
+  // Mappable aesthetic arrays
+  let mapFill
+  let mapFillOpacity
+  let mapShape
+  let mapStroke
+  let mapStrokeWidth
+  let mapStrokeOpacity
+  let mapStrokeLinecap
+  let mapStrokeDash
 
   let _padding
   let rangeCoordsX
@@ -132,7 +143,8 @@
   let colorXEndCoords
   let colorYStartCoords
   let colorYEndCoords
-  let colorGeoms
+  let mapGeometry
+
   const graphicalBarHeight = orient === 'vertical' ? 0.85 : 0.75
   const graphicalBarWidth = orient === 'vertical' ? 0.7 : 1
 
@@ -264,30 +276,20 @@
     }
   }
 
-  // Extract scaleDomain, if necessary
-  // CHECK:
+  // CHECK MAPPABLE SCALES
   // 1. that scale is provided,
   // 2. that least one of the aesthetics has been specified
+  // is there a better way to do this checking?
   $: {
-    if (scale) {
-      // if (Object.prototype.hasOwnProperty.call(scale, 'domain')) {
-      //   if (typeof scale.domain === 'function') {
-      //     scaleDomain = scale.domain()
-      //   } else {
-      //     scaleDomain = scale.domain
-      //   }
-      // } else if (Array.isArray(scale)) {
-      //   scaleDomain = scale
-      // }
+    if (scale && (fill || fillOpacity || shape || stroke || strokeWidth || strokeLinecap || strokeOpacity || strokeDash)) {
     } else {
       throw new Error(`Couldn't construct legend. Please provide at least 'scale' and one of the
       aesthetic properties 'fill' or 'fillOpacity' with range properties or methods.`)
     }
   }
 
-  // TICK LABELS and POSITIONING
-  // Assumes that legend illustrates one dimensional scale,
-  // and that either fill or fillOpacity can used (it will look at fill first)
+  // TICK LABEL and POSITIONING
+  // Assumes that legend illustrates one dimensional scale
   $: {
     tickLabelText = getTicks(scale, labelCount, labelExtra, firstLabel)
     if (labels) {
@@ -297,29 +299,51 @@
     if (orient === 'vertical') {
       tickLabelYCoords = getTickPositions(tickLabelText, scale, labelExtra, flipLabelOrder, labelPaddingY, useScale)
       tickLabelXCoords = Array(tickLabelText.length).fill(0.5)
-      // tickLabelXCoords = flipLabels ? x1 + colorBarHeight * xCoords.width : x1 + (1 - colorBarHeight) * xCoords.width
-      // tickLabelXCoords = labelX || tickLabelXCoords
-
-      // if (labelPaddingX !== undefined) {
-      //   tickLabelXCoords = flipLabels ? tickLabelXCoords + labelPaddingX : tickLabelXCoords - labelPaddingX
-      // }
     } else if (orient === 'horizontal') {
       tickLabelXCoords = getTickPositions(tickLabelText, scale, labelExtra, flipLabelOrder, labelPaddingX, useScale)
       tickLabelYCoords = Array(tickLabelText.length).fill(0.5)
-      // tickLabelYCoords = flipLabels ? yCoords.y2 - (1 - colorBarWidth) * yCoords.height : yCoords.y2 - colorBarWidth * yCoords.height
-      // tickLabelYCoords = labelY || tickLabelYCoords
-  
-      // if (labelPaddingY !== undefined) {
-      //   tickLabelYCoords = flipLabels ? tickLabelYCoords - labelPaddingY : tickLabelYCoords + labelPaddingY
-      // }
     } else {
       throw new Error('Could not construct legend. Please provide either \'vertical\' or \'horizontal\' to \'orient\' prop.')
     }
-}
 
-$: format = getFormat(labelFormat, scale, tickLabelXCoords.length)
-$: tickLabelText = tickLabelText.map(format)
-$: tickLabelText = labels ? labels : tickLabelText
+  }
+
+  // MAPPABLE AESTHETICS
+  $: {
+    if (tickLabelText) {
+      mapFill = getMappable('fill', scale, fill, tickLabelText)
+      mapFillOpacity = getMappable('fillOpacity', scale, fillOpacity, tickLabelText)
+      mapShape = getMappable('shape', scale, shape, tickLabelText)
+      mapStroke = getMappable('stroke', scale, stroke, tickLabelText)
+      mapStrokeWidth = getMappable('strokeWidth', scale, strokeWidth, tickLabelText)
+      mapStrokeOpacity = getMappable('strokeOpacity', scale, strokeOpacity, tickLabelText)
+      mapStrokeLinecap = getMappable('strokeLinecap', scale, strokeLinecap, tickLabelText)
+      mapStrokeDash = getMappable('strokeDash', scale, strokeDash, tickLabelText)
+      format = getFormat(labelFormat, scale, tickLabelXCoords.length)
+      tickLabelText = tickLabelText.map(format)
+      tickLabelText = labels ? labels : tickLabelText
+    }
+  }
+
+  let tickLabels
+  $: {
+    if (tickLabelText && (mapFill || mapFillOpacity || mapStroke || mapShape || mapStrokeDash || mapStrokeWidth || mapStrokeLinecap || mapStrokeOpacity)) {
+      if (orient === 'vertical') {
+        tickLabelPositions = tickLabelYCoords
+        tickAlign = tickLabelXCoords
+      } else {
+        tickLabelPositions = tickLabelXCoords
+        tickAlign = tickLabelYCoords
+      }
+
+      mapGeometry = getColorGeoms(mapFill, orient, scale, tickLabelPositions, tickAlign, useScale, flipLabelOrder, flipX, flipY)
+      colorXStartCoords = mapGeometry.colorXStartCoords
+      colorXEndCoords = mapGeometry.colorXEndCoords
+      colorYStartCoords = mapGeometry.colorYStartCoords
+      colorYEndCoords = mapGeometry.colorYEndCoords
+      //tickLabels = labels ? labels : tickLabelText
+    }
+  }
 </script>
 
 <!-- 
@@ -385,6 +409,13 @@ $: tickLabelText = labels ? labels : tickLabelText
         scaleX={scaleLinear().domain([0, 1])}
         scaleY={scaleLinear().domain([0, 1])}
       >
+        <RectangleLayer
+          x1 = { colorXStartCoords }
+          x2 = { colorXEndCoords}
+          y1 = { colorYStartCoords}
+          y2 = { colorYEndCoords }
+          fill = {mapFill}
+        />
       </Section>
     {:else if legend === 'gradient'}
       <Rectangle 

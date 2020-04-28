@@ -27,7 +27,7 @@
   import StackedAreaChart from './examples/StackedAreaChart.svelte'
   import ViolinPlot from './examples/ViolinPlot.svelte'
   import Title from './examples/Title.svelte'
-  import LegendsDocs from './examples/LegendsDocs.svelte'
+  // import LegendsDocs from './examples/LegendsDocs.svelte'
   import LegendsFix from './examples/LegendsFix.svelte'
   import NestedSections from './examples/NestedSections.svelte'
 
@@ -160,11 +160,11 @@
       url: 'title',
       component: Title
     },
-    {
-      name: 'Legends: Docs',
-      url: 'legendsdocs',
-      component: LegendsDocs
-    },
+    // {
+    //   name: 'Legends: Docs',
+    //   url: 'legendsdocs',
+    //   component: LegendsDocs
+    // },
     {
       name: 'GeoEx',
       url: 'geoex',
