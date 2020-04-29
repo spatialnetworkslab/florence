@@ -29,6 +29,7 @@
   import Title from './examples/Title.svelte'
   import LegendsDocs from './examples/LegendsDocs.svelte'
   import NestedSections from './examples/NestedSections.svelte'
+  import JoHsiBug from './examples/JoHsiBug.svelte'
 
   // geo examples
   import GeoEx from './examples/GeoEx.svelte'
@@ -199,6 +200,11 @@
       url: '/nestedsections',
       component: NestedSections
     },
+    {
+      name: 'Jo Hsi Bug',
+      url: 'johsibug',
+      component: JoHsiBug
+    }
   ]
 </script>
 <Router url="">

@@ -272,9 +272,7 @@
         updatePixelGeometryObject()
         keyArray = Object.keys(pixelGeometryObject)
 
-        if (asPolygon) {
-          updateRadiusAndStrokeWidth()
-        }
+        updateRadiusAndStrokeWidth()
       }
 
       if (screenGeometryObjectRecalculationNecessary) {
