@@ -54,15 +54,15 @@ To create plots with multiple points, we can either loop over the dataset (with 
 | geometry | depends  | Object \| Function                   | undefined | GeoJSON object of type Point    | Data value to be scaled by Section's scaleX/scaleY. If Function then viewBox coordinates. |
 
 ### Other aesthetics
-| Prop           | Required | Types  | Default   | Description    | Unit(s)                    |
-| -------------- | -------- | ------ | --------- | -------------- | -------------------------- |
-| radius         | false    | Number | 3         | Radius length  | Screen pixel               |
-| stroke         | false    | String | 'none'    | Stroke color   | Named color, hex, rgb, hsl |
-| stroke-width   | false    | Number | 0         | Stroke width   | Screen pixel               |
-| stroke-opacity | false    | Number | undefined | Stroke opacity | Number between 0 and 1     |
-| fill           | false    | String | '#000000' | Fill color     | Named color, hex, rgb, hsl |
-| fill-opacity   | false    | Number | undefined | Fill opacity   | Number between 0 and 1     |
-| opacity        | false    | Number | 1         | Mark opacity   | Number between 0 and 1     |
+| Prop          | Required | Types  | Default   | Description    | Unit(s)                    |
+| ------------- | -------- | ------ | --------- | -------------- | -------------------------- |
+| radius        | false    | Number | 3         | Radius length  | Screen pixel               |
+| stroke        | false    | String | 'none'    | Stroke color   | Named color, hex, rgb, hsl |
+| strokeWidth   | false    | Number | 0         | Stroke width   | Screen pixel               |
+| strokeOpacity | false    | Number | undefined | Stroke opacity | Number between 0 and 1     |
+| fill          | false    | String | '#000000' | Fill color     | Named color, hex, rgb, hsl |
+| fillOpacity   | false    | Number | undefined | Fill opacity   | Number between 0 and 1     |
+| opacity       | false    | Number | 1         | Mark opacity   | Number between 0 and 1     |
 
 These are analogous to the CSS properties of the same names.
 

@@ -72,14 +72,14 @@ import HorizontalAreaLower from './utils/_HorizontalAreaLower.svelte'
 n.b. `independentAxis` defaults to 'x' when its value is undefined
 
 ### Other aesthetics
-| Prop           | Required | Types  | Default   | Description             | Unit(s)                    |
-| -------------- | -------- | ------ | --------- | ----------------------- | -------------------------- |
-| stroke         | false    | String | 'none'    | Stroke color            | Named color, hex, rgb, hsl |
-| stroke-width   | false    | Number | 0         | Stroke width            | Screen pixels              |
-| stroke-opacity | false    | Number | undefined | Stroke opacity          | Number between 0 and 1     |
-| fill           | false    | String | '#000000' | Fill color (under line) | Named color, hex, rgb, hsl |
-| fill-opacity   | false    | Number | undefined | Fill opacity            | Number between 0 and 1     |
-| opacity        | false    | Number | 1         | Mark opacity            | Number between 0 and 1     |
+| Prop          | Required | Types  | Default   | Description             | Unit(s)                    |
+| ------------- | -------- | ------ | --------- | ----------------------- | -------------------------- |
+| stroke        | false    | String | 'none'    | Stroke color            | Named color, hex, rgb, hsl |
+| strokeWidth   | false    | Number | 0         | Stroke width            | Screen pixels              |
+| strokeOpacity | false    | Number | undefined | Stroke opacity          | Number between 0 and 1     |
+| fill          | false    | String | '#000000' | Fill color (under line) | Named color, hex, rgb, hsl |
+| fillOpacity   | false    | Number | undefined | Fill opacity            | Number between 0 and 1     |
+| opacity       | false    | Number | 1         | Mark opacity            | Number between 0 and 1     |
 
 These are analogous to the CSS properties of the same names.
 

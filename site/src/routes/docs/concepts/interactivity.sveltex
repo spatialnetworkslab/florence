@@ -162,7 +162,7 @@ const name = ['West', 'North', 'East', 'South']
       x={a}
       y={b}
       radius={10}
-      fill={({ key }) => key === selectedKey ? 'red' : 'black' }
+      fill={key => key === selectedKey ? 'red' : 'black' }
       onMouseover={({ key }) => selectedKey = key}
       onMouseout={() => selectedKey = null}
     />
