@@ -780,7 +780,7 @@ tr > td {
 
 /* codesandbox */
 
-.csbp-render-fullscreen {
+.example-render-fullscreen {
   z-index: 10;
   position: absolute;
   background-color: transparent;
@@ -793,7 +793,7 @@ tr > td {
   margin: auto;
 }
 
-.csbp-container {
+.example-container {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -801,7 +801,7 @@ tr > td {
   margin-top: 2.5rem;
 }
 
-.csbp-rendered {
+.example-rendered {
   width: 100%;
   flex-shrink: 0;
   padding: 1rem;
@@ -813,11 +813,11 @@ tr > td {
   border-width: 1px;
 }
 
-.csbp-rendered svg {
+.example-rendered svg {
   margin: auto;
 }
 
-.csbp-code-tabs {
+.example-code-tabs {
   flex: 1 1 0%;
   position: relative;
   margin: 0.5rem;
@@ -825,20 +825,20 @@ tr > td {
 }
 
 @media (min-width: 1024px) {
-  .csbp-rendered {
+  .example-rendered {
     width: 50%;
   }
 }
 
-.csbp-code code, .csbp-code-snippets code {
+.example-code code, .example-code-snippets code {
   font-size: 0.875rem;
 }
 
-.csbp-tab {
+.example-tab {
   display: inline;
 }
 
-.csbp-tab label {
+.example-tab label {
   --bg-opacity: 1;
   background-color: #fff;
   background-color: rgba(255, 255, 255, var(--bg-opacity));
@@ -857,11 +857,11 @@ tr > td {
   padding: 10px;
 }
 
-.csbp-tab [type="radio"] {
+.example-tab [type="radio"] {
   display: none;
 }
 
-.csbp-content {
+.example-content {
   min-height: 250px;
   max-height: 500px;
   position: absolute;
@@ -889,29 +889,29 @@ tr > td {
   z-index: 2;
 }
 
-[type="radio"]:checked ~ label ~ .csbp-content {
+[type="radio"]:checked ~ label ~ .example-content {
   z-index: 1;
 }
 
-[type="radio"]:checked ~ label ~ .csbp-content > * {
+[type="radio"]:checked ~ label ~ .example-content > * {
   opacity: 1;
   transform: translateX(0);
 }
 
-.csbp-csb-link {
+.example-csb-link {
   flex: 1 1 auto;
   padding: 0.75rem;
   min-width: 200px;
 }
 
-.csbp-csb-link a {
+.example-csb-link a {
   text-decoration: none;
   --text-opacity: 1;
   color: #2b6cb0;
   color: rgba(43, 108, 176, var(--text-opacity));
 }
 
-.csbp-csb-link a:hover {
+.example-csb-link a:hover {
   text-decoration: underline;
   --text-opacity: 1;
   color: #2c5282;

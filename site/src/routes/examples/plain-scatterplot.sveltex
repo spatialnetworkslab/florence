@@ -1,0 +1,6 @@
+# A Plain Scatterplot
+
+Some testing text.
+
+::: example examples/plain-scatterplot/App.svelte 1-3
+:::

@@ -1,6 +1,6 @@
 # Du Bois Simple
 
-Some testing text
+Some testing text.
 
-::: codesandboxplus ../examples/gallery/contour/App.svelte 1-3
+::: example examples/dubois-simple/App.svelte 1-3
 :::

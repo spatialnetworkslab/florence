@@ -4,7 +4,7 @@
   // maybe export this out
   const links = [
     { name: 'Docs', link: 'docs' },
-    { name: 'Examples', link: 'gallery' },
+    { name: 'Examples', link: 'examples' },
     { name: 'Tutorials', link: 'tutorials' }
     // { name: 'Inspiration', link: 'inspiration' }
   ]

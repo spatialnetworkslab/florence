@@ -10,5 +10,5 @@ Examples galore!
 ## Simple Examples
 <div class="grid grid-cols-3 gap-2">
     <ImageWithLinkAndCaption caption="Du Bois Simple" linkURL="examples/dubois-simple" />
-    <ImageWithLinkAndCaption caption="Bar Chart" imageURL="images/examples/test.png" linkURL="examples/barchart" />
+    <ImageWithLinkAndCaption caption="Simple Scatterplot" linkURL="examples/plain-scatterplot" />
 </div>
