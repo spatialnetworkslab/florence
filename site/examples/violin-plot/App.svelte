@@ -13,7 +13,7 @@
   let done;
   let parsedData;
   csv(
-    'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv',
+    'data/iris.csv',
     autoType
   ).then(d => {
     parsedData = d;
