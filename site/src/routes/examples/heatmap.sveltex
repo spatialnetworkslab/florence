@@ -1,0 +1,7 @@
+
+# Heatmap
+
+Some testing text.
+
+::: example examples/heatmap/App.svelte 1-3
+:::
