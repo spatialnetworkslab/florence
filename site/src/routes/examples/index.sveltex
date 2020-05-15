@@ -9,6 +9,17 @@ Examples galore!
 
 ## Simple Examples
 <div class="grid grid-cols-3 gap-2">
-    <ImageWithLinkAndCaption caption="Du Bois Simple" linkURL="examples/dubois-simple" />
-    <ImageWithLinkAndCaption caption="Simple Scatterplot" linkURL="examples/plain-scatterplot" />
+  <ImageWithLinkAndCaption caption="Du Bois Simple" linkURL="examples/dubois-simple" />
+  <ImageWithLinkAndCaption caption="Simple Scatterplot" linkURL="examples/plain-scatterplot" />
+  <ImageWithLinkAndCaption caption="Donut Chart" linkURL="examples/donut" />
+  <!-- <ImageWithLinkAndCaption caption="Heatmap" linkURL="examples/heatmap" /> -->
+  <ImageWithLinkAndCaption caption="Violin Plot" linkURL="examples/violin-plot" />
+  <ImageWithLinkAndCaption caption="Isotype Plot" linkURL="examples/isotype" />
+  <ImageWithLinkAndCaption caption="Area Chart" linkURL="examples/area-chart" />
+  <ImageWithLinkAndCaption caption="Population Pyramid" linkURL="examples/population-pyramid" />
+  <ImageWithLinkAndCaption caption="Stacked Horizontal Bar Chart" linkURL="examples/stacked-horizontal-bars" />
+  <ImageWithLinkAndCaption caption="Stacked Area Chart" linkURL="examples/stacked-area" />
+  <ImageWithLinkAndCaption caption="Density Contours" linkURL="examples/density-contours" />
+  <ImageWithLinkAndCaption caption="Candlestick Chart" linkURL="examples/candlestick" />
+  <ImageWithLinkAndCaption caption="Global Temperature Trends" linkURL="examples/scatterplot-temp-trends" />
 </div>

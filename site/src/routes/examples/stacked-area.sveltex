@@ -1,0 +1,6 @@
+# Stacked Area Chart
+
+Some testing text
+
+::: example examples/stacked-area/App.svelte 1-3
+:::
