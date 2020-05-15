@@ -13,18 +13,18 @@
 
   // import data
   // step1
-  // import { geodata } from "/data/planning_areas_data.js";
+
   let done = false
   let geodata
-  json('/data/planning_areas_data.json').then(d => {
+
+  json('/data/plan_areas_choropleth.json').then(d => {
     geodata = d
     done = true
   })
 
   let data
   let geoScales
-  let priceColors
-  let priceColorScale
+  let priceColors, priceColorScale
 
   // step 2
   // compute color scaling

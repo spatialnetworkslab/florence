@@ -2,5 +2,5 @@
 
 Some testing text.
 
-::: example examples/choropleth-map/App.svelte 68-102
+::: example examples/choropleth-map/App.svelte 78-113
 :::
