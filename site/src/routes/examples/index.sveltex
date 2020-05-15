@@ -19,4 +19,7 @@ Examples galore!
   <ImageWithLinkAndCaption caption="Population Pyramid" linkURL="examples/population-pyramid" />
   <ImageWithLinkAndCaption caption="Stacked Horizontal Bar Chart" linkURL="examples/stacked-horizontal-bars" />
   <ImageWithLinkAndCaption caption="Stacked Area Chart" linkURL="examples/stacked-area" />
+  <ImageWithLinkAndCaption caption="Density Contours" linkURL="examples/density-contours" />
+  <ImageWithLinkAndCaption caption="Candlestick Chart" linkURL="examples/candlestick" />
+  <ImageWithLinkAndCaption caption="Global Temperature Trends" linkURL="examples/scatterplot-temp-trends" />
 </div>

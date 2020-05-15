@@ -1,6 +1,6 @@
 # Area Chart
 
-Some testing text.
+Some testing text
 
 ::: example examples/area-chart/App.svelte 1-3
 :::

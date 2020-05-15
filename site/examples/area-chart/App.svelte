@@ -11,7 +11,7 @@
   let done;
   let parsedData;
   csv(
-    'https://gist.githubusercontent.com/mbostock/14613fb82f32f40119009c94f5a46d72/raw/d0d70ffb7b749714e4ba1dece761f6502b2bdea2/aapl.csv',
+    '/data/apple-stocks-area.csv',
     autoType
   ).then(d => {
     parsedData = d;
