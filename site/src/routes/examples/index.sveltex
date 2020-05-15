@@ -23,4 +23,5 @@ Examples galore!
   <ImageWithLinkAndCaption caption="Candlestick Chart" linkURL="examples/candlestick" />
   <ImageWithLinkAndCaption caption="Global Temperature Trends" linkURL="examples/scatterplot-temp-trends" />
   <ImageWithLinkAndCaption caption="Choropleth" linkURL="examples/choropleth" />
+  <ImageWithLinkAndCaption caption="Gapminder" linkURL="examples/gapminder" />
 </div>
