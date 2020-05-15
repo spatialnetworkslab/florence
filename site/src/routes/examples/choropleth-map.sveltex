@@ -1,0 +1,6 @@
+# A categorical dot plot
+
+Some testing text.
+
+::: example examples/choropleth-map/App.svelte 68-102
+:::
