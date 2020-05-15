@@ -734,11 +734,27 @@ tr > td {
   max-width: 72rem;
 }
 
-/* infoboxes */
+/* infoboxes callout */
 
 .callout {
   background-color: #f0fff4;
   border-color: #48bb78;
+  border-left-width: 8px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  line-height: 1.375;
+}
+
+/* infoboxes warning */
+
+.warning {
+  background-color: #fffff0;
+  border-color: #ecc94b;
   border-left-width: 8px;
   margin-top: 1rem;
   margin-bottom: 1rem;

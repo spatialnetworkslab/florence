@@ -10,6 +10,10 @@ export const posts = [
       {
         title: 'Choropleth maps',
         path: '/tutorials/choropleth'
+      },
+      {
+        title: 'Linked views',
+        path: '/tutorials/linked-views'
       }
     ]
   }
