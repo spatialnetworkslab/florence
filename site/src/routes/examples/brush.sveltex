@@ -1,0 +1,6 @@
+# Brush
+
+Some testing text.
+
+::: example examples/brush/App.svelte
+:::

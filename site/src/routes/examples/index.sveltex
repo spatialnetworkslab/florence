@@ -25,4 +25,5 @@ Examples galore!
   <ImageWithLinkAndCaption caption="Choropleth" linkURL="examples/choropleth" />
   <ImageWithLinkAndCaption caption="Gapminder" linkURL="examples/gapminder" />
   <ImageWithLinkAndCaption caption="Morph" linkURL="examples/morph" />
+  <ImageWithLinkAndCaption caption="Brush" linkURL="examples/brush" />
 </div>
