@@ -1,5 +1,5 @@
 {
-  "name": "gapminder",
+  "name": "morph",
   "version": "1.0.0",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.0",
