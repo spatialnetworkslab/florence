@@ -26,4 +26,5 @@ Examples galore!
   <ImageWithLinkAndCaption caption="Gapminder" linkURL="examples/gapminder" />
   <ImageWithLinkAndCaption caption="Morph" linkURL="examples/morph" />
   <ImageWithLinkAndCaption caption="Brush" linkURL="examples/brush" />
+  <ImageWithLinkAndCaption caption="Scatterplot with transition" linkURL="examples/scatterplot-transition" />
 </div>
