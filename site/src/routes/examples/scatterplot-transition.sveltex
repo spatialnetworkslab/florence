@@ -1,0 +1,6 @@
+# Scatterplot with transition
+
+Some testing text
+
+::: example examples/scatterplot-transition/App.svelte 1-3
+:::
