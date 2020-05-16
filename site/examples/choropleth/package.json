@@ -13,6 +13,9 @@
     "@snlab/florence": "^0.1.20",
     "@snlab/florence-datacontainer": "^0.1.9",
     "d3-fetch": "1.1.2",
+    "d3-scale": "3.2.1",
+    "d3-scale-chromatic": "1.5.0",
+    "topojson": "3.0.2",
     "sirv-cli": "^0.4.4",
     "svelte": "^3.18.1"
   },

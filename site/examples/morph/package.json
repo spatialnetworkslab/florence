@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@snlab/florence": "^0.1.20",
+    "@snlab/florence-datacontainer": "^0.1.9",
+    "d3-scale": "3.2.1",
     "sirv-cli": "^0.4.4",
     "svelte": "^3.18.1"
   },
