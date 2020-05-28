@@ -21,7 +21,7 @@ export default function createPixelGeometry (
       ? geometryProps.x
       : geometryProps.x(sectionContext)
 
-    const y = xNeedsScaling
+    const y = yNeedsScaling
       ? geometryProps.y
       : geometryProps.y(sectionContext)
 
