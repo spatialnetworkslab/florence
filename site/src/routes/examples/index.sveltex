@@ -11,6 +11,8 @@ Examples galore!
 <div class="grid grid-cols-3 gap-2">
   <ImageWithLinkAndCaption caption="Du Bois Simple" linkURL="examples/dubois-simple" />
   <ImageWithLinkAndCaption caption="Simple Scatterplot" linkURL="examples/plain-scatterplot" />
+  <ImageWithLinkAndCaption caption="Categorical dot plot" linkURL="examples/categorical-dot" />
+  <ImageWithLinkAndCaption caption="Choropleth Map of Singapore" linkURL="examples/choropleth-map" />
   <ImageWithLinkAndCaption caption="Donut Chart" linkURL="examples/donut" />
   <!-- <ImageWithLinkAndCaption caption="Heatmap" linkURL="examples/heatmap" /> -->
   <ImageWithLinkAndCaption caption="Violin Plot" linkURL="examples/violin-plot" />
