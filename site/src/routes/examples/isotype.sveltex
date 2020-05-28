@@ -1,0 +1,6 @@
+# Isotype Plot
+
+Some testing text
+
+::: example examples/isotype/App.svelte 1-3
+:::

@@ -17,13 +17,17 @@
 
   <div class="intro">
     <p>
-      This is just a place holder for a short text introducing Florence
-      and its specific approach, key tenets.
+      Florence is built on top of existing open web standards that are already in intensive use for online map making today,
+       but provides a framework that is firmly based on cartographic and visualization theory. 
+    </p>
+    <p>
+      We adopt concepts from Bertin’s Semiology of Graphics and Wilkinson’s Grammar of Graphics to create a ‘language’ with
+       a limited number of core concepts or verbs that are combined with a declarative style of ‘writing’ visualizations.
     </p>
     <p>
       For a sense of the range of visualizations made possible 
-      using the library, check out these some examples in the gallery
-      or visit the examples & documentation.
+      using the library, check out the examples in the gallery
+      or visit the tutorials & documentation.
     </p>
   </div>
 </div>

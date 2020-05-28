@@ -3,9 +3,9 @@
   
   // maybe export this out
   const links = [
-    // { name: 'Gallery', link: 'gallery' },
-    { name: 'Tutorials', link: 'tutorials' },
-    { name: 'Docs', link: 'docs' }
+    { name: 'Docs', link: 'docs' },
+    { name: 'Examples', link: 'examples' },
+    { name: 'Tutorials', link: 'tutorials' }
     // { name: 'Inspiration', link: 'inspiration' }
   ]
 </script>

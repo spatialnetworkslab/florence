@@ -111,51 +111,51 @@ tr > td {
 
 /* codesandbox */
 
-.csbp-render-fullscreen {
+.example-render-fullscreen {
   @apply z-10 absolute bg-transparent inset-0 flex items-center m-auto; 
 }
 
-.csbp-container {
+.example-container {
   @apply flex flex-wrap w-full h-full mt-10;
 }
 
-.csbp-rendered {
+.example-rendered {
   @apply w-full flex-shrink-0 p-4 mb-2 border-dashed border-gray-400 border;
 }
 
-.csbp-rendered svg {
+.example-rendered svg {
   @apply m-auto;
 }
 
-.csbp-code-tabs {
+.example-code-tabs {
   @apply flex-1 relative m-2 text-base;
 }
 
 @screen lg {
-  .csbp-rendered {
+  .example-rendered {
     @apply w-6/12;
   }
 }
 
-.csbp-code code, .csbp-code-snippets code {
+.example-code code, .example-code-snippets code {
   @apply text-sm;
 }
 
-.csbp-tab {
+.example-tab {
   @apply inline;
 }
 
-.csbp-tab label {
+.example-tab label {
   @apply bg-white relative border-t border-l border-r border-b-0 rounded-t-sm border-gray-400 -m-px;
   left: 1px;
   padding: 10px;
 }
 
-.csbp-tab [type="radio"] {
+.example-tab [type="radio"] {
   @apply hidden;
 }
 
-.csbp-content {
+.example-content {
   min-height: 250px;
   max-height: 500px;
   @apply absolute overflow-auto border rounded-tr-sm rounded-b-sm border-gray-400 bg-codegray inset-x-0 bottom-0;
@@ -167,25 +167,25 @@ tr > td {
   z-index: 2;
 }
 
-[type="radio"]:checked ~ label ~ .csbp-content {
+[type="radio"]:checked ~ label ~ .example-content {
   z-index: 1;
 }
 
-[type="radio"]:checked ~ label ~ .csbp-content > * {
+[type="radio"]:checked ~ label ~ .example-content > * {
   opacity: 1;
   transform: translateX(0);
 }
 
-.csbp-csb-link {
+.example-csb-link {
   @apply flex-auto p-3;
   min-width: 200px;
 }
 
-.csbp-csb-link a {
+.example-csb-link a {
   @apply no-underline text-blue-700;
 }
 
-.csbp-csb-link a:hover {
+.example-csb-link a:hover {
   @apply underline text-blue-800;
 }
 

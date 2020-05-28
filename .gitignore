@@ -9,3 +9,4 @@ yarn.lock
 /cypress/screenshots
 site/static/index.css
 .vscode
+build/bundle.*

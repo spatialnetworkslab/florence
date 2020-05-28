@@ -1,0 +1,6 @@
+# Violin Plot
+
+Some testing text
+
+::: example examples/violin-plot/App.svelte 1-3
+:::

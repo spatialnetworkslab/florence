@@ -1,0 +1,6 @@
+# A choropleth map of Singapore
+
+Some testing text.
+
+::: example examples/choropleth-map/App.svelte 78-113
+:::

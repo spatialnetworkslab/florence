@@ -1,0 +1,6 @@
+# A categorical dot plot
+
+Some testing text.
+
+::: example examples/categorical-dot/App.svelte 88-132
+:::

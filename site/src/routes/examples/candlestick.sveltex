@@ -1,0 +1,6 @@
+# Candlestick Chart
+
+Some testing text
+
+::: example examples/candlestick/App.svelte 1-3
+:::

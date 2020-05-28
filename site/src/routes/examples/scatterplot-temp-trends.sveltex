@@ -1,0 +1,6 @@
+# Global Temperature Trends
+
+Some testing text
+
+::: example examples/scatterplot-temp-trends/App.svelte 1-3
+:::
