@@ -1,0 +1,6 @@
+# Donut Chart
+
+Some testing text.
+
+::: example examples/donut/App.svelte 1-3
+:::

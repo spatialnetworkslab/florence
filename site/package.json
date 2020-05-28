@@ -26,10 +26,15 @@
     "@snlab/florence": "^0.1.20",
     "@snlab/florence-datacontainer": "^0.1.9",
     "@snlab/sveltex-unified": "^0.0.16",
+    "d3-array": "^2.4.0",
     "d3-contour": "^1.3.2",
     "d3-fetch": "^1.1.2",
+    "d3-format": "^1.4.4",
+    "d3-interpolate": "^1.4.0",
     "d3-scale": "^3.2.1",
     "d3-scale-chromatic": "^1.5.0",
+    "d3-time": "^1.1.0",
+    "d3-time-format": "^2.2.3",
     "js-yaml": "^3.13.1",
     "multi-integer-range": "^4.0.8",
     "node-fetch": "^2.6.0",
@@ -52,6 +57,7 @@
     "svelte-preprocess": "^3.7.4",
     "sync-rpc": "^1.3.6",
     "tailwindcss": "^1.4.5",
+    "topojson": "^3.0.2",
     "unified": "^9.0.0",
     "unist-util-visit": "^2.0.2"
   }

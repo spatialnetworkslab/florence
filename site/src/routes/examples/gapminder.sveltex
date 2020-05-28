@@ -1,0 +1,6 @@
+# Gapminder
+
+Some testing text
+
+::: example examples/gapminder/App.svelte 1-3
+:::

@@ -1,0 +1,6 @@
+# Stacked Horizontal Bar Chart
+
+Some testing text
+
+::: example examples/stacked-horizontal-bars/App.svelte 1-3
+:::
