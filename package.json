@@ -21,7 +21,7 @@
     "@snlab/florence-datacontainer": "^0.1.9",
     "babel-jest": "^26.0.1",
     "cypress": "^5.0.0",
-    "cypress-plugin-snapshots": "^1.4.3",
+    "cypress-plugin-snapshots": "^1.4.4",
     "d3-array": "^2.4.0",
     "d3-dsv": "^1.2.0",
     "d3-fetch": "^2.0.0",
