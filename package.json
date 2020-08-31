@@ -19,7 +19,7 @@
     "@babel/core": "^7.11.4",
     "@babel/preset-env": "^7.11.0",
     "@snlab/florence-datacontainer": "^0.1.9",
-    "babel-jest": "^26.0.1",
+    "babel-jest": "^26.3.0",
     "cypress": "^5.0.0",
     "cypress-plugin-snapshots": "^1.4.3",
     "d3-array": "^2.4.0",
