@@ -9,7 +9,7 @@
     "@snlab/transshape": "^0.1.2",
     "d3-geo": "^1.12.1",
     "d3-interpolate": "^1.4.0",
-    "d3-scale": "^3.2.1",
+    "d3-scale": "^3.2.3",
     "detect-it": "^3.0.5",
     "rbush": "^3.0.1",
     "robust-point-in-polygon": "^1.0.3",
