@@ -14,7 +14,7 @@
   export let columns = 1
   export let rowGap = 0
   export let columnGap = 0
-  export let areaNames = undefined
+  export let names = undefined
   export let viewGridTemplate = false // Option to console log grid layout
   export let viewGridShape = false // Option to console log rows in cols in grid
 
@@ -34,7 +34,7 @@
   $: if (viewGridShape) { console.log('rows:', numRows, ' columns:', numCols) }
 
   // Get named cells
-  $: allSpecs = mergeNameSpecs(areaNames, allCells, numCols)
+  $: allSpecs = mergeNameSpecs(names, allCells, numCols)
 </script>
 
 <g>

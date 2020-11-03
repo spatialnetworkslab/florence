@@ -46,7 +46,7 @@
 			y1={50} y2={450}
 			columns={cols}
 			rows={rows}
-			areaNames={groupedData.domain('color')}
+			names={groupedData.domain('color')}
 			let:cells
 		>
 

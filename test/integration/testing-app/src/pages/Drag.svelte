@@ -1,6 +1,6 @@
 <script>
 	import { scaleLinear } from 'd3-scale'
-	import { Graphic, Grid, Section, Point } from '../../../../../src/'
+	import { Graphic, Section, Point } from '../../../../../src/'
 
   let height = 500
   let transformation = 'identity'
