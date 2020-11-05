@@ -30,7 +30,7 @@ export function getAllCells (templateRows, templateCols, rowGap, colGap, coords)
 }
 
 // Divides each row into columns
-export function getColCells (specs, colGap, ranges) {
+function getColCells (specs, colGap, ranges) {
   let start = ranges.x1
   const cells = []
 
@@ -83,7 +83,7 @@ export function getColCells (specs, colGap, ranges) {
 // Divides each column into rows
 // Logic should probably be refactored since this function
 // is similar to getColCells
-export function getRowCells (specs, rowGap, ranges) {
+function getRowCells (specs, rowGap, ranges) {
   let start = ranges.y1
   const cells = []
 
