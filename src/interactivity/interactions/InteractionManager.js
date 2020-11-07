@@ -1,4 +1,4 @@
-import detectIt from 'detect-it'
+import * as detectIt from 'detect-it'
 
 import MouseInteractionManager from './mouse/MouseInteractionManager.js'
 import TouchInteractionManager from './touch/TouchInteractionManager.js'
@@ -6,11 +6,11 @@ import SelectManager from './select/SelectManager.js'
 
 export default class InteractionManager {
   constructor () {
-    if (detectIt.hasMouse) {
+    if (detectIt.primaryInput === 'mouse') {
       this._mouseInteractionManager = new MouseInteractionManager()
     }
 
-    if (detectIt.hasTouch) {
+    if (detectIt.primaryInput === 'touch') {
       this._touchInteractionManager = new TouchInteractionManager()
     }
 

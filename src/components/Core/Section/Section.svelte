@@ -6,7 +6,7 @@
 </script>
 
 <script>
-  import detectIt from 'detect-it'
+  import * as detectIt from 'detect-it'
   import * as SectionContext from './SectionContext'
   import * as EventManagerContext from '../Graphic/EventManagerContext'
   import * as InteractionManagerContext from './InteractionManagerContext'
@@ -110,7 +110,7 @@
   }
 
   function removeSectionInteractionsIfNecessary () {
-    if (detectIt.hasMouse) {
+    if (detectIt.primaryInput === 'mouse') {
       const sectionInterface = $interactionManagerContext.mouse().section()
       sectionInterface.removeAllInteractions()
 
@@ -123,7 +123,7 @@
       if (onMousemove) { sectionInterface.addInteraction('mousemove', onMousemove) }
     }
 
-    if (detectIt.hasTouch) {
+    if (detectIt.primaryInput === 'touch') {
       const sectionInterface = $interactionManagerContext.touch().section()
       sectionInterface.removeAllInteractions()
 
