@@ -1,15 +1,15 @@
-import detectIt from 'detect-it'
+import * as detectIt from 'detect-it'
 
 import MouseEventManager from './MouseEventManager.js'
 import TouchEventManager from './TouchEventManager.js'
 
 export default class EventManager {
   constructor () {
-    if (detectIt.hasMouse) {
+    if (detectIt.primaryInput === 'mouse') {
       this._mouseEventManager = new MouseEventManager()
     }
 
-    if (detectIt.hasTouch) {
+    if (detectIt.primaryInput === 'touch') {
       this._touchEventManager = new TouchEventManager()
     }
   }
