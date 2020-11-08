@@ -109,13 +109,20 @@
   }
 
   onMount(() => {
-    // only on mount can we bind the svg root node and attach actual event listeners
-    eventManager.addRootNode(rootNode)
+    // Only on mount can we bind the svg root node and attach actual event listeners.
+    // Sometimes rootNode is undefined for some weird reason. In this case,
+    // we will use document.getElementById instead
+    let _rootNode = rootNode
+      ? rootNode
+      : document.getElementById(graphicId)
+
+    eventManager.addRootNode(_rootNode)
     eventManager.attachEventListeners()
   })
 </script>
 
 <svg
+  id={graphicId}
   {width}
   {height}
   {viewBox}
