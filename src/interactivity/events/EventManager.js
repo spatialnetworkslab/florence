@@ -1,4 +1,4 @@
-import * as detectIt from 'detect-it'
+import * as detectIt from '../../utils/detect.js'
 
 import MouseEventManager from './MouseEventManager.js'
 import TouchEventManager from './TouchEventManager.js'

@@ -6,7 +6,7 @@
 </script>
 
 <script>
-  import * as detectIt from 'detect-it'
+  import * as detectIt from '../../../utils/detect.js'
   import * as SectionContext from './SectionContext'
   import * as EventManagerContext from '../Graphic/EventManagerContext'
   import * as InteractionManagerContext from './InteractionManagerContext'

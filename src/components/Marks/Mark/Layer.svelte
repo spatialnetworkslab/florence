@@ -7,8 +7,8 @@
 
 <script>
   import { beforeUpdate, afterUpdate, onMount, onDestroy, tick } from 'svelte'
-  import * as detectIt from 'detect-it'
 
+  import * as detectIt from '../../../utils/detect.js'
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
