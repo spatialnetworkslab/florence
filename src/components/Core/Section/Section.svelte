@@ -11,7 +11,7 @@
   import * as EventManagerContext from '../Graphic/EventManagerContext'
   import * as InteractionManagerContext from './InteractionManagerContext'
 
-  import InteractionManager from '../../../interactivity/interactions/InteractionManager'
+  import InteractionManager from '../../../interactivity/interactions/InteractionManager.js'
   import { getPixelCoordinates } from './getPixelCoordinates.js'
   import { getClipPropsNoPadding, getClipPropsPadding } from './getClipProps.js'
 
