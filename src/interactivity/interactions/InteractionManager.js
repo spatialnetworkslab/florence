@@ -1,5 +1,4 @@
-import * as detectIt from 'detect-it'
-
+import * as detectIt from '../../utils/detect.js'
 import MouseInteractionManager from './mouse/MouseInteractionManager.js'
 import TouchInteractionManager from './touch/TouchInteractionManager.js'
 import SelectManager from './select/SelectManager.js'

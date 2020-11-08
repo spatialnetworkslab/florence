@@ -10,7 +10,6 @@
     "d3-geo": "^2.0.1",
     "d3-interpolate": "^2.0.1",
     "d3-scale": "^3.2.3",
-    "detect-it": "^4.0.0-next.0",
     "rbush": "^3.0.1",
     "robust-point-in-polygon": "^1.0.3"
   },
