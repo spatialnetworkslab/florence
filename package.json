@@ -18,7 +18,7 @@
     "@babel/preset-env": "^7.11.0",
     "@snlab/florence-datacontainer": "^0.1.9",
     "babel-jest": "^26.6.2",
-    "cypress": "^5.0.0",
+    "cypress": "^5.5.0",
     "cypress-plugin-snapshots": "^1.4.4",
     "d3-array": "^2.8.0",
     "d3-dsv": "^2.0.0",
