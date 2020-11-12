@@ -1,5 +1,5 @@
 <script>
-  import { REPL } from './REPL/index.js'
+  import { REPL } from '@snlab/florence-repl'
 
   const replFiles = [
     {
