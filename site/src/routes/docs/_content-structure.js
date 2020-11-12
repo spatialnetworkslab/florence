@@ -14,6 +14,10 @@ export const posts = [
       {
         title: 'Title',
         path: '/docs/core/title'
+      },
+      {
+        title: 'Grid',
+        path: '/docs/core/grid'
       }
     ]
   },
@@ -22,10 +26,6 @@ export const posts = [
     title: 'Concepts',
     path: '/docs/concepts/local-coordinates',
     children: [
-      {
-        title: 'Grid',
-        path: '/docs/core/grid'
-      },
       {
         title: 'Local coordinates',
         path: '/docs/concepts/local-coordinates'
