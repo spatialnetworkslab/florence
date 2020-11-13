@@ -10,7 +10,7 @@ import MultiRange from 'multi-integer-range'
 const imageDir = 'static/images/examples/'
 const dataDir = 'static/data/'
 
-export default function exampleUpload (options) {
+export default function loadExampleCode (options) {
   return async function transformer (tree) {
     const nodesToChange = []
     visit(tree, 'example', node => {
