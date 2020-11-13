@@ -12,7 +12,6 @@
 
 <script>
   import SideNav from '../../components/SideNav.svelte'
-  import TestREPL from '../../components/TestREPL.svelte'
 	export let items
 	let openMenu = false
 </script>
@@ -28,7 +27,6 @@
 	</div>
 	<div class="right-col cols">
 		<main>
-      <TestREPL />
 			<slot></slot>
 		</main>
 	</div>
