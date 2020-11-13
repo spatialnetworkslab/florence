@@ -43,10 +43,11 @@ export default {
         browser: true,
         dedupe
       }),
+
       commonjs(),
 
       // Needed for codemirror css
-      css({ output: 'static/css/bundle-imported.css' }),
+      css({ output: 'static/css/vendor.css' }),
 
       legacy && babel({
         extensions: ['.js', '.mjs', '.html', '.svelte', 'sveltex'],

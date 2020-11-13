@@ -1,5 +1,5 @@
 <script>
-  import { REPL } from '@snlab/florence-repl'
+  import REPL from '@snlab/florence-repl'
 
   const replFiles = [
     {
