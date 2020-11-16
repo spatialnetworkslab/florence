@@ -12,7 +12,6 @@
   <ImageWithLinkAndCaption caption="Area Chart" linkURL="examples/area-chart" />
   <ImageWithLinkAndCaption caption="Choropleth" linkURL="examples/choropleth" />
   <ImageWithLinkAndCaption caption="Gapminder" linkURL="examples/gapminder" />
-  <ImageWithLinkAndCaption caption="Morph" linkURL="examples/morph" />
   <ImageWithLinkAndCaption caption="Brush" linkURL="examples/brush" />
   <ImageWithLinkAndCaption caption="Scatterplot with transition" linkURL="examples/scatterplot-transition" />
 </div>
