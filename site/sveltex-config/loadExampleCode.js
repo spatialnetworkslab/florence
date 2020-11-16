@@ -27,21 +27,35 @@ function getExampleNodes (tree) {
 }
 
 function handleNode ({ node }) {
-  const pathToFile = node.data.example.location
-  const cwd = process.cwd()
-  const directory = path.join(cwd, path.dirname(pathToFile))
+  const relativeDirectory = node.data.example.location
+  const directory = path.join(process.cwd(), relativeDirectory)
 
+  const filesNames = glob.sync(
+    path.join(directory, '**'),
+    { nodir: true }
+  )
+
+  ensureDirectoryIsValid(filesNames)
   handleThumbnail(directory)
-  handleData(directory)
 
-  const file = fs.readFileSync(pathToFile).toString()
-  insertREPL(node, file)
+  if (hasData(filesNames)) handleData(filesNames)
+
+  insertREPL(node, filesNames)
 }
 
 const IMAGE_DIRECTORY = 'static/images/examples/'
+const THUMBNAIL = 'thumbnail.png'
+const DATA_DIRECTORY = 'static/data/'
+
+function ensureDirectoryIsValid (fileNames) {
+  return (
+    fileNames.some(fileName => fileName.endsWith('App.svelte')) &&
+    fileNames.some(fileName => fileName.endsWith(THUMBNAIL))
+  )
+}
 
 function handleThumbnail (directory) {
-  const imagePath = path.join(directory, 'thumbnail.png')
+  const imagePath = path.join(directory, THUMBNAIL)
   const exampleName = path.basename(directory)
 
   copyThumbnail(imagePath, IMAGE_DIRECTORY, exampleName)
@@ -52,18 +66,17 @@ function copyThumbnail (source, targetDir, exampleName) {
   fs.copyFileSync(source, target)
 }
 
-const DATA_DIRECTORY = 'static/data/'
+const isInDataFolder = fileName => path.dirname(fileName).endsWith('/data')
 
-function handleData (directory) {
-  const fileNames = glob.sync(path.join(directory, '**'), {
-    nodir: true,
-    ignore: ['**/node_modules/**', '**/.metadata', '**/thumbnail.png']
-  })
+function hasData (fileNames) {
+  return fileNames.some(isInDataFolder)
+}
 
-  fileNames.forEach(f => {
-    if (f.includes('public/data/')) {
-      const target = path.join(DATA_DIRECTORY, path.basename(f))
-      fs.copyFileSync(f, target)
+function handleData (fileNames) {
+  fileNames.forEach(fileName => {
+    if (isInDataFolder(fileName)) {
+      const target = path.join(DATA_DIRECTORY, path.basename(fileName))
+      fs.copyFileSync(fileName, target)
     }
   })
 }
@@ -102,7 +115,7 @@ const scriptCode = [
   '})'
 ].join('\n')
 
-function insertREPL (node, file) {
+function insertREPL (node, fileNames) {
   const scriptTags = {
     type: 'code',
     lang: 'js',
@@ -110,30 +123,72 @@ function insertREPL (node, file) {
     value: scriptCode
   }
 
-  const app = createAppFile(file)
-  const replElement = createReplElement(app)
+  const files = readFiles(fileNames)
+  const replElement = createReplElement(files)
   const replWrapper = createReplWrapper(replElement)
 
   node.children = [scriptTags, replWrapper]
 }
 
-function createAppFile (file) {
+function readFiles (fileNames) {
+  let idCounter = 0
+
+  const files = fileNames.filter(withoutDataAndThumbnail).map(file => {
+    const fileContents = fs.readFileSync(file).toString()
+
+    if (file.endsWith('App.svelte')) return createAppFile(fileContents)
+
+    idCounter++
+
+    const { name, type } = getNameAndType(file)
+
+    return {
+      id: idCounter,
+      name,
+      type,
+      source: fileContents
+    }
+  })
+
+  files.sort((a, b) => a.id - b.id)
+
+  return files
+}
+
+function withoutDataAndThumbnail (file) {
+  return !(
+    isInDataFolder(file) ||
+    file.endsWith(THUMBNAIL)
+  )
+}
+
+function createAppFile (fileContents) {
   return {
     id: 0,
     name: 'App',
     type: 'svelte',
-    source: file
+    source: fileContents
   }
 }
 
-function createReplElement (app) {
+function getNameAndType (fileName) {
+  const split = path.basename(fileName).split('.')
+
+  const type = split.pop()
+
+  return split.length === 1
+    ? { name: split[0], type }
+    : { name: split.join('.'), type }
+}
+
+function createReplElement (files) {
   return {
     type: 'renderedComponent',
     data: {
       tagName: 'REPL',
       hName: 'REPL',
       hProperties: {
-        replFiles: `{${JSON.stringify([app])}}`,
+        replFiles: `{${JSON.stringify(files)}}`,
         preloaded: '{preloaded}',
         width: '{replWidth}',
         height: '{replHeight}'
