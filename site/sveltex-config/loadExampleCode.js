@@ -70,7 +70,7 @@ function handleData (directory) {
 
 const scriptCode = [
   'import REPL from \'@snlab/florence-repl\'',
-  'import { onMount } from \'svelte\'',
+  'import { onMount, onDestroy } from \'svelte\'',
   'import { getPreloadedPackages } from \'../../preloadPackages.js\'',
   '',
   'const preloaded = getPreloadedPackages()',
@@ -86,12 +86,20 @@ const scriptCode = [
   '$: replWidth = windowWidth - convertRemToPixels(2)',
   '$: replHeight = windowHeight && offsetTop ? (windowHeight - offsetTop - convertRemToPixels(1)) : null',
   '',
-  'onMount(() => {',
+  'const handleResize = () => {',
   '  offsetTop = document.getElementById(\'repl-wrapper\').offsetTop',
   '  windowWidth = window.innerWidth',
   '  windowHeight = window.innerHeight',
+  '}',
+  '',
+  'onMount(() => {',
+  '  window.addEventListener(\'resize\', handleResize)',
+  '  handleResize()',
+  '})',
+  '',
+  'onDestroy(() => {',
+  '  window.removeEventListener(\'resize\', handleResize)',
   '})'
-
 ].join('\n')
 
 function insertREPL (node, file) {
