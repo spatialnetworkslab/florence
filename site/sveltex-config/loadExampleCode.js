@@ -68,33 +68,45 @@ function handleData (directory) {
   })
 }
 
+const scriptCode = [
+  'import REPL from \'@snlab/florence-repl\'',
+  'import { onMount } from \'svelte\'',
+  'import { getPreloadedPackages } from \'../../preloadPackages.js\'',
+  '',
+  'const preloaded = getPreloadedPackages()',
+  '',
+  'let offsetTop',
+  'let windowWidth',
+  'let windowHeight',
+  '',
+  'function convertRemToPixels(rem) {',
+  '  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize)',
+  '}',
+  '',
+  '$: replWidth = windowWidth - convertRemToPixels(2)',
+  '$: replHeight = windowHeight && offsetTop ? (windowHeight - offsetTop - convertRemToPixels(1)) : null',
+  '',
+  'onMount(() => {',
+  '  offsetTop = document.getElementById(\'repl-wrapper\').offsetTop',
+  '  windowWidth = window.innerWidth',
+  '  windowHeight = window.innerHeight',
+  '})'
+
+].join('\n')
+
 function insertREPL (node, file) {
   const scriptTags = {
     type: 'code',
     lang: 'js',
     meta: 'exec',
-    value: 'import REPL from \'@snlab/florence-repl\'' + '\n' +
-      'import { getPreloadedPackages } from \'../../preloadPackages.js\'' + '\n' +
-      'const preloaded = getPreloadedPackages()'
+    value: scriptCode
   }
 
   const app = createAppFile(file)
+  const replElement = createReplElement(app)
+  const replWrapper = createReplWrapper(replElement)
 
-  const replElement = {
-    type: 'renderedComponent',
-    data: {
-      tagName: 'REPL',
-      hName: 'REPL',
-      hProperties: {
-        replFiles: `{${JSON.stringify([app])}}`,
-        preloaded: '{preloaded}',
-        width: '{1000}',
-        height: '{600}'
-      }
-    }
-  }
-
-  node.children = [scriptTags, replElement]
+  node.children = [scriptTags, replWrapper]
 }
 
 function createAppFile (file) {
@@ -104,4 +116,48 @@ function createAppFile (file) {
     type: 'svelte',
     source: file
   }
+}
+
+function createReplElement (app) {
+  return {
+    type: 'renderedComponent',
+    data: {
+      tagName: 'REPL',
+      hName: 'REPL',
+      hProperties: {
+        replFiles: `{${JSON.stringify([app])}}`,
+        preloaded: '{preloaded}',
+        width: '{replWidth}',
+        height: '{replHeight}'
+      }
+    }
+  }
+}
+
+function createReplWrapper (replElement) {
+  return {
+    type: 'element',
+    data: {
+      tagName: 'div',
+      hName: 'div',
+      hProperties: {
+        id: 'repl-wrapper'
+      }
+    },
+    children: [
+      startIf,
+      replElement,
+      endIf
+    ]
+  }
+}
+
+const startIf = {
+  type: 'html',
+  value: '\n{#if replHeight}\n'
+}
+
+const endIf = {
+  type: 'html',
+  value: '\n{/if}\n'
 }
