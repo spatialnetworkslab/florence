@@ -2,5 +2,5 @@
 
 Some testing text
 
-::: example examples/density-contours/App.svelte 1-3
+::: example examples/density-contours
 :::

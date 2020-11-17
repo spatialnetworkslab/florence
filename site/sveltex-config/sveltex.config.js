@@ -1,14 +1,14 @@
 import unified from 'unified'
 import {
-  blocks, copyFrontmatter, csbBlock,
-  solutionHide, csbUpload, svelteInline, svelteBlock,
+  blocks, copyFrontmatter,
+  solutionHide, svelteInline, svelteBlock,
   svelteElementBlock, svelteElementInline, execCodeBlocks,
   svelteSyntax, escapeCurlies, markdown, frontmatter, parseFrontmatter, containers,
   math, remark2rehype, katex, prism, html, makeSveltePreprocessor
 } from '@snlab/sveltex-unified'
 
-import exampleBlock from './example.js'
-import exampleUpload from './exampleUpload.js'
+import parseExampleBlock from './parseExampleBlock.js'
+import loadExampleCode from './loadExampleCode.js'
 
 const defaultProcessor = unified()
   .use(markdown, { blocks: blocks })
@@ -19,20 +19,14 @@ const defaultProcessor = unified()
     default: true,
     custom: [
       {
-        type: 'codesandbox',
-        element: 'iframe',
-        transform: csbBlock
-      },
-      {
         type: 'example',
         element: 'div',
-        transform: exampleBlock
+        transform: parseExampleBlock
       }
     ]
   })
   .use(solutionHide)
-  .use(csbUpload)
-  .use(exampleUpload)
+  .use(loadExampleCode)
   .use(svelteInline)
   .use(svelteBlock)
   .use(svelteElementBlock)

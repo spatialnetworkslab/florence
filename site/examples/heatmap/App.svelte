@@ -13,43 +13,33 @@
   } from "@snlab/florence";
   import DataContainer from "@snlab/florence-datacontainer";
 
-  let done = false;
-  let data;
-  json("https://github.com/vega/vega-datasets/blob/master/data/movies.json").then(d => {
-    data = d;
-    done = true;
-  });
+  let data
 
-  let reformattedData, dataContainer, binned;
+  json("/data/imdb.json").then(d => {
+    data = d.map(r => ({ ...r, Title: String(r.Title) }))
+  })
+
+  let binned
   let imdbDomain, countDomain, rtDomain;
   let scaleX, scaleY, scaleColor;
 
   $: {
-    if (done) {
-      reformattedData = data.map(d => {
-        return {
-          Title: String(d.Title),
-          Rotten_Tomatoes_Rating: d.Rotten_Tomatoes_Rating,
-          IMDB_Rating: d.IMDB_Rating
-        };
-      });
-
-      dataContainer = new DataContainer(reformattedData);
-
-      binned = dataContainer
+    if (data) {
+      binned = new DataContainer(data)
+        .select(['IMDB Rating', 'Rotten Tomatoes Rating'])
         .dropNA()
         .bin([
-          { groupBy: "IMDB_Rating", method: "EqualInterval", numClasses: 38 },
+          { groupBy: "IMDB Rating", method: "EqualInterval", numClasses: 38 },
           {
-            groupBy: "Rotten_Tomatoes_Rating",
+            groupBy: "Rotten Tomatoes Rating",
             method: "EqualInterval",
             numClasses: 20
           }
         ])
-        .summarise({ count: { IMDB_Rating: "count" } });
+        .summarise({ count: { "IMDB Rating": "count" } });
 
-      imdbDomain = binned.domain("bins_IMDB_Rating"); // [1.6, 9.2]
-      rtDomain = binned.domain("bins_Rotten_Tomatoes_Rating"); // [1, 100]
+      imdbDomain = binned.domain("bins_IMDB Rating"); // [1.6, 9.2]
+      rtDomain = binned.domain("bins_Rotten Tomatoes Rating"); // [1, 100]
       countDomain = binned.domain("count");
 
       scaleY = scaleLinear().domain(rtDomain);
@@ -64,7 +54,7 @@
   height={400}
 >
 
-  {#if done}
+  {#if binned}
     <Section
       {scaleX}
       {scaleY}
@@ -74,10 +64,10 @@
 
       {#each binned.rows() as bin}
         <Rectangle
-          x1={bin['bins_IMDB_Rating'][0]}
-          x2={bin['bins_IMDB_Rating'][1]}
-          y1={bin['bins_Rotten_Tomatoes_Rating'][0]}
-          y2={bin['bins_Rotten_Tomatoes_Rating'][1]}
+          x1={bin['bins_IMDB Rating'][0]}
+          x2={bin['bins_IMDB Rating'][1]}
+          y1={bin['bins_Rotten Tomatoes Rating'][0]}
+          y2={bin['bins_Rotten Tomatoes Rating'][1]}
           fill={scaleColor(bin['count'])}
         />
       {/each}

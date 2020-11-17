@@ -8,7 +8,7 @@
     XAxis,
     YAxis,
     PointLayer
-  } from "@snlab/florence/src/index.js";
+  } from "@snlab/florence";
   import DataContainer from "@snlab/florence-datacontainer";
   import { json } from "d3-fetch";
 

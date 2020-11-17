@@ -31,7 +31,7 @@
   </div>
 </div>
 
-<style>
+<!-- <style>
   /* header styling */
   h1,
   h2,
@@ -65,4 +65,4 @@
     width: 600px;
   }
 
-</style>
+</style> -->

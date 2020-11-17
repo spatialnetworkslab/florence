@@ -1,5 +1,10 @@
-import * as sapper from '@sapper/app';
+import * as sapper from '@sapper/app'
+import { preload } from './preloadPackages.js'
 
-sapper.start({
-	target: document.querySelector('#sapper')
-});
+(async function () {
+  await preload()
+
+  sapper.start({
+    target: document.querySelector('#sapper')
+  })
+})()

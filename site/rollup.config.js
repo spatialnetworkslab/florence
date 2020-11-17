@@ -9,6 +9,7 @@ import sveltePreprocess from 'svelte-preprocess'
 import postcss from 'rollup-plugin-postcss'
 import pkg from './package.json'
 import { sveltex } from './sveltex-config/sveltex.config.js'
+import css from 'rollup-plugin-css-only'
 
 const mode = process.env.NODE_ENV
 const dev = mode === 'development'
@@ -42,7 +43,11 @@ export default {
         browser: true,
         dedupe
       }),
+
       commonjs(),
+
+      // Needed for codemirror css
+      css({ output: 'static/css/vendor.css' }),
 
       legacy && babel({
         extensions: ['.js', '.mjs', '.html', '.svelte', 'sveltex'],
