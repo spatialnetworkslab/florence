@@ -13,7 +13,7 @@
   <ImageWithLinkAndCaption caption="Choropleth" linkURL="examples/choropleth" />
   <ImageWithLinkAndCaption caption="Brush" linkURL="examples/brush" />
   <ImageWithLinkAndCaption caption="Scatterplot with transition" linkURL="examples/scatterplot-transition" />
-  <ImageWithLinkAndCaption caption="Dubios plot" linkURL="examples/dubois-simple">
+  <ImageWithLinkAndCaption caption="Dubois plot" linkURL="examples/dubois-simple" />
 </div>
 
 ## More Complex Examples
