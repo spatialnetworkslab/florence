@@ -5,7 +5,8 @@
   const links = [
     { name: 'Docs', link: 'docs' },
     { name: 'Examples', link: 'examples' },
-    { name: 'Tutorials', link: 'tutorials' }
+    { name: 'Tutorials', link: 'tutorials' },
+    { name: 'REPL', link: 'repl' }
     // { name: 'Inspiration', link: 'inspiration' }
   ]
 </script>

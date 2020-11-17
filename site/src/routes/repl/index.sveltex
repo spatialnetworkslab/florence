@@ -1,0 +1,57 @@
+```js exec
+import REPL from '@snlab/florence-repl'
+import { onMount, onDestroy } from 'svelte'
+import { getPreloadedPackages } from '../../preloadPackages.js'
+import appSource from './appSource.js'
+
+const preloaded = getPreloadedPackages()
+
+let offsetTop
+let windowWidth
+let windowHeight
+let replWidth
+let replHeight
+
+function convertRemToPixels(rem) {
+  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize)
+}
+
+function handleResize () {
+  offsetTop = document.getElementById('repl-wrapper').offsetTop,
+  windowWidth = window.innerWidth
+  windowHeight = window.innerHeight
+  replWidth = windowWidth - convertRemToPixels(2)
+  replHeight = windowHeight - offsetTop - convertRemToPixels(1)
+}
+
+onMount(() => {
+  window.addEventListener('resize', handleResize)
+  handleResize()
+})
+
+onDestroy(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', handleResize)
+  }
+})
+
+const replFiles = [
+  {
+    id: 0,
+    name: 'App',
+    type: 'svelte',
+    source: appSource
+  }
+]
+```
+
+{#if replHeight}
+
+  <REPL
+    {replFiles}
+    {preloaded}
+    width={replWidth}
+    height={replHeight}
+  />
+
+{/if}
