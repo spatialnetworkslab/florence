@@ -4,7 +4,6 @@ node_modules
 public/bundle.*
 test/sandbox/public/bundle.*
 test/integration/testing-app/public/bundle.*
-dist/
 yarn.lock
 /cypress/screenshots
 site/static/index.css

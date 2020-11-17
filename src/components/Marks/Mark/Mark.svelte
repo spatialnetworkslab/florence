@@ -7,8 +7,8 @@
 
 <script>
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte'
-  import detectIt from 'detect-it'
 
+  import * as detectIt from '../../../utils/detect.js'
   import * as GraphicContext from '../../Core/Graphic/GraphicContext'
   import * as SectionContext from '../../Core/Section/SectionContext'
   import * as InteractionManagerContext from '../../Core/Section/InteractionManagerContext'
@@ -294,8 +294,8 @@
   })
 
   // Interactivity
-  $: isInteractiveMouse = detectIt.hasMouse && any(onClick, onMousedown, onMouseup, onMouseover, onMouseout, onMousedrag)
-  $: isInteractiveTouch = detectIt.hasTouch && any(onTouchdown, onTouchup, onTouchover, onTouchout, onTouchdrag)
+  $: isInteractiveMouse = detectIt.primaryInput === 'mouse' && any(onClick, onMousedown, onMouseup, onMouseover, onMouseout, onMousedrag)
+  $: isInteractiveTouch = detectIt.primaryInput === 'touch' && any(onTouchdown, onTouchup, onTouchover, onTouchout, onTouchdrag)
 
   $: isSelectable = onSelect !== undefined || onDeselect !== undefined
 
@@ -375,7 +375,7 @@
   }
 
   function removeMarkFromSpatialIndexIfNecessary () {
-    if (detectIt.hasMouse) {
+    if (detectIt.primaryInput === 'mouse') {
       const markMouseInterface = $interactionManagerContext.mouse().marks()
 
       if (markMouseInterface.markIsLoaded(markId)) {
@@ -384,7 +384,7 @@
       }
     }
 
-    if (detectIt.hasTouch) {
+    if (detectIt.primaryInput === 'touch') {
       const markTouchInterface = $interactionManagerContext.touch().marks()
 
       if (markTouchInterface.markIsLoaded(markId)) {
