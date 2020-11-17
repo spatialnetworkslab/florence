@@ -10,9 +10,9 @@ context('Assertions', () => {
       cy.get('.area').should('have.length', 1)
     })
 
-    it('[render] area snapshot correctly', () => {
-      cy.get('svg').toMatchSnapshot()
-    })
+    // it('[render] area snapshot correctly', () => {
+    //   cy.get('svg').toMatchSnapshot()
+    // })
 
     it('[interaction] hovering over area changes color', () => {
       cy.get('.area').then(($area) => {

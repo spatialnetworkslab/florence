@@ -14,10 +14,10 @@ context('Assertions', () => {
       cy.get('.label').last().should('contain', 'Testing3')
     })
 
-    it('[render] labels snapshot correctly', () => {
-      cy.get('svg')
-        .toMatchSnapshot()
-    })
+    // it('[render] labels snapshot correctly', () => {
+    //   cy.get('svg')
+    //     .toMatchSnapshot()
+    // })
 
     it('[interaction] clicking on label changes color', () => {
       var label = cy.get('.label').first()
