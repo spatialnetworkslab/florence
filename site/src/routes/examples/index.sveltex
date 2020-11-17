@@ -11,18 +11,19 @@
   <ImageWithLinkAndCaption caption="Categorical dot plot" linkURL="examples/categorical-dot" />
   <ImageWithLinkAndCaption caption="Area Chart" linkURL="examples/area-chart" />
   <ImageWithLinkAndCaption caption="Choropleth" linkURL="examples/choropleth" />
-  <ImageWithLinkAndCaption caption="Gapminder" linkURL="examples/gapminder" />
   <ImageWithLinkAndCaption caption="Brush" linkURL="examples/brush" />
   <ImageWithLinkAndCaption caption="Scatterplot with transition" linkURL="examples/scatterplot-transition" />
+  <ImageWithLinkAndCaption caption="Dubios plot" linkURL="examples/dubois-simple">
 </div>
 
 ## More Complex Examples
 <div class="grid grid-cols-3 gap-2">
  <ImageWithLinkAndCaption caption="Donut Chart" linkURL="examples/donut" />
-  <!-- <ImageWithLinkAndCaption caption="Heatmap" linkURL="examples/heatmap" /> -->
+  <ImageWithLinkAndCaption caption="Heatmap" linkURL="examples/heatmap" />
   <ImageWithLinkAndCaption caption="Violin Plot" linkURL="examples/violin-plot" />
   <ImageWithLinkAndCaption caption="Isotype Plot" linkURL="examples/isotype" />
   <ImageWithLinkAndCaption caption="Population Pyramid" linkURL="examples/population-pyramid" />
+  <ImageWithLinkAndCaption caption="Gapminder" linkURL="examples/gapminder" />
   <ImageWithLinkAndCaption caption="Choropleth Map of Singapore" linkURL="examples/choropleth-map" />
   <ImageWithLinkAndCaption caption="Stacked Horizontal Bar Chart" linkURL="examples/stacked-horizontal-bars" />
   <ImageWithLinkAndCaption caption="Stacked Area Chart" linkURL="examples/stacked-area" />
