@@ -27,27 +27,24 @@ export function getNRowsAndColumns (rows, columns, numberOfCells, aspectRatio) {
   }
 }
 
+// numberOfCells = 32
+// aspectRatio = 0.5
+
 function getNRowsAndColumnsFromAspectRatio (numberOfCells, aspectRatio) {
   let ncolumns = 1
   let nrows = 1
 
-  if (aspectRatio > 1) {
-    while (ncolumns * nrows < numberOfCells) {
-      if ((ncolumns / nrows) < aspectRatio) {
-        ncolumns++
-      } else {
-        nrows++
-      }
-    }
-  }
+  while (ncolumns * nrows < numberOfCells) {
+    const aspectRatioIfColumnsAreIncremented = (ncolumns + 1) / nrows
+    const aspectRatioIfRowsAreIncremented = ncolumns / (nrows + 1)
 
-  if (aspectRatio <= 1) {
-    while (ncolumns * nrows < numberOfCells) {
-      if ((ncolumns / nrows) > aspectRatio) {
-        ncolumns++
-      } else {
-        nrows++
-      }
+    const deltaC = Math.abs(aspectRatio - aspectRatioIfColumnsAreIncremented)
+    const deltaR = Math.abs(aspectRatio - aspectRatioIfRowsAreIncremented)
+
+    if (deltaC < deltaR) {
+      ncolumns++
+    } else {
+      nrows++
     }
   }
 
