@@ -11,8 +11,8 @@
   export let x2 = undefined
   export let y1 = undefined
   export let y2 = undefined
-  export let rows = 1
-  export let columns = 1
+  export let rows = undefined
+  export let columns = undefined
   export let rowGap = 0
   export let columnGap = 0
   export let names = undefined
@@ -34,6 +34,10 @@
     let _ = getNRowsAndColumns(rows, columns, names.length, aspectRatio);
     nrows = _.nrows
     ncolumns = _.ncolumns
+
+    if (nrows * ncolumns < names.length) {
+      throw new Error(`Not enough rows (${nrows}) and columns (${ncolumns}) for number of cells (${names.length})`)
+    }
   }
   // Get cells
   $: [allCells, rowSizes, colSizes, numRows, numCols] = getAllCells(nrows, ncolumns, rowGap, columnGap, pixelCoordinates)
