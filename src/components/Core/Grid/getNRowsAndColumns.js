@@ -6,17 +6,50 @@ export function getNRowsAndColumns (rows, columns, numberOfCells, aspectRatio) {
   if (!rows && !columns) {
     return getNRowsAndColumnsFromAspectRatio(numberOfCells, aspectRatio)
   }
+
+  if (rows && !columns) {
+    return {
+      nrows: rows,
+      ncolumns: Math.ceil(numberOfCells / rows)
+    }
+  }
+
+  if (!rows && columns) {
+    return {
+      nrows: Math.ceil(numberOfCells / columns),
+      ncolumns: columns
+    }
+  }
+
+  return {
+    nrows: rows,
+    ncolumns: columns
+  }
 }
 
 function getNRowsAndColumnsFromAspectRatio (numberOfCells, aspectRatio) {
-  const sqrtNumberOfCells = Math.ceil(Math.sqrt(numberOfCells))
-  const factors = {}
+  let ncolumns = 1
+  let nrows = 1
 
-  for (let factor1 = 1; factor1 < sqrtNumberOfCells; factor1++) {
-    if (numberOfCells % factor1 === 0) {
-      const factor2 = numberOfCells / factor1
-      const factorRatio = factor1 / factor2
-      const delta = aspectRatio - factorRatio
+  if (aspectRatio > 1) {
+    while (ncolumns * nrows < numberOfCells) {
+      if ((ncolumns / nrows) < aspectRatio) {
+        ncolumns++
+      } else {
+        nrows++
+      }
     }
   }
+
+  if (aspectRatio <= 1) {
+    while (ncolumns * nrows < numberOfCells) {
+      if ((ncolumns / nrows) > aspectRatio) {
+        ncolumns++
+      } else {
+        nrows++
+      }
+    }
+  }
+
+  return { nrows, ncolumns }
 }

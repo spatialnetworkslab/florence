@@ -2,7 +2,7 @@
   import * as SectionContext from '../Section/SectionContext'
 
   import { getPixelCoordinates } from '../Section/getPixelCoordinates.js'
-  import { getAspectRatio, getNRows, getNColumns } from './getNRowsAndColumns.js'
+  import { getAspectRatio, getNRowsAndColumns } from './getNRowsAndColumns.js'
   import { getAllCells, mergeNameSpecs } from './gridUtils.js'
   import { printGrid } from './viewGrid.js'
 
@@ -26,9 +26,15 @@
   $: pixelCoordinates = getPixelCoordinates({ x1, x2, y1, y2 }, $sectionContext)
 
   $: aspectRatio = getAspectRatio(pixelCoordinates)
-  $: nrows = getNRows(rows, columns, names.length, aspectRatio)
-  $: ncolumns = getNColumns(rows, columns, names.length, aspectRatio)
 
+  let nrows
+  let ncolumns
+
+  $: {
+    let _ = getNRowsAndColumns(rows, columns, names.length, aspectRatio);
+    nrows = _.nrows
+    ncolumns = _.ncolumns
+  }
   // Get cells
   $: [allCells, rowSizes, colSizes, numRows, numCols] = getAllCells(nrows, ncolumns, rowGap, columnGap, pixelCoordinates)
 
