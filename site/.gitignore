@@ -4,7 +4,7 @@
 yarn-error.log
 /cypress/screenshots/
 /__sapper__/
-static/bundle.*
+static/bundler.*
 static/css/vendor.css
 data/
 images/examples/
