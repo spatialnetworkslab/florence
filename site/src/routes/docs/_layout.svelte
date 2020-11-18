@@ -11,7 +11,7 @@
 </script>
 
 <script>
-	import SideNav from '../../components/SideNav.svelte'
+  import SideNav from '../../components/SideNav.svelte'
 	export let items
 	let openMenu = false
 </script>

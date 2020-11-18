@@ -2,5 +2,5 @@
 
 Some testing text.
 
-::: example examples/categorical-dot/App.svelte 88-132
+::: example examples/categorical-dot
 :::
