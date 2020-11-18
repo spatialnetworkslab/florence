@@ -56,10 +56,10 @@
       fill={key => scaleColor(g.column('animal')[key])}
       size={80}
     />
-    <!-- redundant destructuring in y needed to work around point scaling bug -->
+
     <Label
       x={() => 10}
-      y={({ scaleY }) => scaleY('pigs')} 
+      y={('pigs'} 
       text={item}
       rotation={-90}
       fontFamily={'sans-serif'}
