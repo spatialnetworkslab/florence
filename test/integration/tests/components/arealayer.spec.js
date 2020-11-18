@@ -15,12 +15,10 @@ context('Assertions', () => {
     // })
 
     it('[interaction] hovering over area layer changes color', () => {
-      cy.get('.area').first().then(($area) => {
-        const originalFill = $area.attr('fill')
-        cy.wrap($area).trigger('mousemove').its('fill').should('not.be', originalFill)
-        cy.get('.left-col').trigger('mousemove') // unhovers by moving cursor to sidebar
-        cy.wrap($area).its('fill').should('be', originalFill)
-      })
+      const area = cy.get('.area').first()
+      area.should('have.attr', 'fill', '#af8dc3')
+      area.trigger('mousemove')
+      area.should('have.attr', 'fill', '#eee0cb')
     })
   })
 })
