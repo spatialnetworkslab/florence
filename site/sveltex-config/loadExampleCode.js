@@ -12,6 +12,17 @@ export default function loadExampleCode (options) {
   }
 }
 
+const IMAGE_DIRECTORY = 'static/images/examples/'
+const DATA_DIRECTORY = 'static/data/'
+
+function ensureTargetDirsExist (targetDirs) {
+  for (const dir of targetDirs) {
+    fs.mkdirSync(dir, { recursive: true })
+  }
+}
+
+ensureTargetDirsExist([IMAGE_DIRECTORY, DATA_DIRECTORY])
+
 function getExampleNodes (tree) {
   const exampleNodes = []
 
@@ -43,9 +54,7 @@ function handleNode ({ node }) {
   insertREPL(node, filesNames)
 }
 
-const IMAGE_DIRECTORY = 'static/images/examples/'
 const THUMBNAIL = 'thumbnail.png'
-const DATA_DIRECTORY = 'static/data/'
 
 function ensureDirectoryIsValid (fileNames) {
   return (
