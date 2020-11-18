@@ -10,9 +10,9 @@ context('Assertions', () => {
       cy.get('.area').should('have.length', 2)
     })
 
-    // it('[render] area layer snapshot correctly', () => {
-    //   cy.get('svg').toMatchSnapshot()
-    // })
+    it('[render] area layer snapshot correctly', () => {
+      cy.get('svg').toMatchSnapshot()
+    })
 
     it('[interaction] hovering over area layer changes color', () => {
       const area = cy.get('.area').first()
