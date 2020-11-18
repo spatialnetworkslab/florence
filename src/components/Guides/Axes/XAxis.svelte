@@ -56,8 +56,9 @@
   export let titleRotation = 0
   export let titleAnchorPoint = 't'
 
-  // transition
+  // other
   export let transition = undefined
+  export let clip = false
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -128,6 +129,7 @@
       strokeWidth={baseLineWidth}
       opacity={baseLineOpacity}
       stroke={baseLineColor}
+      {clip}
     />
   {/if}
 
@@ -138,6 +140,7 @@
       opacity={tickOpacity}
       stroke={tickColor}
       {transition}
+      {clip}
     />
     
     <LabelLayer
@@ -151,6 +154,7 @@
       opacity={labelOpacity}
       fill={labelColor}
       {transition}
+      {clip}
     />
   {/if}
 
@@ -165,6 +169,7 @@
       fontWeight={titleFontWeight}
       opacity={titleOpacity}
       fill={titleColor}
+      {clip}
     />
   {/if}
 
