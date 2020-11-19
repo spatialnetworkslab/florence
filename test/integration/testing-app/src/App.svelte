@@ -14,6 +14,7 @@
   import AreaLayer from './pages/AreaLayer.svelte'
   import Title from './pages/Title.svelte'
   import NestedSections from './pages/NestedSections.svelte'
+  import GridLines from './pages/GridLines.svelte'
 
   // and add them to this component array
   const components = [
@@ -76,6 +77,11 @@
       name: 'NestedSections',
       url: '/nestedsections',
       component: NestedSections
+    },
+    {
+      name: 'GridLines',
+      url: '/gridlines',
+      component: GridLines
     }
   ]
 </script>

@@ -47,7 +47,7 @@
   )
 </script>
 
-<g class="x-raster">
+<g class="y-grid-lines">
     
   <LineLayer 
     {...coordinates}
