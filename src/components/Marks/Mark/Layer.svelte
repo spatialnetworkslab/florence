@@ -87,6 +87,7 @@
   export let renderSettings = undefined
   export let blockReindexing = false
   export let _asPolygon = true
+  export let clip
 
   // Validate aesthetics every time input changes
   let aesthetics = validateAesthetics(
@@ -445,7 +446,12 @@
 {#if $graphicContext.output() === 'svg'}
 
   {#if renderPolygon}
-    <g class={`${type.toLowerCase()}-layer`}>
+
+    <g 
+      clip-path={clip ? `url(#clip-${$sectionContext.sectionId})` : 'none'}
+      class={`${type.toLowerCase()}-layer`}
+    >
+
       {#each Object.keys($tr_screenGeometryObject) as $key ($key)}
 
         <path
@@ -460,12 +466,18 @@
         />
 
       {/each}
+
     </g>
 
   {/if}
 
   {#if renderCircle}
-    <g class="point-layer">
+
+    <g
+      clip-path={clip ? `url(#clip-${$sectionContext.sectionId})` : 'none'}
+      class="point-layer"
+    >
+
       {#each Object.keys($tr_screenGeometryObject) as $key ($key)}
 
         <circle
@@ -482,11 +494,18 @@
         />
 
       {/each}
+
     </g>
+
   {/if}
 
   {#if renderLine}
-    <g class="line-layer">
+
+    <g 
+      clip-path={clip ? `url(#clip-${$sectionContext.sectionId})` : 'none'}
+      class="line-layer"
+    >
+
       {#each Object.keys($tr_screenGeometryObject) as $key ($key)}
 
         <path
@@ -499,13 +518,20 @@
         />
 
       {/each}
+
     </g>
+
   {/if}
 
 {/if}
 
 {#if renderLabel}
-  <g class="label-layer">
+
+  <g
+    clip-path={clip ? `url(#clip-${$sectionContext.sectionId})` : 'none'} 
+    class="label-layer"
+  >
+
     {#each Object.keys($tr_screenGeometryObject) as $key ($key)}
 
       <text 
@@ -533,6 +559,7 @@
       </text>
       
     {/each}
+
   </g>
 
 {/if}

@@ -70,9 +70,10 @@
   export let titleRotation = 0
   export let titleAnchorPoint = 't'
 
-  // transition
+  // other
   export let transition = undefined
   export let zoomIdentity = undefined
+  export let clip = false
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -389,6 +390,7 @@
     {stroke}
     {strokeWidth}
     {zoomIdentity}
+    {clip}
   />
 
   <LabelLayer
@@ -404,6 +406,7 @@
     fill={labelColor}
     {transition} 
     {zoomIdentity}
+    {clip}
   />
 
   {#if title.length > 0}
@@ -420,6 +423,7 @@
       fill={titleColor}
       {transition} 
       {zoomIdentity}
+      {clip}
     />
   {/if}
 </g>

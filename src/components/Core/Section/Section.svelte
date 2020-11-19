@@ -181,7 +181,7 @@
   </mask>
 </defs>
 
-<g class="section" clip-path={`url(#clip-${sectionId})`} >
+<g class="section">
   {#if backgroundColor}
     <rect 
       class="content-background"

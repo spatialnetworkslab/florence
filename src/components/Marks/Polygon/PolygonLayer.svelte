@@ -40,6 +40,7 @@
   export let renderSettings = undefined
   export let key = undefined
   export let blockReindexing = false
+  export let clip = true
 </script>
 
 <Layer 
@@ -51,6 +52,6 @@
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
   {onTouchdown} {onTouchup} {onTouchover} {onTouchout} {onTouchdrag}
   {onSelect} {onDeselect}
-  {key} {renderSettings} {blockReindexing}
+  {key} {renderSettings} {blockReindexing} {clip}
   _asPolygon={false}
 />

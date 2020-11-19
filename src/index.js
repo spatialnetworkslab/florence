@@ -25,9 +25,12 @@ export { default as AreaLayer } from './components/Marks/Area/AreaLayer.svelte'
 export { default as XAxis } from './components/Guides/Axes/XAxis.svelte'
 export { default as YAxis } from './components/Guides/Axes/YAxis.svelte'
 
-export { default as createGeoScales } from './helpers/createGeoScales.js'
-export { default as createPanHandler } from './helpers/createPanHandler.js'
-export { default as createZoomHandler } from './helpers/createZoomHandler.js'
+export { default as XGridLines } from './components/Guides/GridLines/XGridLines.svelte'
+export { default as YGridLines } from './components/Guides/GridLines/YGridLines.svelte'
 
 export { default as DiscreteLegend } from './components/Guides/Legends/DiscreteLegend.svelte'
 export { default as GradientLegend } from './components/Guides/Legends/GradientLegend.svelte'
+
+export { default as createGeoScales } from './helpers/createGeoScales.js'
+export { default as createPanHandler } from './helpers/createPanHandler.js'
+export { default as createZoomHandler } from './helpers/createZoomHandler.js'

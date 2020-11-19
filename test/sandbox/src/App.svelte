@@ -30,6 +30,7 @@
   import LegendsDocs from './examples/LegendsDocs.svelte'
   import NestedSections from './examples/NestedSections.svelte'
   import JoHsiBug from './examples/JoHsiBug.svelte'
+  import Clipping from './examples/Clipping.svelte'
 
   // geo examples
   import GeoEx from './examples/GeoEx.svelte'
@@ -204,6 +205,11 @@
       name: 'Jo Hsi Bug',
       url: 'johsibug',
       component: JoHsiBug
+    },
+    {
+      name: 'Clipping test',
+      url: 'clipping',
+      component: Clipping
     }
   ]
 </script>

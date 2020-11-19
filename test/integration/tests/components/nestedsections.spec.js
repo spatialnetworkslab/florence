@@ -21,8 +21,8 @@ context('Assertions', () => {
       })
     })
 
-    // it('[render] nested sections snapshot correctly', () => {
-    //   cy.get('svg').toMatchSnapshot()
-    // })
+    it('[render] nested sections snapshot correctly', () => {
+      cy.get('svg').toMatchSnapshot()
+    })
   })
 })

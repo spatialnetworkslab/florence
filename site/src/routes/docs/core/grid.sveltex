@@ -14,7 +14,7 @@ import SimpleExample from './examples/_GridSimple.svelte'
   <Grid
       {columns}
       {rows}
-      areaNames={colors}
+      names={colors}
       let:cells
   >
       {#each colors as color}

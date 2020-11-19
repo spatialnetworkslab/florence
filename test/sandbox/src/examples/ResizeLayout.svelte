@@ -61,7 +61,7 @@
 			y1={0} y2={height}
 			columns={cols}
 			rows={rows}
-			areaNames={layout}
+			names={layout}
       rowGap={10}
       columnGap={10}
 			let:cells

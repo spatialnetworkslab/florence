@@ -1,6 +1,6 @@
 <script>
 	import { scaleLinear, scalePoint, scaleBand } from 'd3-scale'
-	import { Graphic, Grid, Section, PointLayer, Point } from '../../../../src/'
+	import { Graphic, Section, PointLayer, Point } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	const N = 100

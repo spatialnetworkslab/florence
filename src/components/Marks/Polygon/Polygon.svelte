@@ -39,6 +39,7 @@
   // Other
   export let renderSettings = undefined
   export let blockReindexing = false
+  export let clip = true
 </script>
 
 <Mark
@@ -50,6 +51,6 @@
   {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
   {onTouchdown} {onTouchup} {onTouchover} {onTouchout} {onTouchdrag}
   {onSelect} {onDeselect}
-  {renderSettings} {blockReindexing}
+  {renderSettings} {blockReindexing} {clip}
   _asPolygon={false}
 />

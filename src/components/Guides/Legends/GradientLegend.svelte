@@ -82,8 +82,9 @@
   // export let titlePaddingX = 0
   // export let titlePaddingY = 0
 
-  // transition
+  // other
   export let transition = undefined
+  export let clip = false
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -383,63 +384,79 @@
 </script>
 
 <g class="gradient-legend">
+
   <!-- Gradient definition -->
   <defs>
+
     <linearGradient
       id={gradientId}
       x1={gradX.x1}
       y1={gradY.y1}
       x2={gradX.x2}
       y2={gradY.y2}
-      >
+    >
+    
       {#each offsets as o, i}
-          <stop
+
+        <stop
           key={i}
           offset={`${o * 100 + '%'}`}
-          style={`stop-color:${Array.isArray(tickColors) ? tickColors[i] : tickColors};stop-opacity:${Array.isArray(tickOpacities) ? tickOpacities[i] : tickOpacities}`}
-          />
+          style={`
+            stop-color:${Array.isArray(tickColors) ? tickColors[i] : tickColors};
+            stop-opacity:${Array.isArray(tickOpacities) ? tickOpacities[i] : tickOpacities}
+          `}
+        />
+
       {/each}
+
     </linearGradient>
   </defs>
 
   <!-- Florence components-->
   <Rectangle
-      x1 = { () => { return rectCoords.x1 } }
-      x2 = { () => { return rectCoords.x2 } }
-      y1 = { () => { return rectCoords.y1 } }
-      y2 = { () => { return rectCoords.y2 } }
-      fill={`url(#${gradientId})`}
-      {transition}
-      {stroke}
-      {strokeWidth}
+    x1 = {() => rectCoords.x1}
+    x2 = {() => rectCoords.x2}
+    y1 = {() => rectCoords.y1}
+    y2 = {() => rectCoords.y2}
+    fill={`url(#${gradientId})`}
+    {transition}
+    {stroke}
+    {strokeWidth}
+    {clip}
   />
 
   <LabelLayer
-      x={ () => { return tickLabelXCoords } } 
-      y={ () => { return tickLabelYCoords } } 
-      text={tickLabelText} 
-      anchorPoint={labelAnchorPoint}
-      rotation={labelRotate} 
-      fontFamily={labelFont} 
-      fontSize={labelFontSize}
-      fontWeight={labelFontWeight} 
-      opacity={labelOpacity} 
-      fill={labelColor}
-      {transition}
+    x={() => tickLabelXCoords} 
+    y={() => tickLabelYCoords} 
+    text={tickLabelText} 
+    anchorPoint={labelAnchorPoint}
+    rotation={labelRotate} 
+    fontFamily={labelFont} 
+    fontSize={labelFontSize}
+    fontWeight={labelFontWeight} 
+    opacity={labelOpacity} 
+    fill={labelColor}
+    {transition}
+    {clip}
   />
+
   {#if title.length > 0}
+
       <Label 
-          x={ () => { return titleX } }
-          y={ () => { return titleY } }
-          text={title}
-          fontFamily={titleFont}
-          fontSize={titleFontSize}
-          fontWeight={titleFontWeight}
-          rotation={titleRotation}
-          anchorPoint={titleAnchorPoint}
-          opacity={titleOpacity} 
-          fill={titleColor}
-          {transition}
+        x={() => titleX}
+        y={() => titleY}
+        text={title}
+        fontFamily={titleFont}
+        fontSize={titleFontSize}
+        fontWeight={titleFontWeight}
+        rotation={titleRotation}
+        anchorPoint={titleAnchorPoint}
+        opacity={titleOpacity} 
+        fill={titleColor}
+        {transition}
+        {clip}
       />
+
   {/if}
+
 </g>

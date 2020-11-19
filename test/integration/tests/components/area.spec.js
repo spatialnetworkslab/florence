@@ -10,17 +10,15 @@ context('Assertions', () => {
       cy.get('.area').should('have.length', 1)
     })
 
-    // it('[render] area snapshot correctly', () => {
-    //   cy.get('svg').toMatchSnapshot()
-    // })
+    it('[render] area snapshot correctly', () => {
+      cy.get('svg').toMatchSnapshot()
+    })
 
     it('[interaction] hovering over area changes color', () => {
-      cy.get('.area').then(($area) => {
-        const originalFill = $area.attr('fill')
-        cy.wrap($area).trigger('mousemove').its('fill').should('not.be', originalFill)
-        cy.get('.left-col').trigger('mousemove') // unhovers by moving cursor to sidebar
-        cy.wrap($area).its('fill').should('be', originalFill)
-      })
+      const area = cy.get('.area').first()
+      area.should('have.attr', 'fill', 'steelblue')
+      area.trigger('mousemove')
+      area.should('have.attr', 'fill', '#d5896f')
     })
   })
 })

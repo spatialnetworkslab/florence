@@ -59,6 +59,7 @@
   // Other
   export let renderSettings = undefined
   export let blockReindexing = false
+  export let clip = true
 
   // Contexts
   const graphicContext = GraphicContext.subscribe()
@@ -209,6 +210,7 @@
 {#if $graphicContext.output() === 'svg'}
 
   <path
+    clip-path={clip ? `url(#clip-${$sectionContext.sectionId})` : 'none'}
     class="line"
     d={generatePath($tr_screenGeometry)}
     fill="none"

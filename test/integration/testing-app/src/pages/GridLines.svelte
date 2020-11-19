@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, Section, Point, XAxis, YAxis, XGridLines, YGridLines } from '../../../../src'
+  import { Graphic, XGridLines, YGridLines } from '../../../../../src/'
 </script>
 
 <Graphic 
@@ -10,11 +10,6 @@
   padding={{ left: 50, right: 50, top: 50, bottom: 20 }}
   paddingColor="blue"
 >
-
-  <Point x={10} y={10} />
-
-  <XAxis />
-  <YAxis />
 
   <XGridLines />
   <YGridLines />
