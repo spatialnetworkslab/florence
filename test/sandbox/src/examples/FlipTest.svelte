@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, Section, Point, XAxis, YAxis, XRaster, YRaster } from '../../../../src'
+  import { Graphic, Section, Point, XAxis, YAxis, XGridLines, YGridLines } from '../../../../src'
 </script>
 
 <Graphic 
@@ -16,7 +16,7 @@
   <XAxis />
   <YAxis />
 
-  <XRaster />
-  <YRaster />
+  <XGridLines />
+  <YGridLines />
 
 </Graphic>
