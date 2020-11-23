@@ -8,10 +8,16 @@ export function createScales ({ scaleX, scaleY }, { rangeX, rangeY }) {
 }
 function createScale (scale, range) {
   if (scale) {
-    const newScale = scale.copy().range(range)
-    newScale.invert = createInvertMethod(newScale)
+    if (scale.constructor === Function) {
+      const newScale = scale.copy().range(range)
+      newScale.invert = createInvertMethod(newScale)
 
-    return newScale
+      return newScale
+    }
+
+    if (scale.constructor === Array) {
+      return scaleLinear().domain(scale).range(range)
+    }
   }
 
   if (!scale) {
