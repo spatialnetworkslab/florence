@@ -1,6 +1,6 @@
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
-import { createSectionContext } from './createSectionContext'
+import { createSectionContext } from './createSectionContext.js'
 
 const key = {}
 
