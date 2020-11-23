@@ -23,7 +23,7 @@
     "d3-array": "^2.8.0",
     "d3-dsv": "^2.0.0",
     "d3-fetch": "^2.0.0",
-    "d3-format": "^1.4.4",
+    "d3-format": "^2.0.0",
     "d3-scale-chromatic": "^2.0.0",
     "eslint": "^7.13.0",
     "eslint-config-standard": "^14.1.1",
