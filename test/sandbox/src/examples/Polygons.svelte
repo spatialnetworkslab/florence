@@ -1,5 +1,4 @@
 <script>
-  import { scaleLinear } from 'd3-scale'
   import { Graphic, Section, Polygon, PolygonLayer } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
@@ -67,8 +66,8 @@
   <Section
     x1={50} x2={450}
     y1={50} y2={450}
-    scaleX={scaleLinear().domain([0, 10])}
-    scaleY={scaleLinear().domain([0, 10])}
+    scaleX={[0, 10]}
+    scaleY={[0, 10]}
     {transformation}
   >
 
