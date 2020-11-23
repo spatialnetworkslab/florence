@@ -1,7 +1,7 @@
 {
   "name": "@snlab/florence",
   "version": "0.1.21",
-  "svelte": "dist/index.esm.js",
+  "svelte": "src/index.js",
   "main": "src/index.js",
   "module": "dist/index.mjs",
   "dependencies": {
