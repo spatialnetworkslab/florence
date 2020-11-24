@@ -139,8 +139,7 @@ const scaleA = scaleLinear().domain(data.domain('a'))
       <PointLayer
           x={filteredData.column('a')}
           y={filteredData.column('b')}
-          key={filteredData.column('$key')}
-          fill={linearColorScale}
+          fill={filteredData.map('a', linearColorScale)}
         />
 
       <XAxis />
@@ -197,8 +196,7 @@ const scaleA = scaleLinear().domain(data.domain('a'))
       <PointLayer
           x={filteredData.column('a')}
           y={filteredData.column('b')}
-          key={filteredData.column('$key')}
-          fill={seqScale}
+          fill={filteredData.map('a', seqScale)}
         />
 
       <XAxis />

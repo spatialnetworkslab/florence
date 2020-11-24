@@ -73,7 +73,7 @@
       y={lineStrings.y}
       onMouseover={({ key }) => { hoverKey = key }}
       onMouseout={() => { hoverKey = null }}
-      stroke={key => key === hoverKey ? '#3f88c5' : '#f49d37'}
+      stroke={({ key }) => key === hoverKey ? '#3f88c5' : '#f49d37'}
       strokeWidth={3}
     />
 
