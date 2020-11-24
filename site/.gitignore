@@ -6,5 +6,5 @@ yarn-error.log
 /__sapper__/
 static/workers/bundler.*
 static/css/vendor.css
-data/
-static/images/examples/
+static/data/
+static/images/
