@@ -34,7 +34,7 @@
   // process relevant data to get backgroundagons with mean price data
   $: {
     background = new DataContainer(hexagons)
-    const bbox = background.domain('$geometry')
+    const bbox = background.bbox()
     geoScale = createGeoScales(bbox)
     geometry = background.column('$geometry')
     postBg = background.dropNA(['mean_price', 'mean_lease', 'mean_floor_area']) // remove na values
