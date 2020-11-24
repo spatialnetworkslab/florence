@@ -35,7 +35,7 @@
     .domain(columnNames)
     .range(['#af8dc3', '#7fbf7b'])
 
-  let hoveredKey = null
+  let hoveredIndex = null
 
   // only works when hoveredKey is passed as param
   // function handleFill (key) {
@@ -70,9 +70,9 @@
       x1={columnNames.map(_ => rowCumSum.column('u'))}
       y1={({ scaleY }) => columnNames.map(c => rowCumSum.column(c).map(d => scaleY(d[0])))}
       y2={columnNames.map(c => rowCumSum.column(c).map(d => d[1]))}
-      fill={key => key === hoveredKey ? '#eee0cb' : columnNames.map(c => scaleColor(c))[+key]}
-      onMouseover={({ key }) => hoveredKey = key }
-      onMouseout={() => hoveredKey = null }
+      fill={({ index }) => index === hoveredIndex ? '#eee0cb' : columnNames.map(c => scaleColor(c))[index]}
+      onMouseover={({ index }) => hoveredIndex = index }
+      onMouseout={() => hoveredIndex = null }
     />
       <!-- fill={key => handleFill(key, hoveredKey)} -->
 
