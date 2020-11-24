@@ -30,7 +30,7 @@
 
   function onMousedrag (event) {
     if (event.dragType === 'start') {
-      hitKey = event.key
+      hitIndex = event.index
       blockReindexing = true
     }
 
@@ -39,7 +39,7 @@
     }
 
     if (event.dragType === 'end') {
-      data.updateRow(hitKey, { a: dragPoint.x, b: dragPoint.y })
+      data.updateRow({ index: hitIndex }, { a: dragPoint.x, b: dragPoint.y })
       data = data
 
       hitKey = undefined
@@ -68,7 +68,6 @@
 			<PointLayer
         x={data.column('a')}
         y={data.column('b')}
-        key={data.column('$key')}
         {onMousedrag}
       />
 
