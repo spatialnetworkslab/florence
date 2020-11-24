@@ -93,9 +93,6 @@ function handleData (fileNames) {
 const scriptCode = [
   'import REPL from \'@snlab/florence-repl\'',
   'import { onMount, onDestroy } from \'svelte\'',
-  'import { getPreloadedPackages } from \'../../preloadPackages.js\'',
-  '',
-  'const preloaded = getPreloadedPackages()',
   '',
   'let offsetTop',
   'let windowWidth',
@@ -201,9 +198,9 @@ function createReplElement (files) {
       hName: 'REPL',
       hProperties: {
         replFiles: `{${JSON.stringify(files)}}`,
-        preloaded: '{preloaded}',
         width: '{replWidth}',
-        height: '{replHeight}'
+        height: '{replHeight}',
+        debounce: '{400}'
       }
     }
   }
