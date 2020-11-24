@@ -7,5 +7,5 @@ yarn-error.log
 static/workers/bundler.*
 static/css/vendor.css
 static/data/
-static/images/
+static/images/examples/
 static/workers/
