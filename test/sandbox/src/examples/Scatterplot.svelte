@@ -79,7 +79,7 @@
 			<PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}
-        key={filteredData.column('$key')}
+        key={filteredData.keys()}
         fill={transformation === 'identity' ? 'black' : 'blue'}
         radius={transformation === 'identity' ? 4 : 6}
         transition={duration}

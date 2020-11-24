@@ -139,9 +139,23 @@ const domainY = [new Date(2020, 1, 1), new Date(2020, 1, 10)])
 
 <StringTemporal />
 
+### Domain shorthand
+
+It is also possible to simply pass the domain to `scaleX` or `scaleY`. In this case, `florence` will create a linear scale from the domain. Therefore this:
+
+```
+<Graphic scaleX={[0, 10]}>
+```
+
+is equal to this:
+
+```
+<Graphic scaleX={scaleLinear().domain([0, 10])}>
+```
+
 ### Function syntax
 
-Even when `scaleX` and `scaleY` are used, it is possible to bypass them. To do this, pass the positioning prop a function that returns a coordinate, instead of a coordinate:
+Even when `scaleX` and `scaleY` are used, it is possible to bypass them. To do this, pass the positioning prop a function that returns a coordinate, instead of a bare coordinate:
 
 ```js exec
 import CenterPointFunc from './examples/_CenterPointFunc.svelte'

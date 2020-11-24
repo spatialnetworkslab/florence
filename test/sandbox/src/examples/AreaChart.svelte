@@ -43,35 +43,6 @@
 
 </script>
 
-
-<!-- toy example
-<Graphic
-  width={500}
-  height={500}
->
-  <Section
-		{scaleY}
-    {scaleX}
-      flipY
-  > 
-    <Area
-      x1={data.column('date')}
-      y1={data.column('close')}
-      fill={'steelblue'}
-      stroke="steelblue"
-      strokeWidth="2"
-    />
-    <XAxis
-      baseLine={false}
-    />
-
-    <YAxis
-      baseLine={false}
-    />
-  </Section>
-</Graphic> -->
-
-
 <Graphic
   width={700}
   height={500}

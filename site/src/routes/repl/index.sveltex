@@ -1,10 +1,7 @@
 ```js exec
 import REPL from '@snlab/florence-repl'
 import { onMount, onDestroy } from 'svelte'
-import { getPreloadedPackages } from '../../preloadPackages.js'
 import appSource from './appSource.js'
-
-const preloaded = getPreloadedPackages()
 
 let offsetTop
 let windowWidth
@@ -49,9 +46,9 @@ const replFiles = [
 
   <REPL
     {replFiles}
-    {preloaded}
     width={replWidth}
     height={replHeight}
+    debounce={400}
   />
 
 {/if}

@@ -3,5 +3,8 @@
   command = "npm run export"
   publish = "site/__sapper__/export"
 
+[build.environment]
+NODE_VERSION = "12"
+
 [context.deploy-preview.environment]
   NODE_ENV = "development"
