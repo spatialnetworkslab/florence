@@ -19,18 +19,18 @@
   const scaleX = scaleLinear().domain(data.domain('a'))
   const scaleY = scaleLinear().domain(data.domain('b'))
 
-  let hoverKey
+  let hoverIndex
 
-  function onMouseover ({ key }) {
+  function onMouseover ({ index }) {
     console.log('mouseover')
-    console.log(key)
-    hoverKey = key
+    console.log(index)
+    hoverIndex = index
   }
 
-  function onMouseout ({ key }) {
+  function onMouseout ({ index }) {
     console.log('mouseout')
-    console.log(key)
-    hoverKey = undefined
+    console.log(index)
+    hoverIndex = undefined
   }
 
   const log = console.log
@@ -47,7 +47,7 @@
     <PointLayer
       x={data.column('a')}
       y={data.column('b')}
-      fill={key => key === hoverKey ? 'red' : 'black'}
+      fill={({ index }) => index === hoverIndex ? 'red' : 'black'}
       radius={17}
       {onMouseover}
       {onMouseout}
