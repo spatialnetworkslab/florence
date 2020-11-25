@@ -33,7 +33,7 @@
       appleStockData.max('High')
     ])
 
-    tickX = timeMonday.every(1).range(domainDate[0], domainDate[1])
+    ticksX = timeMonday.every(1).range(domainDate[0], domainDate[1])
   })
 
   const openCloseColors = ([open, close]) => open > close ? '#da344d' : '#32936f'
@@ -61,6 +61,9 @@
       stroke={appleStockData.map('openClose', openCloseColors)}
       strokeWidth={4}
     />
+
+    <XAxis tickValues={ticksX} labelFormat={timeFormat('%-m/%-d')} baseLine={false} /> 
+    <YAxis labelFormat={format('$d')} baseLine={false} />
   
   </Graphic>
 
