@@ -1,4 +1,4 @@
-export const livestock = [
+export default [
   { country: 'Great Britain', animal: 'cattle', col: 1 },
   { country: 'Great Britain', animal: 'cattle', col: 2 },
   { country: 'Great Britain', animal: 'cattle', col: 3 },
