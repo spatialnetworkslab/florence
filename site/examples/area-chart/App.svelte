@@ -1,8 +1,8 @@
 <script>
-  import { Graphic, Area, XAxis, YAxis } from '@snlab/florence'
-  import DataContainer from '@snlab/florence-datacontainer'
   import { scaleLinear, scaleUtc } from 'd3-scale'
   import { csv } from 'd3-fetch'
+  import { Graphic, Area, XAxis, YAxis } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
 
   let appleStockData
 
