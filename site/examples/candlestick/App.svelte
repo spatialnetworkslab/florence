@@ -1,8 +1,9 @@
 <script>
   import { csv } from 'd3-fetch'
   import { format } from 'd3-format'
+  import { autoType } from 'd3-dsv'
   import { timeDay, timeMonday } from 'd3-time'
-  import { timeParse, timeFormat } from 'd3-time-format'
+  import { timeFormat } from 'd3-time-format'
   import { scaleLinear, scaleLog, scaleBand } from 'd3-scale'
   import { Graphic, LineLayer, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
@@ -12,20 +13,11 @@
   let scaleY
   let ticksX
 
-  csv('/data/apple-stocks-candlestick.csv', data => {
-    const parseDate = timeParse('%Y-%m-%d')
-
+  csv('/data/apple-stocks-candlestick.csv', autoType).then(data => {
     appleStockData = new DataContainer(data)
       .slice(-120)
       .mutate({
-        Date: row => parseDate(row.Date),
-        High: row => +row.High,
-        Low: row => +row.Low,
-        Open: row => +row.Open,
-        Close: row => +row.Close
-      })
-      .mutate({
-
+        candlesticks: 
       })
 
     const noWeekend = d => d.getDay() !== 0 && d.getDay() !== 6

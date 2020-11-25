@@ -1,12 +1,13 @@
 <script>
   import { scaleLinear, scaleUtc } from 'd3-scale'
   import { csv } from 'd3-fetch'
+  import { autoType } from 'd3-dsv'
   import { Graphic, Area, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
   let appleStockData
 
-  csv('/data/apple-stocks-area.csv').then(data => {
+  csv('/data/apple-stocks-area.csv', autoType).then(data => {
     appleStockData = new DataContainer(data)
   })
 </script>
