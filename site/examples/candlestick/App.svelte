@@ -17,7 +17,9 @@
     appleStockData = new DataContainer(data)
       .slice(-120)
       .mutate({
-        candlesticks: 
+        dates: row => [row.Date, row.Date],
+        lowHigh: row => [row.Low, row.High],
+        openClose: row => [row.Open, row.Close]
       })
 
     const noWeekend = d => d.getDay() !== 0 && d.getDay() !== 6
@@ -33,6 +35,8 @@
 
     tickX = timeMonday.every(1).range(domainDate[0], domainDate[1])
   })
+
+  const openCloseColors = ([open, close]) => open > close ? '#da344d' : '#32936f'
 </script>
 
 {#if appleStockData}
@@ -46,43 +50,18 @@
   >
 
     <LineLayer 
-      x={appleStockData.map('Date', d => [d, d])}
-      y={}
+      x={appleStockData.column('dates')}
+      y={appleStockData.column('lowHigh')}
+      strokeWidth={1}
+    />
+
+    <LineLayer
+      x={appleStockData.column('dates')}
+      y={appleStockData.column('openClose')}
+      stroke={appleStockData.map('openClose', openCloseColors)}
+      strokeWidth={4}
     />
   
   </Graphic>
 
 {/if}
-
-<!-- <Graphic {width} {height}>
-
-  {#if done}
-    <Section
-      {scaleX} 
-      {scaleY}
-      {padding}
-      flipY
-    >  
-
-      <LineLayer
-        x={dataContainer.map('date', d => [d, d])}
-        y={dataContainer.rows().map(r => [r.low, r.high])}
-        strokeWidth={1}
-      />
-
-      <LineLayer
-        x={dataContainer.map('date', d => [d, d])}
-        y={dataContainer.rows().map(r => [r.open, r.close])}
-        strokeWidth={4}
-        stroke={dataContainer.rows().map(r => r.open > r.close ? '#da344d'
-          : r.close > r.open ? '#32936f'
-          : '#32936f')}
-      />
-
-      <XAxis tickValues={xTicks} labelFormat={timeFormat('%-m/%-d')} baseLine={false} /> 
-      <YAxis scale={scaleYAxis} labelFormat={format('$d')} baseLine={false} />
-
-    </Section>
-  {/if}
-
-</Graphic> -->
