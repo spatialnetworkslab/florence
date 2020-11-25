@@ -5,23 +5,23 @@
   import { Graphic, PolygonLayer, createGeoScales } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  let geometries, geoScales, populationScale
+  let dataContainer, geoScales, populationScale
   
   (async () => {
     const topojson = await json('/data/us-states.topojson')
-    geometries = new DataContainer(feature(topojson, topojson.objects.states))
-    geoScales = createGeoScales(geometries.bbox())
+    dataContainer = new DataContainer(feature(topojson, topojson.objects.states))
+    geoScales = createGeoScales(dataContainer.bbox())
 
     const population = await csv('/data/us-states-population.csv')
-    geometries.addColumn('population', population.map(row => +row.population))
+    dataContainer.addColumn('population', population.map(row => +row.population))
 
-    populationScale = geometries.classify({
+    populationScale = dataContainer.classify({
       column: 'population', method: 'Jenks', numClasses: 6
     }, schemeBlues[6])
   })()
 </script>
 
-{#if geometries}
+{#if dataContainer}
 
   <Graphic 
     width={500}
@@ -30,8 +30,8 @@
   >
 
     <PolygonLayer 
-      geometry={geometries.column('$geometry')}
-      fill={geometries.map('population', populationScale)}
+      geometry={dataContainer.column('$geometry')}
+      fill={dataContainer.map('population', populationScale)}
       stroke={'grey'}
       strokeWidth={0.5}
     />
