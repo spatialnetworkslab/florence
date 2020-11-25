@@ -4,7 +4,7 @@
   import { autoType } from 'd3-dsv'
   import { timeDay, timeMonday } from 'd3-time'
   import { timeFormat } from 'd3-time-format'
-  import { scaleLinear, scaleLog, scaleBand } from 'd3-scale'
+  import { scaleLog, scaleBand } from 'd3-scale'
   import { Graphic, LineLayer, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
