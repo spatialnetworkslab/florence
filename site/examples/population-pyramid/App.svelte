@@ -1,31 +1,29 @@
 <!-- adapted from https://observablehq.com/@d3/population-pyramid -->
 <script>
-  import { Graphic, Section, RectangleLayer, XAxis, YAxis } from '@snlab/florence';
-  import DataContainer from '@snlab/florence-datacontainer';
-  import { scaleLinear, scaleBand } from 'd3-scale';
-  import { formatPrefix } from 'd3-format';
+  import { scaleLinear, scaleBand } from 'd3-scale'
+  import { Graphic, Section, RectangleLayer, XAxis, YAxis } from '@snlab/florence'
+  import { formatPrefix } from 'd3-format'
+  import DataContainer from '@snlab/florence-datacontainer'
   import { data } from './population.js'
 
-  const padding = { bottom: 50, top: 0, left: 0, right: 0 };
-  const tickFormatter = formatPrefix('.0', 1e6);
+  const padding = { bottom: 50, top: 0, left: 0, right: 0 }
+  const tickFormatter = formatPrefix('.0', 1e6)
 
-  const dataContainer = new DataContainer(data);
-  const grouped = dataContainer.groupBy('sex');
+  const dataContainer = new DataContainer(data)
+  const grouped = dataContainer.groupBy('sex')
 
-  const valueDomain = dataContainer.domain('value');
-  const ageDomain = dataContainer.domain('age');
+  const scaleX = scaleLinear().domain([0, dataContainer.max('value')])
+  const scaleY = scaleBand().domain(dataContainer.domain('age')).padding(0.1)
 
-  const [maleValues, femaleValues] = grouped.map('$grouped', group => group.column('value'));
-  const ages = grouped.map('$grouped', group => group.column('age'))[0];
-
-  const scaleX = scaleLinear().domain([0, valueDomain[1]]);
-  const scaleY = scaleBand().domain(ageDomain).padding(0.1);
+  const [maleValues, femaleValues] = grouped.map('$grouped', group => group.column('value'))
+  const ages = grouped.map('$grouped', group => group.column('age'))[0]
 </script>
 
 <Graphic width={760} height={480}>
+
   <!-- male -->
   <Section
-    x1={0}
+    x1={0} 
     x2={380}
     {scaleX}
     {scaleY}
@@ -33,6 +31,7 @@
     flipX
     flipY
   >
+
     <RectangleLayer 
       x1={0}
       x2={maleValues}
@@ -40,7 +39,9 @@
       y2={({scaleY}) => ages.map(age => scaleY(age) + scaleY.bandwidth())}
       fill={'steelblue'}
     />
+
     <XAxis labelFormat={tickFormatter} baseLine={false} />
+
   </Section>
 
   <!-- female -->
@@ -52,6 +53,7 @@
     {padding}
     flipY
   >
+
     <RectangleLayer 
       x1={0}
       x2={femaleValues}
@@ -59,7 +61,10 @@
       y2={({scaleY}) => ages.map(age => scaleY(age) + scaleY.bandwidth())}
       fill={'crimson'}
     />
+
     <XAxis labelFormat={tickFormatter} baseLine={false} />
     <YAxis flip={true}/>
+
   </Section>
+
 </Graphic>
