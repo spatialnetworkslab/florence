@@ -1,77 +1,52 @@
-<!-- adapted from https://observablehq.com/@d3/density-contours -->
-<!-- YAxis scaling bug needs to be fixed -->
 <script>
-  import { tsv } from 'd3-fetch';
-  import { contourDensity } from 'd3-contour';
-  import { scaleLinear } from 'd3-scale';
-  import { format } from 'd3-format';
-  import { Graphic, Section, PointLayer, Polygon, XAxis, YAxis } from '@snlab/florence';
-  import DataContainer from '@snlab/florence-datacontainer';
+  import { tsv } from 'd3-fetch'
+  import { contourDensity } from 'd3-contour'
+  import { format } from 'd3-format'
+  import { Graphic, PointLayer, PolygonLayer, XAxis, YAxis } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
 
-  let done = false;
-  let data;
+  const width = 500
+  const height = 500
 
-  tsv('/data/eruptions.tsv', ({ waiting: x, eruptions: y }) => ({ x: +x, y: +y })).then(d => {
-    data = d;
-    done = true;
-  });
+  let dataContainer, contours
 
-  const width = 900;
-  const height = 600;
-  const padding = { top: 20, right: 30, bottom: 30, left: 40 };
+  (async () => {
+    const data = await tsv('/data/eruptions.tsv')
 
-  let dataContainer;
-  let domainX, domainY;
-  let scaleX, scaleY;
-  let contours;
-
-  $: {
-    if (done) {
-      dataContainer = new DataContainer(data);
-
-      domainX = dataContainer.domain('x');
-      domainY = dataContainer.domain('y');
-      console.log('domain x', domainX)
-
-      scaleX = scaleLinear()
-        .domain(domainX)
-        .nice()
-        .rangeRound([padding.left, width - padding.right]);
-      scaleY = scaleLinear()
-        .domain(domainY)
-        .nice()
-        .rangeRound([height - padding.bottom, padding.top]);
-
-      contours = contourDensity()
-        .x(d => scaleX(d.x))
-        .y(d => scaleY(d.y))
-        .size([width, height])
-        .bandwidth(30)
-        .thresholds(30)(data);
-    }
-  }
+    dataContainer = new DataContainer(data)
+    contours = contourDensity()
+      .size([width, height])
+      .bandwidth(30)
+      .thresholds(30)(data);
+  })()
 </script>
 
-<Graphic {width} {height} {padding}> 
+{#if dataContainer}
 
-    {#if done}
-      {#each contours as c, i}
-        <Polygon
-          geometry={c}
-          stroke={'steelblue'}
-          strokeWidth={i % 5 ? 0.25 : 1}
-          fill={'none'}
-        />
-      {/each}
+  <Graphic 
+    {width}
+    {height}
+    padding={{ top: 20, right: 30, bottom: 30, left: 40 }}
+    scaleX={dataContainer.domain('waiting')}
+    scaleY={dataContainer.domain('eruptions')}
+  >
 
-      <PointLayer
-        x={dataContainer.map('x', x => scaleX(x))}
-        y={dataContainer.map('y', y => scaleY(y))}
-        radius={2}
-      />
+    <PolygonLayer
+      geometry={contours}
+      stroke={'steelblue'}
+      strokeWidth={({ index }) => index % 5 ? 0.25 : 1}
+      fill={'none'}
+    />
 
-      <XAxis scale={scaleX} baseLine={false} /> 
-      <YAxis scale={scaleY} baseLine={false} labelFormat={format('.1f')} />
-    {/if}
+    <PointLayer
+      x={dataContainer.column('waiting')}
+      y={dataContainer.column('eruptions')}
+      radius={2}
+    />
+
+  <XAxis baseLine={false} /> 
+  <YAxis baseLine={false} labelFormat={format('.1f')} />
 
 </Graphic>
+
+{/if}
