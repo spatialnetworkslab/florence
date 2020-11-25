@@ -7,9 +7,10 @@
 
   let appleStockData
 
-  csv('/data/apple-stocks-area.csv', autoType).then(data => {
+  (async () => {
+    const data = await csv('/data/apple-stocks-area.csv', autoType)
     appleStockData = new DataContainer(data)
-  })
+  })()
 </script>
 
 {#if appleStockData}
