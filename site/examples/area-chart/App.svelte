@@ -1,68 +1,42 @@
 <script>
-  import { Graphic, Section, Area, XAxis, YAxis } from '@snlab/florence';
-  import DataContainer from '@snlab/florence-datacontainer';
-  import { scaleLinear, scaleUtc, scaleBand } from 'd3-scale';
-  import { autoType } from 'd3-dsv';
-  import { csv } from 'd3-fetch';
+  import { Graphic, Area, XAxis, YAxis } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
+  import { scaleLinear, scaleUtc } from 'd3-scale'
+  import { csv } from 'd3-fetch'
 
-  const padding = { top: 20, right: 20, bottom: 30, left: 30 };
+  let appleStockData
 
-  // set to true once data is loaded
-  let done;
-  let parsedData;
-  csv(
-    '/data/apple-stocks-area.csv',
-    autoType
-  ).then(d => {
-    parsedData = d;
-    done = true;
-  });
-
-  let stockData;
-  let closeDomain, dateDomain;
-  let scaleDate, scaleClose;
-
-  $: {
-    if (done) {
-      stockData = new DataContainer(parsedData);
-
-      dateDomain = stockData.domain('date');
-      closeDomain = stockData.domain('close');
-
-      scaleDate = scaleUtc().domain(dateDomain);
-      scaleClose = scaleLinear().domain([0, closeDomain[1]]);
-    }
-  }
+  csv('/data/apple-stocks-area.csv').then(data => {
+    appleStockData = new DataContainer(data)
+  })
 </script>
 
-<Graphic width={700} height={500}>
-
-  {#if done}
-  <Section
-    scaleX={scaleDate}
-		scaleY={scaleClose}
-    {padding}
-    flipY
+{#if appleStockData}
+  
+  <Graphic
+    width={500}
+    height={500}
+    padding={{ top: 20, right: 20, bottom: 30, left: 30 }}
+    scaleX={scaleUtc().domain(appleStockData.domain('date'))}
+    scaleY={scaleLinear().domain(appleStockData.domain('close'))}
   >
+
     <Area
-      x1={stockData.column('date')}
-      y1={stockData.column('close')}
+      x1={appleStockData.column('date')}
+      y1={appleStockData.column('close')}
       y2={Array(1280).fill(0)}
       fill={'steelblue'}
     />
 
     <XAxis baseLine={false} />
-
+    
     <YAxis
       baseLine={false}
       title={'$ close'}
       titleVjust={'top'}
       titleHjust={0.035}
-      titleRotation={0}
-      titleFontWeight={'bold'}
     />
 
-  </Section>
-  {/if}
+  </Graphic>
 
-</Graphic>
+{/if}
