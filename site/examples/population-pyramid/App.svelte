@@ -1,4 +1,3 @@
-<!-- adapted from https://observablehq.com/@d3/population-pyramid -->
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
   import { Graphic, Section, RectangleLayer, XAxis, YAxis } from '@snlab/florence'

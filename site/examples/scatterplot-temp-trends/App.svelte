@@ -1,6 +1,16 @@
-<!-- adapted from https://observablehq.com/@mbostock/global-temperature-trends -->
-
 <script>
+  import { csv } from 'd3-fetch'
+  import { scaleLinear, scaleTime, scaleSequential } from 'd3-scale'
+  import { interpolateRdBu } from 'd3-scale-chromatic'
+  import { 
+    Graphic, PointLayer, Line, XAxis, YAxis
+  } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
+
+  let dataContainer, scaleX, scaleY, scaleColor
+</script>
+
+<!-- <script>
   import { csvParse } from 'd3-dsv';
   import { csv } from 'd3-fetch';
   import { scaleLinear, scaleTime, scaleSequential } from 'd3-scale';
@@ -39,7 +49,7 @@
       ]);
     }
   }
-</script>
+</script> -->
 
 <Graphic width={800} height={500}>
 
