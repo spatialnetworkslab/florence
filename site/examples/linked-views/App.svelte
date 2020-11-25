@@ -1,133 +1,146 @@
 <script>
-  "use strict";
-  // d3
-  import { scaleThreshold, scaleBand } from "d3-scale";
-
-  // florence
+  import { scaleBand } from 'd3-scale'
+  import { json } from 'd3-fetch'
   import {
     Graphic,
     Section,
     createGeoScales,
-    Polygon,
+    PolygonLayer,
+    RectangleLayer,
     XAxis,
     YAxis,
-    Rectangle,
     Title,
     DiscreteLegend
-  } from "@snlab/florence";
-  import DataContainer from "@snlab/florence-datacontainer";
-  import { json } from "d3-fetch";
+  } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
 
-  // step 1
-  // import data
-  // import { time } from '../time.js'
-  // import { geodata } from '../planning_areas_data.js'
+  const COLORS = [
+    '#d3d3d3',
+    '#fff0d2',
+    '#FDD1A5',
+    '#FD9243',
+    '#982f05',
+    '#4e1802'
+  ]
 
-  let geoDone = false;
-  let timeDone = false;
-  let geodata;
-  let time;
-
-  json("/data/base_map.json").then(d => {
-    geodata = d;
-    geoDone = true;
-  });
-
-  json("/data/time.json").then(d => {
-    time = d;
-    timeDone = true;
-  });
-
-  let geoScales;
-  let priceColors, priceColorScale;
-  let heatmapData, heatmapColors;
-  let timeData, mapData;
-
-  // time scales
   const yearScale = scaleBand()
     .domain([2015, 2016, 2017, 2018, 2019])
-    .padding(0.1);
+    .padding(0.1)
+    
   const monthScale = scaleBand()
     .domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
-    .padding(0.1);
+    .padding(0.1)
 
-  $: {
-    if (geoDone && timeDone) {
-      // heatmaps
-      // town filter
-      timeData = new DataContainer(time);
+  let geoData, timeData, heatmapData, geoScales, priceColorScale
 
-      // maps
-      mapData = new DataContainer(geodata);
-      geoScales = createGeoScales(mapData.domain("$geometry"));
+  (async () => {
+    geoData = new DataContainer(await json('/data/base_map.json'))
+      .rename({ PLN_AREA_N: 'town' })
 
-      // step 2
-      // compute color scaling
-      const colors = [
-        "#d3d3d3",
-        "#fff0d2",
-        "#FDD1A5",
-        "#FD9243",
-        "#982f05",
-        "#4e1802"
-      ];
+    timeData = new DataContainer(await json('/data/time.json'))
+      .groupBy('town')
 
-      // obtain bins from DataContainer method
-      const binsData = mapData.dropNA("resale_price_sqm").bin({
-        groupBy: "resale_price_sqm",
-        method: "EqualInterval",
-        numClasses: colors.length - 2
-      });
+    geoData.setKey('town')
+    timeData.setKey('town')
 
-      // Obtain bins from data container
-      const bins = binsData.column("bins");
+    geoScales = createGeoScales(geoData.bbox())
 
-      // Flatten bins array into individual numbers: [[a, b], [b, c], [c, d]...] => [a, b, b, c, c, d...]
-      // Get unique values from array and turn them into integers
-      const thresholds = [];
-      for (let i = 0; i < bins.length; i += 1) {
-        if (i === 0) {
-          thresholds.push(Math.floor(bins[i][0]));
-          thresholds.push(Math.floor(bins[i][1]));
-        } else {
-          thresholds.push(Math.floor(bins[i][1]));
-        }
-      }
+    priceColorScale = geoData
+      .dropNA('resale_price_sqm')
+      .classify({ 
+        column: 'resale_price_sqm', 
+        method: 'EqualInterval',
+        numClasses: COLORS.length
+      }, COLORS)
+  })()
 
-      // step 3
-      // assign colors
-      priceColorScale = scaleThreshold()
-        .domain(thresholds)
-        .range(colors);
-      priceColors = mapData.map("resale_price_sqm", priceColorScale);
-      if (heatmapData) {
-        heatmapColors = heatmapData.map("resale_price_sqm", priceColorScale);
-      }
+  let hoverKey
+
+  function onMouseover({ key }) {
+    hoverKey = key
+
+    if (timeData.hasRow({ key })) {
+      heatmapData = timeData.row({ key }).$grouped
     }
   }
 
-  // create interaction functions
-  let hoverKey;
-  let hoverTown;
-
-  function onMouseover({ key, town }) {
-    hoverKey = key;
-    hoverTown = town;
-    if (timeData.column("town").includes(hoverTown)) {
-      heatmapData = timeData.filter(row => row.town === hoverTown);
-      heatmapColors = heatmapData.map("resale_price_sqm", priceColorScale);
-    }
-  }
-
-  function onMouseout({ key, town }) {
-    if (hoverKey) hoverKey = undefined;
-    if (hoverTown) hoverTown = undefined;
-    heatmapData = undefined;
-    heatmapColors = undefined;
+  function onMouseout({ key }) {
+    if (hoverKey) hoverKey = undefined
+    heatmapData = undefined
   }
 </script>
 
-<Graphic width={1000} height={800}
+{#if geoData}
+
+  <Graphic width={1000} height={800}>
+
+    <Section
+      x1={50} x2={475}
+      y1={50} y2={350}
+      {...geoScales}
+      flipY
+    >
+
+      <PolygonLayer
+        geometry={geoData.column('$geometry')}
+        keys={geoData.keys()}
+        fill={geoData.map('resale_price_sqm', priceColorScale)}
+        fillOpacity={({ key }) => hoverKey === key ? 1 : 0.5}
+        stroke={'white'}
+        strokeWidth={1}
+        {onMouseover}
+        {onMouseout}
+        transition={1000}
+      />
+
+      <DiscreteLegend
+        fill={priceColorScale}
+        labelAnchorPoint={'r'}
+        title={'Ave. Resale Price/m2 (S$)'}
+        orient={'horizontal'}
+        vjust={'top'}
+        hjust={'right'}
+        flipLabels
+        usePadding={true}
+      />
+    
+    </Section>
+
+    <Section 
+      x1={50} x2={475}
+      y1={350} y2={650}
+      scaleY={yearScale}
+      scaleX={monthScale}
+      padding={50}
+    >
+
+      {#if heatmapData}
+
+        <RectangleLayer 
+          x1={heatmapData.column('month')}
+          x2={({ scaleX }) => heatmapData.map('month', m => scaleX(m) + scaleX.bandwidth())}
+          y1={heatmapData.column('year')}
+          y2={({ scaleY }) => heatmapData.map('year', y => scaleY(y) + scaleY.bandwidth())}
+          fill={heatmapData.map('resale_price_sqm', priceColorScale)}
+        />
+
+      {/if}
+
+      <Title 
+        title={heatmapData ? hoverKey : 'Hover over an area in the map'} 
+        titleFill={hoverKey ? 'black' : 'gray'}
+        titleFontFamily={'Montserrat'} 
+        yOffset={-30}
+        usePadding={true}
+      />
+
+    </Section>
+  
+  </Graphic>
+
+{/if}
+
+<!-- <Graphic width={1000} height={800}
 >   
   {#if timeDone && geoDone}  
     <Section
@@ -191,4 +204,4 @@
       />
     </Section>
   {/if}
-</Graphic>
+</Graphic> -->
