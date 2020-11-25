@@ -9,10 +9,8 @@
   })
 
   let section
-
   let drawing = false
   let rectangle
-
   let brushing = false
   let blockReindexing = false
   let startDelta

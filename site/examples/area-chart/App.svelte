@@ -24,7 +24,7 @@
     <Area
       x1={appleStockData.column('date')}
       y1={appleStockData.column('close')}
-      y2={Array(1280).fill(0)}
+      y2={Array(appleStockData.nrow()).fill(0)}
       fill={'steelblue'}
     />
 

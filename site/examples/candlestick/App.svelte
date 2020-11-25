@@ -1,67 +1,68 @@
-<!-- adapted from https://observablehq.com/@d3/candlestick-chart -->
-
 <script>
-  import { csv } from 'd3-fetch';
-  import { format } from 'd3-format';
-  import { timeDay, timeMonday } from 'd3-time';
-  import { timeParse, timeFormat } from 'd3-time-format';
-  import { scaleLinear, scaleLog, scaleBand } from 'd3-scale';
-  import { Graphic, Section, LineLayer, XAxis, YAxis } from '@snlab/florence';
-  import DataContainer from '@snlab/florence-datacontainer';
+  import { csv } from 'd3-fetch'
+  import { format } from 'd3-format'
+  import { timeDay, timeMonday } from 'd3-time'
+  import { timeParse, timeFormat } from 'd3-time-format'
+  import { scaleLinear, scaleLog, scaleBand } from 'd3-scale'
+  import { Graphic, LineLayer, XAxis, YAxis } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
 
-  const parseDate = timeParse('%Y-%m-%d');
+  let appleStockData
+  let scaleX
+  let scaleY
+  let ticksX
 
-  let done = false;
-  let data;
-  csv('/data/apple-stocks-candlestick.csv', d => {
-    const date = parseDate(d['Date']);
-    return {
-      date,
-      high: +d['High'],
-      low: +d['Low'],
-      open: +d['Open'],
-      close: +d['Close']
-    };
-  }).then(d => {
-    data = d.slice(-120);
-    done = true;
-  });
+  csv('/data/apple-stocks-candlestick.csv', data => {
+    const parseDate = timeParse('%Y-%m-%d')
 
-  const padding = { top: 20, bottom: 30, left: 40, right: 30 };
-  const width = 800;
-  const height = 600;
+    appleStockData = new DataContainer(data)
+      .slice(-120)
+      .mutate({
+        Date: row => parseDate(row.Date),
+        High: row => +row.High,
+        Low: row => +row.Low,
+        Open: row => +row.Open,
+        Close: row => +row.Close
+      })
+      .mutate({
 
-  let dataContainer;
-  let domainHigh, domainLow, domainDate;
-  let scaleX, scaleY;
-  let xTicks, scaleYAxis;
+      })
 
-  $: {
-    if (done) {
-      dataContainer = new DataContainer(data);
+    const noWeekend = d => d.getDay() !== 0 && d.getDay() !== 6
 
-      domainHigh = dataContainer.domain('high');
-      domainLow = dataContainer.domain('low');
-      domainDate = dataContainer.domain('date');
+    scaleX = scaleBand().padding(0.2).domain(
+      timeDay().range(appleStockData.domain('date')).filter(noWeekend)
+    )
 
-      scaleX = scaleBand()
-        .domain(
-          timeDay
-            .range(domainDate[0], +domainDate[1] + 1)
-            .filter(d => d.getDay() !== 0 && d.getDay() !== 6)
-        )
-        .padding(0.2);
-      scaleY = scaleLog().domain([domainLow[0], domainHigh[1]])
+    scaleY = scaleLog().domain([
+      appleStockData.min('Low'),
+      appleStockData.max('High')
+    ])
 
-      xTicks = timeMonday.every(1).range(domainDate[0], domainDate[1]);
-      scaleYAxis = scaleLinear()
-        .domain([domainLow[0], domainHigh[1]])
-        .range([height - padding.bottom, padding.top]);
-    }
-  }
+    tickX = timeMonday.every(1).range(domainDate[0], domainDate[1])
+  })
 </script>
 
-<Graphic {width} {height}>
+{#if appleStockData}
+
+  <Graphic
+    width={500}
+    height={500}
+    padding={{ top: 20, bottom: 30, left: 40, right: 30 }}
+    {scaleX}
+    {scaleY}
+  >
+
+    <LineLayer 
+      x={appleStockData.map('Date', d => [d, d])}
+      y={}
+    />
+  
+  </Graphic>
+
+{/if}
+
+<!-- <Graphic {width} {height}>
 
   {#if done}
     <Section
@@ -92,4 +93,4 @@
     </Section>
   {/if}
 
-</Graphic>
+</Graphic> -->
