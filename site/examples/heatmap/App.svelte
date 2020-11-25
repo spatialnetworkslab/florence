@@ -1,88 +1,52 @@
 <script>
-  import { scaleLinear, scaleSequential } from "d3-scale";
-  import { interpolateYlGnBu } from "d3-scale-chromatic";
-  import { json } from "d3-fetch";
-  import {
-    Graphic,
-    Section,
-    Label,
-    Rectangle,
-    RectangleLayer,
-    XAxis,
-    YAxis
-  } from "@snlab/florence";
-  import DataContainer from "@snlab/florence-datacontainer";
+  import { scaleSequential } from 'd3-scale'
+  import { interpolateYlGnBu } from 'd3-scale-chromatic'
+  import { json } from 'd3-fetch'
+  import { Graphic, RectangleLayer, XAxis, YAxis } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
 
-  let data
+  let dataContainer, scaleColor
 
-  json("/data/imdb.json").then(d => {
-    data = d.map(r => ({ ...r, Title: String(r.Title) }))
-  })
+  (async () => {
+    dataContainer = new DataContainer(await json('/data/imdb.json'))
+      .select(['IMDB Rating', 'Rotten Tomatoes Rating'])
+      .dropNA()
+      .bin([
+        { column: 'IMDB Rating', method: 'EqualInterval', numClasses: 38 },
+        { column: 'Rotten Tomatoes Rating', method: 'EqualInterval',  numClasses: 20 }
+      ])
+      .summarise({
+        count: { 'IMDB Rating': 'count' }
+      })
 
-  let binned
-  let imdbDomain, countDomain, rtDomain;
-  let scaleX, scaleY, scaleColor;
-
-  $: {
-    if (data) {
-      binned = new DataContainer(data)
-        .select(['IMDB Rating', 'Rotten Tomatoes Rating'])
-        .dropNA()
-        .bin([
-          { groupBy: "IMDB Rating", method: "EqualInterval", numClasses: 38 },
-          {
-            groupBy: "Rotten Tomatoes Rating",
-            method: "EqualInterval",
-            numClasses: 20
-          }
-        ])
-        .summarise({ count: { "IMDB Rating": "count" } });
-
-      imdbDomain = binned.domain("bins_IMDB Rating"); // [1.6, 9.2]
-      rtDomain = binned.domain("bins_Rotten Tomatoes Rating"); // [1, 100]
-      countDomain = binned.domain("count");
-
-      scaleY = scaleLinear().domain(rtDomain);
-      scaleX = scaleLinear().domain(imdbDomain);
-      scaleColor = scaleSequential(interpolateYlGnBu).domain(countDomain);
-    }
-  }
+    scaleColor = scaleSequential()
+      .domain(dataContainer.domain('count'))
+      .range(interpolateYlGnBu)
+  })()
 </script>
 
-<Graphic 
-  width={600}
-  height={400}
->
+{#if dataContainer}
 
-  {#if binned}
-    <Section
-      {scaleX}
-      {scaleY}
-      padding={{left: 40, right: 25, top: 25, bottom: 40}}
-      flipY
-    >
+  <Graphic
+    width={500}
+    height={500}
+    scaleX={dataContainer.domain('bins_IMDB Rating')}
+    scaleY={dataContainer.domain('bins_Rotten Tomatoes Rating')}
+    padding={{left: 40, right: 25, top: 25, bottom: 40}}
+    flipY
+  >
 
-      {#each binned.rows() as bin}
-        <Rectangle
-          x1={bin['bins_IMDB Rating'][0]}
-          x2={bin['bins_IMDB Rating'][1]}
-          y1={bin['bins_Rotten Tomatoes Rating'][0]}
-          y2={bin['bins_Rotten Tomatoes Rating'][1]}
-          fill={scaleColor(bin['count'])}
-        />
-      {/each}
+    <RectangleLayer
+      x1={dataContainer.map('bins_IMDB Rating', bin => bin[0])}
+      x2={dataContainer.map('bins_IMDB Rating', bin => bin[1])}
+      y1={dataContainer.map('bins_Rotten Tomatoes Rating', bin => bin[0])}
+      y2={dataContainer.map('bins_Rotten Tomatoes Rating', bin => bin[1])}
+      fill={dataContainer.map('count', scaleColor)}
+    />
 
-      <XAxis
-        title={"IMDB Rating"}
-        baseLine={false}
-      />
+    <XAxis title={"IMDB Rating"} baseLine={false} />
+    <YAxis title={"Rotten Tomatoes Rating"} baseLine={false} />
+  
+  </Graphic>
 
-      <YAxis
-        title={"Rotten Tomatoes Rating"}
-        baseLine={false}
-      />
-
-    </Section>
-  {/if}
-
-</Graphic>
+{/if}
