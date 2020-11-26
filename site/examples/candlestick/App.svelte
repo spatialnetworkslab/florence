@@ -12,9 +12,9 @@
 
   (async () => {
     const data = await csv('/data/apple-stocks-candlestick.csv', autoType)
+      .slice(-120)
     
     appleStockData = new DataContainer(data)
-      .slice(-120)
       .mutate({
         dates: row => [row.Date, row.Date],
         lowHigh: row => [row.Low, row.High],

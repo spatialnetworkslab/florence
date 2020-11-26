@@ -11,7 +11,7 @@
   (async () => {
     dataContainer = new DataContainer(await csv('/data/unemployment.csv', autoType))
     
-    industries = dataContainer.columnNames().filter(c => c !== 'date')
+    industries = dataContainer.columnNames().filter(c => !['date', '$key'].includes(c))
     
     dataContainer = dataContainer.rowCumsum(industries, { asInterval: true })
 
