@@ -28,7 +28,7 @@
     scaleColor = scaleSequential()
       .domain(dataContainer.domain('value').reverse())
       .range(interpolateRdBu)
-  })
+  })()
 </script>
 
 {#if dataContainer}
