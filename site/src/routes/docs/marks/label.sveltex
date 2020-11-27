@@ -74,7 +74,7 @@ These aesthetic props are similar to attributes of the SVG [text](https://develo
 - `fontFamily` refers to the font family (`font-family`)
 - `rotation` refers to the rotation of the text in degrees. The text will rotate around the anchor point (no direct equivalent, is converted into `transform` attribute)
 - `fill` refers to the color of the text (`fill`)
-- `fillOpacity` refers to the opacity of the text itself, `0` being fully transparent (`fill-opacity`)
+- `fillOpacity` refers to the opacity of the text, `0` being fully transparent (`fill-opacity`)
 - `stroke` refers to the color of the text's outline (`stroke`)
 - `strokeWidth` refers to the thickness of the text's outline (`stroke-width`)
 - `strokeOpacity` to the opacity of the text's outline, `0` being fully transparent (`stroke-opacity`)

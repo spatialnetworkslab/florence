@@ -52,8 +52,8 @@ To render a `Point`, you will need to provide either the `x` and `y` props, or t
 These aesthetic props are similar to attributes of the SVG [circle](https://www.w3schools.com/graphics/svg_circle.asp) element. The analogous `circle` attributes are shown below in brackets:
 
 - `radius`, unsurprisingly, refers to the radius of the point (`r`) 
-- `fill` refers to the color of the point itself (`fill`)
-- `fillOpacity` refers to the transparency of the point itself, `0` being fully transparent (`fill-opacity`)
+- `fill` refers to the color of the point (`fill`)
+- `fillOpacity` refers to the transparency of the point, `0` being fully transparent (`fill-opacity`)
 - `stroke` refers to the color of the point's outline (`stroke`)
 - `strokeWidth` refers to the width of the point's outline (`stroke-width`)
 - `strokeOpacity` refers to the transparency of the point's outline, `0` being fully transparent (`stroke-opacity`)
