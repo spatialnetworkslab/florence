@@ -27,7 +27,7 @@ import SimpleExample from './examples/_PointSimple.svelte'
 
 ### Positioning
 
-| Name | Required                      | Type(s)                                | Default     | Unit(s)                                               |
+| Name | Required                      | Type(s)                                | Default     | Units(s)                                               |
 | x    | `if (geometry === undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinates](/docs/concepts/local-coordinates) |
 | y    | `if (geometry === undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinates](/docs/concepts/local-coordinates) |
 | x    | `if (x === undefined && y === undefined)` | GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) feature | `undefined` | [Local coordinates](/docs/concepts/local-coordinates) |
@@ -37,6 +37,11 @@ To render the Point mark, you will need to provide either the `x` and `y` props,
 `x` and `y` can be of type `Number`, `String` and `Date`, depending on the scales used in the parent Section. `geometry` accepts GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) features only. Coordinates inside the GeoJSON geometry will similarly be treated as unscaled.  For all positioning props,  a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `PointLayer`, all positioning props will be supplied as `Array`s of `Number`s, `String`s and `Date`s, or functions that return these- see the [Marks versus Layers](/docs/concepts/marks-vs-layers) documentation.
 
 ### Aesthetics
+
+| Name        | Required | Type(s)  | Default  | Units                         |
+| radius      | `false`  | `Number` | `3`      | Pixels                        |
+| stroke      | `false`  | `String` | `'none'` | Named, hex, rgb or hsl colors |
+| strokeWidth | `false`  | `Number` | `0`      | Pixels                        |
 
 | Prop          | Required | Types  | Default   | Description    | Unit(s)                    |
 | ------------- | -------- | ------ | --------- | -------------- | -------------------------- |

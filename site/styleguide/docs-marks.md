@@ -27,7 +27,7 @@
   - Required (will always be plain text I guess)
   - Type(s) (backticks)
   - Default (backticks)
-  - Unit(s) (plain text) (in most cases we can link through to MDN)
+  - Units (plain text) (in most cases we can link through to MDN)
 
 Explain how mark is analogous HTML element if appriopriate
 
@@ -46,7 +46,7 @@ Link to interactions docs
   - Required (plain text)
   - Type(s) (backticks)
   - Default
-  - Unit(s) (plain text)
+  - Units (plain text)
 
 This is almost the same for every mark/layer, and includes entries for
 
