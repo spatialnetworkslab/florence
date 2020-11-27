@@ -1,4 +1,5 @@
 # Area
+
 The `Area` mark is used to plot filled areas. This is useful to visualize change over time. It can either be used by itself or in a 'stacked' configuration.
 
 ```js exec
@@ -6,17 +7,21 @@ import SimpleExample from './examples/_AreaSimple.svelte'
 ```
 <SimpleExample />
 
-```markup
+```html
 <script>
  const x = [
     new Date(2002, 0, 1),
     new Date(2004, 0, 1),
     new Date(2006, 0, 1)
   ]
+
   const y = [20, 40, 10]
 </script>
+
 <Graphic>
+
   <Area x1={x} y1={y} y2={[0, 0, 0]} />
+
 </Graphic>
 ```
 
