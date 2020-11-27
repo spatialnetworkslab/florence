@@ -1,6 +1,6 @@
 # Point
 
-The `Point` mark is used to plot simple points. It is a special case of the more general [Symbol](/docs/marks/symbol) mark that is made available on its own for convenience.
+The `Point` mark is used to plot simple points. It is a special case of the more general [Symbol](/docs/marks/symbol) mark that is made available on its own for convenience. Its most common applications are scatterplots and point coordinates on a map, but as the [examples](#examples) illustrate all kinds of graphics can be made with the humble `Point`.
 
 ```markup
 <script>

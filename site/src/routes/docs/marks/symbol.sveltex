@@ -1,6 +1,6 @@
 # Symbol
 
-The `Symbol_` mark, like the [Point](/docs/marks/point), is used for plotting point data. Unlike the `Point` mark, however, it supports a variety of different shapes or symbols. The most common use for the `Symbol_` mark is a scatterplot where a categorical variable is mapped to various shapes.
+The `Symbol_` mark, like the [Point](/docs/marks/point), is used for plotting point data. Unlike the `Point` mark, however, it supports a variety of different shapes or symbols. The most common use for the `Symbol_` mark is a scatterplot where a categorical variable is mapped to various shapes. It can also be used to indicate locations on a map.
 
 ```markup
 <script>
