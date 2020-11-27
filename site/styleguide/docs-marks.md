@@ -29,6 +29,8 @@
   - Default (backticks)
   - Units (plain text) (in most cases we can link through to MDN)
 
+In the table, `fill` related stuff goes before `stroke` related stuff.
+
 Explain how mark is analogous HTML element if appriopriate
 
 ### Transitions

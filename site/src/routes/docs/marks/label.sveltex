@@ -1,75 +1,100 @@
 # Label
 The `Label` mark is used to plot text elements.
 
+```markup
+<script>
+  import { Graphic, Label, LabelLayer, XAxis, YAxis } from '@snlab/florence'
+</script>
+
+<Graphic width={200} height={200} scaleX={[0, 10]} scaleY={[0, 10]} padding={20}>
+
+  <Label x={2.5} y={2.5} text={'Hello'} />
+  <LabelLayer x={[5, 7.5]} y={[5, 7.5]} text={['world', '!!!']} />
+
+  <XAxis />
+  <YAxis />
+
+</Graphic>
+```
+
 ```js exec
 import SimpleExample from './examples/_LabelSimple.svelte'
 ```
+
 <SimpleExample />
 
-```markup
-<script>
- const x = [
-    new Date(2002, 0, 1),
-    new Date(2004, 0, 1),
-    new Date(2006, 0, 1)
-  ]
-  const y = [20, 40, 10]
-</script>
-<Graphic>
-  <LabelLayer {x} {y} text={y} />
-</Graphic>
-```
-
-To render the Label mark, you will need to provide the `x` and `y` or the `geometry` props. The two uses are mutually exclusive. You will also need to provide a `text` prop of the actual content of each label.
-
-`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scale used in the parent Section. `geometry` accepts GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) objects only. Values will be scaled according to the `scaleX` and `scaleY` of the parent Section. Alternatively, a function can be supplied that returns a coordinate in the viewBox coordinate system directly, bypassing any active scales.
-
-To create plots with multiple labels, we can either loop over the dataset (with `{#each}`) to generate one `Label` per iteration, or use the `LabelLayer`. The `LabelLayer` shares all of the `Label`'s props, but takes an array per prop instead of a single value.
-
-```markup
-<Graphic>
-  <Label
-    x={🍐}
-    y={🥥}
-    text={'🍓'}
-  />
-</Graphic>
-
-<Graphic>
-  <!-- this denotes 3 labels -->
-  <LabelLayer
-    x={[🍐, 🍐, 🍐]}
-    y={[🥥, 🥥, 🥥]}
-    text={['🍓', '🍓', '🍓']}
-  />
-</Graphic>
-```
-
 ## Properties
+
 ### Positioning
 
-| Prop     | Required | Types                                | Default   | Description                     | Unit(s)                                                                                   |
-| -------- | -------- | ------------------------------------ | --------- | ------------------------------- | ----------------------------------------------------------------------------------------- |
-| x        | depends  | Number \| String \| Date \| Function | undefined | x-coordinate of center of label | Data value to be scaled by Section's scaleX. If Function then viewBox coordinates.        |
-| y        | depends  | Number \| String \| Date \| Function | undefined | y-coordinate of center of label | Data value to be scaled by Section's scaleY. If Function then viewBox coordinates.        |
-| geometry | depends  | Object \| Function                   | undefined | GeoJSON object of type Point    | Data value to be scaled by Section's scaleX/scaleY. If Function then viewBox coordinates. |
+|    Name     |                 Required                  |                                  Type(s)                                   |   Default   |                       Unit(s)                        |
+| ----------- | ----------------------------------------- | -------------------------------------------------------------------------- | ----------- | ---------------------------------------------------- |
+| x           | `if (geometry === undefined)`             | `Number`, `String`, `Date`, `Function`                                     | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y           | `if (geometry === undefined)`             | `Number`, `String`, `Date`, `Function`                                     | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| geometry    | `if (x === undefined && y === undefined)` | GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) feature | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| anchorPoint | `false`                                   | `String`                                                                   | `'center'`  | See below                                            |
 
-### Other aesthetics
-| Prop          | Required | Types                | Default     | Description                           | Unit(s)                                                       |
-| ------------- | -------- | -------------------- | ----------- | ------------------------------------- | ------------------------------------------------------------- |
-| text          | false    | Number <br>\| String | undefined   | Text to display                       | NA                                                            |
-| fontSize      | false    | Number               | 16          | Font size                             | Screen pixel                                                  |
-| fontWeight    | false    | Number <br>\| String | 'normal'    | Font weight                           | Either a number between 0 and 1000, or 'normal', 'bold', etc. |
-| fontFamily    | false    | String               | 'Helvetica' | Font family                           | Name of font family                                           |
-| rotation      | false    | Number               | 0           | Degrees with which to rotate the mark | Degrees                                                       |
-| anchorPoint   | false    | String               | 'center'    | Anchor point for x/y coordinate       | One of ['center', 'lb', 'lt', 'rt', 'rb', 'l', 'r', 't', 'b'] |
-| stroke        | false    | String               | 'none'      | Stroke color                          | Named color, hex, rgb, hsl                                    |
-| strokeWidth   | false    | Number               | 0           | Stroke width                          | Screen pixel                                                  |
-| strokeOpacity | false    | Number               | undefined   | Stroke opacity                        | Number between 0 and 1                                        |
-| fill          | false    | String               | '#000000'   | Fill color                            | Named color, hex, rgb, hsl                                    |
-| fillOpacity   | false    | Number               | undefined   | Fill opacity                          | Number between 0 and 1                                        |
-| opacity       | false    | Number               | 1           | Mark opacity                          | Number between 0 and 1                                        |
+To render a `Label`, you will need to provide either the `x` and `y` props, or the `geometry` prop. The two uses are mutually exclusive. The `x` and `y` coordinates, or the coordinates in the GeoJSON feature passed to `geometry`, control the anchor point of the text. 
 
-These are analogous to the CSS properties of the same names.
+`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scales used in the parent Section. `geometry` accepts GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) features only. Coordinates inside the GeoJSON geometry will similarly be treated as unscaled.  For all positioning props,  a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `LabelLayer`, all positioning props will be supplied as `Array`s of `Number`s, `String`s and `Date`s, or functions that return these- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
+
+The ancher point is by default in the center, but can be changed to with the `anchorPoint` prop. This value passed to the `anchorPoint` prop must be one of the following values: 
+
+- `'center'`
+- `'lb'` (left-bottom)
+- `'lt'` (left-top)
+- `'rt'` (right-top)
+- `'rb'` (right-bottom)
+- `'l'` (left-center)
+- `'r'` (right-center)
+- `'t'` (center-top)
+- `'b'` (center-bottom)
+
+### Aesthetics
+
+|     Prop      | Required |       Types        |    Default    |            Unit(s)            |
+| ------------- | -------- | ------------------ | ------------- | ----------------------------- |
+| text          | `false`  | `Number`, `String` | `undefined`   | NA                            |
+| fontSize      | `false`  | `Number`           | `16`          | Pixel                         |
+| fontWeight    | `false`  | `Number`, `String` | `'normal'`    | See below                     |
+| fontFamily    | `false`  | `String`           | `'Helvetica'` | Name of font family           |
+| rotation      | `false`  | `Number`           | `0`           | Degree                        |
+| fill          | `false`  | `String`           | `'#000000'`   | Named, hex, rgb, or hsl color |
+| fillOpacity   | `false`  | `Number`           | `undefined`   | Number between 0 and 1        |
+| stroke        | `false`  | `String`           | `'none'`      | Named, hex, rgb, or hsl color |
+| strokeWidth   | `false`  | `Number`           | `0`           | Pixel                         |
+| strokeOpacity | `false`  | `Number`           | `undefined`   | Number between 0 and 1        |
+| opacity       | `false`  | `Number`           | `1`           | Number between 0 and 1        |
+
+These aesthetic props are similar to attributes of the SVG [text](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/text) element. The analogous `text` attributes are shown below in brackets:
+
+- `text` refers, unsurprisingly, to the label text (no direct equivalent, is passed to element slot)
+- `fontSize` refers to the font size (`font-size`)
+- `fontWeight` refers to the 'thickness' of the font, similar to using 'bold' text in regular text editors. If a `Number` is passed to `fontWeight`, it must be number between 0 and 1000, where 1000 is the greatest possible weight. If a `String` is passed instead, it must be a value like `'normal'` or `'bold'`. For more options: check the [font-weight CSS property](https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight) documentation, which uses the same API. (`font-weight`)
+- `fontFamily` refers to the font family (`font-family`)
+- `rotation` refers to the rotation of the text in degrees. The text will rotate around the anchor point (no direct equivalent, is converted into `transform` attribute)
+- `fill` refers to the color of the text (`fill`)
+- `fillOpacity` refers to the opacity of the text itself, `0` being fully transparent (`fill-opacity`)
+- `stroke` refers to the color of the text's outline (`stroke`)
+- `strokeWidth` refers to the thickness of the text's outline (`stroke-width`)
+- `strokeOpacity` to the opacity of the text's outline, `0` being fully transparent (`stroke-opacity`)
+- `opacity` sets both the `strokeOpacity` and the `fillOpacity` (`opacity`)
+
+### Transitions
+
+TODO
+
+### Interactions
+
+TODO
+
+### Other
+
+TODO
 
 ## Examples
+
+The `Label` and `LabelLayer` can be seen in action in the following examples:
+
+- [Donut chart](/examples/donut)
+- [Isotype plot](/examples/isotype)

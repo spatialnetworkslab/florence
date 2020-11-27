@@ -42,22 +42,22 @@ To render a `Point`, you will need to provide either the `x` and `y` props, or t
 |     Name      | Required | Type(s)  |   Default   |           Unit(s)            |
 | ------------- | -------- | -------- | ----------- | ---------------------------- |
 | radius        | `false`  | `Number` | `3`         | Pixel                        |
+| fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
+| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1       |
 | stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color |
 | strokeWidth   | `false`  | `Number` | `0`         | Pixel                        |
 | strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1       |
-| fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
-| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1       |
 | opacity       | `false`  | `Number` | `1`         | Number between 0 and 1       |
 
 These aesthetic props are similar to attributes of the SVG [circle](https://www.w3schools.com/graphics/svg_circle.asp) element. The analogous `circle` attributes are shown below in brackets:
 
 - `radius`, unsurprisingly, refers to the radius of the point (`r`) 
+- `fill` refers to the color of the point itself (`fill`)
+- `fillOpacity` refers to the transparency of the point itself, `0` being fully transparent (`fill-opacity`)
 - `stroke` refers to the color of the point's outline (`stroke`)
 - `strokeWidth` refers to the width of the point's outline (`stroke-width`)
 - `strokeOpacity` refers to the transparency of the point's outline, `0` being fully transparent (`stroke-opacity`)
-- `fill` refers to the color of the point itself (`fill`)
-- `fillOpacity` refers to the transparency of the point itself, `0` being fully transparent (`fill-opacity`)
-- `opacity` sets both the `strokeOpacity` and the `fillOpacity`
+- `opacity` sets both the `strokeOpacity` and the `fillOpacity` (`opacity`)
 
 ### Transitions
 
