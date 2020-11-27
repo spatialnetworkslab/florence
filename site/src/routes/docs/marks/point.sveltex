@@ -1,5 +1,6 @@
 # Point
-The `Point` mark is used to plot simple point elements. It is a special case of the more general `Symbol` mark that is made available on its own for convenience.
+
+The `Point` mark is used to plot simple points. It is a special case of the more general `Symbol` mark that is made available on its own for convenience.
 
 ```js exec
 import SimpleExample from './examples/_PointSimple.svelte'
@@ -8,15 +9,17 @@ import SimpleExample from './examples/_PointSimple.svelte'
 
 ```markup
 <script>
- const x = [
-    new Date(2002, 0, 1),
-    new Date(2004, 0, 1),
-    new Date(2006, 0, 1)
-  ]
-  const y = [20, 40, 10]
+  import { Graphic, Point, PointLayer, XAxis, YAxis } from '@snlab/florence'
 </script>
-<Graphic>
-  <PointLayer {x} {y} />
+
+<Graphic width={200} height={200} scaleX={[0, 10]} scaleY={[0, 10]}>
+
+  <Point x={2.5} y={2.5} fill={'red'} />
+  <PointLayer x={[5, 7.5]} y={[5, 7.5]} fill={'blue'} />
+
+  <XAxis />
+  <YAxis />
+
 </Graphic>
 ```
 

@@ -32,7 +32,7 @@ const scaleY ...
 
 - Separate components and template logic blocks by an enter for readability:
 
-```js
+```markup
 {#if data}
 
   <Graphic width={500} height={500}>
@@ -42,6 +42,13 @@ const scaleY ...
   </Graphic>
 
 {/if}
+```
+
+- ^ Except if the components are very simple and self-closing, like with axes:
+
+```markup
+<XAxis />
+<YAxis />
 ```
 
 - If possible, always prefer `Layer`s over `Mark`s rendered with an `{#each}` block.

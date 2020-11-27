@@ -57,3 +57,7 @@ This is almost the same for every mark/layer, and includes entries for
 - `renderSettings`
 - `_asPolygon`
 - etc
+
+## Example
+
+Link to example with REPL that uses this mark.
