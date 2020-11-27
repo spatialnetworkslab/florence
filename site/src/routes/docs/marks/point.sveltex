@@ -1,6 +1,6 @@
 # Point
 
-The `Point` mark is used to plot simple points. It is a special case of the more general `Symbol` mark that is made available on its own for convenience.
+The `Point` mark is used to plot simple points. It is a special case of the more general [Symbol](/docs/marks/symbol) mark that is made available on its own for convenience.
 
 ```markup
 <script>
@@ -10,7 +10,7 @@ The `Point` mark is used to plot simple points. It is a special case of the more
 <Graphic width={200} height={200} scaleX={[0, 10]} scaleY={[0, 10]} padding={20}>
 
   <Point x={2.5} y={2.5} fill={'red'} />
-  <PointLayer x={[5, 7.5]} y={[5, 7.5]} fill={'blue'} />
+  <PointLayer x={[5, 7.5]} y={[5, 7.5]} fill={['blue', 'green']} />
 
   <XAxis />
   <YAxis />
@@ -27,34 +27,53 @@ import SimpleExample from './examples/_PointSimple.svelte'
 
 ### Positioning
 
-| Name | Required                      | Type(s)                                | Default     | Units(s)                                               |
-| x    | `if (geometry === undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinates](/docs/concepts/local-coordinates) |
-| y    | `if (geometry === undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinates](/docs/concepts/local-coordinates) |
-| x    | `if (x === undefined && y === undefined)` | GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) feature | `undefined` | [Local coordinates](/docs/concepts/local-coordinates) |
+| Name |                 Required                  |                                  Type(s)                                   |   Default   |                      Unit(s)(s)                      |
+| ---- | ----------------------------------------- | -------------------------------------------------------------------------- | ----------- | ---------------------------------------------------- |
+| x    | `if (geometry === undefined)`             | `Number`, `String`, `Date`, `Function`                                     | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y    | `if (geometry === undefined)`             | `Number`, `String`, `Date`, `Function`                                     | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| geometry    | `if (x === undefined && y === undefined)` | GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) feature | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 
-To render the Point mark, you will need to provide either the `x` and `y` props, or the `geometry` prop. The two uses are mutually exclusive. The `x` and `y` coordinates, or the equivalent coordinates in the GeoJSON feature passed to `geometry`, refer to the center of the point.
+To render a `Point`, you will need to provide either the `x` and `y` props, or the `geometry` prop. The two uses are mutually exclusive. The `x` and `y` coordinates, or the coordinates in the GeoJSON feature passed to `geometry`, refer to the center of the point.
 
-`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scales used in the parent Section. `geometry` accepts GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) features only. Coordinates inside the GeoJSON geometry will similarly be treated as unscaled.  For all positioning props,  a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `PointLayer`, all positioning props will be supplied as `Array`s of `Number`s, `String`s and `Date`s, or functions that return these- see the [Marks versus Layers](/docs/concepts/marks-vs-layers) documentation.
+`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scales used in the parent Section. `geometry` accepts GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) features only. Coordinates inside the GeoJSON geometry will similarly be treated as unscaled.  For all positioning props,  a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `PointLayer`, all positioning props will be supplied as `Array`s of `Number`s, `String`s and `Date`s, or functions that return these- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
 
 ### Aesthetics
 
-| Name        | Required | Type(s)  | Default  | Units                         |
-| radius      | `false`  | `Number` | `3`      | Pixels                        |
-| stroke      | `false`  | `String` | `'none'` | Named, hex, rgb or hsl colors |
-| strokeWidth | `false`  | `Number` | `0`      | Pixels                        |
+|     Name      | Required | Type(s)  |   Default   |           Unit(s)            |
+| ------------- | -------- | -------- | ----------- | ---------------------------- |
+| radius        | `false`  | `Number` | `3`         | Pixel                        |
+| stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color |
+| strokeWidth   | `false`  | `Number` | `0`         | Pixel                        |
+| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1       |
+| fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
+| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1       |
+| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1       |
 
-| Prop          | Required | Types  | Default   | Description    | Unit(s)                    |
-| ------------- | -------- | ------ | --------- | -------------- | -------------------------- |
-| radius        | false    | Number | 3         | Radius length  | Screen pixel               |
-| stroke        | false    | String | 'none'    | Stroke color   | Named color, hex, rgb, hsl |
-| strokeWidth   | false    | Number | 0         | Stroke width   | Screen pixel               |
-| strokeOpacity | false    | Number | undefined | Stroke opacity | Number between 0 and 1     |
-| fill          | false    | String | '#000000' | Fill color     | Named color, hex, rgb, hsl |
-| fillOpacity   | false    | Number | undefined | Fill opacity   | Number between 0 and 1     |
-| opacity       | false    | Number | 1         | Mark opacity   | Number between 0 and 1     |
+These aesthetic props are similar to attributes of the SVG [circle](https://www.w3schools.com/graphics/svg_circle.asp) element. The analogous `circle` attributes are shown below in brackets:
 
-These are analogous to the CSS properties of the same names.
+- `radius`, unsurprisingly, refers to the radius of the point (`r`) 
+- `stroke` refers to the color of the point's outline (`stroke`)
+- `strokeWidth` refers to the width of the point's outline (`stroke-width`)
+- `strokeOpacity` refers to the transparency of the point's outline, `0` being fully transparent (`stroke-opacity`)
+- `fill` refers to the color of the point itself (`fill`)
+- `fillOpacity` refers to the transparency of the point itself, `0` being fully transparent (`fill-opacity`)
+- `opacity` sets both the `strokeOpacity` and the `fillOpacity`
+
+### Transitions
+
+### Interactions
 
 ### Other
 
 ## Examples
+
+The `Point` and `PointLayer` can be seen in action in the following examples:
+
+- [Simple scatterplot](/examples/plain-scatterplot)
+- [Categorical dot plot](/examples/categorical-dot)
+- [Scatterplot with transition](/examples/scatterplot-transition)
+- [Dubois plot](/examples/dubois-simple)
+- [Brush](/examples/brush)
+- [Gapminder](/examples/gapminder)
+- [Density contours](/examples/density-contours)
+- [Global temperature trends](/examples/scatterplot-temp-trends)
