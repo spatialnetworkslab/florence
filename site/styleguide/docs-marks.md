@@ -3,10 +3,7 @@
 ## Name of mark
 
 - Small description of what mark is, and what it is useful for. 
-- Minimal example necessary to illustrate what mark does: a component plus a code block
-- Slightly longer (but still brief) description of how positioning etc works for this particular mark
-- If appropriate: make clear that there exists a complementary `Layer` for this `Mark`, and how they relate to each other
-- Illustrate this with a code block
+- Minimal example necessary to illustrate what mark does: a component plus a code block, showing both `Mark` and `Layer`
 
 ## Properties
 
@@ -14,8 +11,8 @@
 
 - A table with the following columns:
   - Name (plain text)
-  - Required (backticks if code, plain text otherwise) (with `if` statement showing how the prop depends on other props)
-  - Type(s) (backticks) (`Array` etc, seperated by pipes (|))
+  - Required (backticks) (with `if` statement showing how the prop depends on other props, or `true` or `false`)
+  - Type(s) (backticks) (`Array` etc, seperated by commas)
   - Default (backticks)
   - Unit(s) (plain text) (will usually be local coordinates, link to appriopriate page)
 
@@ -58,6 +55,6 @@ This is almost the same for every mark/layer, and includes entries for
 - `_asPolygon`
 - etc
 
-## Example
+## Examples
 
-Link to example with REPL that uses this mark.
+Link to example(s) with REPL that uses this mark.
