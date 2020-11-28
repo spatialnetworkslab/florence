@@ -43,7 +43,6 @@ import SimpleExample from './examples/_RectangleSimple.svelte'
 
 <SimpleExample />
 
-
 ## Properties
 
 ### Positioning
@@ -84,7 +83,7 @@ import RectangleInherit from './utils/_RectangleInherit.svelte'
 As the 'required' column in the table above indicates, if you choose to use `x1`, you will also have to use `x2` (and vice versa). The same goes for `y1` and `y2`. 
 :::
 
-When using the `RectangleLayer`, all positioning props will be supplied as `Array`s of `Number`s, `String`s and `Date`s, or functions that return these- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
+When using the `RectangleLayer`, all positioning props will be supplied as `Array`s of `Number`s, `String`s and `Date`s, or `Function`s that return `Array`s of scaled coordinates- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
 
 ### Aesthetics
 

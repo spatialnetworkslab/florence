@@ -4,25 +4,25 @@ The `Area` mark is used to plot filled areas. It is often used to visualize chan
 
 ```markup
 <script>
-  import { Graphic, Area, XAxis, YAxis } from '@snlab/florence'
+  import { Graphic, Area, AreaLayer, XAxis, YAxis } from '@snlab/florence'
   import { scaleLinear, scaleTime } from 'd3-scale'
 
   const x = [new Date(2002, 0, 1), new Date(2004, 0, 1), new Date(2006, 0, 1)]
-  const y = [20, 40, 10]
+  const yFirst = [20, 40, 10]
+  const ySecond = [30, 45, 30]
+  const yThird = [35, 60, 55]
 </script>
 
 <Graphic 
   width={200} height={200}
   scaleX={scaleTime().domain([new Date(2001, 0, 1), new Date(2007, 0, 1)])}
-  scaleY={scaleLinear().domain([0, 40])}
+  scaleY={scaleLinear().domain([0, 60])}
   padding={20}
   flipY
 >
-  <Area
-    x1={x}
-    y1={[0, 0, 0]}
-    y2={y}
-  />
+
+  <Area x1={x} y1={[0, 0, 0]} y2={yFirst} fill={'red'} />
+  <AreaLayer x1={[x, x]} y1={[yFirst, ySecond]} y2={[ySecond, yThird]} fill={['blue', 'green']} />
   
   <XAxis />
   <YAxis />
@@ -33,17 +33,22 @@ The `Area` mark is used to plot filled areas. It is often used to visualize chan
 ```js exec
 import SimpleExample from './examples/_AreaSimple.svelte'
 ```
+
 <SimpleExample />
 
-The `Area` is defined by the region between two bounding polylines, which are like Line marks defined with `x1` `y1` and `x2` `y2` props respectively. 
+## Properties
 
-How an area is bounded is determined by the independent variable, which is either derived implicitly from the combination of props or specified with the `independentAxis`.
+### Positioning
 
-When x is the independent variable, only the `x1` prop should be specified, with `x2`=`x1`. `y1` represents the upper bound and `y2` the lower bound, which is set to 0 if unspecified. 
+|      Name       | Required |                   Type(s)                    |   Default   |                       Unit(s)                        |
+| --------------- | -------- | -------------------------------------------- | ----------- | ---------------------------------------------------- |
+| x1              | `true`   | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| x2              | `false`  | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y1              | `true`   | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y2              | `false`  | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| independentAxis | `false`  | `String`                                     | `'x'`       | Either `'x'` or `'y'`                                |
 
-Similarly, when y is the independent variable, only the `y1` prop should be specified, with `y2`=`y1`. `x1` represents the right bound and `x2` the left bound, which is set to 0 if unspecified.
-
-To create stacked areas, either loop over the dataset to generate one `Area` per iteration or use the `AreaLayer`. The `AreaLayer` shares all of the `Area`'s props, but takes an array of arrays per prop instead of an array.
+The `Area` is defined by the region between two bounding polylines, which are like Line marks defined with `x1` `y1` and `x2` `y2` props respectively. How an area is bounded (its 'orientation') is determined by the independent variable, which is either derived implicitly from the combination of props or specified with the `independentAxis`. When x is the independent variable, only the `x1` prop should be specified, with `x2`=`x1`. `y1` represents the upper bound and `y2` the lower bound, which is set to 0 if unspecified. Similarly, when y is the independent variable, only the `y1` prop should be specified, with `y2`=`y1`. `x1` represents the right bound and `x2` the left bound, which is set to 0 if unspecified. This is illustrated in the table below:
 
 ```js exec
 import HorizontalAreaBoth from './utils/_HorizontalAreaBoth.svelte'
@@ -54,51 +59,51 @@ import VerticalAreaBoth from './utils/_VerticalAreaBoth.svelte'
 import HorizontalAreaLower from './utils/_HorizontalAreaLower.svelte'
 ```
 
-## Properties
+|      Name       |                                                                                  Description                                                                                   |                Representation                |     |     |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- | --- | --- |
+| x1              | X coordinates of both upper and lower bounds of an area when x is the independent variable;<br>x coordinates of the right bound of an area when y is the independent variable. | <HorizontalAreaBoth /> <VerticalAreaRight /> |     |     |
+| x2              | X coordinates of the left bound of an area when y is the independent variable.                                                                                                 | <VerticalAreaLeft />                         |     |     |
+| y1              | Y coordinates of the upper bound of an area when x is the independent variable;<br>y coordinates of both left and right bounds of an area when y is the independent variable.  | <HorizontalAreaUpper /> <VerticalAreaBoth /> |     |     |
+| y2              | Y coordinates of the lower bound of an area when x is the independent variable.                                                                                                | <HorizontalAreaLower />                      |     |     |
+| independentAxis | The independent variable.                                                                                                                                                      |                                              |     |     |
 
-### Positioning
+The table below summarizes which combinations of positioning props are allowed: 
 
-| Property        | Type(s)                         | Description                                                                                                                                                                    | Representation                               |
-|-----------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|
-| x1              | Number \|<br>String \|<br>Date  | X coordinates of both upper and lower bounds of an area when x is the independent variable;<br>x coordinates of the right bound of an area when y is the independent variable. | <HorizontalAreaBoth /> <VerticalAreaRight /> |
-| x2              | Number \|<br>String \|<br>Date  | X coordinates of the left bound of an area when y is the independent variable.                                                                                                 | <VerticalAreaLeft />                         |
-| y1              | Number \|<br>String \|<br>Date  | Y coordinates of the upper bound of an area when x is the independent variable;<br>y coordinates of both left and right bounds of an area when y is the independent variable.  | <HorizontalAreaUpper /> <VerticalAreaBoth /> |
-| y2              | Number \|<br>String \|<br>Date  | Y coordinates of the lower bound of an area when x is the independent variable.                                                                                                | <HorizontalAreaLower />                      |
-| independentAxis | String                          | The independent variable.                                                                                                                                                      |                                              |
+| x1  | y1  | x2  | y2  | independentAxis | valid |                         comments                         |
+| --- | --- | --- | --- | --------------- | ----- | -------------------------------------------------------- |
+|     |     | any | any | any             | ❌     | at least x1 and y1 must be given                         |
+|     | ✓   | any | any | any             | ❌     | at least x1 and y1 must be given                         |
+| ✓   |     | any | any | any             | ❌     | at least x1 and y1 must be given                         |
+| ✓   | ✓   |     |     | 'x'             | ✅     | y2 is set to 0 and broadcasted                           |
+| ✓   | ✓   |     |     | 'y'             | ✅     | x2 is set to 0 and broadcasted                           |
+| ✓   | ✓   |     | ✓   | 'x'             | ✅     |                                                          |
+| ✓   | ✓   |     | ✓   | 'y'             | ❌     | independentAxis must be 'x' when x1, y1 and y2 are given |
+| ✓   | ✓   | ✓   |     | 'x'             | ❌     | independentAxis must be 'y' when x1, y1 and x2 are given |
+| ✓   | ✓   | ✓   |     | 'y'             | ✅     |                                                          |
+| ✓   | ✓   | ✓   | ✓   | 'x'             | ✅     | x2 is ignored                                            |
+| ✓   | ✓   | ✓   | ✓   | 'y'             | ✅     | y2 is ignored                                            |
 
-### Allowed prop combinations
-
-| x1 | y1 | x2  | y2  | independentAxis  | valid?  | comments                                                 |
-|----|----|-----|-----|------------------|---------|----------------------------------------------------------|
-|    |    | any | any | any              | ❌      | at least x1 and y1 must be given                         |
-|    | ✓  | any | any | any              | ❌      | at least x1 and y1 must be given                         |
-| ✓  |    | any | any | any              | ❌      | at least x1 and y1 must be given                         |
-| ✓  | ✓  |     |     | 'x' \| undefined | ✅      | y2 is set to 0 and broadcasted                           |
-| ✓  | ✓  |     |     | 'y'              | ✅      | x2 is set to 0 and broadcasted                           |
-| ✓  | ✓  |     |     | otherwise        | ❌      | independentAxis must be passed 'x' or 'y' or left blank  |
-| ✓  | ✓  |     | ✓   | 'x' \| undefined | ✅      |                                                          |
-| ✓  | ✓  |     | ✓   | 'y'              | ❌      | independentAxis must be 'x' when x1, y1 and y2 are given |
-| ✓  | ✓  |     | ✓   | otherwise        | ❌      | independentAxis must be passed 'x' or 'y' or left blank  |
-| ✓  | ✓  | ✓   |     | 'x' \| undefined | ❌      | independentAxis must be 'y' when x1, y1 and x2 are given |
-| ✓  | ✓  | ✓   |     | 'y'              | ✅      |                                                          |
-| ✓  | ✓  | ✓   |     | otherwise        | ❌      | independentAxis must be passed 'x' or 'y' or left blank  |
-| ✓  | ✓  | ✓   | ✓   | 'x' \| undefined | ✅      | x2 is ignored                                            |
-| ✓  | ✓  | ✓   | ✓   | 'y'              | ✅      | y2 is ignored                                            |
-| ✓  | ✓  | ✓   | ✓   | otherwise        | ❌      | independentAxis must be passed 'x' or 'y' or left blank  |
-n.b. `independentAxis` defaults to 'x' when its value is undefined
+For all positioning props, a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `AreaLayer`, all positioning props will be supplied as `Array`s of `Array`s of `Number`s, `String`s and `Date`s, or `Function`s that return `Array`s of `Array`s of scaled coordinates- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
 
 ### Aesthetics
 
-| Prop          | Required | Types  | Default   | Description             | Unit(s)                    |
-| ------------- | -------- | ------ | --------- | ----------------------- | -------------------------- |
-| stroke        | false    | String | 'none'    | Stroke color            | Named color, hex, rgb, hsl |
-| strokeWidth   | false    | Number | 0         | Stroke width            | Screen pixels              |
-| strokeOpacity | false    | Number | undefined | Stroke opacity          | Number between 0 and 1     |
-| fill          | false    | String | '#000000' | Fill color (under line) | Named color, hex, rgb, hsl |
-| fillOpacity   | false    | Number | undefined | Fill opacity            | Number between 0 and 1     |
-| opacity       | false    | Number | 1         | Mark opacity            | Number between 0 and 1     |
+|     Prop      | Required | Type(s)  |   Default   |           Unit(s)           |
+| ------------- | -------- | -------- | ----------- | --------------------------- |
+| stroke        | `false`  | `String` | `'none'`    | Name, hex, rgb or hsl color |
+| strokeWidth   | `false`  | `Number` | `0`         | Pixel                       |
+| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1      |
+| fill          | `false`  | `String` | `'#000000'` | Name, hex, rgb or hsl color |
+| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1      |
+| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1      |
 
-These are analogous to the CSS properties of the same names.
+These aesthetic props are similar to attributes of the SVG [path](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path) element. The analogous `path` attributes are shown below in brackets:
+
+- `fill` refers to the color of the polygon (`fill`)
+- `fillOpacity` refers to the transparency of the polygon, `0` being fully transparent (`fill-opacity`)
+- `stroke` refers to the color of the polygon's outline (`stroke`)
+- `strokeWidth` refers to the width of the polygon's outline (`stroke-width`)
+- `strokeOpacity` refers to the transparency of the polygon's outline, `0` being fully transparent (`stroke-opacity`)
+- `opacity` sets both the `strokeOpacity` and the `fillOpacity` (`opacity`)
 
 ### Transitions
 
@@ -115,3 +120,7 @@ TODO
 ## Examples
 
 The `Area` and `AreaLayer` can be seen in action in the following examples:
+
+- [Area Chart](/examples/area-chart)
+- [Stacked Area Chart](/examples/stacked-area)
+- [Violin Plot](/examples/violin-plot)

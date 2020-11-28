@@ -35,7 +35,7 @@ import SimpleExample from './examples/_PointSimple.svelte'
 
 To render a `Point`, you will need to provide either the `x` and `y` props, or the `geometry` prop. The two uses are mutually exclusive. The `x` and `y` coordinates, or the coordinates in the GeoJSON feature passed to `geometry`, refer to the center of the point.
 
-`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scales used in the parent [Section](/docs/core/section). `geometry` accepts GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) features only. Coordinates inside the GeoJSON geometry will similarly be treated as unscaled.  For all positioning props,  a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `PointLayer`, all positioning props will be supplied as `Array`s of `Number`s, `String`s and `Date`s, or functions that return these- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
+`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scales used in the parent [Section](/docs/core/section). `geometry` accepts GeoJSON [Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) features only. Coordinates inside the GeoJSON geometry will similarly be treated as unscaled.  For all positioning props,  a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `PointLayer`, all positioning props will be supplied as `Array`s of `Number`s, `String`s and `Date`s, or `Function`s that return `Array`s of scaled coordinates- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
 
 ### Aesthetics
 
@@ -49,7 +49,7 @@ To render a `Point`, you will need to provide either the `x` and `y` props, or t
 | strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1       |
 | opacity       | `false`  | `Number` | `1`         | Number between 0 and 1       |
 
-These aesthetic props are similar to attributes of the SVG [circle](https://www.w3schools.com/graphics/svg_circle.asp) element. The analogous `circle` attributes are shown below in brackets:
+These aesthetic props are similar to attributes of the SVG [circle](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/circle) element. The analogous `circle` attributes are shown below in brackets:
 
 - `radius`, unsurprisingly, refers to the radius of the point (`r`) 
 - `fill` refers to the color of the point (`fill`)
