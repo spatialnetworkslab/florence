@@ -50,7 +50,7 @@ import SimpleExample from './examples/_PolygonSimple.svelte'
 Note that `Polygon`s have to 'close', meaning that the last coordinate pair has to be identical to the first. `florence` will close unclosed `x` and `y` arrays automatically. GeoJSON geometries are (according to their specification) supposed to be 'closed' by default, so in theory you should not have to worry about closing polygons when using the `geometry` prop. In practice, however, this is not always the case. So, if the drawn polygons look weird, it might be worth checking of the geometries are closed!
 :::
 
-### Other aesthetics
+### Aesthetics
 
 |     Prop      | Required | Type(s)  |   Default   |           Unit(s)            |
 | ------------- | -------- | -------- | ----------- | ---------------------------- |
@@ -61,13 +61,13 @@ Note that `Polygon`s have to 'close', meaning that the last coordinate pair has 
 | strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 to 1        |
 | opacity       | `false`  | `Number` | `1`         | Number between 0 and 1       |
 
-These aesthetic props are similar to attributes of the SVG [path](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path) element. The analogous `path` attributes are shown below in brackets:
+These aesthetic props are similar to attributes of the SVG [polygon](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/polygon) element. The analogous `polygon` attributes are shown below in brackets:
 
 - `fill` refers to the color of the polygon (`fill`)
-- `fillOpacity` refers to the transparency of the point, `0` being fully transparent (`fill-opacity`)
-- `stroke` refers to the color of the point's outline (`stroke`)
-- `strokeWidth` refers to the width of the point's outline (`stroke-width`)
-- `strokeOpacity` refers to the transparency of the point's outline, `0` being fully transparent (`stroke-opacity`)
+- `fillOpacity` refers to the transparency of the polygon, `0` being fully transparent (`fill-opacity`)
+- `stroke` refers to the color of the polygon's outline (`stroke`)
+- `strokeWidth` refers to the width of the polygon's outline (`stroke-width`)
+- `strokeOpacity` refers to the transparency of the polygon's outline, `0` being fully transparent (`stroke-opacity`)
 - `opacity` sets both the `strokeOpacity` and the `fillOpacity` (`opacity`)
 
 ### Transitions

@@ -55,6 +55,8 @@ To render the Line mark, you will need to provide the `x` and `y` or the `geomet
 | strokeWidth | `false`  | `Number` | `3`         | Pixel                        |
 | opacity     | `false`  | `Number` | `1`         | Number between 0 and 1       |
 
+These aesthetic props are similar to attributes of the SVG [line](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/line) element. The analogous `line` attributes are shown below in brackets:
+
 - `stroke` refers to the color of the line
 - `strokeWidth` refers to the width of the line
 - `strokeOpacity` refers to the transparency of the line, `0` being fully transparent
