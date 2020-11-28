@@ -18,7 +18,9 @@
     .summarise({ meanDiameter: { diameter: 'mean' } })
     .max('meanDiameter')
 
-  const scaleMeanDiameter = scaleLinear().domain([0, maxMeanDiameter * 1.5])
+  const meanDiameterDomain = [0, maxMeanDiameter * 1.5]
+
+  const scaleMeanDiameter = scaleLinear().domain(meanDiameterDomain)
 
   const scaleFruitColor = scaleOrdinal()
     .domain(data.domain('fruit'))
@@ -47,7 +49,7 @@
     x={data.column('fruit')}
     y={data.column('diameter')}
     fill={data.map('fruit', scaleFruitColor)}
-    radius={scaleRadius}
+    radius={data.map('diameter', scaleRadius)}
   />
 
   <XAxis title={'fruit'} />
