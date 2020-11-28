@@ -21,6 +21,7 @@
     padding={{ top: 20, right: 20, bottom: 30, left: 30 }}
     scaleX={scaleUtc().domain(appleStockData.domain('date'))}
     scaleY={scaleLinear().domain(appleStockData.domain('close'))}
+    flipY
   >
 
     <Area
