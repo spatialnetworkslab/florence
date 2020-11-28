@@ -53,8 +53,9 @@ pages:
   script:
     - cd site/
     - npm install
-    - npm run export
-    - mv __sapper__/export ../public
+    - npm run export -- --basepath $CI_PROJECT_NAME
+    - mkdir ../public/ || true
+    - cp -a __sapper__/export/$CI_PROJECT_NAME/* ../public/
   artifacts:
     paths:
       - public

@@ -6,7 +6,7 @@
     "copy-worker": "node scripts/copy-worker.js",
     "dev": "npm run copy-worker && sapper dev --ext '.svelte .sveltex'",
     "build": "npm run copy-worker && sapper build --ext '.svelte .sveltex'",
-    "export": "npm run copy-worker && sapper export --basepath '/florence' --ext '.svelte .sveltex' > /dev/null",
+    "export": "npm run copy-worker && sapper export --ext '.svelte .sveltex' > /dev/null",
     "start": "node __sapper__/build",
     "watch:tailwind": "postcss src/tailwind.css -o static/css/index.css -w",
     "build:tailwind": "NODE_ENV=production postcss src/tailwind.css -o static/css/index.css"
