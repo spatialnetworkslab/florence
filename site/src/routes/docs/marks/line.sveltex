@@ -16,8 +16,8 @@ The `Line` mark plots a line element by taking two or more x/y coordinate pairs.
   />
 
   <LineLayer 
-    x={[[6, 4], [7.5, 10, 7.5]]} 
-    y={[[6, 4], [7.5, 7.5, 10]]}
+    x={[[6, 4], [10, 7.5, 7.5]]} 
+    y={[[4, 6], [10, 7.5, 10]]}
     stroke={['blue', 'green']}
   />
 
@@ -39,25 +39,41 @@ To render the Line mark, you will need to provide the `x` and `y` or the `geomet
 
 ### Positioning
 
-| Prop     | Required | Types              | Default   | Description                        | Unit(s)                                                                                   |
-| -------- | -------- | ------------------ | --------- | ---------------------------------- | ----------------------------------------------------------------------------------------- |
-| x        | depends  | [Array, Function]  | undefined | X coordinates of line              | Data value to be scaled by Section's scaleX. If Function then viewBox coordinates.        |
-| y        | depends  | [Array, Function]  | undefined | Y coordinates of line              | Data value to be scaled by Section's scaleY. If Function then viewBox coordinates.        |
-| geometry | depends  | [Object, Function] | undefined | GeoJSON object of type LineString  | Data value to be scaled by Section's scaleX/scaleY. If Function then viewBox coordinates. |
+|   Name   |                 Required                  |                                       Type(s)                                        |   Default   |                      Unit(s)(s)                      |
+| -------- | ----------------------------------------- | ------------------------------------------------------------------------------------ | ----------- | ---------------------------------------------------- |
+| x        | `if (geometry === undefined)`             | `Number[]`, `String[]`, `Date[]`, `Function`                                         | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y        | `if (geometry === undefined)`             | `Number[]`, `String[]`, `Date[]`, `Function`                                         | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| geometry | `if (x === undefined && y === undefined)` | Array of GeoJSON [LineString](https://tools.ietf.org/html/rfc7946#section-3.1.2) or [MultiLineString](https://tools.ietf.org/html/rfc7946#section-3.1.5) features | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 
-`x` and `y` have to be an array of `Number`, `String` or `Date` values, depending on the scale used in the parent Section. `geometry` accepts GeoJSON [LineString](https://tools.ietf.org/html/rfc7946#section-3.1.4) and [MultiLineString](https://tools.ietf.org/html/rfc7946#section-3.1.5) objects only. Values will be scaled according to the `scaleX` and `scaleY` of the parent Section. Alternatively, a function can be supplied that returns a coordinate in the viewBox coordinate system directly, bypassing any active scales.
+`x` and `y` have to be arrays of `Number`s, `String`s or `Date`s, depending on the scale used in the parent Section. `geometry` accepts arrays of GeoJSON [LineString](https://tools.ietf.org/html/rfc7946#section-3.1.4) and [MultiLineString](https://tools.ietf.org/html/rfc7946#section-3.1.5) objects only. For all positioning props,  a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `LineLayer`, all positioning props will be supplied as `Array`s of `Array`s of `Number`s, `String`s and `Date`s, or functions that return these- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
 
+### Aesthetics
 
-### Other aesthetics
-| Prop          | Required | Types  | Default   | Description             | Unit(s)                    |
-| ------------- | -------- | ------ | --------- | ----------------------- | -------------------------- |
-| stroke        | false    | String | '#000000' | Stroke color            | Named color, hex, rgb, hsl |
-| strokeWidth   | false    | Number | 3         | Stroke width            | Screen pixels              |
-| strokeOpacity | false    | Number | undefined | Stroke opacity          | Number between 0 and 1     |
-| fill          | false    | String | 'none'    | Fill color (under line) | Named color, hex, rgb, hsl |
-| fillOpacity   | false    | Number | undefined | Fill opacity            | Number between 0 and 1     |
-| opacity       | false    | Number | 1         | Mark opacity            | Number between 0 and 1     |
+|    Name     | Required | Type(s)  |   Default   |           Unit(s)            |
+| ----------- | -------- | -------- | ----------- | ---------------------------- |
+| stroke      | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
+| strokeWidth | `false`  | `Number` | `3`         | Pixel                        |
+| opacity     | `false`  | `Number` | `1`         | Number between 0 and 1       |
 
-These are analogous to the CSS properties of the same names.
+- `stroke` refers to the color of the line
+- `strokeWidth` refers to the width of the line
+- `strokeOpacity` refers to the transparency of the line, `0` being fully transparent
+
+### Transitions
+
+TODO
+
+### Interactions
+
+TODO
+
+### Other
+
+TODO
 
 ## Examples
+
+The `Line` and `LineLayer` can be seen in action in the following examples:
+
+- [Candlestick Chart](/examples/candlestick)
+- [Global Temperature Trends](/examples/scatterplot-temp-trends)
