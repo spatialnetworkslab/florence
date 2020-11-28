@@ -54,14 +54,40 @@ pages:
     - cd site/
     - npm install
     - npm run export
+    - mv site/__sapper__/export public 
   artifacts:
     paths:
-      - site/__sapper__/export
+      - public
   cache:
     paths:
       - site/node_modules/
   only:
   - master
+
+.renovate:
+  variables:
+    RENOVATE_GIT_AUTHOR: "${GITLAB_USER_NAME} <${GITLAB_USER_EMAIL}>"
+    RENOVATE_DRY_RUN: "false"
+    RENOVATE_LOG_LEVEL: "info"
+  image:
+    name: renovate/renovate
+    entrypoint: [""]
+  script:
+    - >
+      node /usr/src/app/dist/renovate.js
+      --platform "gitlab"
+      --endpoint "${CI_API_V4_URL}"
+      --git-author "${RENOVATE_GIT_AUTHOR}"
+      --dry-run "${RENOVATE_DRY_RUN}"
+      --log-level "${RENOVATE_LOG_LEVEL}"
+      "${CI_PROJECT_PATH}"
+  only:
+    - master
+    - schedules
+
+Renovate:
+  extends: .renovate
+
 
 # the below doesn't work with absolute links so disable for now
 # pages:preview:
