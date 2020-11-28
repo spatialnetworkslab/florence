@@ -54,7 +54,7 @@ pages:
     - cd site/
     - npm install
     - npm run export
-    - mv site/__sapper__/export public 
+    - mv __sapper__/export ../public
   artifacts:
     paths:
       - public
