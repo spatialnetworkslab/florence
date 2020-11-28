@@ -1,52 +1,54 @@
 # Polygon
-The `Polygon` mark is used to plot polygonal elements.
 
-```js exec
-import SimplePolygon from "./examples/_PolygonSimple.svelte"
-```
-<SimplePolygon/>
+The `Polygon` mark can be used to draw a variety of shapes. Use cases include maps or contours.
 
 ```markup
 <script>
-  const x = [20, 50, 80, 20]
-  const y = [70, 21, 70, 70]
+  import { Graphic, Polygon, PolygonLayer, XAxis, YAxis } from '@snlab/florence'
 </script>
-<Graphic>
-  <Polygon {x} {y} />
-</Graphic>
-```
 
-To render the Polygon mark, you will need to provide the `x` and `y` or the `geometry` props. The two uses are mutually exclusive.
+<Graphic width={200} height={200} scaleX={[0, 10]} scaleY={[0, 10]} padding={20}>
 
-`x` and `y` can be of type `Number`, `String` and `Date`, depending on the scale used in the parent Section. `geometry` accepts GeoJSON [Polygon](https://tools.ietf.org/html/rfc7946#section-3.1.6) objects only. Values will be scaled according to the `scaleX` and `scaleY` of the parent Section. Alternatively, a function can be supplied that returns a coordinate in the viewBox coordinate system directly, bypassing any active scales.
-
-To create multiple polygons, we can either loop over the dataset (with `{#each}`) to generate one `Polygon` per iteration, or use the `PolygonLayer`. The `PolygonLayer` shares all of the `Polygon`'s props, but takes an array of arrays per prop instead of an array.
-
-```markup
-<Graphic>
-  <!-- this denotes a polygon enclosed by three points -->
   <Polygon
-    x={[🍓, 🍋, 🍏, 🍓]}
-    y={[🥑, 🍊, 🥭, 🥑]}
+    x={[0, 2.5, 2.5, 0]}
+    y={[0, 2.5, 0, 0]}
+    fill={'red'}
   />
-</Graphic>
 
-<Graphic>
-  <!-- this denotes 3 polygons -->
-  <PolygonLayer
-    x={[[🍓, 🍋, 🍏, 🍓], [🍓, 🍋, 🍏, 🍓], [🍓, 🍋, 🍏, 🍓]]}
-    y={[[🥑, 🍊, 🥭, 🥑], [🥑, 🍊, 🥭, 🥑], [🥑, 🍊, 🥭, 🥑]]}
+  <PolygonLayer 
+    x={[[5, 7, 5, 3, 5], [10, 7.5, 7.5, 10]]} 
+    y={[[7, 5, 3, 5, 7], [10, 7.5, 10, 10]]}
+    fill={['blue', 'green']}
   />
+
+  <XAxis />
+  <YAxis />
+
 </Graphic>
 ```
+
+```js exec
+import SimpleExample from './examples/_PolygonSimple.svelte'
+```
+
+<SimpleExample />
+
 
 ## Properties
+
 ### Positioning
-| Prop     | Required | Types              | Default   | Description                                       | Unit(s)                                                                                   |
-| -------- | -------- | -------------------| --------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| x        | depends  | Array \| Function  | undefined | X coordinates of each point enclosing the polygon | Data value to be scaled by Section's scaleX. If Function then viewBox coordinates.        |
-| y        | depends  | Array \| Function  | undefined | Y coordinates of each point enclosing the polygon | Data value to be scaled by Section's scaleY. If Function then viewBox coordinates.        |
-| geometry | depends  | Object \| Function | undefined | GeoJSON object of type Polygon                    | Data value to be scaled by Section's scaleX/scaleY. If Function then viewBox coordinates. |
+
+|   Name   |                 Required                  |                                       Type(s)                                        |   Default   |                      Unit(s)(s)                      |
+| -------- | ----------------------------------------- | ------------------------------------------------------------------------------------ | ----------- | ---------------------------------------------------- |
+| x        | `if (geometry === undefined)`             | `Number[]`, `String[]`, `Date[]`, `Function`                                         | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y        | `if (geometry === undefined)`             | `Number[]`, `String[]`, `Date[]`, `Function`                                         | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| geometry | `if (x === undefined && y === undefined)` | Array of GeoJSON [LineString](https://tools.ietf.org/html/rfc7946#section-3.1.2) or [MultiLineString](https://tools.ietf.org/html/rfc7946#section-3.1.5) features | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+
+`x` and `y` have to be arrays of `Number`s, `String`s or `Date`s, depending on the scale used in the parent [Section](/docs/core/section). `geometry` accepts arrays of GeoJSON [Polygon](https://tools.ietf.org/html/rfc7946#section-3.1.6) and [MultiPolygon](https://tools.ietf.org/html/rfc7946#section-3.1.7) objects only. For all positioning props,  a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `PolygonLayer`, all positioning props will be supplied as `Array`s of `Array`s of `Number`s, `String`s and `Date`s, or functions that return these- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
+
+::: div callout
+Note that `Polygon`s have to 'close', meaning that the last coordinate pair has to be identical to the first. GeoJSON geometries are supposed to be 'closed' by default. When using `x` and `y` props, make sure that the last value in each array is the same as the first.
+:::
 
 ### Other aesthetics
 
