@@ -23,6 +23,8 @@ export default function createScreenGeometry (
 
   const totalTransformation = sectionContext.getTotalTransformation()
 
+  console.log(geometry)
+
   return transformGeometry(geometry, totalTransformation, renderSettings)
 }
 
