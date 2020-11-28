@@ -79,6 +79,10 @@ export const posts = [
       {
         title: 'Polygon',
         path: '/docs/marks/polygon'
+      },
+      {
+        title: 'FuncLine',
+        path: '/docs/marks/funcline'
       }
     ]
   },

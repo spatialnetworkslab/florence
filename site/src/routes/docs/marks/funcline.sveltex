@@ -1,0 +1,73 @@
+# FuncLine
+
+The `FuncLine` mark can be used to plot functions over intervals. 
+
+```markup
+<script>
+  import { Graphic, FuncLine, XAxis, YAxis } from '@snlab/florence'
+</script>
+
+<Graphic 
+  width={200}
+  height={200}
+  scaleX={[0, 10]}
+  scaleY={[0, 10]}
+  padding={20}
+  flipY
+>
+
+  <FuncLine func={x => Math.exp(x / 4)} stroke={'red'} />
+
+  <XAxis />
+  <YAxis />
+
+</Graphic>
+```
+
+```js exec
+import SimpleExample from './examples/_FuncLineSimple.svelte'
+```
+
+<SimpleExample />
+
+## Properties
+
+### Positioning
+
+| Name | Required |  Type(s)   |   Default   |                        Unit(s)                        |
+| ---- | -------- | ---------- | ----------- | ----------------------------------------------------- |
+| func | `true`   | `Function` | `undefined` | NA                                                    |
+| x    | `false`  | `Number[]` | `undefined` | [Local coordinates](/docs/concepts/local-coordinates) |
+
+To render `FuncLine`, a `Function` that maps a numeric input to a numeric output has to be passed to the `func` prop. By default, this function will be plotted over a domain that is inherited from the parent `Graphic` or `Section`. To provide a different custom domain, the `x` prop can be passed an `Array` containing two numbers. For example:
+
+```markup
+<script>
+  import { Graphic, FuncLine, XAxis, YAxis } from '@snlab/florence'
+  const pi = Math.PI
+</script>
+
+<Graphic 
+  width={200}
+  height={200}
+  scaleX={[-2 * pi, 2 * pi]}
+  scaleY={[-1, 1]}
+  padding={20}
+>
+
+  <FuncLine func={Math.sin} x={[-pi, pi]} />
+
+  <XAxis />
+  <YAxis />
+
+</Graphic>
+```
+
+```js exec
+import FuncLineDomain from './utils/_FuncLineDomain.svelte'
+```
+
+<FuncLineDomain />
+
+
+TODO mention that parent domain must be numeric!
