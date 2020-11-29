@@ -46,9 +46,6 @@ export default {
 
       commonjs(),
 
-      // Needed for codemirror css
-      css({ output: 'static/css/vendor.css' }),
-
       legacy && babel({
         extensions: ['.js', '.mjs', '.html', '.svelte', 'sveltex'],
         runtimeHelpers: true,
