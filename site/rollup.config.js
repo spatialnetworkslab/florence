@@ -9,7 +9,7 @@ import sveltePreprocess from 'svelte-preprocess'
 import postcss from 'rollup-plugin-postcss'
 import pkg from './package.json'
 import { sveltex } from './sveltex-config/sveltex.config.js'
-import css from 'rollup-plugin-css-only'
+// import css from 'rollup-plugin-css-only'
 
 const mode = process.env.NODE_ENV
 const dev = mode === 'development'

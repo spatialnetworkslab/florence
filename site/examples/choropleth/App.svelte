@@ -10,6 +10,7 @@
   (async () => {
     const topojson = await json('/data/us-states.topojson')
     dataContainer = new DataContainer(feature(topojson, topojson.objects.states))
+
     geoScales = createGeoScales(dataContainer.bbox())
 
     const population = await csv('/data/us-states-population.csv')
@@ -21,7 +22,7 @@
   })()
 </script>
 
-{#if dataContainer}
+{#if populationScale}
 
   <Graphic 
     width={500}
