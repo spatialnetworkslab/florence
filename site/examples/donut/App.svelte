@@ -4,7 +4,7 @@
   import { interpolateSpectral } from 'd3-scale-chromatic'
   import { csv } from 'd3-fetch'
   import { autoType } from 'd3-dsv'
-  import { Graphic, RectangleLayer, LabelLayer } from '@snlab/florence'
+  import { Graphic, Section, RectangleLayer, LabelLayer } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
   let dataContainer, nrow, scaleColor, ready
@@ -19,7 +19,8 @@
         { asInterval: true }
       ).mutate({
         lower: row => row.cumulativePopulation[0],
-        upper: row => row.cumulativePopulation[1],
+        upper: row => row.cumulativePopulation[1]
+      }).mutate({
         mid: ({ lower, upper }) => lower + (upper - lower) / 2
       })
 
@@ -31,7 +32,7 @@
     ).reverse()
 
     scaleColor = scaleOrdinal()
-      .domain(cumSum.domain('age_group'))
+      .domain(dataContainer.domain('age_group'))
       .range(colors)
 
     ready = true
@@ -43,41 +44,55 @@
   <Graphic
     width={500}
     height={500}
-    scaleX={[0, dataContainer.max('cumulativePopulation')]}
-    scaleY={[0, 15]}
-    transformation={'polar'}
     flipY
   >
 
-    <RectangleLayer 
-      x1={dataContainer.column('lower')}
-      x2={dataContainer.column('upper')}
-      y1={Array(nrow).fill(10)}
-      y2={Array(nrow).fill(15)}
-      fill={dataContainer.map('age_group', scaleColor)}
-      stroke={'white'}
-      strokeWidth={1}
-    />
+    <Section
+      scaleX={[0, dataContainer.max('cumulativePopulation')]}
+      scaleY={[0, 15]}
+      transformation={'polar'}
+    >
+    
+      <RectangleLayer 
+        x1={dataContainer.column('lower')}
+        x2={dataContainer.column('upper')}
+        y1={Array(nrow).fill(10)}
+        y2={Array(nrow).fill(15)}
+        fill={dataContainer.map('age_group', scaleColor)}
+        stroke={'white'}
+        strokeWidth={1}
+      />
   
-    <!-- age groups -->
-    <LabelLayer
-      x={dataContainer.column('mid')}
-      y={Array(nrow).fill(12.5)}
-      text={dataContainer.column('age_group')}
-      fontSize={11}
-      fontWeight={'bold'}
-      fontFamily={'sans-serif'}
-    />
+      <!-- age groups -->
+      <LabelLayer
+        x={dataContainer.column('mid')}
+        y={Array(nrow).fill(12.5)}
+        text={dataContainer.column('age_group')}
+        fontSize={11}
+        fontWeight={'bold'}
+        fontFamily={'sans-serif'}
+      />
 
-    <!-- population labels, except last four -->
-    <LabelLayer
-      x={dataContainer.column('cumulativePopulation').slice(0, nrow - 4)}
-      y={Array(nrow - 4).fill(12.5)}
-      text={dataContainer.column('population').slice(0, nrow - 4).map(d => d.toLocaleString())}
-      fontSize={11}
-      fontWeight={'lighter'}
-      fontFamily={'sans-serif'}
-    />
+    </Section>
+
+    <Section
+      scaleX={[0, dataContainer.max('cumulativePopulation')]}
+      scaleY={[0, 15]}
+      transformation={'polar'}
+      zoomIdentity={{ y: 15 }}
+    >
+
+      <!-- population labels, except last four -->
+      <LabelLayer
+        x={dataContainer.column('mid').slice(0, nrow - 4)}
+        y={Array(nrow - 4).fill(12.5)}
+        text={dataContainer.column('population').slice(0, nrow - 4).map(d => d.toLocaleString())}
+        fontSize={11}
+        fontWeight={'lighter'}
+        fontFamily={'sans-serif'}
+      />
+    
+    </Section>
 
   </Graphic>
 
