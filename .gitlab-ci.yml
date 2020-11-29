@@ -2,6 +2,7 @@ image: node:12
 
 stages:
     - test
+    - build
     - deploy
 
 cache:
@@ -48,20 +49,39 @@ run-integration-test:
       junit:
         - junit-integration*.xml
 
-pages:
-  stage: deploy
+
+build_site:
+  stage: build
   script:
     - cd site/
     - npm install
-    - npm run export -- --basepath $CI_PROJECT_NAME
+    - npm run export
     - mkdir ../public/ || true
-    - cp -a __sapper__/export/$CI_PROJECT_NAME/* ../public/
+    - cp -a __sapper__/export/* ../public/
   artifacts:
     paths:
       - public
   cache:
     paths:
       - site/node_modules/
+  only:
+  - master
+
+push_keycdn:
+  stage: deploy
+  variables:
+    KEYCDN_USER: "atepoorthuis"
+    KEYCDN_ZONE_NAME: "florence"
+  script:
+    - apt-get update && apt-get install rsync brotli -y
+    - eval $(ssh-agent -s)
+    - echo "$SSH_DEPLOY_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo 'rsync.keycdn.com,185.172.149.122 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFM7Jqs3BqC+MSEoVsZ+YMKTjVIMTSKlZX2+0t88o4LZvd+BWt71SkXv4mQr7xKD59m7jeJcWiO43u7YQzi+Tgg=' >> ~/.ssh/known_hosts
+    - find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
+    # - find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec brotli -f -k {} \;
+    - rsync -rtvz --chmod=D2755,F644 --delete public/ ${KEYCDN_USER}@rsync.keycdn.com:${KEYCDN_ZONE_NAME}/
   only:
   - master
 
