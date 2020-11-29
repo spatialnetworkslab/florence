@@ -87,3 +87,18 @@ These aesthetic props are similar to attributes of the SVG [line](https://develo
 - `strokeWidth` refers to the width of the line
 - `strokeOpacity` refers to the transparency of the line, `0` being fully transparent
 
+### Transitions
+
+TODO
+
+### Interactions
+
+TODO
+
+### Other
+
+TODO
+
+## Examples
+
+The `FuncLine` is not featured in any examples yet!
