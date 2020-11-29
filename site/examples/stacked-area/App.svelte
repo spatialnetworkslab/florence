@@ -6,7 +6,7 @@
   import { Graphic, AreaLayer, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florene-datacontainer'
 
-  let dataContainer, industries, scaleColor
+  let dataContainer, industries, scaleColor, ready
 
   (async () => {
     dataContainer = new DataContainer(await csv('/data/unemployment.csv', autoType))
@@ -17,11 +17,13 @@
 
     scaleColor = scaleOrdinal()
         .domain(industries)
-        .range(schemeCategory10);    
+        .range(schemeCategory10)
+
+    ready = true
   })()
 </script>
 
-{#if dataContainer}
+{#if ready}
 
   <Graphic
     width={500}

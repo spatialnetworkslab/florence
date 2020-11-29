@@ -8,7 +8,7 @@
   import { Graphic, LineLayer, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  let appleStockData, scaleX, scaleY, ticksX
+  let appleStockData, scaleX, scaleY, ticksX, ready
 
   (async () => {
     const data = await csv('/data/apple-stocks-candlestick.csv', autoType)
@@ -33,12 +33,13 @@
     ])
 
     ticksX = timeMonday.every(1).range(domainDate[0], domainDate[1])
+    ready = true
   })()
 
   const openCloseColors = ([open, close]) => open > close ? '#da344d' : '#32936f'
 </script>
 
-{#if appleStockData}
+{#if ready}
 
   <Graphic
     width={500}

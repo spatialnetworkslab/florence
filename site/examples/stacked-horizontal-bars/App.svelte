@@ -13,7 +13,7 @@
 
   const dataURL = '/data/population-stacked-bars.csv'
 
-  let dataContainer, maxX, groupedByState, scaleColor
+  let dataContainer, maxX, groupedByState, scaleColor, ready
 
   (async () => {
     dataContainer = new DataContainer(await csv(dataURL, autoType))
@@ -33,6 +33,8 @@
       .domain(ageGroups)
       .range(schemeSpectral[ageGroups.length])
       .unknown('#ccc')
+
+    ready = true
   })()
 </script>
 

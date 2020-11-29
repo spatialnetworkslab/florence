@@ -5,7 +5,7 @@
   import { Graphic, PointLayer, Line, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  let dataContainer, scaleColor
+  let dataContainer, scaleColor, ready
 
   (async () => {
     const columnsOfInterest = 'Year,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'
@@ -28,10 +28,12 @@
     scaleColor = scaleSequential()
       .domain(dataContainer.domain('value').reverse())
       .range(interpolateRdBu)
+
+    ready = true
   })()
 </script>
 
-{#if dataContainer}
+{#if ready}
 
   <Graphic
     width={500}

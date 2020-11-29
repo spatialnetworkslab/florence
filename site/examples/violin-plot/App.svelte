@@ -7,7 +7,7 @@
   import { kernelDensityEstimator, kernelEpanechnikov } from './kernelDensity.js'
 
   let dataContainer, scaleSpecies, scaleDimension
-  let densitiesX, densityY, densityDomain
+  let densitiesX, densityY, densityDomain, ready
 
   (async () => {
     dataContainer = new DataContainer(await csv('/data/iris.csv', autoType))
@@ -32,10 +32,12 @@
       .reduce((a, b) => Math.max(a, b))
 
     densityDomain [-maxDensity, maxDensity]
+
+    ready = true
   })()
 </script>
 
-{#if dataContainer}
+{#if ready}
 
   <Graphic
     width={500}

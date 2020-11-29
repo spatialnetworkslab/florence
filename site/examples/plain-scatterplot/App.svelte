@@ -10,7 +10,7 @@
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  let dataContainer, scaleColor
+  let dataContainer, scaleColor, ready
 
   (async () => {
     dataContainer = new DataContainer(await json('/data/cars.json'))
@@ -19,10 +19,12 @@
     scaleColor = scaleOrdinal()
       .domain(dataContainer.domain('Origin'))
       .range(["#e45756", "#f58518", "#4c78a8"])
+
+    ready = true
   })()
 </script>
 
-{#if dataContainer}
+{#if ready}
 
   <Graphic
     width={500}

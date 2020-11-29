@@ -31,7 +31,7 @@
     .domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
     .padding(0.1)
 
-  let geoData, timeData, heatmapData, geoScales, priceColorScale
+  let geoData, timeData, heatmapData, geoScales, priceColorScale, ready
 
   (async () => {
     geoData = new DataContainer(await json('/data/base_map.json'))
@@ -52,6 +52,8 @@
         method: 'EqualInterval',
         numClasses: COLORS.length
       }, COLORS)
+
+    ready = true
   })()
 
   let hoverKey
@@ -70,7 +72,7 @@
   }
 </script>
 
-{#if geoData}
+{#if ready}
 
   <Graphic width={1000} height={800}>
 

@@ -7,7 +7,7 @@
   import { Graphic, RectangleLayer, LabelLayer } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  let dataContainer, nrow, scaleColor
+  let dataContainer, nrow, scaleColor, ready
 
   (async () => {
     const data = await csv('/data/population.csv', autoType)
@@ -33,10 +33,12 @@
     scaleColor = scaleOrdinal()
       .domain(cumSum.domain('age_group'))
       .range(colors)
+
+    ready = true
   })()
 </script>
 
-{#if dataContainer}
+{#if ready}
 
   <Graphic
     width={500}

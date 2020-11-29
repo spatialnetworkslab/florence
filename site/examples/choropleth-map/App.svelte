@@ -7,7 +7,7 @@
 
   const COLORS = ['#d3d3d3', '#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
 
-  let dataContainer, geoScales, priceColorScale
+  let dataContainer, geoScales, priceColorScale, ready
 
   (async () => {
     const geojson = await json('/data/plan_areas_choropleth.json')
@@ -17,10 +17,12 @@
     priceColorScale = dataContainer.classify({
       column: 'resale_price_sqm', method: 'Jenks', numClasses: COLORS.length
     }, COLORS)
+
+    ready = true
   })()
 </script>
 
-{#if dataContainer}
+{#if ready}
 
   <Graphic>
 

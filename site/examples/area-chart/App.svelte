@@ -5,15 +5,16 @@
   import { Graphic, Area, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  let appleStockData
+  let appleStockData, ready
 
   (async () => {
     const data = await csv('/data/apple-stocks-area.csv', autoType)
     appleStockData = new DataContainer(data)
+    ready = true
   })()
 </script>
 
-{#if appleStockData}
+{#if ready}
   
   <Graphic
     width={500}

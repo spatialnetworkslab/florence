@@ -5,7 +5,7 @@
   import { Graphic, RectangleLayer, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  let dataContainer, scaleColor
+  let dataContainer, scaleColor, ready
 
   (async () => {
     dataContainer = new DataContainer(await json('/data/imdb.json'))
@@ -22,10 +22,12 @@
     scaleColor = scaleSequential()
       .domain(dataContainer.domain('count'))
       .range(interpolateYlGnBu)
+
+    ready = true
   })()
 </script>
 
-{#if dataContainer}
+{#if ready}
 
   <Graphic
     width={500}

@@ -5,7 +5,7 @@
   import { Graphic, PolygonLayer, createGeoScales } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  let dataContainer, geoScales, populationScale
+  let dataContainer, geoScales, populationScale, ready
   
   (async () => {
     const topojson = await json('/data/us-states.topojson')
@@ -19,10 +19,12 @@
     populationScale = dataContainer.classify({
       column: 'population', method: 'Jenks', numClasses: 6
     }, schemeBlues[6])
+
+    ready = true
   })()
 </script>
 
-{#if populationScale}
+{#if ready}
 
   <Graphic 
     width={500}

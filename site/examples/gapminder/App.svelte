@@ -10,7 +10,7 @@
   const scaleRadius = scaleSqrt().domain([0, 5e8]).range([0, width / 24])
 
   let currentYear = 1800
-  let data, scaleColor, region, dataInCurrentYear
+  let data, scaleColor, region, dataInCurrentYear, ready
 
   (async () => {
     data = await json('/data/gapminder.json')
@@ -22,17 +22,19 @@
       .domain(region)
       .range(schemeCategory10)
       .unknown('black')
+
+    ready = true
   })
 
   setInterval(() => {
-    if (data && currentYear < 2009) {
+    if (ready && currentYear < 2009) {
       currentYear = currentYear + 0.2
       dataInCurrentYear = getDataInYear(data, currentYear)
     }
   }, 33)
 </script>
 
-{#if data}
+{#if ready}
 
   <Graphic 
     {width}

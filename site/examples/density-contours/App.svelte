@@ -8,7 +8,7 @@
   const width = 500
   const height = 500
 
-  let dataContainer, contours
+  let dataContainer, contours, ready
 
   (async () => {
     const data = await tsv('/data/eruptions.tsv')
@@ -17,11 +17,13 @@
     contours = contourDensity()
       .size([width, height])
       .bandwidth(30)
-      .thresholds(30)(data);
+      .thresholds(30)(data)
+
+    ready = true
   })()
 </script>
 
-{#if dataContainer}
+{#if ready}
 
   <Graphic 
     {width}
