@@ -7,7 +7,7 @@
   width={200}
   height={200}
   scaleX={[-2 * pi, 2 * pi]}
-  scaleY={[-1, 1]}
+  scaleY={[-2, 2]}
   padding={20
 }>
 
