@@ -39,6 +39,10 @@
   import GeoPolygons from './examples/GeoPolygons.svelte'
   import Heatmap from './examples/Heatmap.svelte'
 
+  // Bugs
+  import GraphicAreaBug from './examples/GraphicAreaBug.svelte'
+  import FuncLineBug from './examples/FuncLineBug.svelte'
+  
   // and add them to this component array
   const components = [
     {
@@ -210,6 +214,16 @@
       name: 'Clipping test',
       url: 'clipping',
       component: Clipping
+    },
+    {
+      name: 'Graphic area bug',
+      url: 'graphic-area-bug',
+      component: GraphicAreaBug
+    },
+    {
+      name: 'Func line bug',
+      url: 'func-line-bug',
+      component: FuncLineBug
     }
   ]
 </script>

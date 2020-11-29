@@ -6,6 +6,9 @@ exports[`Assertions > Nested Section Tests > [render] nested sections snapshot c
   viewBox="0 0 600 430"
   preserveAspectRatio="xMidYMid meet"
 >
+  <clipPath id="clip-gr0">
+    <rect x="0" y="0" width="600" height="430"></rect>
+  </clipPath>
   <defs>
     <mask id="gr0-mask-padding-bg">
       <rect x="0" y="0" width="600" height="430" fill="white"></rect>
@@ -14,7 +17,7 @@ exports[`Assertions > Nested Section Tests > [render] nested sections snapshot c
   </defs>
   <defs>
     <clipPath id="clip-sc0">
-      <rect x="0" y="0" width="600" height="430"></rect>
+      <rect x="30" y="30" width="540" height="370"></rect>
     </clipPath>
     <mask id="mask-sc0-padding-bg">
       <rect x="0" y="0" width="600" height="430" fill="white"></rect>

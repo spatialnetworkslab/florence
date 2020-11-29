@@ -129,6 +129,10 @@
   {preserveAspectRatio}
   bind:this={rootNode}
 >
+  <clipPath id={`clip-${graphicId}`}>
+    <rect {...clipPropsPadding} />
+  </clipPath>
+
   <defs>
     <clipPath id={`clip-${graphicId}`}>
       <rect {...clipPropsNoPadding} />

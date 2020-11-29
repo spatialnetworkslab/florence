@@ -172,7 +172,7 @@
 
 <defs>
   <clipPath id={`clip-${sectionId}`}>
-    <rect {...clipPropsNoPadding} />
+    <rect {...clipPropsPadding} />
   </clipPath>
 
   <mask id={`mask-${sectionId}-padding-bg`}>
