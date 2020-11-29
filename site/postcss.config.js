@@ -17,12 +17,12 @@ const rpc = require('sync-rpc')
 const purgeFromMd = rpc(require.resolve('./postcss.asyncmd.js'))
 
 const purgecss = require('@fullhuman/postcss-purgecss')({
-  content: ['./src/**/*.sveltex', './src/**/*.svelte', './src/**/*.html'],
+  content: ['./src/**/*.svelte', './src/**/*.html'],
   extractors: [
-    {
-      extractor: purgeFromMd,
-      extensions: ['sveltex']
-    },
+    // {
+    //   extractor: purgeFromMd,
+    //   extensions: ['sveltex']
+    // },
     {
       extractor: purgeHtml,
       extensions: ['html']
