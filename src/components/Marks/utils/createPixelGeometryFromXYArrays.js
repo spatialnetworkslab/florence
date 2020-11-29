@@ -9,7 +9,6 @@ export function createPixelGeometryFromXYArrays (
   needsScaling
 ) {
   validateXYArrays(x, y)
-  closeIfNecessary(x, y)
 
   const rendervousInput = createRendervousInput(x, y, geometryType)
 
@@ -48,16 +47,6 @@ export function validateXYArrays (x, y) {
 
   if (x.length !== y.length) {
     throw new Error('Arrays passed to \'x\' and \'y\' must have the same length')
-  }
-}
-
-function closeIfNecessary (x, y) {
-  if (x[0] !== x[x.length - 1]) {
-    x.push(x[0])
-  }
-
-  if (y[0] !== y[y.length - 1]) {
-    y.push(y[0])
   }
 }
 
