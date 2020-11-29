@@ -61,6 +61,6 @@
 
 <br /><br />
 
-{#if hoverKey}
-  <h1>OVER: {hoverKey}</h1>
+{#if hoverIndex}
+  <h1>OVER: {hoverIndex}</h1>
 {/if}

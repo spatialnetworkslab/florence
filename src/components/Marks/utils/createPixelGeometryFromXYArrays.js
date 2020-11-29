@@ -10,6 +10,10 @@ export function createPixelGeometryFromXYArrays (
 ) {
   validateXYArrays(x, y)
 
+  if (geometryType === 'Polygon') {
+    closeIfNecessary(x, y)
+  }
+
   const rendervousInput = createRendervousInput(x, y, geometryType)
 
   const interpolationNecessary = (
@@ -47,6 +51,16 @@ export function validateXYArrays (x, y) {
 
   if (x.length !== y.length) {
     throw new Error('Arrays passed to \'x\' and \'y\' must have the same length')
+  }
+}
+
+function closeIfNecessary (x, y) {
+  const xNotClosed = x[0] !== x[x.length - 1]
+  const yNotClosed = y[0] !== y[y.length - 1]
+
+  if (xNotClosed || yNotClosed) {
+    x.push(x[0])
+    y.push(y[0])
   }
 }
 

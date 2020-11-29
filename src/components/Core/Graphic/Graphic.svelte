@@ -129,6 +129,10 @@
   {preserveAspectRatio}
   bind:this={rootNode}
 >
+  <clipPath id={`clip-${graphicId}`}>
+    <rect {...clipPropsPadding} />
+  </clipPath>
+
   <defs>
     <mask id={`${graphicId}-mask-padding-bg`}>
       <rect {...clipPropsNoPadding} fill="white" />

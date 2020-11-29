@@ -10,3 +10,4 @@ site/static/index.css
 .vscode
 build/bundle.*
 dist/
+junit*
