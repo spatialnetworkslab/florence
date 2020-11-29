@@ -6,6 +6,9 @@ exports[`Assertions > Label Mark Tests > [render] labels snapshot correctly #0`]
   viewBox="0 0 500 500"
   preserveAspectRatio="xMidYMid meet"
 >
+  <clipPath id="clip-gr0">
+    <rect x="0" y="0" width="500" height="500"></rect>
+  </clipPath>
   <defs>
     <mask id="gr0-mask-padding-bg">
       <rect x="0" y="0" width="500" height="500" fill="white"></rect>

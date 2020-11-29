@@ -8,8 +8,7 @@
 <Graphic width={1000} height={500}>
 
   <Section 
-    x1={50} x2={450}
-    y1={50} y2={450}
+    padding={50}
     scaleX={scaleLinear().domain([0, 10])}
     scaleY={scaleLinear().domain([0, 10])}
   >
