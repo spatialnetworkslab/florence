@@ -14,7 +14,7 @@
 
   (async () => {
     const data = await tsv('/data/eruptions.tsv', autoType)
-    const dataContainer = new DataContainer(data)
+    dataContainer = new DataContainer(data)
 
     scaleX = scaleLinear()
       .domain(dataContainer.domain('waiting'))
