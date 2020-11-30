@@ -467,26 +467,29 @@
 
   {#if renderLabel}
 
-    <text
-      clip-path={clip ? `url(#clip-${$sectionContext.sectionId})` : 'none'}
-      class="label"
-      x={$tr_screenGeometry.coordinates[0]}
-      y={$tr_screenGeometry.coordinates[1]}
-      fill={$tr_fill}
-      stroke={$tr_stroke}
-      stroke-width={$tr_strokeWidth}
-      fill-opacity={$tr_fillOpacity}
-      stroke-opacity={$tr_strokeOpacity}
-      opacity={$tr_opacity}
-      transform={rotateTransform}
-      font-family={fontFamily}
-      font-size={$tr_fontSize + 'px'}
-      font-weight={$tr_fontWeight}
-      text-anchor={parsedTextAnchorPoint.textAnchor}
-      dominant-baseline={parsedTextAnchorPoint.dominantBaseline}
-    >
-      {aesthetics.text}
-    </text>
+    <g clip-path={clip ? `url(#clip-${$sectionContext.sectionId})` : 'none'}>
+
+      <text
+        class="label"
+        x={$tr_screenGeometry.coordinates[0]}
+        y={$tr_screenGeometry.coordinates[1]}
+        fill={$tr_fill}
+        stroke={$tr_stroke}
+        stroke-width={$tr_strokeWidth}
+        fill-opacity={$tr_fillOpacity}
+        stroke-opacity={$tr_strokeOpacity}
+        opacity={$tr_opacity}
+        transform={rotateTransform}
+        font-family={fontFamily}
+        font-size={$tr_fontSize + 'px'}
+        font-weight={$tr_fontWeight}
+        text-anchor={parsedTextAnchorPoint.textAnchor}
+        dominant-baseline={parsedTextAnchorPoint.dominantBaseline}
+      >
+        {aesthetics.text}
+      </text>
+
+    </g>
 
   {/if}
 
