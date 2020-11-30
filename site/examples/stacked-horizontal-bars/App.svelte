@@ -38,27 +38,31 @@
   })()
 </script>
 
-<Graphic
-  width={500}
-  height={500}
-  scaleX={scaleLinear().domain([0, maxX])}
-  scaleY={scaleBand().domain(dataContainer.domain('state')).padding(0.1)}
-  padding={{ left: 30, right: 10, top: 30, bottom: 0 }}
->
+{#if ready}
 
-  {#each dataContainer.rows() as stateGroup}
+  <Graphic
+    width={500}
+    height={500}
+    scaleX={scaleLinear().domain([0, maxX])}
+    scaleY={scaleBand().domain(dataContainer.domain('state')).padding(0.1)}
+    padding={{ left: 30, right: 10, top: 30, bottom: 0 }}
+  >
 
-    <RectangleLayer 
-      x1={stateGroup.$grouped.map('countInterval', d => d[0])}
-      x2={stateGroup.$grouped.map('countInterval', d => d[1])}
-      y1={stateGroup.state}
-      y2={({ scaleY }) => scaleY(stateGroup.state) + scaleY.bandwidth()}
-      fill={stateGroup.$grouped.map('ageGroup', scaleColor)}
-    />
+    {#each dataContainer.rows() as stateGroup}
 
-  {/each}
+      <RectangleLayer 
+        x1={stateGroup.$grouped.map('countInterval', d => d[0])}
+        x2={stateGroup.$grouped.map('countInterval', d => d[1])}
+        y1={stateGroup.state}
+        y2={({ scaleY }) => scaleY(stateGroup.state) + scaleY.bandwidth()}
+        fill={stateGroup.$grouped.map('ageGroup', scaleColor)}
+      />
 
-  <XAxis vjust={'top'} flip={true} baseLine={false} labelFormat={formatPrefix(",.0", 1e6)}/> 
-  <YAxis baseLine={false} /> 
+    {/each}
 
-</Graphic>
+    <XAxis vjust={'top'} flip={true} baseLine={false} labelFormat={formatPrefix(",.0", 1e6)}/> 
+    <YAxis baseLine={false} /> 
+
+  </Graphic>
+
+{/if}
