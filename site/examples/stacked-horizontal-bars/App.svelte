@@ -24,6 +24,8 @@
         namesTo: 'ageGroup',
         valuesTo: 'countInterval'
       })
+      .mutate({ upper: r => r.countInterval[1] })
+		  .arrange({ upper: 'descending' })
       
     maxX = dataContainer.max('countInterval')
 
