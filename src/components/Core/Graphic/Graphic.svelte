@@ -134,10 +134,6 @@
   </clipPath>
 
   <defs>
-    <clipPath id={`clip-${graphicId}`}>
-      <rect {...clipPropsNoPadding} />
-    </clipPath>
-
     <mask id={`${graphicId}-mask-padding-bg`}>
       <rect {...clipPropsNoPadding} fill="white" />
       <rect {...clipPropsPadding} fill="black" />
