@@ -14,7 +14,7 @@
     .padding(0.01)
 
   const colScale = scalePoint()
-    .domain(dataContainer.domain('col'))
+    .domain(Array(10).fill(0).map((_, i) => i + 1))
     .padding(0.8)
     .round(true)
 
