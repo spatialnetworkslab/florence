@@ -1,0 +1,23 @@
+<script>
+  import { Graphic, PolygonLayer, createGeoScales } from '@snlab/florence'
+
+  const triangles = [
+    { type: 'Polygon', coordinates: [[[0, 0], [5, 2.5], [0, 5], [0, 0]]] },
+    { type: 'Polygon', coordinates: [[[10, 0], [5, 2.5], [10, 5], [10, 0]]] }
+  ]
+
+  const bbox = {
+    x: [0, 10],
+    y: [0, 5]
+  }
+
+  const geoScales = createGeoScales(bbox)
+</script>
+
+<Graphic
+  width={500} height={500}
+  backgroundColor={'grey'} 
+  {...geoScales}
+>
+  <PolygonLayer geometry={triangles} fill={['red', 'green']} />
+</Graphic>

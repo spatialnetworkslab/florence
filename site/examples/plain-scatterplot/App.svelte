@@ -1,84 +1,53 @@
-<!-- adapted from https://vega.github.io/vega-lite/examples/point_color_with_shape.html -->
 <script>
-  import { scaleLinear, scaleOrdinal } from "d3-scale";
+  import { scaleOrdinal } from 'd3-scale'
+  import { json } from 'd3-fetch'
   import {
     Graphic,
-    Section,
-    Label,
+    PointLayer,
+    Title,
     XAxis,
-    YAxis,
-    PointLayer
-  } from "@snlab/florence";
-  import DataContainer from "@snlab/florence-datacontainer";
-  import { json } from "d3-fetch";
+    YAxis
+  } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
 
-  let done = false;
-  let data;
-  json("/data/cars.json").then(d => {
-    data = d;
-    done = true;
-  });
+  let dataContainer, scaleColor, ready
 
-  let dataContainer;
-  let domainX, domainY;
-  let scaleX, scaleY, scaleColour;
+  (async () => {
+    dataContainer = new DataContainer(await json('/data/cars.json'))
+      .dropNA()
 
-  $: {
-    if (done) {
-      dataContainer = new DataContainer(data).dropNA();
+    scaleColor = scaleOrdinal()
+      .domain(dataContainer.domain('Origin'))
+      .range(["#e45756", "#f58518", "#4c78a8"])
 
-      domainX = dataContainer.domain("Horsepower");
-      domainX[0] = 0;
-      domainY = dataContainer.domain("Miles_per_Gallon");
-      domainY[0] = 0;
-
-      scaleX = scaleLinear().domain(domainX);
-      scaleY = scaleLinear().domain(domainY);
-      scaleColour = scaleOrdinal()
-        .domain(dataContainer.domain("Origin"))
-        .range(["#e45756", "#f58518", "#4c78a8"]);
-    }
-  }
+    ready = true
+  })()
 </script>
 
-<Graphic 
-  width={'100%'}
-  height={'100%'}
-  viewBox={'0 0 500 500'}
->
-  <Label
-    x={250}
-    y={10}
-    text={'Miles per gallon vs horsepower'}
-  />
+{#if ready}
 
-  {#if done}
-    <Section
-      {scaleX}
-      {scaleY}
-      padding={{left: 40, right: 25, top: 25, bottom: 40}}
-      flipY
-    >
+  <Graphic
+    width={500}
+    height={500}
+    scaleX={[0, dataContainer.max('Horsepower')]}
+    scaleY={[0, dataContainer.max('Miles_per_Gallon')]}
+    padding={{left: 40, right: 25, top: 25, bottom: 40}}
+    flipY
+  >
 
-      <PointLayer
-        x={dataContainer.column('Horsepower')}
-        y={dataContainer.column('Miles_per_Gallon')}
-        fill={'#4c78a8'}
-        opacity={0.5}
-        radius={5}
-      />
+    <Title title={'Miles per gallon vs horsepower'} />
 
-      <XAxis
-        title={'Horsepower'}
-        titleFontWeight={'bold'}
-      />
+    <PointLayer
+      x={dataContainer.column('Horsepower')}
+      y={dataContainer.column('Miles_per_Gallon')}
+      fill={'#4c78a8'}
+      opacity={0.5}
+      radius={5}
+    />
 
-      <YAxis
-        title='Miles per gallon'
-        titleFontWeight={'bold'}
-      />
+    <XAxis title={'Horsepower'} titleFontWeight={'bold'} />
+    <YAxis title={'Miles per gallon'} titleFontWeight={'bold'} />
+  
+  </Graphic>
 
-    </Section>
-  {/if}
-
-</Graphic>
+{/if}

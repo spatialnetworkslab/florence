@@ -1,95 +1,70 @@
-<!-- adapted from https://observablehq.com/@d3/candlestick-chart -->
-
 <script>
-  import { csv } from 'd3-fetch';
-  import { format } from 'd3-format';
-  import { timeDay, timeMonday } from 'd3-time';
-  import { timeParse, timeFormat } from 'd3-time-format';
-  import { scaleLinear, scaleLog, scaleBand } from 'd3-scale';
-  import { Graphic, Section, LineLayer, XAxis, YAxis } from '@snlab/florence';
-  import DataContainer from '@snlab/florence-datacontainer';
+  import { csv } from 'd3-fetch'
+  import { format } from 'd3-format'
+  import { autoType } from 'd3-dsv'
+  import { timeDay, timeMonday } from 'd3-time'
+  import { timeFormat } from 'd3-time-format'
+  import { scaleLog, scaleBand } from 'd3-scale'
+  import { Graphic, LineLayer, XAxis, YAxis } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
 
-  const parseDate = timeParse('%Y-%m-%d');
+  let appleStockData, scaleX, scaleY, ticksX, ready
 
-  let done = false;
-  let data;
-  csv('/data/apple-stocks-candlestick.csv', d => {
-    const date = parseDate(d['Date']);
-    return {
-      date,
-      high: +d['High'],
-      low: +d['Low'],
-      open: +d['Open'],
-      close: +d['Close']
-    };
-  }).then(d => {
-    data = d.slice(-120);
-    done = true;
-  });
+  (async () => {
+    const data = await csv('/data/apple-stocks-candlestick.csv', autoType)
+      .slice(-120)
+    
+    appleStockData = new DataContainer(data)
+      .mutate({
+        dates: row => [row.Date, row.Date],
+        lowHigh: row => [row.Low, row.High],
+        openClose: row => [row.Open, row.Close]
+      })
 
-  const padding = { top: 20, bottom: 30, left: 40, right: 30 };
-  const width = 800;
-  const height = 600;
+    const noWeekend = d => d.getDay() !== 0 && d.getDay() !== 6
 
-  let dataContainer;
-  let domainHigh, domainLow, domainDate;
-  let scaleX, scaleY;
-  let xTicks, scaleYAxis;
+    scaleX = scaleBand().padding(0.2).domain(
+      timeDay().range(appleStockData.domain('date')).filter(noWeekend)
+    )
 
-  $: {
-    if (done) {
-      dataContainer = new DataContainer(data);
+    scaleY = scaleLog().domain([
+      appleStockData.min('Low'),
+      appleStockData.max('High')
+    ])
 
-      domainHigh = dataContainer.domain('high');
-      domainLow = dataContainer.domain('low');
-      domainDate = dataContainer.domain('date');
+    ticksX = timeMonday.every(1).range(domainDate[0], domainDate[1])
+    ready = true
+  })()
 
-      scaleX = scaleBand()
-        .domain(
-          timeDay
-            .range(domainDate[0], +domainDate[1] + 1)
-            .filter(d => d.getDay() !== 0 && d.getDay() !== 6)
-        )
-        .padding(0.2);
-      scaleY = scaleLog().domain([domainLow[0], domainHigh[1]])
-
-      xTicks = timeMonday.every(1).range(domainDate[0], domainDate[1]);
-      scaleYAxis = scaleLinear()
-        .domain([domainLow[0], domainHigh[1]])
-        .range([height - padding.bottom, padding.top]);
-    }
-  }
+  const openCloseColors = ([open, close]) => open > close ? '#da344d' : '#32936f'
 </script>
 
-<Graphic {width} {height}>
+{#if ready}
 
-  {#if done}
-    <Section
-      {scaleX} 
-      {scaleY}
-      {padding}
-      flipY
-    >  
+  <Graphic
+    width={500}
+    height={500}
+    padding={{ top: 20, bottom: 30, left: 40, right: 30 }}
+    {scaleX}
+    {scaleY}
+  >
 
-      <LineLayer
-        x={dataContainer.map('date', d => [d, d])}
-        y={dataContainer.rows().map(r => [r.low, r.high])}
-        strokeWidth={1}
-      />
+    <LineLayer 
+      x={appleStockData.column('dates')}
+      y={appleStockData.column('lowHigh')}
+      strokeWidth={1}
+    />
 
-      <LineLayer
-        x={dataContainer.map('date', d => [d, d])}
-        y={dataContainer.rows().map(r => [r.open, r.close])}
-        strokeWidth={4}
-        stroke={dataContainer.rows().map(r => r.open > r.close ? '#da344d'
-          : r.close > r.open ? '#32936f'
-          : '#32936f')}
-      />
+    <LineLayer
+      x={appleStockData.column('dates')}
+      y={appleStockData.column('openClose')}
+      stroke={appleStockData.map('openClose', openCloseColors)}
+      strokeWidth={4}
+    />
 
-      <XAxis tickValues={xTicks} labelFormat={timeFormat('%-m/%-d')} baseLine={false} /> 
-      <YAxis scale={scaleYAxis} labelFormat={format('$d')} baseLine={false} />
+    <XAxis tickValues={ticksX} labelFormat={timeFormat('%-m/%-d')} baseLine={false} /> 
+    <YAxis labelFormat={format('$d')} baseLine={false} />
+  
+  </Graphic>
 
-    </Section>
-  {/if}
-
-</Graphic>
+{/if}

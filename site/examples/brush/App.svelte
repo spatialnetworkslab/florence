@@ -1,7 +1,6 @@
 <script>
   import { tick } from 'svelte'
   import { Graphic, Section, PointLayer, XAxis, YAxis, Rectangle } from '@snlab/florence'
-  import { scaleLinear } from 'd3-scale'
   import DataContainer from '@snlab/florence-datacontainer'
 
   const data = new DataContainer({
@@ -9,13 +8,9 @@
     b: new Array(100).fill().map((_, i) => i + (Math.random() * 10))
   })
 
-  const scale = scaleLinear().domain([0, 110])
-
   let section
-
-  let dragging = false
+  let drawing = false
   let rectangle
-
   let brushing = false
   let blockReindexing = false
   let startDelta
@@ -25,7 +20,7 @@
       if (!brushing) {
         section.resetSelectRectangle()
 
-        dragging = true
+        drawing = true
         
         rectangle = {
           x1: screenCoordinates.x,
@@ -40,7 +35,7 @@
   }
 
   const onMousemove = ({ screenCoordinates }) => {
-    if (dragging) {
+    if (drawing) {
       rectangle.x2 = screenCoordinates.x
       rectangle.y2 = screenCoordinates.y
 
@@ -51,8 +46,8 @@
   }
 
   const onMouseup = () => {
-    if (dragging) {
-      dragging = false
+    if (drawing) {
+      drawing = false
     }
   }
 
@@ -120,8 +115,8 @@
   <Section
     bind:this={section}
     padding={30}
-    scaleX={scale}
-    scaleY={scale}
+    scaleX={[0, 110]}
+    scaleY={[0, 110]}
     flipY
     {onMousedown}
     {onMousemove}
@@ -131,7 +126,7 @@
     <PointLayer 
       x={data.column('a')}
       y={data.column('b')}
-      fill={key => selectedPoints[key] ? 'red' : 'steelblue'}
+      fill={({ key }) => selectedPoints[key] ? 'red' : 'steelblue'}
       onSelect={selectPoint}
       onDeselect={deselectPoint}
     />
@@ -145,7 +140,7 @@
 
     <Rectangle 
       {...rectangle}
-      fill="yellow"
+      fill={'yellow'}
       opacity={0.2}
       {onMousedrag}
       {blockReindexing}

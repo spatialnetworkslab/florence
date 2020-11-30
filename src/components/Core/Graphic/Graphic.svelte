@@ -34,6 +34,7 @@
   export let padding = 0
   export let zoomIdentity = undefined
   export let blockReindexing = false
+  export let clip = true
 
   export let backgroundColor = undefined
   export let paddingColor = undefined
@@ -129,9 +130,13 @@
   {preserveAspectRatio}
   bind:this={rootNode}
 >
-  <clipPath id={`clip-${graphicId}`}>
-    <rect {...clipPropsPadding} />
-  </clipPath>
+  {#if clip}
+
+    <clipPath id={`clip-${graphicId}`}>
+      <rect {...clipPropsPadding} />
+    </clipPath>
+
+  {/if}
 
   <defs>
     <mask id={`${graphicId}-mask-padding-bg`}>

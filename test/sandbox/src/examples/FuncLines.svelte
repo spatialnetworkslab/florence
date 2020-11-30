@@ -1,6 +1,6 @@
-<script>
+<!-- <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, FuncLine, createPanHandler, createZoomHandler } from '../../../../src/'
+  import { Graphic, Section, FuncLine, createPanHandler, createZoomHandler, XAxis, YAxis } from '../../../../src/'
 
   let funcName = 'sin'
 
@@ -45,9 +45,9 @@
     <option value="power2">Power 2</option>
   </select>
     
-</div>
+</div> -->
 
-<Graphic width={500} height={500}>
+<!-- <Graphic width={500} height={500}>
 
   <Section
     x1={50} x2={450}
@@ -70,5 +70,25 @@
     />
   
   </Section>
+
+</Graphic> -->
+
+<script>
+  import { Graphic, FuncLine, XAxis, YAxis } from '../../../../src/'
+</script>
+
+<Graphic 
+  width={500}
+  height={500}
+  scaleX={[0, 10]}
+  scaleY={[0, 10]}
+  padding={20}
+  flipY
+>
+
+  <FuncLine func={x => Math.exp(x / 4)} stroke={'red'} />
+
+  <XAxis />
+  <YAxis />
 
 </Graphic>

@@ -6,10 +6,8 @@ import babel from 'rollup-plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 import config from 'sapper/config/rollup.js'
 import sveltePreprocess from 'svelte-preprocess'
-import postcss from 'rollup-plugin-postcss'
 import pkg from './package.json'
 import { sveltex } from './sveltex-config/sveltex.config.js'
-import css from 'rollup-plugin-css-only'
 
 const mode = process.env.NODE_ENV
 const dev = mode === 'development'
@@ -31,8 +29,10 @@ export default {
       }),
       svelte({
         extensions: ['.svelte', '.sveltex'],
-        dev,
-        hydratable: true,
+        compilerOptions: {
+          dev,
+          hydratable: true,
+        },
         emitCss: true,
         preprocess: [
           sveltex({ extension: '.sveltex' }),
@@ -45,9 +45,6 @@ export default {
       }),
 
       commonjs(),
-
-      // Needed for codemirror css
-      css({ output: 'static/css/vendor.css' }),
 
       legacy && babel({
         extensions: ['.js', '.mjs', '.html', '.svelte', 'sveltex'],
@@ -84,17 +81,19 @@ export default {
       }),
       svelte({
         extensions: ['.svelte', '.sveltex'],
-        generate: 'ssr',
-        dev,
+        compilerOptions: {
+          dev,
+          generate: 'ssr',
+        },
         preprocess: [
           sveltex({ extension: '.sveltex' }),
           preprocess
         ]
       }),
-      postcss({
-        minimize: true,
-        extract: './static/css/index.css'
-      }),
+      // postcss({
+      //   minimize: true,
+      //   extract: './static/css/index.css'
+      // }),
       resolve({
         dedupe
       }),
