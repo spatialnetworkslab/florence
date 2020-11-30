@@ -1,22 +1,23 @@
 <script>
-import { Graphic, Point, XAxis, YAxis } from '@snlab/florence'
-import { scaleLinear } from 'd3-scale'
+  import { Graphic, Section, PolygonLayer, createGeoScales } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
+  import { scaleOrdinal } from 'd3-scale'
+  import { schemeCategory10 } from 'd3-scale-chromatic'
+  import { provincesGeoJSON } from './provinces.js'
 
-const scaleX = scaleLinear().domain([20000, 40000])
-const scaleY = scaleLinear().domain([5000, 6000])
+  const provinces = new DataContainer(provincesGeoJSON)
+  const geoScales = createGeoScales(provinces.bbox())
+
+  const colorScale = scaleOrdinal()
+    .domain(provinces.domain('statcode'))
+    .range(schemeCategory10)
 </script>
 
-<Graphic
-  width={500} height={500}
-  padding={40}
-  backgroundColor={'gray'} 
-  {scaleX} {scaleY}
->
-    <Point 
-        x={35000}
-        y={5500}
-    />
-    
-    <XAxis />
-    <YAxis />
+<Graphic width={500} height={500} {...geoScales} flipY>
+  <PolygonLayer
+    geometry={provinces.column('$geometry')}
+    fill={provinces.map('statcode', colorScale)}
+    stroke={'white'}
+    strokeWidth={1}
+  />
 </Graphic>

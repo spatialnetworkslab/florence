@@ -1,22 +1,23 @@
 <script>
-import { Graphic, Point, XAxis, YAxis } from '@snlab/florence'
-import { scaleLinear } from 'd3-scale'
+  import { Graphic, PolygonLayer, createGeoScales } from '@snlab/florence'
 
-const scaleX = scaleLinear().domain([20000, 40000])
-const scaleY = scaleLinear().domain([5000, 6000])
+  const triangles = [
+    { type: 'Polygon', coordinates: [[[0, 0], [5, 2.5], [0, 5], [0, 0]]] },
+    { type: 'Polygon', coordinates: [[[10, 0], [5, 2.5], [10, 5], [10, 0]]] }
+  ]
+
+  const bbox = {
+    x: [0, 10],
+    y: [0, 5]
+  }
+
+  const geoScales = createGeoScales(bbox)
 </script>
 
 <Graphic
   width={500} height={500}
-  padding={40}
-  backgroundColor={'gray'} 
-  {scaleX} {scaleY}
+  backgroundColor={'grey'} 
+  {...geoScales}
 >
-    <Point 
-        x={35000}
-        y={5500}
-    />
-    
-    <XAxis />
-    <YAxis />
+  <PolygonLayer geometry={triangles} fill={['red', 'green']} />
 </Graphic>

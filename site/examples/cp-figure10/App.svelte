@@ -3,7 +3,7 @@
   https://twitter.com/datagistips/status/1248508331263545344?s=20
 -->
 <script>
-  import { scaleLinear, scaleTime } from "d3-scale";
+  import { scaleLinear, scaleTime } from 'd3-scale'
 
   import {
     Graphic,
@@ -14,32 +14,32 @@
     Point,
     Label,
     createGeoScales
-  } from "@snlab/florence";
-  import { loadPolygons, loadCSV } from "./utils.js";
+  } from '@snlab/florence'
+  import { loadPolygons, loadCSV } from './utils.js'
 
   // instead of a sudden change in the date, we set things up to tween/transition nicely
   // see: https://svelte.dev/tutorial/tweened
   // note that currentDate is a store (https://svelte.dev/docs#svelte_store)
-  import { tweened } from "svelte/motion";
-  import { linear } from "svelte/easing";
+  import { tweened } from 'svelte/motion'
+  import { linear } from 'svelte/easing'
 
-  const currentDate = tweened(new Date("2020-02-28"), {
+  const currentDate = tweened(new Date('2020-02-28'), {
     duration: 1000,
     easing: linear
-  });
+  })
 
   // we will load data asychronously so we need a variable to keep track of this
   // otherwise we will attempt to draw a graph without the data loaded
   // done is set to true once data is loaded, and only then we will start drawing
-  let done;
+  let done
 
   // data vars
-  let provinces;
-  let cases;
-  let casesPerProvince;
-  let myGeoScale;
-  let casesPerProvinceFiltered;
-  let casesPerProvinceLastRow;
+  let provinces
+  let cases
+  let casesPerProvince
+  let geoScales
+  let casesPerProvinceFiltered
+  let casesPerProvinceLastRow
 
   // we load the province and case data in two separate functions
   // data fetching is asynchronous is javascript
@@ -50,25 +50,25 @@
 
   async function getData() {
     [provinces, cases] = await Promise.all([
-      loadPolygons("data/provinces.geojson"),
-      loadCSV("data/cases.csv")
+      loadPolygons('data/provinces.geojson'),
+      loadCSV('data/cases.csv')
     ]);
 
     // group data per province so it's easier to access
-    casesPerProvince = cases.groupBy("province");
+    casesPerProvince = cases.groupBy('province')
 
     // add x/y centroid to the case data for starting point of line
-    casesPerProvince.join(provinces.select(["statnaam", "x", "y"]), {
-      by: ["province", "statnaam"]
-    });
+    casesPerProvince.join(provinces.select(['statnaam', 'x', 'y']), {
+      by: ['province', 'statnaam']
+    })
 
-    // create a geo-scale
-    myGeoScale = createGeoScales(provinces.domain("$geometry"));
-    done = true; // this will trigger the actual drawing
+    // create geo-scales
+    geoScales = createGeoScales(provinces.domain('$geometry'))
+    done = true // this will trigger the actual drawing
   }
 
   // go get the data
-  getData();
+  getData()
 
   // when the currentDate changes, we want to filter our chart data accordingly
   $: {
@@ -77,30 +77,30 @@
         .rows()
         .map(province =>
           province.$grouped.filter(row => row.date <= $currentDate)
-        );
+        )
       casesPerProvinceLastRow = casesPerProvinceFiltered.map(province => {
-        const rows = province.rows();
-        return rows[rows.length - 1];
-      });
+        const rows = province.rows()
+        return rows[rows.length - 1]
+      })
     }
   }
 
-  function playReplay() {
-    if ($currentDate > new Date("2020-04-11")) {
-      currentDate.set(new Date("2020-02-28"));
+  function playReplay () {
+    if ($currentDate > new Date('2020-04-11')) {
+      currentDate.set(new Date('2020-02-28'))
     } else {
-      currentDate.set(new Date("2020-04-12"));
+      currentDate.set(new Date('2020-04-12'))
     }
   }
 </script>
 
 <div class="graph">
 
-  <label>Current date is {$currentDate.toLocaleDateString("en-GB")}</label>
+  <label>Current date is {$currentDate.toLocaleDateString('en-GB')}</label>
   <button
     on:click={playReplay}
     type="button">
-    {'play animation'}
+    Play animation
   </button>
   
   <div class="main-chart">
@@ -110,7 +110,7 @@
       <Graphic width={500} height={600}>
 
         <!-- main section with geographic scales -->
-        <Section padding={50} {...myGeoScale} flipY>
+        <Section padding={50} {...geoScales} flipY>
 
           <!-- one polygon for each province -->
           <PolygonLayer 
