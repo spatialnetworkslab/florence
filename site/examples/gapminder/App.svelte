@@ -24,7 +24,7 @@
       .unknown('black')
 
     ready = true
-  })
+  })()
 
   setInterval(() => {
     if (ready && currentYear < 2009) {
