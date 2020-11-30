@@ -30,6 +30,7 @@
   export let zoomIdentity = undefined
   export let transformation = undefined
   export let blockReindexing = false
+  export let clip = true
 
   // Aesthetics
   export let backgroundColor = undefined
@@ -171,9 +172,13 @@
 </script>
 
 <defs>
-  <clipPath id={`clip-${sectionId}`}>
-    <rect {...clipPropsPadding} />
-  </clipPath>
+  {#if clip}
+
+    <clipPath id={`clip-${sectionId}`}>
+      <rect {...clipPropsPadding} />
+    </clipPath>
+
+  {/if}
 
   <mask id={`mask-${sectionId}-padding-bg`}>
     <rect {...clipPropsNoPadding} fill="white" />
