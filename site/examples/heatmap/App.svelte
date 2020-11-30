@@ -19,9 +19,8 @@
         count: { 'IMDB Rating': 'count' }
       })
 
-    scaleColor = scaleSequential()
+    scaleColor = scaleSequential(interpolateYlGnBu)
       .domain(dataContainer.domain('count'))
-      .range(interpolateYlGnBu)
 
     ready = true
   })()
