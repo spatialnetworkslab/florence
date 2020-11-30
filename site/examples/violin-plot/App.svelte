@@ -6,6 +6,8 @@
   import DataContainer from '@snlab/florence-datacontainer'
   import { kernelDensityEstimator, kernelEpanechnikov } from './kernelDensity.js'
 
+  const sepalLengthDomain = [3.5, 8]
+
   let dataContainer, scaleSpecies, scaleDimension
   let densitiesX, densityY, densityDomain, ready
 
@@ -14,7 +16,7 @@
       .groupBy('Species')
 
     scaleSpecies = scaleBand().domain(dataContainer.domain('Species')).padding(0.05)
-    scaleDimension = scaleLinear().domain([3.5, 8])
+    scaleDimension = scaleLinear().domain(sepalLengthDomain)
 
     densityY = scaleDimension.ticks(50)
     
@@ -31,7 +33,7 @@
       .flat()
       .reduce((a, b) => Math.max(a, b))
 
-    densityDomain [-maxDensity, maxDensity]
+    densityDomain = [-maxDensity, maxDensity]
 
     ready = true
   })()
@@ -43,6 +45,7 @@
     width={500}
     height={500}
     scaleX={scaleSpecies}
+    scaleY={scaleDimension}
     flipY
     padding={{ top: 20, right: 20, bottom: 30, left: 30 }}
   >
@@ -69,6 +72,9 @@
       </Section>
 
     {/each}
+
+    <XAxis baseLine={false} />
+    <YAxis baseLine={false} />
 
   </Graphic>
 
