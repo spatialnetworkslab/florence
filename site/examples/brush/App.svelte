@@ -69,8 +69,8 @@
   $: {
     let keys = Object.keys(selectedPoints)
     if (keys.length > 0) {
-      averageA = keys.map(key => data.row(key).a).reduce((a, b) => a + b) / keys.length
-      averageB = keys.map(key => data.row(key).b).reduce((a, b) => a + b) / keys.length
+      averageA = keys.map(key => data.row({ key }).a).reduce((a, b) => a + b) / keys.length
+      averageB = keys.map(key => data.row({ key }).b).reduce((a, b) => a + b) / keys.length
     } else {
       averageA = undefined
       averageB = undefined
