@@ -58,7 +58,6 @@
     "space-separated-tokens": "^1.1.5",
     "svelte": "3.29.7",
     "svelte-preprocess": "^4.6.1",
-    "sync-rpc": "^1.3.6",
     "tailwindcss": "^2.0.1",
     "topojson": "^3.0.2",
     "unified": "^9.2.0",
