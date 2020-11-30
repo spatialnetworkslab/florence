@@ -32,3 +32,17 @@
   <ImageWithLinkAndCaption caption="Global Temperature Trends" linkURL="examples/scatterplot-temp-trends" />
   <ImageWithLinkAndCaption caption="Linked Views" linkURL="examples/linked-views" />
 </div>
+
+## Cartographic Perspectives Figures
+<div class="grid grid-cols-3 gap-2">
+  <ImageWithLinkAndCaption caption="Figure 2" linkURL="examples/cp-figure2" />
+  <ImageWithLinkAndCaption caption="Figure 3" linkURL="examples/cp-figure3" />
+  <ImageWithLinkAndCaption caption="Figure 4" linkURL="examples/cp-figure4" />
+  <ImageWithLinkAndCaption caption="Figure 5" linkURL="examples/cp-figure5" />
+  <ImageWithLinkAndCaption caption="Figure 6" linkURL="examples/cp-figure6" />
+  <ImageWithLinkAndCaption caption="Figure 7" linkURL="examples/cp-figure7" />
+  <ImageWithLinkAndCaption caption="Figure 8a" linkURL="examples/cp-figure8a" />
+  <ImageWithLinkAndCaption caption="Figure 8b" linkURL="examples/cp-figure8b" />
+  <ImageWithLinkAndCaption caption="Figure 9" linkURL="examples/cp-figure9" />
+  <ImageWithLinkAndCaption caption="Figure 10" linkURL="examples/cp-figure10" />
+</div>
