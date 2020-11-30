@@ -5,18 +5,23 @@
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  const COLORS = ['#d3d3d3', '#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
+  const COLORS = ['#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
 
   let dataContainer, geoScales, priceColorScale, ready
 
   (async () => {
     const geojson = await json('/data/plan_areas_choropleth.json')
-    dataContainer = new DataContainer(geojson).dropNA('resale_price_sqm')
-    geoScales = createGeoScales(data.domain('$geometry'))
+    dataContainer = new DataContainer(geojson).mutate({ 
+      resale_price_sqm: r => r.resale_price_sqm === null ? undefined : r.resale_price_sqm
+    })
+    geoScales = createGeoScales(dataContainer.bbox())
 
-    priceColorScale = dataContainer.classify({
-      column: 'resale_price_sqm', method: 'Jenks', numClasses: COLORS.length
-    }, COLORS)
+    priceColorScale = dataContainer
+      .dropNA('resale_price_sqm')
+      .classify({
+        column: 'resale_price_sqm', method: 'EqualInterval', numClasses: 5
+      }, COLORS)
+      .unknown('#d3d3d3')
 
     ready = true
   })()
@@ -24,7 +29,13 @@
 
 {#if ready}
 
-  <Graphic>
+  <Graphic
+    width={500}
+    height={500}
+    {...geoScales}
+    flipY
+    padding={30}
+  >
 
     <Title
       title={'Mean resale price per m2 (S$)'} 
@@ -48,6 +59,7 @@
       hjust={'right'}
       flipLabels
       usePadding={true}
+      format={Math.floor}
     />
 
   </Graphic>
