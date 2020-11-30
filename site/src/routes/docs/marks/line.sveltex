@@ -1,69 +1,81 @@
 # Line
-The `Line` mark plots a line element by taking one or more x/y coordinate pairs. In this way, it can also be used as a rule mark.
+
+The `Line` mark plots a line element by taking two or more x/y coordinate pairs. As such, it can also be used as a [rule](https://vega.github.io/vega-lite/docs/rule.html) mark. Use cases include line charts and network visualizations.
+
+```markup
+<script>
+  import { Graphic, Line, LineLayer, XAxis, YAxis } from '@snlab/florence'
+</script>
+
+<Graphic width={200} height={200} scaleX={[0, 10]} scaleY={[0, 10]} padding={20}>
+
+  <Line
+    x={[0, 2.5, 2.5]}
+    y={[0, 2.5, 0]}
+    stroke={'red'}
+  />
+
+  <LineLayer 
+    x={[[6, 4], [10, 7.5, 7.5]]} 
+    y={[[4, 6], [10, 7.5, 10]]}
+    stroke={['blue', 'green']}
+  />
+
+  <XAxis />
+  <YAxis />
+
+</Graphic>
+```
 
 ```js exec
 import SimpleExample from './examples/_LineSimple.svelte'
 ```
-<SimpleExample />
 
-```markup
-<script>
- const x = [
-    new Date(2002, 0, 1),
-    new Date(2004, 0, 1),
-    new Date(2006, 0, 1)
-  ]
-  const y = [20, 40, 10]
-</script>
-<Graphic>
-  <Line {x} {y} />
-</Graphic>
-```
+<SimpleExample />
 
 To render the Line mark, you will need to provide the `x` and `y` or the `geometry` props. The two uses are mutually exclusive.
 
-`x` and `y` have to be an array of `Number`, `String` or `Date` values, depending on the scale used in the parent Section. `geometry` accepts GeoJSON [LineString](https://tools.ietf.org/html/rfc7946#section-3.1.4) objects only. Values will be scaled according to the `scaleX` and `scaleY` of the parent Section. Alternatively, a function can be supplied that returns a coordinate in the viewBox coordinate system directly, bypassing any active scales.
-
-To create plots with multiple lines, we can either loop over the dataset (with `{#each}`) to generate one `Line` per iteration, or use the `LineLayer`. The `LineLayer` shares all of the `Line`'s props, but takes an array of arrays per prop instead of an array.
-
-```markup
-<Graphic>
-  <!-- this denotes a line segment -->
-  <Line
-    x={[🍉, 🍐]}
-    y={[🍊, 🍇]}
-  />
-</Graphic>
-
-<Graphic>
-  <!-- this denotes 2 line segments -->
-  <LineLayer
-    x={[[🍉, 🍐], [🍉, 🍐]]}
-    y={[[🍊, 🍇], [🍊, 🍇]]}
-  />
-</Graphic>
-```
-
 ## Properties
+
 ### Positioning
 
-| Prop     | Required | Types              | Default   | Description                        | Unit(s)                                                                                   |
-| -------- | -------- | ------------------ | --------- | ---------------------------------- | ----------------------------------------------------------------------------------------- |
-| x        | depends  | [Array, Function]  | undefined | X coordinates of line              | Data value to be scaled by Section's scaleX. If Function then viewBox coordinates.        |
-| y        | depends  | [Array, Function]  | undefined | Y coordinates of line              | Data value to be scaled by Section's scaleY. If Function then viewBox coordinates.        |
-| geometry | depends  | [Object, Function] | undefined | GeoJSON object of type LineString  | Data value to be scaled by Section's scaleX/scaleY. If Function then viewBox coordinates. |
+|   Name   |                 Required                  |                                       Type(s)                                        |   Default   |                      Unit(s)(s)                      |
+| -------- | ----------------------------------------- | ------------------------------------------------------------------------------------ | ----------- | ---------------------------------------------------- |
+| x        | `if (geometry === undefined)`             | `Number[]`, `String[]`, `Date[]`, `Function`                                         | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y        | `if (geometry === undefined)`             | `Number[]`, `String[]`, `Date[]`, `Function`                                         | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| geometry | `if (x === undefined && y === undefined)` | Array of GeoJSON [LineString](https://tools.ietf.org/html/rfc7946#section-3.1.2) or [MultiLineString](https://tools.ietf.org/html/rfc7946#section-3.1.5) features | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 
+`x` and `y` have to be arrays of `Number`s, `String`s or `Date`s, depending on the scale used in the parent [Section](/docs/core/section). `geometry` accepts arrays of GeoJSON [LineString](https://tools.ietf.org/html/rfc7946#section-3.1.4) and [MultiLineString](https://tools.ietf.org/html/rfc7946#section-3.1.5) objects only. For all positioning props,  a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `LineLayer`, all positioning props will be supplied as `Array`s of `Array`s of `Number`s, `String`s and `Date`s, or `Function`s that return scaled coordinates- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
 
-### Other aesthetics
-| Prop          | Required | Types  | Default   | Description             | Unit(s)                    |
-| ------------- | -------- | ------ | --------- | ----------------------- | -------------------------- |
-| stroke        | false    | String | '#000000' | Stroke color            | Named color, hex, rgb, hsl |
-| strokeWidth   | false    | Number | 3         | Stroke width            | Screen pixels              |
-| strokeOpacity | false    | Number | undefined | Stroke opacity          | Number between 0 and 1     |
-| fill          | false    | String | 'none'    | Fill color (under line) | Named color, hex, rgb, hsl |
-| fillOpacity   | false    | Number | undefined | Fill opacity            | Number between 0 and 1     |
-| opacity       | false    | Number | 1         | Mark opacity            | Number between 0 and 1     |
+### Aesthetics
 
-These are analogous to the CSS properties of the same names.
+|    Name     | Required | Type(s)  |   Default   |           Unit(s)            |
+| ----------- | -------- | -------- | ----------- | ---------------------------- |
+| stroke      | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
+| strokeWidth | `false`  | `Number` | `3`         | Pixel                        |
+| opacity     | `false`  | `Number` | `1`         | Number between 0 and 1       |
+
+These aesthetic props are similar to attributes of the SVG [line](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/line) element. The analogous `line` attributes are shown below in brackets:
+
+- `stroke` refers to the color of the line
+- `strokeWidth` refers to the width of the line
+- `strokeOpacity` refers to the transparency of the line, `0` being fully transparent
+
+### Transitions
+
+TODO
+
+### Interactions
+
+TODO
+
+### Other
+
+TODO
 
 ## Examples
+
+The `Line` and `LineLayer` can be seen in action in the following examples:
+
+- [Candlestick Chart](/examples/candlestick)
+- [Global Temperature Trends](/examples/scatterplot-temp-trends)

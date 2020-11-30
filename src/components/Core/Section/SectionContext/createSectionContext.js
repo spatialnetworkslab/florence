@@ -4,6 +4,8 @@ import { createScales, createFinalScales } from './createScales.js'
 import { attachTransformations } from './attachTransformations.js'
 
 export function createSectionContext (sectionData) {
+  sectionData.zoomIdentity = parseZoomIdentity(sectionData.zoomIdentity)
+
   const padding = parsePadding(sectionData.padding)
   const ranges = getRanges(sectionData)
   const finalRanges = getFinalRanges(sectionData, ranges, padding)
@@ -22,6 +24,10 @@ export function createSectionContext (sectionData) {
   attachTransformations(sectionContext)
 
   return sectionContext
+}
+
+function parseZoomIdentity (zoomIdentity) {
+  return Object.assign({ x: 0, y: 0, kx: 1, ky: 1 }, zoomIdentity)
 }
 
 function constructSectionContext (

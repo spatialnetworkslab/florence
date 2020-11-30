@@ -1,33 +1,31 @@
 <script>
-  import { Graphic, PolygonLayer, createGeoScales } from '@snlab/florence'
-  import DataContainer from '@snlab/florence-datacontainer'
   import { json, csv } from 'd3-fetch'
   import { feature } from 'topojson'
-  import { scaleQuantize } from 'd3-scale'
   import { schemeBlues } from 'd3-scale-chromatic'
+  import { Graphic, PolygonLayer, createGeoScales } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
 
-  let geometries
-  let geoScales
+  let dataContainer, geoScales, populationScale, ready
+  
+  (async () => {
+    const topojson = await json('/data/us-states.topojson')
+    dataContainer = new DataContainer(feature(topojson, topojson.objects.states))
 
-  json('/data/us-states.topojson').then(topojson => {
-    const features = feature(topojson, topojson.objects.states)
-    geometries = new DataContainer(features)
-    geoScales = createGeoScales(geometries.domain('$geometry'))
-  })
+    geoScales = createGeoScales(dataContainer.bbox())
 
-  let population
-  let populationScale = scaleQuantize()
-    .domain([0, 40000000])
-    .range(schemeBlues[9])
+    const population = await csv('/data/us-states-population.csv')
+    dataContainer.addColumn('population', population.map(row => +row.population))
 
-  csv('/data/us-states-population.csv').then(csv => {
-    population = csv.map(row => +row.population)
-  })
+    populationScale = dataContainer.classify({
+      column: 'population', method: 'Jenks', numClasses: 6
+    }, schemeBlues[6])
 
-  $: done = geometries && population
+    ready = true
+  })()
 </script>
 
-{#if done}
+{#if ready}
+
   <Graphic 
     width={500}
     height={500}
@@ -35,11 +33,12 @@
   >
 
     <PolygonLayer 
-      geometry={geometries.column('$geometry')}
-      fill={population.map(populationScale)}
-      stroke="grey"
+      geometry={dataContainer.column('$geometry')}
+      fill={dataContainer.map('population', populationScale)}
+      stroke={'grey'}
       strokeWidth={0.5}
     />
 
   </Graphic>
+
 {/if}

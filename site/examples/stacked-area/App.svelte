@@ -1,97 +1,57 @@
 <script>
-  import { scaleLinear, scaleUtc, scaleOrdinal } from 'd3-scale';
-  import { schemeCategory10 } from 'd3-scale-chromatic';
-  import { autoType } from 'd3-dsv';
-  import { csv } from 'd3-fetch';
-  import { Graphic, Section, Area, XAxis, YAxis } from '@snlab/florence';
-  import DataContainer from '@snlab/florence-datacontainer';
+  import { scaleLinear, scaleUtc, scaleOrdinal } from 'd3-scale'
+  import { schemeCategory10 } from 'd3-scale-chromatic'
+  import { autoType } from 'd3-dsv'
+  import { csv } from 'd3-fetch'
+  import { Graphic, AreaLayer, XAxis, YAxis } from '@snlab/florence'
+  import DataContainer from '@snlab/florene-datacontainer'
 
-  const padding = { top: 20, right: 20, bottom: 30, left: 40 };
+  let dataContainer, industries, scaleColor, ready
 
-  // set to true once data is loaded
-  let done;
-  let parsedData;
-  csv(
-    '/data/unemployment.csv',
-    autoType
-  ).then(d => {
-    parsedData = d;
-    done = true;
-  });
+  (async () => {
+    dataContainer = new DataContainer(await csv('/data/unemployment.csv', autoType))
+    
+    industries = dataContainer.columnNames().filter(c => !['date', '$key'].includes(c))
+    
+    dataContainer = dataContainer.rowCumsum(industries, { asInterval: true })
 
-  let columnNames;
-  let dataContainer, rowCumSum;
-  let unemploymentDomain, dateDomain;
-  let scaleDate, scaleUnemployment, scaleColor;
+    scaleColor = scaleOrdinal()
+        .domain(industries)
+        .range(schemeCategory10)
 
-  $: {
-    if (done) {
-      columnNames = parsedData.columns.splice(1);
-
-      dataContainer = new DataContainer(parsedData);
-
-      rowCumSum = dataContainer.rowCumsum(
-        [
-          'Wholesale and Retail Trade',
-          'Manufacturing',
-          'Leisure and hospitality',
-          'Business services',
-          'Construction',
-          'Education and Health',
-          'Government',
-          'Finance',
-          'Self-employed',
-          'Other',
-          'Transportation and Utilities',
-          'Information',
-          'Agriculture',
-          'Mining and Extraction'
-        ],
-        { asInterval: 'true' }
-      );
-
-      dateDomain = rowCumSum.domain('date');
-      unemploymentDomain = rowCumSum.domain('Mining and Extraction');
-
-      scaleDate = scaleUtc().domain(dateDomain);
-      scaleUnemployment = scaleLinear().domain([0, unemploymentDomain[1]]);
-      scaleColor = scaleOrdinal()
-        .domain(parsedData.columns.slice(1))
-        .range(schemeCategory10);
-    }
-  }
+    ready = true
+  })()
 </script>
 
-<Graphic width={700} height={500}>
+{#if ready}
 
-  {#if done}
-    <Section
-      scaleX={scaleDate}
-      scaleY={scaleUnemployment}
-      {padding}
-      flipY
-    >
-      {#each columnNames as c}
-        <Area
-          x1={rowCumSum.column('date')}
-          y1={rowCumSum.column(c).map(d => d[0])}
-          y2={rowCumSum.column(c).map(d => d[1])}
-          fill={scaleColor(c)}
-        />
-      {/each}
-      
-      <XAxis baseLine={false} />
+  <Graphic
+    width={500}
+    height={500}
+    scaleX={scaleUtc().domain(dataContainer.domain('date'))}
+    scaleY={scaleLinear().domain([0, dataContainer.max(industries[industries.length - 1])])}
+    padding={{ top: 20, right: 20, bottom: 30, left: 40 }}
+    flipY
+  >
 
-      <YAxis
-        baseLine={false}
-        title={'Unemployment'}
-        titleVjust={'top'}
-        titleHjust={0.05}
-        titleRotation={0}
-        titleFontWeight={'bold'}
-      />
+    <AreaLayer 
+      x1={industries.map(_ => dataContainer.column('date'))}
+      y1={industries.map(industry => dataContainer.map(industry, d => d[0]))}
+      y2={industries.map(industry => dataContainer.map(industry, d => d[1]))}
+      fill={industries.map(scaleColor)}
+    />
 
-    </Section>
-  {/if} 
+    <XAxis baseLine={false} />
 
-</Graphic>
+    <YAxis
+      baseLine={false}
+      title={'Unemployment'}
+      titleVjust={'top'}
+      titleHjust={0.05}
+      titleRotation={0}
+      titleFontWeight={'bold'}
+    />
+  
+  </Graphic>
+
+{/if}

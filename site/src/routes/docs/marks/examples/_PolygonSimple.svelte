@@ -1,28 +1,22 @@
 <script>
-  import {
-    Graphic,
-    Section,
-    Polygon,
-    XAxis,
-    YAxis,
-  } from '@snlab/florence'
-  import { scaleLinear, scaleBand } from 'd3-scale'
-  const width = 200
-  const height = 200
+  import { Graphic, Polygon, PolygonLayer, XAxis, YAxis } from '@snlab/florence'
 </script>
 
-<Graphic {width} {height}>
-  <Section
-    scaleX={scaleLinear().domain([0, 100])}
-    scaleY={scaleLinear().domain([0, 100])}
-    flipY
-    padding={25}
-  >
-     <Polygon
-      x={[20, 50, 80, 20]}
-      y={[70, 21, 70, 70]} 
-     />
-    <XAxis tickCount={5}/>
-    <YAxis tickCount={5}/>
-  </Section>
+<Graphic width={200} height={200} scaleX={[0, 10]} scaleY={[0, 10]} padding={20}>
+
+  <Polygon
+    x={[0, 2.5, 2.5, 0]}
+    y={[0, 2.5, 0, 0]}
+    fill={'red'}
+  />
+
+  <PolygonLayer 
+    x={[[5, 7, 5, 3, 5], [10, 7.5, 7.5, 10]]} 
+    y={[[7, 5, 3, 5, 7], [10, 7.5, 10, 10]]}
+    fill={['blue', 'green']}
+  />
+
+  <XAxis />
+  <YAxis />
+
 </Graphic>

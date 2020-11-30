@@ -1,72 +1,129 @@
 # Rectangle
-The `Rectangle` mark is used to plot rectangular elements.
 
-```js exec
-import SimpleBar from "./examples/_RectangleSimple.svelte";
-```
-<SimpleBar/>
+The `Rectangle` mark is used to plot rectangular elements. Use cases include bar charts and heatmaps.
 
 ```markup
 <script>
- const x = [2002, 2004, 2006]
- const y = [20, 40, 10]
+  import { Graphic, Rectangle, RectangleLayer, XAxis, YAxis } from '@snlab/florence'
+  import { scaleLinear, scaleBand } from 'd3-scale'
+
+  const x = [2002, 2004, 2006]
+  const y = [20, 40, 10]
+
+  const scaleX = scaleBand().domain(x).padding(0.5)
+  const scaleY = scaleLinear().domain([0, Math.max(...y)])
 </script>
-<Graphic>
-  <RectangleLayer
-      x1={x}
-      x2={({ scaleX }) => x.map(value => scaleX(value) + scaleX.bandwidth())}
-      y1={y}
-      y2={0}
+
+<Graphic width={200} height={200} {scaleX} {scaleY} flipY padding={20}>
+
+  <Rectangle 
+    x1={2002}
+    x2={({ scaleX }) => scaleX(2006) + scaleX.bandwidth()}
+    y1={0}
+    y2={20}
+    opacity={0.3}
   />
+
+  <RectangleLayer
+    x1={x}
+    x2={({ scaleX }) => x.map(value => scaleX(value) + scaleX.bandwidth())}
+    y1={0}
+    y2={y}
+  />
+  
+  <XAxis />
+  <YAxis />
+  
 </Graphic>
 ```
 
-The `Rectangle` mark draws a rectangle with four corners defined by the `x1`, `x2`, `y1` and `y2` props. In many cases (i.e. bar charts), this involves using the `bandwidth` of [the band scale](https://github.com/d3/d3-scale#band-scales).
-
-To create multiple rectangles, we can either loop over the dataset (with `{#each}`) to generate one `Rectangle` per iteration, or use the `RectangleLayer`. The `RectangleLayer` shares all of the `Rectangle`'s props, but takes an array per prop instead of a single value.
-
-```markup
-<Graphic>
-  <Rectangle
-    x1={🥝}
-    x2={🍇}
-    y1={🍋}
-    y2={🍉}
-  />
-</Graphic>
-
-<Graphic>
-  <!-- this denotes 3 rectangles -->
-  <RectangleLayer
-    x1={[🥝, 🥝, 🥝]}
-    x2={[🍇, 🍇, 🍇]}
-    y1={[🍋, 🍋, 🍋]}
-    y2={[🍉, 🍉, 🍉]}
-  />
-</Graphic>
+```js exec
+import SimpleExample from './examples/_RectangleSimple.svelte'
 ```
+
+<SimpleExample />
 
 ## Properties
+
 ### Positioning
-| Prop | Required | Types                                | Default   | Description          | Unit(s)                                                                            |
-| ---- | -------- | ------------------------------------ | --------- | -------------------- | ---------------------------------------------------------------------------------- |
-| x1   | depends  | Number \| String \| Date \| Function | undefined | Left x coordinate    | Data value to be scaled by Section's scaleX. If Function then viewBox coordinates. |
-| x2   | depends  | Number \| String \| Date \| Function | undefined | Right x coordinate   | Data value to be scaled by Section's scaleX. If Function then viewBox coordinates. |
-| y1   | depends  | Number \| String \| Date \| Function | undefined | Bottom y coordinate  | Data value to be scaled by Section's scaleY. If Function then viewBox coordinates. |
-| y2   | depends  | Number \| String \| Date \| Function | undefined | Top y coordinate     | Data value to be scaled by Section's scaleY. If Function then viewBox coordinates. |
 
+| Prop |        Required         |                 Types                  |   Default   |                       Unit(s)                        |
+| ---- | ----------------------- | -------------------------------------- | ----------- | ---------------------------------------------------- |
+| x1   | `if (x2 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| x2   | `if (x1 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y1   | `if (y2 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y2   | `if (y1 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 
-### Other aesthetics
+The `Rectangle` mark draws a rectangle with four corners defined by the `x1`, `x2`, `y1` and `y2` props. In many cases (i.e. bar charts), this involves using the `bandwidth` of a [band scale](https://github.com/d3/d3-scale#band-scales) as shown in the example above- see the [local coordinates](/docs/concepts/local-coordinates) documentation for a more in-depth explanation of this syntax. If `x` and/or `y` coordinates are left undefined, the `Rectangle` will inherit the respective domains from its parent `Graphic` or `Section`:
 
-| Prop          | Required | Types  | Default   | Description                                                                                     | Unit(s)                    |
-| ------------- | -------- | ------ | --------- | ----------------------------------------------------------------------------------------------- | -------------------------- |
-| stroke        | false    | String | 'none'    | Stroke color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke)           | Named color, hex, rgb, hsl |
-| strokeWidth   | false    | Number | 0         | Stroke width [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width)     | Screen pixel               |
-| strokeOpacity | false    | Number | undefined | Stroke opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-opacity) | Number between 0 to 1      |
-| fill          | false    | String | '#000000' | Fill color [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill)               | Named color, hex, rgb, hsl |
-| fillOpacity   | false    | Number | undefined | Fill opacity [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity)     | Number between 0 and 1     |
-| opacity       | false    | Number | 1         | Mark opacity  [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/opacity)         | Number between 0 and 1     |
+```markup
+<script>
+  import { Graphic, Rectangle, XAxis, YAxis } from '@snlab/florence'
+</script>
 
-These are analogous to the CSS properties of the same names.
+<Graphic width={200} height={200} scaleX={[0, 10]} scaleY={[0, 10]} padding={20}>
+  
+  <Rectangle fill={'blue'} />
+  <Rectangle x1={4} x2={6} fill={'red'} />
+  <Rectangle y1={4} y2={6} fill={'green'} />
+
+  <XAxis />
+  <YAxis />
+
+</Graphic>
+```
+
+```js exec
+import RectangleInherit from './utils/_RectangleInherit.svelte'
+```
+
+<RectangleInherit />
+
+::: div callout
+As the 'required' column in the table above indicates, if you choose to use `x1`, you will also have to use `x2` (and vice versa). The same goes for `y1` and `y2`. 
+:::
+
+When using the `RectangleLayer`, all positioning props will be supplied as `Array`s of `Number`s, `String`s and `Date`s, or `Function`s that return `Array`s of scaled coordinates- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
+
+### Aesthetics
+
+|     Prop      | Required |  Types   |   Default   |           Unit(s)            |
+| ------------- | -------- | -------- | ----------- | ---------------------------- |
+| stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color |
+| strokeWidth   | `false`  | `Number` | `0`         | Pixel                        |
+| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 to 1        |
+| fill          | `false`  | `String` | `'#000000'` | Named hex, rgb or hsl color  |
+| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1       |
+| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1       |
+
+These aesthetic props are similar to attributes of the SVG [rect](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/rect) element. The analogous `rect` attributes are shown below in brackets:
+
+- `fill` refers to the color of the rectangle (`fill`)
+- `fillOpacity` refers to the transparency of the rectangle, `0` being fully transparent (`fill-opacity`)
+- `stroke` refers to the color of the rectangle's outline (`stroke`)
+- `strokeWidth` refers to the width of the rectangle's outline (`stroke-width`)
+- `strokeOpacity` refers to the transparency of the rectangle's outline, `0` being fully transparent (`stroke-opacity`)
+- `opacity` sets both the `strokeOpacity` and the `fillOpacity` (`opacity`)
+
+### Transitions
+
+TODO
+
+### Interactions
+
+TODO
+
+### Other
+
+TODO
 
 ## Examples
+
+The `Rectangle` and `RectangleLayer` can be seen in action in the following examples:
+
+- [Brush](/examples/brush)
+- [Donut](/examples/donut)
+- [Heatmap](/examples/heatmap)
+- [Linked views](/examples/linked-views)
+- [Population pyramid](/examples/population-pyramid)
+- [Stacked horizontal bars](/examples/stacked-horizontal-bars)

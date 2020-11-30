@@ -1,69 +1,70 @@
-<!-- adapted from https://vega.github.io/vega-lite/examples/isotype_bar_chart.html -->
 <script>
-  import { Graphic, Section, SymbolLayer, Label } from '@snlab/florence';
-  import DataContainer from '@snlab/florence-datacontainer';
-  import { scaleOrdinal, scaleBand, scalePoint } from 'd3-scale';
-  import FacetedSection from './FacetedSection.svelte';
-  import { coordsCattle, coordsPig, coordsSheep } from './animalCoords.js'
-  import { livestock } from './livestock.js'
+  import { scaleOrdinal, scaleBand, scalePoint } from 'd3-scale'
+  import { Graphic, Section, SymbolLayer, Label } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
+  import { cattleShape, pigShape, sheepShape } from './animalShapes.js'
+  import livestock from './livestock.js'
 
-  const dataContainer = new DataContainer(livestock);
-  const grouped = dataContainer.groupBy('country');
-  const countries = grouped.column('country');
+  const animals = ['cattle', 'pigs', 'sheep']
+  const dataContainer = new DataContainer(livestock)
+  const byCountry = dataContainer.groupBy('country')
 
-  // outer section scales
-  const countryDomain = dataContainer.domain('country');
-  const scaleCountry = scaleBand()
-    .domain(countryDomain)
-    .padding(0.01);
+  const countryScale = scaleBand()
+    .domain(dataContainer.domain('country'))
+    .padding(0.01)
 
-  // inner section scales
-  const scaleCol = scalePoint().domain([...Array(11).keys()].slice(1)).padding(0.8).round(true);
-  const scaleAnimal = scaleBand()
-    .domain(['cattle', 'pigs', 'sheep'])
-    .padding(0.5);
-  const scaleColor = scaleOrdinal()
-    .domain(['cattle', 'pigs', 'sheep'])
-    .range(['#684e32', 'pink', '#5b8395']);
+  const colScale = scalePoint()
+    .domain(dataContainer.domain('col'))
+    .padding(0.8)
+    .round(true)
 
-  // animal shapes
-  const scaleShape = scaleOrdinal()
-    .domain(['cattle', 'pigs', 'sheep'])
-    .range([coordsCattle, coordsPig, coordsSheep]);
+  const animalScale = scaleBand()
+    .domain(animals)
+    .padding(0.5)
 
-  function getShape(animal) {
-    return {
-      type: 'Polygon',
-      coordinates: scaleShape(animal)
-    };
-  }
+  const colorScale = scaleOrdinal()
+    .domain(animals)
+    .range(['#684e32', 'pink', '#5b8395'])
+
+  const shapeScale = scaleOrdinal()
+    .domain(animals)
+    .range([cattleShape, pigShape, sheepShape])
 </script>
 
-<Graphic width={800} height={400} scaleY={scaleCountry} >
-  <FacetedSection
-    scaleX={scaleCol}
-    scaleY={scaleAnimal}
-    iterable={countries}
-    groups={grouped}
-    let:item={item}
-    let:index={index}
-    let:group={g}
-  >
-    <SymbolLayer
-      x={g.column('col')}
-      y={g.column('animal')}
-      shape={key => getShape(g.column('animal')[key])}
-      fill={key => scaleColor(g.column('animal')[key])}
-      size={80}
-    />
+<Graphic 
+  width={500}
+  height={500}
+  scaleY={countryScale}
+>
 
-    <Label
-      x={() => 10}
-      y={('pigs'} 
-      text={item}
-      rotation={-90}
-      fontFamily={'sans-serif'}
-      fontSize={10}
-    />
-  </FacetedSection>
+  {#each byCountry.rows() as row}
+
+    <Section
+      y1={row.country}
+      y2={({ scaleY }) => scaleY(row.country) + scaleY.bandwidth()}
+      scaleX={colScale}
+      scaleY={animalScale}
+    >
+
+      <SymbolLayer 
+        x={row.$grouped.column('col')}
+        y={row.$grouped.column('animal')}
+        shape={row.$grouped.map('animal', shapeScale)}
+        fill={row.$grouped.map('animal', colorScale)}
+        size={80}
+      />
+
+      <Label 
+        x={() => 10}
+        y={'pigs'}
+        text={row.country}
+        rotation={-90}
+        fontFamily={'sans-serif'}
+        fontSize={10}
+      />
+    
+    </Section>
+
+  {/each}
+
 </Graphic>

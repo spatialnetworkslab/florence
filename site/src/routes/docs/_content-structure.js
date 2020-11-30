@@ -31,6 +31,10 @@ export const posts = [
         path: '/docs/concepts/local-coordinates'
       },
       {
+        title: 'Marks versus Layers',
+        path: '/docs/concepts/marks-vs-layers'
+      },
+      {
         title: 'Interactivity',
         path: '/docs/concepts/interactivity'
       },
@@ -75,6 +79,10 @@ export const posts = [
       {
         title: 'Polygon',
         path: '/docs/marks/polygon'
+      },
+      {
+        title: 'FuncLine',
+        path: '/docs/marks/funcline'
       }
     ]
   },
