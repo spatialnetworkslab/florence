@@ -1,6 +1,7 @@
 <script>
   import { scaleBand } from 'd3-scale'
   import { json } from 'd3-fetch'
+  import { tick } from 'svelte'
   import {
     Graphic,
     Section,
@@ -67,14 +68,14 @@
   }
 
   function onMouseout({ key }) {
-    if (hoverKey) hoverKey = undefined
+    hoverKey = undefined
     heatmapData = undefined
   }
 </script>
 
 {#if ready}
 
-  <Graphic width={500} height={8000}>
+  <Graphic width={500} height={800}>
 
     <Section
       y1={0} y2={400}
@@ -125,13 +126,16 @@
           fill={heatmapData.map('resale_price_sqm', priceColorScale)}
         />
 
+        <XAxis flip vjust={'top'} baseLineOpacity={0} yOffset={3}/> 
+        <YAxis baseLineOpacity={0} xOffset={3}/>
+
       {/if}
 
       <Title 
         title={heatmapData ? hoverKey : 'Hover over an area in the map'} 
         titleFill={hoverKey ? 'black' : 'gray'}
         titleFontFamily={'Montserrat'} 
-        yOffset={30}
+        yOffset={-30}
         usePadding={true}
       />
 
