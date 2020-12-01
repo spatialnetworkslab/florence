@@ -32,7 +32,7 @@
   let dataContainer
   let domainHigh, domainLow, domainDate
   let scaleX, scaleY
-  let xTicks, scaleYAxis
+  let xTicks
 
   $: {
     if (done) {
@@ -52,9 +52,6 @@
       scaleY = scaleLog().domain([domainLow[0], domainHigh[1]])
 
       xTicks = timeMonday.every(1).range(domainDate[0], domainDate[1])
-      scaleYAxis = scaleLinear()
-        .domain([domainLow[0], domainHigh[1]])
-        .range([height - padding.bottom, padding.top])
     }
   }
 </script>
@@ -85,7 +82,7 @@
       />
 
       <XAxis tickValues={xTicks} labelFormat={timeFormat('%-m/%-d')} baseLine={false} /> 
-      <YAxis scale={scaleYAxis} labelFormat={format('$d')} baseLine={false} />
+      <YAxis labelFormat={format('$d')} baseLine={false} />
 
     </Section>
   {/if}
