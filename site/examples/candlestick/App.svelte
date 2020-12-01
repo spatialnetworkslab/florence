@@ -4,7 +4,7 @@
   import { timeDay, timeMonday } from 'd3-time'
   import { timeParse, timeFormat } from 'd3-time-format'
   import { scaleLinear, scaleLog, scaleBand } from 'd3-scale'
-  import { Graphic, Section, LineLayer, XAxis, YAxis } from '@snlab/florence'
+  import { Graphic, LineLayer, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
   const parseDate = timeParse('%Y-%m-%d')
@@ -55,35 +55,35 @@
   }
 </script>
 
-<Graphic {width} {height}>
+{#if done}
 
-  {#if done}
-    <Section
-      {scaleX} 
-      {scaleY}
-      {padding}
-      flipY
-    >  
+  <Graphic 
+    {width}
+    {height}
+    {scaleX} 
+    {scaleY}
+    {padding}
+    flipY
+  >
 
-      <LineLayer
-        x={dataContainer.map('date', d => [d, d])}
-        y={dataContainer.rows().map(r => [r.low, r.high])}
-        strokeWidth={1}
-      />
+    <LineLayer
+      x={dataContainer.map('date', d => [d, d])}
+      y={dataContainer.rows().map(r => [r.low, r.high])}
+      strokeWidth={1}
+    />
 
-      <LineLayer
-        x={dataContainer.map('date', d => [d, d])}
-        y={dataContainer.rows().map(r => [r.open, r.close])}
-        strokeWidth={4}
-        stroke={dataContainer.rows().map(r => r.open > r.close ? '#da344d'
-          : r.close > r.open ? '#32936f'
-          : '#32936f')}
+    <LineLayer
+      x={dataContainer.map('date', d => [d, d])}
+      y={dataContainer.rows().map(r => [r.open, r.close])}
+      strokeWidth={4}
+      stroke={dataContainer.rows().map(r => r.open > r.close ? '#da344d'
+        : r.close > r.open ? '#32936f'
+        : '#32936f')}
       />
 
       <XAxis tickValues={xTicks} labelFormat={timeFormat('%-m/%-d')} baseLine={false} /> 
       <YAxis labelFormat={format('$d')} baseLine={false} />
 
-    </Section>
-  {/if}
+  </Graphic>
 
-</Graphic>
+{/if}
