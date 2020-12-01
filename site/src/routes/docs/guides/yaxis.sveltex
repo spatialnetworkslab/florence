@@ -1,6 +1,6 @@
 # Y-axis
 
-```html
+```markup
 <Graphic width={500} height={500}>
 
   <YAxis />

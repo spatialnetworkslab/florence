@@ -105,6 +105,14 @@ export const posts = [
       {
         title: 'Legend',
         path: '/docs/guides/legend'
+      },
+      {
+        title: 'X-gridlines',
+        path: '/docs/guides/x-grid-lines'
+      },
+      {
+        title: 'Y-gridlines',
+        path: '/docs/guides/y-grid-lines'
       }
     ]
   }

@@ -1,6 +1,6 @@
 # X-axis
 
-```html
+```markup
 <Graphic width={500} height={500}>
 
   <XAxis />
@@ -16,7 +16,7 @@ Component that creates an x-axis in reference to its parent `Graphic` or `Sectio
 
 ### Positioning
 
-|  Prop   |      Type(s)       | Required |  Default   |      Units      |
+|  Prop   |      Type(s)       | Required |  Default   |     Unit(s)     |
 | ------- | ------------------ | -------- | ---------- | --------------- |
 | vjust   | `String`, `Number` | no       | `'bottom'` | See explanation |
 | yOffset | `Number`           | no       | `0`        | Pixels          |
@@ -24,7 +24,7 @@ Component that creates an x-axis in reference to its parent `Graphic` or `Sectio
 
 ### Baseline
 
-|      Prop       |  Type(s)  | Required |  Default  |         Units          |
+|      Prop       |  Type(s)  | Required |  Default  |        Unit(s)         |
 | --------------- | --------- | -------- | --------- | ---------------------- |
 | baseLine        | `Boolean` | no       | `true`    | -                      |
 | baseLineColor   | `String`  | no       | `'black'` | Color value            |
@@ -76,3 +76,6 @@ The `scale` prop can be used to override the parent's `scaleX`.
 | titleOpacity     | `Number`           | no       | `1`           | Number between 0 and 1 |
 | titleRotation    | `Number`           | no       | `0`           | Degrees                |
 | titleAnchorPoint | `String`           | no       | `'t'`         | See explanation        |
+
+### Other
+

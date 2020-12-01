@@ -1,0 +1,18 @@
+# X-gridlines
+
+```markup
+<Graphic width={500} height={500}>
+
+  <XGridLines />
+
+</Graphic>
+```
+
+## Description
+
+Component that creates grid lines extending the ticks of the [x-axis](/docs/guides/xaxis).
+
+## Props
+
+TODO
+

@@ -1,0 +1,18 @@
+# Y-gridlines
+
+```markup
+<Graphic width={500} height={500}>
+
+  <YGridLines />
+
+</Graphic>
+```
+
+## Description
+
+Component that creates grid lines extending the ticks of the [y-axis](/docs/guides/yaxis).
+
+## Props
+
+TODO
+
