@@ -3,7 +3,7 @@
   import { format } from 'd3-format'
   import { timeDay, timeMonday } from 'd3-time'
   import { timeParse, timeFormat } from 'd3-time-format'
-  import { scaleLinear, scaleLog, scaleBand } from 'd3-scale'
+  import { scaleLog, scaleBand } from 'd3-scale'
   import { Graphic, LineLayer, XAxis, YAxis, YGridLines } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
