@@ -16,63 +16,78 @@ Component that creates an y-axis in reference to its parent `Graphic` or `Sectio
 
 ### Positioning
 
-|  Prop   |      Type(s)       | Required |  Default   |      Units      |
-| ------- | ------------------ | -------- | ---------- | --------------- |
-| hjust   | `String`, `Number` | no       | `'bottom'` | See explanation |
-| xOffset | `Number`           | no       | `0`        | Pixels          |
-| flip    | `Boolean`          | no       | `false`    | -               |
+|  Prop   | Required |      Type(s)       |  Default   |     Unit(s)     |
+| ------- | -------- | ------------------ | ---------- | --------------- |
+| vjust   | `false`  | `String`, `Number` | `'bottom'` | See explanation |
+| yOffset | `false`  | `Number`           | `0`        | Pixel           |
+| flip    | `false`  | `Boolean`          | `false`    | -               |
 
 ### Baseline
 
-|      Prop       |  Type(s)  | Required |  Default  |         Units          |
-| --------------- | --------- | -------- | --------- | ---------------------- |
-| baseLine        | `Boolean` | no       | `true`    | -                      |
-| baseLineColor   | `String`  | no       | `'black'` | Color value            |
-| baseLineOpacity | `Number`  | no       | 1         | Number between 0 and 1 |
-| baseLineWidth   | `Number`  | no       | 1         | Pixels                 |
+|      Prop       | Required |  Type(s)  |  Default  |           Unit(s)            |
+| --------------- | -------- | --------- | --------- | ---------------------------- |
+| baseLine        | `false`  | `Boolean` | `true`    | -                            |
+| baseLineColor   | `false`  | `String`  | `'black'` | Named, hex, rgb or hsl color |
+| baseLineOpacity | `false`  | `Number`  | `1`       | Number between 0 and 1       |
+| baseLineWidth   | `false`  | `Number`  | `1`       | Pixel                        |
 
 ### Ticks
 
-|    Prop     |                  Type(s)                   | Required |   Default   |         Units          |
-| ----------- | ------------------------------------------ | -------- | ----------- | ---------------------- |
-| scale       | [d3 scale](https://github.com/d3/d3-scale) | no       | `undefined` | -                      |
-| ticks       | `Boolean`                                  | no       | `true`      | -                      |
-| tickCount   | `Number`                                   | no       | `10`        | -                      |
-| tickExtra   | `Boolean`                                  | no       | `false`     | -                      |
-| tickValues  | `Array`                                    | no       | `undefined` | Local coordinates      |
-| tickSize    | `Number`                                   | no       | `5`         | Pixels                 |
-| tickWidth   | `Number`                                   | no       | `0.5`       | Pixels                 |
-| tickColor   | `String`                                   | no       | `'black'`   | Color value            |
-| tickOpacity | `Number`                                   | no       | `1`         | Number between 0 and 1 |
+|    Prop     | Required |  Type(s)   |   Default   |                       Unit(s)                        |
+| ----------- | -------- | ---------- | ----------- | ---------------------------------------------------- |
+| scale       | `false`  | `Function` | `undefined` | [d3 scale](https://github.com/d3/d3-scale)           |
+| ticks       | `false`  | `Boolean`  | `true`      | -                                                    |
+| tickCount   | `false`  | `Number`   | `10`        | -                                                    |
+| tickExtra   | `false`  | `Boolean`  | `false`     | -                                                    |
+| tickValues  | `false`  | `Array`    | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| tickSize    | `false`  | `Number`   | `5`         | Pixel                                                |
+| tickWidth   | `false`  | `Number`   | `0.5`       | Pixel                                                |
+| tickColor   | `false`  | `String`   | `'black'`   | Named, hex, rgb or hsl color                         |
+| tickOpacity | `false`  | `Number`   | `1`         | Number between 0 and 1                               |
 
 The `scale` prop can be used to override the parent's `scaleY`.
 
 ### Tick labels
 
-|      Prop       |  Type(s)   | Required |    Default    |         Units          |
-| --------------- | ---------- | -------- | ------------- | ---------------------- |
-| labelFormat     | `Function` | no       | `undefined`   | -                      |
-| labelOffset     | `Number`   | no       | `2`           | Pixels                 |
-| labelRotate     | `Number`   | no       | `0`           | Degrees                |
-| labelFont       | `String`   | no       | `'Helvetica'` | Font                   |
-| labelFontSize   | `Number`   | no       | `10`          | Pixels                 |
-| labelFontWeight | `String`   | no       | `'normal'`    | See explanation        |
-| labelOpacity    | `Number`   | no       | `1`           | Number between 0 and 1 |
-| labelColor      | `String`   | no       | `'black'`     | Color value            |
+|      Prop       | Required |  Type(s)   |    Default    |           Unit(s)            |
+| --------------- | -------- | ---------- | ------------- | ---------------------------- |
+| labelFormat     | `false`  | `Function` | `undefined`   | -                            |
+| labelOffset     | `false`  | `Number`   | `2`           | Pixel                        |
+| labelRotate     | `false`  | `Number`   | `0`           | Degree                       |
+| labelFont       | `false`  | `String`   | `'Helvetica'` | Font                         |
+| labelFontSize   | `false`  | `Number`   | `10`          | Pixel                        |
+| labelFontWeight | `false`  | `String`   | `'normal'`    | See explanation              |
+| labelOpacity    | `false`  | `Number`   | `1`           | Number between 0 and 1       |
+| labelColor      | `false`  | `String`   | `'black'`     | Named, hex, rgb or hsl color |
 
 ### Title
 
-|       Prop       |      Type(s)       | Required |    Default    |         Units          |
-| ---------------- | ------------------ | -------- | ------------- | ---------------------- |
-| titleHjust       | `String`, `Number` | no       | `'axis'`      | See explanation        |
-| titleXOffset     | `Number`           | no       | `'axis'`      | Pixels                 |
-| titleVjust       | `String`, `Number` | no       | `'center'`    | See explanation        |
-| titleYOffset     | `String`, `Number` | no       | `0`           | See explanation        |
-| title            | `String`           | no       | `''`          | -                      |
-| titleColor       | `String`           | no       | `'black'`     | Color value            |
-| titleFont        | `String`           | no       | `'Helvetica'` | Font                   |
-| titleFontSize    | `Number`           | no       | `12`          | Pixels                 |
-| titleFontWeight  | `String`           | no       | `'normal'`    | See explanation        |
-| titleOpacity     | `Number`           | no       | `1`           | Number between 0 and 1 |
-| titleRotation    | `Number`           | no       | `-90`         | Degrees                |
-| titleAnchorPoint | `String`           | no       | `'center'`    | See explanation        |
+|       Prop       | Required |      Type(s)       |    Default    |           Unit(s)            |
+| ---------------- | -------- | ------------------ | ------------- | ---------------------------- |
+| titleHjust       | `false`  | `String`, `Number` | `'center'`    | See explanation              |
+| titleXOffset     | `false`  | `Number`           | `0`           | Pixel                        |
+| titleVjust       | `false`  | `String`, `Number` | `'axis'`      | See explanation              |
+| titleYOffset     | `false`  | `String`, `Number` | `'axis'`      | See explanation              |
+| title            | `false`  | `String`           | `''`          | -                            |
+| titleColor       | `false`  | `String`           | `'black'`     | Named, hex, rgb or hsl color |
+| titleFont        | `false`  | `String`           | `'Helvetica'` | Font                         |
+| titleFontSize    | `false`  | `Number`           | `12`          | Pixel                        |
+| titleFontWeight  | `false`  | `String`           | `'normal'`    | See explanation              |
+| titleOpacity     | `false`  | `Number`           | `1`           | Number between 0 and 1       |
+| titleRotation    | `false`  | `Number`           | `0`           | Degree                       |
+| titleAnchorPoint | `false`  | `String`           | `'t'`         | See explanation              |
+
+### Transitions
+
+|    Prop    | Required |      Type(s)       |   Default   |             Unit(s)              |
+| ---------- | -------- | ------------------ | ----------- | -------------------------------- |
+| transition | `false`  | `Number`, `Object` | `undefined` | Duration in ms or options object |
+
+Transitions will be applied to the marks (`Line`s and `Label`s) of which the axis consists. See the [transition](/docs/concepts/transitions) documentation for more information.
+
+
+### Other
+
+| Prop | Required |  Type(s)  | Default | Unit(s) |
+| ---- | -------- | --------- | ------- | ------- |
+| clip | `false`  | `Boolean` | `false` | -       |

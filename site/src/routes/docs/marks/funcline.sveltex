@@ -36,7 +36,7 @@ import SimpleExample from './examples/_FuncLineSimple.svelte'
 
 | Name | Required |  Type(s)   |   Default   |                        Unit(s)                        |
 | ---- | -------- | ---------- | ----------- | ----------------------------------------------------- |
-| func | `true`   | `Function` | `undefined` | NA                                                    |
+| func | `true`   | `Function` | `undefined` | -                                                    |
 | x    | `false`  | `Number[]` | `undefined` | [Local coordinates](/docs/concepts/local-coordinates) |
 
 To render `FuncLine`, a `Function` that maps a numeric input to a numeric output has to be passed to the `func` prop. By default, this function will be plotted over a domain that is inherited from the parent `Graphic` or `Section`. To provide a different custom domain, the `x` prop can be passed an `Array` containing two numbers. For example:
@@ -101,29 +101,29 @@ See the [transition](/docs/concepts/transitions) documentation for more informat
 
 |    Prop     | Required |  Type(s)   |   Default   | Unit(s) |
 | ----------- | -------- | ---------- | ----------- | ------- |
-| onClick     | `false`  | `Function` | `undefined` | NA      |
-| onMousedown | `false`  | `Function` | `undefined` | NA      |
-| onMouseup   | `false`  | `Function` | `undefined` | NA      |
-| onMouseover | `false`  | `Function` | `undefined` | NA      |
-| onMouseout  | `false`  | `Function` | `undefined` | NA      |
-| onMousedrag | `false`  | `Function` | `undefined` | NA      |
+| onClick     | `false`  | `Function` | `undefined` | -      |
+| onMousedown | `false`  | `Function` | `undefined` | -      |
+| onMouseup   | `false`  | `Function` | `undefined` | -      |
+| onMouseover | `false`  | `Function` | `undefined` | -      |
+| onMouseout  | `false`  | `Function` | `undefined` | -      |
+| onMousedrag | `false`  | `Function` | `undefined` | -      |
 
 #### Touch events
 
 |    Prop     | Required |  Type(s)   |   Default   | Unit(s) |
 | ----------- | -------- | ---------- | ----------- | ------- |
-| onTouchdown | `false`  | `Function` | `undefined` | NA      |
-| onTouchup   | `false`  | `Function` | `undefined` | NA      |
-| onTouchover | `false`  | `Function` | `undefined` | NA      |
-| onTouchout  | `false`  | `Function` | `undefined` | NA      |
-| onTouchdrag | `false`  | `Function` | `undefined` | NA      |
+| onTouchdown | `false`  | `Function` | `undefined` | -      |
+| onTouchup   | `false`  | `Function` | `undefined` | -      |
+| onTouchover | `false`  | `Function` | `undefined` | -      |
+| onTouchout  | `false`  | `Function` | `undefined` | -      |
+| onTouchdrag | `false`  | `Function` | `undefined` | -      |
 
 #### Select events
 
 |    Prop    | Required |  Type(s)   |   Default   | Unit(s) |
 | ---------- | -------- | ---------- | ----------- | ------- |
-| onSelect   | `false`  | `Function` | `undefined` | NA      |
-| onDeselect | `false`  | `Function` | `undefined` | NA      |
+| onSelect   | `false`  | `Function` | `undefined` | -      |
+| onDeselect | `false`  | `Function` | `undefined` | -      |
 
 See the [interactivity](/docs/concepts/interactivity) documentation for more information.
 
@@ -131,9 +131,9 @@ See the [interactivity](/docs/concepts/interactivity) documentation for more inf
 
 |      Prop       | Required |  Type(s)  |   Default   | Unit(s) |
 | --------------- | -------- | --------- | ----------- | ------- |
-| renderSettings  | `false`  | `Object`  | `undefined` | NA      |
-| blockReindexing | `false`  | `Boolean` | `false`     | NA      |
-| clip            | `false`  | `Boolean` | `true`      | NA      |
+| renderSettings  | `false`  | `Object`  | `undefined` | -      |
+| blockReindexing | `false`  | `Boolean` | `false`     | -      |
+| clip            | `false`  | `Boolean` | `true`      | -      |
 
 - `renderSettings`: see the [advanced rendering](/docs/concepts/advanced-rendering) documentation for more information
 - `blockReindexing`: see the [interactivity](/docs/concepts/interactivity) documentation for more information.

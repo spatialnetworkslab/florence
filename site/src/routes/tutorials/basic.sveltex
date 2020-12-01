@@ -83,7 +83,7 @@ let data = new DataContainer({
   });
 
 data = data
-    .dropNA() // drops NA values
+    .dropNA() // drops - values
     .filter(row => row.fruit !== "anchovies") // filters out unwanted values
     .groupBy("fruit") // groups data by common categorical values
     .summarise({ meanQuantity: { diameter: "mean" } }) // gets mean of groups

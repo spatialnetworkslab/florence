@@ -7,6 +7,16 @@
 
 ## Properties
 
+- If 'Unit(s)' has no meaningful value, use ` - `.
+- Common values for 'Unit(s)' include:
+  - Local coordinate (with link to /docs/concepts/local-coordinates)
+  - Pixel
+  - Named, hex, rgb or hsl color
+  - Number between 0 and 1
+  - See explanation
+  - Font
+  - Degree
+
 ### Positioning
 
 - A table with the following columns:
