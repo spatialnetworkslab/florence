@@ -1,6 +1,6 @@
 # Global Temperature Trends
 
-Some testing text
+Original based on [How 2016 Became Earth’s Hottest Year on Record](https://www.nytimes.com/interactive/2017/01/18/science/earth/2016-hottest-year-on-record.html). Adapted from https://observablehq.com/@mbostock/global-temperature-trends.
 
 ::: example examples/scatterplot-temp-trends
 :::

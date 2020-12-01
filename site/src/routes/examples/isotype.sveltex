@@ -1,6 +1,6 @@
 # Isotype Plot
 
-Some testing text
+Isotype plot showing the differences in livestock between the UK and US from the 1943 book [Only An Ocean Between](http://www.thomwhite.co.uk/?p=1303). Adapted from https://vega.github.io/vega-lite/examples/isotype_bar_chart.html. Original by [@jwoLondon](https://github.com/jwoLondon).
 
 ::: example examples/isotype
 :::

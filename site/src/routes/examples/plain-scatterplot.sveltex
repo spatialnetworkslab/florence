@@ -1,6 +1,6 @@
 # A Plain Scatterplot
 
-Some testing text.
+A plain old scatterplot. Adapted from https://vega.github.io/vega-lite/examples/point_color_with_shape.html.
 
 ::: example examples/plain-scatterplot
 :::

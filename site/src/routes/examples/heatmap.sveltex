@@ -1,7 +1,6 @@
-
 # Heatmap
 
-Some testing text.
+Heatmap showing the relation between IMDB ratings and Rotten Tomatoes ratings of the same movies.
 
 ::: example examples/heatmap
 :::

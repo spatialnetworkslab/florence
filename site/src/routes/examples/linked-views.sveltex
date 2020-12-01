@@ -1,6 +1,6 @@
 # Linked views
 
-Some testing text
+An example of linked views in `florence`. Hover over a [planning areas](https://en.wikipedia.org/wiki/Planning_Areas_of_Singapore) to see how the mean resale price per square meter for houses changed over time for that particular planning area.
 
 ::: example examples/linked-views
 :::
