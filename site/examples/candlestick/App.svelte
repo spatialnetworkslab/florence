@@ -14,11 +14,11 @@
   csv('/data/apple-stocks-candlestick.csv', d => {
     const date = parseDate(d['Date'])
     return {
-      date,
-      high: +d['High'],
-      low: +d['Low'],
-      open: +d['Open'],
-      close: +d['Close']
+      Date: date,
+      High: +d['High'],
+      Low: +d['Low'],
+      Open: +d['Open'],
+      Close: +d['Close']
     }
   }).then(d => {
     data = d.slice(-120)
@@ -37,9 +37,9 @@
     if (done) {
       dataContainer = new DataContainer(data)
 
-      const domainHigh = dataContainer.domain('high')
-      const domainLow = dataContainer.domain('low')
-      const domainDate = dataContainer.domain('date')
+      const domainHigh = dataContainer.domain('High')
+      const domainLow = dataContainer.domain('Low')
+      const domainDate = dataContainer.domain('Date')
 
       const weekdays = timeDay
         .range(domainDate[0], +domainDate[1] + 1)
@@ -67,20 +67,20 @@
   >
 
     <LineLayer
-      x={dataContainer.map('date', d => [d, d])}
-      y={dataContainer.rows().map(r => [r.low, r.high])}
+      x={dataContainer.map('Date', d => [d, d])}
+      y={dataContainer.rows().map(r => [r.Low, r.High])}
       strokeWidth={1}
     />
 
     <LineLayer
-      x={dataContainer.map('date', d => [d, d])}
-      y={dataContainer.rows().map(r => [r.open, r.close])}
+      x={dataContainer.map('Date', d => [d, d])}
+      y={dataContainer.rows().map(r => [r.Open, r.Close])}
       strokeWidth={4}
-      stroke={dataContainer.rows().map(r => r.open > r.close ? '#da344d' : '#32936f') }
+      stroke={dataContainer.rows().map(r => r.Open > r.Close ? '#da344d' : '#32936f') }
     />
 
-      <XAxis tickValues={xTicks} labelFormat={timeFormat('%-m/%-d')} baseLine={false} /> 
-      <YAxis labelFormat={format('$d')} baseLine={false} />
+    <XAxis tickValues={xTicks} labelFormat={timeFormat('%-m/%-d')} baseLine={false} /> 
+    <YAxis labelFormat={format('$d')} baseLine={false} />
 
   </Graphic>
 
