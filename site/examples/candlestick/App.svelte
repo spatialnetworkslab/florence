@@ -41,12 +41,12 @@
       const domainLow = dataContainer.domain('low')
       const domainDate = dataContainer.domain('date')
 
+      const weekdays = timeDay
+        .range(domainDate[0], +domainDate[1] + 1)
+        .filter(d => d.getDay() !== 0 && d.getDay() !== 6)
+
       scaleX = scaleBand()
-        .domain(
-          timeDay
-            .range(domainDate[0], +domainDate[1] + 1)
-            .filter(d => d.getDay() !== 0 && d.getDay() !== 6)
-        )
+        .domain(weekdays)
         .padding(0.2)
       scaleY = scaleLog().domain([domainLow[0], domainHigh[1]])
 
