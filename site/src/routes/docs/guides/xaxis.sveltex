@@ -1,5 +1,7 @@
 # X-axis
 
+Component that creates an x-axis in reference to its parent `Graphic` or `Section`'s local coordinate system.
+
 ```markup
 <script>
   import { Graphic, XAxis } from '@snlab/florence'
@@ -18,11 +20,7 @@ import SimpleExample from './utils/_XAxisSimple.svelte'
 
 <SimpleExample />
 
-## Description
-
-Component that creates an x-axis in reference to its parent `Graphic` or `Section`'s local coordinate system.
-
-## Props
+## Properties
 
 ### Positioning
 

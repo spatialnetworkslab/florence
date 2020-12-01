@@ -1,5 +1,7 @@
 # Y-axis
 
+Component that creates an y-axis in reference to its parent `Graphic` or `Section`'s local coordinate system.
+
 ```markup
 <script>
   import { Graphic, YAxis } from '@snlab/florence'
@@ -18,11 +20,7 @@ import SimpleExample from './utils/_YAxisSimple.svelte'
 
 <SimpleExample />
 
-## Description
-
-Component that creates an y-axis in reference to its parent `Graphic` or `Section`'s local coordinate system.
-
-## Props
+## Properties
 
 ### Positioning
 

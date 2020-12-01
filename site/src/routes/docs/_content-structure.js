@@ -108,11 +108,11 @@ export const posts = [
       },
       {
         title: 'X-gridlines',
-        path: '/docs/guides/x-grid-lines'
+        path: '/docs/guides/xgridlines'
       },
       {
         title: 'Y-gridlines',
-        path: '/docs/guides/y-grid-lines'
+        path: '/docs/guides/ygridlines'
       }
     ]
   }

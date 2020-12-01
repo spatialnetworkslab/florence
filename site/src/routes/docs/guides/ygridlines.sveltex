@@ -1,5 +1,7 @@
 # Y-gridlines
 
+Component that creates grid lines extending the ticks of the [y-axis](/docs/guides/yaxis).
+
 ```markup
 <script>
   import { Graphic, YAxis, YGridLines } from '@snlab/florence'
@@ -19,11 +21,7 @@ import SimpleExample from './utils/_YGridLinesSimple.svelte'
 
 <SimpleExample />
 
-## Description
-
-Component that creates grid lines extending the ticks of the [y-axis](/docs/guides/yaxis).
-
-## Props
+## Properties
 
 TODO
 

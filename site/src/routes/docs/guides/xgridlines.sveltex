@@ -1,5 +1,7 @@
 # X-gridlines
 
+Component that creates grid lines extending the ticks of the [x-axis](/docs/guides/xaxis).
+
 ```markup
 <script>
   import { Graphic, XAxis, XGridLines } from '@snlab/florence'
@@ -19,11 +21,7 @@ import SimpleExample from './utils/_XGridLinesSimple.svelte'
 
 <SimpleExample />
 
-## Description
-
-Component that creates grid lines extending the ticks of the [x-axis](/docs/guides/xaxis).
-
-## Props
+## Properties
 
 TODO
 
