@@ -1,8 +1,6 @@
 # Transitions
 
-## Description
-
-Every `Mark` and every `Layer` has a `transition` prop.
+All `Mark`s `Layer`s can transition automatically when the data on which they depend changes. The details of this transition can be tweaked with the `transition` prop. 
 
 ## Basics
 

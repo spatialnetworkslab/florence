@@ -1,7 +1,5 @@
 # Local coordinates
 
-## Description
-
 Understanding how local coordinates work is key to understanding `florence`.
 The `Graphic` and `Section` components can create local coordinate systems,
 and all other components are affected by local coordinate systems.

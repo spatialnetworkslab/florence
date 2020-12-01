@@ -25,7 +25,7 @@
 ## Description
 Legends are guides used to show mappings for aesthetics like color, shape, size, opacity to a given domain. Each legend is mapped to a single dimension or variable. Florence supports two types of legends that map values to color and/or opacity – gradient and discrete legends.
 
-## Props
+## Properties
 
 ### Positioning
 
