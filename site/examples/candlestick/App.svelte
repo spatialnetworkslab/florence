@@ -4,15 +4,12 @@
   import { timeDay, timeMonday } from 'd3-time'
   import { timeParse, timeFormat } from 'd3-time-format'
   import { scaleLinear, scaleLog, scaleBand } from 'd3-scale'
-  import { Graphic, LineLayer, XAxis, YAxis } from '@snlab/florence'
+  import { Graphic, LineLayer, XAxis, YAxis, YGridLines } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  const width = 800
-  const height = 600
-  const padding = { top: 20, bottom: 30, left: 40, right: 30 }
   const parseDate = timeParse('%Y-%m-%d')
   
-  let dataContainer, scaleX, scaleY, xTicks, done
+  let dataContainer, scaleX, scaleY, xTicks, ready
 
   (async () => {
     const data = await csv('/data/apple-stocks-candlestick.csv', d => ({
@@ -45,20 +42,20 @@
       dataContainer.max('High')
     ])
 
-    xTicks = timeMonday.every(1).range(domainDate[0], domainDate[1])
+    xTicks = timeMonday.every(2).range(...domainDate)
 
-    done = true
+    ready = true
   })()
 </script>
 
-{#if done}
+{#if ready}
 
   <Graphic 
-    {width}
-    {height}
+    width={500}
+    height={500}
     {scaleX} 
     {scaleY}
-    {padding}
+    padding={{ top: 20, bottom: 30, left: 40, right: 30 }}
     flipY
   >
 
@@ -77,6 +74,7 @@
 
     <XAxis tickValues={xTicks} labelFormat={timeFormat('%-m/%-d')} baseLine={false} /> 
     <YAxis labelFormat={format('$d')} baseLine={false} />
+    <YGridLines />
 
   </Graphic>
 
