@@ -37,7 +37,7 @@ import SimpleExample from './examples/_FuncLineSimple.svelte'
 | Name | Required |  Type(s)   |   Default   |                        Unit(s)                        |
 | ---- | -------- | ---------- | ----------- | ----------------------------------------------------- |
 | func | `true`   | `Function` | `undefined` | -                                                    |
-| x    | `false`  | `Number[]` | `undefined` | [Local coordinates](/docs/concepts/local-coordinates) |
+| x    | `false`  | `Number[]` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 
 To render `FuncLine`, a `Function` that maps a numeric input to a numeric output has to be passed to the `func` prop. By default, this function will be plotted over a domain that is inherited from the parent `Graphic` or `Section`. To provide a different custom domain, the `x` prop can be passed an `Array` containing two numbers. For example:
 
