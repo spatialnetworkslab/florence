@@ -76,10 +76,8 @@
       x={dataContainer.map('date', d => [d, d])}
       y={dataContainer.rows().map(r => [r.open, r.close])}
       strokeWidth={4}
-      stroke={dataContainer.rows().map(r => r.open > r.close ? '#da344d'
-        : r.close > r.open ? '#32936f'
-        : '#32936f')}
-      />
+      stroke={dataContainer.rows().map(r => r.open > r.close ? '#da344d' : '#32936f') }
+    />
 
       <XAxis tickValues={xTicks} labelFormat={timeFormat('%-m/%-d')} baseLine={false} /> 
       <YAxis labelFormat={format('$d')} baseLine={false} />
