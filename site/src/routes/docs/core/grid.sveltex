@@ -43,33 +43,20 @@ positioning props.
 
 ### Grid settings
 
-| Prop             | Type(s)   | Required | Default | Units         | Description |                 
-| ---------------- | --------- | -------- | ------- | ------------- | ----------- | 
-| rows             | `Number`  | ✅        | `1`     | Integer       | Number of rows in grid |
-| columns          | `Number`  | ✅        | `1`     | Integer       | Number of columns in grid |
-| rowGap           | `Number`  | ✅        | `0`     | Integer       | Margin between rows |
-| columnGap        | `Number`  | ✅        | `0`     | Integer       | Margin between columns |
-| areaNames        | []`String`  | ✅      | [] |               | An array of cell or facet names |
-
-
-
-
-| Prop             | Type(s)   | Required | Default | Units         | Description |                 
-| ---------------- | --------- | -------- | ------- | ------------- | ----------- | 
-| rows             | `Number`  | ✅        | `1`     | Integer       | Number of rows in grid |
-| columns          | `Number`  | ✅        | `1`     | Integer       | Number of columns in grid |
-| rowGap           | `Number`  | ✅        | `0`     | Integer       | Margin between rows |
-| columnGap        | `Number`  | ✅        | `0`     | Integer       | Margin between columns |
-| areaNames        | []`String`  | ✅      | [] |               | An array of cell or facet names |
-
+|   Prop    | Required |  Type(s)   |   Default   | Unit(s) |
+| --------- | -------- | ---------- | ----------- | ------- |
+| rows      | `false`  | `Number`   | `1`         | Integer |
+| columns   | `false`  | `Number`   | `1`         | Integer |
+| rowGap    | `false`  | `Number`   | `0`         | Integer |
+| columnGap | `false`  | `Number`   | `0`         | Integer |
+| names     | `true`   | `String[]` | `undefined` |         |
 
 ### Other
 
-| Prop             | Type(s)   | Required | Default | Units         | Description                                                                              |
-| ---------------- | --------- | -------- | ------- | ------------- | --------------------------------- | --------------------------------------------------------- |
-| viewGridTemplate | `Boolean` |          | `false` |               | Option to console log grid layout 
-| viewGridShape    | `Boolean` |          | `false` |               | Option to console log grid layout 
-
+|       Prop       | Required |  Type(s)  | Default | Unit(s) |
+| ---------------- | -------- | --------- | ------- | ------- |
+| viewGridTemplate | `false`  | `Boolean` | `false` | -       |
+| viewGridShape    | `false`  | `Boolean` | `false` | -       |
 
 ### Slot Scope
 

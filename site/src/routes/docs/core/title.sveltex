@@ -1,7 +1,7 @@
 # Plot title
-The `Title` component is used to create a plot title and has smart defaults for positioning and aesthetics/visual properties. 
+The `Title` component is used to create titles and has smart defaults for positioning and aesthetics/visual properties. 
 
-```html
+```markup
   <Graphic>
     <Title
         ...
@@ -19,19 +19,53 @@ The `Title` component is used to create a plot title and has smart defaults for 
 ## Properties
 
 ### Positioning
-| Prop       | Type(s)              | Description | Required | Default     | Units                                             |
-|------------|----------------------|-------------|----------|-------------|---------------------------------------------------|
-| x          | `Number`, `Function` | Horizontal position of title | ✅        | `undefined` | local coordinates (`Number`), pixels (`Function`) |
-| y          | `Number`, `Function` | Vertical position of title   | ✅        | `undefined` | local coordinates (`Number`), pixels (`Function`) |
-| vjust      | `String`             | Vertical position of title          | ❌        | `top`       | `top`, `center`/`centre`, `bottom`                |
-| hjust      | `String`             | Horizontal orientation of the title relative to the chart.   | ❌        | `center`    | `left`, `center`/`centre`, `right`                |
-| xOffset    | `String`             | Offsets position of the title by pixel values   | ❌        | `0`         | pixels                                            |
-| yOffset    | `String`             | Offsets position of the title by pixel values    | ❌        | `10`        | pixels                                            |
-| usePadding | `Boolean`            | Positions title either within parent Section/Graphic (`usePadding=false`) or within padding of parent (`usePadding=true`) | ❌        | `false`     | boolean                                                  |
-| subtitleX   |  `Number`  | Horizontal position of subtitle | ❌  | `undefined` |  pixels  |
-| subtitleY   |  `Number`  | Vertical position of title | ❌  | `undefined` |  pixels  |
+
+|    Prop    | Required |       Type(s)        |   Default   |                       Unit(s)                        |
+| ---------- | -------- | -------------------- | ----------- | ---------------------------------------------------- |
+| x          | `false`  | `Number`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y          | `false`  | `Number`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| vjust      | `false`  | `String`             | `'top'`     | See explanation`                                     |
+| hjust      | `false`  | `String`             | `'center'`  | See explanation                                      |
+| xOffset    | `false`  | `String`             | `0`         | Pixel                                                |
+| yOffset    | `false`  | `String`             | `10`        | Pixel                                                |
+| usePadding | `false`  | `Boolean`            | `false`     | -                                                    |
+| subtitleX  | `false`  | `Number`             | `undefined` | Pixel                                                |
+| subtitleY  | `false`  | `Number`             | `undefined` | Pixel                                                |
+
+
+|    Prop    |       Type(s)        | Required |   Default   |                       Units                       |
+| ---------- | -------------------- | -------- | ----------- | ------------------------------------------------- |
+| x          | `Number`, `Function` | Horizontal position of title                                                                                              | ✅        | `undefined` | local coordinates (`Number`), pixels (`Function`) |
+| y          | `Number`, `Function` | Vertical position of title                                                                                                | ✅        | `undefined` | local coordinates (`Number`), pixels (`Function`) |
+| vjust      | `String`             | Vertical position of title                                                                                                | ❌        | `top`       | `top`, `center`/`centre`, `bottom`                |
+| hjust      | `String`             | Horizontal orientation of the title relative to the chart.                                                                | ❌        | `center`    | `left`, `center`/`centre`, `right`                |
+| xOffset    | `String`             | Offsets position of the title by pixel values                                                                             | ❌        | `0`         | pixels                                            |
+| yOffset    | `String`             | Offsets position of the title by pixel values                                                                             | ❌        | `10`        | pixels                                            |
+| usePadding | `Boolean`            | Positions title either within parent Section/Graphic (`usePadding=false`) or within padding of parent (`usePadding=true`) | ❌        | `false`     | boolean                                           |
+| subtitleX  | `Number`             | Horizontal position of subtitle                                                                                           | ❌        | `undefined` | pixels                                            |
+| subtitleY  | `Number`             | Vertical position of title                                                                                                | ❌        | `undefined` | pixels                                            |
+
+
+
 
 ### Title 
+
+|        Prop        | Required | Type(s)  |    Default     |           Unit(s)            |
+| ------------------ | -------- | -------- | -------------- | ---------------------------- |
+| title              | `false`  | `String` | `'Title Text'` | -                            |
+| titleFill          | `false`  | `String` | `'black'`      | Named, hex, rgb or hsl color |
+| titleStroke        | `false`  | `String` | `undefined`    | Named, hex, rgb or hsl color |
+| titleStrokeWidth   | `false`  | `Number` | `undefined`    | Pixel                        |
+| titleStrokeOpacity | `false`  | `Number` | `undefined`    | Number between 0 and 1       |
+| titleFillOpacity   | `false`  | `Number` | `undefined`    | Number between 0 and 1       |
+| titleOpacity       | `false`  | `Number` | `1`            | Number between 0 and 1       |
+| titleFontFamily    | `false`  | `String` | `'Helvetica'`  | -                            |
+| titleFontSize      | `false`  | `Number` | `18`           | Pixel                        |
+| titleFontWeight    | `false`  | `Number` | `'bold'`       | -                            |
+| titleRotation      | `false`  | `Number` | `0`            | Degree                       |
+| titleAnchorPoint   | `false`  | `Number` | `'center'`     | See explanation              |
+
+
 
 | Prop               | Type(s)  | Description                                   | Required | Default      | Units                                                                          |
 |--------------------|----------|-----------------------------------------------|----------|--------------|--------------------------------------------------------------------------------|
@@ -49,7 +83,25 @@ The `Title` component is used to create a plot title and has smart defaults for 
 | titleAnchorPoint   | `Number` | Anchor point of text                          | ❌        | `center`     | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc' |
 
 
-### Subtitle 
+### Subtitle
+
+|         Prop          | Required | Type(s)  |   Default   |           Unit(s)            |
+| --------------------- | -------- | -------- | ----------- | ---------------------------- |
+| subtitle              | `false`  | `String` | ''          | -                            |
+| subtitleFill          | `false`  | `String` | `black`     | Named, hex, rgb or hsl color |
+| subtitleStroke        | `false`  | `Number` | `undefined` | Named, hex, rgb or hsl color |
+| subtitleStrokeWidth   | `false`  | `Number` | `undefined` | Pixel                        |
+| subtitleStrokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1       |
+| subtitleFillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1       |
+| subtitleOpacity       | `false`  | `Number` | `1`         | Number between 0 and 1       |
+| subtitleFontFamily    | `false`  | `String` | `Helvetica` | -                            |
+| subtitleFontSize      | `false`  | `Number` | `14`        | Pixel                        |
+| subtitleFontWeight    | `false`  | `Number` | `normal`    | -                            |
+| subtitleRotation      | `false`  | `Number` | `0`         | Degree                       |
+| subtitleAnchorPoint   | `false`  | `String` | `center`    | See explanation              |
+
+
+
 | Prop                  | Type(s)  | Description                                            | Required | Default     | Units                                                                          |
 |-----------------------|----------|--------------------------------------------------------|----------|-------------|--------------------------------------------------------------------------------|
 | subtitle              | `String` | Subtitle text                                          | ❌        | ''          |                                                                                |
@@ -64,5 +116,3 @@ The `Title` component is used to create a plot title and has smart defaults for 
 | subtitleFontWeight    | `Number` | Font weight of subtitle text                           | ❌        | `normal`    |                                                                                |
 | subtitleRotation      | `Number` | Rotation angle of subtitle text                        | ❌        | `0`         | degrees                                                                        |
 | subtitleAnchorPoint   | `String` | Anchor point of subtitle text                          | ❌        | `center`    | 'left', 'right', 'top', 'bottom', 'center', 'tl', 'tr', 'tc', 'bl', 'br', 'bc' |
-
-## Examples
