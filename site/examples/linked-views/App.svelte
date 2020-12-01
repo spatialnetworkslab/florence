@@ -74,18 +74,18 @@
 
 {#if ready}
 
-  <Graphic width={1000} height={800}>
+  <Graphic width={500} height={8000}>
 
     <Section
-      x1={50} x2={475}
-      y1={50} y2={350}
+      y1={0} y2={400}
       {...geoScales}
+      padding={25}
       flipY
     >
 
       <PolygonLayer
         geometry={geoData.column('$geometry')}
-        keys={geoData.keys()}
+        key={geoData.keys()}
         fill={geoData.map('resale_price_sqm', priceColorScale)}
         fillOpacity={({ key }) => hoverKey === key ? 1 : 0.5}
         stroke={'white'}
@@ -95,7 +95,7 @@
         transition={1000}
       />
 
-      <DiscreteLegend
+      <!-- <DiscreteLegend
         fill={priceColorScale}
         labelAnchorPoint={'r'}
         title={'Ave. Resale Price/m2 (S$)'}
@@ -104,15 +104,14 @@
         hjust={'right'}
         flipLabels
         usePadding={true}
-      />
+      /> -->
     
     </Section>
 
     <Section 
-      x1={50} x2={475}
-      y1={350} y2={650}
-      scaleY={yearScale}
+      y1={400} y2={800}
       scaleX={monthScale}
+      scaleY={yearScale}
       padding={50}
     >
 
@@ -132,7 +131,7 @@
         title={heatmapData ? hoverKey : 'Hover over an area in the map'} 
         titleFill={hoverKey ? 'black' : 'gray'}
         titleFontFamily={'Montserrat'} 
-        yOffset={-30}
+        yOffset={30}
         usePadding={true}
       />
 
