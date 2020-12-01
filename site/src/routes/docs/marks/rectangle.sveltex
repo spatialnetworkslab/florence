@@ -54,7 +54,7 @@ import SimpleExample from './examples/_RectangleSimple.svelte'
 | y1   | `if (y2 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 | y2   | `if (y1 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 
-The `Rectangle` mark draws a rectangle with four corners defined by the `x1`, `x2`, `y1` and `y2` props. In many cases (i.e. bar charts), this involves using the `bandwidth` of a [band scale](https://github.com/d3/d3-scale#band-scales) as shown in the example above- see the [local coordinates](/docs/concepts/local-coordinates) documentation for a more in-depth explanation of this syntax. If `x` and/or `y` coordinates are left undefined, the `Rectangle` will inherit the respective domains from its parent `Graphic` or `Section`:
+The `Rectangle` mark draws a rectangle with four corners defined by the `x1`, `x2`, `y1` and `y2` props. As such, the positioning of the `Rectangle` is identical to the [Section](/docs/core/section). In many cases (i.e. bar charts), this involves using the `bandwidth` of a [band scale](https://github.com/d3/d3-scale#band-scales) as shown in the example above- see the [local coordinates](/docs/concepts/local-coordinates) documentation for a more in-depth explanation of this syntax. Like the [Section](/docs/core/section), If `x` and/or `y` coordinates are omitted, the `Rectangle` will inherit the extents of its parent `Graphic` or `Section`:
 
 ```markup
 <script>

@@ -1,10 +1,6 @@
 # Grid
-The Grid component is used to quickly position and align 'square' components in a grid format. 'Square' here refers to any component that has x1, x2, y1 and y2 props. This includes the Section component, the Rectangle mark, and any custom component that you would want to create, given it has the props mentioned above.
 
-```js exec
-import SimpleExample from './examples/_GridSimple.svelte'
-```
-<SimpleExample />
+The Grid component is used to quickly position and align 'square' components in a grid format. 'Square' here refers to any component that has x1, x2, y1 and y2 props. This includes the Section component, the Rectangle mark, and any custom component that you would want to create, given it has the props mentioned above.
 
 ```markup
 <script>
@@ -25,7 +21,14 @@ import SimpleExample from './examples/_GridSimple.svelte'
 </Graphic>
 ```
 
+```js exec
+import SimpleExample from './examples/_GridSimple.svelte'
+```
+
+<SimpleExample />
+
 ## Properties
+
 ### Positioning
 
 | Prop |     Type(s)     |    Required     |   Default   |       Units       |
@@ -50,6 +53,7 @@ positioning props.
 
 
 ### Other
+
 | Prop             | Type(s)   | Required | Default | Units         | Description                                                                              |
 | ---------------- | --------- | -------- | ------- | ------------- | --------------------------------- | --------------------------------------------------------- |
 | viewGridTemplate | `Boolean` |          | `false` |               | Option to console log grid layout 
@@ -57,6 +61,7 @@ positioning props.
 
 
 ### Slot Scope
+
 Grid exposes value called `cells` using the `let:cells` syntax. The `cells` object holds a series of objects in which the key is the 'area name' element in `areaNames` array and the value is a position object that will be used to position the cells of the grid. This uses the [native Svelte slot syntax](https://svelte.dev/docs#slot_let). It is this `cells` object that can be used to position the children or cells of the Grid (i.e. `Section` components) in their corresponding cell. 
 
 ```svelte
