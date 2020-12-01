@@ -1,6 +1,6 @@
 # FuncLine
 
-The `FuncLine` mark can be used to plot functions over intervals. 
+The `FuncLine` mark can be used to plot functions over intervals. It is the only mark that does not have a corresponding layer element.
 
 ```markup
 <script>
@@ -89,15 +89,55 @@ These aesthetic props are similar to attributes of the SVG [line](https://develo
 
 ### Transitions
 
-TODO
+|    Prop    | Required |      Type(s)       |   Default   |             Unit(s)              |
+| ---------- | -------- | ------------------ | ----------- | -------------------------------- |
+| transition | `false`  | `Number`, `Object` | `undefined` | Duration in ms or options object |
+
+See the [transition](/docs/concepts/transitions) documentation for more information.
 
 ### Interactions
 
-TODO
+#### Mouse events
+
+|    Prop     | Required |  Type(s)   |   Default   | Unit(s) |
+| ----------- | -------- | ---------- | ----------- | ------- |
+| onClick     | `false`  | `Function` | `undefined` | NA      |
+| onMousedown | `false`  | `Function` | `undefined` | NA      |
+| onMouseup   | `false`  | `Function` | `undefined` | NA      |
+| onMouseover | `false`  | `Function` | `undefined` | NA      |
+| onMouseout  | `false`  | `Function` | `undefined` | NA      |
+| onMousedrag | `false`  | `Function` | `undefined` | NA      |
+
+#### Touch events
+
+|    Prop     | Required |  Type(s)   |   Default   | Unit(s) |
+| ----------- | -------- | ---------- | ----------- | ------- |
+| onTouchdown | `false`  | `Function` | `undefined` | NA      |
+| onTouchup   | `false`  | `Function` | `undefined` | NA      |
+| onTouchover | `false`  | `Function` | `undefined` | NA      |
+| onTouchout  | `false`  | `Function` | `undefined` | NA      |
+| onTouchdrag | `false`  | `Function` | `undefined` | NA      |
+
+#### Select events
+
+|    Prop    | Required |  Type(s)   |   Default   | Unit(s) |
+| ---------- | -------- | ---------- | ----------- | ------- |
+| onSelect   | `false`  | `Function` | `undefined` | NA      |
+| onDeselect | `false`  | `Function` | `undefined` | NA      |
+
+See the [interactivity](/docs/concepts/interactivity) documentation for more information.
 
 ### Other
 
-TODO
+|      Prop       | Required |  Type(s)  |   Default   | Unit(s) |
+| --------------- | -------- | --------- | ----------- | ------- |
+| renderSettings  | `false`  | `Object`  | `undefined` | NA      |
+| blockReindexing | `false`  | `Boolean` | `false`     | NA      |
+| clip            | `false`  | `Boolean` | `true`      | NA      |
+
+- `renderSettings`: see the [advanced rendering](/docs/concepts/advanced-rendering) documentation for more information
+- `blockReindexing`: see the [interactivity](/docs/concepts/interactivity) documentation for more information.
+- `clip`: indicates whether the Mark should be clipped off if it extends beyond its parent `Section` or `Graphic` viewport (i.e. the area within the padding). 
 
 ## Examples
 
