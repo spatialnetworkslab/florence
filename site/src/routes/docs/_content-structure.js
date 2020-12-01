@@ -45,6 +45,10 @@ export const posts = [
       {
         title: 'Transitions',
         path: '/docs/concepts/transitions'
+      },
+      {
+        title: 'Advanced rendering',
+        path: '/docs/concepts/advanced-rendering'
       }
     ]
   },
