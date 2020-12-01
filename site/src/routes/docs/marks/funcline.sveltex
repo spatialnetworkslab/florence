@@ -34,7 +34,7 @@ import SimpleExample from './examples/_FuncLineSimple.svelte'
 
 ### Positioning
 
-| Name | Required |  Type(s)   |   Default   |                        Unit(s)                        |
+| Prop | Required |  Type(s)   |   Default   |                        Unit(s)                        |
 | ---- | -------- | ---------- | ----------- | ----------------------------------------------------- |
 | func | `true`   | `Function` | `undefined` | -                                                    |
 | x    | `false`  | `Number[]` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
@@ -75,7 +75,7 @@ The `FuncLine` only works if its parent `Graphic` or `Section`'s scales have qua
 
 ### Aesthetics
 
-|    Name     | Required | Type(s)  |   Default   |           Unit(s)            |
+|    Prop     | Required | Type(s)  |   Default   |           Unit(s)            |
 | ----------- | -------- | -------- | ----------- | ---------------------------- |
 | stroke      | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
 | strokeWidth | `false`  | `Number` | `3`         | Pixel                        |

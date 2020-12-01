@@ -27,7 +27,7 @@ import SimpleExample from './examples/_PointSimple.svelte'
 
 ### Positioning
 
-| Name |                 Required                  |                                  Type(s)                                   |   Default   |                      Unit(s)(s)                      |
+| Prop |                 Required                  |                                  Type(s)                                   |   Default   |                      Unit(s)(s)                      |
 | ---- | ----------------------------------------- | -------------------------------------------------------------------------- | ----------- | ---------------------------------------------------- |
 | x    | `if (geometry === undefined)`             | `Number`, `String`, `Date`, `Function`                                     | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 | y    | `if (geometry === undefined)`             | `Number`, `String`, `Date`, `Function`                                     | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
@@ -39,7 +39,7 @@ To render a `Point`, you will need to provide either the `x` and `y` props, or t
 
 ### Aesthetics
 
-|     Name      | Required | Type(s)  |   Default   |           Unit(s)            |
+|     Prop      | Required | Type(s)  |   Default   |           Unit(s)            |
 | ------------- | -------- | -------- | ----------- | ---------------------------- |
 | radius        | `false`  | `Number` | `3`         | Pixel                        |
 | fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |

@@ -28,7 +28,7 @@ import SimpleExample from './examples/_LabelSimple.svelte'
 
 ### Positioning
 
-|    Name     |                 Required                  |                                  Type(s)                                   |   Default   |                       Unit(s)                        |
+|    Prop     |                 Required                  |                                  Type(s)                                   |   Default   |                       Unit(s)                        |
 | ----------- | ----------------------------------------- | -------------------------------------------------------------------------- | ----------- | ---------------------------------------------------- |
 | x           | `if (geometry === undefined)`             | `Number`, `String`, `Date`, `Function`                                     | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 | y           | `if (geometry === undefined)`             | `Number`, `String`, `Date`, `Function`                                     | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |

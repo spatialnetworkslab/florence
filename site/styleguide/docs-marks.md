@@ -20,7 +20,7 @@
 ### Positioning
 
 - A table with the following columns:
-  - Name (plain text)
+  - Prop (plain text)
   - Required (backticks) (with `if` statement showing how the prop depends on other props, or `true` or `false`)
   - Type(s) (backticks) (`Array` etc, seperated by commas)
   - Default (backticks)
@@ -33,7 +33,7 @@
 ### Aesthetics
 
 - A table with the following columns:
-  - Name (plain text)
+  - Prop (plain text)
   - Required (will always be plain text I guess)
   - Type(s) (backticks)
   - Default (backticks)
@@ -54,7 +54,7 @@ Link to interactions docs
 ### Other
 
 - A table with the following columns:
-  - Name (plain text)
+  - Prop (plain text)
   - Required (plain text)
   - Type(s) (backticks)
   - Default
