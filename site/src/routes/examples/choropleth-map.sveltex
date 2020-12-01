@@ -2,5 +2,7 @@
 
 A basic choropleth map of Sinagpore, showing the mean resale price per square meter for houses in different [planning areas](https://en.wikipedia.org/wiki/Planning_Areas_of_Singapore). 
 
+The `(async () => { ... })()` bit is a so-called [Immediately Invoked Function Expression](https://developer.mozilla.org/en-US/docs/Glossary/IIFE), which is just a way to define a function and run it immediately without having to give it a name. It is used here to contain all logic that depends on asynchronous operations like fetching datasets.
+
 ::: example examples/choropleth-map
 :::

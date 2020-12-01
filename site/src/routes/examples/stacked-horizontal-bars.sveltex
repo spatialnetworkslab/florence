@@ -2,5 +2,7 @@
 
 Stacked horizontal bar chart showing the cumulative population of different age groups per state in the U.S. (2018). Adapted from https://observablehq.com/@d3/stacked-horizontal-bar-chart.
 
+The `(async () => { ... })()` bit is a so-called [Immediately Invoked Function Expression](https://developer.mozilla.org/en-US/docs/Glossary/IIFE), which is just a way to define a function and run it immediately without having to give it a name. It is used here to contain all logic that depends on asynchronous operations like fetching datasets.
+
 ::: example examples/stacked-horizontal-bars
 :::
