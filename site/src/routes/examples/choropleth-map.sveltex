@@ -1,6 +1,6 @@
 # A choropleth map of Singapore
 
-Some testing text.
+A basic choropleth map of Sinagpore, showing the mean resale price per square meter for houses in different [planning areas](https://en.wikipedia.org/wiki/Planning_Areas_of_Singapore). 
 
 ::: example examples/choropleth-map
 :::

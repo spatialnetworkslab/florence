@@ -1,6 +1,6 @@
 # Area Chart
 
-Some testing text
+A simple area chart showing the closing price of Apple stock for a period between 2007 and 2013.
 
 ::: example examples/area-chart
 :::

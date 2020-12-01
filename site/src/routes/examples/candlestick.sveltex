@@ -1,6 +1,6 @@
 # Candlestick Chart
 
-Some testing text
+A candlestick chart showing open and closing prices of Apple stock from the end of 2017 until May 2018. Adapted from https://observablehq.com/@d3/candlestick-chart.
 
 ::: example examples/candlestick
 :::

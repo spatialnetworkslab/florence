@@ -1,6 +1,6 @@
 # Choropleth
 
-Some testing text.
+A basic choropleth map showing the population of US states.
 
 ::: example examples/choropleth
 :::

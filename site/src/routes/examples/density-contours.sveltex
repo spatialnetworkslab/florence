@@ -1,6 +1,6 @@
 # Density Contours
 
-Some testing text
+A chart showing the relationship between waiting and eruption times of the [Old Faithful](https://en.wikipedia.org/wiki/Old_Faithful) geyser in Yellowstone National Park. Adapted from https://observablehq.com/@d3/density-contours. This example is intended to illustrate how external libraries (in this case [d3-contour](https://github.com/d3/d3-contour)) can easily be integrated into `florence`.
 
 ::: example examples/density-contours
 :::
