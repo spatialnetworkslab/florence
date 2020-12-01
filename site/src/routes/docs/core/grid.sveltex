@@ -31,17 +31,28 @@ import SimpleExample from './examples/_GridSimple.svelte'
 
 ### Positioning
 
-| Prop |     Type(s)     |    Required     |   Default   |       Units       |
-| ---- | --------------- | --------------- | ----------- | ----------------- |
-| x1   | see Section | see Section | `undefined` | local coordinates |
-| x2   | see Section | see Section | `undefined` | local coordinates |
-| y1   | see Section | see Section | `undefined` | local coordinates |
-| y2   | see Section | see Section | `undefined` | local coordinates |
+| Prop |        Required         |                 Types                  |   Default   |                       Unit(s)                        |
+| ---- | ----------------------- | -------------------------------------- | ----------- | ---------------------------------------------------- |
+| x1   | `if (x2 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| x2   | `if (x1 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y1   | `if (y2 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y2   | `if (y1 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 
-The `Grid` positioning props work the same way as the [Section](/docs/core/section)
+The `Grid` positioning props behave the same way as the [Section](/docs/core/section)
 positioning props.
 
 ### Grid settings
+
+| Prop             | Type(s)   | Required | Default | Units         | Description |                 
+| ---------------- | --------- | -------- | ------- | ------------- | ----------- | 
+| rows             | `Number`  | ✅        | `1`     | Integer       | Number of rows in grid |
+| columns          | `Number`  | ✅        | `1`     | Integer       | Number of columns in grid |
+| rowGap           | `Number`  | ✅        | `0`     | Integer       | Margin between rows |
+| columnGap        | `Number`  | ✅        | `0`     | Integer       | Margin between columns |
+| areaNames        | []`String`  | ✅      | [] |               | An array of cell or facet names |
+
+
+
 
 | Prop             | Type(s)   | Required | Default | Units         | Description |                 
 | ---------------- | --------- | -------- | ------- | ------------- | ----------- | 
