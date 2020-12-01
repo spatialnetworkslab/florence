@@ -1,6 +1,6 @@
 # Choropleth
 
-A basic choropleth map showing the population of US states.
+A basic choropleth map showing the population of U.S. states.
 
 ::: example examples/choropleth
 :::

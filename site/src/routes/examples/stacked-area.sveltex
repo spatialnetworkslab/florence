@@ -1,6 +1,6 @@
 # Stacked Area Chart
 
-Some testing text
+Stacked area chart showing unemployment by industry from 2000 to 2010. Original data from [U.S. Bureau of Labor Statistics](https://www.bls.gov/). Adapted from https://observablehq.com/@d3/stacked-area-chart.
 
 ::: example examples/stacked-area
 :::

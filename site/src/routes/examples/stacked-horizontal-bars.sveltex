@@ -1,6 +1,6 @@
 # Stacked Horizontal Bar Chart
 
-Some testing text
+Stacked horizontal bar chart showing the cumulative population of different age groups per state in the U.S. (2018). Adapted from https://observablehq.com/@d3/stacked-horizontal-bar-chart.
 
 ::: example examples/stacked-horizontal-bars
 :::
