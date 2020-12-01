@@ -30,7 +30,6 @@
   const height = 600
 
   let dataContainer
-  let domainHigh, domainLow, domainDate
   let scaleX, scaleY
   let xTicks
 
@@ -38,9 +37,9 @@
     if (done) {
       dataContainer = new DataContainer(data)
 
-      domainHigh = dataContainer.domain('high')
-      domainLow = dataContainer.domain('low')
-      domainDate = dataContainer.domain('date')
+      const domainHigh = dataContainer.domain('high')
+      const domainLow = dataContainer.domain('low')
+      const domainDate = dataContainer.domain('date')
 
       scaleX = scaleBand()
         .domain(
