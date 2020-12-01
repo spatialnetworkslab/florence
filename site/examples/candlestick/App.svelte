@@ -16,20 +16,15 @@
   let dataContainer, scaleX, scaleY, xTicks, done
 
   (async () => {
-    let data = await csv(dataURL, d => {
-      const date = parseDate(d['Date'])
-      return {
-        Date: date,
-        High: +d['High'],
-        Low: +d['Low'],
-        Open: +d['Open'],
-        Close: +d['Close']
-      }
-    })
+    const data = await csv(dataURL, d => ({
+      Date:  parseDate(d.Date),
+      High: +d.High,
+      Low: +d.Low,
+      Open: +d.Open,
+      Close: +d.Close
+    }))
 
-    data = data.slice(-120)
-
-    dataContainer = new DataContainer(data)
+    dataContainer = new DataContainer(data.slice(-120))
 
     const domainHigh = dataContainer.domain('High')
     const domainLow = dataContainer.domain('Low')
