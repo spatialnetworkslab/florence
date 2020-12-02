@@ -1,20 +1,24 @@
 # Plot title
+
 The `Title` component is used to create titles and has smart defaults for positioning and aesthetics/visual properties. 
 
 ```markup
-  <Graphic>
-    <Title
-        ...
-      />
-      
-    <Section>
-      <Title
-        ...
-      />
-    </Section>
+<script>
+  import { Graphic, Title } from '@snlab/florence'
+</script>
 
-  </Graphic>
+<Graphic width={200} height={200} backgroundColor={'green'}>
+
+  <Title title={'Hello world!'} />
+
+</Graphic>
 ```
+
+```js exec
+import SimpleExample from './examples/_TitleSimple.svelte'
+```
+
+<SimpleExample />
 
 ## Properties
 

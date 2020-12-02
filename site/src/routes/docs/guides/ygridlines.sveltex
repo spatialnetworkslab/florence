@@ -23,5 +23,14 @@ import SimpleExample from './utils/_YGridLinesSimple.svelte'
 
 ## Properties
 
-TODO
+|  Prop   | Required |  Type(s)   |   Default   |                       Unit(s)                        |
+| ------- | -------- | ---------- | ----------- | ---------------------------------------------------- |
+| scale   | `false`  | `Function` | `undefined` | [d3 scale](https://github.com/d3/d3-scale)           |
+| count   | `false`  | `Number`   | `10`        | -                                                    |
+| extra   | `false`  | `Boolean`  | `false`     | -                                                    |
+| values  | `false`  | `Array`    | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| width   | `false`  | `Number`   | `0.25`      | Pixel                                                |
+| color   | `false`  | `String`   | `'black'`   | Named, hex, rgb or hsl color                         |
+| opacity | `false`  | `Number`   | `1`         | Number between 0 and 1                               |
 
+These properties mirror the 'ticks' properties of the [YAxis](/docs/guides/xaxis).

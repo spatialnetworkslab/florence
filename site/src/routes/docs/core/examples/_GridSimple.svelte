@@ -5,9 +5,6 @@
 
   let columns = 2
   $: rows = Math.ceil(colors.length / columns)
-
-  const width = 200
-  const height = 200
 </script>
 
 <div>
@@ -15,17 +12,16 @@
   <input type="range" min="1" max="3" bind:value={columns} name="cols-slider" />
 </div>
 
-<Graphic {width} {height}>
-  <Grid
-      {columns}
-      {rows}
-      areaNames={colors}
-      let:cells
-  >
-      {#each colors as color}
-          <Section {...cells[color]} backgroundColor={color}>
-          </Section>
-      {/each}
-  </Grid>
-</Graphic>
+<Graphic width={200} height={200}>
 
+  <Grid {columns} {rows} names={colors} let:cells>
+
+    {#each colors as color}
+      
+      <Section {...cells[color]} backgroundColor={color}></Section>
+
+    {/each}
+
+  </Grid>
+
+</Graphic>

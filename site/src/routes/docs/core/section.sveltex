@@ -13,7 +13,7 @@ The `Section` is one of the corner stones of `florence`. It is used to:
 </script>
 
 <Graphic width={200} height={200} backgroundColor={'blue'}>
-  
+
   <Section 
     x1={50}
     x2={150}
