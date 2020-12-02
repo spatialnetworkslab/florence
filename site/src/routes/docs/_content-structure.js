@@ -115,5 +115,23 @@ export const posts = [
         path: '/docs/guides/ygridlines'
       }
     ]
+  },
+  {
+    title: 'Helpers',
+    path: '/docs/helpers/create-geo-scales',
+    children: [
+      {
+        title: 'createGeoScales',
+        path: '/docs/helpers/create-geo-scales'
+      },
+      {
+        title: 'createPanHandler',
+        path: '/docs/helpers/create-pan-handler'
+      },
+      {
+        title: 'createZoomHandler',
+        path: '/docs/helpers/create-zoom-handler'
+      }
+    ]
   }
 ]
