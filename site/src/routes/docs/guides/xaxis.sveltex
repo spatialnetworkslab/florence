@@ -30,6 +30,10 @@ import SimpleExample from './utils/_XAxisSimple.svelte'
 | yOffset | `false`  | `Number`           | `0`        | Pixel           |
 | flip    | `false`  | `Boolean`          | `false`    | -               |
 
+- `vjust` can either be a `String` with the one of the values `'top'`, `'bottom'`, or `'center'`, or a `Number` where `0` corresponds to `'top'`, `1` corresponds to `'bottom'`, and `0.5` to `'center'`. This is the main way to determine where in the `Section` the `XAxis` will be positioned.
+- `yOffset` allows shifting the axis a few pixels up (when it is negative) or down (when it is positive) from where it has been positioned using `vjust`.
+- setting `flip` to `true` will make the `ticks` and `labels` switch sides accross the axis.
+
 ### Baseline
 
 |      Prop       | Required |  Type(s)  |  Default  |           Unit(s)            |
@@ -38,6 +42,9 @@ import SimpleExample from './utils/_XAxisSimple.svelte'
 | baseLineColor   | `false`  | `String`  | `'black'` | Named, hex, rgb or hsl color |
 | baseLineOpacity | `false`  | `Number`  | `1`       | Number between 0 and 1       |
 | baseLineWidth   | `false`  | `Number`  | `1`       | Pixel                        |
+
+- setting `baseLine` to `false` will hide the horizontal axis line.
+- the rest should be self-explanatory.
 
 ### Ticks
 
@@ -53,37 +60,53 @@ import SimpleExample from './utils/_XAxisSimple.svelte'
 | tickColor   | `false`  | `String`   | `'black'`   | Named, hex, rgb or hsl color                         |
 | tickOpacity | `false`  | `Number`   | `1`         | Number between 0 and 1                               |
 
-The `scale` prop can be used to override the parent's `scaleX`.
+- the `scale` prop can be used to override the parent's `scaleX`. 
+- setting `ticks` to `false` will hide the ticks.
+- `tickCount` will determine the number of ticks.
+- `tickExtra` will add an extra tick to mark the lower end of the domain.
+- `tickValues` can be used to manually place ticks, and will override `tickCount` and `tickExtra`.
+- `tickSize` refers to the length of the ticks.
+- `tickWidth` refers to the line width of the ticks.
+- `tickOpacity` refers to the opacity of the ticks.
 
 ### Tick labels
 
-|      Prop       | Required |  Type(s)   |    Default    |           Unit(s)            |
-| --------------- | -------- | ---------- | ------------- | ---------------------------- |
-| labelFormat     | `false`  | `Function` | `undefined`   | -                            |
-| labelOffset     | `false`  | `Number`   | `2`           | Pixel                        |
-| labelRotate     | `false`  | `Number`   | `0`           | Degree                       |
-| labelFont       | `false`  | `String`   | `'Helvetica'` | Font                         |
-| labelFontSize   | `false`  | `Number`   | `10`          | Pixel                        |
-| labelFontWeight | `false`  | `String`   | `'normal'`    | See explanation              |
-| labelOpacity    | `false`  | `Number`   | `1`           | Number between 0 and 1       |
-| labelColor      | `false`  | `String`   | `'black'`     | Named, hex, rgb or hsl color |
+|      Prop       | Required |  Type(s)   |    Default    |               Unit(s)               |
+| --------------- | -------- | ---------- | ------------- | ----------------------------------- |
+| labelFormat     | `false`  | `Function` | `undefined`   | -                                   |
+| labelOffset     | `false`  | `Number`   | `2`           | Pixel                               |
+| labelRotate     | `false`  | `Number`   | `0`           | Degree                              |
+| labelFont       | `false`  | `String`   | `'Helvetica'` | Font                                |
+| labelFontSize   | `false`  | `Number`   | `10`          | Pixel                               |
+| labelFontWeight | `false`  | `String`   | `'normal'`    | See [Label](/docs/marks/label) Mark |
+| labelOpacity    | `false`  | `Number`   | `1`           | Number between 0 and 1              |
+| labelColor      | `false`  | `String`   | `'black'`     | Named, hex, rgb or hsl color        |
+
+- `labelFormat` is a `Function` that receives a tick value, and can return a formatted tick value (for example, passing `Math.floor` to `labelFormat` in a numeric domain will coerce all tick values into integers).
+- `labelOffset` allows shifting the labels a few pixels up (negative) or down (positive).
+- `labelRotate` allows rotating the tick labels. This can be useful when the tick labels are close together.
+- the rest should be self-explanatory.
 
 ### Title
 
-|       Prop       | Required |      Type(s)       |    Default    |           Unit(s)            |
-| ---------------- | -------- | ------------------ | ------------- | ---------------------------- |
-| titleHjust       | `false`  | `String`, `Number` | `'center'`    | See explanation              |
-| titleXOffset     | `false`  | `Number`           | `0`           | Pixel                        |
-| titleVjust       | `false`  | `String`, `Number` | `'axis'`      | See explanation              |
-| titleYOffset     | `false`  | `String`, `Number` | `'axis'`      | See explanation              |
-| title            | `false`  | `String`           | `''`          | -                            |
-| titleColor       | `false`  | `String`           | `'black'`     | Named, hex, rgb or hsl color |
-| titleFont        | `false`  | `String`           | `'Helvetica'` | Font                         |
-| titleFontSize    | `false`  | `Number`           | `12`          | Pixel                        |
-| titleFontWeight  | `false`  | `String`           | `'normal'`    | See explanation              |
-| titleOpacity     | `false`  | `Number`           | `1`           | Number between 0 and 1       |
-| titleRotation    | `false`  | `Number`           | `0`           | Degree                       |
-| titleAnchorPoint | `false`  | `String`           | `'t'`         | See explanation              |
+|       Prop       | Required |      Type(s)       |    Default    |               Unit(s)               |
+| ---------------- | -------- | ------------------ | ------------- | ----------------------------------- |
+| titleHjust       | `false`  | `String`, `Number` | `'center'`    | See explanation                     |
+| titleXOffset     | `false`  | `Number`           | `0`           | Pixel                               |
+| titleVjust       | `false`  | `String`, `Number` | `'axis'`      | See explanation                     |
+| titleYOffset     | `false`  | `String`, `Number` | `'axis'`      | See explanation                     |
+| titleAnchorPoint | `false`  | `String`           | `'t'`         | See [Label](/docs/marks/label) Mark |
+| title            | `false`  | `String`           | `''`          | -                                   |
+| titleColor       | `false`  | `String`           | `'black'`     | Named, hex, rgb or hsl color        |
+| titleFont        | `false`  | `String`           | `'Helvetica'` | Font                                |
+| titleFontSize    | `false`  | `Number`           | `12`          | Pixel                               |
+| titleFontWeight  | `false`  | `String`           | `'normal'`    | See explanation                     |
+| titleOpacity     | `false`  | `Number`           | `1`           | Number between 0 and 1              |
+| titleRotation    | `false`  | `Number`           | `0`           | Degree                              |
+
+`titleHjust`, `titleXOffset`, `titleVjust` and `titleYOffset` can be used to position the axis title similar to the `XAxis`'s `vjust` and `yOffset` props. The `titleVjust` and `titleYOffset` props, however, also allow a `String` with the value `'axis'`, which automatically places the title in a reasonable default position. For an explanation of `titleAnchorPoint`, see the `anchorPoint` explanation in the [Label](/docs/marks/label) Mark documentation.
+
+The rest should be self-explanatory.
 
 ### Transitions
 
@@ -93,9 +116,10 @@ The `scale` prop can be used to override the parent's `scaleX`.
 
 Transitions will be applied to the marks (`Line`s and `Label`s) of which the axis consists. See the [transition](/docs/concepts/transitions) documentation for more information.
 
-
 ### Other
 
 | Prop | Required |  Type(s)  | Default | Unit(s) |
 | ---- | -------- | --------- | ------- | ------- |
 | clip | `false`  | `Boolean` | `false` | -       |
+
+Setting this to `true` will let the parent `Graphic` or `Section` clip off the axis if it leaves the viewport. Usually not desirable for axes.
