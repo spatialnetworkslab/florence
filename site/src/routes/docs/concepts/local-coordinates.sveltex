@@ -6,15 +6,15 @@ Understanding how local coordinates work is key to understanding `florence`. The
 
 As stated above, local coordinate systems are created with the `Graphic` and `Section` components. The following props are used to create local coordinate systems:
 
-|      Prop      |                  Type(s)                   | Required |   Default    |     Units     |
-| -------------- | ------------------------------------------ | -------- | ------------ | ------------- |
-| scaleX         | [d3 scale](https://github.com/d3/d3-scale) | no       | `undefined`  | -             |
-| scaleY         | [d3 scale](https://github.com/d3/d3-scale) | no       | `undefined`  | -             |
-| transformation | `String`: `'identity'` or `'polar'`        | no       | `'identity'` | -             |
-| flipX          | `Boolean`                                  | no       | `false`      | -             |
-| flipY          | `Boolean`                                  | no       | `false`      | -             |
-| padding        | `Number`, `Object`                         | no       | `undefined`  | screen pixels |
-| zoomIdentity   | `Object`                                   | no       | `undefined`  | -             |
+|      Prop      | Required |      Type(s)       |   Default    |                  Unit(s)                   |
+| -------------- | -------- | ------------------ | ------------ | ------------------------------------------ |
+| scaleX         | `false`  | `Function`         | `undefined`  | [d3 scale](https://github.com/d3/d3-scale) |
+| scaleY         | `false`  | `Function`         | `undefined`  | [d3 scale](https://github.com/d3/d3-scale) |
+| transformation | `false`  | `String`           | `'identity'` | Should be either `'identity'` or `'polar'` |
+| flipX          | `false`  | `Boolean`          | `false`      | -                                          |
+| flipY          | `false`  | `Boolean`          | `false`      | -                                          |
+| padding        | `false`  | `Number`, `Object` | `undefined`  | Pixel                                      |
+| zoomIdentity   | `false`  | `Object`           | `undefined`  | -                                          |
 
 The purpose of a local coordinate system is to convert coordinates, given to components within a `Graphic` or `Section`, to pixel values that end up on your screen. All marks and layers have so-called 'positioning props'. Below is a schematic representation of how `florence` converts local coordinates to pixel values:
 
@@ -25,7 +25,7 @@ The purpose of a local coordinate system is to convert coordinates, given to com
 The three main steps in this process are:
 
 1. Scaling
-2. Applying the coordinate transformation
+2. Applying the coordinate transformation, if any
 3. Applying the 'final' transformation, which encompasses padding, zooming and flipping.
 
 These three concepts will be explained in depth in the next paragraphs.
@@ -36,7 +36,7 @@ These three concepts will be explained in depth in the next paragraphs.
 
 Scaling is the process of ["mapping a dimension of abstract data to a visual representation"](https://github.com/d3/d3-scale). In `florence`, this is not always true. The output of the scaling step is not necessarily the final 'visual representation' (a pixel value). If the user chooses to apply a coordinate transformation, the output of the scaling step goes through another step of processing. Or, if the user specifies the `padding`, `flipX`, `flipY` or `zoomIdentity` props, there will be another ('final') step before we obtain a pixel value. But for now, let's forget about coordinate transformations and things like padding and flipping, and look at how scaling works in isolation.
 
-To scale coordinates in a local coordinate system, pass a [d3 scale](https://github.com/d3/d3-scale) to `scaleX` or `scaleY`. D3 scales are functions that map domains to ranges, where a domain is the 'abstract data dimension' and the range is the output dimension. In `florence`, the range will be taken care of for you, so you only need to define the domain.
+To scale coordinates in a local coordinate system, pass a [d3 scale](https://github.com/d3/d3-scale) to `scaleX` or `scaleY`. D3 scales are functions that map domains to ranges, where a domain is the 'abstract data dimension' and the range is the output dimension- in this case, pixels on your screen. In `florence`, the range will be taken care of for you, so you only need to define the domain.
 
 Say that we have the following point:
 
@@ -46,11 +46,11 @@ const point = { x: 5, y: 5 }
 
 And we want to position this point in the middle of the following `Graphic`:
 
-```js
-import { Graphic } from '@snlab/florence'
-```
+```markup
+<script>
+  import { Graphic } from '@snlab/florence'
+</script>
 
-```
 <Graphic 
   width={200}
   height={200}
@@ -61,12 +61,12 @@ import { Graphic } from '@snlab/florence'
 
 If we want to use the point's original coordinates, we can position it in the center using d3's [scaleLinear](https://github.com/d3/d3-scale#scaleLinear). We will also give the `Graphic` a background color. This makes it easier to see that the `Point` is actually in the middle.
 
-```js
-import { Graphic, Point } from '@snlab/florence'
-import { scaleLinear } from 'd3-scale'
-```
+```markup
+<script>
+  import { Graphic, Point } from '@snlab/florence'
+  import { scaleLinear } from 'd3-scale'
+</script>
 
-```
 <Graphic 
   width={200}
   height={200}
@@ -99,15 +99,15 @@ Scaling can also be used to convert `String`s or `Date`s, as long as the correct
 import StringTemporal from './examples/_StringTemporal.svelte'
 ```
 
-```js
-import { Graphic, Rectangle } from '@snlab/florence'
-import { scalePoint, scaleTime } from 'd3-scale'
+```markup
+<script>
+  import { Graphic, Rectangle } from '@snlab/florence'
+  import { scalePoint, scaleTime } from 'd3-scale'
 
-const domainX = ['a', 'b', 'c', 'd', 'e']
-const domainY = [new Date(2020, 1, 1), new Date(2020, 1, 10)])
-```
+  const domainX = ['a', 'b', 'c', 'd', 'e']
+  const domainY = [new Date(2020, 1, 1), new Date(2020, 1, 10)])
+</script>
 
-```
 <Graphic
   width={200}
   height={200}
@@ -136,15 +136,15 @@ const domainY = [new Date(2020, 1, 1), new Date(2020, 1, 10)])
 
 ### Domain shorthand
 
-It is also possible to simply pass the domain to `scaleX` or `scaleY`. In this case, `florence` will create a linear scale from the domain. Therefore this:
+It is also possible to simply pass a numeric domain to `scaleX` or `scaleY`. In this case, `florence` will create a linear scale from the domain. Therefore this:
 
-```
+```markup
 <Graphic scaleX={[0, 10]}>
 ```
 
 is equal to this:
 
-```
+```markup
 <Graphic scaleX={scaleLinear().domain([0, 10])}>
 ```
 
@@ -156,18 +156,25 @@ Even when `scaleX` and `scaleY` are used, it is possible to bypass them. To do t
 import CenterPointFunc from './examples/_CenterPointFunc.svelte'
 ```
 
-```
-<Graphic 
+```markup
+<script>
+  import { Graphic, Point, Rectangle } from '@snlab/florence'
+  import { scaleLinear } from 'd3-scale'
+
+  const point = { x: 5, y: 5 }
+</script>
+
+<Graphic
   width={200}
   height={200}
   scaleX={scaleLinear().domain([0, 10])}
   scaleY={scaleLinear().domain([0, 10])}
-  backgroundColor="#b2ffb2"
+  backgroundColor={'#b2ffb2'}
 >
 
-  <Point x={point.x} y={point.y} radius={20} fill="red" />
+  <Point x={point.x} y={point.y} radius={20} fill={'red'} />
 
-  <Point x={() => 100} y={() => 100} radius={10} fill="green" />
+  <Point x={() => 100} y={() => 100} radius={10} fill={'green'} />
 
 </Graphic>
 ```
@@ -182,11 +189,14 @@ Currently, the only supported coordinate transformation is `'polar'`. More trans
 import PolarShowcase from './examples/_PolarShowcase.svelte'
 ```
 
-```js
-let transformation = 'identity'
-```
+```markup
+<script>
+  import { Graphic, Rectangle, LineLayer, LabelLayer } from '@snlab/florence'
 
-```
+  let flipY = false // set this to true to flip the coordinate system
+  let transformation = 'identity'
+</script>
+
 <div>
   <label for="coordinate-select">Coordinates:</label>
   <select name="coordinate-select" bind:value={transformation}>
@@ -200,6 +210,7 @@ let transformation = 'identity'
   height={500}
   {transformation}
   backgroundColor="#b2ffb2"
+  {flipY}
 >
 
   <Rectangle fill="white" opacity={0.4} transition={2000} />
@@ -207,7 +218,7 @@ let transformation = 'identity'
   <LineLayer 
     x={[[0, 0], [125, 125], [250, 250], [375, 375]]}
     y={[[0, 500], [0, 500], [0, 500], [0, 500]]}
-    stroke={lineStrokes}
+    stroke={["red", "orange", "yellow" , "green"]}
     transition={2000}
   />
 
@@ -233,7 +244,9 @@ Polar coordinates can be used either with or without scales. In the examples abo
 import PolarScalingShowcase from './examples/_PolarScalingShowcase.svelte'
 ```
 
-```
+```markup
+...
+
 <Graphic
   width={500}
   height={500}
@@ -278,7 +291,9 @@ Without using `flipX` and `flipY`, the following point will be in the top left c
 import Flip from './examples/_Flip.svelte'
 ```
 
-```
+```markup
+...
+
 <Graphic
   width={200}
   height={200}
@@ -292,7 +307,9 @@ import Flip from './examples/_Flip.svelte'
 
 With `flipX` and `flipY`, it is moved to the bottom right corner instead:
 
-```
+```markup
+...
+
 <Graphic
   width={200}
   height={200}
@@ -336,11 +353,11 @@ An example:
 import Padding from './examples/_Padding.svelte'
 ```
 
-```js
-import { Graphic, Rectangle } from '@snlab/florence'
-```
+```markup
+<script>
+  import { Graphic, Rectangle } from '@snlab/florence'
+</script>
 
-```
 <Graphic 
   width={200}
   height={200}
@@ -384,18 +401,18 @@ An example:
 import Zoom from './examples/_Zoom.svelte'
 ```
 
-```js
-import { Graphic, Point, Label } from '@snlab/florence'
+```markup
+<script>
+  import { Graphic, Point, Label } from '@snlab/florence'
   
-const zoomIdentity = {
-  x: 50,
-  y: -50,
-  kx: 2,
-  ky: 2
-}
-```
+  const zoomIdentity = {
+    x: 50,
+    y: -50,
+    kx: 2,
+    ky: 2
+  }
+</script>
 
-```
 <Graphic
   width={200}
   height={200}
@@ -418,12 +435,12 @@ An example:
 import NestedSection from './examples/_NestedSection.svelte'
 ```
 
-```js
-import { Graphic, Section, Point } from '@snlab/florence'
-import { scaleLinear } from 'd3-scale'
-```
+```markup
+<script>
+  import { Graphic, Section, Point } from '@snlab/florence'
+  import { scaleLinear } from 'd3-scale'
+</script>
 
-```
 <Graphic
   width={500}
   height={500}
@@ -471,9 +488,7 @@ import { scaleLinear } from 'd3-scale'
 
 <NestedSection />
 
-## Examples
-
-### Scaling example
+## Example
 
 This example will illustrate working with `String`s and d3's [scalePoint](https://github.com/d3/d3-scale#scalePoint). Let's say that a street artist has three favorite locations to play: the square, the park, and the mall. Every day she randomly picks a location where she plays all day, and at the end of the day she writes down the location and how much money she made. To have some insight in which locations yield the best results, she decides to visualize the data of the last 100 days, which is stored in two `Array`s: `location` and `money`. How would she accomplish this in `florence`? For this example, we will also use axes, to make the result a bit easier to interpret.
 
@@ -481,16 +496,17 @@ This example will illustrate working with `String`s and d3's [scalePoint](https:
 import StreetArtist from './examples/_StreetArtist.svelte'
 ```
 
-```js
-import { Graphic, PointLayer, XAxis, YAxis } from '@snlab/florence'
-import { scaleLinear, scalePoint } from 'd3-scale'
+```markup
+<script>
+  import { Graphic, PointLayer, XAxis, YAxis } from '@snlab/florence'
+  import { scaleLinear, scalePoint } from 'd3-scale'
+  import { getData } from './data.js'
 
-const { location, money } = getData()
+  const { location, money } = getData()
 
-const locations = ['square', 'park', 'mall']
-```
+  const locations = ['square', 'park', 'mall']
+</script>
 
-```
 <Graphic
   width={200}
   height={200}
