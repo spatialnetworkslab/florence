@@ -3,13 +3,21 @@
 Every `florence` graphic starts with the `Graphic` component. Think of
 it as a supercharged `svg` root element.
 
-```svelte
-<Graphic width={500} height={500}>
+```markup
+<script>
+  import { Graphic } from '@snlab/florence'
+</script>
 
-  ...
+<Graphic width={200} height={200} backgroundColor={'blue'}>
 
 </Graphic>
 ```
+
+```js exec
+import SimpleExample from './examples/_GraphicSimple.svelte'
+```
+
+<SimpleExample />
 
 ## Caveats
 

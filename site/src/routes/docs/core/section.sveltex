@@ -8,12 +8,30 @@ The `Section` is one of the corner stones of `florence`. It is used to:
 - enable interactions
 
 ```markup
-<Section>
+<script>
+  import { Graphic, Section } from '@snlab/florence'
+</script>
 
-    ...
+<Graphic width={200} height={200} backgroundColor={'blue'}>
+  
+  <Section 
+    x1={50}
+    x2={150}
+    y1={50}
+    y2={150}
+    backgroundColor={'green'}
+  >
+  
+  </Section>
 
-</Section>
+</Graphic>
 ```
+
+```js exec
+import SimpleExample from './examples/_SectionSimple.svelte'
+```
+
+<SimpleExample />
 
 ## Caveats
 
