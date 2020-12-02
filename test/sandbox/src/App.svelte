@@ -42,6 +42,8 @@
   // Bugs
   import GraphicAreaBug from './examples/GraphicAreaBug.svelte'
   import FuncLineBug from './examples/FuncLineBug.svelte'
+
+  import RecycleTest from './examples/RecycleTest.svelte'
   
   // and add them to this component array
   const components = [
@@ -224,6 +226,10 @@
       name: 'Func line bug',
       url: 'func-line-bug',
       component: FuncLineBug
+    },
+    {
+      name: 'Recycle test',
+      url: 'recycle-test'
     }
   ]
 </script>
