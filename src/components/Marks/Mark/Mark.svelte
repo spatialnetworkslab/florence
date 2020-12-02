@@ -467,7 +467,10 @@
 
   {#if renderLabel}
 
-    <g clip-path={clip ? `url(#clip-${$sectionContext.sectionId})` : 'none'}>
+    <g 
+      clip-path={clip ? `url(#clip-${$sectionContext.sectionId})` : 'none'}
+      class="label-group" 
+    >
 
       <text
         class="label"
