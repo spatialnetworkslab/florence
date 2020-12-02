@@ -10,12 +10,12 @@ const purgeFromMd = async (content) => {
 }
 
 const purgecss = require('@fullhuman/postcss-purgecss')({
-  content: ['./src/**/*.svelte', './src/**/*.html'],
+  content: ['./src/**/*.sveltex', './src/**/*.svelte', './src/**/*.html'],
   extractors: [
-    // {
-    //   extractor: purgeFromMd,
-    //   extensions: ['sveltex']
-    // },
+    {
+      extractor: purgeFromMd,
+      extensions: ['sveltex']
+    },
     {
       extractor: purgeHtml,
       extensions: ['html']
