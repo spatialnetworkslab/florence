@@ -81,13 +81,25 @@ Where `x` and `y` represent the amount in pixels that the `Section` is panned to
 }
 ```
 
-`panSettings`: an `Object` with the following possible members:
+`panSettings` must be an `Object` with the following possible members:
 
-- `setZoomIdentity`: A function that updates the `zoomIdentity`
-- `setBlockReindexing`: A function that updates the `blockReindexing`
-- `dimension`: Can be used to limit scrolling to a either the x or y dimension
-- `extentX`: Determines how far can be scrolled in the x dimension (if set to `[0, 0]` scrolling will be disabled in the x dimension)
-- `extentY`: Determines how far can be scrolled in the x dimension (if set to `[0, 0]` scrolling will be disabled in the x dimension)
+```js
+{
+  setZoomIdentity: <Function>,
+  setBlockReindexing: <Function>,
+  dimension: <String>,
+  extentX: <Array>,
+  extentY: <Array>
+}
+```
+
+where
+
+- `setZoomIdentity` is a function that updates the `zoomIdentity`
+- `setBlockReindexing`is a function that updates the `blockReindexing`
+- `dimension` can be used to limit scrolling to a either the x or y dimension
+- `extentX` determines how far can be scrolled in the x dimension (if set to `[0, 0]` scrolling will be disabled in the x dimension)
+- `extentY` determines how far can be scrolled in the y dimension (if set to `[0, 0]` scrolling will be disabled in the y dimension)
 
 TODO explain `setZoomIdentity` and `setBlockReindexing`.
 
