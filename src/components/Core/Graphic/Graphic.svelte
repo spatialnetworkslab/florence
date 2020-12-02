@@ -21,8 +21,8 @@
 
   export let renderer = undefined
   
-  export let width = 500
-  export let height = 500
+  export let width
+  export let height
   export let viewBox = undefined
   export let preserveAspectRatio = 'xMidYMid meet'
 
@@ -95,17 +95,15 @@
     if (width.constructor === Number && height.constructor === Number) {
       numberWidth = width
       numberHeight = height
-    } else if (originalViewBox !== undefined) {
+    } else if (
+      width.constructor === String &&
+      height.constructor === String &&
+      originalViewBox !== undefined
+    ) {
       numberWidth = Number(originalViewBoxArray[2])
       numberHeight = Number(originalViewBoxArray[3])
     } else if (originalViewBox === undefined) {
-      numberWidth = 100
-      numberHeight = 100
-    }
-  }
-  $: {
-    if (originalViewBox === undefined) {
-      viewBox = `0 0 ${numberWidth} ${numberHeight}`
+      throw new Error('Graphic: invalid combination of positioning props')
     }
   }
 
