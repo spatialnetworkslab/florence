@@ -54,7 +54,7 @@ import SimpleExample from './examples/_RectangleSimple.svelte'
 | y1   | `if (y2 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 | y2   | `if (y1 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 
-The `Rectangle` mark draws a rectangle with four corners defined by the `x1`, `x2`, `y1` and `y2` props. In many cases (i.e. bar charts), this involves using the `bandwidth` of a [band scale](https://github.com/d3/d3-scale#band-scales) as shown in the example above- see the [local coordinates](/docs/concepts/local-coordinates) documentation for a more in-depth explanation of this syntax. If `x` and/or `y` coordinates are left undefined, the `Rectangle` will inherit the respective domains from its parent `Graphic` or `Section`:
+The `Rectangle` mark draws a rectangle with four corners defined by the `x1`, `x2`, `y1` and `y2` props. As such, the positioning of the `Rectangle` is identical to the [Section](/docs/core/section). In many cases (i.e. bar charts), this involves using the `bandwidth` of a [band scale](https://github.com/d3/d3-scale#band-scales) as shown in the example above- see the [local coordinates](/docs/concepts/local-coordinates) documentation for a more in-depth explanation of this syntax. Like the [Section](/docs/core/section), If `x` and/or `y` coordinates are omitted, the `Rectangle` will inherit the extents of its parent `Graphic` or `Section`:
 
 ```markup
 <script>
@@ -107,15 +107,63 @@ These aesthetic props are similar to attributes of the SVG [rect](https://develo
 
 ### Transitions
 
-TODO
+|    Prop    | Required |      Type(s)       |   Default   |             Unit(s)              |
+| ---------- | -------- | ------------------ | ----------- | -------------------------------- |
+| transition | `false`  | `Number`, `Object` | `undefined` | Duration in ms or options object |
+
+See the [transition](/docs/concepts/transitions) documentation for more information.
 
 ### Interactions
 
-TODO
+#### Mouse events
+
+|    Prop     | Required |  Type(s)   |   Default   | Unit(s) |
+| ----------- | -------- | ---------- | ----------- | ------- |
+| onClick     | `false`  | `Function` | `undefined` | -      |
+| onMousedown | `false`  | `Function` | `undefined` | -      |
+| onMouseup   | `false`  | `Function` | `undefined` | -      |
+| onMouseover | `false`  | `Function` | `undefined` | -      |
+| onMouseout  | `false`  | `Function` | `undefined` | -      |
+| onMousedrag | `false`  | `Function` | `undefined` | -      |
+
+#### Touch events
+
+|    Prop     | Required |  Type(s)   |   Default   | Unit(s) |
+| ----------- | -------- | ---------- | ----------- | ------- |
+| onTouchdown | `false`  | `Function` | `undefined` | -      |
+| onTouchup   | `false`  | `Function` | `undefined` | -      |
+| onTouchover | `false`  | `Function` | `undefined` | -      |
+| onTouchout  | `false`  | `Function` | `undefined` | -      |
+| onTouchdrag | `false`  | `Function` | `undefined` | -      |
+
+#### Select events
+
+|    Prop    | Required |  Type(s)   |   Default   | Unit(s) |
+| ---------- | -------- | ---------- | ----------- | ------- |
+| onSelect   | `false`  | `Function` | `undefined` | -      |
+| onDeselect | `false`  | `Function` | `undefined` | -      |
+
+See the [interactivity](/docs/concepts/interactivity) documentation for more information.
 
 ### Other
 
-TODO
+|      Prop       | Required |  Type(s)  |   Default   | Unit(s) |
+| --------------- | -------- | --------- | ----------- | ------- |
+| renderSettings  | `false`  | `Object`  | `undefined` | -      |
+| blockReindexing | `false`  | `Boolean` | `false`     | -      |
+| clip            | `false`  | `Boolean` | `true`      | -      |
+
+- `renderSettings`: see the [advanced rendering](/docs/concepts/advanced-rendering) documentation for more information
+- `blockReindexing`: see the [interactivity](/docs/concepts/interactivity) documentation for more information.
+- `clip`: indicates whether the Mark or Layer should be clipped off if it extends beyond its parent `Section` or `Graphic` viewport (i.e. the area within the padding). 
+
+In addition, the `RectangleLayer` has the `key` prop:
+
+| Prop | Required |  Type(s)   |   Default   |       Unit(s)        |
+| ---- | -------- | ---------- | ----------- | -------------------- |
+| key  | `false`  | `String[]` | `undefined` | Array of unique keys |
+
+See the [marks versus layers](/docs/concepts/marks-vs-layers) documentation for more information on how keys work.
 
 ## Examples
 

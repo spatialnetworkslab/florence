@@ -1,6 +1,6 @@
 # FuncLine
 
-The `FuncLine` mark can be used to plot functions over intervals. 
+The `FuncLine` mark can be used to plot functions over intervals. It is the only mark that does not have a corresponding layer element.
 
 ```markup
 <script>
@@ -34,10 +34,10 @@ import SimpleExample from './examples/_FuncLineSimple.svelte'
 
 ### Positioning
 
-| Name | Required |  Type(s)   |   Default   |                        Unit(s)                        |
+| Prop | Required |  Type(s)   |   Default   |                        Unit(s)                        |
 | ---- | -------- | ---------- | ----------- | ----------------------------------------------------- |
-| func | `true`   | `Function` | `undefined` | NA                                                    |
-| x    | `false`  | `Number[]` | `undefined` | [Local coordinates](/docs/concepts/local-coordinates) |
+| func | `true`   | `Function` | `undefined` | -                                                    |
+| x    | `false`  | `Number[]` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 
 To render `FuncLine`, a `Function` that maps a numeric input to a numeric output has to be passed to the `func` prop. By default, this function will be plotted over a domain that is inherited from the parent `Graphic` or `Section`. To provide a different custom domain, the `x` prop can be passed an `Array` containing two numbers. For example:
 
@@ -75,7 +75,7 @@ The `FuncLine` only works if its parent `Graphic` or `Section`'s scales have qua
 
 ### Aesthetics
 
-|    Name     | Required | Type(s)  |   Default   |           Unit(s)            |
+|    Prop     | Required | Type(s)  |   Default   |           Unit(s)            |
 | ----------- | -------- | -------- | ----------- | ---------------------------- |
 | stroke      | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
 | strokeWidth | `false`  | `Number` | `3`         | Pixel                        |
@@ -89,15 +89,55 @@ These aesthetic props are similar to attributes of the SVG [line](https://develo
 
 ### Transitions
 
-TODO
+|    Prop    | Required |      Type(s)       |   Default   |             Unit(s)              |
+| ---------- | -------- | ------------------ | ----------- | -------------------------------- |
+| transition | `false`  | `Number`, `Object` | `undefined` | Duration in ms or options object |
+
+See the [transition](/docs/concepts/transitions) documentation for more information.
 
 ### Interactions
 
-TODO
+#### Mouse events
+
+|    Prop     | Required |  Type(s)   |   Default   | Unit(s) |
+| ----------- | -------- | ---------- | ----------- | ------- |
+| onClick     | `false`  | `Function` | `undefined` | -      |
+| onMousedown | `false`  | `Function` | `undefined` | -      |
+| onMouseup   | `false`  | `Function` | `undefined` | -      |
+| onMouseover | `false`  | `Function` | `undefined` | -      |
+| onMouseout  | `false`  | `Function` | `undefined` | -      |
+| onMousedrag | `false`  | `Function` | `undefined` | -      |
+
+#### Touch events
+
+|    Prop     | Required |  Type(s)   |   Default   | Unit(s) |
+| ----------- | -------- | ---------- | ----------- | ------- |
+| onTouchdown | `false`  | `Function` | `undefined` | -      |
+| onTouchup   | `false`  | `Function` | `undefined` | -      |
+| onTouchover | `false`  | `Function` | `undefined` | -      |
+| onTouchout  | `false`  | `Function` | `undefined` | -      |
+| onTouchdrag | `false`  | `Function` | `undefined` | -      |
+
+#### Select events
+
+|    Prop    | Required |  Type(s)   |   Default   | Unit(s) |
+| ---------- | -------- | ---------- | ----------- | ------- |
+| onSelect   | `false`  | `Function` | `undefined` | -      |
+| onDeselect | `false`  | `Function` | `undefined` | -      |
+
+See the [interactivity](/docs/concepts/interactivity) documentation for more information.
 
 ### Other
 
-TODO
+|      Prop       | Required |  Type(s)  |   Default   | Unit(s) |
+| --------------- | -------- | --------- | ----------- | ------- |
+| renderSettings  | `false`  | `Object`  | `undefined` | -      |
+| blockReindexing | `false`  | `Boolean` | `false`     | -      |
+| clip            | `false`  | `Boolean` | `true`      | -      |
+
+- `renderSettings`: see the [advanced rendering](/docs/concepts/advanced-rendering) documentation for more information
+- `blockReindexing`: see the [interactivity](/docs/concepts/interactivity) documentation for more information.
+- `clip`: indicates whether the Mark should be clipped off if it extends beyond its parent `Section` or `Graphic` viewport (i.e. the area within the padding). 
 
 ## Examples
 

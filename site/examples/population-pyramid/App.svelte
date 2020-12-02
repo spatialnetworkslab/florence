@@ -1,7 +1,7 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, RectangleLayer, XAxis, YAxis } from '@snlab/florence'
   import { formatPrefix } from 'd3-format'
+  import { Graphic, Section, RectangleLayer, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
   import { data } from './population.js'
 

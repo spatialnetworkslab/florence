@@ -1,3 +1,50 @@
 # Marks versus Layers
 
+With the exception of the [FuncLine](/docs/marks/funcline), all `Mark`s have a corresponding `Layer` component. While the two are designed to be as similar as possible, there are some subtle differences between the two. This documentation will discuss these differences.
+
+## Keys
+
+The first difference between `Mark`s and `Layer`s is that the latter have a `key` prop, which the former lack:
+
+| Prop | Required |  Type(s)   |   Default   |       Unit(s)        |
+| ---- | -------- | ---------- | ----------- | -------------------- |
+| key  | `false`  | `String[]` | `undefined` | Array of unique keys |
+
 TODO
+
+## Positioning: marks vs. layers
+
+### Values vs. arrays of values
+
+TODO: explain arrays of values
+
+### Recycling
+
+TODO: explain recycling
+
+### Function syntax
+
+TODO: explain function syntax
+
+## Aesthetics: marks vs. layers
+
+### Values vs. arrays of values
+
+TODO: explain arrays of values
+
+### Recycling
+
+TODO: explain recycling
+
+### Function syntax
+
+TODO: explain function syntax
+
+## Interactions
+
+The main differences between `Mark`s and `Layer`s in the area of interactivity are
+
+- TODO
+- TODO
+
+For more information, consult the [interactivity](/docs/concepts/interactivity) documentation.

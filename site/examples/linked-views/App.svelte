@@ -1,6 +1,7 @@
 <script>
   import { scaleBand } from 'd3-scale'
   import { json } from 'd3-fetch'
+  import { tick } from 'svelte'
   import {
     Graphic,
     Section,
@@ -67,25 +68,25 @@
   }
 
   function onMouseout({ key }) {
-    if (hoverKey) hoverKey = undefined
+    hoverKey = undefined
     heatmapData = undefined
   }
 </script>
 
 {#if ready}
 
-  <Graphic width={1000} height={800}>
+  <Graphic width={500} height={800}>
 
     <Section
-      x1={50} x2={475}
-      y1={50} y2={350}
+      y1={0} y2={400}
       {...geoScales}
+      padding={25}
       flipY
     >
 
       <PolygonLayer
         geometry={geoData.column('$geometry')}
-        keys={geoData.keys()}
+        key={geoData.keys()}
         fill={geoData.map('resale_price_sqm', priceColorScale)}
         fillOpacity={({ key }) => hoverKey === key ? 1 : 0.5}
         stroke={'white'}
@@ -95,7 +96,7 @@
         transition={1000}
       />
 
-      <DiscreteLegend
+      <!-- <DiscreteLegend
         fill={priceColorScale}
         labelAnchorPoint={'r'}
         title={'Ave. Resale Price/m2 (S$)'}
@@ -104,15 +105,14 @@
         hjust={'right'}
         flipLabels
         usePadding={true}
-      />
+      /> -->
     
     </Section>
 
     <Section 
-      x1={50} x2={475}
-      y1={350} y2={650}
-      scaleY={yearScale}
+      y1={400} y2={800}
       scaleX={monthScale}
+      scaleY={yearScale}
       padding={50}
     >
 
@@ -125,6 +125,9 @@
           y2={({ scaleY }) => heatmapData.map('year', y => scaleY(y) + scaleY.bandwidth())}
           fill={heatmapData.map('resale_price_sqm', priceColorScale)}
         />
+
+        <XAxis flip vjust={'top'} baseLineOpacity={0} yOffset={3}/> 
+        <YAxis baseLineOpacity={0} xOffset={3}/>
 
       {/if}
 

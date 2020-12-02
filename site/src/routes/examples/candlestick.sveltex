@@ -1,6 +1,8 @@
 # Candlestick Chart
 
-Some testing text
+A candlestick chart showing open and closing prices of Apple stock from the end of 2017 until May 2018. Adapted from https://observablehq.com/@d3/candlestick-chart.
+
+The `(async () => { ... })()` bit is a so-called [Immediately Invoked Function Expression](https://developer.mozilla.org/en-US/docs/Glossary/IIFE), which is just a way to define a function and run it immediately without having to give it a name. It is used here to contain all logic that depends on asynchronous operations like fetching datasets.
 
 ::: example examples/candlestick
 :::

@@ -1,7 +1,5 @@
 # Interactivity
 
-## Description
-
 `florence` takes a different approach to interactivity than other data visualization libraries. Where libraries like [Vega Lite](https://vega.github.io/vega-lite/) or [G6](https://g6.antv.vision/) use a high-level 'grammar' specifically designed for interactivity, `florence` takes a more low-level approach. Instead of explaining to `florence` through a special language how an event (like a mouse click) should trigger an action (like a Mark changing color), `florence` relies on plain JavaScript combined with Svelte's built-in reactivity system as much as possible. Although this approach can result in more boilerplate code, it does provide more control and flexibility for the end user to create tailored and innovative interactions. At the same time, many tricky aspects of interactivity have been abstracted away, so you do not need to reinvent the wheel either!
 
 ## Caveats
@@ -142,7 +140,7 @@ Highlighting is a technique that allows the end user to request additional infor
 import { Graphic, Section, PointLayer } from '@snlab/florence'
 import { scaleLinear } from 'd3-scale'
 
-let selectedKey = null
+let selectedIndex = null
 
 const a = [1, 3, 5, 3]
 const b = [3, 1, 3, 5]
@@ -162,16 +160,16 @@ const name = ['West', 'North', 'East', 'South']
       x={a}
       y={b}
       radius={10}
-      fill={key => key === selectedKey ? 'red' : 'black' }
-      onMouseover={({ key }) => selectedKey = key}
-      onMouseout={() => selectedKey = null}
+      fill={({ index }) => index === selectedIndex ? 'red' : 'black' }
+      onMouseover={({ index }) => selectedIndex = index}
+      onMouseout={() => selectedIndex = null}
     />
 
   </Section>
 
 </Graphic>
 
-<h1 style="color: blue;">{selectedKey === null ? 'None selected' : name[selectedKey]}</h1>
+<h1 style="color: blue;">{selectedIndex === null ? 'None selected' : name[selectedIndex]}</h1>
 ```
 
 ```js exec

@@ -1,7 +1,8 @@
-
 # Heatmap
 
-Some testing text.
+Heatmap showing the relation between IMDB ratings and Rotten Tomatoes ratings of the same movies.
+
+The `(async () => { ... })()` bit is a so-called [Immediately Invoked Function Expression](https://developer.mozilla.org/en-US/docs/Glossary/IIFE), which is just a way to define a function and run it immediately without having to give it a name. It is used here to contain all logic that depends on asynchronous operations like fetching datasets.
 
 ::: example examples/heatmap
 :::

@@ -1,6 +1,6 @@
 # Brush
 
-Some testing text.
+An example setup for a brush interaction. Draw a selection rectangle in the scatterplot with your mouse. After that, drag the rectangle around, and notice that the average x and y values of the points within the selection are updated. Of course, this particular use of brushing is not super useful, but is intended to illustrate how easy `florence` interactions integrate with the rest of the web page.
 
 ::: example examples/brush
 :::

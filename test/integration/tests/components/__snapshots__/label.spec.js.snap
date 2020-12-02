@@ -25,24 +25,25 @@ exports[`Assertions > Label Mark Tests > [render] labels snapshot correctly #0`]
     </mask>
   </defs>
   <g class="section">
-    <text
-      clip-path="url(#clip-sc0)"
-      class="label"
-      x="210"
-      y="310"
-      fill="yellow"
-      stroke="none"
-      stroke-width="0"
-      opacity="1"
-      transform="rotate(45, 210, 310)"
-      font-family="Georgia"
-      font-size="20px"
-      font-weight="bold"
-      text-anchor="middle"
-      dominant-baseline="middle"
-    >
-      Testing1
-    </text>
+    <g clip-path="url(#clip-sc0)" class="label-group">
+      <text
+        class="label"
+        x="210"
+        y="310"
+        fill="yellow"
+        stroke="none"
+        stroke-width="0"
+        opacity="1"
+        transform="rotate(45, 210, 310)"
+        font-family="Georgia"
+        font-size="20px"
+        font-weight="bold"
+        text-anchor="middle"
+        dominant-baseline="middle"
+      >
+        Testing1
+      </text>
+    </g>
     <g clip-path="url(#clip-sc0)" class="label-layer">
       <text
         class="label"

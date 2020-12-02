@@ -4,7 +4,7 @@
   import { autoType } from 'd3-dsv'
   import { csv } from 'd3-fetch'
   import { Graphic, AreaLayer, XAxis, YAxis } from '@snlab/florence'
-  import DataContainer from '@snlab/florene-datacontainer'
+  import DataContainer from '@snlab/florence-datacontainer'
 
   let dataContainer, industries, scaleColor, ready
 

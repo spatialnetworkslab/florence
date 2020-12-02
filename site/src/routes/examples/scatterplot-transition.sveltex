@@ -1,6 +1,6 @@
 # Scatterplot with transition
 
-Some testing text
+Basic scatterplot based on randomly generated data, intended to illustrate transitions.
 
 ::: example examples/scatterplot-transition
 :::

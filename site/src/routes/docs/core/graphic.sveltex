@@ -1,59 +1,102 @@
 # Graphic
 
-```svelte
-<Graphic width={500} height={500}>
+Every `florence` graphic starts with the `Graphic` component. Think of
+it as a supercharged `svg` root element.
 
-  ...
+```markup
+<script>
+  import { Graphic } from '@snlab/florence'
+</script>
+
+<Graphic width={200} height={200} backgroundColor={'blue'}>
 
 </Graphic>
 ```
 
-## Description
+```js exec
+import SimpleExample from './examples/_GraphicSimple.svelte'
+```
 
-Every `florence` graphic starts with the `Graphic` component. Think of
-it as a supercharged `svg` root element.
+<SimpleExample />
 
 ## Caveats
 
 - `florence` components cannot be used outside of a `Graphic` component
 - `Graphic` components cannot be nested
 
-## Props
+## Properties
 
 ### Positioning
 
-|  Prop  | Type(s)  | Required | Default |     Units     |
-| ------ | -------- | -------- | ------- | ------------- |
-| width  | `Number` | yes      | -       | screen pixels |
-| height | `Number` | yes      | -       | screen pixels |
+|  Prop   |            Required            |      Type(s)       |           Default            |      Unit(s)      |             |                                                                                           |
+| ------- | ------------------------------ | ------------------ | ---------------------------- | ----------------- | ----------- | ----------------------------------------------------------------------------------------- |
+| width   | `true`                        | `Number`, `String` | `500`                        | Pixel, percentage |             |                                                                                           |
+| height  | `true`                        | `Number`, `String` | `500`                        | Pixel, percentage |             |                                                                                           |
+| viewBox | `if (typeof width === 'string' && typeof height === 'string')` | `String`          | `undefined` | [viewBox coordinates](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox) |
 
-### Aesthetic props
+In most cases, the `Graphic` will be positioned by providing the `width` and `height` in pixels, like so:
 
-|      Prop       | Type(s)  | Required |   Default   |    Units    |
-| --------------- | -------- | -------- | ----------- | ----------- |
-| backgroundColor | `String` | no       | `undefined` | Color value |
-| paddingColor    | `String` | no       | `undefined` | Color value |
+```markup
+<Graphic width={800} height={600}>
+```
 
-Where `backgroundColor` is the area within the padded area, and `paddingColor` is the background of the padded area (see `padding` below).
+However, in responsive layouts, it can be desirable to define the `Graphic`'s `width` and `height` in percentages relative to its parent element. In this case, the `viewBox` prop must be specified in [viewBox coordinates](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox), which will determine the `Graphic`'s local coordinate system. Note, however, that this changes all variables that are defined in pixels! The radius below, for example, is much larger than 20px (depending on your screen size):
+
+```markup
+<script>
+  import { Graphic, Point } from '@snlab/florence'
+</script>
+
+<Graphic
+  width={'50%'}
+  height={'100%'}
+  viewBox={'0 0 100 100'}
+  backgroundColor={'#d3d3d3'}
+>
+
+  <Point x={50} y={50} radius={20} />
+
+</Graphic>
+```
+
+```js exec
+import ViewBoxExample from './examples/_ViewBoxSimple.svelte'
+```
+
+<ViewBoxExample />
+
+::: div callout
+`width` and `height` must always be of the same type, so either both `Number` or both `String`.
+:::
+
+### Aesthetics
+
+|      Prop       | Required | Type(s)  |   Default   |           Unit(s)            |
+| --------------- | -------- | -------- | ----------- | ---------------------------- |
+| backgroundColor | `false`  | `String` | `undefined` | Named, hex, rgb or hsl color |
+| paddingColor    | `false`  | `String` | `undefined` | Named, hex, rgb or hsl color |
+
+`backgroundColor` is the area within the padded area, and `paddingColor` is the background of the padded area (see `padding` below).
 
 ### Local coordinate system
 
-|      Prop      |                  Type(s)                   | Required |   Default    |     Units     |
-| -------------- | ------------------------------------------ | -------- | ------------ | ------------- |
-| scaleX         | [d3 scale](https://github.com/d3/d3-scale) | no       | `undefined`  | -             |
-| scaleY         | [d3 scale](https://github.com/d3/d3-scale) | no       | `undefined`  | -             |
-| transformation | `String`: `'identity'` or `'polar'`        | no       | `'identity'` | -             |
-| flipX          | `Boolean`                                  | no       | `false`      | -             |
-| flipY          | `Boolean`                                  | no       | `false`      | -             |
-| padding        | `Number`, `Object`                         | no       | `undefined`  | screen pixels |
-| zoomIdentity   | `Object`                                   | no       | `undefined`  | -             |
+|      Prop      | Required |      Type(s)       |   Default    |                  Unit(s)                   |
+| -------------- | -------- | ------------------ | ------------ | ------------------------------------------ |
+| scaleX         | `false`  | `Function`         | `undefined`  | [d3 scale](https://github.com/d3/d3-scale) |
+| scaleY         | `false`  | `Function`         | `undefined`  | [d3 scale](https://github.com/d3/d3-scale) |
+| transformation | `false`  | `String`           | `'identity'` | Should be either `'identity'` or `'polar'` |
+| flipX          | `false`  | `Boolean`          | `false`      | -                                          |
+| flipY          | `false`  | `Boolean`          | `false`      | -                                          |
+| padding        | `false`  | `Number`, `Object` | `undefined`  | Pixel                                      |
+| zoomIdentity   | `false`  | `Object`           | `undefined`  | -                                          |
 
 For more how to use these props, see the [local coordinates](/docs/concepts/local-coordinates) documentation.
 
 ### Other
 
-|      Prop       |  Type(s)  | Required | Default | Units |
-| --------------- | --------- | -------- | ------- | ----- |
-| blockReindexing | `Boolean` | no       | `false` | -     |
+|      Prop       | Required |  Type(s)  | Default | Unit(s) |
+| --------------- | -------- | --------- | ------- | ------- |
+| blockReindexing | `false`  | `Boolean` | `false` | -       |
+| clip            | `false`  | `Boolean` | `true`  | -       |
 
-The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation.
+The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` indicates whether the marks or layers inside of this `Graphic` should be clipped off if they extends this `Graphic`'s viewport (i.e. the area within the padding).

@@ -53,6 +53,8 @@
   export let onMouseover = undefined
   export let onMouseout = undefined
 
+  export let clip = false
+
   // Contexts
   const sectionContext = SectionContext.subscribe()
   const graphicContext = GraphicContext.subscribe()
@@ -129,7 +131,7 @@
     text={title}
     fontFamily={titleFontFamily} fontSize={titleFontSize} fontWeight={titleFontWeight} rotation={titleRotation} anchorPoint={titleAnchorPoint}
     {transition} {onClick} {onMouseover} {onMouseout}
-    _asPolygon={false}
+    _asPolygon={false} {clip}
   />
 {/if}
 
@@ -145,6 +147,6 @@
   text={subtitle}
   fontFamily={subtitleFontFamily} fontSize={subtitleFontSize} fontWeight={subtitleFontWeight} rotation={subtitleRotation} anchorPoint={subtitleAnchorPoint}
   {transition} {onClick} {onMouseover} {onMouseout}
-  _asPolygon={false}
+  _asPolygon={false} {clip}
 />
 <!-- {/if} -->

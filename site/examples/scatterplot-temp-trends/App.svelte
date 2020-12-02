@@ -21,13 +21,14 @@
         valuesTo: 'value'
       })
       .mutate({
-        date: row => new Date(row.date, months.indexOf(row.month), 1),
+        date: row => new Date(+row.Year, months.indexOf(row.month), 1),
         value: row => +row.value
       })
 
-    scaleColor = scaleSequential()
-      .domain(dataContainer.domain('value').reverse())
-      .range(interpolateRdBu)
+    scaleColor = scaleSequential(interpolateRdBu).domain([
+			dataContainer.max('value'),
+			dataContainer.min('value')
+		])
 
     ready = true
   })()

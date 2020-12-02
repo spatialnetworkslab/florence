@@ -45,6 +45,10 @@ export const posts = [
       {
         title: 'Transitions',
         path: '/docs/concepts/transitions'
+      },
+      {
+        title: 'Advanced rendering',
+        path: '/docs/concepts/advanced-rendering'
       }
     ]
   },
@@ -101,6 +105,32 @@ export const posts = [
       {
         title: 'Legend',
         path: '/docs/guides/legend'
+      },
+      {
+        title: 'X-gridlines',
+        path: '/docs/guides/xgridlines'
+      },
+      {
+        title: 'Y-gridlines',
+        path: '/docs/guides/ygridlines'
+      }
+    ]
+  },
+  {
+    title: 'Helpers',
+    path: '/docs/helpers/create-geo-scales',
+    children: [
+      {
+        title: 'createGeoScales',
+        path: '/docs/helpers/create-geo-scales'
+      },
+      {
+        title: 'createPanHandler',
+        path: '/docs/helpers/create-pan-handler'
+      },
+      {
+        title: 'createZoomHandler',
+        path: '/docs/helpers/create-zoom-handler'
       }
     ]
   }
