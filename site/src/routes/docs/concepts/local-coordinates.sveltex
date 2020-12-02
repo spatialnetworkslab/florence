@@ -1,13 +1,10 @@
 # Local coordinates
 
-Understanding how local coordinates work is key to understanding `florence`.
-The `Graphic` and `Section` components can create local coordinate systems,
-and all other components are affected by local coordinate systems.
+Understanding how local coordinates work is key to understanding `florence`. The `Graphic` and `Section` components can create local coordinate systems, and all other components are affected by local coordinate systems.
 
 ## Creating local coordinate systems
 
-As stated above, local coordinate systems are created with the `Graphic` and `Section`
-components. The following props are used to create local coordinate systems:
+As stated above, local coordinate systems are created with the `Graphic` and `Section` components. The following props are used to create local coordinate systems:
 
 |      Prop      |                  Type(s)                   | Required |   Default    |     Units     |
 | -------------- | ------------------------------------------ | -------- | ------------ | ------------- |
