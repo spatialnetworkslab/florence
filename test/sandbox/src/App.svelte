@@ -229,7 +229,8 @@
     },
     {
       name: 'Recycle test',
-      url: 'recycle-test'
+      url: 'recycle-test',
+      component: RecycleTest
     }
   ]
 </script>

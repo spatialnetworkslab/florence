@@ -2,8 +2,20 @@
   import { 
     Graphic,
     Area,
-    AreaLayer
+    AreaLayer,
+    XAxis,
+    YAxis
   } from '../../../../src/'
 </script>
 
-<h1>Hello world :(</h1>
+<Graphic flipY padding={30}>
+
+  <Area 
+    x1={[100, 200, 300]}
+    y1={[200, 100, 300]}
+  />
+
+  <XAxis />
+  <YAxis />
+
+</Graphic>
