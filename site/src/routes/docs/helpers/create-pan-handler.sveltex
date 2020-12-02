@@ -54,8 +54,8 @@ import SimpleExample from './examples/_PanExample.svelte'
 | ------------------------------ | -------- | ---------- | ----------------------- | ------------------------ |
 | zoomIdentity                   | `true`   | `Object`   | `undefined`             | See explanation          |
 | panSettings                    | `true`   | `Object`   | `undefined`             | See explanation          |
-| panSettings.setZoomIdentity    | `true`   | `Function` | See explanation         |                          |
-| panSettings.setBlockReindexing | `false`  | `Function` | See explanation         |                          |
+| panSettings.setZoomIdentity    | `true`   | `Function` | `undefined`             | See explanation          |
+| panSettings.setBlockReindexing | `false`  | `Function` | `() => {}`              | See explanation          |
 | panSettings.dimension          | `false`  | `String`   | `'both'`                | `'x'`, `'y'` or `'both'` |
 | panSettings.extentX            | `false`  | `Number[]` | `[-Infinity, Infinity]` | Pixel                    |
 | panSettings.extentY            | `false`  | `Number[]` | `[-Infinity, Infinity]` | Pixel                    |
