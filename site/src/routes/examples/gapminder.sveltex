@@ -1,6 +1,8 @@
 # Gapminder
 
-Some testing text
+Remake of Hans Rosling's famous [Gapminder](https://www.gapminder.org/tools/?from=world) visualization. Adapted from https://observablehq.com/@mbostock/the-wealth-health-of-nations.
+
+The `(async () => { ... })()` bit is a so-called [Immediately Invoked Function Expression](https://developer.mozilla.org/en-US/docs/Glossary/IIFE), which is just a way to define a function and run it immediately without having to give it a name. It is used here to contain all logic that depends on asynchronous operations like fetching datasets.
 
 ::: example examples/gapminder
 :::

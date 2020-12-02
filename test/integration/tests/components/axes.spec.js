@@ -12,7 +12,7 @@ context('Assertions', () => {
     })
 
     it('[render] axis has title', () => {
-      cy.get('g.x-axis > .label').should('have.length', 1)
+      cy.get('g.x-axis > g.label-group > .label').should('have.length', 1)
     })
 
     it('[render] axis has tick marks', () => {

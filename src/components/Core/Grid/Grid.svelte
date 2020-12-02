@@ -15,7 +15,7 @@
   export let columns = undefined
   export let rowGap = 0
   export let columnGap = 0
-  export let names = undefined
+  export let names
   export let viewGridTemplate = false // Option to console log grid layout
   export let viewGridShape = false // Option to console log rows in cols in grid
 

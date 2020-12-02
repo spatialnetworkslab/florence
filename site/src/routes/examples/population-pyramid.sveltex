@@ -1,6 +1,6 @@
 # Population Pyramid
 
-Some testing text.
+Population pyramid based on the estimated population of the U.S. in 2015. Adapted from https://observablehq.com/@d3/population-pyramid.
 
 ::: example examples/population-pyramid
 :::

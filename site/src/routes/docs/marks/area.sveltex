@@ -40,7 +40,7 @@ import SimpleExample from './examples/_AreaSimple.svelte'
 
 ### Positioning
 
-|      Name       | Required |                   Type(s)                    |   Default   |                       Unit(s)                        |
+|      Prop       | Required |                   Type(s)                    |   Default   |                       Unit(s)                        |
 | --------------- | -------- | -------------------------------------------- | ----------- | ---------------------------------------------------- |
 | x1              | `true`   | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 | x2              | `false`  | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
@@ -59,7 +59,7 @@ import VerticalAreaBoth from './utils/_VerticalAreaBoth.svelte'
 import HorizontalAreaLower from './utils/_HorizontalAreaLower.svelte'
 ```
 
-|      Name       |                                                                                  Description                                                                                   |                Representation                |     |     |
+|      Prop       |                                                                                  Description                                                                                   |                Representation                |     |     |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- | --- | --- |
 | x1              | X coordinates of both upper and lower bounds of an area when x is the independent variable;<br>x coordinates of the right bound of an area when y is the independent variable. | <HorizontalAreaBoth /> <VerticalAreaRight /> |     |     |
 | x2              | X coordinates of the left bound of an area when y is the independent variable.                                                                                                 | <VerticalAreaLeft />                         |     |     |
@@ -87,14 +87,14 @@ For all positioning props, a function can be supplied that bypasses the scaling 
 
 ### Aesthetics
 
-|     Prop      | Required | Type(s)  |   Default   |           Unit(s)           |
-| ------------- | -------- | -------- | ----------- | --------------------------- |
-| stroke        | `false`  | `String` | `'none'`    | Name, hex, rgb or hsl color |
-| strokeWidth   | `false`  | `Number` | `0`         | Pixel                       |
-| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1      |
-| fill          | `false`  | `String` | `'#000000'` | Name, hex, rgb or hsl color |
-| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1      |
-| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1      |
+|     Prop      | Required | Type(s)  |   Default   |           Unit(s)            |
+| ------------- | -------- | -------- | ----------- | ---------------------------- |
+| stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color |
+| strokeWidth   | `false`  | `Number` | `0`         | Pixel                        |
+| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1       |
+| fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
+| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1       |
+| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1       |
 
 These aesthetic props are similar to attributes of the SVG [path](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path) element. The analogous `path` attributes are shown below in brackets:
 
@@ -107,15 +107,63 @@ These aesthetic props are similar to attributes of the SVG [path](https://develo
 
 ### Transitions
 
-TODO
+|    Prop    | Required |      Type(s)       |   Default   |             Unit(s)              |
+| ---------- | -------- | ------------------ | ----------- | -------------------------------- |
+| transition | `false`  | `Number`, `Object` | `undefined` | Duration in ms or options object |
+
+See the [transition](/docs/concepts/transitions) documentation for more information.
 
 ### Interactions
 
- TODO
+#### Mouse events
+
+|    Prop     | Required |  Type(s)   |   Default   | Unit(s) |
+| ----------- | -------- | ---------- | ----------- | ------- |
+| onClick     | `false`  | `Function` | `undefined` | -      |
+| onMousedown | `false`  | `Function` | `undefined` | -      |
+| onMouseup   | `false`  | `Function` | `undefined` | -      |
+| onMouseover | `false`  | `Function` | `undefined` | -      |
+| onMouseout  | `false`  | `Function` | `undefined` | -      |
+| onMousedrag | `false`  | `Function` | `undefined` | -      |
+
+#### Touch events
+
+|    Prop     | Required |  Type(s)   |   Default   | Unit(s) |
+| ----------- | -------- | ---------- | ----------- | ------- |
+| onTouchdown | `false`  | `Function` | `undefined` | -      |
+| onTouchup   | `false`  | `Function` | `undefined` | -      |
+| onTouchover | `false`  | `Function` | `undefined` | -      |
+| onTouchout  | `false`  | `Function` | `undefined` | -      |
+| onTouchdrag | `false`  | `Function` | `undefined` | -      |
+
+#### Select events
+
+|    Prop    | Required |  Type(s)   |   Default   | Unit(s) |
+| ---------- | -------- | ---------- | ----------- | ------- |
+| onSelect   | `false`  | `Function` | `undefined` | -      |
+| onDeselect | `false`  | `Function` | `undefined` | -      |
+
+See the [interactivity](/docs/concepts/interactivity) documentation for more information.
 
 ### Other
 
-TODO
+|      Prop       | Required |  Type(s)  |   Default   | Unit(s) |
+| --------------- | -------- | --------- | ----------- | ------- |
+| renderSettings  | `false`  | `Object`  | `undefined` | -      |
+| blockReindexing | `false`  | `Boolean` | `false`     | -      |
+| clip            | `false`  | `Boolean` | `true`      | -      |
+
+- `renderSettings`: see the [advanced rendering](/docs/concepts/advanced-rendering) documentation for more information
+- `blockReindexing`: see the [interactivity](/docs/concepts/interactivity) documentation for more information.
+- `clip`: indicates whether the Mark or Layer should be clipped off if it extends beyond its parent `Section` or `Graphic` viewport (i.e. the area within the padding). 
+
+In addition, the `AreaLayer` has the `key` prop:
+
+| Prop | Required |  Type(s)   |   Default   |       Unit(s)        |
+| ---- | -------- | ---------- | ----------- | -------------------- |
+| key  | `false`  | `String[]` | `undefined` | Array of unique keys |
+
+See the [marks versus layers](/docs/concepts/marks-vs-layers) documentation for more information on how keys work.
 
 ## Examples
 

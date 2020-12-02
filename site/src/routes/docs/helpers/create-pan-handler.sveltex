@@ -1,0 +1,108 @@
+# createPanHandler
+
+Helper function to set up panning behavior on `Section`s.
+
+```markup
+<script>
+  import { 
+    Graphic, Section, Rectangle, XAxis, YAxis, createPanHandler
+  } from '@snlab/florence'
+
+  let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
+  let blockReindexing = false
+
+  const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
+  const setBlockReindexing = bool => { blockReindexing = bool }
+
+  const pan = createPanHandler(zoomIdentity, {
+    setZoomIdentity,
+    setBlockReindexing,
+    extentX: [-100, 100],
+    extentY: [-100, 100]
+  })
+</script>
+
+<Graphic width={200} height={200} padding={20}>
+
+  <Section
+    scaleX={[0, 10]}
+    scaleY={[0, 10]}
+    {zoomIdentity}
+    {...pan.handlers}
+    {blockReindexing}
+  >
+  
+    <Rectangle x1={2.5} x2={7.5} y1={2.5} y2={7.5} />
+
+    <XAxis />
+    <YAxis />
+
+  </Section>
+
+</Graphic>
+```
+
+```js exec
+import SimpleExample from './examples/_PanExample.svelte'
+```
+
+<SimpleExample />
+
+## Arguments
+
+|            Argument            | Required |  Type(s)   |         Default         |         Unit(s)          |
+| ------------------------------ | -------- | ---------- | ----------------------- | ------------------------ |
+| zoomIdentity                   | `true`   | `Object`   | `undefined`             | See explanation          |
+| panSettings                    | `true`   | `Object`   | `undefined`             | See explanation          |
+| panSettings.setZoomIdentity    | `true`   | `Function` | `undefined`             | See explanation          |
+| panSettings.setBlockReindexing | `false`  | `Function` | `() => {}`              | See explanation          |
+| panSettings.dimension          | `false`  | `String`   | `'both'`                | `'x'`, `'y'` or `'both'` |
+| panSettings.extentX            | `false`  | `Number[]` | `[-Infinity, Infinity]` | Pixel                    |
+| panSettings.extentY            | `false`  | `Number[]` | `[-Infinity, Infinity]` | Pixel                    |
+
+`zoomIdentity` must be an `Object` of the form:
+
+```js
+{ 
+  x: <Number>,
+  y: <Number>,
+  kx: <Number>,
+  ky: <Number>
+}
+```
+Where `x` and `y` represent the amount in pixels that the `Section` is panned to the right and bottom. `kx` and `ky` represent zooming factors, which are not used for panning. Its default values (i.e. no zooming and panning) are:
+
+```js
+{ 
+  x: 0,
+  y: 0,
+  kx: 1,
+  ky: 1
+}
+```
+
+`panSettings` must be an `Object` with the following possible members:
+
+```js
+{
+  setZoomIdentity: <Function>,
+  setBlockReindexing: <Function>,
+  dimension: <String>,
+  extentX: <Array>,
+  extentY: <Array>
+}
+```
+
+where
+
+- `setZoomIdentity` is a function that updates the `zoomIdentity`
+- `setBlockReindexing`is a function that updates the `blockReindexing`
+- `dimension` can be used to limit scrolling to a either the x or y dimension
+- `extentX` determines how far can be scrolled in the x dimension (if set to `[0, 0]` scrolling will be disabled in the x dimension)
+- `extentY` determines how far can be scrolled in the y dimension (if set to `[0, 0]` scrolling will be disabled in the y dimension)
+
+TODO explain `setZoomIdentity` and `setBlockReindexing`.
+
+## Return value
+
+TODO

@@ -1,8 +1,6 @@
 # Transitions
 
-## Description
-
-Every `Mark` and every `Layer` has a `transition` prop. TODO
+All `Mark`s `Layer`s can transition automatically when the data on which they depend changes. The details of this transition can be tweaked with the `transition` prop. 
 
 ## Basics
 
@@ -93,7 +91,7 @@ function move () {
 
 ## Other aesthetic transitions
 
-For other aesthetics, transitions basically work as you would expect. Here is a full list of all other supported aesthetics:
+For other aesthetics, transitions basically work as you would expect. Other supported aesthetics are:
 
 - radius
 - opacity

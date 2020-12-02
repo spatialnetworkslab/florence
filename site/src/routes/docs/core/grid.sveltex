@@ -1,78 +1,110 @@
 # Grid
+
 The Grid component is used to quickly position and align 'square' components in a grid format. 'Square' here refers to any component that has x1, x2, y1 and y2 props. This includes the Section component, the Rectangle mark, and any custom component that you would want to create, given it has the props mentioned above.
+
+```markup
+<script>
+  import { Graphic, Section, Grid } from '@snlab/florence'
+
+  const colors = ['red', 'blue', 'green', 'orange', 'yellow', 'purple']
+
+  let columns = 2
+  $: rows = Math.ceil(colors.length / columns)
+</script>
+
+<div>
+  <label for="cols-slider">Columns:</label>
+  <input type="range" min="1" max="3" bind:value={columns} name="cols-slider" />
+</div>
+
+<Graphic width={200} height={200}>
+
+  <Grid {columns} {rows} names={colors} let:cells>
+
+    {#each colors as color}
+      
+      <Section {...cells[color]} backgroundColor={color}></Section>
+
+    {/each}
+
+  </Grid>
+
+</Graphic>
+```
 
 ```js exec
 import SimpleExample from './examples/_GridSimple.svelte'
 ```
+
 <SimpleExample />
 
-```markup
-<script>
- const colors = ['red', 'blue', 'green', 'orange']
-</script>
-<Graphic {width} {height}>
-  <Grid
-      {columns}
-      {rows}
-      names={colors}
-      let:cells
-  >
-      {#each colors as color}
-          <Section {...cells[color]} backGroundColor={color}>
-          </Section>
-      {/each}
-  </Grid>
-</Graphic>
-```
-
 ## Properties
+
 ### Positioning
 
-| Prop |     Type(s)     |    Required     |   Default   |       Units       |
-| ---- | --------------- | --------------- | ----------- | ----------------- |
-| x1   | see Section | see Section | `undefined` | local coordinates |
-| x2   | see Section | see Section | `undefined` | local coordinates |
-| y1   | see Section | see Section | `undefined` | local coordinates |
-| y2   | see Section | see Section | `undefined` | local coordinates |
+| Prop |        Required         |                 Types                  |   Default   |                       Unit(s)                        |
+| ---- | ----------------------- | -------------------------------------- | ----------- | ---------------------------------------------------- |
+| x1   | `if (x2 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| x2   | `if (x1 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y1   | `if (y2 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y2   | `if (y1 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 
-The `Grid` positioning props work the same way as the [Section](/docs/core/section)
-positioning props.
+The `Grid` positioning props behave the same way as the [Section](/docs/core/section) positioning props.
 
 ### Grid settings
 
-| Prop             | Type(s)   | Required | Default | Units         | Description |                 
-| ---------------- | --------- | -------- | ------- | ------------- | ----------- | 
-| rows             | `Number`  | ✅        | `1`     | Integer       | Number of rows in grid |
-| columns          | `Number`  | ✅        | `1`     | Integer       | Number of columns in grid |
-| rowGap           | `Number`  | ✅        | `0`     | Integer       | Margin between rows |
-| columnGap        | `Number`  | ✅        | `0`     | Integer       | Margin between columns |
-| areaNames        | []`String`  | ✅      | [] |               | An array of cell or facet names |
+|   Prop    | Required |  Type(s)   |   Default   | Unit(s) |
+| --------- | -------- | ---------- | ----------- | ------- |
+| names     | `true`   | `String[]` | `undefined` | -       |
+| rows      | `false`  | `Number`   | `undefined` | Integer |
+| columns   | `false`  | `Number`   | `undefined` | Integer |
+| rowGap    | `false`  | `Number`   | `0`         | Pixel   |
+| columnGap | `false`  | `Number`   | `0`         | Pixel   |
 
+`names` is the only required prop among the grid settings. If `rows` and `columns` are `undefined`, values will be chosen automatically based on the number of cells and the aspect ratio result from the positioning props. If only `rows` is defined, `columns` will be calculated automatically and vice versa. Finally, if both `rows` and `columns` are defined, the  `Grid` component will give a warning if the number of `names` exceeds the number of cells.
+
+`rowGap` and `columnGap` are used to create spacing between the cells.
 
 ### Other
-| Prop             | Type(s)   | Required | Default | Units         | Description                                                                              |
-| ---------------- | --------- | -------- | ------- | ------------- | --------------------------------- | --------------------------------------------------------- |
-| viewGridTemplate | `Boolean` |          | `false` |               | Option to console log grid layout 
-| viewGridShape    | `Boolean` |          | `false` |               | Option to console log grid layout 
 
+|       Prop       | Required |  Type(s)  | Default | Unit(s) |
+| ---------------- | -------- | --------- | ------- | ------- |
+| viewGridTemplate | `false`  | `Boolean` | `false` | -       |
+| viewGridShape    | `false`  | `Boolean` | `false` | -       |
 
-### Slot Scope
-Grid exposes value called `cells` using the `let:cells` syntax. The `cells` object holds a series of objects in which the key is the 'area name' element in `areaNames` array and the value is a position object that will be used to position the cells of the grid. This uses the [native Svelte slot syntax](https://svelte.dev/docs#slot_let). It is this `cells` object that can be used to position the children or cells of the Grid (i.e. `Section` components) in their corresponding cell. 
+Setting either of these to `true` will `console.log` the grid template or shape whenever the data on which the `Grid` relies changes. This can be helpful when debugging the `Grid`.
 
-```svelte
-{
-  "plot-1":{
-    x1,
-    y1,
-    x2,
-    y2
-  },
-  "plot-2":{
-    x1,
-    y1,
-    x2,
-    y2
-  },
-  ....
-}
+## Slot Scope
+
+`Grid` exposes a value called `cells` through its slot scope using the `let:cells` syntax. The `cells` object holds a series of objects in which the key is the 'area name' element in `areas` array and the value is a position object that will be used to position the cells of the grid. This uses the [native Svelte slot syntax](https://svelte.dev/docs#slot_let). It is this `cells` object is used to position the `Grid` component's children that form the cells of the Grid (i.e. `Section` components). 
+
+With the following prop values:
+
+```html
+<Grid 
+  names={['someName', 'anotherName']}
+  let:cells
+>
+
+  <!-- In here we have access to the cells object -->
+
+</Grid>
 ```
+
+the `cells` object will look something like this:
+
+```js
+{
+  someName: {
+    x1: <Number>,
+    y1: <Number>,
+    x2: <Number>,
+    y2: <Number>
+  },
+  anotherName: {
+    x1: <Number>,
+    y1: <Number>,
+    x2: <Number>,
+    y2: <Number>
+  }
+}
