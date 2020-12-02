@@ -49,18 +49,21 @@ import SimpleExample from './examples/_GridSimple.svelte'
 | y1   | `if (y2 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 | y2   | `if (y1 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 
-The `Grid` positioning props behave the same way as the [Section](/docs/core/section)
-positioning props.
+The `Grid` positioning props behave the same way as the [Section](/docs/core/section) positioning props.
 
 ### Grid settings
 
 |   Prop    | Required |  Type(s)   |   Default   | Unit(s) |
 | --------- | -------- | ---------- | ----------- | ------- |
-| rows      | `false`  | `Number`   | `1`         | Integer |
-| columns   | `false`  | `Number`   | `1`         | Integer |
-| rowGap    | `false`  | `Number`   | `0`         | Integer |
-| columnGap | `false`  | `Number`   | `0`         | Integer |
-| names     | `true`   | `String[]` | `undefined` |         |
+| names     | `true`   | `String[]` | `undefined` | -       |
+| rows      | `false`  | `Number`   | `undefined` | Integer |
+| columns   | `false`  | `Number`   | `undefined` | Integer |
+| rowGap    | `false`  | `Number`   | `0`         | Pixel   |
+| columnGap | `false`  | `Number`   | `0`         | Pixel   |
+
+`names` is the only required prop among the grid settings. If `rows` and `columns` are `undefined`, values will be chosen automatically based on the number of cells and the aspect ratio result from the positioning props. If only `rows` is defined, `columns` will be calculated automatically and vice versa. Finally, if both `rows` and `columns` are defined, the  `Grid` component will give a warning if the number of `names` exceeds the number of cells.
+
+`rowGap` and `columnGap` are used to create spacing between the cells.
 
 ### Other
 
@@ -69,24 +72,39 @@ positioning props.
 | viewGridTemplate | `false`  | `Boolean` | `false` | -       |
 | viewGridShape    | `false`  | `Boolean` | `false` | -       |
 
-### Slot Scope
+Setting either of these to `true` will `console.log` the grid template or shape whenever the data on which the `Grid` relies changes. This can be helpful when debugging the `Grid`.
 
-Grid exposes value called `cells` using the `let:cells` syntax. The `cells` object holds a series of objects in which the key is the 'area name' element in `areaNames` array and the value is a position object that will be used to position the cells of the grid. This uses the [native Svelte slot syntax](https://svelte.dev/docs#slot_let). It is this `cells` object that can be used to position the children or cells of the Grid (i.e. `Section` components) in their corresponding cell. 
+## Slot Scope
 
-```svelte
-{
-  "plot-1":{
-    x1,
-    y1,
-    x2,
-    y2
-  },
-  "plot-2":{
-    x1,
-    y1,
-    x2,
-    y2
-  },
-  ....
-}
+`Grid` exposes a value called `cells` through its slot scope using the `let:cells` syntax. The `cells` object holds a series of objects in which the key is the 'area name' element in `areas` array and the value is a position object that will be used to position the cells of the grid. This uses the [native Svelte slot syntax](https://svelte.dev/docs#slot_let). It is this `cells` object is used to position the `Grid` component's children that form the cells of the Grid (i.e. `Section` components). 
+
+With the following prop values:
+
+```html
+<Grid 
+  names={['someName', 'anotherName']}
+  let:cells
+>
+
+  <!-- In here we have access to the cells object -->
+
+</Grid>
 ```
+
+the `cells` object will look something like this:
+
+```js
+{
+  someName: {
+    x1: <Number>,
+    y1: <Number>,
+    x2: <Number>,
+    y2: <Number>
+  },
+  anotherName: {
+    x1: <Number>,
+    y1: <Number>,
+    x2: <Number>,
+    y2: <Number>
+  }
+}
