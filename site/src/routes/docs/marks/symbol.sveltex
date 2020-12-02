@@ -45,7 +45,7 @@ To render a `Symbol_`, you will need to provide either the `x` and `y` props, or
 
 |     Prop      | Required |  Types   |   Default   |           Unit(s)            |
 | ------------- | -------- | -------- | ----------- | ---------------------------- |
-| shape         | `false`  | `String` | `'circle'`  | See explanation                    |
+| shape         | `false`  | `String` | `'circle'`  | See explanation              |
 | size          | `false`  | `Number` | `10`        | Pixel                        |
 | fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
 | fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1       |
