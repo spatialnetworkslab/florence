@@ -18,7 +18,7 @@
   export let y2
   export let xDivider = 0.3
   export let yDivider = 0.2
-  export let padding = 5
+  export let padding = 1
 
   // Colors and labels
   export let colors

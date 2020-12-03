@@ -6,22 +6,22 @@
 
   <DiscreteLegend
     x1={100} x2={200}
-    y1={100} y2={250}
+    y1={100} y2={450}
     colors={['green', 'yellow', 'brown']}
     labels={['apple', 'banana', 'coconut']}
   >
 
-    <Title title="Fruit colors" yOffset={-20} />
+    <Title title="Fruit colors" />
 
   </DiscreteLegend>
 
   <GradientLegend 
     x1={300} x2={400}
-    y1={100} y2={250}
+    y1={100} y2={450}
     colors={['green', 'yellow', 'brown']}
     labels={['apple', 'banana', 'coconut']}
   >
-    <Title title="Fruit colors" yOffset={-20} />
+    <Title title="Fruit colors" />
 
   </GradientLegend>
 
