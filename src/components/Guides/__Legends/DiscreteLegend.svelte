@@ -16,6 +16,8 @@
   export let yDivider = 0.2
   export let labelFontSize = undefined
 
+  export let transition = undefined
+
   $: sectionCoordinates = getSectionCoordinates(x1, x2, y1, y2)
 </script>
 
@@ -38,6 +40,7 @@
       <Rectangle
         {...getRectangleCoordinates(cells[color])}
         fill={color}
+        {transition}
       />
 
     {/each}
@@ -59,6 +62,7 @@
         text={label}
         fontSize={labelFontSize}
         anchorPoint={'l'}
+        {transition}
       />
 
     {/each}

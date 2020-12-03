@@ -24,6 +24,8 @@
   export let rectangleWidth = 0.25
   export let labelFontSize = undefined
 
+  export let transition = undefined
+
   const gradientId = getId()
   
   $: sectionCoordinates = getSectionCoordinates(x1, x2, y1, y2)
@@ -50,6 +52,7 @@
   <Rectangle
     {...rectangleCoordinates}
     fill={`url(#${gradientId})`}
+    {transition}
   />
 
   <!-- Labels -->
@@ -67,6 +70,7 @@
       text={label}
       fontSize={labelFontSize}
       anchorPoint={'l'}
+      {transition}
     />
 
   {/each}
