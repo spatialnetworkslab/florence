@@ -36,7 +36,7 @@
   }
 
   $: pixelCoordinates = getPixelCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-  $: cells = getCells(applyPadding(getPixelCoordinates, padding), nrows, ncolumns, cellPadding)
+  $: cells = getCells(applyPadding(pixelCoordinates, padding), nrows, ncolumns, cellPadding)
   $: namedCells = nameCells(cells, names)
 </script>
 

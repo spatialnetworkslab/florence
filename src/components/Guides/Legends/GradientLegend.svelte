@@ -6,9 +6,9 @@
 </script>
 
 <script>
-  import { Section, Rectangle, Label } from '../../../index.js'
+  import { Section, Grid, Rectangle, Label } from '../../../index.js'
   import Gradient from './Gradient.svelte'
-  import { getSectionCoordinates, getLabelCoordinates } from './legend.js'
+  import { getLabelCoordinates } from './legend.js'
   import { getRectangleCoordinates } from './gradientLegend.js'
 
   // Positioning
@@ -16,9 +16,9 @@
   export let x2
   export let y1
   export let y2
-  export let gap = 5
   export let xDivider = 0.3
   export let yDivider = 0.2
+  export let padding = 5
 
   // Colors and labels
   export let colors
@@ -39,8 +39,6 @@
   export let transition = undefined
 
   const gradientId = getId()
-  
-  $: sectionCoordinates = getSectionCoordinates(x1, x2, y1, y2)
 
   $: rectangleCoordinates = getRectangleCoordinates(
     xDivider,
@@ -54,7 +52,7 @@
   {colors}
 />
 
-<Section {...sectionCoordinates} scaleX={[0, 1]} scaleY={[0, 1]}>
+<Section {x1} {x2} {y1} {y2} scaleX={[0, 1]} scaleY={[0, 1]}>
 
   <!-- Slot for title and other stuff -->
   <slot />
@@ -62,7 +60,7 @@
   <!-- Color gradient -->
   <Section
     {...rectangleCoordinates}
-    padding={{ left: gap * 2, right: gap * 2, top: 0, bottom: 0 }}
+    {padding}
   >
 
     <Rectangle
@@ -78,9 +76,8 @@
   <Grid 
     x1={xDivider} x2={1} y1={yDivider} y2={1}
     names={labels}
+    {padding}
     columns={1}
-    rowGap={gap}
-    colGap={gap}
     let:cells
   >
 
