@@ -1,12 +1,3 @@
-export function getSectionCoordinates (x1, x2, y1, y2) {
-  return {
-    x1: Math.min(x1, x2),
-    x2: Math.max(x1, x2),
-    y1: Math.min(y1, y2),
-    y2: Math.max(y1, y2)
-  }
-}
-
 export function getRectangleCoordinates ({ x1, x2, y1, y2 }) {
   const height = Math.abs(y2 - y1)
   const width = Math.abs(x2 - x1)
@@ -37,11 +28,4 @@ export function getRectangleCoordinates ({ x1, x2, y1, y2 }) {
 function center (lower, upper, bigWidth, smallWidth) {
   const space = (bigWidth - smallWidth) / 2
   return [space + lower, upper - space]
-}
-
-export function getLabelCoordinates ({ x1, x2, y1, y2 }) {
-  return {
-    x: x1,
-    y: (y2 + y1) / 2
-  }
 }
