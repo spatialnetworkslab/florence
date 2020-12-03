@@ -6,10 +6,10 @@
 <Graphic width={500} height={500}>
 
   <DiscreteColorLegend
-    x1={300} x2={400}
+    x1={300} x2={450}
     y1={300} y2={400}
-    colors={['apple', 'banana', 'coconut']}
-    labels={['green', 'yellow', 'brown']}
+    colors={['green', 'yellow', 'brown']}
+    labels={['apple', 'banana', 'coconut']}
   />
 
 </Graphic>
