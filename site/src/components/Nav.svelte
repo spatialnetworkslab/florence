@@ -35,6 +35,10 @@
   @apply border-b-2 border-red-600;
 }
 
+.nav-a.home {
+  @apply font-semibold;
+}
+
 @screen md {
   ul {
     @apply ml-0;
@@ -45,8 +49,8 @@
 <nav class='top-nav'>
 	<ul class='ml-8 flex flex-row mb-0'>
     <li class='nav-li'>
-      <a class={`nav-a ${segment ===
-        undefined ? 'selected' : ''}`} href='.'>Home</a></li>
+      <a class={`nav-a home ${segment ===
+        undefined ? 'selected' : ''}`} href='.'>Florence</a></li>
 
     {#each links as item, index}
       <li class='nav-li'><a class={`nav-a 
