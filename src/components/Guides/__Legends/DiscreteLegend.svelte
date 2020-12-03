@@ -3,19 +3,26 @@
   import { getSectionCoordinates, getLabelCoordinates } from './legend.js'
   import { getRectangleCoordinates } from './discreteLegend.js'
 
+  // Positioning
   export let x1
   export let x2
   export let y1
   export let y2
-
-  export let colors
-  export let labels
-
   export let rowGap = 5
   export let xDivider = 0.5
   export let yDivider = 0.2
+
+  // Colors and labels
+  export let colors
+  export let labels
+
+  // Color swatch settings
+  // TODO
+
+  // Label settings
   export let labelFontSize = undefined
 
+  // Other
   export let transition = undefined
 
   $: sectionCoordinates = getSectionCoordinates(x1, x2, y1, y2)

@@ -11,19 +11,26 @@
   import { getSectionCoordinates, getLabelCoordinates } from './legend.js'
   import { getRectangleCoordinates } from './gradientLegend.js'
 
+  // Positioning
   export let x1
   export let x2
   export let y1
   export let y2
-
-  export let colors
-  export let labels
-
   export let xDivider = 0.5
   export let yDivider = 0.2
   export let rectangleWidth = 0.25
+
+  // Colors and labels
+  export let colors
+  export let labels
+
+  // Color gradient settings
+  // TODO
+
+  // Label settings
   export let labelFontSize = undefined
 
+  // Other
   export let transition = undefined
 
   const gradientId = getId()
