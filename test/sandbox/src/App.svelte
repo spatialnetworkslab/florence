@@ -5,7 +5,7 @@
   import BarChart from './examples/BarChart.svelte'
   import Polygons from './examples/Polygons.svelte'
   import GridLayout from './examples/GridLayout.svelte'
-  import ResizeLayout from './examples/ResizeLayout.svelte'
+  // import ResizeLayout from './examples/ResizeLayout.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
   import ZoomPan from './examples/ZoomPan.svelte'
   import BaseMark from './examples/BaseMark.svelte'
@@ -62,11 +62,11 @@
       url: '/gridlayout',
       component: GridLayout
     },
-    {
-      name: 'Resize Layout',
-      url: '/resizelayout',
-      component: ResizeLayout
-    },
+    // {
+    //   name: 'Resize Layout',
+    //   url: '/resizelayout',
+    //   component: ResizeLayout
+    // },
     {
       name: 'Scatterplot',
       url: '/scatterplot',
