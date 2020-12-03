@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, Section } from '../../../../src/'
+  import { Graphic, Section, Title } from '../../../../src/'
   import DiscreteColorLegend from '../../../../src/components/Guides/__Legends/DiscreteColorLegend.svelte'
 </script>
 
@@ -10,6 +10,10 @@
     y1={300} y2={400}
     colors={['green', 'yellow', 'brown']}
     labels={['apple', 'banana', 'coconut']}
-  />
+  >
+
+    <Title title="Fruit colors" yOffset={-20} />
+
+  </DiscreteColorLegend>
 
 </Graphic>

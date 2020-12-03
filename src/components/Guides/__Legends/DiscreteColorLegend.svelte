@@ -5,12 +5,14 @@
   export let x2
   export let y1
   export let y2
-  export let gap = 5
 
   export let colors
   export let labels
 
-  // export let orientation = 'horizontal'
+  export let gap = 5
+  export let horizontalDivider = 0.2
+  export let verticalDivider = 0.5
+  export let labelFontSize = undefined
 
   $: sectionCoordinates = {
     x1: Math.min(x1, x2),
@@ -61,9 +63,11 @@
 
 <Section {...sectionCoordinates} scaleX={[0, 1]} scaleY={[0, 1]}>
 
+  <slot />
+
   <!-- Color swatches -->
   <Grid 
-    x1={0} x2={0.5} y1={0.2} y2={1}
+    x1={0} x2={verticalDivider} y1={horizontalDivider} y2={1}
     names={colors}
     columns={1}
     let:cells
@@ -83,7 +87,7 @@
 
   <!-- Labels -->
   <Grid 
-    x1={0.5} x2={1} y1={0.2} y2={1}
+    x1={horizontalDivider} x2={1} y1={horizontalDivider} y2={1}
     names={labels}
     columns={1}
     let:cells
@@ -95,6 +99,7 @@
       <Label
         {...getLabelCoordinates(cells[label])}
         text={label}
+        fontSize={labelFontSize}
         anchorPoint={'l'}
       />
 
