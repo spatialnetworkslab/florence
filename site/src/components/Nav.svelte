@@ -3,11 +3,11 @@
   
   // maybe export this out
   const links = [
-    { name: 'Docs', link: 'docs' },
     { name: 'Examples', link: 'examples' },
     { name: 'Tutorials', link: 'tutorials' },
-    { name: 'REPL', link: 'repl' }
-    // { name: 'Inspiration', link: 'inspiration' }
+    { name: 'Docs', link: 'docs' },
+    { name: 'Install', link: 'install' },
+    { name: 'About', link: 'about' }
   ]
 </script>
 
@@ -31,6 +31,10 @@
   transition: border-color 1s; 
 }
 
+.nav-a.gitlab {
+  @apply no-underline py-1 px-0 mr-4 font-normal text-gray-400;
+}
+
 .nav-a:hover {
   @apply border-b-2 border-red-600;
 }
@@ -47,15 +51,25 @@
 </style>
 
 <nav class='top-nav'>
-	<ul class='ml-8 flex flex-row mb-0'>
-    <li class='nav-li'>
-      <a class={`nav-a home ${segment ===
-        undefined ? 'selected' : ''}`} href='.'>Florence</a></li>
+	<ul class='ml-8 flex flex-row justify-between mb-0'>
+    <div class='left-nav flex flex-row'>
+      <li class='nav-li'>
+        <a class={`nav-a home ${segment ===
+          undefined ? 'selected' : ''}`} href='.'>Florence</a></li>
 
-    {#each links as item, index}
-      <li class='nav-li'><a class={`nav-a 
-        ${segment === item.link ? 'selected' : ''}`} 
-        href={item.link}> {item.name} </a> </li>
-    {/each}
+      {#each links as item, index}
+        <li class='nav-li'><a class={`nav-a 
+          ${segment === item.link ? 'selected' : ''}`} 
+          href={item.link}> {item.name} </a> </li>
+      {/each}
+    </div>
+    <div class='right-nav flex flex-row'>
+    <li class='nav-li self-end'>
+      <a class='nav-a' href='/repl'>REPL</a>
+    </li>
+    <li class='nav-li self-end'>
+      <a class='nav-a gitlab' href='https://gitlab.com/spatialnetworkslab/florence'>Source Code</a>
+    </li>
+    </div>
   </ul>
 </nav>
