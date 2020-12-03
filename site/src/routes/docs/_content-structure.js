@@ -103,10 +103,6 @@ export const posts = [
         path: '/docs/guides/yaxis'
       },
       {
-        title: 'Legend',
-        path: '/docs/guides/legend'
-      },
-      {
         title: 'X-gridlines',
         path: '/docs/guides/xgridlines'
       },
