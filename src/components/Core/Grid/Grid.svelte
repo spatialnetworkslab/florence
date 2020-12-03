@@ -1,6 +1,7 @@
 <script>
   import * as SectionContext from '../Section/SectionContext'
 
+  import Section from '../Section/Section.svelte'
   import { getPixelCoordinates } from '../Section/getPixelCoordinates.js'
   import { getAspectRatio, getNRowsAndColumns } from './getNRowsAndColumns.js'
   import { getAllCells, mergeNameSpecs } from './gridUtils.js'
@@ -50,6 +51,12 @@
   $: allSpecs = mergeNameSpecs(names, allCells, numCols)
 </script>
 
-<g>
+<!-- <g>
   <slot cells={allSpecs} />
-</g>
+</g> -->
+
+<Section {x1} {x2} {y1} {y2}>
+
+  <slot cells={allSpecs} />
+
+</Section>

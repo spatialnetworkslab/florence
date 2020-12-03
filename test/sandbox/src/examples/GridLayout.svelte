@@ -33,12 +33,22 @@
 
 <div>
 
-	<Graphic
+	<!-- <Graphic
 		width={500} height={500}
+	> -->
+  <Graphic
+		width={500} height={500}
+    scaleX={[0, 10]}
 	>
 
-		<Grid
+		<!-- <Grid
 			x1={50} x2={450}
+			y1={50} y2={450}
+			names={groupedData.domain('color')}
+			let:cells
+		> -->
+    <Grid
+			x1={1} x2={9}
 			y1={50} y2={450}
 			names={groupedData.domain('color')}
 			let:cells
