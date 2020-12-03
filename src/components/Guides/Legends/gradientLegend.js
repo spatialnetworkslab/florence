@@ -12,14 +12,13 @@ export function generateStopOffsets (numberOfColors) {
 }
 
 export function getRectangleCoordinates (
-  xDivider, yDivider, rectangleWidth, numberOfLabels
+  xDivider, yDivider, numberOfLabels
 ) {
-  const xSpace = (xDivider - rectangleWidth) / 2
   const ySpace = (1 - yDivider) / (numberOfLabels * 2)
 
   return {
-    x1: xSpace,
-    x2: rectangleWidth + xSpace,
+    x1: 0,
+    x2: xDivider,
     y1: yDivider + ySpace,
     y2: 1 - ySpace
   }

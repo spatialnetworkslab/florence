@@ -34,3 +34,4 @@ export { default as GradientLegend } from './components/Guides/Legends/GradientL
 export { default as createGeoScales } from './helpers/createGeoScales.js'
 export { default as createPanHandler } from './helpers/createPanHandler.js'
 export { default as createZoomHandler } from './helpers/createZoomHandler.js'
+export * from './helpers/labels.js'
