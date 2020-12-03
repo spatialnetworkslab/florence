@@ -92,36 +92,9 @@ function handleData (fileNames) {
 
 const scriptCode = [
   'import REPL from \'@snlab/florence-repl\'',
-  'import { onMount, onDestroy } from \'svelte\'',
   '',
-  'let offsetTop',
-  'let windowWidth',
-  'let windowHeight',
-  'let replWidth',
-  'let replHeight',
-  '',
-  'function convertRemToPixels(rem) {',
-  '  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize)',
-  '}',
-  '',
-  'function handleResize () {',
-  '  offsetTop = document.getElementById(\'repl-wrapper\').offsetTop',
-  '  windowWidth = window.innerWidth',
-  '  windowHeight = window.innerHeight',
-  '  replWidth = windowWidth - convertRemToPixels(2)',
-  '  replHeight = windowHeight - offsetTop - convertRemToPixels(1)',
-  '}',
-  '',
-  'onMount(() => {',
-  '  window.addEventListener(\'resize\', handleResize)',
-  '  handleResize()',
-  '})',
-  '',
-  'onDestroy(() => {',
-  '  if (typeof window !== \'undefined\') {',
-  '    window.removeEventListener(\'resize\', handleResize)',
-  '  }',
-  '})'
+  'let containerWidth',
+  'let windowHeight'
 ].join('\n')
 
 function insertREPL (node, fileNames) {
@@ -136,7 +109,7 @@ function insertREPL (node, fileNames) {
   const replElement = createReplElement(files)
   const replWrapper = createReplWrapper(replElement)
 
-  node.children = [scriptTags, replWrapper]
+  node.children = [scriptTags, css, replWrapper]
 }
 
 function readFiles (fileNames) {
@@ -198,12 +171,17 @@ function createReplElement (files) {
       hName: 'REPL',
       hProperties: {
         replFiles: `{${JSON.stringify(files)}}`,
-        width: '{replWidth}',
-        height: '{replHeight}',
+        width: '{containerWidth}',
+        height: '{containerWidth * 0.6}',
         debounce: '{400}'
       }
     }
   }
+}
+
+const css = {
+  type: 'html',
+  value: '<style>\n.repl {\n @apply border border-gray-100;\n }\n</style>'
 }
 
 function createReplWrapper (replElement) {
@@ -213,7 +191,8 @@ function createReplWrapper (replElement) {
       tagName: 'div',
       hName: 'div',
       hProperties: {
-        id: 'repl-wrapper'
+        class: 'repl',
+        'bind:clientWidth': '{containerWidth}'
       }
     },
     children: [
@@ -226,7 +205,7 @@ function createReplWrapper (replElement) {
 
 const startIf = {
   type: 'html',
-  value: '\n{#if replHeight}\n'
+  value: '\n{#if containerWidth}\n'
 }
 
 const endIf = {

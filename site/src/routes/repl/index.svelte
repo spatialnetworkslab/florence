@@ -1,6 +1,5 @@
 <script>
 import REPL from '@snlab/florence-repl'
-import { onMount, onDestroy } from 'svelte'
 import appSource from './appSource.js'
 
 let containerWidth

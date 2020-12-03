@@ -27,7 +27,7 @@
     </p>
     <p>
       For a sense of the range of visualizations made possible 
-      using the library, check out the <a href="/examples">example gallery</a> 
+      using the library, check out the interactive <a href="/examples">example gallery</a> 
       or visit the <a href="/tutorials">tutorials</a> and <a href="/docs">documentation</a>.
     </p>
     <p>
