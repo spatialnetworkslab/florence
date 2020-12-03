@@ -53,17 +53,30 @@ The `Grid` positioning props behave the same way as the [Section](/docs/core/sec
 
 ### Grid settings
 
-|   Prop    | Required |  Type(s)   |   Default   | Unit(s) |
-| --------- | -------- | ---------- | ----------- | ------- |
-| names     | `true`   | `String[]` | `undefined` | -       |
-| rows      | `false`  | `Number`   | `undefined` | Integer |
-| columns   | `false`  | `Number`   | `undefined` | Integer |
-| rowGap    | `false`  | `Number`   | `0`         | Pixel   |
-| columnGap | `false`  | `Number`   | `0`         | Pixel   |
+|    Prop     | Required |      Type(s)       |   Default   | Unit(s) |
+| ----------- | -------- | ------------------ | ----------- | ------- |
+| names       | `true`   | `String[]`         | `undefined` | -       |
+| rows        | `false`  | `Number`           | `undefined` | Integer |
+| columns     | `false`  | `Number`           | `undefined` | Integer |
+| padding     | `false`  | `Number`, `Object` | `0`         | Pixel   |
+| cellPadding | `false`  | `Number`, `Object` | `0`         | Pixel   |
 
-`names` is the only required prop among the grid settings. If `rows` and `columns` are `undefined`, values will be chosen automatically based on the number of cells and the aspect ratio result from the positioning props. If only `rows` is defined, `columns` will be calculated automatically and vice versa. Finally, if both `rows` and `columns` are defined, the  `Grid` component will give a warning if the number of `names` exceeds the number of cells.
+`names` is the only required prop among the grid settings. If `rows` and `columns` are `undefined`, values will be chosen automatically based on the number of cells and the aspect ratio result from the positioning props. If only `rows` is defined, `columns` will be calculated automatically and vice versa. Finally, if both `rows` and `columns` are defined, the  `Grid` component will throw an error if the number of `names` exceeds the number of cells.
 
-`rowGap` and `columnGap` are used to create spacing between the cells.
+`padding` is used to create an outer padding for the entire grid, while `cellPadding` is used to create padding inside each individual cell.
+Both can be specified as a `Number` or an `Object`, where
+
+```
+padding={10}
+```
+
+is equivalent to
+
+```
+padding={{ left: 10, right: 10, top: 10, bottom: 10 }}
+```
+
+For more information on padding, see the [local coordinates](/docs/concepts/local-coordinates) documentation.
 
 ### Other
 
