@@ -43,7 +43,7 @@
   import GraphicAreaBug from './examples/GraphicAreaBug.svelte'
   import FuncLineBug from './examples/FuncLineBug.svelte'
 
-  import RecycleTest from './examples/RecycleTest.svelte'
+  import NewLegends from './examples/NewLegends.svelte'
   
   // and add them to this component array
   const components = [
@@ -228,9 +228,9 @@
       component: FuncLineBug
     },
     {
-      name: 'Recycle test',
-      url: 'recycle-test',
-      component: RecycleTest
+      name: 'New legends',
+      url: 'new-legends',
+      component: NewLegends
     }
   ]
 </script>
