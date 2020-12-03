@@ -7,7 +7,7 @@
 <Graphic width={800} height={500}>
 
   <DiscreteLegend
-    x1={300} x2={450}
+    x1={100} x2={250}
     y1={300} y2={400}
     colors={['green', 'yellow', 'brown']}
     labels={['apple', 'banana', 'coconut']}
@@ -18,10 +18,13 @@
   </DiscreteLegend>
 
   <GradientLegend 
-    x1={600} x2={700}
+    x1={400} x2={550}
     y1={300} y2={400}
     colors={['green', 'yellow', 'brown']}
     labels={['apple', 'banana', 'coconut']}
-  />
+  >
+    <Title title="Fruit colors" yOffset={-20} />
+
+  </GradientLegend>
 
 </Graphic>

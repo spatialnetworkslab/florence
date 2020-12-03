@@ -21,7 +21,7 @@
 
 <Section {...sectionCoordinates} scaleX={[0, 1]} scaleY={[0, 1]}>
 
-  <!-- Slot for title -->
+  <!-- Slot for title and other stuff -->
   <slot />
 
   <!-- Color swatches -->

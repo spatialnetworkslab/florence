@@ -7,11 +7,9 @@
 
 <script>
   import { Section, Grid, Rectangle, Label } from '../../../index.js'
+  import Gradient from './Gradient.svelte'
   import { getSectionCoordinates, getLabelCoordinates } from './legend.js'
-  import { 
-    generateStopOffsets,
-    getRectangleCoordinates
-  } from './gradientLegend.js'
+  import { getRectangleCoordinates } from './gradientLegend.js'
 
   export let x1
   export let x2
@@ -23,12 +21,11 @@
 
   export let xDivider = 0.5
   export let yDivider = 0.2
-  export let rectangleWidth = 0.4
+  export let rectangleWidth = 0.25
   export let labelFontSize = undefined
 
   const gradientId = getId()
   
-  $: stopOffsets = generateStopOffsets(colors.length)
   $: sectionCoordinates = getSectionCoordinates(x1, x2, y1, y2)
 
   $: rectangleCoordinates = getRectangleCoordinates(
@@ -39,24 +36,17 @@
   )
 </script>
 
-<defs>
-
-    <linearGradient id={gradientId} gradientTransform="rotate(90)">
-
-      {#each colors as color, i}
-
-        <stop offset={stopOffsets[i]} stop-color={color} />
-
-      {/each}
-
-    </linearGradient>
-
-</defs>
+<Gradient
+  {gradientId}
+  {colors}
+/>
 
 <Section {...sectionCoordinates} scaleX={[0, 1]} scaleY={[0, 1]}>
 
+  <!-- Slot for title and other stuff -->
   <slot />
 
+  <!-- Color gradient -->
   <Rectangle
     {...rectangleCoordinates}
     fill={`url(#${gradientId})`}
