@@ -3,6 +3,7 @@
   import Section from '../Section/Section.svelte'
   import { getPixelCoordinates } from '../Section/getPixelCoordinates.js'
   import { getAspectRatio, getNRowsAndColumns } from './getNRowsAndColumns.js'
+  import { getCells, applyPadding, nameCells } from './cells.js'
 
   // Props
   export let x1 = undefined
@@ -35,12 +36,8 @@
   }
 
   $: pixelCoordinates = getPixelCoordinates({ x1, x2, y1, y2 }, $sectionContext)
-
-  // Get cells
-  $: cells = getCells()
-
-  // Get named cells
-  $: allSpecs = mergeNameSpecs(names, allCells, numCols)
+  $: cells = getCells(applyPadding(getPixelCoordinates, padding), nrows, ncolumns, cellPadding)
+  $: namedCells = nameCells(cells, names)
 </script>
 
 <!-- <g>
@@ -49,6 +46,6 @@
 
 <Section {x1} {x2} {y1} {y2}>
 
-  <slot cells={allSpecs} />
+  <slot cells={namedCells} />
 
 </Section>
