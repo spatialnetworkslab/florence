@@ -1,5 +1,5 @@
 <script>
-  import { Section, Rectangle, Label } from '../../../index.js'
+  import { Section, Grid, Rectangle, Label } from '../../../index.js'
   import { getSectionCoordinates, getLabelCoordinates } from './legend.js'
   import { getRectangleCoordinates } from './discreteLegend.js'
 
@@ -39,33 +39,55 @@
   <slot />
 
   <!-- Color swatches -->
-  {#each colors as color}
+  <Grid 
+    x1={0} x2={xDivider} y1={yDivider} y2={1}
+    names={colors}
+    columns={1}
+    rowGap={gap}
+    let:cells
+    colGap={gap}
+  >
 
-    <!-- <Rectangle
-      {...getRectangleCoordinates(cells[color])}
-      fill={color}
-      {stroke}
-      {strokeWidth}
-      {transition}
-    /> -->
+    {#each colors as color}
 
-  {/each}
+      <Rectangle
+        {...getRectangleCoordinates(cells[color])}
+        fill={color}
+        {stroke}
+        {strokeWidth}
+        {transition}
+      />
+
+    {/each}
+  
+  </Grid>
 
   <!-- Labels -->
-  {#each labels as label}
+  <Grid 
+    x1={xDivider} x2={1} y1={yDivider} y2={1}
+    names={labels}
+    columns={1}
+    rowGap={gap}
+    colGap={gap}
+    let:cells
+  >
 
-    <!-- <Label
-      {...getLabelCoordinates(cells[label])}
-      text={label}
-      anchorPoint={'l'}
-      fontFamily={labelFont}
-      fontSize={labelFontSize}
-      fontWeight={labelFontWeight} 
-      opacity={labelOpacity} 
-      fill={labelColor}
-      {transition}
-    /> -->
+    {#each labels as label}
 
-  {/each}
+      <Label
+        {...getLabelCoordinates(cells[label])}
+        text={label}
+        anchorPoint={'l'}
+        fontFamily={labelFont}
+        fontSize={labelFontSize}
+        fontWeight={labelFontWeight} 
+        opacity={labelOpacity} 
+        fill={labelColor}
+        {transition}
+      />
+
+    {/each}
+  
+  </Grid>
 
 </Section>
