@@ -395,6 +395,25 @@ and `kx` and `ky` are the zooming factors in respectively the x and y dimensions
 }
 ```
 
+As a shorthand, it is also possible to specify only some of the members of the `zoomIdentity`. The others will get the default values. So for example
+
+```js
+{
+  x: 10
+}
+```
+
+will become
+
+```js
+{
+  x: 10,
+  y: 0,
+  kx: 1,
+  ky: 1
+}
+```
+
 An example:
 
 ```js exec
