@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, Section, Title, DiscreteLegend, GradientLegend } from '../../../../src/'
+  import { Graphic, Section, DiscreteLegend, GradientLegend } from '../../../../src/'
 </script>
 
 <Graphic width={800} height={800}>
@@ -12,8 +12,6 @@
     opacity={[0.8, 1, 0.2]}
   >
 
-    <Title title="Fruit colors" />
-
   </DiscreteLegend>
 
   <GradientLegend 
@@ -23,7 +21,6 @@
     fill={['green', 'yellow', 'brown']}
     opacity={[0.8, 1, 0.2]}
   >
-    <Title title="Fruit colors" />
 
   </GradientLegend>
 

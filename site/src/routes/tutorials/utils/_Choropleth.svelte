@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, Section, PolygonLayer, createGeoScales, Title, DiscreteLegend } from '@snlab/florence';
+  import { Graphic, Section, PolygonLayer, createGeoScales, Label, DiscreteLegend } from '@snlab/florence';
   import DataContainer from '@snlab/florence-datacontainer';
   import { scaleThreshold } from 'd3-scale'
 
@@ -59,9 +59,12 @@
     
     {#if switch2}
       <!-- step 4 (optional) -->
-      <Title
-        title={'Mean resale price per m2 (S$)'} 
+      <Label
+        x={() => 250}
+        y={() => 50}
+        text={'Mean resale price per m2 (S$)'}
         fontFamily={'Montserrat'}
+        fontSize={18}
       />
     {/if}
     

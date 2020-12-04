@@ -1,6 +1,6 @@
 <script>
   import { 
-    Graphic, Section, Point, XAxis, YAxis, XGridLines, YGridLines, Title 
+    Graphic, Section, Point, XAxis, YAxis, XGridLines, YGridLines 
   } from '../../../../src'
 </script>
 
@@ -12,8 +12,6 @@
   padding={{ left: 50, right: 50, top: 50, bottom: 20 }}
   paddingColor="blue"
 >
-
-  <Title title="Hello!" />
 
   <Point x={10} y={10} />
 

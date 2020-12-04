@@ -309,9 +309,12 @@ Graphs usually come with titles describing the subject of the graph. This can be
     <YAxis 
     />
 
-    <Title 
-      title={'Fruit Sizes'} 
+    <Label
+      x={() => 250}
+      y={() => 50}
+      text={'Fruit Sizes'}
       fontFamily={'Baskerville'}
+      fontSize={18}
     />
   </Section>
 </Graphic>
@@ -358,9 +361,12 @@ In this case, the points on the graph can be scaled to display a different color
     <YAxis 
     />
 
-    <Title 
-      title={'Fruit Sizes'} 
+    <Label
+      x={() => 250}
+      y={() => 50}
+      text={'Fruit Sizes'}
       fontFamily={'Baskerville'}
+      fontSize={18}
     />
   </Section>
 </Graphic>
@@ -406,9 +412,12 @@ The title-vjust and title-hjust properties are used to position the axis title r
       <YAxis 
         title={'diameter/cm'}
       />
-      <Title 
-        title={'Fruit Sizes'} 
+      <Label
+        x={() => 250}
+        y={() => 50}
+        text={'Fruit Sizes'}
         fontFamily={'Baskerville'}
+        fontSize={18}
       />
     </Section>
   </Graphic>

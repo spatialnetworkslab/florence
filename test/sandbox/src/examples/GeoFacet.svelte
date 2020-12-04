@@ -4,7 +4,7 @@
   import { scaleLinear, scaleThreshold, scalePoint } from 'd3-scale'
 
   // florence
-  import { Graphic, Section, Title, createGeoScales, XAxis, YAxis, SymbolLayer, PolygonLayer, Polygon, DiscreteLegend } from '../../../../src/'
+  import { Graphic, Section, createGeoScales, XAxis, YAxis, SymbolLayer, PolygonLayer, Polygon, DiscreteLegend } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   // geodata
@@ -183,7 +183,6 @@
           size={16}
           transition={transition}
         />
-        <Title title={hoverTown} transition={transition} fill={'#2c3e50'}/>
         <YAxis baseLineOpacity={0} xOffset={6} transition={transition}/>
         <XAxis flip vjust={'top'} baseLineOpacity={0} yOffset={6} transition={transition}/>
 

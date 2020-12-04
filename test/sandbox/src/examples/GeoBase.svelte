@@ -1,6 +1,6 @@
 <script>
   import { 
-    Graphic, Section, PolygonLayer, createGeoScales, DiscreteLegend, Title, getClassLabels
+    Graphic, Section, PolygonLayer, createGeoScales, DiscreteLegend, getClassLabels
   } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
   import { scaleThreshold } from 'd3-scale'
@@ -51,11 +51,6 @@
       flipLabels
       usePadding={true}
     /> -->
-
-    <Title
-      title={'Mean resale price per m2 (S$)'} 
-      fontFamily={'Montserrat'}
-    />
   </Section>
 
   <DiscreteLegend

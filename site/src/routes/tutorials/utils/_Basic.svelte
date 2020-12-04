@@ -7,7 +7,7 @@
     PointLayer,
     XAxis,
     YAxis,
-    Title,
+    Label,
     DiscreteLegend
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
@@ -124,10 +124,13 @@
     {/if}
 
     {#if switch2}
-      <Title 
-        title={'Fruit Sizes'} 
+      <Label
+        x={() => 250}
+        y={() => 50}
+        text={'Fruit Sizes'}
         fontFamily={'Baskerville'}
-        />
+        fontSize={18}
+      />
     {/if}
 
     {#if switch5}

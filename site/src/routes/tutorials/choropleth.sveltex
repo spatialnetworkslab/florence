@@ -361,9 +361,12 @@ Our code now looks like this:
     />
 
     <!-- step 4 (optional) -->
-    <Title
-      title={'Mean resale price per m2 (S$)'} 
+    <Label
+      x={() => 250}
+      y={() => 50}
+      text={'Mean resale price per m2 (S$)'}
       fontFamily={'Montserrat'}
+      fontSize={18}
     />
   </Section>
 </Graphic>
@@ -395,9 +398,12 @@ We are using thresholds to denote color, so we set our `labelAnchorPoint` to `r`
       />
 
       <!-- step 4 (optional) -->
-      <Title
-        title={'Mean resale price per m2 (S$)'} 
+      <Label
+        x={() => 250}
+        y={() => 50}
+        text={'Mean resale price per m2 (S$)'}
         fontFamily={'Montserrat'}
+        fontSize={18}
       />
 
       <!-- step 5 (optional) -->
