@@ -105,7 +105,7 @@ TODO explain `setZoomIdentity` and `setBlockReindexing`.
 
 ## Return value
 
-`createPanHandler` returns an object of the following form:
+`createPanHandler` returns an `Object` of the following form:
 
 ```js
 {
