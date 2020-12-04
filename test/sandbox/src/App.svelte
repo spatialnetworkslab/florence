@@ -26,7 +26,6 @@
   import AreaChart from './examples/AreaChart.svelte'
   import StackedAreaChart from './examples/StackedAreaChart.svelte'
   import ViolinPlot from './examples/ViolinPlot.svelte'
-  import Title from './examples/Title.svelte'
   import LegendsDocs from './examples/LegendsDocs.svelte'
   import NestedSections from './examples/NestedSections.svelte'
   import JoHsiBug from './examples/JoHsiBug.svelte'
@@ -161,11 +160,6 @@
       name: 'Violin plot',
       url: 'violinplot',
       component: ViolinPlot
-    },
-    {
-      name: 'Title',
-      url: 'title',
-      component: Title
     },
     {
       name: 'Legends: Docs',
