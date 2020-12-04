@@ -3,7 +3,7 @@ export default [
   '  import { Graphic, Point } from "@snlab/florence"',
   '</script>',
   '',
-  '<Graphic width={500} height={500}>',
-  '  <Point x={250} y={250} radius={50} />',
+  '<Graphic width={400} height={400}>',
+  '  <Point x={200} y={200} radius={50} />',
   '</Graphic>'
 ].join('\n')
