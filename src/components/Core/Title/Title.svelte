@@ -4,7 +4,7 @@
   import Label from '../../Marks/Label/Label.svelte'
 
   // Positioning
-  export let vjust = 'top'
+  export let vjust = 0.1
   export let hjust = 'center'
   export let xOffset = 0
   export let yOffset = 0
