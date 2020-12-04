@@ -39,8 +39,7 @@
 
     <Title
       title={'Mean resale price per m2 (S$)'} 
-      titleFontFamily={'Montserrat'}
-      usePadding={true}
+      fontFamily={'Montserrat'}
     />
 
     <PolygonLayer 

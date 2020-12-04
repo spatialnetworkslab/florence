@@ -183,7 +183,7 @@
           size={16}
           transition={transition}
         />
-        <Title title={hoverTown} usePadding={true} transition={transition} titleFill={'#2c3e50'}/>
+        <Title title={hoverTown} transition={transition} fill={'#2c3e50'}/>
         <YAxis baseLineOpacity={0} xOffset={6} transition={transition}/>
         <XAxis flip vjust={'top'} baseLineOpacity={0} yOffset={6} transition={transition}/>
 

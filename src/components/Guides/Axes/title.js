@@ -1,4 +1,4 @@
-import { parseHJust, parseVJust } from '../../Core/utils/just.js'
+import { parseHJust, parseVJust } from './just.js'
 
 export function getTitleCoordinatesXAxis (
   hjust,

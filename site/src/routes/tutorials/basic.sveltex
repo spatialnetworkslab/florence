@@ -311,8 +311,7 @@ Graphs usually come with titles describing the subject of the graph. This can be
 
     <Title 
       title={'Fruit Sizes'} 
-      titleFontFamily={'Baskerville'}
-      usePadding={true}
+      fontFamily={'Baskerville'}
     />
   </Section>
 </Graphic>
@@ -361,8 +360,7 @@ In this case, the points on the graph can be scaled to display a different color
 
     <Title 
       title={'Fruit Sizes'} 
-      titleFontFamily={'Baskerville'}
-      usePadding={true}
+      fontFamily={'Baskerville'}
     />
   </Section>
 </Graphic>
@@ -410,8 +408,7 @@ The title-vjust and title-hjust properties are used to position the axis title r
       />
       <Title 
         title={'Fruit Sizes'} 
-        titleFontFamily={'Baskerville'}
-        usePadding={true}
+        fontFamily={'Baskerville'}
       />
     </Section>
   </Graphic>

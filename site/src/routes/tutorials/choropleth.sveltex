@@ -363,8 +363,7 @@ Our code now looks like this:
     <!-- step 4 (optional) -->
     <Title
       title={'Mean resale price per m2 (S$)'} 
-      titleFontFamily={'Montserrat'}
-      usePadding={true}
+      fontFamily={'Montserrat'}
     />
   </Section>
 </Graphic>
@@ -398,8 +397,7 @@ We are using thresholds to denote color, so we set our `labelAnchorPoint` to `r`
       <!-- step 4 (optional) -->
       <Title
         title={'Mean resale price per m2 (S$)'} 
-        titleFontFamily={'Montserrat'}
-        usePadding={true}
+        fontFamily={'Montserrat'}
       />
 
       <!-- step 5 (optional) -->

@@ -2,7 +2,7 @@
   import { Line, LineLayer, Label, LabelLayer } from '../../../index.js'
   import * as SectionContext from '../../Core/Section/SectionContext'
 
-  import { parseHJust } from '../../Core/utils/just.js'
+  import { parseHJust } from './just.js'
   import { getBaseLineCoordinatesYAxis } from './baseLine.js'
   import { getTickPositions, getTickCoordinatesYAxis, getFormat } from './ticks.js'
   import { getTickLabelCoordinatesYAxis, getTextWidth } from './tickLabels.js'

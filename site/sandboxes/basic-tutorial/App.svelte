@@ -113,9 +113,8 @@
 
     <Title 
       title={'Fruit Sizes'} 
-      titleFontFamily={'Baskerville'}
-      usePadding={true}
-      />
+      fontFamily={'Baskerville'}
+    />
 
     <DiscreteLegend
       fill={scaleFruitColor}

@@ -25,24 +25,17 @@
 
     <Title 
       title={'Lorem ipsum dolor sit amet'} 
-      titleFontFamily={'Papyrus'}
-      subtitle={'elit, sed do eiusmod tempor incididunt'}
-      subtitleFontFamily={'Garamond'}
-      subtitleStroke={'green'}
-      subtitleStrokeWidth={2}
-      usePadding={true}
-      />
+      fontFamily={'Papyrus'}
+    />
   
   </Section>
 
   <Title 
     title={'Test text at bottom of chart'} 
-    subtitle={'elit, sed do eiusmod tempor incididunt'}
-    vjust={'bottom'}
+    vjust={0.9}
     {hjust}
-    titleFontFamily={'Baskerville'}
-    titleFill={'pink'}
-    usePadding={false}
+    fontFamily={'Baskerville'}
+    fill={'pink'}
     />
 
 </Graphic>

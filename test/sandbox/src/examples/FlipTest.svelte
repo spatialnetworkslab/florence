@@ -8,7 +8,7 @@
   width={500}
   height={500}
   flipX={false}
-  flipY={false}
+  flipY={true}
   padding={{ left: 50, right: 50, top: 50, bottom: 20 }}
   paddingColor="blue"
 >

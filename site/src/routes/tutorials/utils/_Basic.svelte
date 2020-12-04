@@ -126,8 +126,7 @@
     {#if switch2}
       <Title 
         title={'Fruit Sizes'} 
-        titleFontFamily={'Baskerville'}
-        usePadding={true}
+        fontFamily={'Baskerville'}
         />
     {/if}
 

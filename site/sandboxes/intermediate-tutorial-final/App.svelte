@@ -76,8 +76,7 @@
     <!-- step 4 (optional) -->
     <Title
       title={'Mean resale price per m2 (S$)'} 
-      titleFontFamily={'Montserrat'}
-      usePadding={true}
+      fontFamily={'Montserrat'}
     />
   
   <!-- step 5 (optional) -->
