@@ -1,8 +1,5 @@
 <script>
-  import {
-    getAbsoluteXPosition,
-    getAbsoluteYPosition
-  } from '../../Guides/Axes/absolutePosition.js'
+  import { parseHJust, parseVJust } from '../utils/just.js'
   import * as SectionContext from '../Section/SectionContext'
   import Label from '../../Marks/Label/Label.svelte'
 
@@ -32,13 +29,8 @@
 
   const sectionContext = SectionContext.subscribe()
 
-  $: x = getAbsoluteXPosition(hjust, xOffset, $sectionContext)
-  $: y = getAbsoluteYPosition(vjust, yOffset, $sectionContext)
-
-  $: {
-    console.log(x)
-    console.log(y)
-  }
+  $: x = parseHJust(hjust, xOffset, $sectionContext.bbox)
+  $: y = parseVJust(vjust, yOffset, $sectionContext.bbox)
 </script>
 
 <Label

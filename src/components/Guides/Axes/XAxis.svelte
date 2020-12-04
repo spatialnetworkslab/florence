@@ -2,7 +2,7 @@
   import { Line, LineLayer, Label, LabelLayer } from '../../../index.js'
   import * as SectionContext from '../../Core/Section/SectionContext'
 
-  import { getAbsoluteYPosition } from './absolutePosition.js'
+  import { parseVJust } from '../../Core/utils/just.js'
   import { getBaseLineCoordinatesXAxis } from './baseLine.js'
   import { getTickPositions, getTickCoordinatesXAxis, getFormat } from './ticks.js'
   import { getTickLabelCoordinatesXAxis } from './tickLabels.js'
@@ -76,7 +76,7 @@
     : $sectionContext.scaleX
   
   // Absolute position (in pixels)
-  $: yAbsolute = getAbsoluteYPosition(vjust, yOffset, $sectionContext)
+  $: yAbsolute = parseVJust(vjust, yOffset, $sectionContext.paddedBbox)
 
   // Baseline
   $: baseLineCoordinates = getBaseLineCoordinatesXAxis(yAbsolute, $sectionContext)
