@@ -36,7 +36,7 @@
 ```
 
 ```js exec
-import ZoomExample from './examples/__ZoomExample.svelte'
+import ZoomExample from './examples/_ZoomExample.svelte'
 ```
 
 <ZoomExample />
