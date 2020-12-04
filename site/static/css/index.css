@@ -546,11 +546,18 @@ body {
 h1 {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
   margin-bottom: 1rem;
   --tw-text-opacity: 1;
   color: rgba(17, 24, 39, var(--tw-text-opacity));
+}
+
+@media (min-width: 640px) {
+  h1 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
 }
 
 h2 {
@@ -559,7 +566,7 @@ h2 {
   border-bottom-width: 1px;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   line-height: 1.75rem;
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
@@ -567,20 +574,43 @@ h2 {
   color: rgba(17, 24, 39, var(--tw-text-opacity));
 }
 
+@media (min-width: 640px) {
+  h2 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+}
+
 h3 {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
-  font-size: 1.125rem;
-  line-height: 1.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
   --tw-text-opacity: 1;
   color: rgba(17, 24, 39, var(--tw-text-opacity));
 }
 
+@media (min-width: 640px) {
+  h3 {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+}
+
 p {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   margin-top: 0.5rem;
   margin-bottom: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  p {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
 }
 
 strong {
@@ -690,6 +720,7 @@ tr > td {
   --tw-border-opacity: 1;
   border-color: rgba(156, 163, 175, var(--tw-border-opacity));
   border-right-width: 1px;
+  border-bottom-width: 1px;
   flex: none;
   padding-right: 1rem;
   white-space: nowrap;

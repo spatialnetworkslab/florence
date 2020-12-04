@@ -15,7 +15,7 @@
 </script>
 
 <Graphic
-  width={500} height={500}
+  width={400} height={400}
   backgroundColor={'grey'} 
   {...geoScales}
 >

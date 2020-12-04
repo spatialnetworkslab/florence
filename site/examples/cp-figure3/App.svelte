@@ -2,7 +2,7 @@
   import { Graphic, Section } from '@snlab/florence'
 </script>
 
-<Graphic width={500} height={500}>
+<Graphic width={400} height={400}>
 
     <Section
       x1={0}

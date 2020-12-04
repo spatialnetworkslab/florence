@@ -13,7 +13,7 @@
     .range(schemeCategory10)
 </script>
 
-<Graphic width={500} height={500} {...geoScales} flipY>
+<Graphic width={400} height={400} {...geoScales} flipY>
   <PolygonLayer
     geometry={provinces.column('$geometry')}
     fill={provinces.map('statcode', colorScale)}

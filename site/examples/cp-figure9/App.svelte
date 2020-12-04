@@ -9,7 +9,7 @@
   let selectedIndex = null
 </script>
 
-<Graphic width={500} height={500} {...geoScales} flipY>
+<Graphic width={400} height={400} {...geoScales} flipY>
   <PolygonLayer
     geometry={provinces.column('$geometry')}
     fill={({ index }) => index === selectedIndex ? 'yellow' : 'rgb(230,230,230)'}

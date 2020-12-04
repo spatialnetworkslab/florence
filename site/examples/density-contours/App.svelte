@@ -7,8 +7,8 @@
   import { Graphic, PolygonLayer, PointLayer, XAxis, YAxis } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
-  const width = 500
-  const height = 500
+  const width = 400
+  const height = 400
 
   let dataContainer, scaleX, scaleY, contours, ready
 

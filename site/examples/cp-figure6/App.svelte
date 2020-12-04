@@ -7,7 +7,7 @@
 </script>
 
 <Graphic
-  width={500} height={500}
+  width={400} height={400}
   padding={40}
   backgroundColor={'gray'} 
   {scaleX} {scaleY}
