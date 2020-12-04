@@ -35,8 +35,7 @@
 </script>
 
 <svelte:head>
-	<link rel="stylesheet" href="href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css"
-      rel="stylesheet"">
+	<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css">
 </svelte:head>
 <div style="width: {width}px; height: {height}px;" bind:this={container}>
 </div>
