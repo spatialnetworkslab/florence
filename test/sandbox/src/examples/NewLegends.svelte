@@ -4,22 +4,23 @@
 
 <Graphic width={800} height={800}>
 
-  <DiscreteLegend
+  <!-- <DiscreteLegend
     x1={100} x2={200}
     y1={100} y2={450}
-    colors={['green', 'yellow', 'brown']}
     labels={['apple', 'banana', 'coconut']}
+    fill={['green', 'yellow', 'brown']}
   >
 
     <Title title="Fruit colors" />
 
-  </DiscreteLegend>
+  </DiscreteLegend> -->
 
   <GradientLegend 
     x1={300} x2={400}
     y1={100} y2={450}
-    colors={['green', 'yellow', 'brown']}
     labels={['apple', 'banana', 'coconut']}
+    fill={['green', 'yellow', 'brown']}
+    opacity={[0.8, 1, 0.2]}
   >
     <Title title="Fruit colors" />
 

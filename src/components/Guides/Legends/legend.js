@@ -13,3 +13,15 @@ export function getLabelCoordinates ({ x1, x2, y1, y2 }) {
     y: (y2 + y1) / 2
   }
 }
+
+export function parseAesthetic (aesthetic, length) {
+  if (aesthetic.constructor === Array) {
+    if (aesthetic.length !== length) {
+      throw new Error('Aesthetics and labels must all be of same length')
+    }
+
+    return aesthetic
+  }
+
+  return Array(length).fill(aesthetic)
+}

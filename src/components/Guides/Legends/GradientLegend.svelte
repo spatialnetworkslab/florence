@@ -8,7 +8,7 @@
 <script>
   import { Section, Grid, Rectangle, Label } from '../../../index.js'
   import Gradient from './Gradient.svelte'
-  import { getLabelCoordinates } from './legend.js'
+  import { getLabelCoordinates, parseAesthetic } from './legend.js'
   import { getRectangleCoordinates } from './gradientLegend.js'
 
   // Positioning
@@ -20,9 +20,10 @@
   export let yDivider = 0.2
   export let padding = 1
 
-  // Colors and labels
-  export let colors
+  // Aesthetics and labels
   export let labels
+  export let fill
+  export let opacity = 1
 
   // Color gradient settings
   export let stroke = 'none'
@@ -45,11 +46,21 @@
     yDivider,
     labels.length
   )
+
+  $: fills = parseAesthetic(fill, labels.length)
+  $: opacities = parseAesthetic(opacity, labels.length)
+
+  $: {
+    if (fills.length !== opacities.length) {
+      throw new Error('Aesthetics and labels must all be of same length')
+    }
+  }
 </script>
 
 <Gradient
   {gradientId}
-  {colors}
+  {fills}
+  {opacities}
 />
 
 <Section {x1} {x2} {y1} {y2} scaleX={[0, 1]} scaleY={[0, 1]}>
