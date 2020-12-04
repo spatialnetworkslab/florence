@@ -31,6 +31,7 @@
 
   // Other
   export let transition = undefined
+  export let clip = false
 
   $: fills = parseAesthetic(fill, labels.length)
   $: opacities = parseAesthetic(opacity, labels.length)
@@ -66,6 +67,7 @@
         {stroke}
         {strokeWidth}
         {transition}
+        {clip}
       />
 
     {/each}
@@ -94,6 +96,7 @@
         opacity={labelOpacity} 
         fill={labelColor}
         {transition}
+        {clip}
       />
 
     {/each}

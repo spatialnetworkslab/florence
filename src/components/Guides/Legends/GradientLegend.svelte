@@ -38,6 +38,7 @@
 
   // Other
   export let transition = undefined
+  export let clip = false
 
   const gradientId = getId()
 
@@ -79,6 +80,7 @@
       {stroke}
       {strokeWidth}
       {transition}
+      {clip}
     />
 
   </Section>
@@ -104,6 +106,7 @@
       opacity={labelOpacity} 
       fill={labelColor}
       {transition}
+      {clip}
     />
 
   {/each}
