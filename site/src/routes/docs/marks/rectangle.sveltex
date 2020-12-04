@@ -47,7 +47,7 @@ import SimpleExample from './examples/_RectangleSimple.svelte'
 
 ### Positioning
 
-| Prop |        Required         |                 Types                  |   Default   |                       Unit(s)                        |
+| Prop |        Required         |                Type(s)                 |   Default   |                       Unit(s)                        |
 | ---- | ----------------------- | -------------------------------------- | ----------- | ---------------------------------------------------- |
 | x1   | `if (x2 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 | x2   | `if (x1 !== undefined)` | `Number`, `String`, `Date`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
