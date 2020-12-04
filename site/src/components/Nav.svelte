@@ -32,7 +32,7 @@
 }
 
 .nav-a.gitlab {
-  @apply no-underline py-1 px-0 mr-4 font-normal text-gray-400;
+  @apply no-underline py-1 px-0 mr-4 font-normal text-gray-500;
 }
 
 .nav-a:hover {
@@ -51,8 +51,8 @@
 </style>
 
 <nav class='top-nav'>
-	<ul class='sm:flex justify-between mb-0'>
-    <div class='ml-8 left-nav flex flex-row justify-center sm:justify-start'>
+	<div class='sm:flex justify-between mb-0'>
+    <ul class='ml-8 left-nav flex flex-row justify-center sm:justify-start'>
       <li class='nav-li'>
         <a class={`nav-a home ${segment ===
           undefined ? 'selected' : ''}`} href='.'>Florence</a></li>
@@ -62,14 +62,14 @@
           ${segment === item.link ? 'selected' : ''}`} 
           href={item.link}> {item.name} </a> </li>
       {/each}
-    </div>
-    <div class='right-nav mt-2 sm:mt-0 flex flex-row justify-center sm:justify-end'>
+    </ul>
+    <ul class='right-nav mt-2 sm:mt-0 flex flex-row justify-center sm:justify-end'>
     <li class='nav-li'>
       <a class='nav-a' href='/repl'>REPL</a>
     </li>
     <li class='nav-li'>
       <a class='nav-a gitlab' href='https://gitlab.com/spatialnetworkslab/florence'>Source Code</a>
     </li>
-    </div>
-  </ul>
+    </ul>
+  </div>
 </nav>
