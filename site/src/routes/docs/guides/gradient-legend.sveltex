@@ -24,7 +24,7 @@ The `GradientLegend` component help the viewer of a graphic interpret mappings b
 ```
 
 ```js exec
-import SimpleExample from './examples/_GradientSimple.svelte'
+import SimpleExample from './utils/_GradientSimple.svelte'
 ```
 
 <SimpleExample />

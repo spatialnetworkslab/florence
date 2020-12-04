@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@polka/send": "^1.0.0-next.3",
+    "@snlab/florence": "^0.1.25",
     "@snlab/florence-repl": "0.0.9",
     "compression": "^1.7.4",
     "polka": "^1.0.0-next.4",
@@ -26,7 +27,6 @@
     "@babel/preset-env": "^7.12.7",
     "@babel/runtime": "^7.12.5",
     "@fullhuman/postcss-purgecss": "^3.0.0",
-    "@snlab/florence": "^0.1.24",
     "@snlab/florence-datacontainer": "^0.1.18",
     "@snlab/sveltex-unified": "^0.0.16",
     "d3-array": "^2.9.0",

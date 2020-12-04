@@ -24,7 +24,7 @@ The `DiscreteLegend` component help the viewer of a graphic interpret mappings b
 ```
 
 ```js exec
-import SimpleExample from './examples/_DiscreteSimple.svelte'
+import SimpleExample from './utils/_DiscreteSimple.svelte'
 ```
 
 <SimpleExample />
