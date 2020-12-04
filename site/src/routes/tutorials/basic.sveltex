@@ -11,7 +11,7 @@ You may further customise your graph using the following components:
 
 - [Label](docs/marks/label), which can serve as a title
 - Axis Title
-- [Legend](docs/guides/legend)
+- [DiscreteLegend](docs/guides/discrete-legend)
 - [X](docs/guides/xgridlines) or [Y](docs/guides/ygridlines) grid lines
 
 For scaling, we rely on [d3 scales](https://github.com/d3/d3-scale).

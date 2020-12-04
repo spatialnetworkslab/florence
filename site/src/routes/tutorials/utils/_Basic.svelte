@@ -7,8 +7,7 @@
     PointLayer,
     XAxis,
     YAxis,
-    Label,
-    DiscreteLegend
+    Label
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
@@ -18,7 +17,6 @@
   export let switch2 = false
   export let switch3 = false
   export let switch4 = false
-  export let switch5 = false
 
   let data = new DataContainer({
     diameter: [
@@ -131,19 +129,6 @@
         fontFamily={'Baskerville'}
         fontSize={18}
       />
-    {/if}
-
-    {#if switch5}
-      <DiscreteLegend
-        fill={scaleFruitColor}
-        hjust={'right'}
-        vjust={'top'}
-        stroke={'white'}
-        strokeWidth={2}
-        labelPaddingX={-12}
-        labelAnchorPoint={'left'}
-        usePadding={true}
-      /> 
     {/if}
   </Section>
 
