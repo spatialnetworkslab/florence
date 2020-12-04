@@ -59,17 +59,17 @@
     />
 
     <DiscreteLegend
-      x1={300} x2={400}
-      y1={0} y2={100}
+      x1={200} x2={400}
+      y1={300} y2={400}
       labels={getClassLabels(priceColorScale, Math.floor)}
       fill={priceColorScale.range()}
     >
 
       <Label
-        x1={0.5}
-        y1={0.1}
+        x={0.5}
+        y={0.1}
         text={'Mean Resale Price / m2 (SGD)'}
-        fontSize={14}
+        fontSize={10}
       />
 
     </DiscreteLegend>
