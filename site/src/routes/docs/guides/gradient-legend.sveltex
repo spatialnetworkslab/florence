@@ -53,11 +53,11 @@ Positioning the `GradientLegend` works similar to positioning the [Section](/doc
 
 Coming soon: a diagram that explains this better.
 
-`xDivider` is used to determine what proportion of horizontal space the color swatches get. The remaining space is used by the labels. At the default value of `0.2` the color swatches get 20% of the space inside of the legend. The labels will thus start at 20% of the distance between `x1` and `x2`, plus left-side padding.
+`xDivider` is used to determine what proportion of horizontal space the gradient rectangle get. The remaining space is used by the labels. At the default value of `0.2` the color gradient rectangle get 20% of the space inside of the legend. The labels will thus start at 20% of the distance between `x1` and `x2`, plus left-side padding.
 
-`yDivider` determines what proportion of empty vertical space is made available at the top of the legend for, for example, titles (see `Slot` below). The remaining space is used by the color swatches and labels.
+`yDivider` determines what proportion of empty vertical space is made available at the top of the legend for, for example, titles (see `Slot` below). The remaining space is used by the gradient rectangle and labels.
 
-`padding` and `cellPadding` are used to apply padding around respectively all the color swatches/labels, and each individual color swatch/label. Both props can either be `Number`s, representing padding in pixels on all sides, or `Object`s with any of the members `top`, `bottom`, `left` and/or `right`. For example:
+`padding` and `cellPadding` are used to apply padding around respectively all the gradient rectangle/labels, and each individual color label. Both props can either be `Number`s, representing padding in pixels on all sides, or `Object`s with any of the members `top`, `bottom`, `left` and/or `right`. For example:
 
 ```js
 {
@@ -88,7 +88,7 @@ Coming soon: a diagram that explains this better.
 | labelOpacity    | `false`  | `Number`           | `1`           | Number between 0 and 1              |
 | labelColor      | `false`  | `String`           | `'black'`     | Named, hex, rgb or hsl color        |
 
-`stroke` and `strokeWidth` refer to the color swatches.
+`stroke` and `strokeWidth` refer to the gradient rectangle.
 
 ### Transitions
 
