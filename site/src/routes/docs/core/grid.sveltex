@@ -76,16 +76,19 @@ is equivalent to
 padding={{ left: 10, right: 10, top: 10, bottom: 10 }}
 ```
 
+and
+
+```
+padding={{ left: 10 }}
+```
+
+is equivalent to
+
+```
+padding={{ left: 10, right: 0, top: 0, bottom: 0 }}
+```
+
 For more information on padding, see the [local coordinates](/docs/concepts/local-coordinates) documentation.
-
-### Other
-
-|       Prop       | Required |  Type(s)  | Default | Unit(s) |
-| ---------------- | -------- | --------- | ------- | ------- |
-| viewGridTemplate | `false`  | `Boolean` | `false` | -       |
-| viewGridShape    | `false`  | `Boolean` | `false` | -       |
-
-Setting either of these to `true` will `console.log` the grid template or shape whenever the data on which the `Grid` relies changes. This can be helpful when debugging the `Grid`.
 
 ## Slot Scope
 
