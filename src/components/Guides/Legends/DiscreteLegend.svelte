@@ -1,6 +1,6 @@
 <script>
   import { Section, Grid, Rectangle, Label } from '../../../index.js'
-  import { getLabelCoordinates } from './legend.js'
+  import { getLabelCoordinates, parseAesthetic } from './legend.js'
   import { getRectangleCoordinates } from './discreteLegend.js'
 
   // Positioning
@@ -13,9 +13,10 @@
   export let padding = 1
   export let cellPadding = 2
   
-  // Colors and labels
-  export let colors
+  // Aesthetics and labels
   export let labels
+  export let fill
+  export let opacity = 1
 
   // Color swatch settings
   export let stroke = 'none'
@@ -30,6 +31,15 @@
 
   // Other
   export let transition = undefined
+
+  $: fills = parseAesthetic(fill, labels.length)
+  $: opacities = parseAesthetic(opacity, labels.length)
+
+  $: {
+    if (fills.length !== opacities.length) {
+      throw new Error('Aesthetics and labels must all be of same length')
+    }
+  }
 </script>
 
 <Section {x1} {x2} {y1} {y2} scaleX={[0, 1]} scaleY={[0, 1]}>
@@ -40,18 +50,19 @@
   <!-- Color swatches -->
   <Grid 
     x1={0} x2={xDivider} y1={yDivider} y2={1}
-    names={colors}
+    names={fills}
     columns={1}
     {padding}
     {cellPadding}
     let:cells
   >
 
-    {#each colors as color}
+    {#each fills as fill, i}
 
       <Rectangle
-        {...getRectangleCoordinates(cells[color])}
-        fill={color}
+        {...getRectangleCoordinates(cells[fill])}
+        {fill}
+        fillOpacity={opacities[i]}
         {stroke}
         {strokeWidth}
         {transition}

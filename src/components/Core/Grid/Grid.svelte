@@ -40,10 +40,6 @@
   $: namedCells = nameCells(cells, names)
 </script>
 
-<!-- <g>
-  <slot cells={allSpecs} />
-</g> -->
-
 <Section {x1} {x2} {y1} {y2}>
 
   <slot cells={namedCells} />
