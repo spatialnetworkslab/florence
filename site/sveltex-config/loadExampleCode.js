@@ -172,7 +172,7 @@ function createReplElement (files) {
       hProperties: {
         replFiles: `{${JSON.stringify(files)}}`,
         width: '{containerWidth}',
-        height: '{containerWidth * 0.6}',
+        height: '{500}',
         debounce: '{400}'
       }
     }
@@ -181,7 +181,7 @@ function createReplElement (files) {
 
 const css = {
   type: 'html',
-  value: '<style>\n.repl {\n @apply border border-gray-100;\n }\n</style>'
+  value: '<style>\n.repl {\n left: 50%;\nmargin-left: -48vw;\nmargin-right: -48vw;\nmax-width: 96vw;\nposition: relative;\nright: 50%;\n;@apply border border-gray-100;\n }\n</style>'
 }
 
 function createReplWrapper (replElement) {

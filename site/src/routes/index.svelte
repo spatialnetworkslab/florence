@@ -1,6 +1,6 @@
 <style>
 .leader {
-  @apply text-xl italic mt-4 mb-4 text-gray-900 text-center;
+  @apply text-lg sm:text-xl italic mt-4 mb-4 text-gray-900 text-center;
 }
 </style>
 

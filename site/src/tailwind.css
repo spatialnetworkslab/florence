@@ -7,19 +7,19 @@ body {
 }
 
 h1 {
-  @apply text-2xl font-sans font-semibold mb-4 text-gray-900;
+  @apply text-xl sm:text-2xl font-sans font-semibold mb-4 text-gray-900;
 }
 
 h2 {
-  @apply text-xl font-sans font-semibold mt-3 mb-3 border-b border-gray-400 text-gray-900;
+  @apply text-lg sm:text-xl font-sans font-semibold mt-3 mb-3 border-b border-gray-400 text-gray-900;
 }
 
 h3 {
-  @apply text-lg font-sans font-semibold mt-1 mb-1 text-gray-900;
+  @apply text-base sm:text-lg  font-sans font-semibold mt-1 mb-1 text-gray-900;
 }
 
 p {
-  @apply mt-2 mb-3;
+  @apply mt-2 mb-3 text-sm sm:text-base;
 }
 
 strong {
@@ -95,7 +95,7 @@ tr > td {
 }
 
 .left-col {
-  @apply w-48 border-r border-gray-400 pr-4 whitespace-nowrap flex-none;
+  @apply w-48 border-r border-b border-gray-400 pr-4 whitespace-nowrap flex-none;
 }
 
 .right-col {

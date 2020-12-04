@@ -27,7 +27,7 @@
 }
 
 .nav-a {
-  @apply no-underline py-1 px-0 mr-4 font-normal text-black;
+  @apply no-underline py-1 px-0 mr-4 font-normal text-black text-xs sm:text-base;
   transition: border-color 1s; 
 }
 
@@ -51,8 +51,8 @@
 </style>
 
 <nav class='top-nav'>
-	<ul class='ml-8 flex flex-row justify-between mb-0'>
-    <div class='left-nav flex flex-row'>
+	<ul class='sm:flex justify-between mb-0'>
+    <div class='ml-8 left-nav flex flex-row justify-center sm:justify-start'>
       <li class='nav-li'>
         <a class={`nav-a home ${segment ===
           undefined ? 'selected' : ''}`} href='.'>Florence</a></li>
@@ -63,11 +63,11 @@
           href={item.link}> {item.name} </a> </li>
       {/each}
     </div>
-    <div class='right-nav flex flex-row'>
-    <li class='nav-li self-end'>
+    <div class='right-nav mt-2 sm:mt-0 flex flex-row justify-center sm:justify-end'>
+    <li class='nav-li'>
       <a class='nav-a' href='/repl'>REPL</a>
     </li>
-    <li class='nav-li self-end'>
+    <li class='nav-li'>
       <a class='nav-a gitlab' href='https://gitlab.com/spatialnetworkslab/florence'>Source Code</a>
     </li>
     </div>
