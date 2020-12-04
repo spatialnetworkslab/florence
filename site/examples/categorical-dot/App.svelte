@@ -24,7 +24,7 @@
 
   const scaleFruitColor = scaleOrdinal()
     .domain(data.domain('fruit'))
-    .range(schemeCategory10)
+    .range(schemeCategory10.slice(0, 5))
 
   const scaleRadius = scaleLinear()
     .domain(meanDiameterDomain)
