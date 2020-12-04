@@ -12,7 +12,6 @@
   <ImageWithLinkAndCaption caption="Area Chart" linkURL="examples/area-chart" />
   <ImageWithLinkAndCaption caption="Choropleth" linkURL="examples/choropleth" />
   <ImageWithLinkAndCaption caption="Scatterplot with transition" linkURL="examples/scatterplot-transition" />
-  <ImageWithLinkAndCaption caption="Dubois plot" linkURL="examples/dubois-simple" />
 </div>
 
 ## More Complex Examples
@@ -30,7 +29,8 @@
   <ImageWithLinkAndCaption caption="Density Contours" linkURL="examples/density-contours" />
   <ImageWithLinkAndCaption caption="Candlestick Chart" linkURL="examples/candlestick" />
   <ImageWithLinkAndCaption caption="Global Temperature Trends" linkURL="examples/scatterplot-temp-trends" />
-  <ImageWithLinkAndCaption caption="Linked Views" linkURL="examples/linked-views" />
+  <ImageWithLinkAndCaption caption="Network Layout" linkURL="examples/d3-force" />
+  <ImageWithLinkAndCaption caption="Basemap/Mapbox GL" linkURL="examples/mapbox-gl" />
 </div>
 
 ## Cartographic Perspectives Figures

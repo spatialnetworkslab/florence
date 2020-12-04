@@ -51,8 +51,8 @@
 {#if ready}
 
   <Graphic 
-    width={500}
-    height={500}
+    width={400}
+    height={400}
     {scaleX} 
     {scaleY}
     padding={{ top: 20, bottom: 30, left: 40, right: 30 }}

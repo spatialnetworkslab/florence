@@ -27,8 +27,8 @@
 {#if ready}
 
   <Graphic
-    width={500}
-    height={500}
+    width={400}
+    height={400}
     scaleX={[0, dataContainer.max('Horsepower')]}
     scaleY={[0, dataContainer.max('Miles_per_Gallon')]}
     padding={{left: 40, right: 25, top: 25, bottom: 40}}

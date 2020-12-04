@@ -34,7 +34,7 @@
 
 <style>
 .openMenu {
-	@apply block absolute h-full bg-white;
+	@apply block absolute min-h-full bg-white;
 }
 .hamburger {
 	@apply absolute top-0 left-0 pl-1 pt-1;

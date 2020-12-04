@@ -18,12 +18,12 @@
   const ages = grouped.map('$grouped', group => group.column('age'))[0]
 </script>
 
-<Graphic width={760} height={480}>
+<Graphic width={760/2} height={400}>
 
   <!-- male -->
   <Section
     x1={0} 
-    x2={380}
+    x2={380/2}
     {scaleX}
     {scaleY}
     {padding}
@@ -45,8 +45,8 @@
 
   <!-- female -->
   <Section
-    x1={380}
-    x2={760}
+    x1={380/2}
+    x2={760/2}
     {scaleX}
     {scaleY}
     {padding}
