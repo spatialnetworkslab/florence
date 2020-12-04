@@ -8,3 +8,4 @@ static/workers/bundler.*
 static/data/
 static/images/examples/
 static/workers/
+static/css/index.css

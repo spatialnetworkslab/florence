@@ -26,8 +26,8 @@
 {#if ready}
 
   <Graphic
-    width={500}
-    height={500}
+    width={400}
+    height={400}
     scaleX={scaleUtc().domain(dataContainer.domain('date'))}
     scaleY={scaleLinear().domain([0, dataContainer.max(industries[industries.length - 1])])}
     padding={{ top: 20, right: 20, bottom: 30, left: 40 }}

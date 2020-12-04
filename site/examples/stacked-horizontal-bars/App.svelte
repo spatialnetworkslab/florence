@@ -43,7 +43,7 @@
 {#if ready}
 
   <Graphic
-    width={500}
+    width={400}
     height={500}
     scaleX={scaleLinear().domain([0, maxX])}
     scaleY={scaleBand().domain(dataContainer.domain('state')).padding(0.1)}

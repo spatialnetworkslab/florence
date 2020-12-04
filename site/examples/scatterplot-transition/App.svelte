@@ -21,8 +21,8 @@
 </script>
 
 <Graphic
-  width={500}
-  height={500}
+  width={400}
+  height={400}
   scaleX={[0, 105]}
   scaleY={[0, 105]}
   flipY

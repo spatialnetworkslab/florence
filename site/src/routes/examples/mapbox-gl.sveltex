@@ -1,0 +1,7 @@
+# Basemap with Mapbox GL
+
+An example of 'syncing' the coordinate system used in Florence with the web Mercator system often used in map libraries such as Leaflet or Openlayers.
+Here an example is given with Mapbox GL and two ways of syncing, a 'naive' implementation and a more performant approach that uses Florence's built-in zoom functionality.
+
+::: example examples/mapbox-gl
+:::

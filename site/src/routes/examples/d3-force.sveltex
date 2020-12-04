@@ -1,0 +1,6 @@
+# Network layout with d3-force
+
+A replication of [Mike Bostock's example with data from Les Miserables](https://observablehq.com/@d3/force-directed-graph?collection=@d3/d3-force) to show how an external library like `d3-force` can be combined with Florence.
+
+::: example examples/d3-force
+:::
