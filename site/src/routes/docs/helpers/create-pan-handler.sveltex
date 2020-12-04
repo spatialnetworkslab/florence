@@ -105,4 +105,18 @@ TODO explain `setZoomIdentity` and `setBlockReindexing`.
 
 ## Return value
 
-TODO
+`createPanHandler` returns an object of the following form:
+
+```js
+{
+  handlers: {
+    onMousedown: <Function>,
+    onMousemove: <Function>,
+    onMouseup: <Function>
+  },
+
+  reset: <Function>
+}
+```
+
+The `handlers` can be spread over the `Section`, and enable the actual panning behavior. The `reset` method will reset the `zoomIdentity` originally passed to `createPanHandler` to `{ x: 0, y: 0, kx: 1, ky: 1 }`.
