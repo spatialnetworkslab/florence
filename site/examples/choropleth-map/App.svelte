@@ -1,7 +1,7 @@
 <script>
   import { json } from 'd3-fetch'
   import { 
-    Graphic, PolygonLayer, createGeoScales, Title, DiscreteLegend 
+    Graphic, PolygonLayer, createGeoScales, Label, DiscreteLegend 
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
@@ -37,9 +37,12 @@
     padding={30}
   >
 
-    <Title
-      title={'Mean resale price per m2 (S$)'} 
+    <Label
+      x={() => 200}
+      y={() => 40}
+      text={'Mean resale price per m2 (S$)'}
       fontFamily={'Montserrat'}
+      fontSize={18}
     />
 
     <PolygonLayer 

@@ -4,7 +4,7 @@
     Section,
     PolygonLayer,
     createGeoScales,
-    Title,
+    Label,
     DiscreteLegend
   } from "@snlab/florence";
   import DataContainer from "@snlab/florence-datacontainer";
@@ -74,9 +74,12 @@
     />
     
     <!-- step 4 (optional) -->
-    <Title
-      title={'Mean resale price per m2 (S$)'} 
+    <Label
+      x={() => 250}
+      y={() => 50}
+      text={'Mean resale price per m2 (S$)'}
       fontFamily={'Montserrat'}
+      fontSize={18}
     />
   
   <!-- step 5 (optional) -->

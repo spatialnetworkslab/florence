@@ -2,7 +2,7 @@
   import { scaleLinear, scalePoint, scaleOrdinal } from 'd3-scale'
   import { schemeCategory10 } from 'd3-scale-chromatic'
   import { 
-    Graphic, PointLayer, XAxis, YAxis, Title, DiscreteLegend
+    Graphic, PointLayer, XAxis, YAxis, Label, DiscreteLegend
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
   import _data from './data.js'
@@ -39,9 +39,12 @@
   scaleY={scaleMeanDiameter}
 >
 
-  <Title 
-    title={'Fruit Sizes'} 
+  <Label
+    x={() => 200}
+    y={() => 40}
+    text={'Fruit Sizes'}
     fontFamily={'Baskerville'}
+    fontSize={18}
   />
 
   <PointLayer
