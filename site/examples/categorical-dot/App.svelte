@@ -2,7 +2,7 @@
   import { scaleLinear, scalePoint, scaleOrdinal } from 'd3-scale'
   import { schemeCategory10 } from 'd3-scale-chromatic'
   import { 
-    Graphic, PointLayer, XAxis, YAxis, Label, DiscreteLegend
+    Graphic, Section, PointLayer, XAxis, YAxis, Label, DiscreteLegend
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
   import _data from './data.js'
@@ -32,40 +32,42 @@
 </script>
 
 
-<Graphic 
-  width={400} height={400}
-  padding={50}
-  scaleX={scaleFruit}
-  scaleY={scaleMeanDiameter}
->
+<Graphic width={400} height={400}>
+
+  <Section
+    padding={50}
+    scaleX={scaleFruit}
+    scaleY={scaleMeanDiameter}
+  >
+
+    <PointLayer
+      x={data.column('fruit')}
+      y={data.column('diameter')}
+      fill={data.map('fruit', scaleFruitColor)}
+      radius={data.map('diameter', scaleRadius)}
+    />
+
+    <XAxis title={'fruit'} />
+    <YAxis title={'diameter/cm'} />
+  
+  </Section>
 
   <Label
-    x={() => 200}
-    y={() => 40}
+    x={200}
+    y={70}
     text={'Fruit Sizes'}
     fontFamily={'Baskerville'}
     fontSize={18}
   />
 
-  <PointLayer
-    x={data.column('fruit')}
-    y={data.column('diameter')}
-    fill={data.map('fruit', scaleFruitColor)}
-    radius={data.map('diameter', scaleRadius)}
-  />
-
-  <XAxis title={'fruit'} />
-  <YAxis title={'diameter/cm'} />
-
   <DiscreteLegend
-    fill={scaleFruitColor}
-    hjust={'right'}
-    vjust={'top'}
+    x1={300} x2={400}
+    y1={0} y2={100}
+    yDivider={0}
+    fill={scaleFruitColor.range()}
+    labels={scaleFruitColor.domain()}
     stroke={'white'}
     strokeWidth={2}
-    labelPaddingX={-12}
-    labelAnchorPoint={'left'}
-    usePadding={true}
   /> 
 
 </Graphic>

@@ -1,7 +1,8 @@
 <script>
   import { json } from 'd3-fetch'
   import { 
-    Graphic, PolygonLayer, createGeoScales, Label, DiscreteLegend 
+    Graphic, Section, PolygonLayer, createGeoScales,
+    Label, DiscreteLegend, getClassLabels
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
@@ -32,37 +33,46 @@
   <Graphic
     width={400}
     height={400}
-    {...geoScales}
-    flipY
-    padding={30}
   >
 
+    <Section
+      {...geoScales}
+      flipY
+      padding={30}
+    >
+    
+      <PolygonLayer 
+        geometry={dataContainer.column('$geometry')}
+        fill={dataContainer.map('resale_price_sqm', priceColorScale)}
+        stroke={'white'} 
+        strokeWidth={1}
+      />
+
+    </Section>
+
     <Label
-      x={() => 200}
-      y={() => 40}
+      x={200}
+      y={70}
       text={'Mean resale price per m2 (S$)'}
       fontFamily={'Montserrat'}
       fontSize={18}
     />
 
-    <PolygonLayer 
-      geometry={dataContainer.column('$geometry')}
-      fill={dataContainer.map('resale_price_sqm', priceColorScale)}
-      stroke={'white'} 
-      strokeWidth={1}
-    />
-    
     <DiscreteLegend
-      fill={priceColorScale}
-      labelAnchorPoint={'r'}
-      title={'Mean Resale Price / m2 (SGD)'}
-      orient={'horizontal'}
-      vjust={'top'}
-      hjust={'right'}
-      flipLabels
-      usePadding={true}
-      format={Math.floor}
-    />
+      x1={300} x2={400}
+      y1={0} y2={100}
+      labels={getClassLabels(priceColorScale, Math.floor)}
+      fill={priceColorScale.range()}
+    >
+
+      <Label
+        x1={0.5}
+        y1={0.1}
+        text={'Mean Resale Price / m2 (SGD)'}
+        fontSize={14}
+      />
+
+    </DiscreteLegend>
 
   </Graphic>
 
