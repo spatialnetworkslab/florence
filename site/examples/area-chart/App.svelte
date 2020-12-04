@@ -17,8 +17,8 @@
 {#if ready}
   
   <Graphic
-    width={500}
-    height={500}
+    width={400}
+    height={400}
     padding={{ top: 20, right: 20, bottom: 30, left: 30 }}
     scaleX={scaleUtc().domain(appleStockData.domain('date'))}
     scaleY={scaleLinear().domain(appleStockData.domain('close'))}

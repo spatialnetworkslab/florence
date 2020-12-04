@@ -110,7 +110,7 @@
   }
 </script>
 
-<Graphic width={500} height={500}>
+<Graphic width={400} height={400}>
 
   <Section
     bind:this={section}

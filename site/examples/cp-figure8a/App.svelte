@@ -7,7 +7,7 @@
   const geoScales = createGeoScales(provinces.bbox())
 </script>
 
-<Graphic width={500} height={500} {...geoScales} flipY>
+<Graphic width={400} height={400} {...geoScales} flipY>
   <PolygonLayer
     geometry={provinces.column('$geometry')}
     fill={'rgb(230,230,230)'}

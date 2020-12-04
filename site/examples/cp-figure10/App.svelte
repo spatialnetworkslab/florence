@@ -107,7 +107,7 @@
     <!-- we only display the graph once data is loaded -->
     {#if done}
       
-      <Graphic width={500} height={600}>
+      <Graphic width={400} height={500}>
 
         <!-- main section with geographic scales -->
         <Section padding={50} {...geoScales} flipY>

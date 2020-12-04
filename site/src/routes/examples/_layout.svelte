@@ -1,7 +1,7 @@
 <script>
 </script>
 
-<div class="content">
+<div>
 	<main>
 		<slot></slot>
 	</main>

@@ -5,8 +5,8 @@
   import { Graphic, PointLayer, XAxis, YAxis } from '@snlab/florence'
   import getDataInYear from './getDataInYear.js'
 
-  const width = 500
-  const height = 500  
+  const width = 400
+  const height = 400  
   const scaleRadius = scaleSqrt().domain([0, 5e8]).range([0, width / 24])
 
   let currentYear = 1800
