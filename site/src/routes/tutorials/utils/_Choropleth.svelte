@@ -1,85 +1,79 @@
 <script>
-  import { Graphic, Section, PolygonLayer, createGeoScales, Label, DiscreteLegend } from '@snlab/florence';
-  import DataContainer from '@snlab/florence-datacontainer';
-  import { scaleThreshold } from 'd3-scale'
+  import { json } from 'd3-fetch'
+  import { 
+    Graphic, Section, PolygonLayer, createGeoScales,
+    Label, DiscreteLegend, getClassLabels
+  } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
 
-  export let switch1 = false
-  export let switch2 = false
-  export let switch3 = false
+  const COLORS = ['#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
 
-  // import data
-  // step1
-  import { geodata } from './planning_areas_data.js'
-  const data = new DataContainer(geodata)
-  const geoScales = createGeoScales(data.domain('$geometry'))
+  let dataContainer, geoScales, priceColorScale, ready
 
-  // step 2
-  // compute color scaling
-  const colors = ['#d3d3d3', '#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
+  (async () => {
+    const geojson = await json('/data/plan_areas_choropleth.json')
+    dataContainer = new DataContainer(geojson).mutate({ 
+      resale_price_sqm: r => r.resale_price_sqm === null ? undefined : r.resale_price_sqm
+    })
+    geoScales = createGeoScales(dataContainer.bbox())
 
-  // obtain bins from DataContainer method
-  const binsData = data.dropNA('resale_price_sqm').bin({ groupBy: 'resale_price_sqm', method: 'EqualInterval', numClasses: colors.length - 2 })
-  
-  // Obtain bins from data container
-  const bins = binsData.column('bins')
+    priceColorScale = dataContainer
+      .dropNA('resale_price_sqm')
+      .classify({
+        column: 'resale_price_sqm', method: 'EqualInterval', numClasses: 5
+      }, COLORS)
+      .unknown('#d3d3d3')
 
-  // Flatten bins array into individual numbers: [[a, b], [b, c], [c, d]...] => [a, b, b, c, c, d...]
-  // Get unique values from array and turn them into integers
-  let thresholds = []
-  for (let i = 0; i < bins.length; i += 1) {
-    if (i === 0) {
-      thresholds.push(Math.floor(bins[i][0]))
-      thresholds.push(Math.floor(bins[i][1]))
-    } else {
-      thresholds.push(Math.floor(bins[i][1]))
-    }
-  }
-
-  // step 3
-  // assign colors
-  const priceColorScale = scaleThreshold().domain(thresholds).range(colors)
-  const priceColors = data.map('resale_price_sqm', priceColorScale)
+    ready = true
+  })()
 </script>
 
+{#if ready}
 
-<Graphic width={500} height={500}>
-
-  <Section
-    {...geoScales}
-    padding={switch2 ? 30 : 0}
-    flipY
+  <Graphic
+    width={400}
+    height={400}
   >
-    <!-- steps 1, 2 and 3 -->
-    <PolygonLayer 
-      geometry={data.column('$geometry')}
-      fill={switch1 ? priceColors : '#d3d3d3'}
-      stroke={'white'} 
-      strokeWidth={1}
+
+    <Section
+      {...geoScales}
+      flipY
+      padding={30}
+    >
+    
+      <PolygonLayer 
+        geometry={dataContainer.column('$geometry')}
+        fill={dataContainer.map('resale_price_sqm', priceColorScale)}
+        stroke={'white'} 
+        strokeWidth={1}
+      />
+
+    </Section>
+
+    <Label
+      x={200}
+      y={70}
+      text={'Mean resale price per m2 (S$)'}
+      fontFamily={'Montserrat'}
+      fontSize={18}
     />
-    
-    {#if switch2}
-      <!-- step 4 (optional) -->
+
+    <DiscreteLegend
+      x1={300} x2={400}
+      y1={0} y2={100}
+      labels={getClassLabels(priceColorScale, Math.floor)}
+      fill={priceColorScale.range()}
+    >
+
       <Label
-        x={() => 250}
-        y={() => 50}
-        text={'Mean resale price per m2 (S$)'}
-        fontFamily={'Montserrat'}
-        fontSize={18}
+        x1={0.5}
+        y1={0.1}
+        text={'Mean Resale Price / m2 (SGD)'}
+        fontSize={14}
       />
-    {/if}
-    
-    <!-- step 5 (optional) -->
-    {#if switch3}
-      <DiscreteLegend
-        fill={priceColorScale}
-        labelAnchorPoint={'r'}
-        title={'Mean Resale Price / m2 (SGD)'}
-        orient={'horizontal'}
-        vjust={'top'}
-        hjust={'right'}
-        flipLabels
-        usePadding={true}
-      />
-    {/if}
-  </Section>
-</Graphic>
+
+    </DiscreteLegend>
+
+  </Graphic>
+
+{/if}

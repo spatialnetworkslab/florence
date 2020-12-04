@@ -12,7 +12,6 @@
   import Line from './examples/Line.svelte'
 
   import FuncLines from './examples/FuncLines.svelte'
-  // import Legends from './examples/Legends.svelte'
   import DragCategorical from './examples/DragCategorical.svelte'
   import FunctionAPI from './examples/FunctionAPI.svelte'
   import FlipTest from './examples/FlipTest.svelte'
@@ -26,7 +25,6 @@
   import AreaChart from './examples/AreaChart.svelte'
   import StackedAreaChart from './examples/StackedAreaChart.svelte'
   import ViolinPlot from './examples/ViolinPlot.svelte'
-  import LegendsDocs from './examples/LegendsDocs.svelte'
   import NestedSections from './examples/NestedSections.svelte'
   import JoHsiBug from './examples/JoHsiBug.svelte'
   import Clipping from './examples/Clipping.svelte'
@@ -162,11 +160,6 @@
       component: ViolinPlot
     },
     {
-      name: 'Legends: Docs',
-      url: 'legendsdocs',
-      component: LegendsDocs
-    },
-    {
       name: 'GeoEx',
       url: 'geoex',
       component: GeoEx
@@ -191,11 +184,6 @@
       url: 'heatmap',
       component: Heatmap
     },
-    // {
-    //   name: 'Legends',
-    //   url: '/legends',
-    //   component: Legends
-    // },
     {
       name: 'Nested sections',
       url: '/nestedsections',

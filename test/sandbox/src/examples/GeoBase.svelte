@@ -40,17 +40,6 @@
       strokeWidth={1}
     />
 
-    <!-- step 4 (optional) -->
-    <!-- <DiscreteLegend
-      fill={priceColorScale}
-      labelAnchorPoint={'r'}
-      title={'Mean Resale Price / m2 (SGD)'}
-      orient={'horizontal'}
-      vjust={'top'}
-      hjust={'right'}
-      flipLabels
-      usePadding={true}
-    /> -->
   </Section>
 
   <DiscreteLegend
