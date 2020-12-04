@@ -126,7 +126,7 @@
     {#if switch2}
       <Label
         x={() => 250}
-        y={() => 50}
+        y={() => 70}
         text={'Fruit Sizes'}
         fontFamily={'Baskerville'}
         fontSize={18}
