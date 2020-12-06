@@ -115,7 +115,7 @@ import MarkVsLayerPositioning from './examples/_MarkVsLayerPositioning.svelte'
 
 ### Function syntax
 
-Again with the exception of the [Area](/docs/marks/area)'s `independentAxis` prop and the [FuncLine](/docs/marks/funcline)'s positioning props, the positioning props of all marks and layers support the so-called 'Function syntax'. Function syntax can be used to bypass the scaling step (see the [local coordinates](/docs/concepts/local-coordinates) documentation).
+Again with the exception of the [Area](/docs/marks/area)'s `independentAxis` prop and the [FuncLine](/docs/marks/funcline)'s positioning props, the positioning props of all marks and layers support the so-called 'function syntax'. Function syntax can be used to bypass the scaling step (see the [local coordinates](/docs/concepts/local-coordinates) documentation).
 
 See the example below for another side-by-side comparison of this behavior for marks and layers:
 
@@ -153,6 +153,8 @@ import MarkVsLayerPosFunc from './examples/_MarkVsLayerPosFunc.svelte'
 
 ### Single values versus arrays
 
+Like with the positioning props, aesthetic props of layers are supposed to receive `Array`s of whatever is supposed to be passed to marks. For example, if the `fill` prop of the `Point` mark expects a color, the `fill` prop of the `PointLayer` expects an `Array` of colors:
+
 ```markup
 <script>
   import { Graphic, Section, Point, PointLayer } from '@snlab/florence'
@@ -184,6 +186,8 @@ import MarkVsLayerAesthetics from './examples/_MarkVsLayerAesthetics.svelte'
 <MarkVsLayerAesthetics />
 
 ### Recycling in layers
+
+In many cases, however, it is desirable to give every mark in a layer the same value. So, if you want to make all marks in your `PointLayer` red, instead of passing an `Array` where every value is `'red'`, you can simply pass the value `'red'` directly to the prop, which will recycle it:
 
 ```markup
 <script>
@@ -217,9 +221,16 @@ import MarkVsLayerAesSingle from './examples/_MarkVsLayerAesSingle.svelte'
 
 ### Function syntax
 
-Non-positioning aesthetics also have a 'Function syntax', but it works a bit different from the positioning one.
+Aesthetic props also have a 'function syntax', but it works a bit different from the one used in positioning props. The aesthetic prop function syntax will execute the given function for each mark in the layer, and receives an `Object` containing an `index` and a `key`:
 
-TODO explain
+```js
+{
+  index: <Number>,
+  key: <String>
+}
+```
+
+These can be used to give marks with a certain index or key a different aesthetic value. In the example below, aesthetic function syntax is used to make one point in the `PointLayer` blue, while the rest is red:
 
 ```markup
 <script>
