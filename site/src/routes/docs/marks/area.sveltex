@@ -83,7 +83,11 @@ The table below summarizes which combinations of positioning props are allowed:
 | ✓   | ✓   | ✓   | ✓   | 'x'             | ✅     | x2 is ignored                                            |
 | ✓   | ✓   | ✓   | ✓   | 'y'             | ✅     | y2 is ignored                                            |
 
-For all positioning props, a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `AreaLayer`, all positioning props will be supplied as `Array`s of `Array`s of `Number`s, `String`s and `Date`s, or `Function`s that return `Array`s of `Array`s of scaled coordinates- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
+For all positioning props (except `independentAxis`), a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `AreaLayer`, all positioning props (except `independentAxis`) will be supplied as `Array`s of `Array`s of `Number`s, `String`s and `Date`s, or `Function`s that return `Array`s of `Array`s of scaled coordinates- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
+
+::: div callout
+`independentAxis` is the only positioning prop to which you __always__ pass a `String` and not an `Array` of `String`s, regardless of whether you are using an `Area` or `AreaLayer`! Together with the [FuncLine](/docs/marks/funcline)'s positioning props, it also does not support `Function` syntax, which all other positioning props do.
+:::
 
 ### Aesthetics
 

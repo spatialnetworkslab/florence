@@ -1,6 +1,6 @@
 # Marks versus Layers
 
-With the exception of the [FuncLine](/docs/marks/funcline), all `Mark`s have a corresponding `Layer` component. While the two are designed to be as similar as possible, there are some subtle differences between the two. This documentation will discuss these differences.
+With the exception of the [FuncLine](/docs/marks/funcline), all `Mark`s have a corresponding `Layer` component. While the two are designed to be as similar as possible, there are some subtle differences between the two. This page will discuss these differences.
 
 ## Keys
 
@@ -77,8 +77,85 @@ This will be discussed under `Aesthetics: marks vs. layers`.
 
 ## Positioning: marks vs. layers
 
-TODO: explain arrays of values
+### Single values versus arrays
+
+The main difference between the positioning of marks and layers is that whatever you are supposed to pass to a positioning prop of a mark, you are supposed to pass an `Array` of to the layer. So if you pass a single local coordinate (often a `Number`) to the `x1` prop of the [Rectangle](/docs/marks/rectangle), then you would pass an `Array` (of, in this example, `Number`s) to the `RectangleLayer`'s `x1` prop. Likewise, if you pass an `Array` of local coordinates to the [Line](/docs/marks/line), you pass an `Array` of `Array`s of local coordinates to the `LineLayer`. The only exceptions to this rule are the [FuncLine](/docs/marks/funcline)'s (which has no corresponding `Layer` component) positioning props, and the `independentAxis` prop of the [Area](/docs/marks/area) mark/layer.
+
+To illustrate, the result of drawing three `Point`s in the green panel is identical to drawing a `PointLayer` consisting of three marks in the blue panel:
+
+```markup
+<script>
+  import { Graphic, Section, Point, PointLayer } from '@snlab/florence'
+</script>
+
+<Graphic width={500} height={300}>
+
+  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+
+    <Point x={2} y={2} />
+    <Point x={5} y={5} />
+    <Point x={8} y={8} />
+
+  </Section>
+
+  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  
+    <PointLayer x={[2, 5, 8]} y={[2, 5, 8]} />
+
+  </Section>
+
+</Graphic>
+```
+
+```js exec
+import MarkVsLayerPositioning from './examples/_MarkVsLayerPositioning.svelte'
+```
+
+<MarkVsLayerPositioning />
+
+### Function syntax
+
+Again with the exception of the [Area](/docs/marks/area)'s `independentAxis` prop and the [FuncLine](/docs/marks/funcline)'s positioning props, the positioning props of all marks and layers support the so-called 'Function syntax'. Function syntax can be used to bypass the scaling step (see the [local coordinates](/docs/concepts/local-coordinates) documentation).
+
+See the example below for another side-by-side comparison of this behavior for marks and layers:
+
+```markup
+<script>
+  import { Graphic, Section, Point, PointLayer } from '@snlab/florence'
+</script>
+
+<Graphic width={500} height={300}>
+
+  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+
+    <Point x={() => 50} y={() => 50} />
+    <Point x={() => 125} y={() => 125} />
+    <Point x={() => 200} y={() => 200} />
+
+  </Section>
+
+  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  
+    <PointLayer x={() => [50, 125, 200]} y={() => [50, 125, 200]} />
+
+  </Section>
+
+</Graphic>
+```
+
+```js exec
+import MarkVsLayerPosFunc from './examples/_MarkVsLayerPosFunc.svelte'
+```
+
+<MarkVsLayerPosFunc />
 
 ## Aesthetics: marks vs. layers
 
-TODO: explain arrays of values, but also how it is ok to also just use one aesthetic, and explain the function syntax stuff
+### Single values versus arrays
+
+### Recycling in layers
+
+### Function syntax
+
+Non-positioning aesthetics also have a 'Function syntax', but it works a bit different from the positioning one.
+TODO
