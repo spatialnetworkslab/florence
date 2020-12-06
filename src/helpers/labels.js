@@ -7,7 +7,7 @@ export function getClassLabels (thresholdColorScale, format = x => x) {
     labels.push(`${format(domain[i])} - ${format(domain[i + 1])}`)
   }
 
-  labels.push(`${format(domain[domain.length - 1])} ≤`)
+  labels.push(`≥ ${format(domain[domain.length - 1])}`)
 
   return labels
 }
