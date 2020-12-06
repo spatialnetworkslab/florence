@@ -1,6 +1,6 @@
 # Marks versus Layers
 
-With the exception of the [FuncLine](/docs/marks/funcline), all `Mark`s have a corresponding `Layer` component. While the two are designed to be as similar as possible, there are some subtle differences between the two. This page will discuss these differences.
+With the exception of the [FuncLine](/docs/marks/funcline), all `Mark`s have a corresponding `Layer` component. While the two are designed to be as similar as possible, there are some subtle differences to take note of. This page will discuss these differences.
 
 ## Keys
 
@@ -69,7 +69,7 @@ import KeyTransition from './examples/_KeyTransition.svelte'
 
 ### Interactions
 
-The main differences between `Mark`s and `Layer`s in the area of interactivity is that the `Layer`'s `event` object includes an `index` and `key`. For more information, consult the [interactivity](/docs/concepts/interactivity) documentation.
+The main difference between `Mark`s and `Layer`s in the area of interactivity is that the `Layer`'s `event` object includes an `index` and `key`. For more information, consult the [interactivity](/docs/concepts/interactivity) documentation.
 
 ### Aesthetic function syntax
 
@@ -81,7 +81,7 @@ This will be discussed under `Aesthetics: marks vs. layers`.
 
 The main difference between the positioning of marks and layers is that whatever you are supposed to pass to a positioning prop of a mark, you are supposed to pass an `Array` of to the layer. So if you pass a single local coordinate (often a `Number`) to the `x1` prop of the [Rectangle](/docs/marks/rectangle), then you would pass an `Array` (of, in this example, `Number`s) to the `RectangleLayer`'s `x1` prop. Likewise, if you pass an `Array` of local coordinates to the [Line](/docs/marks/line), you pass an `Array` of `Array`s of local coordinates to the `LineLayer`. The only exceptions to this rule are the [FuncLine](/docs/marks/funcline)'s (which has no corresponding `Layer` component) positioning props, and the `independentAxis` prop of the [Area](/docs/marks/area) mark/layer.
 
-To illustrate, the result of drawing three `Point`s in the green panel is identical to drawing a `PointLayer` consisting of three marks in the blue panel:
+To illustrate, the result of drawing three `Point`s in the left panel is identical to drawing a `PointLayer` consisting of three marks in the right panel:
 
 ```markup
 <script>
@@ -136,7 +136,7 @@ See the example below for another side-by-side comparison of this behavior for m
 
   <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
   
-    <PointLayer x={() => [50, 125, 200]} y={() => [50, 125, 200]} />
+    <PointLayer x={() => [300, 375, 450]} y={() => [50, 125, 200]} />
 
   </Section>
 
@@ -153,9 +153,105 @@ import MarkVsLayerPosFunc from './examples/_MarkVsLayerPosFunc.svelte'
 
 ### Single values versus arrays
 
+```markup
+<script>
+  import { Graphic, Section, Point, PointLayer } from '@snlab/florence'
+</script>
+
+<Graphic width={500} height={300}>
+
+  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+
+    <Point x={2} y={2} fill={'red'} />
+    <Point x={5} y={5} fill={'blue'} />
+    <Point x={8} y={8} fill={'green'} />
+
+  </Section>
+
+  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  
+    <PointLayer x={[2, 5, 8]} y={[2, 5, 8]} fill={['red', 'blue', 'green']} />
+
+  </Section>
+
+</Graphic>
+```
+
+```js exec
+import MarkVsLayerAesthetics from './examples/_MarkVsLayerAesthetics.svelte'
+```
+
+<MarkVsLayerAesthetics />
+
 ### Recycling in layers
+
+```markup
+<script>
+  import { Graphic, Section, Point, PointLayer } from '@snlab/florence'
+</script>
+
+<Graphic width={500} height={300}>
+
+  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+
+    <Point x={2} y={2} fill={'red'} />
+    <Point x={5} y={5} fill={'red'} />
+    <Point x={8} y={8} fill={'red'} />
+
+  </Section>
+
+  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  
+    <PointLayer x={[2, 5, 8]} y={[2, 5, 8]} fill={'red'} />
+
+  </Section>
+
+</Graphic>
+```
+
+```js exec
+import MarkVsLayerAesSingle from './examples/_MarkVsLayerAesSingle.svelte'
+```
+
+<MarkVsLayerAesSingle />
 
 ### Function syntax
 
 Non-positioning aesthetics also have a 'Function syntax', but it works a bit different from the positioning one.
-TODO
+
+TODO explain
+
+```markup
+<script>
+  import { Graphic, Section, Point, PointLayer } from '@snlab/florence'
+</script>
+
+<Graphic width={500} height={300}>
+
+  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+
+    <Point x={2} y={2} fill={'red'} />
+    <Point x={5} y={5} fill={'blue'} />
+    <Point x={8} y={8} fill={'red'} />
+
+  </Section>
+
+  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  
+    <PointLayer 
+      x={[2, 5, 8]}
+      y={[2, 5, 8]}
+      fill={({ key }) => key === 'b' ? 'blue' : 'red'}
+      key={['a', 'b', 'c']}
+    />
+
+  </Section>
+
+</Graphic>
+```
+
+```js exec
+import MarkVsLayerAesFunc from './examples/_MarkVsLayerAesFunc.svelte'
+```
+
+<MarkVsLayerAesFunc />

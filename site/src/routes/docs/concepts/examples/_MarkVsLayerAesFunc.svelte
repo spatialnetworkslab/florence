@@ -6,15 +6,20 @@
 
   <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
 
-    <Point x={() => 50} y={() => 50} />
-    <Point x={() => 125} y={() => 125} />
-    <Point x={() => 200} y={() => 200} />
+    <Point x={2} y={2} fill={'red'} />
+    <Point x={5} y={5} fill={'blue'} />
+    <Point x={8} y={8} fill={'red'} />
 
   </Section>
 
   <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
   
-    <PointLayer x={() => [300, 375, 450]} y={() => [50, 125, 200]} />
+    <PointLayer 
+      x={[2, 5, 8]}
+      y={[2, 5, 8]}
+      fill={({ key }) => key === 'b' ? 'blue' : 'red'}
+      key={['a', 'b', 'c']}
+    />
 
   </Section>
 
