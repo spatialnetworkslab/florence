@@ -33,5 +33,14 @@
     <p>
       If you want to dive straight in, try out the <a href="/repl">interactive REPL</a>.
     </p>
+    <p>
+      For a more detailed discussion of the framework and its design goals, please have a
+      look at corresponding in article in <span class="italic">Cartographic Perspectives</span>.
+    </p>
+    <p>
+      Poorthuis, A., van der Zee, L., Guo, G., Keong, J. H., & Dy, B. (2020).
+      Florence: a Web-based Grammar of Graphics for Making Maps and Learning Cartography.
+      <span class="italic">Cartographic Perspectives</span>, (96). <a href="https://doi.org/10.14714/CP96.1645">https://doi.org/10.14714/CP96.1645</a>.
+    </p>
   </div>
 </div>

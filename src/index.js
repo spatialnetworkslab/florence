@@ -1,7 +1,6 @@
 export { default as Graphic } from './components/Core/Graphic/Graphic.svelte'
 export { default as Section } from './components/Core/Section/Section.svelte'
 export { default as Grid } from './components/Core/Grid/Grid.svelte'
-export { default as Title } from './components/Core/Title/Title.svelte'
 
 export { default as Mark } from './components/Marks/Mark/Mark.svelte'
 export { default as Point } from './components/Marks/Point/Point.svelte'
@@ -34,3 +33,4 @@ export { default as GradientLegend } from './components/Guides/Legends/GradientL
 export { default as createGeoScales } from './helpers/createGeoScales.js'
 export { default as createPanHandler } from './helpers/createPanHandler.js'
 export { default as createZoomHandler } from './helpers/createZoomHandler.js'
+export * from './helpers/labels.js'

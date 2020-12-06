@@ -8,13 +8,10 @@ export function parsePadding (_padding) {
   }
 
   if (padding.constructor === Object) {
-    if (Object.keys(padding).length !== 4) throw invalidPaddingError
-
-    for (const key of ['left', 'right', 'top', 'bottom']) {
-      if (!(key in padding)) throw invalidPaddingError
-    }
-
-    return padding
+    return Object.assign(
+      parsePadding(0),
+      padding
+    )
   }
 
   throw invalidPaddingError
