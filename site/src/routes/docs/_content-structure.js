@@ -12,10 +12,6 @@ export const posts = [
         path: '/docs/core/section'
       },
       {
-        title: 'Title',
-        path: '/docs/core/title'
-      },
-      {
         title: 'Grid',
         path: '/docs/core/grid'
       }
