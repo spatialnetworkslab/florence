@@ -4,7 +4,7 @@
   import {
     Graphic,
     PointLayer,
-    Title,
+    Label,
     XAxis,
     YAxis
   } from '@snlab/florence'
@@ -35,7 +35,12 @@
     flipY
   >
 
-    <Title title={'Miles per gallon vs horsepower'} />
+    <Label
+      x={() => 200}
+      y={() => 40}
+      text={'Miles per gallon vs horsepower'}
+      fontSize={18}
+    />
 
     <PointLayer
       x={dataContainer.column('Horsepower')}

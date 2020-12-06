@@ -347,6 +347,23 @@ If given a `Number`, for example `20`, the padding will internally be converted 
 }
 ```
 
+Furthermore, just providing some of the four possible members of the padding object, e.g. only `left`:
+
+```js
+{ left: 10 }
+```
+
+ will set the rest to zero:
+
+```js
+{
+  left: 10,
+  right: 0,
+  top: 0,
+  bottom: 0
+}
+```
+
 An example:
 
 ```js exec

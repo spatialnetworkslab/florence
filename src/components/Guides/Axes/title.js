@@ -1,7 +1,4 @@
-import {
-  getAbsoluteXPosition,
-  getAbsoluteYPosition
-} from './absolutePosition.js'
+import { parseHJust, parseVJust } from './just.js'
 
 export function getTitleCoordinatesXAxis (
   hjust,
@@ -16,10 +13,10 @@ export function getTitleCoordinatesXAxis (
 ) {
   const heightOffset = getHeightOffset(yOffset, flip, axisHeight, fontSize)
 
-  const xAbsolute = getAbsoluteXPosition(hjust, xOffset, sectionContext)
+  const xAbsolute = parseHJust(hjust, xOffset, sectionContext.paddedBbox)
   const yAbsolute = vjust === 'axis'
     ? yAbsoluteAxis + heightOffset
-    : getAbsoluteYPosition(vjust, yOffset, sectionContext) + heightOffset
+    : parseVJust(vjust, yOffset, sectionContext.paddedBbox) + heightOffset
 
   const { finalScaleX, finalScaleY } = sectionContext
 
@@ -60,8 +57,8 @@ export function getTitleCoordinatesYAxis (
   const widthOffset = getWidthOffset(xOffset, flip, axisWidth, fontSize)
   const xAbsolute = hjust === 'axis'
     ? xAbsoluteAxis + widthOffset
-    : getAbsoluteXPosition(hjust, xOffset, sectionContext)
-  const yAbsolute = getAbsoluteYPosition(vjust, yOffset, sectionContext)
+    : parseHJust(hjust, xOffset, sectionContext.paddedBbox)
+  const yAbsolute = parseHJust(vjust, yOffset, sectionContext.paddedBbox)
 
   const { finalScaleX, finalScaleY } = sectionContext
 

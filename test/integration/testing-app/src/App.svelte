@@ -12,7 +12,6 @@
   import ScaleBandAxes from './pages/ScaleBandAxes.svelte'
   import Area from './pages/Area.svelte'
   import AreaLayer from './pages/AreaLayer.svelte'
-  import Title from './pages/Title.svelte'
   import NestedSections from './pages/NestedSections.svelte'
   import GridLines from './pages/GridLines.svelte'
 
@@ -67,11 +66,6 @@
       name: 'AreaLayer',
       url: '/arealayer',
       component: AreaLayer
-    },
-    {
-      name: 'Title',
-      url: '/title',
-      component: Title
     },
     {
       name: 'NestedSections',

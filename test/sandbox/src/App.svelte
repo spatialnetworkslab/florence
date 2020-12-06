@@ -5,14 +5,13 @@
   import BarChart from './examples/BarChart.svelte'
   import Polygons from './examples/Polygons.svelte'
   import GridLayout from './examples/GridLayout.svelte'
-  import ResizeLayout from './examples/ResizeLayout.svelte'
+  // import ResizeLayout from './examples/ResizeLayout.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
   import ZoomPan from './examples/ZoomPan.svelte'
   import BaseMark from './examples/BaseMark.svelte'
   import Line from './examples/Line.svelte'
 
   import FuncLines from './examples/FuncLines.svelte'
-  // import Legends from './examples/Legends.svelte'
   import DragCategorical from './examples/DragCategorical.svelte'
   import FunctionAPI from './examples/FunctionAPI.svelte'
   import FlipTest from './examples/FlipTest.svelte'
@@ -26,8 +25,6 @@
   import AreaChart from './examples/AreaChart.svelte'
   import StackedAreaChart from './examples/StackedAreaChart.svelte'
   import ViolinPlot from './examples/ViolinPlot.svelte'
-  import Title from './examples/Title.svelte'
-  import LegendsDocs from './examples/LegendsDocs.svelte'
   import NestedSections from './examples/NestedSections.svelte'
   import JoHsiBug from './examples/JoHsiBug.svelte'
   import Clipping from './examples/Clipping.svelte'
@@ -43,7 +40,7 @@
   import GraphicAreaBug from './examples/GraphicAreaBug.svelte'
   import FuncLineBug from './examples/FuncLineBug.svelte'
 
-  import RecycleTest from './examples/RecycleTest.svelte'
+  import NewLegends from './examples/NewLegends.svelte'
   
   // and add them to this component array
   const components = [
@@ -62,11 +59,11 @@
       url: '/gridlayout',
       component: GridLayout
     },
-    {
-      name: 'Resize Layout',
-      url: '/resizelayout',
-      component: ResizeLayout
-    },
+    // {
+    //   name: 'Resize Layout',
+    //   url: '/resizelayout',
+    //   component: ResizeLayout
+    // },
     {
       name: 'Scatterplot',
       url: '/scatterplot',
@@ -163,16 +160,6 @@
       component: ViolinPlot
     },
     {
-      name: 'Title',
-      url: 'title',
-      component: Title
-    },
-    {
-      name: 'Legends: Docs',
-      url: 'legendsdocs',
-      component: LegendsDocs
-    },
-    {
       name: 'GeoEx',
       url: 'geoex',
       component: GeoEx
@@ -197,11 +184,6 @@
       url: 'heatmap',
       component: Heatmap
     },
-    // {
-    //   name: 'Legends',
-    //   url: '/legends',
-    //   component: Legends
-    // },
     {
       name: 'Nested sections',
       url: '/nestedsections',
@@ -228,9 +210,9 @@
       component: FuncLineBug
     },
     {
-      name: 'Recycle test',
-      url: 'recycle-test',
-      component: RecycleTest
+      name: 'New legends',
+      url: 'new-legends',
+      component: NewLegends
     }
   ]
 </script>

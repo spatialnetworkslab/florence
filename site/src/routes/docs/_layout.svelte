@@ -6,14 +6,19 @@
       return { items }
     } else {
       this.error(res.status, items.message)
-    }
+	}
   }
 </script>
 
 <script>
-  import SideNav from '../../components/SideNav.svelte'
+	import SideNav from '../../components/SideNav.svelte'
+	import { stores } from "@sapper/app"
+	
 	export let items
 	let openMenu = false
+
+	const { page } = stores()
+	$: selected = $page.path
 </script>
 
 <div on:click={() => openMenu ^= true} class="hamburger">
@@ -23,7 +28,7 @@
 </div>
 <div class="content">
 	<div class:openMenu class="left-col cols md:flex hidden">
-		<SideNav { items }/>
+		<SideNav { items } { selected }/>
 	</div>
 	<div class="right-col cols">
 		<main>

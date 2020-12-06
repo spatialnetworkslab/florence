@@ -1,6 +1,6 @@
 <script>
     export let items
-    let selected
+    export let selected
 </script>
 
 <style>
@@ -31,12 +31,11 @@
       {#if item.children}
         {#each item.children as child, index}
         <li class={`list-none sidenav-second
-           ${selected === child.title + index
+           ${selected === child.path
            ? 'sidenav-second-selected' : ''}`}>
             <a
               rel="prefetch"
               href={child.path}
-              on:click={() => (selected = child.title + index)}
               class={'sidenav-a'}>
               {child.title} 
             </a>
