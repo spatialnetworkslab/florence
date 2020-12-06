@@ -68,7 +68,7 @@
       <a class='nav-a' href='/repl'>REPL</a>
     </li>
     <li class='nav-li'>
-      <a class='nav-a gitlab' href='https://gitlab.com/spatialnetworkslab/florence'>Source Code</a>
+      <a class='nav-a gitlab' target="_blank" rel="noopener" href='https://gitlab.com/spatialnetworkslab/florence'>Source Code</a>
     </li>
     </ul>
   </div>
