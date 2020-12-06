@@ -10,41 +10,75 @@ The first difference between `Mark`s and `Layer`s is that the latter have a `key
 | ---- | -------- | ---------- | ----------- | -------------------- |
 | key  | `false`  | `String[]` | `undefined` | Array of unique keys |
 
-TODO
+If the `key` is not specified, an `Array` containing the numbers `0 ... N - 1` converted to `String`s will be used, where `N` is the number of marks of which the layer consists. There are three reasons for using keys:
+
+### Transitions
+
+During [transitions](/docs/concepts/transitions), keys are used to keep track of which mark is which before and after the transition. Internally, `florence` uses Svelte's [keyed each blocks](https://svelte.dev/tutorial/keyed-each-blocks) to accomplish this. How keys work together with transitions is best illustrated through an example. Pressing the button will filter out the first row of the data, and then shift all x-values a bit to the right. The `PointLayer` in the green `Section` does not use keying, while the one in the blue `Section` does. As you can see, the `PointLayer` in the green `Section` animates the points as if the last point had disappeared, whereas the animation in the `PointLayer` in the blue `Section` gives the (in this case, correct) impression that the first point has disappeared. Pressing the button undoes the filtering and the shift to the right.
+
+```markup
+<script>
+  import { Graphic, Section, PointLayer } from '@snlab/florence'
+  import DataContainer from '@snlab/florence-datacontainer'
+
+  const dataContainer = new DataContainer({
+    x: [1, 2, 3],
+    y: [1, 2, 3]
+  })
+
+  let transformed = false
+
+  $: data = transformed 
+    ? dataContainer.filter(r => r.x > 1).mutate({ x: r => r.x + 0.5 })
+    : dataContainer
+</script>
+
+<button on:click={() => { transformed = !transformed }}>Click me!</button><br /><br />
+
+<Graphic width={500} height={300}>
+  
+  <Section x1={0} x2={250} scaleX={[0, 4]} scaleY={[0, 4]} backgroundColor={'#a9f49c'}>
+    
+    <PointLayer 
+      x={data.column('x')}
+      y={data.column('y')}
+      transition={3000}
+    />
+
+  </Section>
+  
+  <Section x1={250} x2={500} scaleX={[0, 4]} scaleY={[0, 4]} backgroundColor={'#9cc1f4'}>
+    
+    <PointLayer 
+      x={data.column('x')}
+      y={data.column('y')}
+      key={data.keys()}
+      transition={3000}  
+    />
+
+  </Section>
+
+</Graphic>
+```
+
+```js exec
+import KeyTransition from './examples/_KeyTransition.svelte'
+```
+
+<KeyTransition />
+
+### Interactions
+
+The main differences between `Mark`s and `Layer`s in the area of interactivity is that the `Layer`'s `event` object includes an `index` and `key`. For more information, consult the [interactivity](/docs/concepts/interactivity) documentation.
+
+### Aesthetic function syntax
+
+This will be discussed under `Aesthetics: marks vs. layers`. 
 
 ## Positioning: marks vs. layers
 
-### Values vs. arrays of values
-
 TODO: explain arrays of values
-
-### Recycling
-
-TODO: explain recycling
-
-### Function syntax
-
-TODO: explain function syntax
 
 ## Aesthetics: marks vs. layers
 
-### Values vs. arrays of values
-
-TODO: explain arrays of values
-
-### Recycling
-
-TODO: explain recycling
-
-### Function syntax
-
-TODO: explain function syntax
-
-## Interactions
-
-The main differences between `Mark`s and `Layer`s in the area of interactivity are
-
-- TODO
-- TODO
-
-For more information, consult the [interactivity](/docs/concepts/interactivity) documentation.
+TODO: explain arrays of values, but also how it is ok to also just use one aesthetic, and explain the function syntax stuff
