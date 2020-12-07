@@ -1,135 +1,45 @@
 <script>
-  import { scaleLinear, scalePoint, scaleOrdinal } from "d3-scale";
-  import { schemeCategory10 } from "d3-scale-chromatic";
-  import {
-    Graphic,
-    Section,
-    PointLayer,
-    XAxis,
-    YAxis,
-    Label
-  } from '@snlab/florence'
+  import { Graphic, Section, PointLayer } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
+  import { scalePoint, scaleLinear } from 'd3-scale'
 
-  // switches for steps
-  export let switch0 = false
-  export let switch1 = false
-  export let switch2 = false
-  export let switch3 = false
-  export let switch4 = false
-
-  let data = new DataContainer({
+  const data = {
     diameter: [
-      4.7,
-      6.1,
-      7.9,
-      6.6,
-      6.7,
-      5.3,
-      11.6,
-      11.1,
-      5.5,
-      10.6,
-      6.4,
-      4.9,
-      8.8,
-      12.5,
-      12.7,
-      8.6,
-      13.1,
-      5.8,
-      8.9,
-      9.1,
-      10.3,
-      9.4
+      4.7, 6.1, 7.9, 6.6, 6.7, 5.3, 11.6, 11.1, 5.5, 10.6, 6.4,
+      4.9, 8.8, 12.5, 12.7, 8.6, 13.1, 5.8, 8.9, 9.1, 10.3, 9.4, 0.5
     ],
+  
     fruit: [
-      'lime',
-      'lemon',
-      'grapefruit',
-      'lemon',
-      'orange',
-      'lemon',
-      'pomelo',
-      'grapefruit',
-      'lime',
-      'pomelo',
-      'lemon',
-      'lime',
-      'grapefruit',
-      'pomelo',
-      'grapefruit',
-      'grapefruit',
-      'pomelo',
-      'lime',
-      'orange',
-      'grapefruit',
-      'pomelo',
-      'grapefruit'
+      'lime', 'lemon', 'grapefruit', 'lemon', 'orange', 'lemon', 
+      'pomelo', 'grapefruit', 'lime', 'pomelo', 'lemon',
+      'lime', 'grapefruit', 'pomelo', 'grapefruit', 'grapefruit',
+      'pomelo', 'lime', 'orange', 'grapefruit', 'pomelo', 
+      'grapefruit', 'anchovies'
     ]
-  })
+  }
 
-  const processedData = data
-    .dropNA()
-    .groupBy('fruit')
-    .summarise({ meanDiameter: { diameter: 'mean' } })
-    .arrange({ meanDiameter: 'descending' })
+  const dataContainer = new DataContainer(data)
+    .filter(row => row.fruit !== 'anchovies')
 
-  const fruitDomain = data.domain("fruit");
-  const scaleFruit = scalePoint()
-    .domain(fruitDomain)
-    .padding(0.2);
-  const meanDiameterDomain = [0, processedData.domain("meanDiameter")[1] * 1.5]
-  const scaleMeanDiameter = scaleLinear().domain(meanDiameterDomain)
-  const scaleFruitColor = scaleOrdinal()
-    .domain(fruitDomain)
-    .range(schemeCategory10);
-
-  const scaleRadius = scaleLinear()
-    .domain(meanDiameterDomain)
-    .range([2, 10]);
+  const fruitDomain = dataContainer.domain('fruit')
+  const scaleFruit = scalePoint().domain(fruitDomain).padding(0.2)
+  const diameterDomain = [0, dataContainer.max('diameter')]
+  const scaleDiameter = scaleLinear().domain(diameterDomain)
 </script>
 
-
-<Graphic 
-  width={500} height={500}
->
+<Graphic width={500} height={500}>
 
   <Section
-    x1={50} x2={450}
-    y1={50} y2={450}
-    padding={40}
+    padding={25}
     scaleX={scaleFruit}
-    scaleY={scaleMeanDiameter}
+    scaleY={scaleDiameter}
   >
-    {#if switch0 || switch3}
-      <PointLayer
-        x={data.column('fruit')}
-        y={data.column('diameter')}
-        key={data.column('$key')}
-        fill={switch3 ? data.column('fruit').map(d => scaleFruitColor(d)) : 'black'}
-        radius={switch3 ? scaleRadius : 3}
-      />
-    {/if}
 
-    {#if switch1 || switch4}
-      <XAxis
-        title={switch4 ? 'fruit' : ''}
-      />
-      <YAxis 
-        title={switch4 ? 'diameter/cm' : ''}
-      />
-    {/if}
+    <PointLayer
+      x={dataContainer.column('fruit')}
+      y={dataContainer.column('diameter')}
+    />
 
-    {#if switch2}
-      <Label
-        x={() => 250}
-        y={() => 70}
-        text={'Fruit Sizes'}
-        fontFamily={'Baskerville'}
-        fontSize={18}
-      />
-    {/if}
   </Section>
 
 </Graphic>

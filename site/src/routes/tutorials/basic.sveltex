@@ -79,7 +79,7 @@ Data in column-oriented format, on the other hand, takes the form of a single ob
 </script>
 ```
 
-We will load this data to the `DataContainer`:
+We will load this data to the `DataContainer`. Somehow some anchovies ended up in our fruit data! Let's filter them out immediately.
 
 ```markup
 <script>
@@ -88,7 +88,7 @@ We will load this data to the `DataContainer`:
   const data = {
     diameter: [
       4.7, 6.1, 7.9, 6.6, 6.7, 5.3, 11.6, 11.1, 5.5, 10.6, 6.4,
-      4.9, 8.8, 12.5, 12.7, 8.6, 13.1, 5.8, 8.9, 9.1, 10.3, 9.4, 10.1
+      4.9, 8.8, 12.5, 12.7, 8.6, 13.1, 5.8, 8.9, 9.1, 10.3, 9.4, 0.5
     ],
   
     fruit: [
@@ -101,10 +101,7 @@ We will load this data to the `DataContainer`:
   }
 
   const dataContainer = new DataContainer(data)
-    .filter(row => row.fruit !== 'anchovies') // filters out unwanted values
-    .groupBy('fruit') // groups data by common categorical values
-    .summarise({ meanQuantity: { diameter: 'mean' } }) // computes mean diameter per group
-    .arrange({ meanQuantity: 'descending' }) // sorts data by mean quantity, in descending order
+    .filter(row => row.fruit !== 'anchovies')
 </script>
 ```
 
@@ -127,22 +124,25 @@ The [Graphic](docs/core/graphic) component forms the basis of all Florence graph
 
 ## Section
 
-The `Section` component divides the `Graphic` (or canvas) up into subsections. Each subsection can contain its own graph with its own marks, axes etc. While this could also be accomplished by creating multiple `Graphic`s, it is often more convenient to use multiple `Section`s inside a single `Graphic`, because this allows you to use `florence`s coordinate systems to position the various subsections of the graph. Another reason for using `Section`s is when you want to use multiple types of coordinate systems within a single graphic, which is the main reason for using a `Section` in this tutorial.
+The `Section` component divides the `Graphic` (or canvas) up into subsections. Each subsection can contain its own graph with its own marks, axes etc. While this could also be accomplished by creating multiple `Graphic`s, it is often more convenient to use multiple `Section`s inside a single `Graphic`, which allows you to use `florence`s coordinate systems to position the various subsections of the graph (whereas with multiple `Graphic`s you would have to do this with HTML and CSS). Another reason for using `Section`s is when you want to use multiple types of coordinate systems within a single graphic, which is the main reason for using a `Section` in this tutorial.
 
-We will declare a single `Section` like so:
+We will declare a single `Section` with a bit of padding like so:
 
 ```markup
 <script>
   import { Graphic, Section } from '@snlab/florence'
-  ...
+  import DataContainer from '@snlab/florence-datacontainer'
+
+  const data = {
+    ...
+  }
+
+  const dataContainer = ...
 </script>
 
 <Graphic width={500} height={500}>
 
-  <Section
-    x1={50} x2={450}
-    y1={50} y2={450}
-  >
+  <Section padding={25}>
 
   </Section>
 
@@ -153,40 +153,36 @@ For further details on `Section`, refer to its [documentation](docs/core/section
 
 ## Scales
 
-In our example, let's say we'd like to plot the column `fruit` to the x-axis, and `diameter` to the y-axis.
-
-Considering that the x value of each point we'd like to plot is some fruit name, it makes no sense to position the corresponding point at x coordinate 'lemon' or 'grapefruit' if these values are not first scaled to a reasonable screen coordinate in pixels. 
-
-If we think of the `Section` as our chart plotting space, this means we need to apply scaling such that the x-axis of the `Section` plots fruits (categorical values), and the y-axis plots diameter (continuous values) in pixel space. This means we need to add scales, one for X (`scaleX`) and one for Y (`scaleY`), to our `Section`.
-
-We will create our scales in the `<script>` section of the component:
+In our example, let's say we'd like to plot the column `fruit` to the x-axis, and `meanDiameter` to the y-axis. To accomplish this, we will have to somehow convert our data values, which are fruit names and diameters, into x and y pixel coordinates that will be displayed on our screens. This is what scales are used for. We will create our scales in the `<script>` section of the component:
 
 ```markup
 <script>
+  import { Graphic, Section } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
   import { scalePoint, scaleLinear } from 'd3-scale'
 
   const data = {
-  ...
+    ...
+  }
+
+  const dataContainer = ...
 
   const fruitDomain = dataContainer.domain('fruit')
   const scaleFruit = scalePoint().domain(fruitDomain).padding(0.2)
-  const meanDiameterDomain = [0, dataContainer.max('meanDiameter') * 1.5]
-  const scaleMeanDiameter = scaleLinear().domain(meanDiameterDomain)
+  const diameterDomain = [0, dataContainer.max('diameter')]
+  const scaleDiameter = scaleLinear().domain(diameterDomain)
 </script>
 ```
 
-We then use our scales as input to `scaleX, scaleY` of Section.
+We then pass our scales to `scaleX` and `scaleY` props of the `Section`:
 
 ```markup
-<Graphic 
-  width={500} height={500}
->
+<Graphic width={500} height={500}>
+
   <Section
-    x1={50} x2={450}
-    y1={50} y2={450}
+    padding={25}
     scaleX={scaleFruit}
-    scaleY={scaleMeanDiameter}
+    scaleY={scaleDiameter}
   >
 
   </Section>
@@ -194,67 +190,48 @@ We then use our scales as input to `scaleX, scaleY` of Section.
 </Graphic>
 ```
 
-We can also directly create scales as inputs. 
-
-```markup
-<Graphic 
-  width={500} height={500}
->
-  <Section
-    x1={50} x2={450}
-    y1={50} y2={450}
-    padding={40}
-    scaleX={scalePoint().domain(fruitDomain).padding(0.2)}
-    scaleY={scaleLinear().domain(meanDiameterDomain)}
-  >
-
-  </Section>
-
-</Graphic>
-```
-
-For further details on d3-scales, refer to the [documentation](https://github.com/d3/d3-scale).
+For further information on d3-scales, refer to the [documentation](https://github.com/d3/d3-scale).
 
 ## Marks
 
 In order to actually render one point per row in the dataset, we need to specify our chosen mark. Since we are plotting multiple points in this example, the `PointLayer` component is sufficient for our purposes. However, there are a wide range of marks that are available. For details of each, refer to the Marks section of the documentation.
 
 ```markup
-<Graphic 
-  width={500} height={500}
->
+<script>
+  import { Graphic, Section, PointLayer } from '@snlab/florence'
+  ...
+</script>
+
+<Graphic width={500} height={500}>
+
   <Section
-    x1={50} x2={450}
-    y1={50} y2={450}
-    padding={40}
-    scaleX={scalePoint().domain(fruitDomain).padding(0.2)}
-    scaleY={scaleLinear().domain(meanDiameterDomain)}
+    padding={25}
+    scaleX={scaleFruit}
+    scaleY={scaleDiameter}
   >
-      <PointLayer
-      x={data.column('fruit')}
-      y={data.column('diameter')}
-      key={data.column('$key')}
-      fill={scaleFruitColor}
-      radius={test}
+
+    <PointLayer
+      x={dataContainer.column('fruit')}
+      y={dataContainer.column('diameter')}
     />
+
   </Section>
 
 </Graphic>
 ```
 
 ::: div callout
-If we are plotting only a single point, we would use `Point`.
+If we were plotting only a single point, it would have made more sense to use the `Point` mark instead of the `PointLayer`.
 :::
 
-Note that the `PointLayer` component requires the x and y properties to be specified. This tells the component which data variable to use as the x and y coordinates of each point. As such, we specify these to be `data.column('fruit')` and `data.column('diameter')`, respectively.
+Note that the `PointLayer` component requires the x and y properties to be specified. This tells the component which data variable to use as the x and y coordinates of each point. Since we want our fruits on the x-axis and our diameters on the y-axis, we specify `x` and `y` as `data.column('fruit')` and `data.column('diameter')`, respectively.
 
 ::: div callout
-Since we have already specified the scale values in `Section`, our raw values will now be scaled to screen coordinates.
+Since we have already specified the scale values in `Section`, our data values will be be scaled to screen coordinates.
 :::
 
-
 The graph should now look like this:
-<!-- TODO replace with codeboxes -->
+
 ```js exec
 import Basic from './utils/_Basic.svelte'
 ```
