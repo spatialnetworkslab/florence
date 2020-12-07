@@ -19,26 +19,48 @@
 
   const graphicId = getId()
 
-  export let renderer = undefined
-  
+  // Positioning
   export let width = 500
   export let height = 500
   export let viewBox = undefined
   export let preserveAspectRatio = 'xMidYMid meet'
 
+  // Local coordinates
   export let scaleX = undefined
   export let scaleY = undefined
-  export let transformation = undefined
   export let flipX = false
   export let flipY = false
   export let padding = 0
   export let zoomIdentity = undefined
-  export let blockReindexing = false
-  export let clip = true
 
+  // Mouse interactions
+  export let onClick = undefined
+  export let onWheel = undefined
+  export let onMousedown = undefined
+  export let onMouseup = undefined
+  export let onMouseover = undefined
+  export let onMouseout = undefined
+  export let onMousemove = undefined
+
+  // Touch interactions
+  export let onPinch = undefined
+  export let onTouchdown = undefined
+  export let onTouchmove = undefined
+  export let onTouchup = undefined
+  export let onTouchover = undefined
+  export let onTouchout = undefined
+
+  // Aesthetics
   export let backgroundColor = undefined
   export let paddingColor = undefined
 
+  // Other
+  export let transformation = undefined
+  export let blockReindexing = false
+  export let clip = true
+  export let renderer = undefined
+
+  // Contexts
   const graphicContext = GraphicContext.init()
   const sectionContext = SectionContext.init()
   const eventManagerContext = EventManagerContext.init()
@@ -53,8 +75,8 @@
   // set up event and interaction manager
   const eventManager = new EventManager()
   EventManagerContext.update(eventManagerContext, eventManager)
+  
   const interactionManager = new InteractionManager()
-
   interactionManager.setId(graphicId)
   interactionManager.linkEventManager(eventManager)
   InteractionManagerContext.update(interactionManagerContext, interactionManager)
@@ -120,6 +142,86 @@
     eventManager.addRootNode(_rootNode)
     eventManager.attachEventListeners()
   })
+
+  // Interactions
+  // Change callbacks if necessary
+  $: {
+    removeSectionInteractionsIfNecessary(
+      onWheel,
+      onClick,
+      onMousedown,
+      onMouseup,
+      onMouseover,
+      onMouseout,
+      onTouchdown,
+      onTouchmove,
+      onTouchup,
+      onTouchover,
+      onTouchout,
+      onPinch
+    )
+  }
+
+  function removeSectionInteractionsIfNecessary () {
+    if (detectIt.primaryInput === 'mouse') {
+      const sectionInterface = $interactionManagerContext.mouse().section()
+      sectionInterface.removeAllInteractions()
+
+      if (onWheel) sectionInterface.addInteraction('wheel', onWheel)
+      if (onClick) sectionInterface.addInteraction('click', onClick)
+      if (onMousedown) sectionInterface.addInteraction('mousedown', onMousedown)
+      if (onMouseup) sectionInterface.addInteraction('mouseup', onMouseup)
+      if (onMouseover) sectionInterface.addInteraction('mouseover', onMouseover)
+      if (onMouseout) sectionInterface.addInteraction('mouseout', onMouseout)
+      if (onMousemove) sectionInterface.addInteraction('mousemove', onMousemove)
+    }
+
+    if (detectIt.primaryInput === 'touch') {
+      const sectionInterface = $interactionManagerContext.touch().section()
+      sectionInterface.removeAllInteractions()
+
+      if (onTouchdown) sectionInterface.addInteraction('touchdown', onTouchdown)
+      if (onTouchmove) sectionInterface.addInteraction('touchmove', onTouchmove)
+      if (onTouchup) sectionInterface.addInteraction('touchup', onTouchup)
+      if (onTouchover) sectionInterface.addInteraction('touchover', onTouchover)
+      if (onTouchout) sectionInterface.addInteraction('touchout', onTouchout)
+      if (onPinch) sectionInterface.addInteraction('pinch', onPinch)
+    }
+  }
+
+  export function selectRectangle (rectangle) {
+    $interactionManagerContext.select().selectRectangle(rectangle)
+  }
+
+  export function updateSelectRectangle (rectangle) {
+    $interactionManagerContext.select().updateSelectRectangle(rectangle)
+  }
+
+  export function resetSelectRectangle () {
+    $interactionManagerContext.select().resetSelectRectangle()
+  }
+
+  export function startSelectPolygon (startCoordinates) {
+    $interactionManagerContext.select().startSelectPolygon(startCoordinates)
+  }
+
+  export function addPointToSelectPolygon (pointCoordinates) {
+    $interactionManagerContext
+      .select()
+      .addPointToSelectPolygon(pointCoordinates)
+  }
+
+  export function moveSelectPolygon (delta) {
+    $interactionManagerContext.select().moveSelectPolygon(delta)
+  }
+
+  export function getSelectPolygon () {
+    return $interactionManagerContext.select().getSelectPolygon()
+  }
+
+  export function resetSelectPolygon () {
+    $interactionManagerContext.select().resetSelectPolygon()
+  }
 </script>
 
 <svg
