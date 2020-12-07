@@ -35,8 +35,9 @@ import SimpleExample from './examples/_SectionSimple.svelte'
 
 ## Caveats
 
-- `Section`s can be nested, but
-- a `Section` with a coordinate transformation can only contain marks, layers and axes
+::: div callout
+`Section`s can be nested, but a `Section` with a coordinate transformation can only contain `Mark`s and `Layer`s
+:::
 
 ## Props
 

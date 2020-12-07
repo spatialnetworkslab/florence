@@ -61,9 +61,6 @@ We get started by making it available to the Svelte application.
 
 To provide an easy starting point, you can use the below sandbox, which has all the necessary dependencies and data set up.
 
-::: codesandbox sandboxes/intermediate-tutorial-init codemirror=1&view=split&runonclick=1&fontsize=12&hidenavigation=1&hidedevtools=1&theme=light&module=App.svelte
-:::
-
 ### Using a `DataContainer`
 When using Florence, we can also use the sidecar `florence-dataContainer` library, that lets us store data as either rows or columns and perform pre-processing operations on it. We use `DataContainer` here to extract the geometry that we will use to plot the map based on the imported GeoJSON.
 

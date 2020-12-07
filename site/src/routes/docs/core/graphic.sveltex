@@ -19,10 +19,9 @@ import SimpleExample from './examples/_GraphicSimple.svelte'
 
 <SimpleExample />
 
-## Caveats
-
-- `florence` components cannot be used outside of a `Graphic` component
-- `Graphic` components cannot be nested
+::: div callout
+`florence` components cannot be used outside of a `Graphic` component, and `Graphic` components cannot be nested.
+:::
 
 ## Properties
 

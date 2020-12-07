@@ -2,10 +2,6 @@
 
 `florence` takes a different approach to interactivity than other data visualization libraries. Where libraries like [Vega Lite](https://vega.github.io/vega-lite/) or [G6](https://g6.antv.vision/) use a high-level 'grammar' specifically designed for interactivity, `florence` takes a more low-level approach. Instead of explaining to `florence` through a special language how an event (like a mouse click) should trigger an action (like a Mark changing color), `florence` relies on plain JavaScript combined with Svelte's built-in reactivity system as much as possible. Although this approach can result in more boilerplate code, it does provide more control and flexibility for the end user to create tailored and innovative interactions. At the same time, many tricky aspects of interactivity have been abstracted away, so you do not need to reinvent the wheel either!
 
-## Caveats
-
-- Interactivity always requires a `Section` component
-
 ## Events and actions
 
 To make interactivity easier to discuss, we will split up the concept into two parts:
