@@ -13,7 +13,7 @@ export default function createScreenGeometry (
     func,
     x,
     sectionContext,
-    renderSettings.interpolationTreshold
+    renderSettings.interpolationThreshold
   )
 
   const geometry = {
@@ -37,11 +37,11 @@ function ensureValidInput (func, x) {
   throw new Error('FuncLine: invalid geometry props')
 }
 
-function generateDataPoints (func, x, sectionContext, interpolationTreshold) {
+function generateDataPoints (func, x, sectionContext, interpolationThreshold) {
   const domainX = x || getDomainX(sectionContext)
 
   const finalRangeX = sectionContext.finalRangeX
-  const resolution = Math.abs(finalRangeX[0] - finalRangeX[1]) / interpolationTreshold
+  const resolution = Math.abs(finalRangeX[0] - finalRangeX[1]) / interpolationThreshold
 
   return interpolatePointsFromFunc(func, domainX, resolution)
 }

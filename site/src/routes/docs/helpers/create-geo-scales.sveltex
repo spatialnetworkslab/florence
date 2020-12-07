@@ -73,4 +73,13 @@ The `x` and `y` members represent the domains of the variables that will be used
 
 ## Return value
 
-TODO
+`createGeoScales` returns an object containing two other objects that pretend to be scales:
+
+```js
+{
+  scaleX: { range: <Function>, copy: <Function> },
+  scaleY: { range: <Function>, copy: <Function> }
+}
+```
+
+These will be converted into real scales by `florence` after being passed to `scaleX` and `scaleY`.

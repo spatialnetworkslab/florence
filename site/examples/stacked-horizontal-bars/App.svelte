@@ -55,8 +55,8 @@
       <RectangleLayer 
         x1={stateGroup.$grouped.map('countInterval', d => d[0])}
         x2={stateGroup.$grouped.map('countInterval', d => d[1])}
-        y1={stateGroup.state}
-        y2={({ scaleY }) => scaleY(stateGroup.state) + scaleY.bandwidth()}
+        y1={Array(stateGroup.$grouped.nrow()).fill(stateGroup.state)}
+        y2={({ scaleY }) => Array(stateGroup.$grouped.nrow()).fill(scaleY(stateGroup.state) + scaleY.bandwidth())}
         fill={stateGroup.$grouped.map('ageGroup', scaleColor)}
       />
 

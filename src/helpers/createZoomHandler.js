@@ -2,7 +2,8 @@ export default function createZoomHandler (
   zoomIdentity,
   {
     setZoomIdentity,
-    minZoom, maxZoom,
+    minZoom = 0.5,
+    maxZoom = 3,
     step = 1,
     dimension = 'both'
   }

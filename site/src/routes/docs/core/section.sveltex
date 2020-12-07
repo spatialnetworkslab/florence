@@ -33,10 +33,9 @@ import SimpleExample from './examples/_SectionSimple.svelte'
 
 <SimpleExample />
 
-## Caveats
-
-- `Section`s can be nested, but
-- a `Section` with a coordinate transformation can only contain marks, layers and axes
+::: div callout
+`Section`s can be nested, but a `Section` with a coordinate transformation can only contain `Mark`s and `Layer`s
+:::
 
 ## Props
 
@@ -51,7 +50,7 @@ import SimpleExample from './examples/_SectionSimple.svelte'
 
 It is possible to use the `Section` without providing any of the positioning props. This will result in the `Section` inheriting the extents of the parent `Section` or `Graphic`, taking padding into account. For example,
 
-```svelte
+```markup
 <Graphic width={500} height={500}>
   
   <Section padding={20}>
@@ -69,7 +68,7 @@ It is possible to use the `Section` without providing any of the positioning pro
 
 is equivalent to
 
-```svelte
+```markup
 <Graphic width={500} height={500}>
   
   <Section
@@ -99,7 +98,7 @@ is equivalent to
 It is also allowed to provide just the `x1` and `x2`, or just the `y1` and `y2` props.
 But providing only `x1` and `x2`, for example, is not allowed:
 
-```svelte
+```markup
 <Section x1={50} x2={450}></Section> <!-- Fine -->
 <Section x1={50}></Section> <!-- Not allowed -->
 ```
@@ -108,7 +107,7 @@ In the examples above, no local coordinate systems are being used, so everything
 screen pixels. If the parent `Graphic` or `Section` has specified a local coordinate system,
 the positioning props would have to be defined in local coordinates. For example:
 
-```svelte
+```markup
 <Graphic
   width={500}
   height={500}
@@ -130,7 +129,7 @@ the positioning props would have to be defined in local coordinates. For example
 
 would be equivalent to:
 
-```svelte
+```markup
 <Graphic
   width={500}
   height={500}
@@ -224,13 +223,12 @@ The purpose of `blockReindexing` is explained in the [interactivity](/docs/conce
 
 `Section` methods can be used as follows:
 
-```js
-let section
+```markup
+<script>
+  let section
+  section.selectRectangle(...)
+</script>
 
-section.selectRectangle(...)
-```
-
-```html
 <Section bind:this={section}>
 
 </Section>

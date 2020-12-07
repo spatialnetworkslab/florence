@@ -17,20 +17,19 @@
 
   const sectionId = getId()
 
-  // Props
+  // Positioning
   export let x1 = undefined
   export let x2 = undefined
   export let y1 = undefined
   export let y2 = undefined
-  export let padding = 0
+
+  // Local coordinates
   export let scaleX = undefined
   export let scaleY = undefined
   export let flipX = false
   export let flipY = false
+  export let padding = 0
   export let zoomIdentity = undefined
-  export let transformation = undefined
-  export let blockReindexing = false
-  export let clip = true
 
   // Aesthetics
   export let backgroundColor = undefined
@@ -52,6 +51,11 @@
   export let onTouchup = undefined
   export let onTouchover = undefined
   export let onTouchout = undefined
+
+  // Other
+  export let transformation = undefined
+  export let blockReindexing = false
+  export let clip = true
 
   // Contexts
   const sectionContext = SectionContext.subscribe()
@@ -92,6 +96,7 @@
   $: clipPropsNoPadding = getClipPropsNoPadding(coordinates)
   $: clipPropsPadding = getClipPropsPadding(coordinates, padding)
 
+  // Interactions
   // Change callbacks if necessary
   $: {
     removeSectionInteractionsIfNecessary(
@@ -117,25 +122,26 @@
 
       if (onWheel) sectionInterface.addInteraction('wheel', onWheel)
       if (onClick) sectionInterface.addInteraction('click', onClick)
-      if (onMousedown) { sectionInterface.addInteraction('mousedown', onMousedown) }
+      if (onMousedown) sectionInterface.addInteraction('mousedown', onMousedown)
       if (onMouseup) sectionInterface.addInteraction('mouseup', onMouseup)
-      if (onMouseover) { sectionInterface.addInteraction('mouseover', onMouseover) }
+      if (onMouseover) sectionInterface.addInteraction('mouseover', onMouseover)
       if (onMouseout) sectionInterface.addInteraction('mouseout', onMouseout)
-      if (onMousemove) { sectionInterface.addInteraction('mousemove', onMousemove) }
+      if (onMousemove) sectionInterface.addInteraction('mousemove', onMousemove)
     }
 
     if (detectIt.primaryInput === 'touch') {
       const sectionInterface = $interactionManagerContext.touch().section()
       sectionInterface.removeAllInteractions()
 
-      if (onTouchdown) { sectionInterface.addInteraction('touchdown', onTouchdown) }
-      if (onTouchmove) { sectionInterface.addInteraction('touchmove', onTouchmove) }
+      if (onTouchdown) sectionInterface.addInteraction('touchdown', onTouchdown)
+      if (onTouchmove) sectionInterface.addInteraction('touchmove', onTouchmove)
       if (onTouchup) sectionInterface.addInteraction('touchup', onTouchup)
-      if (onTouchover) { sectionInterface.addInteraction('touchover', onTouchover) }
+      if (onTouchover) sectionInterface.addInteraction('touchover', onTouchover)
       if (onTouchout) sectionInterface.addInteraction('touchout', onTouchout)
       if (onPinch) sectionInterface.addInteraction('pinch', onPinch)
     }
   }
+
   export function selectRectangle (rectangle) {
     $interactionManagerContext.select().selectRectangle(rectangle)
   }

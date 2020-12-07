@@ -32,7 +32,7 @@
   >
 
     <RectangleLayer 
-      x1={0}
+      x1={Array(maleValues.length).fill(0)}
       x2={maleValues}
       y1={ages}
       y2={({scaleY}) => ages.map(age => scaleY(age) + scaleY.bandwidth())}
@@ -54,7 +54,7 @@
   >
 
     <RectangleLayer 
-      x1={0}
+      x1={Array(femaleValues.length).fill(0)}
       x2={femaleValues}
       y1={ages}
       y2={({scaleY}) => ages.map(age => scaleY(age) + scaleY.bandwidth())}
