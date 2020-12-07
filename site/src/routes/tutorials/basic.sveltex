@@ -17,7 +17,7 @@ In addition, pretty much every graphic will need scales, for which we rely on [d
 
 ## ⭐️Learning Goal(s)
 
-In this tutorial, you will make a map of a basic dot plot (along with some optional customisations) of the fruit-diameter dataset below.
+In this tutorial, you will make a map of a basic dot plot (along with some optional customisations) of the fruit-diameter dataset below. 
 
 ## Dataset
 
@@ -142,7 +142,7 @@ We will declare a single `Section` with a bit of padding like so:
 
 <Graphic width={500} height={500}>
 
-  <Section padding={25}>
+  <Section padding={40}>
 
   </Section>
 
@@ -153,7 +153,7 @@ For further details on `Section`, refer to its [documentation](docs/core/section
 
 ## Scaling coordinates
 
-In our example, let's say we'd like to plot the column `fruit` to the x-axis, and `meanDiameter` to the y-axis. To accomplish this, we will have to somehow convert our data values, which are fruit names and diameters, into x and y pixel coordinates that will be displayed on our screens. This is what scales are used for. We will create our scales in the `<script>` section of the component:
+In our example, let's say we'd like to plot the column `fruit` to the x-axis, and `diameter` to the y-axis. To accomplish this, we will have to somehow convert our data values, which are fruit names and diameters, into x and y pixel coordinates that will be displayed on our screens. This is what scales are used for. We will create our scales in the `<script>` section of the component:
 
 ```markup
 <script>
@@ -180,7 +180,7 @@ We then pass our scales to `scaleX` and `scaleY` props of the `Section`:
 <Graphic width={500} height={500}>
 
   <Section
-    padding={25}
+    padding={40}
     scaleX={scaleFruit}
     scaleY={scaleDiameter}
   >
@@ -194,7 +194,7 @@ For further information on d3-scales, refer to the [documentation](https://githu
 
 ## Marks
 
-In order to actually render one point per row in the dataset, we need to specify our chosen mark. Since we are plotting multiple points in this example, the `PointLayer` component is sufficient for our purposes. However, there are a wide range of marks that are available. For details of each, refer to the Marks section of the documentation.
+In order to actually render one point per row in the dataset, we need to specify our chosen mark. Since we are going to draw multiple points, it makes sense to use the `PointLayer` component. We could, however, also have chosen another `Layer`. Refer to the Marks section of the documentation for more options.
 
 ```markup
 <script>
@@ -205,7 +205,7 @@ In order to actually render one point per row in the dataset, we need to specify
 <Graphic width={500} height={500}>
 
   <Section
-    padding={25}
+    padding={40}
     scaleX={scaleFruit}
     scaleY={scaleDiameter}
   >
@@ -236,52 +236,15 @@ The graph should now look like this:
 import Basic from './utils/_Basic.svelte'
 ```
 
-<Basic />
+<Basic flipY={false} />
 
 ## Axes
 
-TODO better sentence.
-
-Axes are added by using the `XAxis` and `YAxis` components. They immediately take on the values of the scales specified by your `Section` component, and revert to smart defaults in the absence of scales.
+The points look fine, but they lack context. In order to understand what the points are supposed to represent, we will add some axes. Axes are added using the `XAxis` and `YAxis` components. These components will automatically adapt to the scales specified by their parent `Section` component, and revert to smart defaults in their absence.
 
 ```markup
 <script>
   import { Graphic, Section, PointLayer, XAxis, YAxis } from '@snlab/florence'
-  ...
-</script>
-
-<Graphic width={500} height={500}>
-
-  <Section
-    padding={25}
-    scaleX={scaleFruit}
-    scaleY={scaleDiameter}
-  >
-
-    <PointLayer
-      x={data.column('fruit')}
-      y={data.column('diameter')}
-    />
-
-    <XAxis title={'fruit'} />
-    <YAxis title={'diameter (cm)'} />
-
-  </Section>
-
-</Graphic>
-```
-
-The graph should now look like this:
-
-<Basic switchAxes />
-
-## Title
-
-Graphics usually come with titles describing the subject of the graph. Titles be added using the `Label` component. Note that we place the `Label` outside of the `Section`, so that we can use the `Graphic`'s coordinate system to position it. This is just to show the two different coordinate systems that currently exist within out graphic- we could also have used the coordinate system inside of the `Section`.
-
-```markup
-<script>
-  import { Graphic, Section, PointLayer, XAxis, YAxis, Label } from '@snlab/florence'
   ...
 </script>
 
@@ -303,6 +266,49 @@ Graphics usually come with titles describing the subject of the graph. Titles be
 
   </Section>
 
+</Graphic>
+```
+
+The graphic should now look like this:
+
+<Basic flipY={false} switchAxes />
+
+Whoops! The graphic looks like it's upside down, because in your browser, y coordinates go from up to down instead of down to up. Better flip the y dimension of our `Section`'s coordinate system:
+
+```markup
+<Section
+  padding={40}
+  scaleX={scaleFruit}
+  scaleY={scaleDiameter}
+  flipY
+>
+```
+
+<Basic switchAxes />
+
+## Title
+
+Graphics usually come with titles describing their content. Titles be added using the `Label` component. Note that we place the `Label` outside of the `Section`, so that we can use the `Graphic`'s coordinate system to position it. This is just to show the two different coordinate systems that currently exist within out graphic- we could also have used the coordinate system inside of the `Section`.
+
+```markup
+<script>
+  import { Graphic, Section, PointLayer, XAxis, YAxis, Label } from '@snlab/florence'
+  ...
+</script>
+
+<Graphic width={500} height={500}>
+
+  <Section
+    padding={40}
+    scaleX={scaleFruit}
+    scaleY={scaleDiameter}
+    flip
+  >
+
+    ...
+
+  </Section>
+
   <Label
     x={250}
     y={70}
@@ -318,7 +324,7 @@ Graphics usually come with titles describing the subject of the graph. Titles be
 
 ## Scaling other aesthetics
 
-We have seen the necessity of scales above. So far, we have used scales to convert raw values in the dataset (e.g. fruit names) into values that can be rendered on a screen (pixel coordinates). In mathematical terms we could say that in the examples above, we used scales to map values in the domain of fruit names to values in the range of pixel coordinates in the x dimension, and values in the domain of fruit diameters to values in the range of pixel coordinates in the y dimension. Whew! 
+So far, we have used scales to convert raw values in the dataset (e.g. fruit names) into values that can be rendered on a screen (pixel coordinates). In mathematical terms we could say that in the examples above, we used scales to map values in the domain of fruit names to values in the range of pixel coordinates in the x dimension, and values in the domain of fruit diameters to values in the range of pixel coordinates in the y dimension. Whew! 
 
 However, scaling is not limited to changing data values (domain) into screen coordinates/pixels (range). Scaling can be done for a wide range of _aesthetics_, such as color, radius and opacity. For example, when we use a scale to give each type of fruit its own color, we are mapping values in the domain of fruit names to a range of colors. In this tutorial, we will use a scale to give each type of fruit a different color, and another scale to make fruits with higher diameters look bigger. We will use the `fill` and `radius` props on the `PointLayer` for this.
 
@@ -353,18 +359,11 @@ However, scaling is not limited to changing data values (domain) into screen coo
       radius={dataContainer.map('diameter', scaleRadius)}
     />
 
-    <XAxis title={'fruit'} />
-    <YAxis title={'diameter (cm)'} />
+    ...
 
   </Section>
 
-  <Label
-    x={250}
-    y={70}
-    text={'Fruit Sizes'}
-    fontFamily={'Baskerville'}
-    fontSize={18}
-  />
+  ...
 
 </Graphic>
 ```
@@ -376,3 +375,6 @@ Note that the `scaleFruitColor` and `scaleRadius` not only have a `.domain`, but
 For `scaleFruitColor` we are using an 'ordinal' scale, which means that our domains and ranges are both categories (fruit names and colors). What about the `schemeCategory10`? This simply tells the scale to use the 'category 10' color scheme. This is one of [many predefined color schemes from d3](https://github.com/d3/d3-scale-chromatic). However, do note that certain color schemes can only be used with categorical variables/certain scale types (like we are doing here), while others can only be used with numerical variables. 
 
 Finally, what is going on with the `.map('fruit', scaleFruitColor)` part, you might ask? This simply means "use `scaleFruitColor` to convert every fruit in the `fruit` column to a color in `schemeCategory10`". Likewise, `.map('diameter', scaleRadius)` means "convert every fruit diameter into a radius expressed in pixel values".
+
+## Result
+

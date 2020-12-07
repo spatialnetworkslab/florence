@@ -4,6 +4,7 @@
   import { scalePoint, scaleLinear, scaleOrdinal } from 'd3-scale'
   import { schemeCategory10 } from 'd3-scale-chromatic'
 
+  export let flipY = true
   export let switchAxes = false
   export let switchTitle = false
   export let switchColors = false
@@ -43,9 +44,10 @@
 <Graphic width={500} height={500}>
 
   <Section
-    padding={25}
+    padding={40}
     scaleX={scaleFruit}
     scaleY={scaleDiameter}
+    {flipY}
   >
 
     {#if switchColors === false}
