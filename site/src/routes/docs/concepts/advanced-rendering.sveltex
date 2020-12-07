@@ -1,1 +1,5 @@
 # Advanced rendering
+
+`florence` allows the user to finetune how `Mark`s and `Layer`s are rendered using the `renderSettings` object.
+
+
