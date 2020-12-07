@@ -96,7 +96,7 @@ For more information on padding, see the [local coordinates](/docs/concepts/loca
 
 With the following prop values:
 
-```html
+```markup
 <Grid 
   names={['someName', 'anotherName']}
   let:cells

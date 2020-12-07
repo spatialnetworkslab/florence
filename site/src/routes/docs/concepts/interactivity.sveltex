@@ -19,13 +19,15 @@ Events are things done by the end user of the graphic, while actions are things 
 
 To listen for an event, simply pass a function to one of the event listening props of a `Mark`, `Layer` or `Section`:
 
-```js
-function handleClick (event) {
+```markup
+<script>
   ...
-}
-```
 
-```html
+  function handleClick (event) {
+  ...
+  }
+</script>
+
 <Point onClick={handleClick} />
 ```
 
@@ -138,18 +140,18 @@ While the `Layer`'s `event` object also has:
 
 Highlighting is a technique that allows the end user to request additional information about observations of interest. If we think about data as a set of observations, where each observation has a number of attributes, data visualization is the process of representing the attributes graphically. However, there is only so much information that can be encoded graphically without becoming overwhelmed by information, so only some attributes of each observation will be observable. Highlighting is one method to allow the user to request more, unobservable information about an observation on demand. For example, in this scatterplot, the `a` and `b` variables are mapped to the `x` and `y` dimensions of the points and are therefore visible to the user, but the name of each observation is not visible. By hovering the mouse over a point, its `name` attribute is requested, and displayed below the graphic:
 
-```js
-import { Graphic, Section, PointLayer } from '@snlab/florence'
-import { scaleLinear } from 'd3-scale'
+```markup
+<script>
+  import { Graphic, Section, PointLayer } from '@snlab/florence'
+  import { scaleLinear } from 'd3-scale'
 
-let selectedIndex = null
+  let selectedIndex = null
 
-const a = [1, 3, 5, 3]
-const b = [3, 1, 3, 5]
-const name = ['West', 'North', 'East', 'South']
-```
+  const a = [1, 3, 5, 3]
+  const b = [3, 1, 3, 5]
+  const name = ['West', 'North', 'East', 'South']
+</script>
 
-```html
 <Graphic width={300} height={300} backgroundColor="#b2ffb2">
 
   <Section 
@@ -190,38 +192,38 @@ To make it easy to create dragging behavior, `florence` provides `onMousedrag` a
 
 Here is an example of how to use `onMousedrag`. `onTouchdrag` works similarly.
 
-```js
-import { Graphic, Section, Point } from '@snlab/florence'
-import { scaleLinear } from 'd3-scale'
+```markup
+<script>
+  import { Graphic, Section, Point } from '@snlab/florence'
+  import { scaleLinear } from 'd3-scale'
 
-const points = new Array(5).fill(0).map(_ => ({
-  x: Math.round(Math.random() * 10),
-  y: Math.round(Math.random() * 10)
-}))
+  const points = new Array(5).fill(0).map(_ => ({
+    x: Math.round(Math.random() * 10),
+    y: Math.round(Math.random() * 10)
+  }))
 
-$: center = {
-  x: points.map(p => p.x).reduce((a, c) => a + c) / points.length,
-  y: points.map(p => p.y).reduce((a, c) => a + c) / points.length
-}
-
-let blockReindexing
-
-function drag ({ dragType, localCoordinates }, index) {
-  if (dragType === 'start') {
-    blockReindexing = true
+  $: center = {
+    x: points.map(p => p.x).reduce((a, c) => a + c) / points.length,
+    y: points.map(p => p.y).reduce((a, c) => a + c) / points.length
   }
 
-  if (dragType === 'drag' && blockReindexing) {
-    points[index] = localCoordinates
-  }
+  let blockReindexing
 
-  if (dragType === 'end') {
-    blockReindexing = false
-  }
-}
-```
+  function drag ({ dragType, localCoordinates }, index) {
+    if (dragType === 'start') {
+      blockReindexing = true
+    }
 
-```html
+    if (dragType === 'drag' && blockReindexing) {
+      points[index] = localCoordinates
+    }
+
+    if (dragType === 'end') {
+      blockReindexing = false
+    }
+  }
+</script>
+
 <Graphic width={300} height={300}>
 
   <Section 
@@ -268,42 +270,42 @@ See the [zooming and panning](/docs/concepts/zoom-pan) documentation for an exam
 
 ### Rectangle selection example
 
-```js
-import { scaleLinear } from 'd3-scale'
-import { Graphic, Section, Point, Rectangle } from '@snlab/florence'
+```markup
+<script>
+  import { scaleLinear } from 'd3-scale'
+  import { Graphic, Section, Point, Rectangle } from '@snlab/florence'
 
-let section
-let makingSelection = false
-let selectionRectangle
+  let section
+  let makingSelection = false
+  let selectionRectangle
 
-function onMousedown ({ screenCoordinates }) {
-  section.resetSelectRectangle()
+  function onMousedown ({ screenCoordinates }) {
+    section.resetSelectRectangle()
 
-  makingSelection = true
-  const { x, y } = screenCoordinates
-  selectionRectangle = { x1: x, x2: x, y1: y, y2: y }
-
-  section.selectRectangle(selectionRectangle)
-}
-
-function onMousemove ({ screenCoordinates }) {
-  if (makingSelection) {
+    makingSelection = true
     const { x, y } = screenCoordinates
-    selectionRectangle.x2 = x
-    selectionRectangle.y2 = y
+    selectionRectangle = { x1: x, x2: x, y1: y, y2: y }
 
-    section.updateSelectRectangle(selectionRectangle)
+    section.selectRectangle(selectionRectangle)
   }
-}
 
-function onMouseup () {
-  if (makingSelection) makingSelection = false
-}
+  function onMousemove ({ screenCoordinates }) {
+    if (makingSelection) {
+      const { x, y } = screenCoordinates
+      selectionRectangle.x2 = x
+      selectionRectangle.y2 = y
 
-let pointInSelection = false
-```
+      section.updateSelectRectangle(selectionRectangle)
+    }
+  }
 
-```html
+  function onMouseup () {
+    if (makingSelection) makingSelection = false
+  }
+
+  let pointInSelection = false
+</script>
+
 <Graphic width={300} height={300} backgroundColor="#b2ffb2">
 
   <Section
@@ -347,37 +349,37 @@ import RectSelect from './examples/_RectSelect.svelte'
 
 ### Polygon selection example
 
-```js
-import { scaleLinear } from 'd3-scale'
-import { Graphic, Section, Point, Polygon } from '@snlab/florence'
+```markup
+<script>
+  import { scaleLinear } from 'd3-scale'
+  import { Graphic, Section, Point, Polygon } from '@snlab/florence'
 
-let section
-let selecting = false
-let selectionPolygon
+  let section
+  let selecting = false
+  let selectionPolygon
 
-function onMousedown ({ screenCoordinates }) {
-  section.resetSelectPolygon()
-  selectionPolygon = undefined
+  function onMousedown ({ screenCoordinates }) {
+    section.resetSelectPolygon()
+    selectionPolygon = undefined
 
-  section.startSelectPolygon(screenCoordinates)
-  selecting = true
-}
-
-function onMousemove ({ screenCoordinates }) {
-  if (selecting) {
-    section.addPointToSelectPolygon(screenCoordinates)
-    selectionPolygon = section.getSelectPolygon()
+    section.startSelectPolygon(screenCoordinates)
+    selecting = true
   }
-}
 
-function onMouseup () {
-  selecting = false
-}
+  function onMousemove ({ screenCoordinates }) {
+    if (selecting) {
+      section.addPointToSelectPolygon(screenCoordinates)
+      selectionPolygon = section.getSelectPolygon()
+    }
+  }
 
-let pointInSelection = false
-```
+  function onMouseup () {
+    selecting = false
+  }
 
-```html
+  let pointInSelection = false
+</script>
+
 <Graphic width={300} height={300} backgroundColor="#b2ffb2">
 
   <Section
