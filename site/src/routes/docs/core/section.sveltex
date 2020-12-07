@@ -1,6 +1,6 @@
 # Section
 
-The `Section` is one of the corner stones of `florence`. It is used to:
+The `Section` is one of the cornerstones of `florence`. It is used to:
 
 - define local coordinate systems
 - apply coordinate transformations
@@ -34,7 +34,7 @@ import SimpleExample from './examples/_SectionSimple.svelte'
 <SimpleExample />
 
 ::: div callout
-`Section`s can be nested, but a `Section` with a coordinate transformation can only contain `Mark`s and `Layer`s
+`Section`s can be nested, but a `Section` with a coordinate transformation (e.g. polar) can only contain `Mark`s and `Layer`s
 :::
 
 ## Props
@@ -96,15 +96,14 @@ is equivalent to
 ```
 
 It is also allowed to provide just the `x1` and `x2`, or just the `y1` and `y2` props.
-But providing only `x1` and `x2`, for example, is not allowed:
+But providing only a single position property is not allowed:
 
 ```markup
 <Section x1={50} x2={450}></Section> <!-- Fine -->
 <Section x1={50}></Section> <!-- Not allowed -->
 ```
 
-In the examples above, no local coordinate systems are being used, so everything is in
-screen pixels. If the parent `Graphic` or `Section` has specified a local coordinate system,
+In the examples above, no local coordinate systems are being used, so everything is measured in screen pixels. However, if the parent `Graphic` or `Section` has specified a local coordinate system,
 the positioning props would have to be defined in local coordinates. For example:
 
 ```markup
@@ -209,7 +208,7 @@ See the [interactivity](/docs/concepts/interactivity) documentation for more inf
 | blockReindexing | `false`  | `Boolean` | `false` | -       |
 | clip            | `false`  | `Boolean` | `true`  | -       |
 
-The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` indicates whether the marks or layers inside of this `Graphic` should be clipped off if they extends this `Graphic`'s viewport (i.e. the area within the padding).
+The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` indicates whether the marks or layers inside of this `Graphic` should be clipped off if they extend beyond this `Graphic`'s viewport (i.e. the area within the padding).
 
 ## Methods
 

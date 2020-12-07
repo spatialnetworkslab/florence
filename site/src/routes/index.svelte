@@ -17,12 +17,12 @@
 
   <div class="intro">
     <p>
-      Florence is built on top of existing open web standards that are already in intensive use for online map making today,
-       but provides a framework that is firmly based on cartographic and visualization theory. 
+      Florence is built with existing open web standards (HTML, CSS, JavaScript) and the JavaScript framework <a target="_blank" rel="noopener" href='https://svelte.dev'>Svelte</a>.
+      These are already in intensive use for online map making today, so Florence provides a convenient framework on top that is based on cartographic and visualization theory. 
     </p>
     <p>
       We adopt concepts from Bertin’s <span class="italic">Semiology of Graphics</span> and Wilkinson’s <span class="italic">
-      Grammar of Graphics</span> to create a ‘language’ with a limited number of core concepts or verbs that are combined
+      Grammar of Graphics</span> to create a ‘language’ with a limited number of core concepts or ‘verbs’ that are combined
       with a declarative style of ‘writing’ visualizations.
     </p>
     <p>
@@ -35,7 +35,7 @@
     </p>
     <p>
       For a more detailed discussion of the framework and its design goals, please have a
-      look at corresponding in article in <span class="italic">Cartographic Perspectives</span>.
+      look at corresponding in article in <span class="italic">Cartographic Perspectives</span>:
     </p>
     <p>
       Poorthuis, A., van der Zee, L., Guo, G., Keong, J. H., & Dy, B. (2020).

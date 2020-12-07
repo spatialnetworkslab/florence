@@ -1,6 +1,6 @@
 # Marks versus Layers
 
-With the exception of the [FuncLine](/docs/marks/funcline), all `Mark`s have a corresponding `Layer` component. While the two are designed to be as similar as possible, there are some subtle differences to take note of. This page will discuss these differences.
+With the exception of the [FuncLine](/docs/marks/funcline), all `Mark`s have a corresponding `Layer` component. You can use the `Layer` version when you want to create many marks of the same type. While the two are designed to be as similar as possible, there are some subtle differences to take note of. This page will discuss these differences.
 
 ## Keys
 
@@ -14,7 +14,7 @@ If the `key` is not specified, an `Array` containing the numbers `0 ... N - 1` c
 
 ### Transitions
 
-During [transitions](/docs/concepts/transitions), keys are used to keep track of which mark is which before and after the transition. Internally, `florence` uses Svelte's [keyed each blocks](https://svelte.dev/tutorial/keyed-each-blocks) to accomplish this. How keys work together with transitions is best illustrated through an example. Pressing the button will filter out the first row of the data, and then shift all x-values a bit to the right. The `PointLayer` in the green `Section` does not use keying, while the one in the blue `Section` does. As you can see, the `PointLayer` in the green `Section` animates the points as if the last point had disappeared, whereas the animation in the `PointLayer` in the blue `Section` gives the (in this case, correct) impression that the first point has disappeared. Pressing the button undoes the filtering and the shift to the right.
+During [transitions](/docs/concepts/transitions), keys are used to keep track of each mark before and after the transition. Internally, `florence` uses Svelte's [keyed each blocks](https://svelte.dev/tutorial/keyed-each-blocks) to accomplish this. How keys work together with transitions is best illustrated through an example. Pressing the button will filter out the first row of the data, and then shift all x-values a bit to the right. The `PointLayer` in the green `Section` does not use keying, while the one in the blue `Section` does. As you can see, the `PointLayer` in the green `Section` animates the points as if the last point had disappeared, whereas the animation in the `PointLayer` in the blue `Section` gives the (in this case, correct) impression that the first point has disappeared. Pressing the button undoes the filtering and the shift to the right.
 
 ```markup
 <script>
@@ -79,7 +79,7 @@ This will be discussed under `Aesthetics: marks vs. layers`.
 
 ### Single values versus arrays
 
-The main difference between the positioning of marks and layers is that whatever you are supposed to pass to a positioning prop of a mark, you are supposed to pass an `Array` of to the layer. So if you pass a single local coordinate (often a `Number`) to the `x1` prop of the [Rectangle](/docs/marks/rectangle), then you would pass an `Array` (of, in this example, `Number`s) to the `RectangleLayer`'s `x1` prop. Likewise, if you pass an `Array` of local coordinates to the [Line](/docs/marks/line), you pass an `Array` of `Array`s of local coordinates to the `LineLayer`. The only exceptions to this rule are the [FuncLine](/docs/marks/funcline)'s (which has no corresponding `Layer` component) positioning props, and the `independentAxis` prop of the [Area](/docs/marks/area) mark/layer.
+The main difference between the positioning of marks and layers is that whatever type of value you would pass to the prop of a single mark, you would need to pass an `Array` of that type of values to the layer. So if you pass a single local coordinate (often a `Number`) to the `x1` prop of the [Rectangle](/docs/marks/rectangle), then you would pass an `Array` (of, in this example, `Number`s) to the `RectangleLayer`'s `x1` prop. Likewise, if you pass an `Array` of local coordinates to the [Line](/docs/marks/line), you pass an `Array` of `Array`s of local coordinates to the `LineLayer`. The only exceptions to this rule are the [FuncLine](/docs/marks/funcline)'s (which has no corresponding `Layer` component) positioning props, and the `independentAxis` prop of the [Area](/docs/marks/area) mark/layer.
 
 To illustrate, the result of drawing three `Point`s in the left panel is identical to drawing a `PointLayer` consisting of three marks in the right panel:
 
@@ -153,7 +153,7 @@ import MarkVsLayerPosFunc from './examples/_MarkVsLayerPosFunc.svelte'
 
 ### Single values versus arrays
 
-Like with the positioning props, aesthetic props of layers are supposed to receive `Array`s of whatever is supposed to be passed to marks. For example, if the `fill` prop of the `Point` mark expects a color, the `fill` prop of the `PointLayer` expects an `Array` of colors:
+Like with the positioning props, aesthetic props of layers need to receive `Array`s of whatever would otherwise be passed to the individual marks. For example, if the `fill` prop of the `Point` mark expects a color, the `fill` prop of the `PointLayer` expects an `Array` of colors:
 
 ```markup
 <script>

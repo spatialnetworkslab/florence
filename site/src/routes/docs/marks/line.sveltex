@@ -1,6 +1,6 @@
 # Line
 
-The `Line` mark plots a line element by taking two or more x/y coordinate pairs. As such, it can also be used as a [rule](https://vega.github.io/vega-lite/docs/rule.html) mark. Use cases include line charts and network visualizations.
+The `Line` mark plots a line element by taking two or more x/y coordinate pairs. Use cases include line charts and network visualizations.
 
 ```markup
 <script>
