@@ -9,10 +9,10 @@ The Florence library comes with a range of components that can be used to compos
 
 You may further customise your graph using the following components:
 
-- [Plot Title](docs/core/title)
+- [Label](docs/marks/label), which can serve as a title
 - Axis Title
-- [Legend](docs/guides/legend)
-- X/Y Grid
+- [DiscreteLegend](docs/guides/discrete-legend)
+- [X](docs/guides/xgridlines) or [Y](docs/guides/ygridlines) grid lines
 
 For scaling, we rely on [d3 scales](https://github.com/d3/d3-scale).
 
@@ -281,7 +281,8 @@ The graph should now look like this:
 <Basic switch0 switch1 />
 
 ## Plot Title (Optional)
-Graphs usually come with titles describing the subject of the graph. This can be added using the `Title` component.
+
+Graphs usually come with titles describing the subject of the graph. This can be added using the `Label` component.
 
 <Basic switch0 switch1 switch2 />
 
@@ -309,18 +310,17 @@ Graphs usually come with titles describing the subject of the graph. This can be
     <YAxis 
     />
 
-    <Title 
-      title={'Fruit Sizes'} 
-      titleFontFamily={'Baskerville'}
-      usePadding={true}
+    <Label
+      x={() => 250}
+      y={() => 70}
+      text={'Fruit Sizes'}
+      fontFamily={'Baskerville'}
+      fontSize={18}
     />
   </Section>
 </Graphic>
 
 ```
-<!-- TODO replace with codeboxes -->
-
-For further details, refer to the [Title documentation](docs/core/title).
 
 ## Adding scales to marks (Optional)
 We have briefly discussed the necessity of scales in the part on `Section` above. Scales are necessary for converting raw values in the dataset (e.g. fruit name) into values that can be rendered on a screen (e.g. pixels).
@@ -359,10 +359,12 @@ In this case, the points on the graph can be scaled to display a different color
     <YAxis 
     />
 
-    <Title 
-      title={'Fruit Sizes'} 
-      titleFontFamily={'Baskerville'}
-      usePadding={true}
+    <Label
+      x={() => 250}
+      y={() => 70}
+      text={'Fruit Sizes'}
+      fontFamily={'Baskerville'}
+      fontSize={18}
     />
   </Section>
 </Graphic>
@@ -408,10 +410,12 @@ The title-vjust and title-hjust properties are used to position the axis title r
       <YAxis 
         title={'diameter/cm'}
       />
-      <Title 
-        title={'Fruit Sizes'} 
-        titleFontFamily={'Baskerville'}
-        usePadding={true}
+      <Label
+        x={() => 250}
+        y={() => 70}
+        text={'Fruit Sizes'}
+        fontFamily={'Baskerville'}
+        fontSize={18}
       />
     </Section>
   </Graphic>

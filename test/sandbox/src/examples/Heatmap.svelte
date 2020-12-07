@@ -5,7 +5,7 @@
   import { schemeBlues } from 'd3-scale-chromatic'
 
   // florence
-  import { Graphic, Section, Rectangle, XAxis, YAxis, DiscreteLegend } from '../../../../src/'
+  import { Graphic, Section, Rectangle, XAxis, YAxis } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   // heatmap data
@@ -69,15 +69,4 @@
     <YAxis baseLineOpacity={0} xOffset={3}/>
     <XAxis flip vjust={'top'} baseLineOpacity={0} yOffset={3}/>
   </Section>
-
-  <DiscreteLegend
-      fill={priceColorScale}
-      labelAnchorPoint={'r'}
-      title={'Mean resale price/m2 (SGD)'}
-      stroke={'white'}
-      orient={'horizontal'}
-      vjust={'bottom'}
-      hjust={'center'}
-    />
-
 </Graphic>

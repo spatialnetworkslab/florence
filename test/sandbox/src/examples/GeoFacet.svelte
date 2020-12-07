@@ -4,7 +4,7 @@
   import { scaleLinear, scaleThreshold, scalePoint } from 'd3-scale'
 
   // florence
-  import { Graphic, Section, Title, createGeoScales, XAxis, YAxis, SymbolLayer, PolygonLayer, Polygon, DiscreteLegend } from '../../../../src/'
+  import { Graphic, Section, createGeoScales, XAxis, YAxis, SymbolLayer, PolygonLayer, Polygon } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   // geodata
@@ -151,19 +151,6 @@
         />
     {/each}
 
-    <DiscreteLegend
-      fill={priceScale}
-      vjust={'bottom'}
-      hjust={'right'}
-      labelAnchorPoint={'bl'}
-      usePadding={true}
-      title={'Mean Price (SGD)'}
-      titlePaddingY={-8}
-      orient={'horizontal'}
-      height={30}
-      width={150}
-      stroke={'white'}
-    />
   </Section>
 
   {#if hoverTown}
@@ -183,7 +170,6 @@
           size={16}
           transition={transition}
         />
-        <Title title={hoverTown} usePadding={true} transition={transition} titleFill={'#2c3e50'}/>
         <YAxis baseLineOpacity={0} xOffset={6} transition={transition}/>
         <XAxis flip vjust={'top'} baseLineOpacity={0} yOffset={6} transition={transition}/>
 

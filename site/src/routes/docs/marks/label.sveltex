@@ -55,9 +55,9 @@ The ancher point is by default in the center, but can be changed to with the `an
 
 |     Prop      | Required |       Types        |    Default    |            Unit(s)            |
 | ------------- | -------- | ------------------ | ------------- | ----------------------------- |
-| text          | `false`  | `Number`, `String` | `undefined`   | -                            |
+| text          | `false`  | `Number`, `String` | `undefined`   | -                             |
 | fontSize      | `false`  | `Number`           | `16`          | Pixel                         |
-| fontWeight    | `false`  | `Number`, `String` | `'normal'`    | See explanation                     |
+| fontWeight    | `false`  | `Number`, `String` | `'normal'`    | See explanation               |
 | fontFamily    | `false`  | `String`           | `'Helvetica'` | Name of font family           |
 | rotation      | `false`  | `Number`           | `0`           | Degree                        |
 | fill          | `false`  | `String`           | `'#000000'`   | Named, hex, rgb, or hsl color |

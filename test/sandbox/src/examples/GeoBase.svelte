@@ -1,5 +1,7 @@
 <script>
-  import { Graphic, Section, PolygonLayer, createGeoScales, DiscreteLegend, Title } from '../../../../src/'
+  import { 
+    Graphic, Section, PolygonLayer, createGeoScales, DiscreteLegend, getClassLabels
+  } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
   import { scaleThreshold } from 'd3-scale'
 
@@ -15,7 +17,7 @@
   const priceColorScale = data
     .dropNA('resale_price_sqm')
     .classify(
-      { column: 'resale_price_sqm', method: 'EqualInterval', numClasses: colors.length - 2 },
+      { column: 'resale_price_sqm', method: 'EqualInterval', numClasses: colors.length },
       colors
     )
   
@@ -38,23 +40,13 @@
       strokeWidth={1}
     />
 
-    <!-- step 4 (optional) -->
-    <DiscreteLegend
-      fill={priceColorScale}
-      labelAnchorPoint={'r'}
-      title={'Mean Resale Price / m2 (SGD)'}
-      orient={'horizontal'}
-      vjust={'top'}
-      hjust={'right'}
-      flipLabels
-      usePadding={true}
-    />
-    <Title
-      title={'Mean resale price per m2 (S$)'} 
-      titleFontFamily={'Montserrat'}
-      usePadding={true}
-    />
   </Section>
 
+  <DiscreteLegend
+    x1={300} x2={450}
+    y1={0} y2={100}
+    {colors}
+    labels={getClassLabels(priceColorScale, Math.floor)}
+  />
 
 </Graphic>

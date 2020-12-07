@@ -4,7 +4,7 @@
   import { scaleLinear, scaleThreshold } from 'd3-scale'
 
   // florence
-  import { Graphic, Section, createGeoScales, PolygonLayer, DiscreteLegend } from '../../../../src/'
+  import { Graphic, Section, createGeoScales, PolygonLayer } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   // geodata TODO CONVERT TO PLANNING AREA
@@ -81,20 +81,7 @@
   > 
     <PolygonLayer geometry={geometry} fill={'#d3d3d3'} stroke={'white'} strokeWidth={2} />
     <PolygonLayer geometry={processedGeom} fill={priceColors} stroke={'white'} strokeWidth={2} />
-    <DiscreteLegend
-      fill={priceScale}
-      vjust={'top'}
-      hjust={'right'}
-      labelAnchorPoint={'bl'}
 
-      usePadding={true}
-      title={'Mean Price (SGD)'}
-      titlePaddingY={-8}
-      orient={'horizontal'}
-      height={30}
-      width={150}
-      stroke={'white'}
-    />
   </Section>
 
   <Section 
@@ -106,20 +93,7 @@
   > 
     <PolygonLayer geometry={geometry} fill={'#d3d3d3'} stroke={'white'} strokeWidth={2} />
     <PolygonLayer geometry={processedGeom} fill={leaseColors} stroke={'white'} strokeWidth={2} />
-    <DiscreteLegend
-      fill={leaseScale}
-      vjust={'top'}
-      hjust={'right'}
-      labelAnchorPoint={'bl'}
-      labelPaddingX={-5}
-      usePadding={true}
-      title={'Mean Lease (Years)'}
-      titlePaddingY={-8}
-      orient={'horizontal'}
-      height={30}
-      width={150}
-      stroke={'white'}
-    />
+
   </Section>
 
   <Section 
@@ -132,19 +106,5 @@
     <PolygonLayer geometry={geometry} fill={'#d3d3d3'} stroke={'white'} strokeWidth={2} />
     <PolygonLayer geometry={processedGeom} fill={floorColors} stroke={'white'} strokeWidth={2} />
 
-    <DiscreteLegend
-      fill={floorScale}
-      vjust={'top'}
-      hjust={'right'}
-      labelAnchorPoint={'bl'}
-      labelPaddingX={-5}
-      usePadding={true}
-      title={'Mean Floor Area (m2)'}
-      titlePaddingY={-8}
-      orient={'horizontal'}
-      height={30}
-      width={150}
-      stroke={'white'}
-    />
   </Section>
 </Graphic>

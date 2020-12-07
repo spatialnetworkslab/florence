@@ -12,10 +12,6 @@ export const posts = [
         path: '/docs/core/section'
       },
       {
-        title: 'Title',
-        path: '/docs/core/title'
-      },
-      {
         title: 'Grid',
         path: '/docs/core/grid'
       }
@@ -103,16 +99,20 @@ export const posts = [
         path: '/docs/guides/yaxis'
       },
       {
-        title: 'Legend',
-        path: '/docs/guides/legend'
-      },
-      {
         title: 'X-gridlines',
         path: '/docs/guides/xgridlines'
       },
       {
         title: 'Y-gridlines',
         path: '/docs/guides/ygridlines'
+      },
+      {
+        title: 'Discrete legend',
+        path: '/docs/guides/discrete-legend'
+      },
+      {
+        title: 'Gradient legend',
+        path: '/docs/guides/gradient-legend'
       }
     ]
   },
@@ -131,6 +131,10 @@ export const posts = [
       {
         title: 'createZoomHandler',
         path: '/docs/helpers/create-zoom-handler'
+      },
+      {
+        title: 'getClassLabels',
+        path: '/docs/helpers/get-class-labels'
       }
     ]
   }
