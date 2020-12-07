@@ -2,4 +2,7 @@
 
 `florence` allows the user to finetune how `Mark`s and `Layer`s are rendered using the `renderSettings` object.
 
-
+|          Prop           | Required |  Type(s)  | Default | Unit(s) |
+| ----------------------- | -------- | --------- | ------- | ------- |
+| renderSettings.simplify | `false`  | `Boolean` | `false` | -       |
+| renderSettings.simplificationTreshold | `Number` | `
