@@ -33,28 +33,28 @@ Every time the end user clicks on this `Point`, the `handleClick` function will 
 
 ### Mark and layer event listening props
 
-The following event listening props are available on all `Mark`s and `Layer`s. Whenever the description mentions `Mark`, read: `Mark` or `Layer`.
+The following mouse and click event listening props are available on all `Mark`s and `Layer`s:
 
 #### Mouse events
 
-|    Prop     |                             Description                             |
-| ----------- | ------------------------------------------------------------------- |
-| onClick     | Fires when a user clicks on `Mark`                                  |
-| onMousedown | Fires when a user presses the mouse button down while over a `Mark` |
-| onMouseup   | Fires when a user releases the mouse button while over a `Mark`     |
-| onMouseover | Fires once when a user moves the mouse over a `Mark`                |
-| onMouseout  | Fires once when a user moves the mouse out of a `Mark`              |
-| onMousedrag | See 'Dragging' below                                                |
+|    Prop     |                                  Description                                   |
+| ----------- | ------------------------------------------------------------------------------ |
+| onClick     | Fires when a user clicks on `Mark` or `Layer`                                  |
+| onMousedown | Fires when a user presses the mouse button down while over a `Mark` or `Layer` |
+| onMouseup   | Fires when a user releases the mouse button while over a `Mark` or `Layer`     |
+| onMouseover | Fires once when a user moves the mouse over a `Mark` or `Layer`                |
+| onMouseout  | Fires once when a user moves the mouse out of a `Mark` or `Layer`              |
+| onMousedrag | See 'Dragging' below                                                           |
 
 #### Touch events
 
-|    Prop     |                         Description                         |
-| ----------- | ----------------------------------------------------------- |
-| onTouchdown | Fires when a user touches a `Mark`                          |
-| onTouchup   | Fires when a user lifts his or her finger from a `Mark`     |
-| onTouchover | Fires when a user moves his or her finger over a `Mark`     |
-| onTouchout  | Fires when a user moves his or her finger out of the `Mark` |
-| onTouchdrag | See 'Dragging' below                                        |
+|    Prop     |                              Description                               |
+| ----------- | ---------------------------------------------------------------------- |
+| onTouchdown | Fires when a user touches a `Mark` or `Layer`                          |
+| onTouchup   | Fires when a user lifts their finger from a `Mark` or `Layer`     |
+| onTouchover | Fires when a user moves their finger over a `Mark` or `Layer`     |
+| onTouchout  | Fires when a user moves their finger out of the `Mark` or `Layer` |
+| onTouchdrag | See 'Dragging' below                                                   |
 
 #### Select events
 
@@ -63,30 +63,32 @@ The following event listening props are available on all `Mark`s and `Layer`s. W
 | onSelect   | See 'Selection' below |
 | onDeselect | See 'Selection' below |
 
-### Section event listening props
+### Graphic and Section event listening props
+
+The following mouse and click event listening props are available on the `Graphic` and `Section`:
 
 #### Mouse events
 
-|    Prop     |                                       Description                                       |
-| ----------- | --------------------------------------------------------------------------------------- |
-| onClick     | Fires when a user clicks anywhere in the `Section`                                      |
-| onWheel     | Fires when a user uses a mouse wheel or two-finger touchpad zoom while over a `Section` |
-| onMousedown | Fires when a user presses the mouse button down while over a `Section`                  |
-| onMouseup   | Fires when a user releases the mouse button while over a `Section`                      |
-| onMouseover | Fires once when a user moves the mouse over a `Section`                                 |
-| onMouseout  | Fires once when a user moves the mouse out of a `Section`                               |
-| onMousemove | Fires every time the mouse moves while it is over a `Section`                           |
+|    Prop     |                                             Description                                              |
+| ----------- | ---------------------------------------------------------------------------------------------------- |
+| onClick     | Fires when a user clicks anywhere in the `Graphic` or `Section`                                      |
+| onWheel     | Fires when a user uses a mouse wheel or two-finger touchpad zoom while over a `Graphic` or `Section` |
+| onMousedown | Fires when a user presses the mouse button down while over a `Graphic` or `Section`                  |
+| onMouseup   | Fires when a user releases the mouse button while over a `Graphic` or `Section`                      |
+| onMouseover | Fires once when a user moves the mouse over a `Graphic` or `Section`                                 |
+| onMouseout  | Fires once when a user moves the mouse out of a `Graphic` or `Section`                               |
+| onMousemove | Fires every time the mouse moves while it is over a `Graphic` or `Section`                           |
 
 #### Touch events
 
-|    Prop     |                              Description                               |
-| ----------- | ---------------------------------------------------------------------- |
-| onPinch     | Fires when a user makes a 'pinch' gesture with two fingers             |
-| onTouchdown | Fires when a user touches the area in a `Section`                      |
-| onTouchup   | Fires when a user lifts his or her finger from the `Section`           |
-| onTouchover | Fires when a user moves his or her finger into the `Section`           |
-| onTouchout  | Fires when a user moves his or her finger out of the `Section`         |
-| onTouchmove | Fires every time the user moves his or her finger within the `Section` |
+|    Prop     |                                     Description                                     |
+| ----------- | ----------------------------------------------------------------------------------- |
+| onPinch     | Fires when a user makes a 'pinch' gesture with two fingers                          |
+| onTouchdown | Fires when a user touches the area in a `Graphic` or `Section`                      |
+| onTouchup   | Fires when a user lifts their finger from the `Graphic` or `Section`           |
+| onTouchover | Fires when a user moves their finger into the `Graphic` or `Section`           |
+| onTouchout  | Fires when a user moves their finger out of the `Graphic` or `Section`         |
+| onTouchmove | Fires every time the user moves their finger within the `Graphic` or `Section` |
 
 ### The event object
 
@@ -256,7 +258,7 @@ The `blockReindexing` prop is a bit ugly, but necessary for now. By default, whe
 
 In this case, `blockReindexing` is used when the user is dragging the mark using `onMousedrag`. Every time the `drag` event fires, the `Point`'s coordinates are updated, and thus `florence`'s internal spatial index needs to be updated as well. This is an expensive operation, and can cause significant lags- hence the need for `blockReindexing`, which blocks this behavior until the user is done dragging. A more elegant solution to this problem will be implemented in a future version.
 
-`blockReindexing` can be supplied to the `Mark` or `Layer` of which you want to block re-indexing, or the `Mark` or `Layer`'s parent `Section`, as demonstrated above. To block re-indexing of the `Section` itself, supply the `blockReindexing` to its parent `Section`.
+`blockReindexing` can be supplied to the `Mark` or `Layer` of which you want to block re-indexing, or the `Mark` or `Layer`'s parent `Graphic` / `Section`, as demonstrated above. To block re-indexing of a `Section` itself, supply the `blockReindexing` to its parent `Graphic` or `Section`.
 
 ## Zooming and panning
 
@@ -343,7 +345,7 @@ import RectSelect from './examples/_RectSelect.svelte'
 
 <RectSelect />
 
-### Polygon selection
+### Polygon selection example
 
 ```js
 import { scaleLinear } from 'd3-scale'
