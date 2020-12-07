@@ -2,7 +2,12 @@
 
 `florence` allows the user to finetune how `Mark`s and `Layer`s are rendered using the `renderSettings` object.
 
-|          Prop           | Required |  Type(s)  | Default | Unit(s) |
-| ----------------------- | -------- | --------- | ------- | ------- |
-| renderSettings.simplify | `false`  | `Boolean` | `false` | -       |
-| renderSettings.simplificationTreshold | `Number` | `
+|                  Prop                  | Required |  Type(s)  | Default | Unit(s) |
+| -------------------------------------- | -------- | --------- | ------- | ------- |
+| renderSettings.simplify                | `false`  | `Boolean` | `false` | -       |
+| renderSettings.simplificationThreshold | `false`  | `Number`  | `1`     | Pixel   |
+| renderSettings.decimals                | `false`  | `Number`  | `2`     | -       |
+
+- `simplify`: if set to `true`, geometries will be simplified
+- `simplificationThreshold`: if `simplify` is `true`, determines when geometries should be simplified. A value of `1` indicates that if we have three consecutive points A B C, and the distances AB and AC are both lower than the simplification threshold, point B will be skipped
+- `decimals`: the number of decimals that coordinates will be rounded off to
