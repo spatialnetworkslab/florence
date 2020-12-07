@@ -1,9 +1,9 @@
 export default function parseRenderSettings (renderSettings) {
   const defaultRenderSettings = {
     simplify: false,
-    simplificationTreshold: 1,
+    simplificationThreshold: 1,
     interpolate: true,
-    interpolationTreshold: 5,
+    interpolationThreshold: 5,
     decimals: 2
   }
 

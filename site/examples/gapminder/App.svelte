@@ -2,7 +2,7 @@
   import { json } from 'd3-fetch'
   import { scaleLog, scaleLinear, scaleSqrt, scaleOrdinal } from 'd3-scale'
   import { schemeCategory10 } from 'd3-scale-chromatic'
-  import { Graphic, PointLayer, XAxis, YAxis } from '@snlab/florence'
+  import { Graphic, PointLayer, XAxis, YAxis, YGridLines } from '@snlab/florence'
   import getDataInYear from './getDataInYear.js'
 
   const width = 400
@@ -54,6 +54,7 @@
 
     <XAxis />
     <YAxis />
+    <YGridLines />
 
   </Graphic>
 

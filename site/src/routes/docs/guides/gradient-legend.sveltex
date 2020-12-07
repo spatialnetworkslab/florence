@@ -7,10 +7,10 @@ The `GradientLegend` component help the viewer of a graphic interpret mappings b
   import { Graphic, GradientLegend, Label } from '@snlab/florence'
 </script>
 
-<Graphic width={200} height={200}>
+<Graphic width={300} height={200}>
 
   <GradientLegend
-    x1={50} x2={150}
+    x1={50} x2={250}
     y1={25} y2={175}
     fill={['red', 'blue', 'green']}
     labels={['red', 'blue', 'green']}

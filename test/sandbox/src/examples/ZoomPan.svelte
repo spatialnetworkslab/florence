@@ -23,9 +23,7 @@
   const zoom = createZoomHandler(zoomIdentity, {
     setZoomIdentity,
     minZoom: 0.2,
-    maxZoom: 3,
-    center: { x: 0, y: 0 }
-    // dimension: 'x'
+    maxZoom: 3
   })
 </script>
 

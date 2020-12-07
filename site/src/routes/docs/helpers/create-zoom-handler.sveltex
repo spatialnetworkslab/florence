@@ -1,3 +1,78 @@
 # createZoomHandler
 
-TODO
+```markup
+<script>
+  import { 
+    Graphic, Section, Rectangle, XAxis, YAxis, createZoomHandler
+  } from '@snlab/florence'
+
+  let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
+  const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
+
+  const zoom = createZoomHandler(zoomIdentity, {
+    setZoomIdentity,
+    minZoom: 0.2,
+    maxZoom: 3
+  })
+</script>
+
+<Graphic width={200} height={200} padding={20}>
+
+  <Section
+    scaleX={[0, 10]}
+    scaleY={[0, 10]}
+    {zoomIdentity}
+    {...zoom.handlers}
+  >
+  
+    <Rectangle x1={2.5} x2={7.5} y1={2.5} y2={7.5} />
+
+    <XAxis />
+    <YAxis />
+
+  </Section>
+
+</Graphic>
+```
+
+```js exec
+import ZoomExample from './examples/_ZoomExample.svelte'
+```
+
+<ZoomExample />
+
+## Arguments
+
+|           Argument           | Required |  Type(s)   |   Default   |         Unit(s)          |
+| ---------------------------- | -------- | ---------- | ----------- | ------------------------ |
+| zoomIdentity                 | `true`   | `Object`   | `undefined` | See explanation          |
+| zoomSettings                 | `true`   | `Object`   | `undefined` | See explanation          |
+| zoomSettings.setZoomIdentity | `true`   | `Function` | `undefined` | See explanation          |
+| zoomSettings.minZoom         | `false`  | `Number`   | `0.5`       | Zoom factor              |
+| zoomSettings.maxZoom         | `false`  | `Number`   | `3`         | Zoom factor              |
+| zoomSettings.step            | `false`  | `Number`   | `1`         | See explanation          |
+| zoomSettings.dimension       | `false`  | `String`   | `'both'`    | `'x'`, `'y'` or `'both'` |
+
+`zoomIdentity` and `zoomSettings.setZoomIdentity` work similar to their counterparts in [createPanHandler](/docs/helpers/create-pan-handler).
+
+- `minZoom`: limits zooming out to this level
+- `maxZoom`: limits zooming in to this level
+- `step`: indicates how sensitive zooming is (higher is more sensitive)
+- `dimension`: makes it possible to limit zooming in only one dimensions
+
+## Return value
+
+`createZoomHandler` returns an `Object` of the following form:
+
+```js
+{
+  handlers: {
+    onWheel: <Function>,
+    onPinch: <Function>
+  },
+
+  reset: <Function>
+}
+```
+
+The `handlers` can be spread over the `Section`, and enable the actual zooming behavior. The `reset` method will reset the `zoomIdentity` originally passed to `createZoomHandler` to `{ x: 0, y: 0, kx: 1, ky: 1 }`.

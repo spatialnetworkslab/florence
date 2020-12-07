@@ -4,7 +4,7 @@ All `Mark`s `Layer`s can transition automatically when the data on which they de
 
 ## Basics
 
-```html
+```markup
 <Point
   ...
   transition={options}
@@ -13,10 +13,10 @@ All `Mark`s `Layer`s can transition automatically when the data on which they de
 
 Where the `options` object can be either a `Number`, or an `Object`. If `options` is a `Number`, the number is the transition duration in milliseconds, and the transition will be applied to all aesthetics. For example:
 
-```html
+```markup
 <Point
-  fill="blue"
-  opacity="0.7"
+  fill={'blue'}
+  opacity={0.7}
   transition={2000}
 />
 ```
@@ -25,10 +25,10 @@ Here, if either the `fill` or the `opacity` changes, instead of changing instant
 
 If `options` is an `Object`, the keys correspond to the names of aesthetics. The values, then, are either `Number`s (transition durations), or `Object`s of transition settings. For example, we can set a transition for the `fill` but not the `opacity` like this:
 
-```html
+```markup
 <Point
-  fill="blue"
-  opacity="0.7"
+  fill={'blue'}
+  opacity={0.7}
   transition={{ fill: 2000 }}
 />
 ```
