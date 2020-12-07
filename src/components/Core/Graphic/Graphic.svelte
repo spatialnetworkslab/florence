@@ -6,6 +6,7 @@
 </script>
 
 <script>
+  import * as detectIt from '../../../utils/detect.js'
   import { onMount } from 'svelte'
   import * as GraphicContext from './GraphicContext'
   import * as SectionContext from '../Section/SectionContext'

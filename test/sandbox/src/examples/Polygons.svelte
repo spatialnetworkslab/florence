@@ -61,7 +61,7 @@
   </select>
 </div>
 
-<Graphic width={500} height={500}>
+<Graphic width={500} height={500} onMouseover={() => { console.log('mouseover') }}>
 
   <Section
     x1={50} x2={450}
