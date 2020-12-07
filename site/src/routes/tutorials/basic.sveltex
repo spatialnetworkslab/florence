@@ -1,23 +1,15 @@
 # Creating Basic Graphs
 
-The Florence library comes with a range of components that can be used to compose common graph types easily. Generally, most graphs use the following components:
+## ⭐️Learning Goal(s)
+
+In this tutorial, you will make a map of a basic dot plot (along with some optional customisations) of the fruit-diameter dataset below. You will become familiar with the following components:
 
 - The [Graphic](docs/core/graphic)
 - The [Section](docs/core/section)
-- A selection of the available `Mark`s / `Layer`s
-- Axes
+- The [PointLayer](docs/marks/Point)
+- The [Label](docs/marks/label), to make a title
 
-Graphs can be further customized with the following components:
-
-- The [Label](docs/marks/label), to make annotations or as a title
-- The [DiscreteLegend](docs/guides/discrete-legend) and [GradientLegend](docs/guides/gradient-legend) components
-- The [XGridLines](docs/guides/xgridlines) and [YGridLines](docs/guides/ygridlines) components
-
-In addition, pretty much every graphic will need scales, for which we rely on [d3 scales](https://github.com/d3/d3-scale).
-
-## ⭐️Learning Goal(s)
-
-In this tutorial, you will make a map of a basic dot plot (along with some optional customisations) of the fruit-diameter dataset below. 
+To manage our data, we will use the [DataContainer](https://gitlab.com/spatialnetworkslab/florence-datacontainer) library. In addition, the concept of scaling will be introduced through [d3 scales](https://github.com/d3/d3-scale).
 
 ## Dataset
 

@@ -1,5 +1,5 @@
 <script>
-  import { json } from 'd3-fetch'
+  import { geojson } from './planning_areas_data.js'
   import { 
     Graphic, Section, PolygonLayer, createGeoScales,
     Label, DiscreteLegend, getClassLabels
@@ -8,72 +8,61 @@
 
   const COLORS = ['#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
 
-  let dataContainer, geoScales, priceColorScale, ready
+  const convertNullToUndefined = value => value === null ? undefined : value
 
-  (async () => {
-    const geojson = await json('/data/plan_areas_choropleth.json')
-    dataContainer = new DataContainer(geojson).mutate({ 
-      resale_price_sqm: r => r.resale_price_sqm === null ? undefined : r.resale_price_sqm
-    })
-    geoScales = createGeoScales(dataContainer.bbox())
+  const dataContainer = new DataContainer(geojson)
+    .mutate({ resale_price_sqm: r => convertNullToUndefined(r.resale_price_sqm) })
 
-    priceColorScale = dataContainer
-      .dropNA('resale_price_sqm')
-      .classify({
-        column: 'resale_price_sqm', method: 'EqualInterval', numClasses: 5
-      }, COLORS)
-      .unknown('#d3d3d3')
+  const geoScales = createGeoScales(dataContainer.bbox())
 
-    ready = true
-  })()
+  const priceColorScale = dataContainer
+    .dropNA('resale_price_sqm')
+    .classify(
+      { column: 'resale_price_sqm', method: 'EqualInterval', numClasses: 5 },
+      COLORS
+    )
+    .unknown('#d3d3d3')
 </script>
 
-{#if ready}
+<Graphic width={500} height={500}>
 
-  <Graphic
-    width={400}
-    height={400}
+  <Section
+    padding={30}
+    {...geoScales}
+    flipY
   >
-
-    <Section
-      {...geoScales}
-      flipY
-      padding={30}
-    >
     
-      <PolygonLayer 
-        geometry={dataContainer.column('$geometry')}
-        fill={dataContainer.map('resale_price_sqm', priceColorScale)}
-        stroke={'white'} 
-        strokeWidth={1}
-      />
-
-    </Section>
-
-    <Label
-      x={200}
-      y={70}
-      text={'Mean resale price per m2 (S$)'}
-      fontFamily={'Montserrat'}
-      fontSize={18}
+    <PolygonLayer 
+      geometry={dataContainer.column('$geometry')}
+      fill={dataContainer.map('resale_price_sqm', priceColorScale)}
+      stroke={'white'} 
+      strokeWidth={1}
     />
 
-    <DiscreteLegend
-      x1={300} x2={400}
-      y1={0} y2={100}
-      labels={getClassLabels(priceColorScale, Math.floor)}
-      fill={priceColorScale.range()}
-    >
+  </Section>
 
-      <Label
-        x1={0.5}
-        y1={0.1}
-        text={'Mean Resale Price / m2 (SGD)'}
-        fontSize={14}
-      />
+  <Label
+    x={250}
+    y={70}
+    text={'Mean resale price per m2 (S$)'}
+    fontFamily={'Montserrat'}
+    fontSize={18}
+  />
 
-    </DiscreteLegend>
+  <DiscreteLegend
+    x1={300} x2={400}
+    y1={0} y2={100}
+    labels={getClassLabels(priceColorScale, Math.floor)}
+    fill={priceColorScale.range()}
+  >
 
-  </Graphic>
+    <Label
+      x={0.5}
+      y={0.1}
+      text={'Mean Resale Price / m2 (SGD)'}
+      fontSize={14}
+    />
 
-{/if}
+  </DiscreteLegend>
+
+</Graphic>
