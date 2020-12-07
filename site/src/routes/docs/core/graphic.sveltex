@@ -92,6 +92,38 @@ import ViewBoxExample from './examples/_ViewBoxSimple.svelte'
 
 For more how to use these props, see the [local coordinates](/docs/concepts/local-coordinates) documentation.
 
+### Interactions
+
+#### Mouse events
+
+|    Prop     | Required |  Type(s)   |   Default   | Unit(s) |
+| ----------- | -------- | ---------- | ----------- | ------- |
+| onClick     | `false`  | `Function` | `undefined` | -      |
+| onMousedown | `false`  | `Function` | `undefined` | -      |
+| onMouseup   | `false`  | `Function` | `undefined` | -      |
+| onMouseover | `false`  | `Function` | `undefined` | -      |
+| onMouseout  | `false`  | `Function` | `undefined` | -      |
+| onMousedrag | `false`  | `Function` | `undefined` | -      |
+
+#### Touch events
+
+|    Prop     | Required |  Type(s)   |   Default   | Unit(s) |
+| ----------- | -------- | ---------- | ----------- | ------- |
+| onTouchdown | `false`  | `Function` | `undefined` | -      |
+| onTouchup   | `false`  | `Function` | `undefined` | -      |
+| onTouchover | `false`  | `Function` | `undefined` | -      |
+| onTouchout  | `false`  | `Function` | `undefined` | -      |
+| onTouchdrag | `false`  | `Function` | `undefined` | -      |
+
+#### Select events
+
+|    Prop    | Required |  Type(s)   |   Default   | Unit(s) |
+| ---------- | -------- | ---------- | ----------- | ------- |
+| onSelect   | `false`  | `Function` | `undefined` | -      |
+| onDeselect | `false`  | `Function` | `undefined` | -      |
+
+See the [interactivity](/docs/concepts/interactivity) documentation for more information.
+
 ### Other
 
 |      Prop       | Required |  Type(s)  | Default | Unit(s) |
@@ -100,3 +132,28 @@ For more how to use these props, see the [local coordinates](/docs/concepts/loca
 | clip            | `false`  | `Boolean` | `true`  | -       |
 
 The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` indicates whether the marks or layers inside of this `Graphic` should be clipped off if they extends this `Graphic`'s viewport (i.e. the area within the padding).
+
+## Methods
+
+- `selectRectangle`
+- `updateSelectRectangle`
+- `resetSelectRectangle`
+- `startSelectPolygon`
+- `addPointToSelectPolygon`
+- `moveSelectPolygon`
+- `resetSelectPolygon`
+
+`Graphic` methods can be used as follows:
+
+```markup
+<script>
+  let graphic
+  graphic.selectRectangle(...)
+</script>
+
+<Graphic width={500} height={500} bind:this={graphic}>
+
+</Graphic>
+```
+
+For more information on `Graphic` methods and how to use them to create advanced interactions like selection or brushing, check out the [interactivity](/docs/concepts/interactivity) documentation.

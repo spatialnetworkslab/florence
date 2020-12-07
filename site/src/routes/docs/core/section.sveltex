@@ -224,13 +224,12 @@ The purpose of `blockReindexing` is explained in the [interactivity](/docs/conce
 
 `Section` methods can be used as follows:
 
-```js
-let section
+```markup
+<script>
+  let section
+  section.selectRectangle(...)
+</script>
 
-section.selectRectangle(...)
-```
-
-```html
 <Section bind:this={section}>
 
 </Section>
