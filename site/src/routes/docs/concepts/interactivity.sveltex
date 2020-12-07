@@ -15,7 +15,7 @@ Events are things done by the end user of the graphic, while actions are things 
 
 To listen for an event, simply pass a function to one of the event listening props of a `Mark`, `Layer` or `Section`:
 
-```markup
+```
 <script>
   ...
 
@@ -136,7 +136,7 @@ While the `Layer`'s `event` object also has:
 
 Highlighting is a technique that allows the end user to request additional information about observations of interest. If we think about data as a set of observations, where each observation has a number of attributes, data visualization is the process of representing the attributes graphically. However, there is only so much information that can be encoded graphically without becoming overwhelmed by information, so only some attributes of each observation will be observable. Highlighting is one method to allow the user to request more, unobservable information about an observation on demand. For example, in this scatterplot, the `a` and `b` variables are mapped to the `x` and `y` dimensions of the points and are therefore visible to the user, but the name of each observation is not visible. By hovering the mouse over a point, its `name` attribute is requested, and displayed below the graphic:
 
-```markup
+```
 <script>
   import { Graphic, Section, PointLayer } from '@snlab/florence'
   import { scaleLinear } from 'd3-scale'
@@ -188,7 +188,7 @@ To make it easy to create dragging behavior, `florence` provides `onMousedrag` a
 
 Here is an example of how to use `onMousedrag`. `onTouchdrag` works similarly.
 
-```markup
+```
 <script>
   import { Graphic, Section, Point } from '@snlab/florence'
   import { scaleLinear } from 'd3-scale'
@@ -266,7 +266,7 @@ See the [zooming and panning](/docs/concepts/zoom-pan) documentation for an exam
 
 ### Rectangle selection example
 
-```markup
+```
 <script>
   import { scaleLinear } from 'd3-scale'
   import { Graphic, Section, Point, Rectangle } from '@snlab/florence'
@@ -345,7 +345,7 @@ import RectSelect from './examples/_RectSelect.svelte'
 
 ### Polygon selection example
 
-```markup
+```
 <script>
   import { scaleLinear } from 'd3-scale'
   import { Graphic, Section, Point, Polygon } from '@snlab/florence'
