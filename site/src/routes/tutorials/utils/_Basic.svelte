@@ -1,7 +1,12 @@
 <script>
-  import { Graphic, Section, PointLayer } from '@snlab/florence'
+  import { Graphic, Section, PointLayer, XAxis, YAxis, Label } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
-  import { scalePoint, scaleLinear } from 'd3-scale'
+  import { scalePoint, scaleLinear, scaleOrdinal } from 'd3-scale'
+  import { schemeCategory10 } from 'd3-scale-chromatic'
+
+  export let switchAxes = false
+  export let switchTitle = false
+  export let switchColors = false
 
   const data = {
     diameter: [
@@ -25,6 +30,14 @@
   const scaleFruit = scalePoint().domain(fruitDomain).padding(0.2)
   const diameterDomain = [0, dataContainer.max('diameter')]
   const scaleDiameter = scaleLinear().domain(diameterDomain)
+
+  const scaleFruitColor = scaleOrdinal()
+    .domain(fruitDomain)
+    .range(schemeCategory10)
+
+  const scaleRadius = scaleLinear()
+    .domain(diameterDomain)
+    .range([2, 10])
 </script>
 
 <Graphic width={500} height={500}>
@@ -35,11 +48,37 @@
     scaleY={scaleDiameter}
   >
 
-    <PointLayer
-      x={dataContainer.column('fruit')}
-      y={dataContainer.column('diameter')}
-    />
+    {#if switchColors === false}
+      <PointLayer
+        x={dataContainer.column('fruit')}
+        y={dataContainer.column('diameter')}
+      />
+    {/if}
+
+    {#if switchColors === true}
+      <PointLayer
+        x={dataContainer.column('fruit')}
+        y={dataContainer.column('diameter')}
+        fill={dataContainer.map('fruit', scaleFruitColor)}
+        radius={dataContainer.map('diameter', scaleRadius)}
+      />
+    {/if}
+
+    {#if switchAxes}
+      <XAxis title={'fruit'} />
+      <YAxis title={'diameter (cm)'} />
+    {/if}
 
   </Section>
+
+  {#if switchTitle}
+    <Label
+      x={250}
+      y={70}
+      text={'Fruit Sizes'}
+      fontFamily={'Baskerville'}
+      fontSize={18}
+    />
+  {/if}
 
 </Graphic>
