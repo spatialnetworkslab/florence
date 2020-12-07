@@ -250,7 +250,13 @@ import Drag from './examples/_Drag.svelte'
 
 <Drag />
 
-The `blockReindexing` prop is a bit ugly, but necessary for now. If it is omitted, every time the `drag` event fires, the changed `Point` will be removed from and added again to `florence`s internal spatial index. This is an expensive operation, and can cause significant lags. A more elegant solution to this problem will be implemented in a future version.
+### blockReindexing
+
+The `blockReindexing` prop is a bit ugly, but necessary for now. By default, when any mark or layer becomes interactive (i.e., has a `onMousedrag` or event listener prop), a spatial index will be created. The mark or layer will then be added to the spatial index for rapid collision detection. When the coordinates of the mark or layer change, the spatial index will need to be updated.
+
+In this case, `blockReindexing` is used when the user is dragging the mark using `onMousedrag`. Every time the `drag` event fires, the `Point`'s coordinates are updated, and thus `florence`'s internal spatial index needs to be updated as well. This is an expensive operation, and can cause significant lags- hence the need for `blockReindexing`, which blocks this behavior until the user is done dragging. A more elegant solution to this problem will be implemented in a future version.
+
+`blockReindexing` can be supplied to the `Mark` or `Layer` of which you want to block re-indexing, or the `Mark` or `Layer`'s parent `Section`, as demonstrated above. To block re-indexing of the `Section` itself, supply the `blockReindexing` to its parent `Section`.
 
 ## Zooming and panning
 
