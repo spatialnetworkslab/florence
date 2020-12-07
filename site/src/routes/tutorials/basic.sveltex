@@ -1,124 +1,144 @@
 # Creating Basic Graphs
+
 The Florence library comes with a range of components that can be used to compose common graph types easily. Generally, most graphs use the following components:
 
-- [Graphic](docs/core/graphic)
-- [Section](docs/core/section)
-- Scales
-- A selection of the available Marks
+- The [Graphic](docs/core/graphic)
+- The [Section](docs/core/section)
+- A selection of the available `Mark`s / `Layer`s
 - Axes
 
-You may further customise your graph using the following components:
+Graphs can be further customized with the following components:
 
-- [Label](docs/marks/label), which can serve as a title
-- Axis Title
-- [DiscreteLegend](docs/guides/discrete-legend)
-- [X](docs/guides/xgridlines) or [Y](docs/guides/ygridlines) grid lines
+- The [Label](docs/marks/label), to make annotations or as a title
+- The [DiscreteLegend](docs/guides/discrete-legend) and [GradientLegend](docs/guides/gradient-legend) components
+- The [XGridLines](docs/guides/xgridlines) and [YGridLines](docs/guides/ygridlines) components
 
-For scaling, we rely on [d3 scales](https://github.com/d3/d3-scale).
+In addition, pretty much every graphic will need scales, for which we rely on [d3 scales](https://github.com/d3/d3-scale).
 
 ## ⭐️Learning Goal(s)
+
 In this tutorial, you will make a map of a basic dot plot (along with some optional customisations) of the fruit-diameter dataset below.
 
 ## Dataset
 
-|fruit|	diameter|		|fruit|	diameter|
-| ---- | ---- | ---- | ---- | ---- |
-|lime|	4.7	|	| lime |	4.7 |
-|lemon|	6.1	| |	grapefruit |	8.8 |
-|grapefruit|	7.9 |	|	pomelo |	12.5 |
-|lemon|	6.6	| |	grapefruit |	12.7 |
-|orange|	6.7	| |	grapefruit |	8.6 |
-|lemon|	5.3	| |	pomelo |	13.1 |
-|pomelo|	11.6	|	 | lime |	5.8 |
-|grapefruit|	11.1	| |	orange	| 8.9 |
-|lime|	5.5	|	 | grapefruit |	9.1 |
-|pomelo|	10.6	| |	pomelo	| 10.3 |
-|lemon|	6.4	| |	grapefruit |	9.4 |
+|   fruit    | diameter |     |   fruit    | diameter |
+| ---------- | -------- | --- | ---------- | -------- |
+| lime       | 4.7      |     | lime       | 4.7      |
+| lemon      | 6.1      |     | grapefruit | 8.8      |
+| grapefruit | 7.9      |     | pomelo     | 12.5     |
+| lemon      | 6.6      |     | grapefruit | 12.7     |
+| orange     | 6.7      |     | grapefruit | 8.6      |
+| lemon      | 5.3      |     | pomelo     | 13.1     |
+| pomelo     | 11.6     |     | lime       | 5.8      |
+| grapefruit | 11.1     |     | orange     | 8.9      |
+| lime       | 5.5      |     | grapefruit | 9.1      |
+| pomelo     | 10.6     |     | pomelo     | 10.3     |
+| lemon      | 6.4      |     | grapefruit | 9.4      |
 
-## Formatting the dataset
+## Loading the dataset
 
-Data can either be organized by row or by column. To pass in data by row, the data should take the form of an array of objects, where each object contains the column_name:value pairs per instance (row).
+When working with `florence`, in most cases it is recommended to use the sidecar [florence-datacontainer](https://gitlab.com/spatialnetworkslab/florence-datacontainer) library, which exports a `DataContainer` class. The two most common data formats that can be loaded to the `DataContainer` are column-oriented and row-oriented data.
 
-To pass in data by column, the data should be a single object of `column_name:[ value1, value2, value3 ...]` where all the values in a column are included in an array accessible by column name.
-
-**Passing in data by column is the preferred format as it reduces the amount of pre-processing needed.** The above data, for example, should be pre-processed into the following structure:
+Row-oriented data takes the form of an array of objects. For example, in row-oriented format, the dataset above would look something like this:
 
 ```js
-let data = {
-    diameter: [
-      4.7, 6.1, 7.9, 6.6, 6.7, 5.3, 11.6, 11.1, 5.5, 10.6, 6.4,
-      4.9, 8.8, 12.5, 12.7, 8.6, 13.1, 5.8, 8.9, 9.1, 10.3, 9.4, 10.1
-    ],
-    fruit: [
-      "lime", "lemon","grapefruit", "lemon", "orange", "lemon", 
-      "pomelo", "grapefruit", "lime", "pomelo", "lemon",
-      "lime", "grapefruit", "pomelo", "grapefruit", "grapefruit",
-      "pomelo", "lime", "orange", "grapefruit", "pomelo", 
-      "grapefruit", "anchovies"
-    ]
-  }
+[
+  { fruit: 'lime', diameter: 4.7 },
+  { fruit: 'lemon', diameter: 6.1 }
+  ...
+]
 ```
 
-### Using a `DataContainer`
-
-When using Florence, we can also use the sidecar `florence-dataContainer` library, that lets us store data as either rows or columns and perform
-pre-processing operations on it. Take a look at the example below for examples of 
-such operations.
+Data in column-oriented format, on the other hand, takes the form of a single object of columns represented as `Array`s, like so:
 
 ```js
-import DataContainer from "@snlab/florence-datacontainer";
-
-let data = new DataContainer({
-    diameter: [
-      4.7, 6.1, 7.9, 6.6, 6.7, 5.3, 11.6, 11.1, 5.5, 10.6, 6.4,
-      4.9, 8.8, 12.5, 12.7, 8.6, 13.1, 5.8, 8.9, 9.1, 10.3, 9.4, 10.1
-    ],
-    fruit: [
-      "lime", "lemon","grapefruit", "lemon", "orange", "lemon", 
-      "pomelo", "grapefruit", "lime", "pomelo", "lemon",
-      "lime", "grapefruit", "pomelo", "grapefruit", "grapefruit",
-      "pomelo", "lime", "orange", "grapefruit", "pomelo", 
-      "grapefruit", "anchovies"
-    ]
-  });
-
-data = data
-    .dropNA() // drops - values
-    .filter(row => row.fruit !== "anchovies") // filters out unwanted values
-    .groupBy("fruit") // groups data by common categorical values
-    .summarise({ meanQuantity: { diameter: "mean" } }) // gets mean of groups
-    .arrange({ meanQuantity: "descending" }); // arranges a variable by ascending/descending order
+{
+  fruit: ['lime', 'lemon', ...],
+  diameter: [4.7, 6.1, ...]
+}
 ```
 
-For further details on data loading and formatting using `Data Container`, refer to its [documentation](https://github.com/spatialnetworkslab/florence-datacontainer).
-
-
-## Graphic
-The `Graphic` component is used in all Florence graphs. The component is declared first, and takes the width, height and data properties.
-
-This creates an empty svg canvas of the given width and height.
+**Passing in data by column is the preferred format as it reduces the amount of pre-processing needed.** The dataset above in column-oriented format looks as follows:
 
 ```markup
-<Graphic 
-  width={500} height={500}
->
+<script>
+  const data = {
+    diameter: [
+      4.7, 6.1, 7.9, 6.6, 6.7, 5.3, 11.6, 11.1, 5.5, 10.6, 6.4,
+      4.9, 8.8, 12.5, 12.7, 8.6, 13.1, 5.8, 8.9, 9.1, 10.3, 9.4, 10.1
+    ],
+  
+    fruit: [
+      'lime', 'lemon', 'grapefruit', 'lemon', 'orange', 'lemon', 
+      'pomelo', 'grapefruit', 'lime', 'pomelo', 'lemon',
+      'lime', 'grapefruit', 'pomelo', 'grapefruit', 'grapefruit',
+      'pomelo', 'lime', 'orange', 'grapefruit', 'pomelo', 
+      'grapefruit', 'anchovies'
+    ]
+  }
+</script>
+```
+
+We will load this data to the `DataContainer`:
+
+```markup
+<script>
+  import DataContainer from '@snlab/florence-datacontainer'
+
+  const data = {
+    diameter: [
+      4.7, 6.1, 7.9, 6.6, 6.7, 5.3, 11.6, 11.1, 5.5, 10.6, 6.4,
+      4.9, 8.8, 12.5, 12.7, 8.6, 13.1, 5.8, 8.9, 9.1, 10.3, 9.4, 10.1
+    ],
+  
+    fruit: [
+      'lime', 'lemon', 'grapefruit', 'lemon', 'orange', 'lemon', 
+      'pomelo', 'grapefruit', 'lime', 'pomelo', 'lemon',
+      'lime', 'grapefruit', 'pomelo', 'grapefruit', 'grapefruit',
+      'pomelo', 'lime', 'orange', 'grapefruit', 'pomelo', 
+      'grapefruit', 'anchovies'
+    ]
+  }
+
+  const dataContainer = new DataContainer(data)
+    .filter(row => row.fruit !== 'anchovies') // filters out unwanted values
+    .groupBy('fruit') // groups data by common categorical values
+    .summarise({ meanQuantity: { diameter: 'mean' } }) // computes mean diameter per group
+    .arrange({ meanQuantity: 'descending' }) // sorts data by mean quantity, in descending order
+</script>
+```
+
+For further details on data loading and formatting using `DataContainer`, refer to its [documentation](https://gitlab.com/spatialnetworkslab/florence-datacontainer).
+
+## Graphic
+
+The [Graphic](docs/core/graphic) component forms the basis of all Florence graphics, including ours. We will give our graphic a `width` and `height` of 500 pixels:
+
+```markup
+<script>
+  import { Graphic } from '@snlab/florence'
+  ...
+</script>
+
+<Graphic width={500} height={500}>
 
 </Graphic>
 ```
 
-For further details on `Graphic`, refer to the [documentation](docs/core/graphic).
-
 ## Section
-The `Section` component divides the `Graphic` (or canvas) up into subsections. Each subsection can contain its own graph with its own variables, axes etc.
 
-It is sometimes convenient to use `Section` instead of declaring `Graphic` multiple times when the sub-graphs use the same dataset (faceting), or when user interactions are meant to be reflected across multiple graphs.
+The `Section` component divides the `Graphic` (or canvas) up into subsections. Each subsection can contain its own graph with its own marks, axes etc. While this could also be accomplished by creating multiple `Graphic`s, it is often more convenient to use multiple `Section`s inside a single `Graphic`, because this allows you to use `florence`s coordinate systems to position the various subsections of the graph. Another reason for using `Section`s is when you want to use multiple types of coordinate systems within a single graphic, which is the main reason for using a `Section` in this tutorial.
 
-In this example, we declare a single `Section` since only a single graph is being created.
+We will declare a single `Section` like so:
 
 ```markup
-<Graphic 
-  width={500} height={500}
->
+<script>
+  import { Graphic, Section } from '@snlab/florence'
+  ...
+</script>
+
+<Graphic width={500} height={500}>
+
   <Section
     x1={50} x2={450}
     y1={50} y2={450}
@@ -129,7 +149,7 @@ In this example, we declare a single `Section` since only a single graph is bein
 </Graphic>
 ```
 
-For further details on `Section`, refer to the [documentation](docs/core/section).
+For further details on `Section`, refer to its [documentation](docs/core/section).
 
 ## Scales
 
@@ -139,21 +159,21 @@ Considering that the x value of each point we'd like to plot is some fruit name,
 
 If we think of the `Section` as our chart plotting space, this means we need to apply scaling such that the x-axis of the `Section` plots fruits (categorical values), and the y-axis plots diameter (continuous values) in pixel space. This means we need to add scales, one for X (`scaleX`) and one for Y (`scaleY`), to our `Section`.
 
-Since we are using Svelte, we first create our scales in the `<script>` section of the component.
+We will create our scales in the `<script>` section of the component:
 
-```js
-const processedData = data
-    .dropNA()
-    .filter(row => row.fruit !== 'anchovies')
-    .groupBy('fruit')
-    .summarise({ meanDiameter: { diameter: 'mean' } })
-    .arrange({ meanDiameter: 'descending' })
+```markup
+<script>
+  import DataContainer from '@snlab/florence-datacontainer'
+  import { scalePoint, scaleLinear } from 'd3-scale'
 
-const fruitDomain = data.domain('fruit')
-const scaleFruit = scalePoint().domain(fruitDomain).padding(0.2)
-const meanDiameterDomain = [0, processedData.domain('meanDiameter')[1] * 1.5]
-const scaleMeanDiameter = scaleLinear().domain(meanDiameterDomain)
+  const data = {
+  ...
 
+  const fruitDomain = dataContainer.domain('fruit')
+  const scaleFruit = scalePoint().domain(fruitDomain).padding(0.2)
+  const meanDiameterDomain = [0, dataContainer.max('meanDiameter') * 1.5]
+  const scaleMeanDiameter = scaleLinear().domain(meanDiameterDomain)
+</script>
 ```
 
 We then use our scales as input to `scaleX, scaleY` of Section.
@@ -196,6 +216,7 @@ We can also directly create scales as inputs.
 For further details on d3-scales, refer to the [documentation](https://github.com/d3/d3-scale).
 
 ## Marks
+
 In order to actually render one point per row in the dataset, we need to specify our chosen mark. Since we are plotting multiple points in this example, the `PointLayer` component is sufficient for our purposes. However, there are a wide range of marks that are available. For details of each, refer to the Marks section of the documentation.
 
 ```markup
