@@ -374,3 +374,9 @@ Finally, what is going on with the `.map('fruit', scaleFruitColor)` part, you mi
 
 ## Result
 
+```js exec
+import REPLWrapper from '../../components/REPLWrapperTutorials.svelte'
+import basicFiles from './replFiles/basic.js'
+```
+
+<REPLWrapper replFiles={basicFiles} />
