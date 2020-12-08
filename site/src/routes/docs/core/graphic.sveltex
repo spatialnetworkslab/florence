@@ -1,7 +1,9 @@
 # Graphic
 
-Every `florence` graphic starts with the `Graphic` component. Think of
+Every `florence` visualization starts with the `Graphic` component. Think of
 it as a supercharged `svg` root element.
+
+The `Graphic` component, and all other `florence` components are [Svelte](https://svelte.dev) components and we make extensive use of Svelte's template syntax to write our visualizations. If you are new to Svelte, check out the [accessible and fun tutorial](https://svelte.dev/tutorial/basics) over on the main Svelte website.
 
 ```markup
 <script>
@@ -27,10 +29,10 @@ import SimpleExample from './examples/_GraphicSimple.svelte'
 
 ### Positioning
 
-|  Prop   |            Required            |      Type(s)       |           Default            |      Unit(s)      |             |                                                                                           |
-| ------- | ------------------------------ | ------------------ | ---------------------------- | ----------------- | ----------- | ----------------------------------------------------------------------------------------- |
-| width   | `true`                        | `Number`, `String` | `500`                        | Pixel, percentage |             |                                                                                           |
-| height  | `true`                        | `Number`, `String` | `500`                        | Pixel, percentage |             |                                                                                           |
+|  Prop   |            Required            |      Type(s)       |           Default            |      Unit(s)      |
+| ------- | ------------------------------ | ------------------ | ---------------------------- | ----------------- | 
+| width   | `true`                        | `Number`, `String` | `500`                        | Pixel, percentage |
+| height  | `true`                        | `Number`, `String` | `500`                        | Pixel, percentage |
 | viewBox | `if (typeof width === 'string' && typeof height === 'string')` | `String`          | `undefined` | [viewBox coordinates](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox) |
 
 In most cases, the `Graphic` will be positioned by providing the `width` and `height` in pixels, like so:
@@ -39,7 +41,7 @@ In most cases, the `Graphic` will be positioned by providing the `width` and `he
 <Graphic width={800} height={600}>
 ```
 
-However, in responsive layouts, it can be desirable to define the `Graphic`'s `width` and `height` in percentages relative to its parent element. In this case, the `viewBox` prop must be specified in [viewBox coordinates](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox), which will determine the `Graphic`'s local coordinate system. Note, however, that this changes all variables that are defined in pixels! The radius below, for example, is much larger than 20px (depending on your screen size):
+However, in responsive layouts, it can be desirable to define the `Graphic`'s `width` and `height` in percentages relative to its parent element. In this case, the `viewBox` prop must be specified in [viewBox coordinates](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox) to determine the `Graphic`'s local coordinate system. Note, however, that this means that the local coordinate system used within the `Graphic` does not necessarily correspond to the pixels on your screen! The radius below, for example, is much larger than 20px (depending on your screen size):
 
 ```markup
 <script>
@@ -65,7 +67,7 @@ import ViewBoxExample from './examples/_ViewBoxSimple.svelte'
 <ViewBoxExample />
 
 ::: div callout
-`width` and `height` must always be of the same type, so either both `Number` or both `String`.
+`width` and `height` must always be of the same type, so either both `Number` (for dimensions in pixels) or both `String` (for dimensions relative to the parent container).
 :::
 
 ### Aesthetics
@@ -130,7 +132,7 @@ See the [interactivity](/docs/concepts/interactivity) documentation for more inf
 | blockReindexing | `false`  | `Boolean` | `false` | -       |
 | clip            | `false`  | `Boolean` | `true`  | -       |
 
-The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` indicates whether the marks or layers inside of this `Graphic` should be clipped off if they extends this `Graphic`'s viewport (i.e. the area within the padding).
+The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` indicates whether the marks or layers inside of this `Graphic` should be clipped off if they extend beyond the `Graphic`'s viewport (i.e. the area within the padding).
 
 ## Methods
 

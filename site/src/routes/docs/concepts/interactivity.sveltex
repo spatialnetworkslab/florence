@@ -1,15 +1,15 @@
 # Interactivity
 
-`florence` takes a different approach to interactivity than other data visualization libraries. Where libraries like [Vega Lite](https://vega.github.io/vega-lite/) or [G6](https://g6.antv.vision/) use a high-level 'grammar' specifically designed for interactivity, `florence` takes a more low-level approach. Instead of explaining to `florence` through a special language how an event (like a mouse click) should trigger an action (like a Mark changing color), `florence` relies on plain JavaScript combined with Svelte's built-in reactivity system as much as possible. Although this approach can result in more boilerplate code, it does provide more control and flexibility for the end user to create tailored and innovative interactions. At the same time, many tricky aspects of interactivity have been abstracted away, so you do not need to reinvent the wheel either!
+`florence` takes a different approach to interactivity than many other data visualization libraries. Where libraries like [Vega Lite](https://vega.github.io/vega-lite/) or [G6](https://g6.antv.vision/) use a high-level 'grammar' specifically designed for interactivity, `florence` takes a more low-level approach. Instead of explaining to `florence` through a special language how an event (like a mouse click) should trigger an action (like a Mark changing color), `florence` relies on plain JavaScript combined with Svelte's built-in reactivity system as much as possible. Although this approach can result in more boilerplate code, it does provide more control and flexibility for the end user to create tailored and innovative interactions. At the same time, many tricky aspects of interactivity have been abstracted away, so you do not need to reinvent the wheel.
 
 ## Events and actions
 
 To make interactivity easier to discuss, we will split up the concept into two parts:
 
-- Events
-- Actions
+- *Events*
+- *Actions*
 
-Events are things done by the end user of the graphic, while actions are things that the graphic does in response to events. All simple (highlighting, dragging) and more complex (zooming, selection, brushing) interactions can be broken down into events and actions. For example, an interaction where a `Rectangle` is highlighted by clicking on it, can be broken down in an event (end user clicking on a `Rectangle` mark) and an action (the `Rectangle` mark changing color). `florence`'s approach to events is to provide the user with a convenient API to capture ('listen' for) events triggered by the end user. This event listening API is dicussed is the next paragraph. On the other hand, the number of actions that can be triggered as a result of events is potentially infinite- there is no exhaustive list of actions to document. There are, however, common interactions techniques that you might be familiar with from other libraries. While these interaction techniques are not supported out of the box with a single line of code, `florence` does provide handy abstractions for all the events and actions that these interaction techniques consist of. See the Highlighting, Dragging, Zooming and Selection paragraphs on this page for examples on how to set up these interactions.
+Events are things done by the end user of the graphic, while actions are things that the graphic does in response to events. All simple (highlighting, dragging) and more complex (zooming, selection, brushing) interactions can be broken down into events and actions. For example, an interaction where a `Rectangle` is highlighted by clicking on it, can be broken down in an event (end user clicking on a `Rectangle` mark) and an action (the `Rectangle` mark changing color). `florence`'s approach to events is to provide the user with a convenient API to capture ('listen' for) events triggered by the end user. This event listening API is discussed is the next paragraph. On the other hand, the number of actions that can be triggered as a result of events is potentially infinite- there is no exhaustive list of actions to document. There are, however, common interactions techniques that you might be familiar with from other libraries. While these interaction techniques are not supported out of the box with a single line of code, `florence` does provide handy abstractions for all the events and actions that these interaction techniques consist of. See the Highlighting, Dragging, Zooming and Selection paragraphs on this page for examples on how to set up these interactions.
 
 ## Event listening
 
@@ -134,7 +134,7 @@ While the `Layer`'s `event` object also has:
 
 ## Highlighting
 
-Highlighting is a technique that allows the end user to request additional information about observations of interest. If we think about data as a set of observations, where each observation has a number of attributes, data visualization is the process of representing the attributes graphically. However, there is only so much information that can be encoded graphically without becoming overwhelmed by information, so only some attributes of each observation will be observable. Highlighting is one method to allow the user to request more, unobservable information about an observation on demand. For example, in this scatterplot, the `a` and `b` variables are mapped to the `x` and `y` dimensions of the points and are therefore visible to the user, but the name of each observation is not visible. By hovering the mouse over a point, its `name` attribute is requested, and displayed below the graphic:
+Highlighting is a technique that allows the end user to request additional information about observations of interest. For example, in this scatterplot, the `a` and `b` variables are mapped to the `x` and `y` dimensions of the points and are therefore visible to the user, but the name of each observation is not visible. By hovering the mouse over a point, its `name` attribute is requested, and displayed below the graphic:
 
 ```
 <script>
@@ -154,6 +154,7 @@ Highlighting is a technique that allows the end user to request additional infor
     scaleX={scaleLinear().domain([1, 5])}
     scaleY={scaleLinear().domain([1, 5])}
     padding={20}
+    clip={false}
   >
 
     <PointLayer 
@@ -251,10 +252,9 @@ import Drag from './examples/_Drag.svelte'
 <Drag />
 
 ### blockReindexing
+The `blockReindexing` prop is a necessary evil due to how `florence` works internally. By default, when any mark or layer becomes interactive (i.e., has a `onMousedrag` or event listener prop), a spatial index will be created. The mark or layer will then be added to the spatial index for rapid collision detection. When the coordinates of the mark or layer change, the spatial index will need to be updated.
 
-The `blockReindexing` prop is a bit ugly, but necessary for now. By default, when any mark or layer becomes interactive (i.e., has a `onMousedrag` or event listener prop), a spatial index will be created. The mark or layer will then be added to the spatial index for rapid collision detection. When the coordinates of the mark or layer change, the spatial index will need to be updated.
-
-In this case, `blockReindexing` is used when the user is dragging the mark using `onMousedrag`. Every time the `drag` event fires, the `Point`'s coordinates are updated, and thus `florence`'s internal spatial index needs to be updated as well. This is an expensive operation, and can cause significant lags- hence the need for `blockReindexing`, which blocks this behavior until the user is done dragging. A more elegant solution to this problem will be implemented in a future version.
+In this case, `blockReindexing` is used when the user is dragging the mark using `onMousedrag`. Every time the `drag` event fires, the `Point`'s coordinates are updated, and thus `florence`'s internal spatial index needs to be updated as well. This is an expensive operation, and can cause significant lags – hence the need for `blockReindexing`, which blocks this behavior until the user is done dragging.
 
 `blockReindexing` can be supplied to the `Mark` or `Layer` of which you want to block re-indexing, or the `Mark` or `Layer`'s parent `Graphic` / `Section`, as demonstrated above. To block re-indexing of a `Section` itself, supply the `blockReindexing` to its parent `Graphic` or `Section`.
 

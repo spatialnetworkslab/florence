@@ -101,8 +101,6 @@ where
 - `extentX` determines how far can be scrolled in the x dimension (if set to `[0, 0]` scrolling will be disabled in the x dimension)
 - `extentY` determines how far can be scrolled in the y dimension (if set to `[0, 0]` scrolling will be disabled in the y dimension)
 
-TODO explain `setZoomIdentity` and `setBlockReindexing`.
-
 ## Return value
 
 `createPanHandler` returns an `Object` of the following form:

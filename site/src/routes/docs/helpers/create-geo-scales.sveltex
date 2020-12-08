@@ -83,3 +83,10 @@ The `x` and `y` members represent the domains of the variables that will be used
 ```
 
 These will be converted into real scales by `florence` after being passed to `scaleX` and `scaleY`.
+
+## Examples
+
+You can see this in practice here:
+
+- [Simple Choropleth](/examples/choropleth)
+- [CP Figure 8a](/examples/cp-figure8a)

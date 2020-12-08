@@ -1,6 +1,6 @@
 # Transitions
 
-All `Mark`s `Layer`s can transition automatically when the data on which they depend changes. The details of this transition can be tweaked with the `transition` prop. 
+All `Mark`s and `Layer`s can transition automatically when the data on which they depend changes. The details of this transition can be tweaked with the `transition` prop. 
 
 ## Basics
 
@@ -51,7 +51,7 @@ Where the
 - `easing` is a `Svelte` [easing function](https://svelte.dev/docs#svelte_easing) (default `cubicOut`)
 - `interpolate` is an [interpolate function](https://svelte.dev/docs#tweened) (see explanation below for defaults)
 
-The default interpolate function used depends on the kind of aesthetic. For positioning aesthetics, [transshape](https://github.com/spatialnetworkslab/transshape) is currently used internally. However, it is at this moment not recommended to use other interpolate functions for transitions of positioning aesthetics. For other aesthetics, [d3-interpolate](https://github.com/d3/d3-interpolate) is used by default. 
+The default interpolate function used depends on the kind of aesthetic. For positioning aesthetics, [transshape](https://github.com/spatialnetworkslab/transshape) is currently used internally. For other aesthetics, [d3-interpolate](https://github.com/d3/d3-interpolate) is used by default. 
 
 ## Positioning aesthetic transitions
 
