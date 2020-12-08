@@ -2,7 +2,7 @@
 
 ## ⭐️Learning Goal(s)
 
-In this tutorial, you will make a map of a basic dot plot (along with some optional customisations) of the fruit-diameter dataset below. You will become familiar with the following components:
+In this tutorial, you will make a basic point or 'dot' plot (along with some optional customizations) of the fruit-diameter dataset below. You will become familiar with the following components:
 
 - The [Graphic](docs/core/graphic)
 - The [Section](docs/core/section)
@@ -10,6 +10,8 @@ In this tutorial, you will make a map of a basic dot plot (along with some optio
 - The [Label](docs/marks/label), to make a title
 
 To manage our data, we will use the [DataContainer](https://gitlab.com/spatialnetworkslab/florence-datacontainer) library. In addition, the concept of scaling will be introduced through [d3 scales](https://github.com/d3/d3-scale).
+
+Throughout the tutorial, we will write our visualization is Svelte's template syntax. If you are unfamiliar with Svelte, we suggest to take a look at the first sections of [the general Svelte tutorial](https://svelte.dev/tutorial/basics) first. 
 
 ## Dataset
 
@@ -29,7 +31,9 @@ To manage our data, we will use the [DataContainer](https://gitlab.com/spatialne
 
 ## Loading the dataset
 
-When working with `florence`, in most cases it is recommended to use the sidecar [florence-datacontainer](https://gitlab.com/spatialnetworkslab/florence-datacontainer) library, which exports a `DataContainer` class. The two most common data formats that can be loaded to the `DataContainer` are column-oriented and row-oriented data.
+When working with `florence`, in most cases it is recommended to use the sidecar [florence-datacontainer](https://gitlab.com/spatialnetworkslab/florence-datacontainer) library, which exports a `DataContainer` class. This `DataContainer` allows for reading and manipulating data sets in way that is consistent with the `dplyr` approach from R's [tidyverse](https://www.tidyverse.org/).
+
+The two most common data formats that can be loaded to the `DataContainer` are column-oriented and row-oriented data.
 
 Row-oriented data takes the form of an array of objects. For example, in row-oriented format, the dataset above would look something like this:
 
@@ -71,7 +75,7 @@ Data in column-oriented format, on the other hand, takes the form of a single ob
 </script>
 ```
 
-We will load this data to the `DataContainer`. Somehow some anchovies ended up in our fruit data! Let's filter them out immediately.
+We will load this data into a `DataContainer`. Somehow some anchovies ended up in our fruit data! Let's `filter` them out immediately. [Filter](https://gitlab.com/spatialnetworkslab/florence-datacontainer#datacontainer_filter) is one of the data transformation methods made available by `DataContainer`.
 
 ```markup
 <script>
@@ -97,7 +101,7 @@ We will load this data to the `DataContainer`. Somehow some anchovies ended up i
 </script>
 ```
 
-For further details on data loading and formatting using `DataContainer`, refer to its [documentation](https://gitlab.com/spatialnetworkslab/florence-datacontainer).
+For further details on using `DataContainer`, refer to its [documentation](https://gitlab.com/spatialnetworkslab/florence-datacontainer).
 
 ## Graphic
 
@@ -166,7 +170,7 @@ In our example, let's say we'd like to plot the column `fruit` to the x-axis, an
 </script>
 ```
 
-We then pass our scales to `scaleX` and `scaleY` props of the `Section`:
+We then pass our scales to the `scaleX` and `scaleY` props of the `Section`:
 
 ```markup
 <Graphic width={500} height={500}>
@@ -186,7 +190,7 @@ For further information on d3-scales, refer to the [documentation](https://githu
 
 ## Marks
 
-In order to actually render one point per row in the dataset, we need to specify our chosen mark. Since we are going to draw multiple points, it makes sense to use the `PointLayer` component. We could, however, also have chosen another `Layer`. Refer to the Marks section of the documentation for more options.
+In order to actually render one point per row in the dataset, we need to specify our chosen mark. Since we are going to draw multiple points, it makes sense to use the `PointLayer` component. We could, however, also have chosen another type of `Layer`. Refer to the Marks section of the documentation for more options.
 
 ```markup
 <script>
@@ -280,7 +284,7 @@ Whoops! The graphic looks like it's upside down, because in your browser, y coor
 
 ## Title
 
-Graphics usually come with titles describing their content. Titles be added using the `Label` component. Note that we place the `Label` outside of the `Section`, so that we can use the `Graphic`'s coordinate system to position it. This is just to show the two different coordinate systems that currently exist within out graphic- we could also have used the coordinate system inside of the `Section`.
+Graphics usually come with titles describing their content. Titles can be added using the `Label` component. Note that we place the `Label` outside of the `Section`, so that we can use the `Graphic`'s coordinate system (which is in 'pixel space' rather than 'data space') to position it. This is just to show the two different coordinate systems that currently exist within out graphic- we could also have used the coordinate system inside of the `Section`.
 
 ```markup
 <script>
@@ -316,7 +320,7 @@ Graphics usually come with titles describing their content. Titles be added usin
 
 ## Scaling other aesthetics
 
-So far, we have used scales to convert raw values in the dataset (e.g. fruit names) into values that can be rendered on a screen (pixel coordinates). In mathematical terms we could say that in the examples above, we used scales to map values in the domain of fruit names to values in the range of pixel coordinates in the x dimension, and values in the domain of fruit diameters to values in the range of pixel coordinates in the y dimension. Whew! 
+So far, we have used scales to convert raw values in the dataset (e.g. fruit names) into values that can be rendered on a screen (pixel coordinates). In technical terms, we could say that in the examples above, we used scales to map values in the domain of fruit names to values in the range of pixel coordinates in the x dimension, and values in the domain of fruit diameters to values in the range of pixel coordinates in the y dimension. Whew! 
 
 However, scaling is not limited to changing data values (domain) into screen coordinates/pixels (range). Scaling can be done for a wide range of _aesthetics_, such as color, radius and opacity. For example, when we use a scale to give each type of fruit its own color, we are mapping values in the domain of fruit names to a range of colors. In this tutorial, we will use a scale to give each type of fruit a different color, and another scale to make fruits with higher diameters look bigger. We will use the `fill` and `radius` props on the `PointLayer` for this.
 
@@ -362,7 +366,7 @@ However, scaling is not limited to changing data values (domain) into screen coo
 
 <Basic switchAxes switchTitle switchColors />
 
-Note that the `scaleFruitColor` and `scaleRadius` not only have a `.domain`, but also a `.range`. What 'domains' and 'ranges' are was explained under `Scaling coordinates`. So why do we now suddenly have to specify both the domain and the range, while for the `scaleFruit` and `scaleDiameter` we only had to specify the domain? The answer is that `florence` takes care of the range when you pass your scales to `scaleX` and `scaleY`. For scales that are not passed to `scaleX` or `scaleY`, we have to pick a range ourselves.
+Note that the `scaleFruitColor` and `scaleRadius` not only have a `.domain`, but also a `.range`. What 'domains' and 'ranges' are was explained under `Scaling coordinates`. So why do we now suddenly have to specify both the domain and the range, while for the `scaleFruit` and `scaleDiameter` we only had to specify the domain? The answer is that `florence` takes care of the range when you pass your scales to `scaleX` and `scaleY`. But for scales that do not relate to position, we have to define a range ourselves.
 
 For `scaleFruitColor` we are using an 'ordinal' scale, which means that our domains and ranges are both categories (fruit names and colors). What about the `schemeCategory10`? This simply tells the scale to use the 'category 10' color scheme. This is one of [many predefined color schemes from d3](https://github.com/d3/d3-scale-chromatic). However, do note that certain color schemes can only be used with categorical variables/certain scale types (like we are doing here), while others can only be used with numerical variables. 
 
