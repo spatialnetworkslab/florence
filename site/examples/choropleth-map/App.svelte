@@ -7,13 +7,14 @@
   import DataContainer from '@snlab/florence-datacontainer'
 
   const COLORS = ['#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
+  const convertNullToUndefined = value => value === null ? undefined : value
 
   let dataContainer, geoScales, priceColorScale, ready
 
   (async () => {
     const geojson = await json('/data/plan_areas_choropleth.json')
     dataContainer = new DataContainer(geojson).mutate({ 
-      resale_price_sqm: r => r.resale_price_sqm === null ? undefined : r.resale_price_sqm
+      resale_price_sqm: r => convertNullToUndefined(r.resale_price_sqm)
     })
     geoScales = createGeoScales(dataContainer.bbox())
 
