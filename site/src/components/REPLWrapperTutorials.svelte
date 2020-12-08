@@ -10,8 +10,8 @@ let windowHeight
 <style>
 .repl {
   left: 50%;
-	margin-left: -48vw;
-	margin-right: -48vw;
+	margin-left: -55vw;
+	margin-right: -55vw;
 	max-width: 96vw;
 	position: relative;
 	right: 50%;
