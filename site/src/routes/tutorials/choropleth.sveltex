@@ -2,7 +2,7 @@
 
 Although the act of map making (cartography!) has much older roots than the concept of the 'grammar of graphics', the two are very much compatible. With some extensions, the grammar of graphics can also be used to create maps of any kind. 
 
-`florence`'s coordinate systems and components support geospatial visualisations like maps. In combination with the [DataContainer](https://gitlab.com/spatialnetworkslab/florence-datacontainer) and [proj4](https://github.com/proj4js/proj4js), it furthermore supports pretty much any coordinate system used around the world. In this tutorial, you will learn how to construct a map that encodes data through color– a choropleth– using GeoJSON data.
+`florence`'s coordinate systems and components natively support all kinds of geospatial visualisations or maps. In combination with the [DataContainer](https://gitlab.com/spatialnetworkslab/florence-datacontainer) and [proj4](https://github.com/proj4js/proj4js), it furthermore supports any coordinate system supported by `proj4`. In this tutorial, you will learn how to construct a map that encodes data through color – a choropleth map – using GeoJSON data.
 
 ## ⭐️Learning Goal(s)
 
@@ -19,7 +19,7 @@ To manage our data, we will use the [DataContainer](https://gitlab.com/spatialne
 
 ## What data do we need?
 
-Spatial data can be understood as a combination of spatial 'geometries' with non-spatial attributes. For example, a dataset of shops might consist of a set of pairs of cartesian or longitude-latitude coordinates (spatial geometries), and a complementary set of attributes like the names of shops and opening hours (non-spatial attributes). In online mapping, [GeoJSON](geojson.org) is the defacto standard to store spatial data. It is an extension (subset) of regular JSON that follows specific rules. In GeoJSON, a point might represented like this:
+Spatial data can be understood as a combination of spatial 'geometries' with non-spatial attributes. For example, a dataset of shops might consist of a set of pairs of cartesian or longitude-latitude coordinates (spatial geometries), and a complementary set of attributes like the names of shops and opening hours (non-spatial attributes). In online mapping, [GeoJSON](geojson.org) is the defacto standard to store spatial data. It is an extension of regular JSON that follows specific rules. In GeoJSON, a point might be represented like this:
 
 ``` js
 {
@@ -38,13 +38,13 @@ A 'Feature' has two additional keys: `geometry`, holding information about the s
 
 ## Importing and preparing the dataset
 
-For this tutorial, we import a GeoJSON file of Singapore's planning areas and mean resale prices per square meter from the Housing & Development Board. Let's get started by making it available to our Svelte component. 
+For this tutorial, we import a GeoJSON file of Singapore's planning areas and mean resale prices per square meter derived from public data from the Housing & Development Board. Let's get started by making it available to our Svelte component (scroll down all the way to the end of this tutorial for a REPL that includes the dataset). 
 
 ```js
 import { geojson } from './planning_areas_data.js' 
 ```
 
-Next, we will load this file to the `DataContainer`:
+Next, we will load this file into the `DataContainer`:
 
 ```js
 const convertNullToUndefined = value => value === null ? undefined : value
@@ -53,7 +53,7 @@ const dataContainer = new DataContainer(geojson)
   .mutate({ resale_price_sqm: r => convertNullToUndefined(r.resale_price_sqm) })
 ```
 
-Note that directly after loading the geojson data into a `DataContainer`, we use the [mutate](https://gitlab.com/spatialnetworkslab/florence-datacontainer#datacontainer_mutate) method. What that line of code does is take all values in the `resale_price_sqm` column that are `null` (missing), and convert them to `undefined`. The reason for this will become clear later!
+Note that directly after loading the geojson data into a `DataContainer`, we use the [mutate](https://gitlab.com/spatialnetworkslab/florence-datacontainer#datacontainer_mutate) method. What that line of code does is take all values in the `resale_price_sqm` column that are `null` (missing), and convert them to `undefined`. This bit of data gymnastics is necessary because we need to treat missing data in a special way. The reason for this will become clear later!
 
 For further details on loading data to the `DataContainer`, refer to its [documentation](https://gitlab.com/spatialnetworkslab/florence-datacontainer).
 
@@ -61,7 +61,7 @@ For further details on loading data to the `DataContainer`, refer to its [docume
 
 In the case of maps, some data may be recorded in three-dimensional 'earth' coordinates (like longitude/latitude) while in other cases data might already be pre-projected in a two-dimensional plane for you. In both cases, you still need to translate the spatial coordinates to pixel (screen) coordinates.
 
-When dealing with geodata, we can't treat the x and y dimension as separate, but must take them into account together- otherwise we will loose the aspect ratio between the x and y dimensions, and our map will look stretched. We can accomplish this with a helper function that `florence` exports called [createGeoScales](/docs/helpers/create-geo-scales), that uses the [bounding box](https://en.wikipedia.org/wiki/Minimum_bounding_box) of our GeoJSON geometries to create the correct scales. We can calculate the bounding box simply by using the [bbox](https://gitlab.com/spatialnetworkslab/florence-datacontainer#datacontainer_bbox) method of the `DataContainer`. The function then returns an object with a `scaleX` and `scaleY` key that we can pass to the `Section`'s `scaleX` and `scaleY`.
+When dealing with geodata, we can't treat the x and y dimension as separate, but must take them into account together. If we don't, we will loose the aspect ratio between the x and y dimensions, and our map will look stretched. We can accomplish this with a helper function that `florence` exports called [createGeoScales](/docs/helpers/create-geo-scales), that uses the [bounding box](https://en.wikipedia.org/wiki/Minimum_bounding_box) of our GeoJSON geometries to create the correct scales. We can calculate the bounding box simply by using the [bbox](https://gitlab.com/spatialnetworkslab/florence-datacontainer#datacontainer_bbox) method of the `DataContainer`. The function then returns an object with a `scaleX` and `scaleY` key that we can pass to the `Section`'s `scaleX` and `scaleY`.
 
 Our code now looks like this:
 
@@ -84,7 +84,7 @@ Our code now looks like this:
 </script>
 ```
 
-## Seting up our 'canvas' for mapping
+## Setting up our 'canvas' for mapping
 
 We are now ready to set up our 'canvas' for creating our map with the [Graphic](docs/core/graphic) and [Section](docs/core/section) components. After specifying the width and height of the `Graphic` (which creates an empty svg of the given width and height), we use the `geoScales` variable from our previous step to set the `scaleX` and `scaleY` of the `Section`. To make our code more concise, we will use the [spread](https://svelte.dev/docs#Attributes_and_props) syntax for this.
 
@@ -170,7 +170,7 @@ import Choropleth from './utils/_Choropleth.svelte'
 
 ## Turning our map into a choropleth
 
-That was not too hard! Now we take it a step further and add colors to the polygons to reflect variable in our dataset— in other words, we turn our map into a choropleth map. First, we are going to pick a set of colors for our polygons. In the [basic](/tutorials/basic) tutorial, we used a predefined color scheme from [d3-scale-chromatic](https://github.com/d3/d3-scale-chromatic), but in this tutorial we will create own color scheme to demonstrate how easy that is.
+That was not too hard! Now we take it a step further and add colors to the polygons to reflect a variable in our dataset – in other words, we turn our map into a choropleth map. First, we are going to pick a set of colors for our polygons. In the [basic](/tutorials/basic) tutorial, we used a predefined color scheme from [d3-scale-chromatic](https://github.com/d3/d3-scale-chromatic), but in this tutorial we will create own color scheme to demonstrate how that works.
 
 ```js
 const COLORS = ['#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
@@ -277,7 +277,7 @@ Graphics, including maps, usually come with titles describing the subject of the
 
 For the final touch, we will add a legend to our plot to make it easier to understand what the colors mean. Since we are using a set of discrete colors (as opposed to a color gradient) we will use the [DiscreteLegend](/docs/guides/discrete-legend) component.
 
-The `DiscreteLegend` component requires us to specify an `Array` of labels for the `labels` prop, and in this case, an `Array` of colors of the same length for the `fill` prop. `fill` is easy: we can just use our previously defined `COLORS` variable. The `labels` prop a bit trickier. In this case, we will use the [getClassLabels](/docs/helpers/get-class-labels) helper function exported by `florence` to automatically create some labels for us based on the `priceColorScale`. To make the class boundaries look nice, we will turn them into integers by passing `Math.floor` to the `getClassLabels` function. 
+The `DiscreteLegend` component requires us to specify an `Array` of labels for the `labels` prop, and in this case, an `Array` of colors of the same length for the `fill` prop. `fill` is easy: we can just use our previously defined `COLORS` variable. The `labels` prop is a bit trickier. In this case, we will use the [getClassLabels](/docs/helpers/get-class-labels) helper function exported by `florence` to automatically create some labels for us based on the `priceColorScale`. To make the class boundaries look nice, we will turn them into integers by passing `Math.floor` as a formatting function to `getClassLabels`. 
 
 ```markup
 <script>
