@@ -1,44 +1,21 @@
 <script>
-  import REPLWrapper from '../../components/REPLWrapper.svelte'
-  import appSource from './appSource.js'
-
-  const replFiles = [
-    {
-      id: 0,
-      name: 'App',
-      type: 'svelte',
-      source: appSource
-    }
-  ]
-</script>
-
-<REPLWrapper {replFiles} /> 
-
-<!-- <script>
 import REPL from '@snlab/florence-repl'
-import appSource from './appSource.js'
+
+export let replFiles
 
 let containerWidth
 let windowHeight
-
-const replFiles = [
-  {
-    id: 0,
-    name: 'App',
-    type: 'svelte',
-    source: appSource
-  }
-]
 </script>
 
 <style>
 .repl {
   left: 50%;
-	margin-left: -48vw;
-	margin-right: -48vw;
+	margin-left: -55vw;
+	margin-right: -55vw;
 	max-width: 96vw;
 	position: relative;
 	right: 50%;
+  background-color: white;
   @apply border border-gray-100;
 }
 </style>
@@ -53,4 +30,4 @@ const replFiles = [
       debounce={400}
     />
   {/if}
-</div> -->
+</div>
