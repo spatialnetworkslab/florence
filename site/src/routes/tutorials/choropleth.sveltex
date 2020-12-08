@@ -305,7 +305,7 @@ The `DiscreteLegend` component requires us to specify an `Array` of labels for t
 ## Result
 
 ```js exec
-import REPLWrapper from '../../components/REPLWrapper.svelte'
+import REPLWrapper from '../../components/REPLWrapperTutorials.svelte'
 import choroplethFiles from './replFiles/choropleth.js'
 ```
 
