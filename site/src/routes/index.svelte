@@ -28,7 +28,7 @@
     <p>
       For a sense of the range of visualizations made possible 
       using the library, check out the interactive <a href="/examples">example gallery</a> 
-      or visit the <a href="/tutorials">tutorials</a> and <a href="/docs">documentation</a>.
+      or start with working through the <a href="/tutorials">tutorials</a> and <a href="/docs">documentation</a>.
     </p>
     <p>
       If you want to dive straight in, try out the <a href="/repl">interactive REPL</a>.
