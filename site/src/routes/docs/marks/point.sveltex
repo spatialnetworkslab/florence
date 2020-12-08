@@ -1,6 +1,6 @@
 # Point
 
-The `Point` mark is used to plot simple points. It is a special case of the more general [Symbol](/docs/marks/symbol) mark that is made available on its own for convenience. Its most common applications are scatterplots and point coordinates on a map, but as the [examples](#examples) illustrate all kinds of graphics can be made with the humble `Point`.
+The `Point` mark is used to plot simple points. It is a special case of the more general [Symbol](/docs/marks/symbol) mark that is made available on its own for convenience. Its most common applications are scatterplots and visualizations of point coordinates on a map, but as the [examples](#examples) illustrate all kinds of graphics can be made with the humble `Point`.
 
 ```markup
 <script>
@@ -126,7 +126,6 @@ The `Point` and `PointLayer` can be seen in action in the following examples:
 - [Simple scatterplot](/examples/plain-scatterplot)
 - [Categorical dot plot](/examples/categorical-dot)
 - [Scatterplot with transition](/examples/scatterplot-transition)
-- [Dubois plot](/examples/dubois-simple)
 - [Brush](/examples/brush)
 - [Gapminder](/examples/gapminder)
 - [Density contours](/examples/density-contours)

@@ -7,7 +7,7 @@ const color = d3.scaleThreshold()
   .domain([0, 1])
   .range(["red", "white", "green"])
 
-getClassLabels(color) // ['< 0', '0 - 1', '1 ≤']
+getClassLabels(color) // ['< 0', '0 - 1', '≥ 1']
 ```
 
 ## Arguments
