@@ -199,8 +199,6 @@ In summary, the part of our code between `<script>` should now look like this:
   import DataContainer from '@snlab/florence-datacontainer'
   import { geojson } from './planning_areas_data.js'
 
-  export let switchColor = false
-
   const convertNullToUndefined = value => value === null ? undefined : value
 
   const dataContainer = new DataContainer(geojson)
