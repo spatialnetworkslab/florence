@@ -12,7 +12,7 @@
     "build:tailwind": "NODE_ENV=production postcss src/tailwind.css -o static/css/index.css"
   },
   "dependencies": {
-    "@polka/send": "^1.0.0-next.3",
+    "@polka/send": "^1.0.0-next",
     "@snlab/florence-repl": "0.0.9",
     "compression": "^1.7.4",
     "polka": "^1.0.0-next.4",
