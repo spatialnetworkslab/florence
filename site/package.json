@@ -34,7 +34,7 @@
     "d3-fetch": "^2.0.0",
     "d3-format": "^2.0.0",
     "d3-interpolate": "^2.0.1",
-    "d3-scale": "^3.2.3",
+    "d3-scale": "^3.3.0",
     "d3-scale-chromatic": "^2.0.0",
     "d3-time": "^2.0.0",
     "d3-time-format": "^3.0.0",
