@@ -15,7 +15,7 @@
     "robust-point-in-polygon": "^1.0.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
+    "@babel/core": "^7.13.16",
     "@babel/preset-env": "^7.12.7",
     "@snlab/florence-datacontainer": "^0.2.0",
     "babel-jest": "^26.6.3",
