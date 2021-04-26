@@ -1,21 +1,17 @@
 <script context="module">
   let idCounter = 0
+
   function getId () {
     return 'sc' + idCounter++
   }
 </script>
 
 <script>
-  import * as detectIt from '../../../utils/detect.js'
-  import * as SectionContext from './SectionContext'
-  import * as EventManagerContext from '../Graphic/EventManagerContext'
-  import * as InteractionManagerContext from './InteractionManagerContext'
+  import { getContext, setContext } from 'svelte'
+  import { createSection, InteractionManager } from 'rendervous'
+  import Clipper from './Clipper.svelte'
 
-  import InteractionManager from '../../../interactivity/interactions/InteractionManager.js'
-  import { getPixelCoordinates } from './getPixelCoordinates.js'
-  import { getClipPropsNoPadding, getClipPropsPadding } from './getClipProps.js'
-
-  const sectionId = getId()
+  const id = getId()
 
   // Positioning
   export let x1 = undefined
@@ -24,16 +20,13 @@
   export let y2 = undefined
 
   // Local coordinates
+  export let coordinates = undefined
   export let scaleX = undefined
   export let scaleY = undefined
   export let flipX = false
   export let flipY = false
   export let padding = 0
   export let zoomIdentity = undefined
-
-  // Aesthetics
-  export let backgroundColor = undefined
-  export let paddingColor = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -52,52 +45,51 @@
   export let onTouchover = undefined
   export let onTouchout = undefined
 
-  // Other
-  export let transformation = undefined
-  export let blockReindexing = false
-  export let clip = true
+  // Other options
+  export let clip = 'padding'
 
-  // Contexts
-  const sectionContext = SectionContext.subscribe()
-  const newSectionContext = SectionContext.init()
-  const eventManagerContext = EventManagerContext.subscribe()
-  const interactionManagerContext = InteractionManagerContext.init()
-  
-  // Set up InteractionManager
-  const interactionManager = new InteractionManager()
-  interactionManager.setId(sectionId)
-  interactionManager.linkEventManager($eventManagerContext)
-  InteractionManagerContext.update(
-    interactionManagerContext,
-    interactionManager
-  )
+  // Get parent contexts
+  const graphicContext = getContext('graphic')
+  const parentSectionContext = getContext('section')
+  const eventManagerContext = getContext('eventManager')
 
-  // Keep SectionContext and InteractionManagerContext up to date
-  $: coordinates = getPixelCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+  // Initiate child contexts
+  const sectionContext = writable()
+  const interactionManagerContext = writable()
+  setContext('section', sectionContext)
+  setContext('interactionManager', interactionManagerContext)
+
+  // Section data
+  let section
 
   $: {
-    const sectionData = {
-      sectionId,
+    section = createSection({
+      x1,
+      x2,
+      y1,
+      y2,
       coordinates,
       scaleX,
       scaleY,
-      padding,
       flipX,
       flipY,
-      blockReindexing,
-      transformation,
-      zoomIdentity
-    }
-
-    SectionContext.update(newSectionContext, sectionData)
-    $interactionManagerContext.loadSection($newSectionContext)
+      padding,
+      zoomIdentity,
+      clip,
+      id
+    }, $parentSectionContext)
   }
 
-  $: clipPropsNoPadding = getClipPropsNoPadding(coordinates)
-  $: clipPropsPadding = getClipPropsPadding(coordinates, padding)
+  // Interactivity
+  const interactionManager = new InteractionManager()
 
-  // Interactions
-  // Change callbacks if necessary
+  interactionManager.setId(id)
+  interactionManager.linkEventManager($eventManagerContext)
+
+  $: {
+    interactionManager.loadSection(section)
+  }
+
   $: {
     removeSectionInteractionsIfNecessary(
       onWheel,
@@ -116,8 +108,8 @@
   }
 
   function removeSectionInteractionsIfNecessary () {
-    if (detectIt.primaryInput === 'mouse') {
-      const sectionInterface = $interactionManagerContext.mouse().section()
+    if (interactionManager.getPrimaryInput() === 'mouse') {
+      const sectionInterface = interactionManager.mouse().section()
       sectionInterface.removeAllInteractions()
 
       if (onWheel) sectionInterface.addInteraction('wheel', onWheel)
@@ -129,8 +121,8 @@
       if (onMousemove) sectionInterface.addInteraction('mousemove', onMousemove)
     }
 
-    if (detectIt.primaryInput === 'touch') {
-      const sectionInterface = $interactionManagerContext.touch().section()
+    if (interactionManager.getPrimaryInput() === 'touch') {
+      const sectionInterface = interactionManager.touch().section()
       sectionInterface.removeAllInteractions()
 
       if (onTouchdown) sectionInterface.addInteraction('touchdown', onTouchdown)
@@ -143,70 +135,52 @@
   }
 
   export function selectRectangle (rectangle) {
-    $interactionManagerContext.select().selectRectangle(rectangle)
+    interactionManager.select().selectRectangle(rectangle)
   }
 
   export function updateSelectRectangle (rectangle) {
-    $interactionManagerContext.select().updateSelectRectangle(rectangle)
+    interactionManager.select().updateSelectRectangle(rectangle)
   }
 
   export function resetSelectRectangle () {
-    $interactionManagerContext.select().resetSelectRectangle()
+    interactionManager.select().resetSelectRectangle()
   }
 
   export function startSelectPolygon (startCoordinates) {
-    $interactionManagerContext.select().startSelectPolygon(startCoordinates)
+    interactionManager.select().startSelectPolygon(startCoordinates)
   }
 
   export function addPointToSelectPolygon (pointCoordinates) {
-    $interactionManagerContext
+    interactionManager
       .select()
       .addPointToSelectPolygon(pointCoordinates)
   }
 
   export function moveSelectPolygon (delta) {
-    $interactionManagerContext.select().moveSelectPolygon(delta)
+    interactionManager.select().moveSelectPolygon(delta)
   }
 
   export function getSelectPolygon () {
-    return $interactionManagerContext.select().getSelectPolygon()
+    return interactionManager.select().getSelectPolygon()
   }
 
   export function resetSelectPolygon () {
-    $interactionManagerContext.select().resetSelectPolygon()
+    interactionManager.select().resetSelectPolygon()
   }
+
+  // Expose contexts
+  $: { sectionContext.set(section) }
+  $: { interactionManagerContext.set(interactionManager) }
 </script>
 
-<defs>
-  {#if clip}
+{#if $graphicContext.renderer === 'svg'}
+  <Clipper {section} />
 
-    <clipPath id={`clip-${sectionId}`}>
-      <rect {...clipPropsPadding} />
-    </clipPath>
+  <g class="section">
+    <slot />
+  </g>
+{/if}
 
-  {/if}
-
-  <mask id={`mask-${sectionId}-padding-bg`}>
-    <rect {...clipPropsNoPadding} fill="white" />
-    <rect {...clipPropsPadding} fill="black" />
-  </mask>
-</defs>
-
-<g class="section">
-  {#if backgroundColor}
-    <rect 
-      class="content-background"
-      {...clipPropsPadding}
-      fill={backgroundColor}
-    />
-  {/if}
-
-  {#if paddingColor}
-    <rect 
-      class="padding-background"
-      mask={`url(#mask-${sectionId}-padding-bg)`}
-      {...clipPropsNoPadding}
-      fill={paddingColor} />
-  {/if}
+{#if $graphicContext.renderer === 'canvas'}
   <slot />
-</g>
+{/if}

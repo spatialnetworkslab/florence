@@ -10,7 +10,7 @@
   import { onMount, setContext } from 'svelte'
   import { writable } from 'svelte/store'
   import { createSection, EventManager, InteractionManager } from 'rendervous'
-  import Clipper from './Clipper.svelte'
+  import Clipper from '../Section/Clipper.svelte'
 
   // Positioning
   export let width = 500
@@ -81,11 +81,6 @@
 
   // Interactivity: set up globally
   const eventManager = new EventManager()
-  const interactionManager = new InteractionManager()
-
-  interactionManager.setId(id)
-  interactionManager.linkEventManager(eventManager)
-
   let rootNode
 
   onMount(() => {
@@ -101,6 +96,11 @@
   })
 
   // Interactivity: component-specific
+  const interactionManager = new InteractionManager()
+
+  interactionManager.setId(id)
+  interactionManager.linkEventManager(eventManager)
+
   $: {
     interactionManager.loadSection(section)
   }
