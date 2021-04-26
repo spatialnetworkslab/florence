@@ -1,32 +1,23 @@
 <script context="module">
   let idCounter = 0
+
   function getId () {
     return 'gr' + idCounter++
   }
 </script>
 
 <script>
-  import * as detectIt from '../../../utils/detect.js'
-  import { onMount } from 'svelte'
-  import * as GraphicContext from './GraphicContext'
-  import * as SectionContext from '../Section/SectionContext'
-  import * as EventManagerContext from './EventManagerContext'
-  import * as InteractionManagerContext from '../Section/InteractionManagerContext'
-
-  import EventManager from '../../../interactivity/events/EventManager.js'
-  import InteractionManager from '../../../interactivity/interactions/InteractionManager.js'
-
-  import { getClipPropsPadding, getClipPropsNoPadding } from '../Section/getClipProps.js'
-
-  const graphicId = getId()
+  import { onMount, setContext } from 'svelte'
+  import { writable } from 'svelte/store'
+  import { createSection, EventManager, InteractionManager } from 'rendervous'
+  import Clipper from './Clipper.svelte'
 
   // Positioning
   export let width = 500
   export let height = 500
-  export let viewBox = undefined
-  export let preserveAspectRatio = 'xMidYMid meet'
 
   // Local coordinates
+  export let coordinates = undefined
   export let scaleX = undefined
   export let scaleY = undefined
   export let flipX = false
@@ -51,86 +42,51 @@
   export let onTouchover = undefined
   export let onTouchout = undefined
 
-  // Aesthetics
-  export let backgroundColor = undefined
-  export let paddingColor = undefined
+  // Other options
+  export let clip = 'padding'
+  export let renderer = 'svg'
 
-  // Other
-  export let transformation = undefined
-  export let blockReindexing = false
-  export let clip = true
-  export let renderer = undefined
+  const id = getId()
 
-  // Contexts
-  const graphicContext = GraphicContext.init()
-  const sectionContext = SectionContext.init()
-  const eventManagerContext = EventManagerContext.init()
-  const interactionManagerContext = InteractionManagerContext.init()
+  // Initiate contexts
+  const graphicContext = writable()
+  const sectionContext = writable()
+  const eventManagerContext = writable()
+  const interactionManagerContext = writable()
+  setContext('graphic', graphicContext)
+  setContext('section', sectionContext)
+  setContext('eventManager', eventManagerContext)
+  setContext('interactionManager', interactionManagerContext)
 
-  $: {
-    GraphicContext.update(graphicContext, { renderer })
-  }
-
-  let rootNode
-
-  // set up event and interaction manager
-  const eventManager = new EventManager()
-  EventManagerContext.update(eventManagerContext, eventManager)
-  
-  const interactionManager = new InteractionManager()
-  interactionManager.setId(graphicId)
-  interactionManager.linkEventManager(eventManager)
-  InteractionManagerContext.update(interactionManagerContext, interactionManager)
-
-  // Keep SectionContext and InteractionManagerContext up to date
-  let numberWidth = width
-  let numberHeight = height
-  $: coordinates = { x1: 0, y1: 0, x2: numberWidth, y2: numberHeight }
+  // Section data
+  let section
 
   $: {
-    const sectionData = {
-      sectionId: graphicId,
+    section = createSection({
+      x1: 0,
+      x2: width,
+      y1: 0,
+      y2: height,
       coordinates,
       scaleX,
       scaleY,
-      padding,
       flipX,
       flipY,
-      blockReindexing,
-      transformation,
-      zoomIdentity
-    }
-
-    SectionContext.update(sectionContext, sectionData)
-    $interactionManagerContext.loadSection($sectionContext)
+      padding,
+      zoomIdentity,
+      clip,
+      id
+    })
   }
 
-  $: clipPropsPadding = getClipPropsPadding(coordinates, padding)
-  $: clipPropsNoPadding = getClipPropsNoPadding(coordinates)
+  // Interactivity: set up globally
+  const eventManager = new EventManager()
+  const interactionManager = new InteractionManager()
 
-  const originalViewBox = viewBox
-  let originalViewBoxArray
-  
-  if (originalViewBox !== undefined) {
-    originalViewBoxArray = originalViewBox.split(' ')
-  }
-  $: {
-    if (width.constructor === Number && height.constructor === Number) {
-      numberWidth = width
-      numberHeight = height
-    } else if (originalViewBox !== undefined) {
-      numberWidth = Number(originalViewBoxArray[2])
-      numberHeight = Number(originalViewBoxArray[3])
-    } else if (originalViewBox === undefined) {
-      numberWidth = 100
-      numberHeight = 100
-    }
-  }
-  $: {
-    if (originalViewBox === undefined) {
-      viewBox = `0 0 ${numberWidth} ${numberHeight}`
-    }
-  }
+  interactionManager.setId(id)
+  interactionManager.linkEventManager(eventManager)
+
+  let rootNode
 
   onMount(() => {
     // Only on mount can we bind the svg root node and attach actual event listeners.
@@ -138,14 +94,17 @@
     // we will use document.getElementById instead
     let _rootNode = rootNode
       ? rootNode
-      : document.getElementById(graphicId)
+      : document.getElementById(id)
 
-    eventManager.addRootNode(_rootNode)
+    eventManager.addRootNode(_rootNode, renderer)
     eventManager.attachEventListeners()
   })
 
-  // Interactions
-  // Change callbacks if necessary
+  // Interactivity: component-specific
+  $: {
+    interactionManager.loadSection(section)
+  }
+
   $: {
     removeSectionInteractionsIfNecessary(
       onWheel,
@@ -164,8 +123,8 @@
   }
 
   function removeSectionInteractionsIfNecessary () {
-    if (detectIt.primaryInput === 'mouse') {
-      const sectionInterface = $interactionManagerContext.mouse().section()
+    if (interactionManager.getPrimaryInput() === 'mouse') {
+      const sectionInterface = interactionManager.mouse().section()
       sectionInterface.removeAllInteractions()
 
       if (onWheel) sectionInterface.addInteraction('wheel', onWheel)
@@ -177,8 +136,8 @@
       if (onMousemove) sectionInterface.addInteraction('mousemove', onMousemove)
     }
 
-    if (detectIt.primaryInput === 'touch') {
-      const sectionInterface = $interactionManagerContext.touch().section()
+    if (interactionManager.getPrimaryInput() === 'touch') {
+      const sectionInterface = interactionManager.touch().section()
       sectionInterface.removeAllInteractions()
 
       if (onTouchdown) sectionInterface.addInteraction('touchdown', onTouchdown)
@@ -191,79 +150,58 @@
   }
 
   export function selectRectangle (rectangle) {
-    $interactionManagerContext.select().selectRectangle(rectangle)
+    interactionManager.select().selectRectangle(rectangle)
   }
 
   export function updateSelectRectangle (rectangle) {
-    $interactionManagerContext.select().updateSelectRectangle(rectangle)
+    interactionManager.select().updateSelectRectangle(rectangle)
   }
 
   export function resetSelectRectangle () {
-    $interactionManagerContext.select().resetSelectRectangle()
+    interactionManager.select().resetSelectRectangle()
   }
 
   export function startSelectPolygon (startCoordinates) {
-    $interactionManagerContext.select().startSelectPolygon(startCoordinates)
+    interactionManager.select().startSelectPolygon(startCoordinates)
   }
 
   export function addPointToSelectPolygon (pointCoordinates) {
-    $interactionManagerContext
+    interactionManager
       .select()
       .addPointToSelectPolygon(pointCoordinates)
   }
 
   export function moveSelectPolygon (delta) {
-    $interactionManagerContext.select().moveSelectPolygon(delta)
+    interactionManager.select().moveSelectPolygon(delta)
   }
 
   export function getSelectPolygon () {
-    return $interactionManagerContext.select().getSelectPolygon()
+    return interactionManager.select().getSelectPolygon()
   }
 
   export function resetSelectPolygon () {
-    $interactionManagerContext.select().resetSelectPolygon()
+    interactionManager.select().resetSelectPolygon()
   }
+
+  // Expose contexts
+  $: { graphicContext.set({ renderer, rootNode }) }
+  $: { sectionContext.set(section) }
+  $: { eventManagerContext.set(eventManager) }
+  $: { interactionManagerContext.set(interactionManager) }
 </script>
 
-<svg
-  id={graphicId}
-  {width}
-  {height}
-  {viewBox}
-  {preserveAspectRatio}
-  bind:this={rootNode}
->
-  {#if clip}
+{#if renderer === 'svg'}
 
-    <clipPath id={`clip-${graphicId}`}>
-      <rect {...clipPropsPadding} />
-    </clipPath>
+  <svg {id} {width} {height} bind:this={rootNode}>
+    <Clipper {section} />
+    <slot />
+  </svg>
 
-  {/if}
+{/if}
 
-  <defs>
-    <mask id={`${graphicId}-mask-padding-bg`}>
-      <rect {...clipPropsNoPadding} fill="white" />
-      <rect {...clipPropsPadding} fill="black" />
-    </mask>
-  </defs>
+{#if renderer === 'canvas'}
 
-  {#if backgroundColor}
-    <rect 
-      class="content-background"
-      {...clipPropsPadding}
-      fill={backgroundColor}
-    />
-  {/if}
-
-  {#if paddingColor}
-    <rect 
-      class="padding-background"
-      mask={`url(#${graphicId}-mask-padding-bg)`}
-      {...clipPropsNoPadding}
-      fill={paddingColor} 
-    />
-  {/if}
-
+  <canvas {id} {width} {height} bind:this={rootNode} />
   <slot />
-</svg>
+
+{/if}
