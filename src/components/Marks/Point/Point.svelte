@@ -1,6 +1,6 @@
 <script>
   import { getContext, onMount } from 'svelte'
-  import { createPoint, parseAestheticsPoint, svgPositioning } from '@snlab/rendervous'
+  import { createPoint, parseAestheticsPoint, svgPositioning, getClipPathURL } from '@snlab/rendervous'
   import any from '../utils/any.js'
 
   // Positioning
@@ -16,12 +16,13 @@
   export let strokeOpacity = undefined
   export let fillOpacity = undefined
   export let opacity = undefined
+  export let lineCap = undefined
   export let dashArray = undefined
   export let dashOffset = undefined
 
   // Other
   export let outputSettings = undefined
-  export let clip = 'padding'
+  export let clip = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -68,6 +69,7 @@
       strokeOpacity,
       fillOpacity,
       opacity,
+      lineCap,
       dashArray,
       dashOffset,
       clip
@@ -85,7 +87,7 @@
     if (
       radius || fill || stroke || strokeWidth ||
       strokeOpacity || fillOpacity || opacity ||
-      dashArray || dashOffset || clip
+      lineCap || dashArray || dashOffset || clip
     ) {
       scheduleUpdateAesthetics()
     }
@@ -110,29 +112,31 @@
       }
 
       if (!updatePositioning && updateAesthetics) {
+        const parsedAesthetics = parseAestheticsPoint({
+          radius,
+          fill,
+          stroke,
+          strokeWidth,
+          strokeOpacity,
+          fillOpacity,
+          opacity,
+          lineCap,
+          dashArray,
+          dashOffset,
+          clip
+        })
+
+        const radiusChanged = point.props.radius !== parsedAesthetics.radius
+        const strokeWidthChanged = point.props.strokeWidth !== parsedAesthetics.strokeWidth 
+
+        point.updateAesthetics(parsedAesthetics)
+
+        if (radiusChanged || strokeWidthChanged) {
+          updateInteractionManagerIfNecessary()
+        }
+
         if ($graphicContext.renderer === 'canvas') {
-          const parsedAesthetics = parseAestheticsPoint({
-            radius,
-            fill,
-            stroke,
-            strokeWidth,
-            strokeOpacity,
-            fillOpacity,
-            opacity,
-            dashArray,
-            dashOffset,
-            clip
-          })
-
-          const radiusChanged = point.props.radius !== parsedAesthetics.radius
-          const strokeWidthChanged = point.props.strokeWidth !== parsedAesthetics.strokeWidth 
-
-          point.updateAesthetics(parsedAesthetics)
           point.render($graphicContext.rootNode)
-
-          if (radiusChanged || strokeWidthChanged) {
-            updateInteractionManagerIfNecessary()
-          }
         }
       }
 
@@ -217,3 +221,21 @@
     }
   }
 </script>
+
+{#if $graphicContext.renderer === 'svg'}
+  <circle 
+    {...positioningSvg}
+    class="point"
+    clip-path={getClipPathURL({ clip }, $sectionContext)}
+    r={radius}
+    {fill}
+    {stroke}
+    stroke-width={strokeWidth}
+    fill-opacity={fillOpacity}
+    stroke-opacity={strokeOpacity}
+    opacity={opacity}
+    stroke-linecap={lineCap}
+    stroke-dasharray={dashArray}
+    stroke-dashoffset={dashOffset}
+  />
+{/if}
