@@ -33,7 +33,8 @@
   const log = console.log
 
   let background = "white"
-  let big = false
+  
+  let current
 </script>
 
 <div>
@@ -64,6 +65,7 @@
     width={500} {height}
     scaleX={scaleLinear().domain([0, 500])}
     scaleY={scaleLinear().domain([0, 500])}
+    renderer="canvas"
   >
 		
 		<Section
@@ -87,6 +89,8 @@
         <Point
           x={filteredData.column('a')[i]}
           y={filteredData.column('b')[i]}
+          fill={i === current ? 'red': 'black'}
+          onMouseover={() => { current = i }}
         />
       {/each}
 

@@ -57,21 +57,24 @@
   // Interactivity: set up globally
   const eventManager = new EventManager()
   let rootNode
+  let context
 
   onMount(() => {
     // Only on mount can we bind the svg root node and attach actual event listeners.
     // Sometimes rootNode is undefined for some weird reason. In this case,
     // we will use document.getElementById instead
-    let _rootNode = rootNode
-      ? rootNode
-      : document.getElementById(id)
+    if (!rootNode) {
+      rootNode = document.getElementById(id)
+    }
 
-    eventManager.addRootNode(_rootNode, renderer)
+    context = rootNode.getContext('2d')
+
+    eventManager.addRootNode(rootNode, renderer)
     eventManager.attachEventListeners()
   })
 
     // Expose contexts
-  $: { graphicContext.set({ renderer, rootNode }) }
+  $: { graphicContext.set({ renderer, rootNode, context }) }
   $: { eventManagerContext.set(eventManager) }
 </script>
 

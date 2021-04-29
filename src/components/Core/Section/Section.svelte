@@ -8,6 +8,7 @@
 
 <script>
   import { getContext, setContext } from 'svelte'
+  import { writable } from 'svelte/store'
   import { createSection, InteractionManager } from '@snlab/rendervous'
   import Clipper from './Clipper.svelte'
 

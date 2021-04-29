@@ -51,6 +51,7 @@
   // Init
   let mounted
   onMount(() => { mounted = true })
+  const isMounted = () => mounted
 
   let updatePositioning = false
   let updateAesthetics = false
@@ -85,19 +86,16 @@
     positioningSvg = positioningContext.result()
   }
 
-  if ($graphicContext.renderer === 'canvas') {
-    point.render($graphicContext.rootNode)
-  }
-
   // Handling prop updates
-  $: { if (x || y || geometry || radius) { scheduleUpdatePositioning() } }
-  $: { if ($graphicContext || $sectionContext || outputSettings) { scheduleUpdatePositioning() } }
+  $: { if (isMounted() && (x || y || geometry || radius)) { scheduleUpdatePositioning() } }
+  $: { if (isMounted() && ($graphicContext || $sectionContext || outputSettings)) { scheduleUpdatePositioning() } }
 
   $: {
     if (
-      radius || fill || stroke || strokeWidth ||
+      isMounted() &&
+      (radius || fill || stroke || strokeWidth ||
       strokeOpacity || fillOpacity || opacity ||
-      lineCap || dashArray || dashOffset || clip
+      lineCap || dashArray || dashOffset || clip)
     ) {
       scheduleUpdateAesthetics()
     }
@@ -115,7 +113,7 @@
         }
 
         if ($graphicContext.renderer === 'canvas') {
-          point.render($graphicContext.rootNode)
+          point.render($graphicContext.context)
         }
 
         updateInteractionManagerIfNecessary()
@@ -144,7 +142,7 @@
         }
 
         if ($graphicContext.renderer === 'canvas') {
-          point.render($graphicContext.rootNode)
+          point.render($graphicContext.context)
         }
 
         if ($graphicContext.renderer === 'svg') {
