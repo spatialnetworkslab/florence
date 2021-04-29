@@ -1,29 +1,21 @@
 <script>
-  import { getContext, onMount } from 'svelte'
-  import { createPolygon, parseAestheticsPolygon, svgPositioning, getClipPathURL } from '@snlab/rendervous'
-  import any from '../utils/any.js'
- 
-  // Positioning
+  import Mark from '../Mark/Mark.svelte'
+
+  // Aesthetics: positioning
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
 
-  // Aesthetics
+  // Aesthetics: other
   export let fill = undefined
   export let stroke = undefined
   export let strokeWidth = undefined
   export let strokeOpacity = undefined
   export let fillOpacity = undefined
   export let opacity = undefined
-  export let lineCap = undefined
-  export let lineJoin = undefined
-  export let miterLimit = undefined
-  export let dashArray = undefined
-  export let dashOffset = undefined
 
-  // Other
-  export let outputSettings = undefined
-  export let clip = undefined
+  // Transitions
+  export let transition = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -43,4 +35,22 @@
   // Select interactions
   export let onSelect = undefined
   export let onDeselect = undefined
+
+  // Other
+  export let renderSettings = undefined
+  export let blockReindexing = false
+  export let clip = true
 </script>
+
+<Mark
+  type="Polygon"
+  {x} {y} {geometry}
+  {fill} {stroke} {strokeWidth}
+  {strokeOpacity} {fillOpacity} {opacity}
+  {transition} 
+  {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
+  {onTouchdown} {onTouchup} {onTouchover} {onTouchout} {onTouchdrag}
+  {onSelect} {onDeselect}
+  {renderSettings} {blockReindexing} {clip}
+  _asPolygon={false}
+/>

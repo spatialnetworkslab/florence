@@ -1,6 +1,6 @@
 <script>
 	import { scaleLinear } from 'd3-scale'
-	import { Graphic, Section, PointLayer, Point } from '../../../../src/'
+	import { Graphic, Section, /* PointLayer, */ Point } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	const N = 100
@@ -71,19 +71,24 @@
 			y1={50} y2={450}
 			scaleX={scaleA}
 			scaleY={scaleB}
-      backgroundColor={background}
       flipY
       {transformation}
 		>
 
-			<PointLayer
+			<!-- <PointLayer
         x={filteredData.column('a')}
         y={filteredData.column('b')}
         key={filteredData.keys()}
         fill={transformation === 'identity' ? 'black' : 'blue'}
         radius={transformation === 'identity' ? 4 : 6}
         transition={duration}
-      />
+      /> -->
+      {#each data.keys() as key, i}
+        <Point
+          x={filteredData.column('a')[i]}
+          y={filteredData.column('b')[i]}
+        />
+      {/each}
 
 		</Section>
 

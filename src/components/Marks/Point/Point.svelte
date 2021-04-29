@@ -76,11 +76,21 @@
     }, $sectionContext, outputSettings)
   }
 
+  let positioningContext
   let positioningSvg
 
+  if ($graphicContext.renderer === 'svg') {
+    positioningContext = svgPositioning.path()
+    point.render(positioningContext)
+    positioningSvg = positioningContext.result()
+  }
+
+  if ($graphicContext.renderer === 'canvas') {
+    point.render($graphicContext.rootNode)
+  }
+
   // Handling prop updates
-  $: { if ($graphicContext.renderer === 'svg' && (x || y || geometry)) { scheduleUpdatePositioning() } }
-  $: { if ($graphicContext.renderer === 'canvas' && (x || y || geometry || radius)) { scheduleUpdatePositioning() } }
+  $: { if (x || y || geometry || radius) { scheduleUpdatePositioning() } }
   $: { if ($graphicContext || $sectionContext || outputSettings) { scheduleUpdatePositioning() } }
 
   $: {
@@ -99,7 +109,7 @@
         point = create()
 
         if ($graphicContext.renderer === 'svg') {
-          let positioningContext = svgPositioning.point()
+          positioningContext = svgPositioning.path()
           point.render(positioningContext)
           positioningSvg = positioningContext.result()
         }
@@ -113,7 +123,6 @@
 
       if (!updatePositioning && updateAesthetics) {
         const parsedAesthetics = parseAestheticsPoint({
-          radius,
           fill,
           stroke,
           strokeWidth,
@@ -126,17 +135,20 @@
           clip
         })
 
-        const radiusChanged = point.props.radius !== parsedAesthetics.radius
         const strokeWidthChanged = point.props.strokeWidth !== parsedAesthetics.strokeWidth 
 
         point.updateAesthetics(parsedAesthetics)
 
-        if (radiusChanged || strokeWidthChanged) {
+        if (strokeWidthChanged) {
           updateInteractionManagerIfNecessary()
         }
 
         if ($graphicContext.renderer === 'canvas') {
           point.render($graphicContext.rootNode)
+        }
+
+        if ($graphicContext.renderer === 'svg') {
+          point = point
         }
       }
 
@@ -223,19 +235,18 @@
 </script>
 
 {#if $graphicContext.renderer === 'svg'}
-  <circle 
+  <path
     {...positioningSvg}
     class="point"
     clip-path={getClipPathURL({ clip }, $sectionContext)}
-    r={radius}
-    {fill}
-    {stroke}
-    stroke-width={strokeWidth}
-    fill-opacity={fillOpacity}
-    stroke-opacity={strokeOpacity}
-    opacity={opacity}
-    stroke-linecap={lineCap}
-    stroke-dasharray={dashArray}
-    stroke-dashoffset={dashOffset}
+    fill={point.props.fill}
+    stroke={point.props.stroke}
+    stroke-width={point.props.strokeWidth}
+    fill-opacity={point.props.fillOpacity}
+    stroke-opacity={point.props.strokeOpacity}
+    opacity={point.props.opacity}
+    stroke-linecap={point.props.lineCap}
+    stroke-dasharray={point.props.dashArray}
+    stroke-dashoffset={point.props.dashOffset}
   />
 {/if}
