@@ -68,7 +68,7 @@
       name: 'Scatterplot',
       url: '/scatterplot',
       component: Scatterplot
-    }//,
+    },
     // {
     //   name: 'ZoomPan',
     //   url: '/zoompan',

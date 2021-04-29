@@ -1,7 +1,7 @@
 /* eslint-disable */
 import svelte from 'rollup-plugin-svelte';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import globals from 'rollup-plugin-node-globals';
@@ -26,7 +26,7 @@ export default [
       // some cases you'll need additional configuration —
       // consult the documentation for details:
       // https://github.com/rollup/rollup-plugin-commonjs
-      resolve(),
+      nodeResolve(),
       commonjs(),
       // analyze({ summaryOnly: true }),
   
