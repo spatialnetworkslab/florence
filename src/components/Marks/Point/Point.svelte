@@ -1,12 +1,14 @@
 <script>
-  import Mark from '../Mark/Mark.svelte'
+  import { getContext, onMount } from 'svelte'
+  import { createPoint, parseAestheticsPoint, svgPositioning } from '@snlab/rendervous'
+  import any from '../utils/any.js'
 
-  // Aesthetics: positioning
+  // Positioning
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
 
-  // Aesthetics: other
+  // Aesthetics
   export let radius = undefined
   export let fill = undefined
   export let stroke = undefined
@@ -14,9 +16,12 @@
   export let strokeOpacity = undefined
   export let fillOpacity = undefined
   export let opacity = undefined
+  export let dashArray = undefined
+  export let dashOffset = undefined
 
-  // Transitions
-  export let transition = undefined
+  // Other
+  export let outputSettings = undefined
+  export let clip = 'padding'
 
   // Mouse interactions
   export let onClick = undefined
@@ -37,21 +42,178 @@
   export let onSelect = undefined
   export let onDeselect = undefined
 
-  // Other
-  export let renderSettings = undefined
-  export let blockReindexing = false
-  export let clip = true
-</script>
+  // Get parent contexts
+  const graphicContext = getContext('graphic')
+  const sectionContext = getContext('section')
+  const interactionManagerContext = getContext('interactionManager')
 
-<Mark
-  type="Point"
-  {x} {y} {geometry} {radius} 
-  {fill} {stroke} {strokeWidth}
-  {strokeOpacity} {fillOpacity} {opacity}
-  {transition} 
-  {onClick} {onMousedown} {onMouseup} {onMouseover} {onMouseout} {onMousedrag}
-  {onTouchdown} {onTouchup} {onTouchover} {onTouchout} {onTouchdrag}
-  {onSelect} {onDeselect}
-  {renderSettings} {blockReindexing} {clip}
-  _asPolygon={false}
-/>
+  // Init
+  let mounted
+  onMount(() => { mounted = true })
+
+  let updatePositioning = false
+  let updateAesthetics = false
+
+  let point = create()
+
+  function create () {
+    return createPoint({
+      x,
+      y,
+      geometry,
+      radius,
+      fill,
+      stroke,
+      strokeWidth,
+      strokeOpacity,
+      fillOpacity,
+      opacity,
+      dashArray,
+      dashOffset,
+      clip
+    }, $sectionContext, outputSettings)
+  }
+
+  let positioningSvg
+
+  // Handling prop updates
+  $: { if ($graphicContext.renderer === 'svg' && (x || y || geometry)) { scheduleUpdatePositioning() } }
+  $: { if ($graphicContext.renderer === 'canvas' && (x || y || geometry || radius)) { scheduleUpdatePositioning() } }
+  $: { if ($graphicContext || $sectionContext || outputSettings) { scheduleUpdatePositioning() } }
+
+  $: {
+    if (
+      radius || fill || stroke || strokeWidth ||
+      strokeOpacity || fillOpacity || opacity ||
+      dashArray || dashOffset || clip
+    ) {
+      scheduleUpdateAesthetics()
+    }
+  }
+
+  $: {
+    if (mounted) {
+      if (updatePositioning) {
+        point = create()
+
+        if ($graphicContext.renderer === 'svg') {
+          let positioningContext = svgPositioning.point()
+          point.render(positioningContext)
+          positioningSvg = positioningContext.result()
+        }
+
+        if ($graphicContext.renderer === 'canvas') {
+          point.render($graphicContext.rootNode)
+        }
+
+        updateInteractionManagerIfNecessary()
+      }
+
+      if (!updatePositioning && updateAesthetics) {
+        if ($graphicContext.renderer === 'canvas') {
+          const parsedAesthetics = parseAestheticsPoint({
+            radius,
+            fill,
+            stroke,
+            strokeWidth,
+            strokeOpacity,
+            fillOpacity,
+            opacity,
+            dashArray,
+            dashOffset,
+            clip
+          })
+
+          const radiusChanged = point.props.radius !== parsedAesthetics.radius
+          const strokeWidthChanged = point.props.strokeWidth !== parsedAesthetics.strokeWidth 
+
+          point.updateAesthetics(parsedAesthetics)
+          point.render($graphicContext.rootNode)
+
+          if (radiusChanged || strokeWidthChanged) {
+            updateInteractionManagerIfNecessary()
+          }
+        }
+      }
+
+      updatePositioning = false
+      updateAesthetics = false
+    }
+  }
+
+  function scheduleUpdatePositioning () { updatePositioning = true }
+  function scheduleUpdateAesthetics () { updateAesthetics = true }
+
+  // Interactivity
+  $: primaryInput = $interactionManagerContext.getPrimaryInput()
+  $: isInteractiveMouse = primaryInput === 'mouse' && any(onClick, onMousedown, onMouseup, onMouseover, onMouseout, onMousedrag)
+  $: isInteractiveTouch = primaryInput === 'touch' && any(onTouchdown, onTouchup, onTouchover, onTouchout, onTouchdrag)
+  $: isSelectable = any(onSelect, onDeselect)
+
+  function updateInteractionManagerIfNecessary () {
+    if (isInteractiveMouse || isInteractiveTouch) {
+      removeMarkFromSpatialIndexIfNecessary()
+
+      if (isInteractiveMouse) {
+        const markInterface = $interactionManagerContext.mouse().marks()
+
+        markInterface.loadMark(point)
+
+        if (onClick) markInterface.addMarkInteraction('click', point, onClick)
+        if (onMousedown) markInterface.addMarkInteraction('mousedown', point, onMousedown)
+        if (onMouseup) markInterface.addMarkInteraction('mouseup', point, onMouseup)
+        if (onMouseout) markInterface.addMarkInteraction('mouseout', point, onMouseout)
+        if (onMouseover) markInterface.addMarkInteraction('mouseover', point, onMouseover)
+        if (onMousedrag) markInterface.addMarkInteraction('mousedrag', point, onMousedrag)
+      }
+
+      if (isInteractiveTouch) {
+        const markInterface = $interactionManagerContext.touch().marks()
+
+        markInterface.loadMark(point)
+
+        if (onTouchdown) markInterface.addMarkInteraction('touchdown', point, onTouchdown)
+        if (onTouchup) markInterface.addMarkInteraction('touchup', point, onTouchup)
+        if (onTouchover) markInterface.addMarkInteraction('touchover', point, onTouchover)
+        if (onTouchout) markInterface.addMarkInteraction('touchout', point, onTouchout)
+        if (onTouchdrag) markInterface.addMarkInteraction('touchdrag', point, onTouchdrag)
+      }
+    }
+
+    removeMarkFromSelectIfNecessary()
+  
+    if (isSelectable) {
+      const selectManager = $interactionManagerContext.select()
+
+      selectManager.loadMark(point, { onSelect, onDeselect })
+    }
+  }
+
+  function removeMarkFromSpatialIndexIfNecessary () {
+    if (primaryInput === 'mouse') {
+      const markMouseInterface = $interactionManagerContext.mouse().marks()
+
+      if (markMouseInterface.markIsLoaded(point)) {
+        markMouseInterface.removeAllMarkInteractions(point)
+        markMouseInterface.removeMark(point)
+      }
+    }
+
+    if (primaryInput === 'touch') {
+      const markTouchInterface = $interactionManagerContext.touch().marks()
+
+      if (markTouchInterface.markIsLoaded(point)) {
+        markTouchInterface.removeAllMarkInteractions(point)
+        markTouchInterface.removeMark(point)
+      }
+    }
+  }
+
+  function removeMarkFromSelectIfNecessary () {
+    const selectManager = $interactionManagerContext.select()
+
+    if (selectManager.markIsLoaded(point)) {
+      selectManager.removeMark(point)
+    }
+  }
+</script>

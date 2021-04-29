@@ -1,5 +1,5 @@
 <script>
-  import { bboxToClipRect } from 'rendervous'
+  import { bboxToClipRect } from '@snlab/rendervous'
 
   export let section
 

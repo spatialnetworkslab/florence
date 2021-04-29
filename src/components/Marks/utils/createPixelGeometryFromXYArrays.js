@@ -14,7 +14,7 @@ export function createPixelGeometryFromXYArrays (
     closeIfNecessary(x, y)
   }
 
-  const rendervousInput = createRendervousInput(x, y, geometryType)
+  const @snlab/rendervousInput = createRendervousInput(x, y, geometryType)
 
   const interpolationNecessary = (
     sectionContext.transformation === 'polar' &&
@@ -26,7 +26,7 @@ export function createPixelGeometryFromXYArrays (
     const postScaleTransformation = sectionContext.postScaleTransformation
 
     return polarGeometry(
-      rendervousInput,
+      @snlab/rendervousInput,
       sectionContext,
       { scaleTransformation, postScaleTransformation },
       renderSettings
@@ -36,7 +36,7 @@ export function createPixelGeometryFromXYArrays (
   if (!interpolationNecessary) {
     const totalTransformation = sectionContext.getTotalTransformation(needsScaling)
 
-    return transformGeometry(rendervousInput, totalTransformation, renderSettings)
+    return transformGeometry(@snlab/rendervousInput, totalTransformation, renderSettings)
   }
 }
 

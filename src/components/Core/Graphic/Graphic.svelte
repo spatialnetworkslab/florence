@@ -9,7 +9,7 @@
 <script>
   import { onMount, setContext } from 'svelte'
   import { writable } from 'svelte/store'
-  import { EventManager } from 'rendervous'
+  import { EventManager } from '@snlab/rendervous'
   import Section from '../Section/Section.svelte'
 
   // Positioning

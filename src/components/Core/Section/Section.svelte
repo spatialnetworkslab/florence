@@ -8,7 +8,7 @@
 
 <script>
   import { getContext, setContext } from 'svelte'
-  import { createSection, InteractionManager } from 'rendervous'
+  import { createSection, InteractionManager } from '@snlab/rendervous'
   import Clipper from './Clipper.svelte'
 
   const id = getId()
