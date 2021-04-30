@@ -3,20 +3,27 @@ export default class RedrawManager {
     this.sections = {}
   }
 
+  addRootSection (section) {
+    this.sections[section.id] = {
+      data: section,
+      childSections: []
+    }
+  }
+
   addSection (section, parentSection) {
     this.sections[section.id] = {
       data: section,
       parentSection: parentSection.id,
-      childSections: new Set()
+      childSections: []
     }
 
-    this.sections[parentSection.id].childSections.add(section.id)
+    this.sections[parentSection.id].childSections.push(section.id)
   }
 
   removeSection (section) {
     const parentId = this.sections[section.id].parentSection
     delete this.sections[section.id]
-    this.sections[parentId].childSections.delete(parentId)
+    this.sections[parentId].childSections.delete(parentId) // TODO
   }
 
   addMark (mark, section) {
