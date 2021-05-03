@@ -71,15 +71,20 @@
 
     eventManager.addRootNode(rootNode, renderer)
     eventManager.attachEventListeners()
+
+    dirty.set(true)
   })
 
+  const isEmptyTextNode = node => [' ', ''].includes(node.data)
+
   function render () {
+    context.clearRect(0, 0, width, height)
     const childArray = Array.from(document.getElementById(`div-${id}`).childNodes)
 
     for (let i = 0; i < childArray.length; i++) {
       const node = childArray[i]
 
-      if (node.data !== " ") {
+      if (!isEmptyTextNode(node)) {
         const id = node.data
         marksAndLayers[id].render(context)
       }

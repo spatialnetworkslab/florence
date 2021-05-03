@@ -53,7 +53,7 @@
 
   // Init
   let mounted
-  onMount(() => { mounted = true })
+  onMount(() => { mounted = true; dirty.set(true) })
   const isMounted = () => mounted
 
   let updatePositioning = false

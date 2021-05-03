@@ -19,21 +19,17 @@
   let threshold = 0
   let filteredData
   $: {
-    filteredData = data
-    .filter(row => row.a > threshold)
+    filteredData = data.filter(row => row.a > threshold)
   }
 
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scaleLinear().domain(data.domain('b'))
   
   let height = 500
-  let transformation = 'identity'
-  let duration = 2000
-
   const log = console.log
 
-  let background = "white"
-  
+  let submarkVisible = false
+
   let current
 </script>
 
@@ -43,20 +39,11 @@
 </div>
 
 <div>
-  <label for="coordinate-select">Coordinates:</label>
-  <select name="coordinate-select" bind:value={transformation}>
-    <option value="identity">Identity</option>
-    <option value="polar">Polar</option>
-  </select>
-</div>
-
-<div>
-  <label for="duration">Transition time</label>
-  <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
-</div>
-
-<div>
   <button on:click={() => threshold = 40}>Filter: x > 40</button>
+</div>
+
+<div>
+  <button on:click={() => submarkVisible = !submarkVisible}>Toggle submark</button>
 </div>
 
 <div>
@@ -74,8 +61,11 @@
 			scaleX={scaleA}
 			scaleY={scaleB}
       flipY
-      {transformation}
 		>
+
+      {#if submarkVisible}
+        <Point x={50} y={50} radius={50} fill="red" />
+      {/if}
 
 			<!-- <PointLayer
         x={filteredData.column('a')}
@@ -85,7 +75,7 @@
         radius={transformation === 'identity' ? 4 : 6}
         transition={duration}
       /> -->
-      {#each data.keys() as key, i}
+      {#each filteredData.keys() as key, i}
         <Point
           x={filteredData.column('a')[i]}
           y={filteredData.column('b')[i]}
