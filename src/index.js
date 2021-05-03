@@ -30,7 +30,14 @@ export { default as Rectangle } from './components/Marks/Rectangle/Rectangle.sve
 // export { default as DiscreteLegend } from './components/Guides/Legends/DiscreteLegend.svelte'
 // export { default as GradientLegend } from './components/Guides/Legends/GradientLegend.svelte'
 
-// export { default as createGeoScales } from './helpers/createGeoScales.js'
-// export { default as createPanHandler } from './helpers/createPanHandler.js'
-// export { default as createZoomHandler } from './helpers/createZoomHandler.js'
-// export * from './helpers/labels.js'
+export { default as createPanHandler } from './helpers/createPanHandler.js'
+export { default as createZoomHandler } from './helpers/createZoomHandler.js'
+export * from './helpers/labels.js'
+
+export {
+  fitScales,
+  x2,
+  y2,
+  x2s,
+  y2s
+} from '@snlab/rendervous'
