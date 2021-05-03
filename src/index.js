@@ -4,7 +4,7 @@ export { default as Section } from './components/Core/Section/Section.svelte'
 
 // export { default as Mark } from './components/Marks/Mark/Mark.svelte'
 export { default as Point } from './components/Marks/Point/Point.svelte'
-// export { default as Rectangle } from './components/Marks/Rectangle/Rectangle.svelte'
+export { default as Rectangle } from './components/Marks/Rectangle/Rectangle.svelte'
 // export { default as Polygon } from './components/Marks/Polygon/Polygon.svelte'
 // export { default as Line } from './components/Marks/Line/Line.svelte'
 // export { default as Label } from './components/Marks/Label/Label.svelte'

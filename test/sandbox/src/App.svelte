@@ -2,7 +2,7 @@
   import { Router, Link, Route } from 'svelte-routing'
 
   // import all playground examples here
-  // import BarChart from './examples/BarChart.svelte'
+  import BarChart from './examples/BarChart.svelte'
   // import Polygons from './examples/Polygons.svelte'
   // import GridLayout from './examples/GridLayout.svelte'
   // import ResizeLayout from './examples/ResizeLayout.svelte'
@@ -44,11 +44,11 @@
   
   // and add them to this component array
   const components = [
-    // {
-    //   name: 'Bar Chart',
-    //   url: '/barchart',
-    //   component: BarChart
-    // },
+    {
+      name: 'Bar Chart',
+      url: '/barchart',
+      component: BarChart
+    },
     // {
     //   name: 'Polygons',
     //   url: '/polygons',

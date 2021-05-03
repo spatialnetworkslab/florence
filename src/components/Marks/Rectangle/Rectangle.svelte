@@ -1,15 +1,15 @@
 <script>
   import { getContext, onMount } from 'svelte'
-  import { createPoint, parseAestheticsPoint } from '@snlab/rendervous'
+  import { createRectangle, parseAestheticsRectangle } from '@snlab/rendervous'
   import Mark from '../Base/Mark.svelte'
 
   // Positioning
-  export let x = undefined
-  export let y = undefined
-  export let geometry = undefined
+  export let x1 = undefined
+  export let x2 = undefined
+  export let y1 = undefined
+  export let y2 = undefined
 
   // Aesthetics
-  export let radius = undefined
   export let fill = undefined
   export let stroke = undefined
   export let strokeWidth = undefined
@@ -17,6 +17,8 @@
   export let fillOpacity = undefined
   export let opacity = undefined
   export let lineCap = undefined
+  export let lineJoin = undefined
+  export let miterLimit = undefined
   export let dashArray = undefined
   export let dashOffset = undefined
 
@@ -55,26 +57,26 @@
   let mark
 
   // Handling prop updates
-  $: { if (isMounted() && (x || y || geometry || radius)) { mark.scheduleUpdatePositioning() } }
+  $: { if (isMounted() && (x1 || x2 || y1 || y2)) { mark.scheduleUpdatePositioning() } }
   $: { if (isMounted() && ($section || outputSettings)) { mark.scheduleUpdatePositioning() } }
 
   $: {
     if (
       isMounted() &&
-      (radius || fill || stroke || strokeWidth ||
+      (fill || stroke || strokeWidth ||
       strokeOpacity || fillOpacity || opacity ||
-      lineCap || dashArray || dashOffset || clip)
+      lineCap || lineJoin || miterLimit || dashArray || dashOffset || clip)
     ) {
       mark.scheduleUpdateAesthetics()
     }
   }
 
-  $: positioning = { x, y, geometry }
+  $: positioning = { x1, x2, y1, y2 }
 
   $: aesthetics = {
-    radius, fill, stroke, strokeWidth,
+    fill, stroke, strokeWidth,
     strokeOpacity, fillOpacity, opacity,
-    lineCap, dashArray, dashOffset, clip
+    lineCap, lineJoin, miterLimit, dashArray, dashOffset, clip
   }
 </script>
 
@@ -82,9 +84,9 @@
   {positioning}
   {aesthetics}
   bind:this={mark}
-  createMark={createPoint}
-  parseAesthetics={parseAestheticsPoint}
-  className="point"
+  createMark={createRectangle}
+  parseAesthetics={parseAestheticsRectangle}
+  className="rectangle"
   {onClick}
   {onMousedown}
   {onMouseup}
