@@ -50,41 +50,32 @@
 
 	<Graphic 
     width={500} {height}
-    scaleX={scaleLinear().domain([0, 500])}
-    scaleY={scaleLinear().domain([0, 500])}
+    scaleX={scaleA}
+		scaleY={scaleB}
     renderer="canvas"
+    flipY
   >
 		
-		<Section
-			x1={50} x2={450}
-			y1={50} y2={450}
-			scaleX={scaleA}
-			scaleY={scaleB}
-      flipY
-		>
+		{#if submarkVisible}
+      <Point x={50} y={50} radius={50} fill="red" />
+    {/if}
 
-      {#if submarkVisible}
-        <Point x={50} y={50} radius={50} fill="red" />
-      {/if}
-
-			<!-- <PointLayer
-        x={filteredData.column('a')}
-        y={filteredData.column('b')}
-        key={filteredData.keys()}
-        fill={transformation === 'identity' ? 'black' : 'blue'}
-        radius={transformation === 'identity' ? 4 : 6}
-        transition={duration}
-      /> -->
-      {#each filteredData.keys() as key, i}
-        <Point
-          x={filteredData.column('a')[i]}
-          y={filteredData.column('b')[i]}
-          fill={i === current ? 'red': 'black'}
-          onMouseover={() => { current = i }}
-        />
-      {/each}
-
-		</Section>
+		<!-- <PointLayer
+      x={filteredData.column('a')}
+      y={filteredData.column('b')}
+      key={filteredData.keys()}
+      fill={transformation === 'identity' ? 'black' : 'blue'}
+      radius={transformation === 'identity' ? 4 : 6}
+      transition={duration}
+    /> -->
+    {#each filteredData.keys() as key, i}
+      <Point
+        x={filteredData.column('a')[i]}
+        y={filteredData.column('b')[i]}
+        fill={i === current ? 'red': 'black'}
+        onMouseover={() => { current = i }}
+      />
+    {/each}
 
 	</Graphic>
 

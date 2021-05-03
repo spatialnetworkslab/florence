@@ -67,7 +67,9 @@
       rootNode = document.getElementById(id)
     }
 
-    context = rootNode.getContext('2d')
+    if (renderer === 'canvas') {
+      context = rootNode.getContext('2d')
+    }
 
     eventManager.addRootNode(rootNode, renderer)
     eventManager.attachEventListeners()
@@ -108,8 +110,8 @@
       y1={0}
       y2={height}
       {coordinates}
-      {scaleX}
-      {scaleY}
+      scaleX={scaleX ?? [0, width]}
+      scaleY={scaleY ?? [0, height]}
       {flipX}
       {flipY}
       {padding}

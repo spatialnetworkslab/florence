@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, Rectangle, /*RectangleLayer*/ } from '../../../../src/'
+  import { Graphic, Section, Rectangle, x2, /*RectangleLayer*/ } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   let data = new DataContainer({
@@ -53,9 +53,10 @@
 
       <Rectangle 
         x1={row.fruit}
-        x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
+        x2={x2(row.fruit)}
         y1={0}
         y2={row.meanQuantity}
+        fill="green"
       />
 
     {/each}
