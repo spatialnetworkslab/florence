@@ -7,7 +7,7 @@
 </script>
 
 <script>
-  import { onMount, setContext } from 'svelte'
+  import { onMount, setContext, tick } from 'svelte'
   import { writable } from 'svelte/store'
   import { EventManager } from '@snlab/rendervous'
   import Section from '../Section/Section.svelte'
@@ -71,11 +71,9 @@
 
     eventManager.addRootNode(rootNode, renderer)
     eventManager.attachEventListeners()
-
-    dirty.set(true)
   })
 
-  const isEmptyTextNode = id => [' ', ''].includes(id)
+  const isEmpty = id => [' ', ''].includes(id)
 
   function render () {
     context.clearRect(0, 0, width, height)
@@ -92,8 +90,10 @@
 
   $: {
     if ($dirty) {
-      render()
-      dirty.set(false)
+      tick().then(() => {
+        render()
+        dirty.set(false)
+      })
     }
   }
 </script>
