@@ -1,6 +1,7 @@
 <script>
-  import { getContext, onMount } from 'svelte'
+  import { getContext, onMount, onDestroy } from 'svelte'
   import { createPoint, parseAestheticsPoint, svgPositioning, getClipPathURL } from '@snlab/rendervous'
+  import { getMarkId } from '../utils/getId.js'
   import any from '../utils/any.js'
 
   // Positioning
@@ -44,9 +45,11 @@
   export let onDeselect = undefined
 
   // Get parent contexts
-  const graphicContext = getContext('graphic')
-  const sectionContext = getContext('section')
-  const interactionManagerContext = getContext('interactionManager')
+  const { renderer, marksAndLayers, dirty } = getContext('graphic')
+  const section = getContext('section')
+  const interactionManager = getContext('interactionManager')
+
+  const id = getMarkId()
 
   // Init
   let mounted
@@ -57,9 +60,10 @@
   let updateAesthetics = false
 
   let point = create()
+  marksAndLayers[id] = point
 
   function create () {
-    return createPoint({
+    let _point = createPoint({
       x,
       y,
       geometry,
@@ -74,13 +78,17 @@
       dashArray,
       dashOffset,
       clip
-    }, $sectionContext, outputSettings)
+    }, $section, outputSettings)
+
+    _point.id = id
+
+    return _point
   }
 
   let positioningContext
   let positioningSvg
 
-  if ($graphicContext.renderer === 'svg') {
+  if (renderer === 'svg') {
     positioningContext = svgPositioning.path()
     point.render(positioningContext)
     positioningSvg = positioningContext.result()
@@ -88,7 +96,7 @@
 
   // Handling prop updates
   $: { if (isMounted() && (x || y || geometry || radius)) { scheduleUpdatePositioning() } }
-  $: { if (isMounted() && ($graphicContext || $sectionContext || outputSettings)) { scheduleUpdatePositioning() } }
+  $: { if (isMounted() && ($section || outputSettings)) { scheduleUpdatePositioning() } }
 
   $: {
     if (
@@ -106,14 +114,15 @@
       if (updatePositioning) {
         point = create()
 
-        if ($graphicContext.renderer === 'svg') {
+        if (renderer === 'svg') {
           positioningContext = svgPositioning.path()
           point.render(positioningContext)
           positioningSvg = positioningContext.result()
         }
 
-        if ($graphicContext.renderer === 'canvas') {
-          point.render($graphicContext.context)
+        if (renderer === 'canvas') {
+          marksAndLayers[id] = point
+          dirty.set(true)
         }
 
         updateInteractionManagerIfNecessary()
@@ -141,11 +150,11 @@
           updateInteractionManagerIfNecessary()
         }
 
-        if ($graphicContext.renderer === 'canvas') {
-          point.render($graphicContext.context)
+        if (renderer === 'canvas') {
+          dirty.set(true)
         }
 
-        if ($graphicContext.renderer === 'svg') {
+        if (renderer === 'svg') {
           point = point
         }
       }
@@ -159,7 +168,7 @@
   function scheduleUpdateAesthetics () { updateAesthetics = true }
 
   // Interactivity
-  $: primaryInput = $interactionManagerContext.getPrimaryInput()
+  $: primaryInput = $interactionManager.getPrimaryInput()
   $: isInteractiveMouse = primaryInput === 'mouse' && any(onClick, onMousedown, onMouseup, onMouseover, onMouseout, onMousedrag)
   $: isInteractiveTouch = primaryInput === 'touch' && any(onTouchdown, onTouchup, onTouchover, onTouchout, onTouchdrag)
   $: isSelectable = any(onSelect, onDeselect)
@@ -169,7 +178,7 @@
       removeMarkFromSpatialIndexIfNecessary()
 
       if (isInteractiveMouse) {
-        const markInterface = $interactionManagerContext.mouse().marks()
+        const markInterface = $interactionManager.mouse().marks()
 
         markInterface.loadMark(point)
 
@@ -182,7 +191,7 @@
       }
 
       if (isInteractiveTouch) {
-        const markInterface = $interactionManagerContext.touch().marks()
+        const markInterface = $interactionManager.touch().marks()
 
         markInterface.loadMark(point)
 
@@ -197,7 +206,7 @@
     removeMarkFromSelectIfNecessary()
   
     if (isSelectable) {
-      const selectManager = $interactionManagerContext.select()
+      const selectManager = $interactionManager.select()
 
       selectManager.loadMark(point, { onSelect, onDeselect })
     }
@@ -205,7 +214,7 @@
 
   function removeMarkFromSpatialIndexIfNecessary () {
     if (primaryInput === 'mouse') {
-      const markMouseInterface = $interactionManagerContext.mouse().marks()
+      const markMouseInterface = $interactionManager.mouse().marks()
 
       if (markMouseInterface.markIsLoaded(point)) {
         markMouseInterface.removeAllMarkInteractions(point)
@@ -214,7 +223,7 @@
     }
 
     if (primaryInput === 'touch') {
-      const markTouchInterface = $interactionManagerContext.touch().marks()
+      const markTouchInterface = $interactionManager.touch().marks()
 
       if (markTouchInterface.markIsLoaded(point)) {
         markTouchInterface.removeAllMarkInteractions(point)
@@ -224,19 +233,24 @@
   }
 
   function removeMarkFromSelectIfNecessary () {
-    const selectManager = $interactionManagerContext.select()
+    const selectManager = $interactionManager.select()
 
     if (selectManager.markIsLoaded(point)) {
       selectManager.removeMark(point)
     }
   }
+
+  onDestroy(() => {
+    delete marksAndLayers[id]
+    dirty.set(true)
+  })
 </script>
 
-{#if $graphicContext.renderer === 'svg'}
+{#if renderer === 'svg'}
   <path
     {...positioningSvg}
     class="point"
-    clip-path={getClipPathURL({ clip }, $sectionContext)}
+    clip-path={getClipPathURL({ clip }, $section)}
     fill={point.props.fill}
     stroke={point.props.stroke}
     stroke-width={point.props.strokeWidth}
@@ -247,4 +261,8 @@
     stroke-dasharray={point.props.dashArray}
     stroke-dashoffset={point.props.dashOffset}
   />
+{/if}
+
+{#if renderer === 'canvas'}
+  {id}
 {/if}

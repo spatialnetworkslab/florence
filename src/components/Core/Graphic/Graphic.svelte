@@ -48,16 +48,16 @@
 
   const id = getId()
 
-  // Initiate contexts
-  const graphicContext = writable()
-  const eventManagerContext = writable()
-  setContext('graphic', graphicContext)
-  setContext('eventManager', eventManagerContext)
-
-  // Interactivity: set up globally
-  const eventManager = new EventManager()
   let rootNode
   let context
+  let dirty = writable(false)
+  const marksAndLayers = {}
+
+  setContext('graphic', { renderer, dirty, marksAndLayers })
+
+  // Set up EventManager for this Graphic
+  const eventManager = new EventManager()
+  setContext('eventManager', eventManager)
 
   onMount(() => {
     // Only on mount can we bind the svg root node and attach actual event listeners.
@@ -73,9 +73,25 @@
     eventManager.attachEventListeners()
   })
 
-    // Expose contexts
-  $: { graphicContext.set({ renderer, rootNode, context }) }
-  $: { eventManagerContext.set(eventManager) }
+  function render () {
+    const childArray = Array.from(document.getElementById(`div-${id}`).childNodes)
+
+    for (let i = 0; i < childArray.length; i++) {
+      const node = childArray[i]
+
+      if (node.data !== " ") {
+        const id = node.data
+        marksAndLayers[id].render(context)
+      }
+    }
+  }
+
+  $: {
+    if ($dirty) {
+      render()
+      dirty.set(false)
+    }
+  }
 </script>
 
 {#if renderer === 'svg'}
@@ -150,7 +166,9 @@
     {clip}
   >
     
-    <slot />
+    <div style="display: none;" id={`div-${id}`}>
+      <slot />
+    </div>
 
   </Section>
 

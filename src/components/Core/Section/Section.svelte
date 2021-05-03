@@ -50,9 +50,9 @@
   export let clip = 'padding'
 
   // Get parent contexts
-  const graphicContext = getContext('graphic')
-  const parentSectionContext = getContext('section')
-  const eventManagerContext = getContext('eventManager')
+  const { renderer } = getContext('graphic')
+  const parentSection = getContext('section')
+  const eventManager = getContext('eventManager')
 
   // Initiate child contexts
   const sectionContext = writable()
@@ -78,14 +78,14 @@
       zoomIdentity,
       clip,
       id
-    }, $parentSectionContext)
+    }, $parentSection)
   }
 
   // Interactivity
   const interactionManager = new InteractionManager()
 
   interactionManager.setId(id)
-  interactionManager.linkEventManager($eventManagerContext)
+  interactionManager.linkEventManager(eventManager)
 
   $: {
     interactionManager.loadSection(section)
@@ -174,7 +174,7 @@
   $: { interactionManagerContext.set(interactionManager) }
 </script>
 
-{#if $graphicContext.renderer === 'svg'}
+{#if renderer === 'svg'}
   <Clipper {section} />
 
   <g class="section">
@@ -182,6 +182,6 @@
   </g>
 {/if}
 
-{#if $graphicContext.renderer === 'canvas'}
+{#if renderer === 'canvas'}
   <slot />
 {/if}
