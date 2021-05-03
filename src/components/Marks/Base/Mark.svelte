@@ -73,8 +73,10 @@
   let updatePositioning = false
   let updateAesthetics = false
 
-  export function scheduleUpdatePositioning () { updatePositioning = true }
-  export function scheduleUpdateAesthetics () { updateAesthetics = true }
+  export function scheduleUpdatePositioning () { if (isMounted()) { updatePositioning = true } }
+  export function scheduleUpdateAesthetics () { if (isMounted()) { updateAesthetics = true } }
+
+  $: { if ($section || outputSettings) { mark.scheduleUpdatePositioning() } }
 
   $: {
     if (mounted) {
@@ -103,7 +105,7 @@
 
         mark.updateAesthetics(parsedAesthetics)
 
-        if (strokeWidthChanged) {
+        if (strokeWidthChanged || clipChanged) {
           updateInteractionManagerIfNecessary()
         }
 

@@ -1,5 +1,4 @@
 <script>
-  import { getContext, onMount } from 'svelte'
   import { createRectangle, parseAestheticsRectangle } from '@snlab/rendervous'
   import Mark from '../Base/Mark.svelte'
 
@@ -45,32 +44,6 @@
   export let onSelect = undefined
   export let onDeselect = undefined
 
-  // Get parent contexts
-  const { dirty } = getContext('graphic')
-  const section = getContext('section')
-  
-  // Init
-  let mounted
-  onMount(() => { mounted = true })
-  const isMounted = () => mounted
-
-  let mark
-
-  // Handling prop updates
-  $: { if (isMounted() && (x1 || x2 || y1 || y2)) { mark.scheduleUpdatePositioning() } }
-  $: { if (isMounted() && ($section || outputSettings)) { mark.scheduleUpdatePositioning() } }
-
-  $: {
-    if (
-      isMounted() &&
-      (fill || stroke || strokeWidth ||
-      strokeOpacity || fillOpacity || opacity ||
-      lineCap || lineJoin || miterLimit || dashArray || dashOffset || clip)
-    ) {
-      mark.scheduleUpdateAesthetics()
-    }
-  }
-
   $: positioning = { x1, x2, y1, y2 }
 
   $: aesthetics = {
@@ -78,6 +51,12 @@
     strokeOpacity, fillOpacity, opacity,
     lineCap, lineJoin, miterLimit, dashArray, dashOffset, clip
   }
+
+  let mark
+
+  // Handling prop updates
+  $: { if (positioning) { mark.scheduleUpdatePositioning() } }
+  $: { if (aesthetics) { mark.scheduleUpdateAesthetics() } }
 </script>
 
 <Mark
@@ -87,6 +66,7 @@
   createMark={createRectangle}
   parseAesthetics={parseAestheticsRectangle}
   className="rectangle"
+  {outputSettings}
   {onClick}
   {onMousedown}
   {onMouseup}
