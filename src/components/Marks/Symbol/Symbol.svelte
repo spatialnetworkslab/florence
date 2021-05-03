@@ -1,11 +1,12 @@
 <script>
-  import { createPoint, parseAestheticsPoint } from '@snlab/rendervous'
+  import { createSymbol, parseAestheticsSymbol } from '@snlab/rendervous'
   import Mark from '../Base/Mark.svelte'
 
   // Positioning
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
+  export let shape = undefined
   export let radius = undefined
 
   // Aesthetics
@@ -16,6 +17,8 @@
   export let fillOpacity = undefined
   export let opacity = undefined
   export let lineCap = undefined
+  export let lineJoin = undefined
+  export let miterLimit = undefined
   export let dashArray = undefined
   export let dashOffset = undefined
 
@@ -42,12 +45,12 @@
   export let onSelect = undefined
   export let onDeselect = undefined
 
-  $: positioning = { x, y, geometry, radius }
+  $: positioning = { x, y, geometry, shape, radius }
 
   $: aesthetics = {
     fill, stroke, strokeWidth,
     strokeOpacity, fillOpacity, opacity,
-    lineCap, dashArray, dashOffset, clip
+    lineCap, lineJoin, miterLimit, dashArray, dashOffset, clip
   }
 
   let mark
@@ -61,9 +64,9 @@
   {positioning}
   {aesthetics}
   bind:this={mark}
-  createMark={createPoint}
-  parseAesthetics={parseAestheticsPoint}
-  className="point"
+  createMark={createSymbol}
+  parseAesthetics={parseAestheticsSymbol}
+  className="symbol"
   {outputSettings}
   {onClick}
   {onMousedown}
