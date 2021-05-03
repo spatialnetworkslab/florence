@@ -1,16 +1,18 @@
 <script>
-  import { createLine, parseAestheticsLine } from '@snlab/rendervous'
+  import { createPolygon, parseAestheticsPolygon } from '@snlab/rendervous'
   import Mark from '../Base/Mark.svelte'
 
   // Positioning
   export let x = undefined
   export let y = undefined
   export let geometry = undefined
-  export let curve = undefined
 
   // Aesthetics
+  export let fill = undefined
   export let stroke = undefined
   export let strokeWidth = undefined
+  export let strokeOpacity = undefined
+  export let fillOpacity = undefined
   export let opacity = undefined
   export let lineCap = undefined
   export let lineJoin = undefined
@@ -41,11 +43,12 @@
   export let onSelect = undefined
   export let onDeselect = undefined
 
-  $: positioning = { x, y, geometry, curve }
+  $: positioning = { x, y, geometry }
 
   $: aesthetics = {
-    stroke, strokeWidth, opacity,
-    lineCap, dashArray, lineJoin, miterLimit, dashOffset, clip
+    fill, stroke, strokeWidth,
+    strokeOpacity, fillOpacity, opacity,
+    lineCap, lineJoin, miterLimit, dashArray, dashOffset, clip
   }
 
   let mark
@@ -59,9 +62,9 @@
   {positioning}
   {aesthetics}
   bind:this={mark}
-  createMark={createLine}
-  parseAesthetics={parseAestheticsLine}
-  className="line"
+  createMark={createPolygon}
+  parseAesthetics={parseAestheticsPolygon}
+  className="polygon"
   {outputSettings}
   {onClick}
   {onMousedown}
