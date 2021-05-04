@@ -1,6 +1,6 @@
 <script>
+  import { getContext } from 'svelte'
   import { Line, LineLayer, Label, LabelLayer } from '../../../index.js'
-  import * as SectionContext from '../../Core/Section/SectionContext'
 
   import { parseHJust } from './just.js'
   import { getBaseLineCoordinatesYAxis } from './baseLine.js'
@@ -50,36 +50,35 @@
   export let title = ''
   export let titleColor = 'black'
   export let titleFont = 'Helvetica'
-  export let titleFontSize = '12'
+  export let titleFontSize = 12
   export let titleFontWeight = 'normal'
   export let titleOpacity = 1
-  export let titleRotation = -90
+  export let titleRotate = -Math.PI / 2
   export let titleAnchorPoint = 'center'
 
   // other
-  export let transition = undefined
-  export let clip = false
+  export let clip = 'outer'
 
   // Contexts
-  const sectionContext = SectionContext.subscribe()
+  const section = getContext('section')
   
   // Make sure not polar
   $: {
-    if ($sectionContext.transformation === 'polar') {
+    if ($section.transformation === 'polar') {
       throw new Error('Axes do\'nt work with polar coordinates (for now)')
     }
   }
 
   // Scale
   $: scaleY = scale
-    ? scale.copy().range($sectionContext.rangeY)
-    : $sectionContext.scaleY
+    ? scale.copy().range($section.scaleY.range())
+    : $section.scaleY
 
   // Absolute position (in pixels)
-  $: xAbsolute = parseHJust(hjust, xOffset, $sectionContext.paddedBbox)
+  $: xAbsolute = parseHJust(hjust, xOffset, $section.paddedBbox)
 
   // Baseline
-  $: baseLineCoordinates = getBaseLineCoordinatesYAxis(xAbsolute, $sectionContext)
+  $: baseLineCoordinates = getBaseLineCoordinatesYAxis(xAbsolute, $section)
   
   // Ticks
   $: tickPositions = getTickPositions(
@@ -87,23 +86,23 @@
     scaleY,
     tickCount,
     tickExtra,
-    $sectionContext.zoomIdentity
-      ? { t: $sectionContext.zoomIdentity.y, k: $sectionContext.zoomIdentity.ky }
+    $section.zoomIdentity
+      ? { t: $section.zoomIdentity.y, k: $section.zoomIdentity.ky }
       : undefined
   )
   $: tickCoordinates = getTickCoordinatesYAxis(
     tickPositions,
     xAbsolute,
     scaleY,
-    $sectionContext.finalScaleX,
+    $section.indirectScales.x,
     tickSize,
     flip
   )
 
   // Tick labels
-  $: format = getFormat(labelFormat, $sectionContext.scaleY, ticks.length)
+  $: format = getFormat(labelFormat, scaleY, ticks.length)
   $: tickLabelText = tickPositions.map(format)
-  $: tickLabelCoordinates = getTickLabelCoordinatesYAxis(tickCoordinates, $sectionContext, labelOffset, flip)
+  $: tickLabelCoordinates = getTickLabelCoordinatesYAxis(tickCoordinates, $section, labelOffset, flip)
   $: labelAnchorPoint = flip ? 'l' : 'r'
   $: tickLabelWidth = getTextWidth(tickLabelText[tickLabelText.length - 1], labelFontSize, labelFont)
 
@@ -114,7 +113,7 @@
     titleXOffset,
     titleVjust,
     titleYOffset,
-    $sectionContext,
+    $section,
     flip,
     axisWidth,
     titleFontSize,
@@ -140,7 +139,6 @@
       strokeWidth={tickWidth}
       opacity={tickOpacity}
       stroke={tickColor}
-      {transition}
       {clip}
     />
     
@@ -154,7 +152,6 @@
       fontWeight={labelFontWeight}
       opacity={labelOpacity}
       fill={labelColor}
-      {transition}
       {clip}
     />
   {/if}
@@ -164,7 +161,7 @@
       {...titleCoordinates}
       text={title}
       anchorPoint={titleAnchorPoint}
-      rotation={titleRotation}
+      rotation={titleRotate}
       fontFamily={titleFont}
       fontSize={titleFontSize}
       fontWeight={titleFontWeight}

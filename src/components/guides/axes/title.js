@@ -18,10 +18,10 @@ export function getTitleCoordinatesXAxis (
     ? yAbsoluteAxis + heightOffset
     : parseVJust(vjust, yOffset, sectionContext.paddedBbox) + heightOffset
 
-  const { finalScaleX, finalScaleY } = sectionContext
+  const { indirectScales } = sectionContext
 
-  const x = finalScaleX.invert(xAbsolute)
-  const y = finalScaleY.invert(yAbsolute)
+  const x = indirectScales.x.invert(xAbsolute)
+  const y = indirectScales.y.invert(yAbsolute)
 
   return {
     x: () => x,
@@ -60,10 +60,10 @@ export function getTitleCoordinatesYAxis (
     : parseHJust(hjust, xOffset, sectionContext.paddedBbox)
   const yAbsolute = parseHJust(vjust, yOffset, sectionContext.paddedBbox)
 
-  const { finalScaleX, finalScaleY } = sectionContext
+  const { indirectScales } = sectionContext
 
-  const x = finalScaleX.invert(xAbsolute)
-  const y = finalScaleY.invert(yAbsolute)
+  const x = indirectScales.x.invert(xAbsolute)
+  const y = indirectScales.y.invert(yAbsolute)
 
   return {
     x: () => x,

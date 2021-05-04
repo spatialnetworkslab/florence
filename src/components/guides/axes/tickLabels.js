@@ -1,6 +1,6 @@
 export function getTickLabelCoordinatesXAxis (
   tickCoordinates,
-  { finalScaleY },
+  { indirectScales },
   labelOffset,
   flip
 ) {
@@ -8,13 +8,13 @@ export function getTickLabelCoordinatesXAxis (
 
   const y = tickCoordinates.y().map(y => {
     const yEnd = y[1]
-    const yEndAbsolute = finalScaleY(yEnd)
+    const yEndAbsolute = indirectScales.y(yEnd)
 
     const yLabelAbsolute = flip
       ? yEndAbsolute - labelOffset
       : yEndAbsolute + labelOffset
 
-    return finalScaleY.invert(yLabelAbsolute)
+    return indirectScales.y.invert(yLabelAbsolute)
   })
 
   return {
@@ -25,19 +25,19 @@ export function getTickLabelCoordinatesXAxis (
 
 export function getTickLabelCoordinatesYAxis (
   tickCoordinates,
-  { finalScaleX },
+  { indirectScales },
   labelOffset,
   flip
 ) {
   const x = tickCoordinates.x().map(x => {
     const xEnd = x[1]
-    const xEndAbsolute = finalScaleX(xEnd)
+    const xEndAbsolute = indirectScales.x(xEnd)
 
     const xLabelAbsolute = flip
       ? xEndAbsolute + labelOffset
       : xEndAbsolute - labelOffset
 
-    return finalScaleX.invert(xLabelAbsolute)
+    return indirectScales.x.invert(xLabelAbsolute)
   })
 
   const y = tickCoordinates.y().map(y => y[0])

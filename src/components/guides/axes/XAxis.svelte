@@ -1,6 +1,6 @@
 <script>
+  import { getContext } from 'svelte'
   import { Line, LineLayer, Label, LabelLayer } from '../../../index.js'
-  import * as SectionContext from '../../Core/Section/SectionContext'
 
   import { parseVJust } from './just.js'
   import { getBaseLineCoordinatesXAxis } from './baseLine.js'
@@ -50,36 +50,34 @@
   export let title = ''
   export let titleColor = 'black'
   export let titleFont = 'Helvetica'
-  export let titleFontSize = '12'
+  export let titleFontSize = 12
   export let titleFontWeight = 'normal'
   export let titleOpacity = 1
-  export let titleRotation = 0
+  export let titleRotate = 0
   export let titleAnchorPoint = 't'
 
   // other
-  export let transition = undefined
-  export let clip = false
+  export let clip = 'outer'
 
   // Contexts
-  const sectionContext = SectionContext.subscribe()
+  const section = getContext('section')
 
-  // Make sure not polar
   $: {
-    if ($sectionContext.transformation === 'polar') {
-      throw new Error('Axes do\'nt work with polar coordinates (for now)')
+    if ($section.coordinateSystem) {
+      throw new Error('Cannot use axes with alternative coordinate systems (for now)')
     }
   }
 
   // Scale
   $: scaleX = scale
-    ? scale.copy().range($sectionContext.rangeX)
-    : $sectionContext.scaleX
+    ? scale.copy().range($section.scaleX.range())
+    : $section.scaleX
   
   // Absolute position (in pixels)
-  $: yAbsolute = parseVJust(vjust, yOffset, $sectionContext.paddedBbox)
+  $: yAbsolute = parseVJust(vjust, yOffset, $section.paddedBbox)
 
   // Baseline
-  $: baseLineCoordinates = getBaseLineCoordinatesXAxis(yAbsolute, $sectionContext)
+  $: baseLineCoordinates = getBaseLineCoordinatesXAxis(yAbsolute, $section)
   
   // Ticks
   $: tickPositions = getTickPositions(
@@ -87,23 +85,23 @@
     scaleX,
     tickCount,
     tickExtra,
-    $sectionContext.zoomIdentity 
-      ? { t: $sectionContext.zoomIdentity.x, k: $sectionContext.zoomIdentity.kx }
+    $section.zoomIdentity 
+      ? { t: $section.zoomIdentity.x, k: $section.zoomIdentity.kx }
       : undefined
   )
   $: tickCoordinates = getTickCoordinatesXAxis(
     tickPositions,
     yAbsolute,
     scaleX,
-    $sectionContext.finalScaleY,
+    $section.indirectScales.y,
     tickSize,
     flip
   )
 
   // Tick labels
-  $: format = getFormat(labelFormat, $sectionContext.scaleX, ticks.length)
+  $: format = getFormat(labelFormat, scaleX, ticks.length)
   $: tickLabelText = tickPositions.map(format)
-  $: tickLabelCoordinates = getTickLabelCoordinatesXAxis(tickCoordinates, $sectionContext, labelOffset, flip)
+  $: tickLabelCoordinates = getTickLabelCoordinatesXAxis(tickCoordinates, $section, labelOffset, flip)
   $: labelAnchorPoint = flip ? 'b' : 't'
 
   // Title
@@ -113,7 +111,7 @@
     titleXOffset,
     titleVjust,
     titleYOffset,
-    $sectionContext,
+    $section,
     flip,
     axisHeight,
     titleFontSize,
@@ -121,56 +119,50 @@
   )
 </script>
 
-<g class="x-axis">
+{#if baseLine}
+  <Line 
+    {...baseLineCoordinates}
+    strokeWidth={baseLineWidth}
+    opacity={baseLineOpacity}
+    stroke={baseLineColor}
+    {clip}
+  />
+{/if}
+
+{#if ticks}
+  <LineLayer 
+    {...tickCoordinates}
+    strokeWidth={tickWidth}
+    opacity={tickOpacity}
+    stroke={tickColor}
+    {clip}
+  />
     
-  {#if baseLine}
-    <Line 
-      {...baseLineCoordinates}
-      strokeWidth={baseLineWidth}
-      opacity={baseLineOpacity}
-      stroke={baseLineColor}
-      {clip}
-    />
-  {/if}
+  <LabelLayer
+    {...tickLabelCoordinates}
+    text={tickLabelText} 
+    anchorPoint={labelAnchorPoint}
+    rotate={labelRotate}
+    fontFamily={labelFont}
+    fontSize={labelFontSize}
+    fontWeight={labelFontWeight}
+    opacity={labelOpacity}
+    fill={labelColor}
+    {clip}
+  />
+{/if}
 
-  {#if ticks}
-    <LineLayer 
-      {...tickCoordinates}
-      strokeWidth={tickWidth}
-      opacity={tickOpacity}
-      stroke={tickColor}
-      {transition}
-      {clip}
-    />
-    
-    <LabelLayer
-      {...tickLabelCoordinates}
-      text={tickLabelText} 
-      anchorPoint={labelAnchorPoint}
-      rotation={labelRotate}
-      fontFamily={labelFont}
-      fontSize={labelFontSize}
-      fontWeight={labelFontWeight}
-      opacity={labelOpacity}
-      fill={labelColor}
-      {transition}
-      {clip}
-    />
-  {/if}
-
-  {#if title.length > 0}
-    <Label 
-      {...titleCoordinates}
-      text={title}
-      anchorPoint={titleAnchorPoint}
-      rotation={titleRotation}
-      fontFamily={titleFont}
-      fontSize={titleFontSize}
-      fontWeight={titleFontWeight}
-      opacity={titleOpacity}
-      fill={titleColor}
-      {clip}
-    />
-  {/if}
-
-</g>
+{#if title.length > 0}
+  <Label 
+    {...titleCoordinates}
+    text={title}
+    anchorPoint={titleAnchorPoint}
+    rotate={titleRotate}
+    fontFamily={titleFont}
+    fontSize={titleFontSize}
+    fontWeight={titleFontWeight}
+    opacity={titleOpacity}
+    fill={titleColor}
+    {clip}
+  />
+{/if}

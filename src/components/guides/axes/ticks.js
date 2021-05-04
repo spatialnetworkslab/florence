@@ -45,7 +45,7 @@ export function getTickCoordinatesXAxis (
   ticks,
   yAbsolute,
   scaleX,
-  finalScaleY,
+  indirectScaleY,
   tickSize,
   flip
 ) {
@@ -55,8 +55,8 @@ export function getTickCoordinatesXAxis (
   const yEndAbsolute = yAbsolute + offset
 
   const yCoordsTick = [
-    finalScaleY.invert(yAbsolute),
-    finalScaleY.invert(yEndAbsolute)
+    indirectScaleY.invert(yAbsolute),
+    indirectScaleY.invert(yEndAbsolute)
   ]
 
   const x = ticks.map(t => scaleX(t) + bandOffset).map(t => [t, t])
@@ -72,7 +72,7 @@ export function getTickCoordinatesYAxis (
   ticks,
   xAbsolute,
   scaleY,
-  finalScaleX,
+  indirectScaleX,
   tickSize,
   flip
 ) {
@@ -82,8 +82,8 @@ export function getTickCoordinatesYAxis (
   const xEndAbsolute = xAbsolute + offset
 
   const xCoordsTick = [
-    finalScaleX.invert(xAbsolute),
-    finalScaleX.invert(xEndAbsolute)
+    indirectScaleX.invert(xAbsolute),
+    indirectScaleX.invert(xEndAbsolute)
   ]
 
   const x = generateArrayOfLength(xCoordsTick, ticks.length)
