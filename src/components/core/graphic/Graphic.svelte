@@ -10,7 +10,7 @@
   import { onMount, setContext, tick } from 'svelte'
   import { writable } from 'svelte/store'
   import { EventManager } from '@snlab/rendervous'
-  import Section from '../Section/Section.svelte'
+  import Section from '../section/Section.svelte'
 
   // Positioning
   export let width = 500
