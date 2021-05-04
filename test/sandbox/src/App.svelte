@@ -13,7 +13,7 @@
 
   // import FuncLines from './examples/FuncLines.svelte'
   // import DragCategorical from './examples/DragCategorical.svelte'
-  // import FunctionAPI from './examples/FunctionAPI.svelte'
+  import FunctionAPI from './examples/FunctionAPI.svelte'
   // import FlipTest from './examples/FlipTest.svelte'
   // import NonNumericAxis from './examples/NonNumericAxis.svelte'
   // import DragAllMarks from './examples/DragAllMarks.svelte'
@@ -99,11 +99,11 @@
     //   url: 'dragcategorical',
     //   component: DragCategorical
     // },
-    // {
-    //   name: 'Function API',
-    //   url: 'functionapi',
-    //   component: FunctionAPI
-    // },
+    {
+      name: 'Function API',
+      url: 'functionapi',
+      component: FunctionAPI
+    },
     // {
     //   name: 'Flip test',
     //   url: 'fliptest',

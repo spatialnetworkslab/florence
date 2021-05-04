@@ -53,6 +53,7 @@
   onMount(() => {
      mounted = true
      if (renderer === 'canvas') { dirty.set(true) }
+     updateInteractionManagerIfNecessary()
   })
 
   const isMounted = () => mounted
@@ -113,8 +114,8 @@
     if (!updatePositioning && updateAesthetics) {
       const parsedAesthetics = parseAesthetics(aesthetics)
 
-      const strokeWidthChanged = mark.props.strokeWidth !== parsedAesthetics.strokeWidth
-      const clipChanged = mark.props.clip !== parsedAesthetics.clip
+      const strokeWidthChanged = layer.props.strokeWidth !== parsedAesthetics.strokeWidth
+      const clipChanged = layer.props.clip !== parsedAesthetics.clip
 
       layer.updateAesthetics(parsedAesthetics)
 
@@ -150,7 +151,7 @@
       if (isInteractiveMouse) {
         const markInterface = $interactionManager.mouse().marks()
 
-        markInterface.loadLayer(mark)
+        markInterface.loadLayer(layer)
 
         if (onClick) markInterface.addLayerInteraction('click', layer, onClick)
         if (onMousedown) markInterface.addLayerInteraction('mousedown', layer, onMousedown)
@@ -163,7 +164,7 @@
       if (isInteractiveTouch) {
         const markInterface = $interactionManager.touch().marks()
 
-        markInterface.loadLayer(mark)
+        markInterface.loadLayer(layer)
 
         if (onTouchdown) markInterface.addLayerInteraction('touchdown', layer, onTouchdown)
         if (onTouchup) markInterface.addLayerInteraction('touchup', layer, onTouchup)

@@ -52,6 +52,7 @@
   onMount(() => {
      mounted = true
      if (renderer === 'canvas') { dirty.set(true) }
+     updateInteractionManagerIfNecessary()
   })
 
   const isMounted = () => mounted
