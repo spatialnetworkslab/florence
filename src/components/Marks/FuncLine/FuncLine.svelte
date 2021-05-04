@@ -1,14 +1,12 @@
 <script>
-  import { createLine, parseAestheticsLine } from '@snlab/rendervous'
+  import { createFuncLine, parseAestheticsFuncLine } from '@snlab/rendervous'
   import Mark from '../Base/Mark.svelte'
 
   // Positioning
+  export let func = undefined
   export let x = undefined
-  export let y = undefined
-  export let geometry = undefined
-  export let curve = undefined
-  export let _resampleIntervals = undefined
-
+  export let resolution = undefined
+  
   // Aesthetics
   export let stroke = undefined
   export let strokeWidth = undefined
@@ -42,7 +40,7 @@
   export let onSelect = undefined
   export let onDeselect = undefined
 
-  $: positioning = { x, y, geometry, curve, _resampleIntervals }
+  $: positioning = { func, x, resolution }
 
   $: aesthetics = {
     stroke, strokeWidth, opacity,
@@ -60,8 +58,8 @@
   {positioning}
   {aesthetics}
   bind:this={mark}
-  createMark={createLine}
-  parseAesthetics={parseAestheticsLine}
+  createMark={createFuncLine}
+  parseAesthetics={parseAestheticsFuncLine}
   className="line"
   {outputSettings}
   {onClick}
