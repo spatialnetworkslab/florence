@@ -1,14 +1,14 @@
 <script>
   import { getContext, onMount, onDestroy, tick } from 'svelte'
   import { svgStyled, getClipPathURL } from '@snlab/rendervous'
-  import { getMarkId } from '../utils/getId.js'
+  import { getLayerId } from '../utils/getId.js'
   import any from '../utils/any.js'
   import merge from '../utils/merge.js'
 
   export let positioning
   export let aesthetics
 
-  export let createMark
+  export let createLayer
   export let parseAesthetics
   export let className
   export let element = 'path'
@@ -40,11 +40,11 @@
   const section = getContext('section')
   const interactionManager = getContext('interactionManager')
 
-  const id = getMarkId()
+  const id = getLayerId()
 
   const createSVGContext = element === 'path'
-    ? svgStyled.path
-    : svgStyled.label
+    ? svgStyled.pathLayer
+    : svgStyled.labelLayer
 
   // Init
   let mounted
@@ -56,19 +56,19 @@
 
   const isMounted = () => mounted
 
-  let mark = create()
-  marksAndLayers[id] = mark
+  let layer = create()
+  marksAndLayers[id] = layer
 
   function create () {
-    let _mark = createMark(
+    let _layer = createLayer(
       merge(positioning, aesthetics),
       $section,
       outputSettings
     )
 
-    _mark.id = id
+    _layer.id = id
 
-    return _mark
+    return _layer
   }
 
   let svgContext
@@ -76,7 +76,7 @@
 
   if (renderer === 'svg') {
     svgContext = createSVGContext()
-    mark.render(svgContext)
+    layer.render(svgContext)
     svgData = svgContext.result()
   }
 
@@ -93,48 +93,50 @@
   $: { if ($section || outputSettings) { scheduleUpdatePositioning() } }
 
   $: {
-    if (updatePositioning) {
-      mark = create()
+    if (isMounted()) {
+      if (updatePositioning) {
+        mark = create()
 
-      if (renderer === 'svg') {
-        svgContext = createSVGContext()
-        mark.render(svgContext)
-        svgData = svgContext.result()
-      }
+        if (renderer === 'svg') {
+          svgContext = createSVGContext()
+          mark.render(svgContext)
+          svgData = svgContext.result()
+        }
 
-      if (renderer === 'canvas') {
-        marksAndLayers[id] = mark
-        dirty.set(true)
-      }
+        if (renderer === 'canvas') {
+          marksAndLayers[id] = mark
+          dirty.set(true)
+        }
 
-      updateInteractionManagerIfNecessary()
-    }
-
-    if (!updatePositioning && updateAesthetics) {
-      const parsedAesthetics = parseAesthetics(aesthetics)
-
-      const strokeWidthChanged = mark.props.strokeWidth !== parsedAesthetics.strokeWidth
-      const clipChanged = mark.props.clip !== parsedAesthetics.clip
-
-      mark.updateAesthetics(parsedAesthetics)
-
-      if (strokeWidthChanged || clipChanged) {
         updateInteractionManagerIfNecessary()
       }
 
-      if (renderer === 'svg') {
-        svgContext = createSVGContext()
-        mark.render(svgContext)
-        svgData = svgContext.result()
+      if (!updatePositioning && updateAesthetics) {
+        const parsedAesthetics = parseAesthetics(aesthetics)
+
+        const strokeWidthChanged = mark.props.strokeWidth !== parsedAesthetics.strokeWidth
+        const clipChanged = mark.props.clip !== parsedAesthetics.clip
+
+        mark.updateAesthetics(parsedAesthetics)
+
+        if (strokeWidthChanged || clipChanged) {
+          updateInteractionManagerIfNecessary()
+        }
+
+        if (renderer === 'svg') {
+          svgContext = createSVGContext()
+          mark.render(svgContext)
+          svgData = svgContext.result()
+        }
+
+        if (renderer === 'canvas') {
+          dirty.set(true)
+        }
       }
 
-      if (renderer === 'canvas') {
-        dirty.set(true)
-      }
+      updatePositioning = false
+      updateAesthetics = false
     }
-
-    updatePositioning = false
-    updateAesthetics = false
   }
 
   // Interactivity
