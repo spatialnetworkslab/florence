@@ -15,7 +15,6 @@
 
   // Other
   export let outputSettings = undefined
-  export let keys = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -223,26 +222,26 @@
 
   <g class={className} clip-path={getClipPathURL(aesthetics, $section)}>
 
-    {#if element === 'path' && keys === undefined}
+    {#if element === 'path' && aesthetics.keys === undefined}
       {#each svgData as mark}
         <path {...mark} />
       {/each}
     {/if}
 
-    {#if element === 'path' && keys !== undefined}
-      {#each svgData as mark, i (keys[i])}
+    {#if element === 'path' && aesthetics.keys !== undefined}
+      {#each svgData as mark, i (aesthetics.keys[i])}
         <path {...mark} />
       {/each}
     {/if}
 
-    {#if element === 'text' && keys === undefined}
+    {#if element === 'text' && aesthetics.keys === undefined}
       {#each svgData as mark}
         <text {...mark} />
       {/each}
     {/if}
 
-    {#if element === 'text' && keys !== undefined}
-      {#each svgData as mark, i (keys[i])}
+    {#if element === 'text' && aesthetics.keys !== undefined}
+      {#each svgData as mark, i (aesthetics.keys[i])}
         <text {...mark} />
       {/each}
     {/if}
