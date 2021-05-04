@@ -1,4 +1,4 @@
-import generateArrayOfLength from '../../Marks/utils/generateArrayOfLength.js'
+import generateArrayOfLength from '../../../utils/generateArrayOfLength.js'
 
 export function getTickPositions (tickValuesArray, scale, tickCount, tickExtra, zoomIdentity) {
   let ticks

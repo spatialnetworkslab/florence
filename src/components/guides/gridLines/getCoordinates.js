@@ -1,4 +1,4 @@
-import generateArrayOfLength from '../../Marks/utils/generateArrayOfLength.js'
+import generateArrayOfLength from '../../../utils/generateArrayOfLength.js'
 
 export function getCoordinatesXRaster (positions, scaleX, sectionContext) {
   const bandOffset = scaleX.bandwidth ? scaleX.bandwidth() / 2 : 0

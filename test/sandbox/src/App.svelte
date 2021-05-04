@@ -3,7 +3,7 @@
 
   // import all playground examples here
   import BarChart from './examples/BarChart.svelte'
-  // import Polygons from './examples/Polygons.svelte'
+  import Polygons from './examples/Polygons.svelte'
   // import GridLayout from './examples/GridLayout.svelte'
   // import ResizeLayout from './examples/ResizeLayout.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
@@ -49,11 +49,11 @@
       url: '/barchart',
       component: BarChart
     },
-    // {
-    //   name: 'Polygons',
-    //   url: '/polygons',
-    //   component: Polygons
-    // },
+    {
+      name: 'Polygons',
+      url: '/polygons',
+      component: Polygons
+    },
     // {
     //   name: 'Grid Layout',
     //   url: '/gridlayout',

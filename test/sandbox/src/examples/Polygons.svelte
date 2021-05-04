@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, Section, Polygon, PolygonLayer } from '../../../../src/'
+  import { Graphic, Section, Polygon, PolygonLayer, cartesian, polar } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   function getRandomValueArray (N, range) {
@@ -39,18 +39,22 @@
   let isHovering = false
 
   let transformation = 'identity'
+  $: coordinates = transformation === 'identity'
+    ? cartesian()
+    : polar()
+
   let chosenGeometry = 'a'
 
   const log = console.log
 </script>
 
-<div>
+<!-- <div>
   <label for="coordinate-select">Coordinates:</label>
   <select name="coordinate-select" bind:value={transformation}>
     <option value="identity">Identity</option>
     <option value="polar">Polar</option>
   </select>
-</div>
+</div> -->
 
 <div>
   <label for="geometry-select">Geometry:</label>
@@ -61,14 +65,14 @@
   </select>
 </div>
 
-<Graphic width={500} height={500} onMouseover={() => { console.log('mouseover') }}>
+<Graphic width={500} height={500} renderer="canvas">
 
   <Section
     x1={50} x2={450}
     y1={50} y2={450}
     scaleX={[0, 10]}
     scaleY={[0, 10]}
-    {transformation}
+    {coordinates}
   >
 
     <Polygon

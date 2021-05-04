@@ -19,8 +19,8 @@ export { default as LabelLayer } from './components/marks/label/LabelLayer.svelt
 export { default as SymbolLayer } from './components/marks/symbol/SymbolLayer.svelte'
 export { default as AreaLayer } from './components/marks/area/AreaLayer.svelte'
 
-// export { default as XAxis } from './components/guides/axes/XAxis.svelte'
-// export { default as YAxis } from './components/guides/axes/YAxis.svelte'
+export { default as XAxis } from './components/guides/axes/XAxis.svelte'
+export { default as YAxis } from './components/guides/axes/YAxis.svelte'
 
 // export { default as XGridLines } from './components/guides/gridLines/XGridLines.svelte'
 // export { default as YGridLines } from './components/guides/gridLines/YGridLines.svelte'
