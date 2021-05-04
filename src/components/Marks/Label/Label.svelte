@@ -1,21 +1,25 @@
 <script>
-  import { createFuncLine, parseAestheticsFuncLine } from '@snlab/rendervous'
+  import { createLabel, parseAestheticsLabel } from '@snlab/rendervous'
   import Mark from '../Base/Mark.svelte'
 
   // Positioning
-  export let func = undefined
   export let x = undefined
-  export let resolution = undefined
-  
+  export let y = undefined
+  export let geometry = undefined
+  export let rotate = undefined
+  export let anchorPoint = undefined
+
   // Aesthetics
+  export let text = undefined
+  export let fontSize = undefined
+  export let fontFamily = undefined
+  export let fontWeight = undefined
+  export let fill = undefined
   export let stroke = undefined
   export let strokeWidth = undefined
+  export let strokeOpacity = undefined
+  export let fillOpacity = undefined
   export let opacity = undefined
-  export let lineCap = undefined
-  export let lineJoin = undefined
-  export let miterLimit = undefined
-  export let dashArray = undefined
-  export let dashOffset = undefined
 
   // Other
   export let outputSettings = undefined
@@ -40,11 +44,13 @@
   export let onSelect = undefined
   export let onDeselect = undefined
 
-  $: positioning = { func, x, resolution }
+  $: positioning = { x, y, geometry, rotate, anchorPoint }
 
   $: aesthetics = {
-    stroke, strokeWidth, opacity,
-    lineCap, dashArray, lineJoin, miterLimit, dashOffset, clip
+    text, fontSize, fontFamily, fontWeight,
+    fill, stroke, strokeWidth,
+    strokeOpacity, fillOpacity, opacity,
+    clip
   }
 
   let mark
@@ -58,9 +64,10 @@
   {positioning}
   {aesthetics}
   bind:this={mark}
-  createMark={createFuncLine}
-  parseAesthetics={parseAestheticsFuncLine}
-  className="funcline"
+  createMark={createLabel}
+  parseAesthetics={parseAestheticsLabel}
+  className="label"
+  element="text"
   {outputSettings}
   {onClick}
   {onMousedown}

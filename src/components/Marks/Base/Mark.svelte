@@ -11,6 +11,7 @@
   export let createMark
   export let parseAesthetics
   export let className
+  export let element = 'path'
 
   // Other
   export let outputSettings = undefined
@@ -41,6 +42,10 @@
 
   const id = getMarkId()
 
+  const createSVGContext = element === 'path'
+    ? svgStyled.path
+    : svgStyled.label
+
   // Init
   let mounted
   onMount(() => { mounted = true })
@@ -65,7 +70,7 @@
   let svgData
 
   if (renderer === 'svg') {
-    svgContext = svgStyled.path()
+    svgContext = createSVGContext()
     mark.render(svgContext)
     svgData = svgContext.result()
   }
@@ -84,7 +89,7 @@
         mark = create()
 
         if (renderer === 'svg') {
-          svgContext = svgStyled.path()
+          svgContext = createSVGContext()
           mark.render(svgContext)
           svgData = svgContext.result()
         }
@@ -110,7 +115,7 @@
         }
 
         if (renderer === 'svg') {
-          svgContext = svgStyled.path()
+          svgContext = createSVGContext()
           mark.render(svgContext)
           svgData = svgContext.result()
         }
@@ -207,11 +212,21 @@
 </script>
 
 {#if renderer === 'svg'}
-  <path
-    {...svgData}
-    class={className}
-    clip-path={getClipPathURL(aesthetics, $section)}
-  />
+  {#if element === 'path'}
+    <path
+      {...svgData}
+      class={className}
+      clip-path={getClipPathURL(aesthetics, $section)}
+    />
+  {/if}
+
+  {#if element === 'text'}
+    <text
+      {...svgData}
+      class={className}
+      clip-path={getClipPathURL(aesthetics, $section)}
+    />
+  {/if}
 {/if}
 
 {#if renderer === 'canvas'}
