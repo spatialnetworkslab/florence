@@ -75,6 +75,7 @@
     svgData = svgContext.result()
   }
 
+  // Handling of updates
   let updatePositioning = false
   let updateAesthetics = false
 
