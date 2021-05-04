@@ -49,18 +49,11 @@
     strokeOpacity, fillOpacity, opacity,
     lineCap, dashArray, dashOffset, clip
   }
-
-  let mark
-
-  // Handling prop updates
-  $: { if (positioning) { mark.scheduleUpdatePositioning() } }
-  $: { if (aesthetics) { mark.scheduleUpdatePositioning() } }
 </script>
 
 <Mark
   {positioning}
   {aesthetics}
-  bind:this={mark}
   createMark={createPoint}
   parseAesthetics={parseAestheticsPoint}
   className="point"

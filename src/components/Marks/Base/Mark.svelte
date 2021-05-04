@@ -48,7 +48,12 @@
 
   // Init
   let mounted
-  onMount(() => { mounted = true })
+
+  onMount(() => {
+     mounted = true
+     if (renderer === 'canvas') { dirty.set(true) }
+  })
+
   const isMounted = () => mounted
 
   let mark = create()
@@ -79,13 +84,16 @@
   let updatePositioning = false
   let updateAesthetics = false
 
-  export function scheduleUpdatePositioning () { if (isMounted()) { updatePositioning = true } }
-  export function scheduleUpdateAesthetics () { if (isMounted()) { updateAesthetics = true } }
+  function scheduleUpdatePositioning () { if (isMounted()) { updatePositioning = true } }
+  function scheduleUpdateAesthetics () { if (isMounted()) { updateAesthetics = true } }
 
-  $: { if ($section || outputSettings) { mark.scheduleUpdatePositioning() } }
+  $: { if (positioning) { scheduleUpdatePositioning() } }
+  $: { if (aesthetics) { scheduleUpdateAesthetics() } }
+
+  $: { if ($section || outputSettings) { scheduleUpdatePositioning() } }
 
   $: {
-    if (mounted) {
+    if (isMounted()) {
       if (updatePositioning) {
         mark = create()
 
