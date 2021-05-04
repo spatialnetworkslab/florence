@@ -50,18 +50,11 @@
     strokeOpacity, fillOpacity, opacity,
     lineCap, lineJoin, miterLimit, dashArray, dashOffset, clip
   }
-
-  let mark
-
-  // Handling prop updates
-  $: { if (positioning) { mark.scheduleUpdatePositioning() } }
-  $: { if (aesthetics) { mark.scheduleUpdatePositioning() } }
 </script>
 
 <Mark
   {positioning}
   {aesthetics}
-  bind:this={mark}
   createMark={createPolygon}
   parseAesthetics={parseAestheticsPolygon}
   className="polygon"

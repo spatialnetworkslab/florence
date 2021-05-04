@@ -44,26 +44,19 @@
   export let onSelect = undefined
   export let onDeselect = undefined
 
-  $: positioning = { x, y, geometry, rotate, anchorPoint }
+  $: positioning = { x, y, geometry, rotate, anchorPoint, text, fontSize }
 
   $: aesthetics = {
-    text, fontSize, fontFamily, fontWeight,
+    anchorPoint, text, fontSize, fontFamily, fontWeight,
     fill, stroke, strokeWidth,
     strokeOpacity, fillOpacity, opacity,
     clip
   }
-
-  let mark
-
-  // Handling prop updates
-  $: { if (positioning) { mark.scheduleUpdatePositioning() } }
-  $: { if (aesthetics) { mark.scheduleUpdatePositioning() } }
 </script>
 
 <Mark
   {positioning}
   {aesthetics}
-  bind:this={mark}
   createMark={createLabel}
   parseAesthetics={parseAestheticsLabel}
   className="label"

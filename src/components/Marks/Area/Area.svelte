@@ -54,18 +54,11 @@
     strokeOpacity, fillOpacity, opacity,
     lineCap, lineJoin, miterLimit, dashArray, dashOffset, clip
   }
-
-  let mark
-
-  // Handling prop updates
-  $: { if (positioning) { mark.scheduleUpdatePositioning() } }
-  $: { if (aesthetics) { mark.scheduleUpdateAesthetics() } }
 </script>
 
 <Mark
   {positioning}
   {aesthetics}
-  bind:this={mark}
   createMark={createArea}
   parseAesthetics={parseAestheticsArea}
   className="area"

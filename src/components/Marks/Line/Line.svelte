@@ -48,18 +48,11 @@
     stroke, strokeWidth, opacity,
     lineCap, dashArray, lineJoin, miterLimit, dashOffset, clip
   }
-
-  let mark
-
-  // Handling prop updates
-  $: { if (positioning) { mark.scheduleUpdatePositioning() } }
-  $: { if (aesthetics) { mark.scheduleUpdatePositioning() } }
 </script>
 
 <Mark
   {positioning}
   {aesthetics}
-  bind:this={mark}
   createMark={createLine}
   parseAesthetics={parseAestheticsLine}
   className="line"
