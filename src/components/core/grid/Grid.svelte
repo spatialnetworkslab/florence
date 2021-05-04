@@ -1,7 +1,7 @@
 <script>
-  import * as SectionContext from '../Section/SectionContext'
-  import Section from '../Section/Section.svelte'
-  import { getPixelCoordinates } from '../Section/getPixelCoordinates.js'
+  import { getContext } from 'svelte'
+  import { createSection } from '@snlab/rendervous'
+  import Section from '../section/Section.svelte'
   import { getAspectRatio, getNRowsAndColumns } from './getNRowsAndColumns.js'
   import { getCells, applyPadding, nameCells } from './cells.js'
 
@@ -18,7 +18,7 @@
   export let cellPadding = undefined
 
   // Contexts
-  const sectionContext = SectionContext.subscribe()
+  const parentSection = getContext('section')
 
   $: aspectRatio = getAspectRatio(pixelCoordinates)
 
@@ -35,7 +35,7 @@
     }
   }
 
-  $: pixelCoordinates = getPixelCoordinates({ x1, x2, y1, y2 }, $sectionContext)
+  $: pixelCoordinates = createSection({ x1, x2, y1, y2 }, $parentSection)
   $: cells = getCells(applyPadding(pixelCoordinates, padding), nrows, ncolumns, cellPadding)
   $: namedCells = nameCells(cells, names)
 </script>
