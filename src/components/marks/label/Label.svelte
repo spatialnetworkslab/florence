@@ -1,6 +1,6 @@
 <script>
   import { createLabel, parseAestheticsLabel } from '@snlab/rendervous'
-  import Mark from '../Base/Mark.svelte'
+  import Mark from '../base/Mark.svelte'
 
   // Positioning
   export let x = undefined

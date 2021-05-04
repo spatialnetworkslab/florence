@@ -1,6 +1,6 @@
 <script>
   import { createAreaLayer, parseAestheticsAreaLayer } from '@snlab/rendervous'
-  import Layer from '../Base/Layer.svelte'
+  import Layer from '../base/Layer.svelte'
 
   // Positioning
   export let x = undefined
