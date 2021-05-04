@@ -89,7 +89,6 @@
 
   $: { if (positioning) { scheduleUpdatePositioning() } }
   $: { if (aesthetics) { scheduleUpdateAesthetics() } }
-
   $: { if ($section || outputSettings) { scheduleUpdatePositioning() } }
 
   $: {

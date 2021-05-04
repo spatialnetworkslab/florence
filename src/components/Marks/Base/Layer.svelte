@@ -15,6 +15,7 @@
 
   // Other
   export let outputSettings = undefined
+  export let keys = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -89,54 +90,51 @@
 
   $: { if (positioning) { scheduleUpdatePositioning() } }
   $: { if (aesthetics) { scheduleUpdateAesthetics() } }
-
   $: { if ($section || outputSettings) { scheduleUpdatePositioning() } }
 
   $: {
-    if (isMounted()) {
-      if (updatePositioning) {
-        mark = create()
+    if (updatePositioning) {
+      layer = create()
 
-        if (renderer === 'svg') {
-          svgContext = createSVGContext()
-          mark.render(svgContext)
-          svgData = svgContext.result()
-        }
+      if (renderer === 'svg') {
+        svgContext = createSVGContext()
+        layer.render(svgContext)
+        svgData = svgContext.result()
+      }
 
-        if (renderer === 'canvas') {
-          marksAndLayers[id] = mark
-          dirty.set(true)
-        }
+      if (renderer === 'canvas') {
+        marksAndLayers[id] = layer
+        dirty.set(true)
+      }
 
+      updateInteractionManagerIfNecessary()
+    }
+
+    if (!updatePositioning && updateAesthetics) {
+      const parsedAesthetics = parseAesthetics(aesthetics)
+
+      const strokeWidthChanged = mark.props.strokeWidth !== parsedAesthetics.strokeWidth
+      const clipChanged = mark.props.clip !== parsedAesthetics.clip
+
+      layer.updateAesthetics(parsedAesthetics)
+
+      if (strokeWidthChanged || clipChanged) {
         updateInteractionManagerIfNecessary()
       }
 
-      if (!updatePositioning && updateAesthetics) {
-        const parsedAesthetics = parseAesthetics(aesthetics)
-
-        const strokeWidthChanged = mark.props.strokeWidth !== parsedAesthetics.strokeWidth
-        const clipChanged = mark.props.clip !== parsedAesthetics.clip
-
-        mark.updateAesthetics(parsedAesthetics)
-
-        if (strokeWidthChanged || clipChanged) {
-          updateInteractionManagerIfNecessary()
-        }
-
-        if (renderer === 'svg') {
-          svgContext = createSVGContext()
-          mark.render(svgContext)
-          svgData = svgContext.result()
-        }
-
-        if (renderer === 'canvas') {
-          dirty.set(true)
-        }
+      if (renderer === 'svg') {
+        svgContext = createSVGContext()
+        layer.render(svgContext)
+        svgData = svgContext.result()
       }
 
-      updatePositioning = false
-      updateAesthetics = false
+      if (renderer === 'canvas') {
+        dirty.set(true)
+      }
     }
+
+    updatePositioning = false
+    updateAesthetics = false
   }
 
   // Interactivity
@@ -152,26 +150,26 @@
       if (isInteractiveMouse) {
         const markInterface = $interactionManager.mouse().marks()
 
-        markInterface.loadMark(mark)
+        markInterface.loadLayer(mark)
 
-        if (onClick) markInterface.addMarkInteraction('click', mark, onClick)
-        if (onMousedown) markInterface.addMarkInteraction('mousedown', mark, onMousedown)
-        if (onMouseup) markInterface.addMarkInteraction('mouseup', mark, onMouseup)
-        if (onMouseout) markInterface.addMarkInteraction('mouseout', mark, onMouseout)
-        if (onMouseover) markInterface.addMarkInteraction('mouseover', mark, onMouseover)
-        if (onMousedrag) markInterface.addMarkInteraction('mousedrag', mark, onMousedrag)
+        if (onClick) markInterface.addLayerInteraction('click', layer, onClick)
+        if (onMousedown) markInterface.addLayerInteraction('mousedown', layer, onMousedown)
+        if (onMouseup) markInterface.addLayerInteraction('mouseup', layer, onMouseup)
+        if (onMouseout) markInterface.addLayerInteraction('mouseout', layer, onMouseout)
+        if (onMouseover) markInterface.addLayerInteraction('mouseover', layer, onMouseover)
+        if (onMousedrag) markInterface.addLayerInteraction('mousedrag', layer, onMousedrag)
       }
 
       if (isInteractiveTouch) {
         const markInterface = $interactionManager.touch().marks()
 
-        markInterface.loadMark(mark)
+        markInterface.loadLayer(mark)
 
-        if (onTouchdown) markInterface.addMarkInteraction('touchdown', mark, onTouchdown)
-        if (onTouchup) markInterface.addMarkInteraction('touchup', mark, onTouchup)
-        if (onTouchover) markInterface.addMarkInteraction('touchover', mark, onTouchover)
-        if (onTouchout) markInterface.addMarkInteraction('touchout', mark, onTouchout)
-        if (onTouchdrag) markInterface.addMarkInteraction('touchdrag', mark, onTouchdrag)
+        if (onTouchdown) markInterface.addLayerInteraction('touchdown', layer, onTouchdown)
+        if (onTouchup) markInterface.addLayerInteraction('touchup', layer, onTouchup)
+        if (onTouchover) markInterface.addLayerInteraction('touchover', layer, onTouchover)
+        if (onTouchout) markInterface.addLayerInteraction('touchout', layer, onTouchout)
+        if (onTouchdrag) markInterface.addLayerInteraction('touchdrag', layer, onTouchdrag)
       }
     }
 
@@ -180,7 +178,7 @@
     if (isSelectable) {
       const selectManager = $interactionManager.select()
 
-      selectManager.loadMark(mark, { onSelect, onDeselect })
+      selectManager.loadLayer(layer, { onSelect, onDeselect })
     }
   }
 
@@ -188,18 +186,18 @@
     if (primaryInput === 'mouse') {
       const markMouseInterface = $interactionManager.mouse().marks()
 
-      if (markMouseInterface.markIsLoaded(mark)) {
-        markMouseInterface.removeAllMarkInteractions(mark)
-        markMouseInterface.removeMark(mark)
+      if (markMouseInterface.layerIsLoaded(layer)) {
+        markMouseInterface.removeAllLayerInteractions(layer)
+        markMouseInterface.removeLayer(layer)
       }
     }
 
     if (primaryInput === 'touch') {
       const markTouchInterface = $interactionManager.touch().marks()
 
-      if (markTouchInterface.markIsLoaded(mark)) {
-        markTouchInterface.removeAllMarkInteractions(mark)
-        markTouchInterface.removeMark(mark)
+      if (markTouchInterface.layerIsLoaded(layer)) {
+        markTouchInterface.removeAllLayerInteractions(layer)
+        markTouchInterface.removeLayer(layer)
       }
     }
   }
@@ -207,8 +205,8 @@
   function removeMarkFromSelectIfNecessary () {
     const selectManager = $interactionManager.select()
 
-    if (selectManager.markIsLoaded(mark)) {
-      selectManager.removeMark(mark)
+    if (selectManager.layerIsLoaded(layer)) {
+      selectManager.removeLayer(layer)
     }
   }
 
@@ -221,21 +219,35 @@
 </script>
 
 {#if renderer === 'svg'}
-  {#if element === 'path'}
-    <path
-      {...svgData}
-      class={className}
-      clip-path={getClipPathURL(aesthetics, $section)}
-    />
-  {/if}
 
-  {#if element === 'text'}
-    <text
-      {...svgData}
-      class={className}
-      clip-path={getClipPathURL(aesthetics, $section)}
-    />
-  {/if}
+  <g class={className} clip-path={getClipPathURL(aesthetics, $section)}>
+
+    {#if element === 'path' && keys === undefined}
+      {#each svgData as mark}
+        <path {...mark} />
+      {/each}
+    {/if}
+
+    {#if element === 'path' && keys !== undefined}
+      {#each svgData as mark, i (keys[i])}
+        <path {...mark} />
+      {/each}
+    {/if}
+
+    {#if element === 'text' && keys === undefined}
+      {#each svgData as mark}
+        <text {...mark} />
+      {/each}
+    {/if}
+
+    {#if element === 'text' && keys !== undefined}
+      {#each svgData as mark, i (keys[i])}
+        <text {...mark} />
+      {/each}
+    {/if}
+
+  </g>
+
 {/if}
 
 {#if renderer === 'canvas'}
