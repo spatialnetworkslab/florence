@@ -10,7 +10,6 @@
 
   // global properties
   export let flip = false
-  export let scale = undefined
 
   // axis baseline
   export let baseLine = true
@@ -69,11 +68,6 @@
     }
   }
 
-  // Scale
-  $: scaleY = scale
-    ? scale.copy().range($section.scaleY.range())
-    : $section.scaleY
-
   // Absolute position (in pixels)
   $: xAbsolute = parseHJust(hjust, xOffset, $section.paddedBbox)
 
@@ -83,24 +77,25 @@
   // Ticks
   $: tickPositions = getTickPositions(
     tickValues,
-    scaleY,
+    $section.directScales.x,
     tickCount,
     tickExtra,
     $section.zoomIdentity
       ? { t: $section.zoomIdentity.y, k: $section.zoomIdentity.ky }
       : undefined
   )
+
   $: tickCoordinates = getTickCoordinatesYAxis(
     tickPositions,
     xAbsolute,
-    scaleY,
+    $section.scaleY,
     $section.indirectScales.x,
     tickSize,
     flip
   )
 
   // Tick labels
-  $: format = getFormat(labelFormat, scaleY, ticks.length)
+  $: format = getFormat(labelFormat, $section.scaleY, ticks.length)
   $: tickLabelText = tickPositions.map(format)
   $: tickLabelCoordinates = getTickLabelCoordinatesYAxis(tickCoordinates, $section, labelOffset, flip)
   $: labelAnchorPoint = flip ? 'l' : 'r'

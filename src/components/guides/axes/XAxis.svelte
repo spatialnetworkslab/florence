@@ -10,7 +10,6 @@
 
   // global properties
   export let flip = false
-  export let scale = undefined
 
   // axis baseline
   export let baseLine = true
@@ -67,11 +66,6 @@
       throw new Error('Cannot use axes with alternative coordinate systems (for now)')
     }
   }
-
-  // Scale
-  $: scaleX = scale
-    ? scale.copy().range($section.scaleX.range())
-    : $section.scaleX
   
   // Absolute position (in pixels)
   $: yAbsolute = parseVJust(vjust, yOffset, $section.paddedBbox)
@@ -82,24 +76,25 @@
   // Ticks
   $: tickPositions = getTickPositions(
     tickValues,
-    scaleX,
+    $section.directScales.x,
     tickCount,
     tickExtra,
     $section.zoomIdentity 
       ? { t: $section.zoomIdentity.x, k: $section.zoomIdentity.kx }
       : undefined
   )
+
   $: tickCoordinates = getTickCoordinatesXAxis(
     tickPositions,
     yAbsolute,
-    scaleX,
+    $section.scaleX,
     $section.indirectScales.y,
     tickSize,
     flip
   )
 
   // Tick labels
-  $: format = getFormat(labelFormat, scaleX, ticks.length)
+  $: format = getFormat(labelFormat, $section.scaleX, ticks.length)
   $: tickLabelText = tickPositions.map(format)
   $: tickLabelCoordinates = getTickLabelCoordinatesXAxis(tickCoordinates, $section, labelOffset, flip)
   $: labelAnchorPoint = flip ? 'b' : 't'

@@ -1,21 +1,21 @@
 import generateArrayOfLength from '../../../utils/generateArrayOfLength.js'
 
-export function getTickPositions (tickValuesArray, scale, tickCount, tickExtra, zoomIdentity) {
+export function getTickPositions (tickValuesArray, directScale, tickCount, tickExtra, zoomIdentity) {
   let ticks
 
   if (Array.isArray(tickValuesArray) && tickValuesArray.length > 0) {
     ticks = tickValuesArray
-  } else if (isContinuous(scale)) {
-    ticks = getContinuousTicks(scale, tickCount, zoomIdentity)
-  } else if ('domain' in scale) {
-    ticks = scale.domain()
+  } else if (isContinuous(directScale)) {
+    ticks = getContinuousTicks(directScale, tickCount, zoomIdentity)
+  } else if ('domain' in directScale) {
+    ticks = directScale.domain()
   } else {
     throw new Error(`Couldn't construct axis. Please provide 'tickValues' or a scale with
       either a 'ticks' or a 'domain' method.`)
   }
 
-  if (tickExtra && 'domain' in scale && ticks[0] !== scale.domain()[0]) {
-    ticks.unshift(scale.domain()[0])
+  if (tickExtra && 'domain' in directScale && ticks[0] !== directScale.domain()[0]) {
+    ticks.unshift(directScale.domain()[0])
   }
 
   return ticks
