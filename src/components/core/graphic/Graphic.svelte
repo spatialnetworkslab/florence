@@ -85,6 +85,7 @@
       const id = childArray[i].data
 
       if (!isEmpty(id)) {
+        console.log(marksAndLayers[id])
         marksAndLayers[id].render(context)
       }
     }
