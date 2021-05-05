@@ -4,11 +4,9 @@
   // import all playground examples here
   import BarChart from './examples/BarChart.svelte'
   import Polygons from './examples/Polygons.svelte'
-  // import GridLayout from './examples/GridLayout.svelte'
-  // import ResizeLayout from './examples/ResizeLayout.svelte'
+  import GridLayout from './examples/GridLayout.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
-  // import ZoomPan from './examples/ZoomPan.svelte'
-  // import BaseMark from './examples/BaseMark.svelte'
+  import ZoomPan from './examples/ZoomPan.svelte'
   // import Line from './examples/Line.svelte'
 
   // import FuncLines from './examples/FuncLines.svelte'
@@ -54,31 +52,21 @@
       url: '/polygons',
       component: Polygons
     },
-    // {
-    //   name: 'Grid Layout',
-    //   url: '/gridlayout',
-    //   component: GridLayout
-    // },
-    // {
-    //   name: 'Resize Layout',
-    //   url: '/resizelayout',
-    //   component: ResizeLayout
-    // },
+    {
+      name: 'Grid Layout',
+      url: '/gridlayout',
+      component: GridLayout
+    },
     {
       name: 'Scatterplot',
       url: '/scatterplot',
       component: Scatterplot
     },
-    // {
-    //   name: 'ZoomPan',
-    //   url: '/zoompan',
-    //   component: ZoomPan
-    // },
-    // {
-    //   name: 'Base mark',
-    //   url: '/basemark',
-    //   component: BaseMark
-    // },
+    {
+      name: 'ZoomPan',
+      url: '/zoompan',
+      component: ZoomPan
+    },
     // {
     //   name: 'Line',
     //   url: '/line',
