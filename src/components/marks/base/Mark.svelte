@@ -230,9 +230,12 @@
   {#if element === 'text'}
     <text
       {...svgData}
+      text={undefined}
       class={className}
       clip-path={getClipPathURL(aesthetics, $section)}
-    />
+    >
+      {svgData.text}
+    </text>
   {/if}
 {/if}
 

@@ -236,13 +236,13 @@
 
     {#if element === 'text' && aesthetics.keys === undefined}
       {#each svgData as mark}
-        <text {...mark} />
+        <text {...mark} text={undefined}>{mark.text}</text>
       {/each}
     {/if}
 
     {#if element === 'text' && aesthetics.keys !== undefined}
       {#each svgData as mark, i (aesthetics.keys[i])}
-        <text {...mark} />
+        <text {...mark} text={undefined}>{mark.text}</text>
       {/each}
     {/if}
 
