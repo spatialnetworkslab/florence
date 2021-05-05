@@ -121,54 +121,50 @@
   )
 </script>
 
-<g class="y-axis">
+{#if baseLine}
+  <Line 
+    {...baseLineCoordinates}
+    strokeWidth={baseLineWidth}
+    opacity={baseLineOpacity}
+    stroke={baseLineColor}
+    {clip}
+  />
+{/if}
+
+{#if ticks}
+  <LineLayer 
+    {...tickCoordinates}
+    strokeWidth={tickWidth}
+    opacity={tickOpacity}
+    stroke={tickColor}
+    {clip}
+  />
     
-  {#if baseLine}
-    <Line 
-      {...baseLineCoordinates}
-      strokeWidth={baseLineWidth}
-      opacity={baseLineOpacity}
-      stroke={baseLineColor}
-      {clip}
-    />
-  {/if}
+  <LabelLayer
+    {...tickLabelCoordinates}
+    text={tickLabelText} 
+    anchorPoint={labelAnchorPoint}
+    rotation={labelRotate}
+    fontFamily={labelFont}
+    fontSize={labelFontSize}
+    fontWeight={labelFontWeight}
+    opacity={labelOpacity}
+    fill={labelColor}
+    {clip}
+  />
+{/if}
 
-  {#if ticks}
-    <LineLayer 
-      {...tickCoordinates}
-      strokeWidth={tickWidth}
-      opacity={tickOpacity}
-      stroke={tickColor}
-      {clip}
-    />
-    
-    <LabelLayer
-      {...tickLabelCoordinates}
-      text={tickLabelText} 
-      anchorPoint={labelAnchorPoint}
-      rotation={labelRotate}
-      fontFamily={labelFont}
-      fontSize={labelFontSize}
-      fontWeight={labelFontWeight}
-      opacity={labelOpacity}
-      fill={labelColor}
-      {clip}
-    />
-  {/if}
-
-  {#if title.length > 0}
-    <Label 
-      {...titleCoordinates}
-      text={title}
-      anchorPoint={titleAnchorPoint}
-      rotation={titleRotate}
-      fontFamily={titleFont}
-      fontSize={titleFontSize}
-      fontWeight={titleFontWeight}
-      opacity={titleOpacity}
-      fill={titleColor}
-      {clip}
-    />
-  {/if}
-
-</g>
+{#if title.length > 0}
+  <Label 
+    {...titleCoordinates}
+    text={title}
+    anchorPoint={titleAnchorPoint}
+    rotation={titleRotate}
+    fontFamily={titleFont}
+    fontSize={titleFontSize}
+    fontWeight={titleFontWeight}
+    opacity={titleOpacity}
+    fill={titleColor}
+    {clip}
+  />
+{/if}

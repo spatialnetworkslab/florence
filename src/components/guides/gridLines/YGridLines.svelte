@@ -1,6 +1,6 @@
 <script>
+  import { getContext } from 'svelte'
   import { LineLayer } from '../../../index.js'
-  import * as SectionContext from '../../Core/Section/SectionContext'
 
   import { getTickPositions } from '../Axes/ticks.js'
   import { getCoordinatesYRaster } from './getCoordinates.js'
@@ -12,22 +12,21 @@
   export let width = 0.25
   export let color = 'black'
   export let opacity = 1
-  export let transition = undefined
 
   // Contexts
-  const sectionContext = SectionContext.subscribe()
+  const section = getContext('section')
 
   // Make sure not polar
   $: {
-    if ($sectionContext.transformation === 'polar') {
-      throw new Error('Rasters do\'nt work with polar coordinates (for now)')
+    if ($section.coordinateSystem) {
+      throw new Error('Cannot use grid lines with alternative coordinate systems (for now)')
     }
   }
 
   // Scale
   $: scaleY = scale
-    ? scale.copy().range($sectionContext.rangeY)
-    : $sectionContext.scaleY
+    ? scale.copy().range($section.scaleY.range())
+    : $section.scaleY
 
   // Ticks
   $: positions = getTickPositions(
@@ -35,26 +34,21 @@
     scaleY,
     count,
     extra,
-    $sectionContext.zoomIdentity 
-      ? { t: $sectionContext.zoomIdentity.y, k: $sectionContext.zoomIdentity.ky }
+    $section.zoomIdentity 
+      ? { t: $section.zoomIdentity.y, k: $section.zoomIdentity.ky }
       : undefined
   )
 
   $: coordinates = getCoordinatesYRaster(
     positions,
     scaleY,
-    $sectionContext
+    $section
   )
 </script>
 
-<g class="y-grid-lines">
-    
-  <LineLayer 
-    {...coordinates}
-    strokeWidth={width}
-    opacity={opacity}
-    stroke={color}
-    {transition}
-  />
-
-</g>
+<LineLayer 
+  {...coordinates}
+  strokeWidth={width}
+  opacity={opacity}
+  stroke={color}
+/>
