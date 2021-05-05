@@ -64,6 +64,9 @@
   let section
 
   $: {
+    console.log(`id: ${id}`)
+    console.log(scaleX)
+    console.log(scaleY)
     section = createSection({
       x1,
       x2,

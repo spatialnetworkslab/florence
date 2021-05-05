@@ -85,7 +85,6 @@
       const id = childArray[i].data
 
       if (!isEmpty(id)) {
-        console.log(marksAndLayers[id])
         marksAndLayers[id].render(context)
       }
     }
@@ -98,7 +97,7 @@
         dirty.set(false)
       })
     }
-  }
+  } 
 </script>
 
 {#if renderer === 'svg'}
@@ -151,8 +150,8 @@
     y1={0}
     y2={height}
     {coordinates}
-    {scaleX}
-    {scaleY}
+    scaleX={scaleX ?? [0, width]}
+    scaleY={scaleY ?? [0, height]}
     {flipX}
     {flipY}
     {padding}
