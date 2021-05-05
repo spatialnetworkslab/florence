@@ -38,10 +38,6 @@
   $: pixelCoordinates = getPixelCoordinates({ x1, x2, y1, y2 }, $parentSection)
   $: cells = getCells(applyPadding(pixelCoordinates, padding), nrows, ncolumns, cellPadding)
   $: namedCells = nameCells(cells, names)
-
-  $: {
-    console.log(pixelCoordinates)
-  }
 </script>
 
 <Section {x1} {x2} {y1} {y2} scaleX={[x1, x2]} scaleY={[y1, y2]}>
