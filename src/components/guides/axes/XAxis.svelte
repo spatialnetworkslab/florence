@@ -71,7 +71,7 @@
   $: yAbs = parseVJust(vjust, yOffset, $section.paddedBbox)
 
   // Baseline
-  $: baseLineCoordinates = getBaseLineCoordinatesXAxis(yAbs)
+  $: baseLineCoordinates = getBaseLineCoordinatesXAxis(yAbs, $section)
   
   // Ticks
   $: tickPositions = getTickPositions(
@@ -86,7 +86,7 @@
 
   $: tickCoordinates = getTickCoordinatesXAxis(
     tickPositions,
-    yAbsolute,
+    yAbs,
     tickSize,
     flip
   )
@@ -108,7 +108,7 @@
     flip,
     axisHeight,
     titleFontSize,
-    yAbsolute
+    yAbs
   )
 </script>
 

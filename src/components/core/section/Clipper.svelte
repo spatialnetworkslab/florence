@@ -3,10 +3,10 @@
 
   export let section
 
-  const paddingClipId = `clip-padding-${section.id}`
-  const paddingClipRect = bboxToClipRect(section.paddedBbox)
-  const outerClipId = `clip-outer-${section.id}`
-  const outerClipRect = bboxToClipRect(section.bbox)
+  $: paddingClipId = `clip-padding-${section.id}`
+  $: paddingClipRect = bboxToClipRect(section.paddedBbox)
+  $: outerClipId = `clip-outer-${section.id}`
+  $: outerClipRect = bboxToClipRect(section.bbox)
 </script>
 
 <clipPath id={paddingClipId}>

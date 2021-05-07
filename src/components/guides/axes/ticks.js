@@ -36,6 +36,7 @@ function getContinuousTicks (scale, tickCount, zoomIdentity) {
 function rescale (scale, { k, t }) {
   const rescaledRange = scale.range().map(r => (r - t) / k)
   const rescaledDomain = rescaledRange.map(scale.invert)
+
   return rescaledDomain
 }
 

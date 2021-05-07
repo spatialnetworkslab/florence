@@ -72,12 +72,12 @@
   $: xAbs = parseHJust(hjust, xOffset, $section.paddedBbox)
 
   // Baseline
-  $: baseLineCoordinates = getBaseLineCoordinatesYAxis(xAbs)
+  $: baseLineCoordinates = getBaseLineCoordinatesYAxis(xAbs, $section)
   
   // Ticks
   $: tickPositions = getTickPositions(
     tickValues,
-    $section.directScales.x,
+    $section.directScales.y,
     tickCount,
     tickExtra,
     $section.zoomIdentity
@@ -87,7 +87,7 @@
 
   $: tickCoordinates = getTickCoordinatesYAxis(
     tickPositions,
-    xAbsolute,
+    xAbs,
     tickSize,
     flip
   )
@@ -110,7 +110,7 @@
     flip,
     axisWidth,
     titleFontSize,
-    xAbsolute
+    xAbs
   )
 </script>
 
