@@ -57,7 +57,7 @@
       onMouseover={() => { hovered = !hovered }} 
     />
 
-    <!-- <LineLayer
+    <LineLayer
       x={[data.column('x')]}
       y={[data.column('y')]}
       strokeWidth={hovered ? 2: 10}
@@ -73,7 +73,7 @@
       onMouseout={() => { hoverKey = null }}
       stroke={({ key }) => key === hoverKey ? '#3f88c5' : '#f49d37'}
       strokeWidth={3}
-    /> -->
+    />
 
   </Section>
 
