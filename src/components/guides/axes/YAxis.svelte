@@ -69,10 +69,10 @@
   }
 
   // Absolute position (in pixels)
-  $: xAbsolute = parseHJust(hjust, xOffset, $section.paddedBbox)
+  $: xAbs = parseHJust(hjust, xOffset, $section.paddedBbox)
 
   // Baseline
-  $: baseLineCoordinates = getBaseLineCoordinatesYAxis(xAbsolute, $section)
+  $: baseLineCoordinates = getBaseLineCoordinatesYAxis(xAbs)
   
   // Ticks
   $: tickPositions = getTickPositions(
@@ -88,8 +88,6 @@
   $: tickCoordinates = getTickCoordinatesYAxis(
     tickPositions,
     xAbsolute,
-    $section.scaleY,
-    $section.indirectScales.x,
     tickSize,
     flip
   )
@@ -97,7 +95,7 @@
   // Tick labels
   $: format = getFormat(labelFormat, $section.scaleY, ticks.length)
   $: tickLabelText = tickPositions.map(format)
-  $: tickLabelCoordinates = getTickLabelCoordinatesYAxis(tickCoordinates, $section, labelOffset, flip)
+  $: tickLabelCoordinates = getTickLabelCoordinatesYAxis(tickCoordinates, labelOffset, flip)
   $: labelAnchorPoint = flip ? 'l' : 'r'
   $: tickLabelWidth = getTextWidth(tickLabelText[tickLabelText.length - 1], labelFontSize, labelFont)
 

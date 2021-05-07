@@ -1,5 +1,3 @@
-import generateArrayOfLength from '../../../utils/generateArrayOfLength.js'
-
 export function getTickPositions (tickValuesArray, directScale, tickCount, tickExtra, zoomIdentity) {
   let ticks
 
@@ -43,55 +41,35 @@ function rescale (scale, { k, t }) {
 
 export function getTickCoordinatesXAxis (
   ticks,
-  yAbsolute,
-  scaleX,
-  indirectScaleY,
+  yAbs,
   tickSize,
   flip
 ) {
-  const offset = flip ? -tickSize : tickSize
-  const bandOffset = scaleX.bandwidth ? scaleX.bandwidth() / 2 : 0
-
-  const yEndAbsolute = yAbsolute + offset
-
-  const yCoordsTick = [
-    indirectScaleY.invert(yAbsolute),
-    indirectScaleY.invert(yEndAbsolute)
-  ]
-
-  const x = ticks.map(t => scaleX(t) + bandOffset).map(t => [t, t])
-  const y = generateArrayOfLength(yCoordsTick, ticks.length)
+  const yOffset = flip ? -tickSize : tickSize
 
   return {
-    x: () => x,
-    y: () => y
+    x: ({ scaleX, bwx }) => {
+      const bandOffset = bwx ? bwx() / 2 : 0
+      return ticks.map(t => scaleX(t) + bandOffset).map(t => [t, t])
+    },
+    y: ({ py, pyAt }) => { const y = pyAt(yAbs); return ticks.map(_ => [y, y + py(yOffset)]) }
   }
 }
 
 export function getTickCoordinatesYAxis (
   ticks,
-  xAbsolute,
-  scaleY,
-  indirectScaleX,
+  xAbs,
   tickSize,
   flip
 ) {
-  const offset = flip ? tickSize : -tickSize
-  const bandOffset = scaleY.bandwidth ? scaleY.bandwidth() / 2 : 0
-
-  const xEndAbsolute = xAbsolute + offset
-
-  const xCoordsTick = [
-    indirectScaleX.invert(xAbsolute),
-    indirectScaleX.invert(xEndAbsolute)
-  ]
-
-  const x = generateArrayOfLength(xCoordsTick, ticks.length)
-  const y = ticks.map(t => scaleY(t) + bandOffset).map(t => [t, t])
+  const xOffset = flip ? tickSize : -tickSize
 
   return {
-    x: () => x,
-    y: () => y
+    x: ({ px, pxAt }) => { const x = pxAt(xAbs); return ticks.map(_ => [x, x + px(xOffset)]) },
+    y: ({ scaleY, bwy }) => {
+      const bandOffset = bwy ? bwy() / 2 : 0
+      return ticks.map(t => scaleY(t) + bandOffset).map(t => [t, t])
+    }
   }
 }
 

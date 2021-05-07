@@ -5,7 +5,7 @@ export function getTitleCoordinatesXAxis (
   xOffset,
   vjust,
   yOffset,
-  sectionContext,
+  section,
   flip,
   axisHeight,
   fontSize,
@@ -13,19 +13,14 @@ export function getTitleCoordinatesXAxis (
 ) {
   const heightOffset = getHeightOffset(yOffset, flip, axisHeight, fontSize)
 
-  const xAbsolute = parseHJust(hjust, xOffset, sectionContext.paddedBbox)
-  const yAbsolute = vjust === 'axis'
+  const xAbs = parseHJust(hjust, xOffset, section.paddedBbox)
+  const yAbs = vjust === 'axis'
     ? yAbsoluteAxis + heightOffset
-    : parseVJust(vjust, yOffset, sectionContext.paddedBbox) + heightOffset
-
-  const { indirectScales } = sectionContext
-
-  const x = indirectScales.x.invert(xAbsolute)
-  const y = indirectScales.y.invert(yAbsolute)
+    : parseVJust(vjust, yOffset, section.paddedBbox) + heightOffset
 
   return {
-    x: () => x,
-    y: () => y
+    x: ({ pxAt }) => pxAt(xAbs),
+    y: ({ pyAt }) => pyAt(yAbs)
   }
 }
 
@@ -37,7 +32,7 @@ function getHeightOffset (offset, flip, axisHeight, fontSize) {
   }
 
   if (offset.constructor !== Number) {
-    throw new Error('yOffset must be a Number')
+    throw new Error('yOffset must be a Number or \'axis\'')
   }
 
   return offset
@@ -48,26 +43,22 @@ export function getTitleCoordinatesYAxis (
   xOffset,
   vjust,
   yOffset,
-  sectionContext,
+  section,
   flip,
   axisWidth,
   fontSize,
   xAbsoluteAxis
 ) {
   const widthOffset = getWidthOffset(xOffset, flip, axisWidth, fontSize)
-  const xAbsolute = hjust === 'axis'
+
+  const xAbs = hjust === 'axis'
     ? xAbsoluteAxis + widthOffset
-    : parseHJust(hjust, xOffset, sectionContext.paddedBbox)
-  const yAbsolute = parseHJust(vjust, yOffset, sectionContext.paddedBbox)
-
-  const { indirectScales } = sectionContext
-
-  const x = indirectScales.x.invert(xAbsolute)
-  const y = indirectScales.y.invert(yAbsolute)
+    : parseHJust(hjust, xOffset, section.paddedBbox)
+  const yAbs = parseHJust(vjust, yOffset, section.paddedBbox)
 
   return {
-    x: () => x,
-    y: () => y
+    x: ({ pxAt }) => pxAt(xAbs),
+    y: ({ pyAt }) => pyAt(yAbs)
   }
 }
 
@@ -79,7 +70,7 @@ function getWidthOffset (offset, flip, axisWidth, fontSize) {
   }
 
   if (offset.constructor !== Number) {
-    throw new Error('xOffset must be a Number')
+    throw new Error('xOffset must be a Number or \'axis\'')
   }
 
   return offset
