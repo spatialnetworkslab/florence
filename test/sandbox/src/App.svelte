@@ -7,10 +7,10 @@
   import GridLayout from './examples/GridLayout.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
   import ZoomPan from './examples/ZoomPan.svelte'
-  // import Line from './examples/Line.svelte'
+  import Line from './examples/Line.svelte'
 
-  // import FuncLines from './examples/FuncLines.svelte'
-  // import DragCategorical from './examples/DragCategorical.svelte'
+  import FuncLines from './examples/FuncLines.svelte'
+  import DragCategorical from './examples/DragCategorical.svelte'
   import FunctionAPI from './examples/FunctionAPI.svelte'
   // import FlipTest from './examples/FlipTest.svelte'
   // import NonNumericAxis from './examples/NonNumericAxis.svelte'
@@ -67,26 +67,26 @@
       url: '/zoompan',
       component: ZoomPan
     },
-    // {
-    //   name: 'Line',
-    //   url: '/line',
-    //   component: Line
-    // },
+    {
+      name: 'Line',
+      url: '/line',
+      component: Line
+    },
     // {
     //   name: 'Geo Polygons',
     //   url: '/geopolygons',
     //   component: GeoPolygons
     // },
-    // {
-    //   name: 'FuncLines',
-    //   url: 'funclines',
-    //   component: FuncLines
-    // },
-    // {
-    //   name: 'DragCategorical',
-    //   url: 'dragcategorical',
-    //   component: DragCategorical
-    // },
+    {
+      name: 'FuncLines',
+      url: 'funclines',
+      component: FuncLines
+    },
+    {
+      name: 'DragCategorical',
+      url: 'dragcategorical',
+      component: DragCategorical
+    },
     {
       name: 'Function API',
       url: 'functionapi',

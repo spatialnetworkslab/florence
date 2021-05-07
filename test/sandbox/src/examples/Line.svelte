@@ -6,7 +6,6 @@
   const data = new DataContainer({
     x: [1, 2, 4, 6, 9, 10, 12, 13],
     y: [1.5, 3.3, 2.8, 7.95, 3.39, 5.3, 6.34, 7]
-    // y: new Array(8).fill(0).map((_, i) => Math.random() * (i * 2))
   })
 
   const multiLineString = {
@@ -56,10 +55,9 @@
       stroke={clicked ? 'green' : 'red'}
       onClick={() => { clicked = !clicked }} 
       onMouseover={() => { hovered = !hovered }} 
-      transition={2000}
     />
 
-    <LineLayer
+    <!-- <LineLayer
       x={[data.column('x')]}
       y={[data.column('y')]}
       strokeWidth={hovered ? 2: 10}
@@ -75,7 +73,7 @@
       onMouseout={() => { hoverKey = null }}
       stroke={({ key }) => key === hoverKey ? '#3f88c5' : '#f49d37'}
       strokeWidth={3}
-    />
+    /> -->
 
   </Section>
 
