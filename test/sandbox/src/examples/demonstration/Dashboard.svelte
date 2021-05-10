@@ -2,7 +2,7 @@
   import { 
     Graphic, Section, 
     PointLayer, PolygonLayer, Line, Label,
-    XAxis, YAxis, createGeoScales
+    XAxis, YAxis, fitScales
   } from '../../../../src/'
 
   import { scaleLinear, scaleTime } from 'd3-scale'
@@ -44,7 +44,7 @@
   }
 
   // Step 3: creating the geo-scales for the map
-  const geoScales = createGeoScales(states.domain('$geometry'))
+  const geoScales = fitScales(states.domain('$geometry'))
 
   // Step 4: allowing switching between the map and the scatterplot 
   let currentVisualization = 'scatterplot'

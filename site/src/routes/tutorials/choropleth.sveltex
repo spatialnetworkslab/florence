@@ -11,7 +11,7 @@ In this tutorial, you will make a map of average resale prices in different plan
 - The [Graphic](docs/core/graphic)
 - The [Section](docs/core/section)
 - The [PolygonLayer](docs/marks/Polygon)
-- The [createGeoScales](/docs/helpers/createGeoScales) helper function
+- The [fitScales](/docs/helpers/fitScales) helper function
 - The [Label](docs/marks/label), to make a title
 - The [DiscreteLegend](docs/guides/legend)
 
@@ -61,13 +61,13 @@ For further details on loading data to the `DataContainer`, refer to its [docume
 
 In the case of maps, some data may be recorded in three-dimensional 'earth' coordinates (like longitude/latitude) while in other cases data might already be pre-projected in a two-dimensional plane for you. In both cases, you still need to translate the spatial coordinates to pixel (screen) coordinates.
 
-When dealing with geodata, we can't treat the x and y dimension as separate, but must take them into account together. If we don't, we will loose the aspect ratio between the x and y dimensions, and our map will look stretched. We can accomplish this with a helper function that `florence` exports called [createGeoScales](/docs/helpers/create-geo-scales), that uses the [bounding box](https://en.wikipedia.org/wiki/Minimum_bounding_box) of our GeoJSON geometries to create the correct scales. We can calculate the bounding box simply by using the [bbox](https://gitlab.com/spatialnetworkslab/florence-datacontainer#datacontainer_bbox) method of the `DataContainer`. The function then returns an object with a `scaleX` and `scaleY` key that we can pass to the `Section`'s `scaleX` and `scaleY`.
+When dealing with geodata, we can't treat the x and y dimension as separate, but must take them into account together. If we don't, we will loose the aspect ratio between the x and y dimensions, and our map will look stretched. We can accomplish this with a helper function that `florence` exports called [fitScales](/docs/helpers/create-geo-scales), that uses the [bounding box](https://en.wikipedia.org/wiki/Minimum_bounding_box) of our GeoJSON geometries to create the correct scales. We can calculate the bounding box simply by using the [bbox](https://gitlab.com/spatialnetworkslab/florence-datacontainer#datacontainer_bbox) method of the `DataContainer`. The function then returns an object with a `scaleX` and `scaleY` key that we can pass to the `Section`'s `scaleX` and `scaleY`.
 
 Our code now looks like this:
 
 ```markup
 <script>
-  import { createGeoScales } from '@snlab/florence'
+  import { fitScales } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
   // import data
@@ -80,7 +80,7 @@ Our code now looks like this:
     .mutate({ resale_price_sqm: r => convertNullToUndefined(r.resale_price_sqm) })
 
   // create geo scales
-  const geoScales = createGeoScales(data.bbox())
+  const geoScales = fitScales(data.bbox())
 </script>
 ```
 
@@ -90,7 +90,7 @@ We are now ready to set up our 'canvas' for creating our map with the [Graphic](
 
 ```markup
 <script>
-  import { Graphic, Section, createGeoScales } from '@snlab/florence'
+  import { Graphic, Section, fitScales } from '@snlab/florence'
   ...
 </script>
 
@@ -118,7 +118,7 @@ If we were plotting only a single polygon, we would use the `Polygon` mark inste
 
 ```markup
 <script>
-  import { Graphic, Section, PolygonLayer, createGeoScales } from '@snlab/florence'
+  import { Graphic, Section, PolygonLayer, fitScales } from '@snlab/florence'
   ...
 </script>
 
@@ -195,7 +195,7 @@ Before calling `classify`, we first remove the missing (`undefined`) values from
 In summary, the part of our code between `<script>` should now look like this:
 
 ```js
-  import { Graphic, Section, PolygonLayer, createGeoScales } from '@snlab/florence'
+  import { Graphic, Section, PolygonLayer, fitScales } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
   import { geojson } from './planning_areas_data.js'
 
@@ -204,7 +204,7 @@ In summary, the part of our code between `<script>` should now look like this:
   const dataContainer = new DataContainer(geojson)
     .mutate({ resale_price_sqm: r => convertNullToUndefined(r.resale_price_sqm) })
 
-  const geoScales = createGeoScales(dataContainer.bbox())
+  const geoScales = fitScales(dataContainer.bbox())
 
   const COLORS = ['#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
 
@@ -243,7 +243,7 @@ Graphics, including maps, usually come with titles describing the subject of the
 ```markup
 <script>
   import { 
-    Graphic, Section, PolygonLayer, createGeoScales, Label
+    Graphic, Section, PolygonLayer, fitScales, Label
   } from '@snlab/florence'
   ...
 </script>
@@ -282,7 +282,7 @@ The `DiscreteLegend` component requires us to specify an `Array` of labels for t
 ```markup
 <script>
   import { 
-    Graphic, Section, PolygonLayer, createGeoScales,
+    Graphic, Section, PolygonLayer, fitScales,
     Label, DiscreteLegend, getClassLabels
   } from '@snlab/florence'
 </script>

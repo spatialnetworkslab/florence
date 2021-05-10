@@ -13,32 +13,32 @@
   import DragCategorical from './examples/DragCategorical.svelte'
   import FunctionAPI from './examples/FunctionAPI.svelte'
   // import FlipTest from './examples/FlipTest.svelte'
-  // import NonNumericAxis from './examples/NonNumericAxis.svelte'
-  // import DragAllMarks from './examples/DragAllMarks.svelte'
-  // import StackedBarChart from './examples/StackedBarChart.svelte'
-  // import SelectRectangle from './examples/SelectRectangle.svelte'
-  // import SelectPolygon from './examples/SelectPolygon.svelte'
-  // import Symbol_ from './examples/Symbol.svelte'
-  // import TouchTest from './examples/TouchTest.svelte'
-  // import AreaChart from './examples/AreaChart.svelte'
-  // import StackedAreaChart from './examples/StackedAreaChart.svelte'
-  // import ViolinPlot from './examples/ViolinPlot.svelte'
-  // import NestedSections from './examples/NestedSections.svelte'
-  // import JoHsiBug from './examples/JoHsiBug.svelte'
-  // import Clipping from './examples/Clipping.svelte'
+  import NonNumericAxis from './examples/NonNumericAxis.svelte'
+  import DragAllMarks from './examples/DragAllMarks.svelte'
+  import StackedBarChart from './examples/StackedBarChart.svelte'
+  import SelectRectangle from './examples/SelectRectangle.svelte'
+  import SelectPolygon from './examples/SelectPolygon.svelte'
+  import Symbol_ from './examples/Symbol.svelte'
+  import TouchTest from './examples/TouchTest.svelte'
+  import AreaChart from './examples/AreaChart.svelte'
+  import StackedAreaChart from './examples/StackedAreaChart.svelte'
+  import ViolinPlot from './examples/ViolinPlot.svelte'
+  import NestedSections from './examples/NestedSections.svelte'
+  import JoHsiBug from './examples/JoHsiBug.svelte'
+  import Clipping from './examples/Clipping.svelte'
 
   // // geo examples
-  // import GeoEx from './examples/GeoEx.svelte'
-  // import GeoFacet from './examples/GeoFacet.svelte'
-  // import GeoBase from './examples/GeoBase.svelte'
-  // import GeoPolygons from './examples/GeoPolygons.svelte'
-  // import Heatmap from './examples/Heatmap.svelte'
+  import GeoEx from './examples/GeoEx.svelte'
+  import GeoFacet from './examples/GeoFacet.svelte'
+  import GeoBase from './examples/GeoBase.svelte'
+  import GeoPolygons from './examples/GeoPolygons.svelte'
+  import Heatmap from './examples/Heatmap.svelte'
 
   // // Bugs
-  // import GraphicAreaBug from './examples/GraphicAreaBug.svelte'
-  // import FuncLineBug from './examples/FuncLineBug.svelte'
+  import GraphicAreaBug from './examples/GraphicAreaBug.svelte'
+  import FuncLineBug from './examples/FuncLineBug.svelte'
 
-  // import NewLegends from './examples/NewLegends.svelte'
+  import NewLegends from './examples/NewLegends.svelte'
   
   // and add them to this component array
   const components = [
@@ -72,11 +72,11 @@
       url: '/line',
       component: Line
     },
-    // {
-    //   name: 'Geo Polygons',
-    //   url: '/geopolygons',
-    //   component: GeoPolygons
-    // },
+    {
+      name: 'Geo Polygons',
+      url: '/geopolygons',
+      component: GeoPolygons
+    },
     {
       name: 'FuncLines',
       url: 'funclines',
@@ -97,111 +97,106 @@
     //   url: 'fliptest',
     //   component: FlipTest
     // },
-    // {
-    //   name: 'Non numeric axis',
-    //   url: 'nonnumericaxis',
-    //   component: NonNumericAxis
-    // },
-    // {
-    //   name: 'Drag all marks',
-    //   url: 'dragallmarks',
-    //   component: DragAllMarks
-    // },
-    // {
-    //   name: 'Stacked bar chart',
-    //   url: 'stackedbarchart',
-    //   component: StackedBarChart
-    // },
-    // {
-    //   name: 'Select rectangle',
-    //   url: 'selectrectangle',
-    //   component: SelectRectangle
-    // },
-    // {
-    //   name: 'Select polygon',
-    //   url: 'selectpolygon',
-    //   component: SelectPolygon
-    // },
-    // {
-    //   name: 'Symbol',
-    //   url: 'symbol',
-    //   component: Symbol_
-    // },
-    // {
-    //   name: 'Touch test',
-    //   url: 'touchtest',
-    //   component: TouchTest
-    // },
-    // {
-    //   name: 'Area chart',
-    //   url: 'areachart',
-    //   component: AreaChart
-    // },
-    // {
-    //   name: 'Stacked area chart',
-    //   url: 'stackedareachart',
-    //   component: StackedAreaChart
-    // },
-    // {
-    //   name: 'Violin plot',
-    //   url: 'violinplot',
-    //   component: ViolinPlot
-    // },
-    // {
-    //   name: 'GeoEx',
-    //   url: 'geoex',
-    //   component: GeoEx
-    // },
-    // {
-    //   name: 'GeoFacet',
-    //   url: 'geofacet',
-    //   component: GeoFacet
-    // },
-    // {
-    //   name: 'GeoBase',
-    //   url: 'geobase',
-    //   component: GeoBase
-    // },
-    // {
-    //   name: 'GeoPolygons',
-    //   url: 'geopolygons',
-    //   component: GeoPolygons
-    // },
-    // {
-    //   name: 'Heatmap',
-    //   url: 'heatmap',
-    //   component: Heatmap
-    // },
-    // {
-    //   name: 'Nested sections',
-    //   url: '/nestedsections',
-    //   component: NestedSections
-    // },
-    // {
-    //   name: 'Jo Hsi Bug',
-    //   url: 'johsibug',
-    //   component: JoHsiBug
-    // },
-    // {
-    //   name: 'Clipping test',
-    //   url: 'clipping',
-    //   component: Clipping
-    // },
-    // {
-    //   name: 'Graphic area bug',
-    //   url: 'graphic-area-bug',
-    //   component: GraphicAreaBug
-    // },
-    // {
-    //   name: 'Func line bug',
-    //   url: 'func-line-bug',
-    //   component: FuncLineBug
-    // },
-    // {
-    //   name: 'New legends',
-    //   url: 'new-legends',
-    //   component: NewLegends
-    // }
+    {
+      name: 'Non numeric axis',
+      url: 'nonnumericaxis',
+      component: NonNumericAxis
+    },
+    {
+      name: 'Drag all marks',
+      url: 'dragallmarks',
+      component: DragAllMarks
+    },
+    {
+      name: 'Stacked bar chart',
+      url: 'stackedbarchart',
+      component: StackedBarChart
+    },
+    {
+      name: 'Select rectangle',
+      url: 'selectrectangle',
+      component: SelectRectangle
+    },
+    {
+      name: 'Select polygon',
+      url: 'selectpolygon',
+      component: SelectPolygon
+    },
+    {
+      name: 'Symbol',
+      url: 'symbol',
+      component: Symbol_
+    },
+    {
+      name: 'Touch test',
+      url: 'touchtest',
+      component: TouchTest
+    },
+    {
+      name: 'Area chart',
+      url: 'areachart',
+      component: AreaChart
+    },
+    {
+      name: 'Stacked area chart',
+      url: 'stackedareachart',
+      component: StackedAreaChart
+    },
+    {
+      name: 'Violin plot',
+      url: 'violinplot',
+      component: ViolinPlot
+    },
+    {
+      name: 'GeoEx',
+      url: 'geoex',
+      component: GeoEx
+    },
+    {
+      name: 'GeoFacet',
+      url: 'geofacet',
+      component: GeoFacet
+    },
+    {
+      name: 'GeoBase',
+      url: 'geobase',
+      component: GeoBase
+    },
+    {
+      name: 'Heatmap',
+      url: 'heatmap',
+      component: Heatmap
+    },
+    {
+      name: 'Nested sections',
+      url: '/nestedsections',
+      component: NestedSections
+    },
+    {
+      name: 'Jo Hsi Bug',
+      url: 'johsibug',
+      component: JoHsiBug
+    },
+    {
+      name: 'Clipping test',
+      url: 'clipping',
+      component: Clipping
+    },
+    {
+      name: 'Graphic area bug',
+      url: 'graphic-area-bug',
+      component: GraphicAreaBug
+    },
+    {
+      name: 'Func line bug',
+      url: 'func-line-bug',
+      component: FuncLineBug
+    },
+    {
+      name: 'New legends',
+      url: 'new-legends',
+      component: NewLegends
+    }
   ]
 </script>
 <Router url="">

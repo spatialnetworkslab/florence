@@ -4,7 +4,7 @@
   import { scaleLinear, scaleThreshold, scalePoint } from 'd3-scale'
 
   // florence
-  import { Graphic, Section, createGeoScales, XAxis, YAxis, SymbolLayer, PolygonLayer, Polygon } from '../../../../src/'
+  import { Graphic, Section, fitScales, XAxis, YAxis, SymbolLayer, PolygonLayer, Polygon } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   // geodata
@@ -46,7 +46,7 @@
   // process relevant data to get backgroundagons with mean price data
   background = new DataContainer(metadata)
   const bbox = background.domain('$geometry')
-  geoScale = createGeoScales(bbox)
+  geoScale = fitScales(bbox)
   geometry = background.column('$geometry')
   postBg = background.dropNA(['resale_price_sqm', 'remaining_lease', 'floor_area_sqm']) // remove na values
   processedGeom = postBg.column('$geometry')

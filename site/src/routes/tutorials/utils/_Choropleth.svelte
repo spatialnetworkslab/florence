@@ -1,6 +1,6 @@
 <script>
   import { 
-    Graphic, Section, PolygonLayer, createGeoScales,
+    Graphic, Section, PolygonLayer, fitScales,
     Label, DiscreteLegend, getClassLabels
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
@@ -15,7 +15,7 @@
   const dataContainer = new DataContainer(geojson)
     .mutate({ resale_price_sqm: r => convertNullToUndefined(r.resale_price_sqm) })
 
-  const geoScales = createGeoScales(dataContainer.bbox())
+  const geoScales = fitScales(dataContainer.bbox())
 
   const COLORS = ['#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
   const priceColorScale = dataContainer

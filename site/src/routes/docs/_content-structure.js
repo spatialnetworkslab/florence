@@ -121,7 +121,7 @@ export const posts = [
     path: '/docs/helpers/create-geo-scales',
     children: [
       {
-        title: 'createGeoScales',
+        title: 'fitScales',
         path: '/docs/helpers/create-geo-scales'
       },
       {

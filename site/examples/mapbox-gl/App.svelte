@@ -1,7 +1,7 @@
 <script>
   import MapWithFlorence from './MapWithFlorence.svelte'
 
-  import { Graphic, Point, createGeoScales } from '@snlab/florence'
+  import { Graphic, Point, fitScales } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
 
   import { projectMapboxMercator, projectBbox } from './utils.js'
@@ -43,13 +43,13 @@
   function setScalesNaive (event) {
     const mapInstance = event.detail
     const bbox = projectBbox(mapInstance.getBounds())
-    myGeoScale = createGeoScales(bbox)
+    myGeoScale = fitScales(bbox)
   }
 
 
   function updateBounds (event) {
     const bbox = projectBbox(event.detail)
-    myGeoScale = createGeoScales(bbox)
+    myGeoScale = fitScales(bbox)
   }
 
 
@@ -57,7 +57,7 @@
   function setScalesZoom (event) {
     const mapInstance = event.detail
     const bbox = projectBbox(mapInstance.getBounds())
-    myGeoScaleInit = createGeoScales(bbox)
+    myGeoScaleInit = fitScales(bbox)
     originalBbox = bbox
     scaleX = myGeoScaleInit.scaleX.range([0, width])
     scaleY = myGeoScaleInit.scaleY.range([0, height])

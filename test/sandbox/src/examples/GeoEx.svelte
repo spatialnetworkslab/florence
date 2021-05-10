@@ -4,7 +4,7 @@
   import { scaleLinear, scaleThreshold } from 'd3-scale'
 
   // florence
-  import { Graphic, Section, createGeoScales, PolygonLayer } from '../../../../src/'
+  import { Graphic, Section, fitScales, PolygonLayer } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   // geodata TODO CONVERT TO PLANNING AREA
@@ -35,7 +35,7 @@
   $: {
     background = new DataContainer(hexagons)
     const bbox = background.bbox()
-    geoScale = createGeoScales(bbox)
+    geoScale = fitScales(bbox)
     geometry = background.column('$geometry')
     postBg = background.dropNA(['mean_price', 'mean_lease', 'mean_floor_area']) // remove na values
     processedGeom = postBg.column('$geometry')

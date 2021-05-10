@@ -1,10 +1,10 @@
-# createGeoScales
+# fitScales
 
 Helper function for creating linear scales that maintain the aspect ratio of x and y domains. The main usecase for this is when creating maps.
 
 ```markup
 <script>
-  import { Graphic, Section, Rectangle, createGeoScales } from '@snlab/florence'
+  import { Graphic, Section, Rectangle, fitScales } from '@snlab/florence'
   import { scaleLinear } from 'd3-scale'
 
   const domains = {
@@ -17,7 +17,7 @@ Helper function for creating linear scales that maintain the aspect ratio of x a
     scaleY: scaleLinear().domain(domains.y)
   }
   
-  const geoScales = createGeoScales(domains)
+  const geoScales = fitScales(domains)
 </script> 
 
 <Graphic width={400} height={200}>
@@ -73,7 +73,7 @@ The `x` and `y` members represent the domains of the variables that will be used
 
 ## Return value
 
-`createGeoScales` returns an object containing two other objects that pretend to be scales:
+`fitScales` returns an object containing two other objects that pretend to be scales:
 
 ```js
 {

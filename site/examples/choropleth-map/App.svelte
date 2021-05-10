@@ -1,7 +1,7 @@
 <script>
   import { json } from 'd3-fetch'
   import { 
-    Graphic, Section, PolygonLayer, createGeoScales,
+    Graphic, Section, PolygonLayer, fitScales,
     Label, DiscreteLegend, getClassLabels
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
@@ -16,7 +16,7 @@
     dataContainer = new DataContainer(geojson).mutate({ 
       resale_price_sqm: r => convertNullToUndefined(r.resale_price_sqm)
     })
-    geoScales = createGeoScales(dataContainer.bbox())
+    geoScales = fitScales(dataContainer.bbox())
 
     priceColorScale = dataContainer
       .dropNA('resale_price_sqm')

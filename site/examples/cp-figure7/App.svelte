@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, PolygonLayer, createGeoScales } from '@snlab/florence'
+  import { Graphic, PolygonLayer, fitScales } from '@snlab/florence'
 
   const triangles = [
     { type: 'Polygon', coordinates: [[[0, 0], [5, 2.5], [0, 5], [0, 0]]] },
@@ -11,7 +11,7 @@
     y: [0, 5]
   }
 
-  const geoScales = createGeoScales(bbox)
+  const geoScales = fitScales(bbox)
 </script>
 
 <Graphic

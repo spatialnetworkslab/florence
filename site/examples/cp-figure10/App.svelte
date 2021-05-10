@@ -13,7 +13,7 @@
     Line,
     Point,
     Label,
-    createGeoScales
+    fitScales
   } from '@snlab/florence'
   import { loadPolygons, loadCSV } from './utils.js'
 
@@ -63,7 +63,7 @@
     })
 
     // create geo-scales
-    geoScales = createGeoScales(provinces.domain('$geometry'))
+    geoScales = fitScales(provinces.domain('$geometry'))
     done = true // this will trigger the actual drawing
   }
 
