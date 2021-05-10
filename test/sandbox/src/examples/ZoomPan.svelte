@@ -47,7 +47,7 @@
 
     <PolygonLayer
       x={[
-        [0, 1, 1, 0, 0],
+        [1, 1, 1, 0, 0],
         [1, 2, 2, 1, 1],
         [2, 3, 3, 2, 2]
       ]}
@@ -70,8 +70,7 @@
 
       <Point x={2} y={2} radius={10} />
       <Point x={5} y={5} radius={10} />
-      <Point x={8} y={8} radius={10} />
-    
+      <Point x={8} y={8} radius={10} /> 
     </Section>
 
     <XAxis />

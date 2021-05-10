@@ -51,7 +51,7 @@
 
     <Line
       {geometry}
-      strokeWidth={hovered ? 9: 2}
+      strokeWidth={hovered ? 9 : 2}
       stroke={clicked ? 'green' : 'red'}
       onClick={() => { clicked = !clicked }} 
       onMouseover={() => { hovered = true }}

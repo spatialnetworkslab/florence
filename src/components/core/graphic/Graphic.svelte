@@ -11,6 +11,7 @@
   import { writable } from 'svelte/store'
   import { EventManager } from '@snlab/rendervous'
   import Section from '../section/Section.svelte'
+  // import wrapContext from './wrapContext.js'
 
   // Positioning
   export let width = 500
@@ -44,7 +45,8 @@
 
   // Other options
   export let clip = 'padding'
-  export let renderer = 'svg'
+  // export let renderer = 'svg'
+  export let renderer = 'canvas'
 
   const id = getId()
 
@@ -68,6 +70,7 @@
     }
 
     if (renderer === 'canvas') {
+      // context = wrapContext(rootNode.getContext('2d'))
       context = rootNode.getContext('2d')
     }
 

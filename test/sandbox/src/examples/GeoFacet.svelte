@@ -138,11 +138,9 @@
     <PolygonLayer geometry={geometry} fill={'white'} stroke={'white'} strokeWidth={1} />
     {#each background.rows() as row, i (row.$key)}
       <Polygon geometry={row.$geometry} 
-        fillOpacity={hoverKey === row.$key ? 1 : 0.8} 
-        transition={transition}
+        fillOpacity={hoverKey === row.$key ? 1 : 0.8}
         stroke={'white'} 
         strokeWidth={2} 
-        key={row.$key}
         fill={priceColors[row.$key]}
         onMouseover={() => { onMouseover({ key: row.$key, town: row.PLN_AREA_N }) }}
         onMouseout={() => { onMouseout({ key: row.$key, town: row.PLN_AREA_N }) }}
@@ -167,11 +165,10 @@
           y={heatmapData.column('adjYear')}
           shape={'square'}
           fill={heatmapPriceColors}
-          size={16}
-          transition={transition}
+          radius={8}
         />
-        <YAxis baseLineOpacity={0} xOffset={6} transition={transition}/>
-        <XAxis flip vjust={'top'} baseLineOpacity={0} yOffset={6} transition={transition}/>
+        <YAxis baseLineOpacity={0} xOffset={6} />
+        <XAxis flip vjust={'top'} baseLineOpacity={0} yOffset={6} />
 
     </Section>
   {/if}

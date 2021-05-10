@@ -11,7 +11,7 @@
     scaleY={scaleLinear().domain([0, 10])}
   >
     <Point x={10} y={2} radius={50} fill="red" />
-    <Point x={10} y={8} radius={50} fill="blue" clip={false} />
+    <Point x={10} y={8} radius={50} fill="blue" clip={'outer'} />
 
     <XAxis />
 
