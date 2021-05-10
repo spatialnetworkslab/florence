@@ -54,13 +54,14 @@
       strokeWidth={hovered ? 9: 2}
       stroke={clicked ? 'green' : 'red'}
       onClick={() => { clicked = !clicked }} 
-      onMouseover={() => { hovered = !hovered }} 
+      onMouseover={() => { hovered = true }}
+      onMouseout={() => { hovered = false }}
     />
 
     <LineLayer
       x={[data.column('x')]}
       y={[data.column('y')]}
-      strokeWidth={hovered ? 2: 10}
+      strokeWidth={hovered ? 2 : 10}
       stroke={clicked ? 'green' : 'red'}
       onClick={() => { clicked = !clicked }} 
       onMouseover={() => { hovered = !hovered }} 
