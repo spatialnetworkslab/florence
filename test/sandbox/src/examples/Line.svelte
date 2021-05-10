@@ -49,14 +49,14 @@
     scaleY={scaleLinear().domain(data.domain('y'))}
     padding={10}>
 
-    <Line
+    <!-- <Line
       {geometry}
       strokeWidth={hovered ? 9: 2}
       stroke={clicked ? 'green' : 'red'}
       onClick={() => { clicked = !clicked }} 
       onMouseover={() => { hovered = true }}
       onMouseout={() => { hovered = false }}
-    />
+    /> -->
 
     <LineLayer
       x={[data.column('x')]}
@@ -67,14 +67,14 @@
       onMouseover={() => { hovered = !hovered }} 
     /> 
 
-    <LineLayer
+    <!-- <LineLayer
       x={lineStrings.x}
       y={lineStrings.y}
       onMouseover={({ key }) => { hoverKey = key }}
       onMouseout={() => { hoverKey = null }}
       stroke={({ key }) => key === hoverKey ? '#3f88c5' : '#f49d37'}
       strokeWidth={3}
-    />
+    /> -->
 
   </Section>
 
