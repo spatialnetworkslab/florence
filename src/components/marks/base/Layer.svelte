@@ -145,7 +145,7 @@
 
   function updateInteractionManagerIfNecessary () {
     if (isInteractiveMouse || isInteractiveTouch) {
-      removeMarkFromSpatialIndexIfNecessary()
+      removeLayerFromSpatialIndexIfNecessary()
 
       if (isInteractiveMouse) {
         const markInterface = $interactionManager.mouse().marks()
@@ -173,7 +173,7 @@
       }
     }
 
-    removeMarkFromSelectIfNecessary()
+    removeLayerFromSelectIfNecessary()
   
     if (isSelectable) {
       const selectManager = $interactionManager.select()
@@ -182,7 +182,7 @@
     }
   }
 
-  function removeMarkFromSpatialIndexIfNecessary () {
+  function removeLayerFromSpatialIndexIfNecessary () {
     if (primaryInput === 'mouse') {
       const markMouseInterface = $interactionManager.mouse().marks()
 
@@ -202,7 +202,7 @@
     }
   }
 
-  function removeMarkFromSelectIfNecessary () {
+  function removeLayerFromSelectIfNecessary () {
     const selectManager = $interactionManager.select()
 
     if (selectManager.layerIsLoaded(layer)) {

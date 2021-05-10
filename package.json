@@ -6,7 +6,7 @@
   "module": "dist/index.mjs",
   "repository": "https://gitlab.com/spatialnetworkslab/florence.git",
   "dependencies": {
-    "@snlab/rendervous": "^0.1.8",
+    "@snlab/rendervous": "^0.1.9",
     "@snlab/transshape": "^0.1.2",
     "d3-geo": "^2.0.1",
     "d3-interpolate": "^2.0.1",

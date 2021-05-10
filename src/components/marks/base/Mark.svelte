@@ -79,7 +79,6 @@
     svgContext = createSVGContext()
     mark.render(svgContext)
     svgData = svgContext.result()
-    console.log(mark)
   }
 
   // Handling of updates
