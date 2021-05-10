@@ -37,8 +37,7 @@
   export let labelColor = 'black'
 
   // Other
-  export let transition = undefined
-  export let clip = false
+  export let clip = undefined
 
   const gradientId = getId()
 
@@ -79,7 +78,6 @@
       fill={`url(#${gradientId})`}
       {stroke}
       {strokeWidth}
-      {transition}
       {clip}
     />
 
@@ -105,7 +103,6 @@
       fontWeight={labelFontWeight} 
       opacity={labelOpacity} 
       fill={labelColor}
-      {transition}
       {clip}
     />
 
