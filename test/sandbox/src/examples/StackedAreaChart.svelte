@@ -69,7 +69,7 @@
     >
       {#each columnNames as c}
         <Area
-          x1={rowCumSum.column('date')}
+          x={rowCumSum.column('date')}
           y1={rowCumSum.column(c).map(d => d[0])}
           y2={rowCumSum.column(c).map(d => d[1])}
           fill={scaleColor(c)}

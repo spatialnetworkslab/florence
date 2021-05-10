@@ -45,7 +45,7 @@
   <DiscreteLegend
     x1={300} x2={450}
     y1={0} y2={100}
-    {colors}
+    fill={colors}
     labels={getClassLabels(priceColorScale, Math.floor)}
   />
 

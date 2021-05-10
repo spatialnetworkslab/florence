@@ -137,7 +137,7 @@
     {...tickLabelCoordinates}
     text={tickLabelText} 
     anchorPoint={labelAnchorPoint}
-    rotation={labelRotate}
+    rotate={labelRotate}
     fontFamily={labelFont}
     fontSize={labelFontSize}
     fontWeight={labelFontWeight}
@@ -152,7 +152,7 @@
     {...titleCoordinates}
     text={title}
     anchorPoint={titleAnchorPoint}
-    rotation={titleRotate}
+    rotate={titleRotate}
     fontFamily={titleFont}
     fontSize={titleFontSize}
     fontWeight={titleFontWeight}

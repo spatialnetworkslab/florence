@@ -9,8 +9,8 @@ export function getSectionCoordinates (x1, x2, y1, y2) {
 
 export function getLabelCoordinates ({ x1, x2, y1, y2 }) {
   return {
-    x: x1,
-    y: (y2 + y1) / 2
+    x: ({ pxAt }) => pxAt(x1),
+    y: ({ pyAt }) => pyAt((y2 + y1) / 2)
   }
 }
 

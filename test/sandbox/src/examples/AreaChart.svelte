@@ -71,7 +71,7 @@
       title={'$ close'}
       titleVjust={'top'}
       titleHjust={0.035}
-      titleRotation={0}
+      titleRotate={0}
       titleFontWeight={'bold'}
     />
 
