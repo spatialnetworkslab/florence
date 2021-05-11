@@ -45,8 +45,8 @@
 
   // Other options
   export let clip = 'padding'
-  // export let renderer = 'svg'
-  export let renderer = 'canvas'
+  export let renderer = 'svg'
+  // export let renderer = 'canvas'
 
   const id = getId()
 

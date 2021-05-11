@@ -14,7 +14,7 @@
 
   </DiscreteLegend>
 
-  <GradientLegend 
+  <!-- <GradientLegend 
     x1={300} x2={400}
     y1={100} y2={450}
     labels={['apple', 'banana', 'coconut']}
@@ -22,6 +22,6 @@
     opacity={[0.8, 1, 0.2]}
   >
 
-  </GradientLegend>
+  </GradientLegend> -->
 
 </Graphic>
