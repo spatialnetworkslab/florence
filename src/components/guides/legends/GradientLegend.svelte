@@ -6,6 +6,7 @@
 </script>
 
 <script>
+  import { getContext } from 'svelte'
   import { Section, Grid, Rectangle, Label } from '../../../index.js'
   import Gradient from './Gradient.svelte'
   import { getLabelCoordinates, parseAesthetic } from './legend.js'
@@ -38,6 +39,12 @@
 
   // Other
   export let clip = undefined
+
+  const { renderer } = getContext('graphic')
+  
+  if (renderer !== 'svg') {
+    throw new Error('GradientLegend only works with svg (for now)')
+  }
 
   const gradientId = getId()
 
