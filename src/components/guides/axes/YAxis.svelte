@@ -33,7 +33,7 @@
 
   // tick labels
   export let labelFormat = undefined
-  export let labelOffset = 2
+  export let labelOffset = 8
   export let labelRotate = 0
   export let labelFont = 'Helvetica'
   export let labelFontSize = 10

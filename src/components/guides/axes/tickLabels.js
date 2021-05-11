@@ -16,7 +16,7 @@ export function getTickLabelCoordinatesYAxis (
   labelOffset,
   flip
 ) {
-  const dl = flip ? -labelOffset : labelOffset
+  const dl = flip ? labelOffset : -labelOffset
 
   return {
     x: s => tickCoordinates.x(s).map(x => x[1] + s.px(dl)),
