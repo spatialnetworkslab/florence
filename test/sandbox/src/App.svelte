@@ -12,7 +12,7 @@
   import FuncLines from './examples/FuncLines.svelte'
   import DragCategorical from './examples/DragCategorical.svelte'
   import FunctionAPI from './examples/FunctionAPI.svelte'
-  // import FlipTest from './examples/FlipTest.svelte'
+  import FlipTest from './examples/FlipTest.svelte'
   import NonNumericAxis from './examples/NonNumericAxis.svelte'
   import DragAllMarks from './examples/DragAllMarks.svelte'
   import StackedBarChart from './examples/StackedBarChart.svelte'
@@ -37,8 +37,8 @@
   // // Bugs
   import GraphicAreaBug from './examples/GraphicAreaBug.svelte'
   import FuncLineBug from './examples/FuncLineBug.svelte'
-
   import NewLegends from './examples/NewLegends.svelte'
+  import Glyph from './examples/Glyph.svelte'
   
   // and add them to this component array
   const components = [
@@ -92,11 +92,11 @@
       url: 'functionapi',
       component: FunctionAPI
     },
-    // {
-    //   name: 'Flip test',
-    //   url: 'fliptest',
-    //   component: FlipTest
-    // },
+    {
+      name: 'Flip test',
+      url: 'fliptest',
+      component: FlipTest
+    },
     {
       name: 'Non numeric axis',
       url: 'nonnumericaxis',
@@ -196,6 +196,11 @@
       name: 'New legends',
       url: 'new-legends',
       component: NewLegends
+    },
+    {
+      name: 'Glyph',
+      url: 'glyph',
+      component: Glyph
     }
   ]
 </script>

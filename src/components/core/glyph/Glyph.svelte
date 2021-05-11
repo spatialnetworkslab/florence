@@ -2,21 +2,20 @@
   let idCounter = 0
 
   function getId () {
-    return 'sc' + idCounter++
+    return 'psc' + idCounter++
   }
 </script>
 
 <script>
-  import { createSection } from '@snlab/rendervous'
+  import { createPointSection } from '@snlab/rendervous'
   import BaseSection from '../_BaseSection.svelte'
 
   const id = getId()
 
   // Positioning
-  export let x1 = undefined
-  export let x2 = undefined
-  export let y1 = undefined
-  export let y2 = undefined
+  export let x
+  export let y
+  export let radius
 
   // Local coordinates
   export let coordinates = undefined
@@ -50,7 +49,7 @@
   let node
 
   $: props = {
-    x1, x2, y1, y2,
+    x, y, radius,
     coordinates, scaleX, scaleY, flipX, flipY, padding, zoomIdentity,
     clip
   }
@@ -69,7 +68,7 @@
   bind:this={node}
   {props}
   {id}
-  createFunction={createSection}
+  createFunction={createPointSection}
   {onClick}
   {onWheel}
   {onMousedown}

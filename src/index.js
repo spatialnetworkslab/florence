@@ -1,6 +1,7 @@
 export { default as Graphic } from './components/core/graphic/Graphic.svelte'
 export { default as Section } from './components/core/section/Section.svelte'
 export { default as Grid } from './components/core/grid/Grid.svelte'
+export { default as Glyph } from './components/core/glyph/Glyph.svelte'
 
 export { default as Area } from './components/marks/area/Area.svelte'
 export { default as FuncLine } from './components/marks/funcLine/FuncLine.svelte'
