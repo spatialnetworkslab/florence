@@ -3,6 +3,7 @@
   import { 
     Graphic, Section, PolygonLayer, Rectangle, Point,
     XAxis, YAxis,
+    XGridLines, YGridLines,
     createPanHandler, createZoomHandler
   } from '../../../../src'
 
@@ -75,6 +76,9 @@
 
     <XAxis />
     <YAxis />
+
+    <XGridLines />
+    <YGridLines />
   
   </Section>
 

@@ -1,25 +1,27 @@
-import generateArrayOfLength from '../../../utils/generateArrayOfLength.js'
-
-export function getCoordinatesXRaster (positions, scaleX, sectionContext) {
-  const bandOffset = scaleX.bandwidth ? scaleX.bandwidth() / 2 : 0
-
-  const x = positions.map(p => scaleX(p) + bandOffset).map(p => [p, p])
-  const y = generateArrayOfLength(sectionContext.ranges.rangeY, positions.length)
-
+export function getCoordinatesXRaster (positions) {
   return {
-    x: () => x,
-    y: () => y
+    x: ({ scaleX, bwx }) => {
+      const bandOffset = bwx ? bwx() / 2 : 0
+      return positions.map(t => scaleX(t) + bandOffset).map(t => [t, t])
+    },
+    y: ({ pyAt, paddedBbox }) => {
+      const y1 = pyAt(paddedBbox.minY)
+      const y2 = pyAt(paddedBbox.maxY)
+      return Array(positions.length).fill([y1, y2])
+    }
   }
 }
 
-export function getCoordinatesYRaster (positions, scaleY, sectionContext) {
-  const bandOffset = scaleY.bandwidth ? scaleY.bandwidth() / 2 : 0
-
-  const x = generateArrayOfLength(sectionContext.ranges.rangeX, positions.length)
-  const y = positions.map(p => scaleY(p) + bandOffset).map(p => [p, p])
-
+export function getCoordinatesYRaster (positions) {
   return {
-    x: () => x,
-    y: () => y
+    x: ({ pxAt, paddedBbox }) => {
+      const x1 = pxAt(paddedBbox.minX)
+      const x2 = pxAt(paddedBbox.maxX)
+      return Array(positions.length).fill([x1, x2])
+    },
+    y: ({ scaleY, bwy }) => {
+      const bandOffset = bwy ? bwy() / 2 : 0
+      return positions.map(t => scaleY(t) + bandOffset).map(t => [t, t])
+    }
   }
 }

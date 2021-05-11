@@ -22,8 +22,8 @@ export { default as AreaLayer } from './components/marks/area/AreaLayer.svelte'
 export { default as XAxis } from './components/guides/axes/XAxis.svelte'
 export { default as YAxis } from './components/guides/axes/YAxis.svelte'
 
-// export { default as XGridLines } from './components/guides/gridLines/XGridLines.svelte'
-// export { default as YGridLines } from './components/guides/gridLines/YGridLines.svelte'
+export { default as XGridLines } from './components/guides/gridLines/XGridLines.svelte'
+export { default as YGridLines } from './components/guides/gridLines/YGridLines.svelte'
 
 export { default as DiscreteLegend } from './components/guides/legends/DiscreteLegend.svelte'
 export { default as GradientLegend } from './components/guides/legends/GradientLegend.svelte'

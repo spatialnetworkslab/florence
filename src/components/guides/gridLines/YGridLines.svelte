@@ -2,10 +2,9 @@
   import { getContext } from 'svelte'
   import { LineLayer } from '../../../index.js'
 
-  import { getTickPositions } from '../Axes/ticks.js'
+  import { getTickPositions } from '../axes/ticks.js'
   import { getCoordinatesYRaster } from './getCoordinates.js'
   
-  export let scale = undefined
   export let count = 10
   export let extra = false
   export let values = undefined
@@ -23,15 +22,10 @@
     }
   }
 
-  // Scale
-  $: scaleY = scale
-    ? scale.copy().range($section.scaleY.range())
-    : $section.scaleY
-
   // Ticks
   $: positions = getTickPositions(
     values,
-    scaleY,
+    $section.directScales.y,
     count,
     extra,
     $section.zoomIdentity 
@@ -39,11 +33,7 @@
       : undefined
   )
 
-  $: coordinates = getCoordinatesYRaster(
-    positions,
-    scaleY,
-    $section
-  )
+  $: coordinates = getCoordinatesYRaster(positions)
 </script>
 
 <LineLayer 
