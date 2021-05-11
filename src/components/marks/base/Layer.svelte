@@ -1,7 +1,11 @@
+<script context="module">
+  let layerId = 0
+  const getId = () => 'l' + layerId++
+</script>
+
 <script>
   import { getContext, onMount, onDestroy, tick } from 'svelte'
   import { svgStyled, getClipPathURL } from '@snlab/rendervous'
-  import { getLayerId } from '../utils/getId.js'
   import any from '../utils/any.js'
   import merge from '../utils/merge.js'
 
@@ -40,7 +44,7 @@
   const section = getContext('section')
   const interactionManager = getContext('interactionManager')
 
-  const id = getLayerId()
+  const id = getId()
 
   const createSVGContext = element === 'path'
     ? svgStyled.pathLayer
