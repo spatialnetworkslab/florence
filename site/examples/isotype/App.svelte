@@ -51,7 +51,7 @@
         y={row.$grouped.column('animal')}
         shape={row.$grouped.map('animal', shapeScale)}
         fill={row.$grouped.map('animal', colorScale)}
-        size={80}
+        radius={40}
       />
 
       <Label 

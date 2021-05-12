@@ -46,7 +46,7 @@ To render a `Symbol_`, you will need to provide either the `x` and `y` props, or
 |     Prop      | Required |  Types   |   Default   |           Unit(s)            |
 | ------------- | -------- | -------- | ----------- | ---------------------------- |
 | shape         | `false`  | `String` | `'circle'`  | See explanation              |
-| size          | `false`  | `Number` | `10`        | Pixel                        |
+| radius        | `false`  | `Number` | `3`         | Pixel                        |
 | fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
 | fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1       |
 | stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color |
@@ -71,7 +71,7 @@ To render a `Symbol_`, you will need to provide either the `x` and `y` props, or
 
 <Graphic width={200} height={200} scaleX={[0, 10]} scaleY={[0, 10]} padding={20}>
 
-  <Symbol_ x={5} y={5} shape={septagon} size={100} />
+  <Symbol_ x={5} y={5} shape={septagon} radius={25} />
   
   <XAxis />
   <YAxis />
@@ -84,7 +84,7 @@ import CustomShape from './utils/_CustomShape.svelte'
 ```
 <CustomShape />
 
-- `size` defaults to 10 pixels. This same value refers to both the height and width of the shape, or 2 times the `radius` if it would be a circle. In order to improve the accuracy when reading off the (x, y) values of the center point of each symbol instance, the height and width of the symbol mark are not allowed to take on different values.
+- `radius` defaults to 3 pixels, equivalent to half of the width and height of the symbol in pixels.
 - `fill` refers to the color of the symbol
 - `fillOpacity` refers to the transparency of the symbol, `0` being fully transparent
 - `stroke` refers to the color of the symbol's outline
