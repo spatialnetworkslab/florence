@@ -6,7 +6,7 @@
   "module": "dist/index.mjs",
   "repository": "https://gitlab.com/spatialnetworkslab/florence.git",
   "dependencies": {
-    "@snlab/rendervous": "^0.1.20"
+    "@snlab/rendervous": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
