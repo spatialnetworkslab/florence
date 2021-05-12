@@ -4,7 +4,7 @@
 </script>
 
 <script>
-  import { getContext, onMount, onDestroy, tick } from 'svelte'
+  import { getContext, onMount, onDestroy } from 'svelte'
   import { svgStyled, getClipPathURL } from '@snlab/rendervous'
   import any from '../utils/any.js'
   import merge from '../utils/merge.js'
