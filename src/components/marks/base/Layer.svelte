@@ -48,7 +48,7 @@
 
   const createSVGContext = element === 'path'
     ? svgStyled.pathLayer
-    : svgStyled.labelLayer
+    : svgStyled.textLayer
 
   // Init
   let mounted
