@@ -132,6 +132,8 @@ While the `Layer`'s `event` object also has:
 }
 ```
 
+The `key` will be `undefined` if nothing is passed to the `Layer`'s `keys` prop.
+
 ## Highlighting
 
 Highlighting is a technique that allows the end user to request additional information about observations of interest. For example, in this scatterplot, the `a` and `b` variables are mapped to the `x` and `y` dimensions of the points and are therefore visible to the user, but the name of each observation is not visible. By hovering the mouse over a point, its `name` attribute is requested, and displayed below the graphic:

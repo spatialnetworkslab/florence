@@ -18,7 +18,7 @@
       x={[2, 5, 8]}
       y={[2, 5, 8]}
       fill={({ key }) => key === 'b' ? 'blue' : 'red'}
-      key={['a', 'b', 'c']}
+      keys={['a', 'b', 'c']}
     />
 
   </Section>

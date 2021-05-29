@@ -37,7 +37,7 @@
     <PointLayer 
       x={data.column('x')}
       y={data.column('y')}
-      key={data.keys()}
+      keys={data.keys()}
       transition={3000}  
     />
 

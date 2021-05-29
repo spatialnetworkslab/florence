@@ -157,11 +157,11 @@ See the [interactivity](/docs/concepts/interactivity) documentation for more inf
 - `blockReindexing`: see the [interactivity](/docs/concepts/interactivity) documentation for more information.
 - `clip`: indicates whether the Mark or Layer should be clipped off if it extends beyond its parent `Section` or `Graphic` viewport (i.e. the area within the padding). 
 
-In addition, the `RectangleLayer` has the `key` prop:
+In addition, the `RectangleLayer` has the `keys` prop:
 
 | Prop | Required |  Type(s)   |   Default   |       Unit(s)        |
 | ---- | -------- | ---------- | ----------- | -------------------- |
-| key  | `false`  | `String[]` | `undefined` | Array of unique keys |
+| keys  | `false`  | `String[]` | `undefined` | Array of unique keys |
 
 See the [marks versus layers](/docs/concepts/marks-vs-layers) documentation for more information on how keys work.
 
