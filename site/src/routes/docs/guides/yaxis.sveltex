@@ -50,7 +50,6 @@ import SimpleExample from './utils/_YAxisSimple.svelte'
 
 |    Prop     | Required |  Type(s)   |   Default   |                       Unit(s)                        |
 | ----------- | -------- | ---------- | ----------- | ---------------------------------------------------- |
-| scale       | `false`  | `Function` | `undefined` | [d3 scale](https://github.com/d3/d3-scale)           |
 | ticks       | `false`  | `Boolean`  | `true`      | -                                                    |
 | tickCount   | `false`  | `Number`   | `10`        | -                                                    |
 | tickExtra   | `false`  | `Boolean`  | `false`     | -                                                    |
@@ -60,7 +59,6 @@ import SimpleExample from './utils/_YAxisSimple.svelte'
 | tickColor   | `false`  | `String`   | `'black'`   | Named, hex, rgb or hsl color                         |
 | tickOpacity | `false`  | `Number`   | `1`         | Number between 0 and 1                               |
 
-- the `scale` prop can be used to override the parent's `scaleY`. 
 - setting `ticks` to `false` will hide the ticks.
 - `tickCount` will determine the number of ticks.
 - `tickExtra` will add an extra tick to mark the lower end of the domain.
@@ -75,7 +73,7 @@ import SimpleExample from './utils/_YAxisSimple.svelte'
 | --------------- | -------- | ---------- | ------------- | ----------------------------------- |
 | labelFormat     | `false`  | `Function` | `undefined`   | -                                   |
 | labelOffset     | `false`  | `Number`   | `2`           | Pixel                               |
-| labelRotate     | `false`  | `Number`   | `0`           | Degree                              |
+| labelRotate     | `false`  | `Number`   | `0`           | Radian                              |
 | labelFont       | `false`  | `String`   | `'Helvetica'` | Font                                |
 | labelFontSize   | `false`  | `Number`   | `10`          | Pixel                               |
 | labelFontWeight | `false`  | `String`   | `'normal'`    | See [Label](/docs/marks/label) Mark |
@@ -101,7 +99,7 @@ import SimpleExample from './utils/_YAxisSimple.svelte'
 | titleFontSize    | `false`  | `Number`           | `12`          | Pixel                        |
 | titleFontWeight  | `false`  | `String`           | `'normal'`    | See explanation              |
 | titleOpacity     | `false`  | `Number`           | `1`           | Number between 0 and 1       |
-| titleRotation    | `false`  | `Number`           | `0`           | Degree                       |
+| titleRotate      | `false`  | `Number`           | `0`           | Radian                       |
 | titleAnchorPoint | `false`  | `String`           | `'t'`         | See explanation              |
 
 `titleVjust`, `titleYOffset`, `titleHjust` and `titleXOffset` can be used to position the axis title similar to the `YAxis`'s `hjust` and `xOffset` props. The `titleHjust` and `titleXOffset` props, however, also allow a `String` with the value `'axis'`, which automatically places the title in a reasonable default position. For an explanation of `titleAnchorPoint`, see the `anchorPoint` explanation in the [Label](/docs/marks/label) Mark documentation.
