@@ -2,13 +2,13 @@
   import { scaleLinear } from 'd3-scale'
   import { Graphic, Section, Label, LabelLayer } from '../../../../../src/'
   
-
+  const toRadian = degree => (degree / 180) * Math.PI
 
   const data = {
       x: [5, 3, 2],
       y: [10, 5, 2],
       text: ["Testing1", "Testing2", "Testing3"],
-      rotation: [45, 10, 90]
+      rotate: [45, 10, 90].map(toRadian)
   }
 
    let isActive = false
@@ -36,7 +36,7 @@
         fontFamily="Georgia"
         fontSize="20"
         fontWeight="bold"
-        rotation={data.rotation[0]}
+        rotate={data.rotate[0]}
         onClick={() => {
           console.log('click')
           isActive = true
@@ -51,7 +51,7 @@
         fontFamily="Georgia"
         fontSize="20"
         fontWeight="bold"
-        rotation={data.rotation}
+        rotate={data.rotate}
     />
 
   </Section>

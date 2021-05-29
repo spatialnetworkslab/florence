@@ -102,4 +102,4 @@ For other aesthetics, transitions basically work as you would expect. Other supp
 - strokeOpacity
 - fontSize
 - fontWeight
-- rotation
+- rotate

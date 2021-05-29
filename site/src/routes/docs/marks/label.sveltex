@@ -59,7 +59,7 @@ The anchor point is by default in the center, but can be changed to with the `an
 | fontSize      | `false`  | `Number`           | `16`          | Pixel                         |
 | fontWeight    | `false`  | `Number`, `String` | `'normal'`    | See explanation               |
 | fontFamily    | `false`  | `String`           | `'Helvetica'` | Name of font family           |
-| rotation      | `false`  | `Number`           | `0`           | Degree                        |
+| rotate      | `false`  | `Number`           | `0`           | Radian                        |
 | fill          | `false`  | `String`           | `'#000000'`   | Named, hex, rgb, or hsl color |
 | fillOpacity   | `false`  | `Number`           | `undefined`   | Number between 0 and 1        |
 | stroke        | `false`  | `String`           | `'none'`      | Named, hex, rgb, or hsl color |
@@ -73,7 +73,7 @@ These aesthetic props are similar to attributes of the SVG [text](https://develo
 - `fontSize` refers to the font size (`font-size`)
 - `fontWeight` refers to the 'thickness' of the font, similar to using 'bold' text in regular text editors. If a `Number` is passed to `fontWeight`, it must be number between 0 and 1000, where 1000 is the greatest possible weight. If a `String` is passed instead, it must be a value like `'normal'` or `'bold'`. For more options: check the [font-weight CSS property](https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight) documentation, which uses the same API. (`font-weight`)
 - `fontFamily` refers to the font family (`font-family`)
-- `rotation` refers to the rotation of the text in degrees. The text will rotate around the anchor point (no direct equivalent, is converted into `transform` attribute)
+- `rotate` refers to the rotation of the text in radians. The text will rotate around the anchor point (no direct equivalent)
 - `fill` refers to the color of the text (`fill`)
 - `fillOpacity` refers to the opacity of the text, `0` being fully transparent (`fill-opacity`)
 - `stroke` refers to the color of the text's outline (`stroke`)

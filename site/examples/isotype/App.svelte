@@ -58,7 +58,7 @@
         x={() => 10}
         y={'pigs'}
         text={row.country}
-        rotation={-90}
+        rotate={-Math.PI / 2}
         fontFamily={'sans-serif'}
         fontSize={10}
       />
