@@ -40,54 +40,24 @@ import SimpleExample from './examples/_AreaSimple.svelte'
 
 ### Positioning
 
-|      Prop       | Required |                   Type(s)                    |   Default   |                       Unit(s)                        |
-| --------------- | -------- | -------------------------------------------- | ----------- | ---------------------------------------------------- |
-| x1              | `true`   | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
-| x2              | `false`  | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
-| y1              | `true`   | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
-| y2              | `false`  | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
-| independentAxis | `false`  | `String`                                     | `'x'`       | Either `'x'` or `'y'`                                |
+| Prop |                  Required                   |                   Type(s)                    |   Default   |                       Unit(s)                        |
+| ---- | ------------------------------------------- | -------------------------------------------- | ----------- | ---------------------------------------------------- |
+| x    | `if (y1 !== undefined && y2 !== undefined)` | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y    | `if (x1 !== undefined && x2 !== undefined)` | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| x1   | `if (y !== undefined)`                      | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| x2   | `if (y !== undefined)`                      | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y1   | `if (x !== undefined)`                      | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| y2   | `if (x !== undefined)`                      | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
 
-The `Area` is defined by the region between two bounding polylines, which are like Line marks defined with `x1` `y1` and `x2` `y2` props respectively. How an area is bounded (its 'orientation') is determined by the independent variable, which is either derived implicitly from the combination of props or specified explicitly with the `independentAxis`. When x is the independent variable, only the `x1` prop should be specified, with `x2`=`x1`. `y1` represents the upper bound and `y2` the lower bound, which is set to 0 if unspecified. Similarly, when y is the independent variable, only the `y1` prop should be specified, with `y2`=`y1`. `x1` represents the right bound and `x2` the left bound, which is set to 0 if unspecified. This is illustrated in the table below:
+The `Area` is defined by the region between two bounding polylines, which are like Line marks defined with `x1` `y1` and `x2` `y2` props respectively. How an area is bounded (its 'orientation') is determined by which props are combined. When `x` is defined, `y1` and `y2` are required, and the `Area` is oriented horizontally. Likewise, When `y` is defined, `x1` and `x2` are required, and the `Area` will be oriented vertically. This is illustrated by the examples below:
 
 ```js exec
-import HorizontalAreaBoth from './utils/_HorizontalAreaBoth.svelte'
-import VerticalAreaRight from './utils/_VerticalAreaRight.svelte'
-import VerticalAreaLeft from './utils/_VerticalAreaLeft.svelte'
-import HorizontalAreaUpper from './utils/_HorizontalAreaUpper.svelte'
-import VerticalAreaBoth from './utils/_VerticalAreaBoth.svelte'
-import HorizontalAreaLower from './utils/_HorizontalAreaLower.svelte'
+import HorizontalArea from './utils/_HorizontalArea.svelte'
+import VerticalArea from './utils/_VerticalArea.svelte'
 ```
 
-|      Prop       |                                                                                  Description                                                                                   |                Representation                |     |     |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- | --- | --- |
-| x1              | X coordinates of both upper and lower bounds of an area when x is the independent variable;<br>x coordinates of the right bound of an area when y is the independent variable. | <HorizontalAreaBoth /> <VerticalAreaRight /> |     |     |
-| x2              | X coordinates of the left bound of an area when y is the independent variable.                                                                                                 | <VerticalAreaLeft />                         |     |     |
-| y1              | Y coordinates of the upper bound of an area when x is the independent variable;<br>y coordinates of both left and right bounds of an area when y is the independent variable.  | <HorizontalAreaUpper /> <VerticalAreaBoth /> |     |     |
-| y2              | Y coordinates of the lower bound of an area when x is the independent variable.                                                                                                | <HorizontalAreaLower />                      |     |     |
-| independentAxis | The independent variable.                                                                                                                                                      |                                              |     |     |
-
-The table below summarizes which combinations of positioning props are allowed: 
-
-| x1  | y1  | x2  | y2  | independentAxis | valid |                         comments                         |
-| --- | --- | --- | --- | --------------- | ----- | -------------------------------------------------------- |
-|     |     | any | any | any             | ❌     | at least x1 and y1 must be given                         |
-|     | ✓   | any | any | any             | ❌     | at least x1 and y1 must be given                         |
-| ✓   |     | any | any | any             | ❌     | at least x1 and y1 must be given                         |
-| ✓   | ✓   |     |     | 'x'             | ✅     | y2 is set to 0 and broadcasted                           |
-| ✓   | ✓   |     |     | 'y'             | ✅     | x2 is set to 0 and broadcasted                           |
-| ✓   | ✓   |     | ✓   | 'x'             | ✅     |                                                          |
-| ✓   | ✓   |     | ✓   | 'y'             | ❌     | independentAxis must be 'x' when x1, y1 and y2 are given |
-| ✓   | ✓   | ✓   |     | 'x'             | ❌     | independentAxis must be 'y' when x1, y1 and x2 are given |
-| ✓   | ✓   | ✓   |     | 'y'             | ✅     |                                                          |
-| ✓   | ✓   | ✓   | ✓   | 'x'             | ✅     | x2 is ignored                                            |
-| ✓   | ✓   | ✓   | ✓   | 'y'             | ✅     | y2 is ignored                                            |
-
-For all positioning props (except `independentAxis`), a function can be supplied that bypasses the scaling step- see the [local coordinates](/docs/concepts/local-coordinates) documentation. When using the `AreaLayer`, all positioning props (except `independentAxis`) will be supplied as `Array`s of `Array`s of `Number`s, `String`s and `Date`s, or `Function`s that return `Array`s of `Array`s of scaled coordinates- see the [marks versus layers](/docs/concepts/marks-vs-layers) documentation.
-
-::: div callout
-`independentAxis` is the only positioning prop to which you __always__ pass a `String` and not an `Array` of `String`s, regardless of whether you are using an `Area` or `AreaLayer`! Together with the [FuncLine](/docs/marks/funcline)'s positioning props, it also does not support `Function` syntax, which all other positioning props do.
-:::
+<HorizontalArea />
+<VerticalArea />
 
 ### Aesthetics
 

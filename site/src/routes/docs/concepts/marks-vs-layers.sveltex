@@ -25,7 +25,7 @@ This will be discussed under `Aesthetics: marks vs. layers`.
 
 ### Single values versus arrays
 
-The main difference between the positioning of marks and layers is that whatever type of value you would pass to the prop of a single mark, you would need to pass an `Array` of that type of values to the layer. So if you pass a single local coordinate (often a `Number`) to the `x1` prop of the [Rectangle](/docs/marks/rectangle), then you would pass an `Array` (of, in this example, `Number`s) to the `RectangleLayer`'s `x1` prop. Likewise, if you pass an `Array` of local coordinates to the [Line](/docs/marks/line), you pass an `Array` of `Array`s of local coordinates to the `LineLayer`. The only exceptions to this rule are the [FuncLine](/docs/marks/funcline)'s (which has no corresponding `Layer` component) positioning props, and the `independentAxis` prop of the [Area](/docs/marks/area) mark/layer.
+The main difference between the positioning of marks and layers is that whatever type of value you would pass to the prop of a single mark, you would need to pass an `Array` of that type of values to the layer. So if you pass a single local coordinate (often a `Number`) to the `x1` prop of the [Rectangle](/docs/marks/rectangle), then you would pass an `Array` (of, in this example, `Number`s) to the `RectangleLayer`'s `x1` prop. Likewise, if you pass an `Array` of local coordinates to the [Line](/docs/marks/line), you pass an `Array` of `Array`s of local coordinates to the `LineLayer`. The only exceptions to this rule is the [FuncLine](/docs/marks/funcline)'s (which has no corresponding `Layer` component) positioning props.
 
 To illustrate, the result of drawing three `Point`s in the left panel is identical to drawing a `PointLayer` consisting of three marks in the right panel:
 
@@ -61,7 +61,7 @@ import MarkVsLayerPositioning from './examples/_MarkVsLayerPositioning.svelte'
 
 ### Function syntax
 
-Again with the exception of the [Area](/docs/marks/area)'s `independentAxis` prop and the [FuncLine](/docs/marks/funcline)'s positioning props, the positioning props of all marks and layers support the so-called 'function syntax'. Function syntax can be used to bypass the scaling step (see the [local coordinates](/docs/concepts/local-coordinates) documentation).
+Again with the exception of the [FuncLine](/docs/marks/funcline)'s positioning props, the positioning props of all marks and layers support the so-called 'function syntax'. Function syntax can be used to bypass the scaling step (see the [local coordinates](/docs/concepts/local-coordinates) documentation).
 
 See the example below for another side-by-side comparison of this behavior for marks and layers:
 
