@@ -7,7 +7,6 @@
   width={500}
   height={500}
   padding={20}
-  paddingColor="#b2ffb2"
 >
 
   <Section 

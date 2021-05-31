@@ -113,7 +113,6 @@
 			scaleX={scaleA}
 			scaleY={scaleB}
       backgroundColor={background}
-      paddingColor={padding}
       padding={{left: 40, right: 25, top: 25, bottom: 40}}
       flipY
 		>

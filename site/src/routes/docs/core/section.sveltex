@@ -151,9 +151,6 @@ would be equivalent to:
 |      Prop       | Required | Type(s)  |   Default   |            Units             |
 | --------------- | -------- | -------- | ----------- | ---------------------------- |
 | backgroundColor | `false`  | `String` | `undefined` | Named, hex, rgb or hsl color |
-| paddingColor    | `false`  | `String` | `undefined` | Named, hex, rgb or hsl color |
-
-Where `backgroundColor` is the area within the padded area, and `paddingColor` is the background of the padded area (see `padding` below).
 
 ### Local coordinate system
 
