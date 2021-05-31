@@ -156,7 +156,7 @@ Highlighting is a technique that allows the end user to request additional infor
     scaleX={scaleLinear().domain([1, 5])}
     scaleY={scaleLinear().domain([1, 5])}
     padding={20}
-    clip={false}
+    clip={'outer'}
   >
 
     <PointLayer 

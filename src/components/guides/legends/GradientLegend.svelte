@@ -38,7 +38,7 @@
   export let labelColor = 'black'
 
   // Other
-  export let clip = undefined
+  export let clip = 'outer'
 
   const { renderer } = getContext('graphic')
   

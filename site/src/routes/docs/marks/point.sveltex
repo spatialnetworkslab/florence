@@ -101,15 +101,15 @@ See the [interactivity](/docs/concepts/interactivity) documentation for more inf
 
 ### Other
 
-|      Prop       | Required |  Type(s)  |   Default   | Unit(s) |
-| --------------- | -------- | --------- | ----------- | ------- |
-| renderSettings  | `false`  | `Object`  | `undefined` | -      |
-| blockReindexing | `false`  | `Boolean` | `false`     | -      |
-| clip            | `false`  | `Boolean` | `true`      | -      |
+|      Prop       | Required |        Type(s)        |   Default   |                   Unit(s)                    |
+| --------------- | -------- | --------------------- | ----------- | -------------------------------------------- |
+| renderSettings  | `false`  | `Object`              | `undefined` | -                                            |
+| blockReindexing | `false`  | `Boolean`             | `false`     | -                                            |
+| clip            | `false`  | `String`, `undefined` | `undefined` | Either `'padding'`, `'outer'` or `undefined` |
 
 - `renderSettings`: see the [advanced rendering](/docs/concepts/advanced-rendering) documentation for more information
 - `blockReindexing`: see the [interactivity](/docs/concepts/interactivity) documentation for more information.
-- `clip`: indicates whether the Mark or Layer should be clipped off if it extends beyond its parent `Section` or `Graphic` viewport (i.e. the area within the padding). 
+- `clip`: if defined, overrides the clip mode of the parent `Graphic`, `Section` or `Glyph`. 
 
 In addition, the `PointLayer` has the `keys` prop:
 

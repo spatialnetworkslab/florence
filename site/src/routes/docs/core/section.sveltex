@@ -200,12 +200,12 @@ See the [interactivity](/docs/concepts/interactivity) documentation for more inf
 
 ### Other
 
-|      Prop       | Required |  Type(s)  | Default | Unit(s) |
-| --------------- | -------- | --------- | ------- | ------- |
-| blockReindexing | `false`  | `Boolean` | `false` | -       |
-| clip            | `false`  | `Boolean` | `true`  | -       |
+|      Prop       | Required |  Type(s)  |   Default   |            Unit(s)            |
+| --------------- | -------- | --------- | ----------- | ----------------------------- |
+| blockReindexing | `false`  | `Boolean` | `false`     | -                             |
+| clip            | `false`  | `String`  | `'padding'` | Either `'padding' or 'outer'` |
 
-The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` indicates whether the marks or layers inside of this `Graphic` should be clipped off if they extend beyond this `Graphic`'s viewport (i.e. the area within the padding).
+The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` controls how the marks, layers and other visual elements inside of this `Section` should be clipped off. To clip off everything within the padding, `'padding'` should be used. To only clip off everything outside of the `Sections`'s outer border (determined by the positioning props), `'outer'` should be used.
 
 ## Methods
 

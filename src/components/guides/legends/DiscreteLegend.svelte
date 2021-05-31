@@ -30,7 +30,7 @@
   export let labelColor = 'black'
 
   // Other
-  export let clip = undefined
+  export let clip = 'outer'
 
   $: fills = parseAesthetic(fill, labels.length)
   $: opacities = parseAesthetic(opacity, labels.length)

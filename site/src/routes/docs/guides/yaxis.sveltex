@@ -114,8 +114,8 @@ Transitions will be applied to the marks (`Line`s and `Label`s) of which the axi
 
 ### Other
 
-| Prop | Required |  Type(s)  | Default | Unit(s) |
-| ---- | -------- | --------- | ------- | ------- |
-| clip | `false`  | `Boolean` | `false` | -       |
+| Prop | Required |        Type(s)        |  Default  |                   Unit(s)                    |
+| ---- | -------- | --------------------- | --------- | -------------------------------------------- |
+| clip | `false`  | `String`, `undefined` | `'outer'` | Either `'padding'`, `'outer'` or `undefined` |
 
-Setting this to `true` will let the parent `Graphic` or `Section` clip off the axis if it leaves the viewport. Usually not desirable for axes.
+Can be used to override the clip mode of the parent `Graphic`, `Section` or `Glyph`. When `undefined`, inherits from the parent `Section` or `Graphic`.
