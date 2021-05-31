@@ -11,11 +11,13 @@
   import { writable } from 'svelte/store'
   import { EventManager } from '@snlab/rendervous'
   import Section from '../section/Section.svelte'
-  // import wrapContext from './wrapContext.js'
 
   // Positioning
   export let width = 500
   export let height = 500
+
+  // Aesthetics
+  export let backgroundColor = undefined
 
   // Local coordinates
   export let coordinates = undefined
@@ -69,7 +71,6 @@
     }
 
     if (renderer === 'canvas') {
-      // context = wrapContext(rootNode.getContext('2d'))
       context = rootNode.getContext('2d')
     }
 
@@ -111,6 +112,7 @@
       x2={width}
       y1={0}
       y2={height}
+      {backgroundColor}
       {coordinates}
       scaleX={scaleX ?? [0, width]}
       scaleY={scaleY ?? [0, height]}
@@ -151,6 +153,7 @@
     x2={width}
     y1={0}
     y2={height}
+    {backgroundColor}
     {coordinates}
     scaleX={scaleX ?? [0, width]}
     scaleY={scaleY ?? [0, height]}

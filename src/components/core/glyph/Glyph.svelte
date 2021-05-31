@@ -17,6 +17,9 @@
   export let y
   export let radius
 
+  // Aesthetics
+  export let backgroundColor = undefined
+
   // Local coordinates
   export let coordinates = undefined
   export let scaleX = undefined
@@ -67,6 +70,7 @@
 <BaseSection
   bind:this={node}
   {props}
+  {backgroundColor}
   {id}
   createFunction={createPointSection}
   {onClick}

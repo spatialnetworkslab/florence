@@ -29,10 +29,10 @@ import SimpleExample from './examples/_GraphicSimple.svelte'
 
 ### Positioning
 
-|  Prop   |            Required            |      Type(s)       |           Default            |      Unit(s)      |
-| ------- | ------------------------------ | ------------------ | ---------------------------- | ----------------- | 
-| width   | `true`                        | `Number`, `String` | `500`                        | Pixel, percentage |
-| height  | `true`                        | `Number`, `String` | `500`                        | Pixel, percentage |
+|  Prop  | Required | Type(s)  | Default | Unit(s) |
+| ------ | -------- | -------- | ------- | ------- |
+| width  | `true`   | `Number` | `500`   | Pixel   |
+| height | `true`   | `Number` | `500`   | Pixel   |
 
 ### Local coordinate system
 

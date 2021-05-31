@@ -3,10 +3,13 @@
   import { writable } from 'svelte/store'
   import { InteractionManager } from '@snlab/rendervous'
   import Clipper from './_Clipper.svelte'
+  import Rectangle from '../marks/rectangle/Rectangle.svelte'
 
   export let props
   export let id
   export let createFunction
+
+  export let backgroundColor = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -102,11 +105,19 @@
 {#if renderer === 'svg'}
   <Clipper {section} />
 
+  {#if backgroundColor}
+    <Rectangle fill={backgroundColor} />
+  {/if}
+
   <g class="section">
     <slot />
   </g>
 {/if}
 
 {#if renderer === 'canvas'}
+  {#if backgroundColor}
+    <Rectangle fill={backgroundColor} />
+  {/if}
+
   <slot />
 {/if}
