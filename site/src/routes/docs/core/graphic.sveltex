@@ -31,8 +31,8 @@ import SimpleExample from './examples/_GraphicSimple.svelte'
 
 |  Prop  | Required | Type(s)  | Default | Unit(s) |
 | ------ | -------- | -------- | ------- | ------- |
-| width  | `true`   | `Number` | `500`   | Pixel   |
-| height | `true`   | `Number` | `500`   | Pixel   |
+| width  | `false`   | `Number` | `500`   | Pixel   |
+| height | `false`   | `Number` | `500`   | Pixel   |
 
 ### Aesthetics
 
