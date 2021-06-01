@@ -52,14 +52,19 @@ Note that `Polygon`s have to 'close', meaning that the last coordinate pair has 
 
 ### Aesthetics
 
-|     Prop      | Required | Type(s)  |   Default   |           Unit(s)            |
-| ------------- | -------- | -------- | ----------- | ---------------------------- |
-| fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
-| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1       |
-| stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color |
-| strokeWidth   | `false`  | `Number` | `0`         | Pixel                        |
-| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 to 1        |
-| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1       |
+|     Prop      | Required | Type(s)  |   Default   |                                                             Unit(s)                                                              |
+| ------------- | -------- | -------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color                                                                                                     |
+| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1                                                                                                           |
+| stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color                                                                                                     |
+| strokeWidth   | `false`  | `Number` | `0`         | Pixel                                                                                                                            |
+| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 to 1                                                                                                            |
+| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1                                                                                                           |
+| lineCap       | `false`  | `String` | `'butt'`    | `'butt'`, `'round'` or `'square'`                                                                                                |
+| lineJoin      | `false`  | `String` | `'bevel'`   | `'bevel'`, `'round'` or `'miter'`                                                                                                |
+| miterLimit    | `false`  | `Number` | `10`        | Pixel                                                                                                                            |
+| dashArray     | `false`  | `String` | `undefined` | A string of numbers seperated by spaces. See [here](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray) |
+| dashOffset    | `false`  | `Number` | `undefined` | Pixel                                                                                                                            |
 
 These aesthetic props are similar to attributes of the SVG [polygon](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/polygon) element. The analogous `polygon` attributes are shown below in brackets:
 
@@ -69,6 +74,11 @@ These aesthetic props are similar to attributes of the SVG [polygon](https://dev
 - `strokeWidth` refers to the width of the polygon's outline (`stroke-width`)
 - `strokeOpacity` refers to the transparency of the polygon's outline, `0` being fully transparent (`stroke-opacity`)
 - `opacity` sets both the `strokeOpacity` and the `fillOpacity` (`opacity`)
+- `lineCap` controls the endings of strokes (in this case only relevant when `dashArray` is used) (`stroke-linecap`)
+- `lineJoin` controls the shape to be used at the corners of the stroke (`stroke-linejoin`)
+- `miterLimit`, if `lineJoin` is `'miter'`, sets a limit on how long the miter can be (`stroke-miterlimit`)
+- `dashArray` can be used to make dashed strokes (`stroke-dasharray`)
+- `dashOffset` shifts the pattern defined in `dashArray` by a number of pixels (`stroke-dashoffset`)
 
 ### Transitions
 

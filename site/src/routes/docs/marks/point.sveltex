@@ -39,25 +39,31 @@ To render a `Point`, you will need to provide either the `x` and `y` props, or t
 
 ### Aesthetics
 
-|     Prop      | Required | Type(s)  |   Default   |           Unit(s)            |
-| ------------- | -------- | -------- | ----------- | ---------------------------- |
-| radius        | `false`  | `Number` | `3`         | Pixel                        |
-| fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
-| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1       |
-| stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color |
-| strokeWidth   | `false`  | `Number` | `0`         | Pixel                        |
-| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1       |
-| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1       |
+|     Prop      | Required | Type(s)  |   Default   |                                                             Unit(s)                                                              |
+| ------------- | -------- | -------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| radius        | `false`  | `Number` | `3`         | Pixel                                                                                                                            |
+| fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color                                                                                                     |
+| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1                                                                                                           |
+| stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color                                                                                                     |
+| strokeWidth   | `false`  | `Number` | `0`         | Pixel                                                                                                                            |
+| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1                                                                                                           |
+| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1                                                                                                           |
+| lineCap       | `false`  | `String` | `'butt'`    | `'butt'`, `'round'` or `'square'`                                                                                                |
+| dashArray     | `false`  | `String` | `undefined` | A string of numbers seperated by spaces. See [here](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray) |
+| dashOffset    | `false`  | `Number` | `undefined` | Pixel                                                                                                                            |
 
 These aesthetic props are similar to attributes of the SVG [circle](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/circle) element. The analogous `circle` attributes are shown below in brackets:
 
 - `radius`, unsurprisingly, refers to the radius of the point (`r`) 
 - `fill` refers to the color of the point (`fill`)
 - `fillOpacity` refers to the transparency of the point, `0` being fully transparent (`fill-opacity`)
-- `stroke` refers to the color of the point's outline (`stroke`)
-- `strokeWidth` refers to the width of the point's outline (`stroke-width`)
-- `strokeOpacity` refers to the transparency of the point's outline, `0` being fully transparent (`stroke-opacity`)
+- `stroke` refers to the color of the point's outline or 'stroke' (`stroke`)
+- `strokeWidth` refers to the width of the point's outline or 'stroke' (`stroke-width`)
+- `strokeOpacity` refers to the transparency of the point's outline or 'stroke', `0` being fully transparent (`stroke-opacity`)
 - `opacity` sets both the `strokeOpacity` and the `fillOpacity` (`opacity`)
+- `lineCap` controls the endings of strokes (in this case only relevant when `dashArray` is used) (`stroke-linecap`)
+- `dashArray` can be used to make dashed strokes (`stroke-dasharray`)
+- `dashOffset` shifts the pattern defined in `dashArray` by a number of pixels (`stroke-dashoffset`)
 
 ### Transitions
 

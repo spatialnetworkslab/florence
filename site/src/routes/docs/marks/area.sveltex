@@ -40,14 +40,15 @@ import SimpleExample from './examples/_AreaSimple.svelte'
 
 ### Positioning
 
-| Prop |                  Required                   |                   Type(s)                    |   Default   |                       Unit(s)                        |
-| ---- | ------------------------------------------- | -------------------------------------------- | ----------- | ---------------------------------------------------- |
-| x    | `if (y1 !== undefined && y2 !== undefined)` | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
-| y    | `if (x1 !== undefined && x2 !== undefined)` | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
-| x1   | `if (y !== undefined)`                      | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
-| x2   | `if (y !== undefined)`                      | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
-| y1   | `if (x !== undefined)`                      | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
-| y2   | `if (x !== undefined)`                      | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |
+| Prop  |                  Required                   |                   Type(s)                    |   Default   |                          Unit(s)                          |
+| ----- | ------------------------------------------- | -------------------------------------------- | ----------- | --------------------------------------------------------- |
+| x     | `if (y1 !== undefined && y2 !== undefined)` | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates)      |
+| y     | `if (x1 !== undefined && x2 !== undefined)` | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates)      |
+| x1    | `if (y !== undefined)`                      | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates)      |
+| x2    | `if (y !== undefined)`                      | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates)      |
+| y1    | `if (x !== undefined)`                      | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates)      |
+| y2    | `if (x !== undefined)`                      | `Number[]`, `String[]`, `Date[]`, `Function` | `undefined` | [Local coordinate](/docs/concepts/local-coordinates)      |
+| curve | `false`                                     | `Object`                                     | `undefined` | A [d3-shape curve](https://github.com/d3/d3-shape#curves) |
 
 The `Area` is defined by the region between two bounding polylines, which are like Line marks defined with `x1` `y1` and `x2` `y2` props respectively. How an area is bounded (its 'orientation') is determined by which props are combined. When `x` is defined, `y1` and `y2` are required, and the `Area` is oriented horizontally. Likewise, When `y` is defined, `x1` and `x2` are required, and the `Area` will be oriented vertically. This is illustrated by the examples below:
 
@@ -61,23 +62,33 @@ import VerticalArea from './utils/_VerticalArea.svelte'
 
 ### Aesthetics
 
-|     Prop      | Required | Type(s)  |   Default   |           Unit(s)            |
-| ------------- | -------- | -------- | ----------- | ---------------------------- |
-| stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color |
-| strokeWidth   | `false`  | `Number` | `0`         | Pixel                        |
-| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1       |
-| fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
-| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1       |
-| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1       |
+|     Prop      | Required | Type(s)  |   Default   |                                                             Unit(s)                                                              |
+| ------------- | -------- | -------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color                                                                                                     |
+| strokeWidth   | `false`  | `Number` | `0`         | Pixel                                                                                                                            |
+| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1                                                                                                           |
+| fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color                                                                                                     |
+| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1                                                                                                           |
+| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1                                                                                                           |
+| lineCap       | `false`  | `String` | `'butt'`    | `'butt'`, `'round'` or `'square'`                                                                                                |
+| lineJoin      | `false`  | `String` | `'bevel'`   | `'bevel'`, `'round'` or `'miter'`                                                                                                |
+| miterLimit    | `false`  | `Number` | `10`        | Pixel                                                                                                                            |
+| dashArray     | `false`  | `String` | `undefined` | A string of numbers seperated by spaces. See [here](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray) |
+| dashOffset    | `false`  | `Number` | `undefined` | Pixel                                                                                                                            |
 
 These aesthetic props are similar to attributes of the SVG [path](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path) element. The analogous `path` attributes are shown below in brackets:
 
 - `fill` refers to the color of the polygon (`fill`)
 - `fillOpacity` refers to the transparency of the polygon, `0` being fully transparent (`fill-opacity`)
-- `stroke` refers to the color of the polygon's outline (`stroke`)
-- `strokeWidth` refers to the width of the polygon's outline (`stroke-width`)
-- `strokeOpacity` refers to the transparency of the polygon's outline, `0` being fully transparent (`stroke-opacity`)
+- `stroke` refers to the color of the polygon's outline or 'stroke' (`stroke`)
+- `strokeWidth` refers to the width of the polygon's outline or 'stroke' (`stroke-width`)
+- `strokeOpacity` refers to the transparency of the polygon's outline or 'stroke', `0` being fully transparent (`stroke-opacity`)
 - `opacity` sets both the `strokeOpacity` and the `fillOpacity` (`opacity`)
+- `lineCap` controls the endings of strokes (in this case only relevant when `dashArray` is used) (`stroke-linecap`)
+- `lineJoin` controls the shape to be used at the corners of the stroke (`stroke-linejoin`)
+- `miterLimit`, if `lineJoin` is `'miter'`, sets a limit on how long the miter can be (`stroke-miterlimit`)
+- `dashArray` can be used to make dashed strokes (`stroke-dasharray`)
+- `dashOffset` shifts the pattern defined in `dashArray` by a number of pixels (`stroke-dashoffset`)
 
 ### Transitions
 

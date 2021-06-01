@@ -59,7 +59,7 @@ The anchor point is by default in the center, but can be changed to with the `an
 | fontSize      | `false`  | `Number`           | `16`          | Pixel                         |
 | fontWeight    | `false`  | `Number`, `String` | `'normal'`    | See explanation               |
 | fontFamily    | `false`  | `String`           | `'Helvetica'` | Name of font family           |
-| rotate      | `false`  | `Number`           | `0`           | Radian                        |
+| rotate        | `false`  | `Number`           | `0`           | Radian                        |
 | fill          | `false`  | `String`           | `'#000000'`   | Named, hex, rgb, or hsl color |
 | fillOpacity   | `false`  | `Number`           | `undefined`   | Number between 0 and 1        |
 | stroke        | `false`  | `String`           | `'none'`      | Named, hex, rgb, or hsl color |

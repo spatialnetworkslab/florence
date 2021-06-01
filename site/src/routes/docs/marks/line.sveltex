@@ -49,17 +49,27 @@ To render the Line mark, you will need to provide the `x` and `y` or the `geomet
 
 ### Aesthetics
 
-|    Prop     | Required | Type(s)  |   Default   |           Unit(s)            |
-| ----------- | -------- | -------- | ----------- | ---------------------------- |
-| stroke      | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
-| strokeWidth | `false`  | `Number` | `3`         | Pixel                        |
-| opacity     | `false`  | `Number` | `1`         | Number between 0 and 1       |
+|    Prop     | Required | Type(s)  |   Default   |                                                             Unit(s)                                                              |
+| ----------- | -------- | -------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| stroke      | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color                                                                                                     |
+| strokeWidth | `false`  | `Number` | `3`         | Pixel                                                                                                                            |
+| opacity     | `false`  | `Number` | `1`         | Number between 0 and 1                                                                                                           |
+| lineCap     | `false`  | `String` | `'butt'`    | `'butt'`, `'round'` or `'square'`                                                                                                |
+| lineJoin    | `false`  | `String` | `'bevel'`   | `'bevel'`, `'round'` or `'miter'`                                                                                                |
+| miterLimit  | `false`  | `Number` | `10`        | Pixel                                                                                                                            |
+| dashArray   | `false`  | `String` | `undefined` | A string of numbers seperated by spaces. See [here](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray) |
+| dashOffset  | `false`  | `Number` | `undefined` | Pixel                                                                                                                            |
 
 These aesthetic props are similar to attributes of the SVG [line](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/line) element. The analogous `line` attributes are shown below in brackets:
 
 - `stroke` refers to the color of the line
 - `strokeWidth` refers to the width of the line
 - `strokeOpacity` refers to the transparency of the line, `0` being fully transparent
+- `lineCap` controls the endings of the line (`stroke-linecap`)
+- `lineJoin` controls the shape to be used at the corners of the line (`stroke-linejoin`)
+- `miterLimit`, if `lineJoin` is `'miter'`, sets a limit on how long the miter can be (`stroke-miterlimit`)
+- `dashArray` can be used to make dashed lines (`stroke-dasharray`)
+- `dashOffset` shifts the pattern defined in `dashArray` by a number of pixels (`stroke-dashoffset`)
 
 ### Transitions
 
