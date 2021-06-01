@@ -86,7 +86,7 @@ These will be converted into real scales by `florence` after being passed to `sc
 
 ## Examples
 
-You can see this in practice here:
+You can see this in action here:
 
 - [Simple Choropleth](/examples/choropleth)
 - [CP Figure 8a](/examples/cp-figure8a)

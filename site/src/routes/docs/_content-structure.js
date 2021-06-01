@@ -118,11 +118,11 @@ export const posts = [
   },
   {
     title: 'Helpers',
-    path: '/docs/helpers/create-geo-scales',
+    path: '/docs/helpers/fit-scales',
     children: [
       {
         title: 'fitScales',
-        path: '/docs/helpers/create-geo-scales'
+        path: '/docs/helpers/fit-scales'
       },
       {
         title: 'createPanHandler',
