@@ -100,14 +100,6 @@ These aesthetic props are similar to attributes of the SVG [line](https://develo
 - `dashArray` can be used to make dashed lines (`stroke-dasharray`)
 - `dashOffset` shifts the pattern defined in `dashArray` by a number of pixels (`stroke-dashoffset`)
 
-### Transitions
-
-|    Prop    | Required |      Type(s)       |   Default   |             Unit(s)              |
-| ---------- | -------- | ------------------ | ----------- | -------------------------------- |
-| transition | `false`  | `Number`, `Object` | `undefined` | Duration in ms or options object |
-
-See the [transition](/docs/concepts/transitions) documentation for more information.
-
 ### Interactions
 
 #### Mouse events

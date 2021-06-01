@@ -28,20 +28,18 @@
   {flipY}
 >
 
-  <Rectangle fill="white" opacity={0.4} transition={2000} />
+  <Rectangle fill="white" opacity={0.4} />
 
   <LineLayer 
     x={[[0, 0], [1, 1], [2, 2], [3, 3]]}
     y={[[0, 4], [0, 4], [0, 4], [0, 4]]}
     stroke={["red", "orange", "yellow" , "green"]}
-    transition={2000}
   />
 
   <LabelLayer
     x={[0, 1, 2, 3]}
     y={[2, 2, 2, 2]}
     text={[0, 1, 2, 3]}
-    transition={2000}
   />
 
 </Graphic>

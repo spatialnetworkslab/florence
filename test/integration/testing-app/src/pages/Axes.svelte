@@ -71,8 +71,7 @@
     titleFontWeight: 'normal',
     titleOpacity: 1,
     titleRotation: 0,
-    titleAnchorPoint: 't',
-    transition: 2000
+    titleAnchorPoint: 't'
   }
 
 </script>
@@ -119,14 +118,12 @@
         <PointLayer
           x={data.column('a')}
           y={data.column('b')}
-          transition={2000}
         />
 
         <!-- <PointLayer
           x={data.column('a')}
           y={data.column('b')}
           key={data.column('$key')}
-          transition={2000}
         /> -->
 		
         <XAxis
@@ -166,7 +163,6 @@
           titleOpacity={Number(options.titleOpacity)}
           titleRotation={Number(options.titleRotation)}
           titleAnchorPoint={options.titleAnchorPoint}
-          transition={Number(options.transition)}
         />
 
         <YAxis hjust={'left'} baseLineWidth={1} title="Test Y Axis"/>

@@ -43,10 +43,6 @@ In the table, `fill` related stuff goes before `stroke` related stuff, and the o
 
 Explain how mark is analogous HTML element if appriopriate
 
-### Transitions
-
-Link to transitions docs
-
 ### Interactions
 
 Link to interactions docs

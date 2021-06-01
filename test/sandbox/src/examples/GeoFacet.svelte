@@ -121,8 +121,6 @@
       heatmapPriceColors = heatmapData.map('resale_price_sqm', heatmapPrice)
     }
   }
-
-  let transition = 250
 </script>
 
 <Graphic width={500} height={1000}

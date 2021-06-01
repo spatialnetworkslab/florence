@@ -66,7 +66,6 @@
       key={filteredData.keys()}
       fill={transformation === 'identity' ? 'black' : 'blue'}
       radius={transformation === 'identity' ? 4 : 6}
-      transition={duration}
     /> -->
     {#each filteredData.keys() as key, i}
       <Point

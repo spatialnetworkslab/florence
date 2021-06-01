@@ -39,10 +39,6 @@ export const posts = [
         path: '/docs/concepts/zoom-pan'
       },
       {
-        title: 'Transitions',
-        path: '/docs/concepts/transitions'
-      },
-      {
         title: 'Advanced rendering',
         path: '/docs/concepts/advanced-rendering'
       }

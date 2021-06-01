@@ -104,14 +104,6 @@ import SimpleExample from './utils/_YAxisSimple.svelte'
 
 `titleVjust`, `titleYOffset`, `titleHjust` and `titleXOffset` can be used to position the axis title similar to the `YAxis`'s `hjust` and `xOffset` props. The `titleHjust` and `titleXOffset` props, however, also allow a `String` with the value `'axis'`, which automatically places the title in a reasonable default position. For an explanation of `titleAnchorPoint`, see the `anchorPoint` explanation in the [Label](/docs/marks/label) Mark documentation.
 
-### Transitions
-
-|    Prop    | Required |      Type(s)       |   Default   |             Unit(s)              |
-| ---------- | -------- | ------------------ | ----------- | -------------------------------- |
-| transition | `false`  | `Number`, `Object` | `undefined` | Duration in ms or options object |
-
-Transitions will be applied to the marks (`Line`s and `Label`s) of which the axis consists. See the [transition](/docs/concepts/transitions) documentation for more information.
-
 ### Other
 
 | Prop | Required |        Type(s)        |  Default  |                   Unit(s)                    |

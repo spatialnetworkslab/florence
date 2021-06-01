@@ -88,14 +88,6 @@ Positioning the `GradientLegend` works similar to positioning the [Section](/doc
 
 `stroke` and `strokeWidth` refer to the gradient rectangle.
 
-### Transitions
-
-|    Prop    | Required |      Type(s)       |   Default   |             Unit(s)              |
-| ---------- | -------- | ------------------ | ----------- | -------------------------------- |
-| transition | `false`  | `Number`, `Object` | `undefined` | Duration in ms or options object |
-
-Transitions will be applied to the marks (`Rectangle`s and `Label`s) of which the legend consists. See the [transition](/docs/concepts/transitions) documentation for more information.
-
 ### Other
 
 | Prop | Required |        Type(s)        |  Default  |                   Unit(s)                    |

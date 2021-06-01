@@ -101,7 +101,6 @@
       onMouseover={event => { setCity(event) }}
       onMouseout={() => { setCity(undefined) }}
       fill={key => key === currentKey ? 'red' : 'steelblue'}
-      transition={{ geometry: 3000 }}
     />
 
     {#if currentVisualization === 'scatterplot'}

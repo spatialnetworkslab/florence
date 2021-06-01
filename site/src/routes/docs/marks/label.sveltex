@@ -81,14 +81,6 @@ These aesthetic props are similar to attributes of the SVG [text](https://develo
 - `strokeOpacity` to the opacity of the text's outline, `0` being fully transparent (`stroke-opacity`)
 - `opacity` sets both the `strokeOpacity` and the `fillOpacity` (`opacity`)
 
-### Transitions
-
-|    Prop    | Required |      Type(s)       |   Default   |             Unit(s)              |
-| ---------- | -------- | ------------------ | ----------- | -------------------------------- |
-| transition | `false`  | `Number`, `Object` | `undefined` | Duration in ms or options object |
-
-See the [transition](/docs/concepts/transitions) documentation for more information.
-
 ### Interactions
 
 #### Mouse events
