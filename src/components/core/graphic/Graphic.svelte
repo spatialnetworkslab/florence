@@ -100,7 +100,18 @@
         dirty.set(false)
       })
     }
-  } 
+  }
+
+  let node
+
+  export const selectRectangle = rect => node.getSM().selectRectangle(rect)
+  export const updateSelectRectangle = rect => node.getSM().updateSelectRectangle(rect)
+  export const resetSelectRectangle = () => node.getSM().resetSelectRectangle()
+  export const startSelectPolygon = c => node.getSM().startSelectPolygon(c)
+  export const addPointToSelectPolygon = c => node.getSM().addPointToSelectPolygon(c)
+  export const moveSelectPolygon = delta => node.getSM().moveSelectPolygon(delta)
+  export const getSelectPolygon = () => node.getSM().getSelectPolygon()
+  export const resetSelectPolygon = () => node.getSM().resetSelectPolygon()
 </script>
 
 {#if renderer === 'svg'}
@@ -108,6 +119,7 @@
   <svg {id} {width} {height} bind:this={rootNode}>
 
     <Section
+      bind:this={node}
       x1={0}
       x2={width}
       y1={0}
@@ -149,6 +161,7 @@
   <canvas {id} {width} {height} bind:this={rootNode} />
   
   <Section
+    bind:this={node}
     x1={0}
     x2={width}
     y1={0}

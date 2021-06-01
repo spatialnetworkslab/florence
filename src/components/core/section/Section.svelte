@@ -50,13 +50,14 @@
   // Other options
   export let clip = 'padding'
 
-  let node
-
   $: props = {
     x1, x2, y1, y2,
     coordinates, scaleX, scaleY, flipX, flipY, padding, zoomIdentity,
     clip
   }
+
+  let node
+  export const getSM = () => node.getSM()
 
   export const selectRectangle = rect => node.getSM().selectRectangle(rect)
   export const updateSelectRectangle = rect => node.getSM().updateSelectRectangle(rect)
