@@ -92,8 +92,13 @@ See the [interactivity](/docs/concepts/interactivity) documentation for more inf
 | --------------- | -------- | --------- | ----------- | ----------------------------- |
 | blockReindexing | `false`  | `Boolean` | `false`     | -                             |
 | clip            | `false`  | `String`  | `'padding'` | Either `'padding' or 'outer'` |
+| renderer        | `false`  | `String`  | `'svg'`     | Either `'svg'` or `'canvas'`  |
 
-The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` controls how the marks, layers and other visual elements inside of this `Graphic` should be clipped off. To clip off everything within the padding, `'padding'` should be used. To only clip off everything outside of the `Graphic`'s outer border, `'outer'` should be used.
+The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` controls how the marks, layers and other visual elements inside of this `Graphic` should be clipped off. To clip off everything within the padding, `'padding'` should be used. To only clip off everything outside of the `Graphic`'s outer border, `'outer'` should be used. `renderer` determines whether `florence` will render to SVG or Canvas.
+
+::: div callout
+The renderer should not be changed in runtime!
+:::
 
 ## Methods
 
