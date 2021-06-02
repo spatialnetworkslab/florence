@@ -214,3 +214,7 @@ import MarkVsLayerAesFunc from './examples/_MarkVsLayerAesFunc.svelte'
 <MarkVsLayerAesFunc />
 
 If the `Layer`'s `keys` prop is not defined, the `key` property in aesthetic function syntax will be `undefined`.
+
+### The asOnePath prop
+
+For every `Mark`, the corresponding `Layer` has a `asOnePath` prop (with the exception of the `LabelLayer` and `FuncLine`, which does not have a corresponding layer element). As the name implies, this draws the entire `Layer` as one SVG or Canvas path, but _only_ if all the aesthethics of that layer are being recycled. If this is not the case, `asOnePath` will not do anything. When you have a layer where all shapes have the same aesthetics, which is common in maps and some graphics, `asOnePath` can improve performance significantly. However, if you are drawing, for example, overlapping polygons or points that have a fill and a stroke, the results can look funny when `asOnePath` is used.

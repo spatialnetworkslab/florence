@@ -134,13 +134,14 @@ See the [interactivity](/docs/concepts/interactivity) documentation for more inf
 - `blockReindexing`: see the [interactivity](/docs/concepts/interactivity) documentation for more information.
 - `clip`: if defined, overrides the clip mode of the parent `Graphic`, `Section` or `Glyph`. 
 
-In addition, the `AreaLayer` has the `keys` prop:
+In addition, the `AreaLayer` has the following props:
 
-| Prop | Required |  Type(s)   |   Default   |       Unit(s)        |
-| ---- | -------- | ---------- | ----------- | -------------------- |
-| keys  | `false`  | `String[]` | `undefined` | Array of unique keys |
+|   Prop    | Required |  Type(s)   |   Default   |       Unit(s)        |
+| --------- | -------- | ---------- | ----------- | -------------------- |
+| keys      | `false`  | `String[]` | `undefined` | Array of unique keys |
+| asOnePath | `false`  | `Boolean`  | `false`     | -                    |
 
-See the [marks versus layers](/docs/concepts/marks-vs-layers) documentation for more information on how keys work.
+See the [marks versus layers](/docs/concepts/marks-vs-layers) documentation for more information on how `keys` and `asOnePath` work.
 
 ## Examples
 
