@@ -59,7 +59,7 @@ Link to interactions docs
 This is almost the same for every mark/layer, and includes entries for
 
 - `clip`
-- `renderSettings`
+- `outputSettings`
 - `_asPolygon`
 - etc
 

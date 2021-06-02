@@ -116,11 +116,11 @@ See the [interactivity](/docs/concepts/interactivity) documentation for more inf
 
 |      Prop       | Required |        Type(s)        |   Default   |                   Unit(s)                    |
 | --------------- | -------- | --------------------- | ----------- | -------------------------------------------- |
-| renderSettings  | `false`  | `Object`              | `undefined` | -                                            |
+| outputSettings  | `false`  | `Object`              | `undefined` | -                                            |
 | blockReindexing | `false`  | `Boolean`             | `false`     | -                                            |
 | clip            | `false`  | `String`, `undefined` | `undefined` | Either `'padding'`, `'outer'` or `undefined` |
 
-- `renderSettings`: see the [advanced rendering](/docs/concepts/advanced-rendering) documentation for more information
+- `outputSettings`: see the [advanced rendering](/docs/concepts/advanced-rendering) documentation for more information
 - `blockReindexing`: see the [interactivity](/docs/concepts/interactivity) documentation for more information.
 - `clip`: if defined, overrides the clip mode of the parent `Graphic`, `Section` or `Glyph`. 
 
