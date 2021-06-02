@@ -48,15 +48,22 @@
   // Other options
   export let clip = 'padding'
   export let renderer = 'svg'
+  export let blockReindexing = undefined
+
+  let mounted = false
+  const isMounted = () => mounted
 
   const id = getId()
 
   let rootNode
   let context
   let dirty = writable(false)
+  let globalBlockReindexing = writable(blockReindexing)
+  $: { if (isMounted()) globalBlockReindexing.set(blockReindexing) }
+
   const marksAndLayers = {}
 
-  setContext('graphic', { renderer, dirty, marksAndLayers })
+  setContext('graphic', { renderer, dirty, marksAndLayers, globalBlockReindexing })
 
   // Set up EventManager for this Graphic
   const eventManager = new EventManager()
@@ -76,6 +83,7 @@
 
     eventManager.addRootNode(rootNode, renderer)
     eventManager.attachEventListeners()
+    mounted = true
   })
 
   const isEmpty = id => [' ', ''].includes(id)

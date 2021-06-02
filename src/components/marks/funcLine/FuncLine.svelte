@@ -20,6 +20,7 @@
   // Other
   export let outputSettings = undefined
   export let clip = undefined
+  export let blockReindexing = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -55,6 +56,7 @@
   parseAesthetics={parseAestheticsFuncLine}
   className="funcline"
   {outputSettings}
+  {blockReindexing}
   {onClick}
   {onMousedown}
   {onMouseup}

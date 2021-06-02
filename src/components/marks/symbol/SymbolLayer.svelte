@@ -27,6 +27,7 @@
   export let clip = undefined
   export let keys = undefined
   export let asOnePath = undefined
+  export let blockReindexing = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -64,6 +65,7 @@
   parseAesthetics={parseAestheticsSymbolLayer}
   className="symbol-layer"
   {outputSettings}
+  {blockReindexing}
   {onClick}
   {onMousedown}
   {onMouseup}
