@@ -38,8 +38,8 @@
 	>
 
 		<Grid
-			x1={50} x2={450}
-			y1={50} y2={450}
+			x1={0.1} x2={0.9}
+			y1={0.1} y2={0.9}
 			names={groupedData.domain('color')}
 			let:cells
 		>
@@ -118,8 +118,8 @@
 	>
 
 		<Grid
-			x1={50} x2={450}
-			y1={50} y2={450}
+			x1={0.1} x2={0.9}
+			y1={0.1} y2={0.9}
 			columns={cols}
 			rows={rows}
 			names={groupedData.domain('color')}

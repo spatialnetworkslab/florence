@@ -36,7 +36,7 @@ To illustrate, the result of drawing three `Point`s in the left panel is identic
 
 <Graphic width={500} height={300}>
 
-  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0} x2={0.5} scaleX={[0, 10]} scaleY={[0, 10]}>
 
     <Point x={2} y={2} />
     <Point x={5} y={5} />
@@ -44,7 +44,7 @@ To illustrate, the result of drawing three `Point`s in the left panel is identic
 
   </Section>
 
-  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0.5} x2={1} scaleX={[0, 10]} scaleY={[0, 10]}>
   
     <PointLayer x={[2, 5, 8]} y={[2, 5, 8]} />
 
@@ -72,7 +72,7 @@ See the example below for another side-by-side comparison of this behavior for m
 
 <Graphic width={500} height={300}>
 
-  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0} x2={0.5} scaleX={[0, 10]} scaleY={[0, 10]}>
 
     <Point x={() => 50} y={() => 50} />
     <Point x={() => 125} y={() => 125} />
@@ -80,7 +80,7 @@ See the example below for another side-by-side comparison of this behavior for m
 
   </Section>
 
-  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0.5} x2={1} scaleX={[0, 10]} scaleY={[0, 10]}>
   
     <PointLayer x={() => [300, 375, 450]} y={() => [50, 125, 200]} />
 
@@ -108,7 +108,7 @@ Like with the positioning props, aesthetic props of layers need to receive `Arra
 
 <Graphic width={500} height={300}>
 
-  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0} x2={0.5} scaleX={[0, 10]} scaleY={[0, 10]}>
 
     <Point x={2} y={2} fill={'red'} />
     <Point x={5} y={5} fill={'blue'} />
@@ -116,7 +116,7 @@ Like with the positioning props, aesthetic props of layers need to receive `Arra
 
   </Section>
 
-  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0.5} x2={1} scaleX={[0, 10]} scaleY={[0, 10]}>
   
     <PointLayer x={[2, 5, 8]} y={[2, 5, 8]} fill={['red', 'blue', 'green']} />
 
@@ -142,7 +142,7 @@ In many cases, however, it is desirable to give every mark in a layer the same v
 
 <Graphic width={500} height={300}>
 
-  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0} x2={0.5} scaleX={[0, 10]} scaleY={[0, 10]}>
 
     <Point x={2} y={2} fill={'red'} />
     <Point x={5} y={5} fill={'red'} />
@@ -150,7 +150,7 @@ In many cases, however, it is desirable to give every mark in a layer the same v
 
   </Section>
 
-  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0.5} x2={1} scaleX={[0, 10]} scaleY={[0, 10]}>
   
     <PointLayer x={[2, 5, 8]} y={[2, 5, 8]} fill={'red'} />
 
@@ -185,7 +185,7 @@ These can be used to give marks with a certain index or key a different aestheti
 
 <Graphic width={500} height={300}>
 
-  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0} x2={0.5} scaleX={[0, 10]} scaleY={[0, 10]}>
 
     <Point x={2} y={2} fill={'red'} />
     <Point x={5} y={5} fill={'blue'} />
@@ -193,7 +193,7 @@ These can be used to give marks with a certain index or key a different aestheti
 
   </Section>
 
-  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0.5} x2={1} scaleX={[0, 10]} scaleY={[0, 10]}>
   
     <PointLayer 
       x={[2, 5, 8]}

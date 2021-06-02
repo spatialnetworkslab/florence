@@ -2,7 +2,11 @@
     import { Graphic, Section, Area, Line, PointLayer, XAxis, YAxis } from '@snlab/florence'
   </script>
 
-  <Graphic height={200} width={200} padding={{ top: 10, bottom: 15, left: 15, right: 10 }}>
+  <Graphic 
+    height={200} width={200}
+    scaleX={[0, 200]} scaleY={[0, 200]}
+    padding={{ top: 10, bottom: 15, left: 15, right: 10 }}
+  >
     <Area 
       y={[40, 60, 80, 100, 120, 140, 160, 180, 200]}
       x1={[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}

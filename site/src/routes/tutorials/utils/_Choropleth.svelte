@@ -45,8 +45,8 @@
 
   {#if switchTitle}
     <Label
-      x={250}
-      y={70}
+      x={0.5}
+      y={0.14}
       text={'Mean resale price per m2 (S$)'}
       fontFamily={'Montserrat'}
       fontSize={18}
@@ -55,8 +55,8 @@
 
   {#if switchLegend}
     <DiscreteLegend
-      x1={300} x2={400}
-      y1={300} y2={400}
+      x1={0.75} x2={1}
+      y1={0.75} y2={1}
       labels={getClassLabels(priceColorScale, Math.floor)}
       fill={COLORS}
     />

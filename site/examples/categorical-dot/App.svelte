@@ -53,16 +53,16 @@
   </Section>
 
   <Label
-    x={200}
-    y={70}
+    x={0.5}
+    y={0.175}
     text={'Fruit Sizes'}
     fontFamily={'Baskerville'}
     fontSize={18}
   />
 
   <DiscreteLegend
-    x1={300} x2={400}
-    y1={0} y2={100}
+    x1={0.75} x2={1}
+    y1={0} y2={0.25}
     yDivider={0}
     fill={scaleFruitColor.range()}
     labels={scaleFruitColor.domain()}

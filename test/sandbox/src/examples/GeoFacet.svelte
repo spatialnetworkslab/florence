@@ -123,8 +123,7 @@
   }
 </script>
 
-<Graphic width={500} height={1000}
->     
+<Graphic width={500} height={1000} scaleX={[0, 500]} scaleY={[0, 1000]}>     
    <Section 
     x1={20} x2={480}
     y1={50} y2={300}

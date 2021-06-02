@@ -24,7 +24,7 @@
 <div class="graph">
   <div class="main-chart">
     <!-- main chart -->
-    <Graphic {width} {height}>
+    <Graphic {width} {height} scaleX={[0, width]} scaleY={[0, height]}>
       {#each nodes as node}
         <Point
           x={node.x}

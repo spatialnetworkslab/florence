@@ -126,8 +126,8 @@
       y2={height}
       {backgroundColor}
       {coordinates}
-      scaleX={scaleX ?? [0, width]}
-      scaleY={scaleY ?? [0, height]}
+      {scaleX}
+      {scaleY}
       {flipX}
       {flipY}
       {padding}
@@ -168,8 +168,8 @@
     y2={height}
     {backgroundColor}
     {coordinates}
-    scaleX={scaleX ?? [0, width]}
-    scaleY={scaleY ?? [0, height]}
+    {scaleX}
+    {scaleY}
     {flipX}
     {flipY}
     {padding}

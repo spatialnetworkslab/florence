@@ -43,8 +43,8 @@
   </Section>
 
   <DiscreteLegend
-    x1={300} x2={450}
-    y1={0} y2={100}
+    x1={0.6} x2={0.9}
+    y1={0} y2={0.2}
     fill={colors}
     labels={getClassLabels(priceColorScale, Math.floor)}
   />

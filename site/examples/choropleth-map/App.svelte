@@ -52,16 +52,16 @@
     </Section>
 
     <Label
-      x={200}
-      y={70}
+      x={0.5}
+      y={0.175}
       text={'Mean resale price per m2 (S$)'}
       fontFamily={'Montserrat'}
       fontSize={18}
     />
 
     <DiscreteLegend
-      x1={200} x2={400}
-      y1={300} y2={400}
+      x1={0.5} x2={1}
+      y1={0.75} y2={1}
       labels={getClassLabels(priceColorScale, Math.floor)}
       fill={priceColorScale.range()}
     >

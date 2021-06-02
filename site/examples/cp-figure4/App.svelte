@@ -4,7 +4,7 @@
 
 <Graphic width={400} height={400} backgroundColor={'gray'}>
   <Point 
-    x={250}
-    y={250}
+    x={0.5}
+    y={0.5}
   />
 </Graphic>

@@ -2,7 +2,7 @@
   import { Graphic, Section, DiscreteLegend, GradientLegend } from '../../../../src/'
 </script>
 
-<Graphic width={800} height={800}>
+<Graphic width={800} height={800} scaleX={[0, 800]} scaleY={[0, 800]}>
 
   <DiscreteLegend
     x1={100} x2={200}

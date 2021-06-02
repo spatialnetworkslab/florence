@@ -19,7 +19,7 @@
 
   <Section 
     x1={0} 
-    x2={200}
+    x2={0.5}
     {...regularScales}
     padding={20}
     backgroundColor={'#d3d3d3'}
@@ -28,8 +28,8 @@
   </Section>
 
   <Section 
-    x1={200}
-    x2={400}
+    x1={0.5}
+    x2={1}
     {...geoScales}
     padding={20}
     backgroundColor={'#d3d3d3'}

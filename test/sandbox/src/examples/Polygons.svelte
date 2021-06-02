@@ -68,8 +68,8 @@
 <Graphic width={500} height={500} renderer="canvas">
 
   <Section
-    x1={50} x2={450}
-    y1={50} y2={450}
+    x1={0.1} x2={0.9}
+    y1={0.1} y2={0.9}
     scaleX={[0, 10]}
     scaleY={[0, 10]}
     {coordinates}

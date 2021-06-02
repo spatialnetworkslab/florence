@@ -74,7 +74,7 @@
 
 <br />
 
-<Graphic width={1200} height={600}>
+<Graphic width={1200} height={600} scaleX={[0, 1200]} scaleY={[0, 600]}>
 
   <Section
     x1={0} x2={600}

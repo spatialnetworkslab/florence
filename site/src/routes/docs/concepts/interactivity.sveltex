@@ -304,7 +304,7 @@ See the [zooming and panning](/docs/concepts/zoom-pan) documentation for an exam
   let pointInSelection = false
 </script>
 
-<Graphic width={300} height={300} backgroundColor="#b2ffb2">
+<Graphic width={300} height={300} scaleX={[0, 300]} scaleY={[0, 300]} backgroundColor="#b2ffb2">
 
   <Section
     bind:this={section}
@@ -378,7 +378,7 @@ import RectSelect from './examples/_RectSelect.svelte'
   let pointInSelection = false
 </script>
 
-<Graphic width={300} height={300} backgroundColor="#b2ffb2">
+<Graphic width={300} height={300} scaleX={[0, 300]} scaleY={[0, 300]} backgroundColor="#b2ffb2">
 
   <Section
     bind:this={section}
