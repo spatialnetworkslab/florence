@@ -5,8 +5,43 @@
   "main": "src/index.js",
   "module": "dist/index.mjs",
   "repository": "https://gitlab.com/spatialnetworkslab/florence.git",
-  "dependencies": {
-    "@snlab/rendervous": "^0.2.1"
+  "scripts": {
+    "build": "rollup -c",
+    "autobuild": "rollup -c test/sandbox/rollup.config.js -w",
+    "autobuild:test": "rollup -c test/integration/testing-app/rollup.config.js -w",
+    "build:ci": "rollup -c test/integration/testing-app/rollup.config.js",
+    "dev": "run-p start:dev autobuild",
+    "dev:test": "run-p start:test autobuild:test",
+    "dev:ci": "run-s build:ci start:ci",
+    "start:ci": "sirv test/integration/testing-app/public -s --port 3009",
+    "start:dev": "sirv test/sandbox/public --dev -s",
+    "start:test": "sirv test/integration/testing-app/public --dev -s --port 3009",
+    "cy:run": "cypress run --headless --browser chrome --reporter junit --reporter-options 'mochaFile=junit-integration-[hash].xml,toConsole=true'",
+    "cy:open": "cypress open",
+    "test:integration": "run-p --race dev:test cy:run",
+    "test:integration:ci": "run-p --race dev:ci cy:run",
+    "test:unit": "jest",
+    "test:unit:ci": "jest --ci --coverage --reporters=default --reporters=jest-junit",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "jest": {
+    "verbose": true,
+    "testMatch": [
+      "**/*.test.js"
+    ],
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules"
+    ],
+    "testPathIgnorePatterns": [
+      "/__data__/"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -48,42 +83,7 @@
     "svelte": "^3.31.0",
     "svelte-routing": "^1.4.2"
   },
-  "scripts": {
-    "build": "rollup -c",
-    "autobuild": "rollup -c test/sandbox/rollup.config.js -w",
-    "autobuild:test": "rollup -c test/integration/testing-app/rollup.config.js -w",
-    "build:ci": "rollup -c test/integration/testing-app/rollup.config.js",
-    "dev": "run-p start:dev autobuild",
-    "dev:test": "run-p start:test autobuild:test",
-    "dev:ci": "run-s build:ci start:ci",
-    "start:ci": "sirv test/integration/testing-app/public -s --port 3009",
-    "start:dev": "sirv test/sandbox/public --dev -s",
-    "start:test": "sirv test/integration/testing-app/public --dev -s --port 3009",
-    "cy:run": "cypress run --headless --browser chrome --reporter junit --reporter-options 'mochaFile=junit-integration-[hash].xml,toConsole=true'",
-    "cy:open": "cypress open",
-    "test:integration": "run-p --race dev:test cy:run",
-    "test:integration:ci": "run-p --race dev:ci cy:run",
-    "test:unit": "jest",
-    "test:unit:ci": "jest --ci --coverage --reporters=default --reporters=jest-junit",
-    "prepublishOnly": "npm run build"
-  },
-  "files": [
-    "dist",
-    "src"
-  ],
-  "jest": {
-    "verbose": true,
-    "testMatch": [
-      "**/*.test.js"
-    ],
-    "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "<rootDir>/node_modules"
-    ],
-    "testPathIgnorePatterns": [
-      "/__data__/"
-    ]
+  "dependencies": {
+    "@snlab/rendervous": "^0.2.2"
   }
 }
