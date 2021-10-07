@@ -1,4 +1,4 @@
-import { getCells } from '../../../src/components/Core/Grid/cells.js'
+import { getCells } from '../../../../../src/components/Core/Grid/cells.js'
 
 describe('getCells', () => {
   it('works correctly when x1 < x2 and y1 < y2', () => {

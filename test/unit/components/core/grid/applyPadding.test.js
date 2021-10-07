@@ -1,4 +1,4 @@
-import { applyPadding } from '../../../src/components/Core/Grid/cells.js'
+import { applyPadding } from '../../../../../src/components/Core/Grid/cells.js'
 
 describe('applyPadding', () => {
   it('works correctly when x1 < x2 and y1 < y2', () => {
