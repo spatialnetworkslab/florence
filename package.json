@@ -8,7 +8,7 @@
   "dependencies": {
     "@snlab/rendervous": "0.0.3",
     "@snlab/transshape": "^0.1.2",
-    "d3-geo": "^2.0.1",
+    "d3-geo": "^3.0.0",
     "d3-interpolate": "^2.0.1",
     "d3-scale": "^3.2.3",
     "rbush": "^3.0.1",
