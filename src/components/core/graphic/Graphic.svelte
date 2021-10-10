@@ -167,7 +167,7 @@
 
 {#if renderer === 'canvas'}
 
-  <canvas {id} {width} {height} bind:this={rootNode} />
+  <canvas {id} {width} {height} bind:this={rootNode} data-testid={testId('root')} />
   
   <Section
     bind:this={node}
