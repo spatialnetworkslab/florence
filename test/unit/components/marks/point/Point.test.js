@@ -1,12 +1,12 @@
 import { render } from '@testing-library/svelte'
 import { Point } from '../../../../../src/index.js'
-import TestMark from '../TestMark.svelte'
+import TestComponent from '../TestComponent.svelte'
 
 describe('Point (svg)', () => {
   it('renders', () => {
-    const { getAllByTestId } = render(TestMark, {
-      mark: Point,
-      markProps: { x: 0.5, y: 0.5 }
+    const { getAllByTestId } = render(TestComponent, {
+      component: Point,
+      componentProps: { x: 0.5, y: 0.5 }
     })
 
     expect(getAllByTestId('point').length).toEqual(1)

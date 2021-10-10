@@ -2,8 +2,8 @@
   import { Graphic } from '../../../../src/index.js'
 
   export let graphicProps = {}
-  export let mark
-  export let markProps = {}
+  export let component
+  export let componentProps = {}
 
   function parseGraphicProps (props) {
     const clone = Object.assign({}, graphicProps)
@@ -15,5 +15,5 @@
 </script>
 
 <Graphic {...graphicProps}>
-  <svelte:component this={mark} {...markProps} />
+  <svelte:component this={component} {...componentProps} />
 </Graphic>
