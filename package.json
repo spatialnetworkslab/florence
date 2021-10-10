@@ -20,6 +20,7 @@
     "cy:open": "cypress open",
     "test:integration": "run-p --race dev:test cy:run",
     "test:integration:ci": "run-p --race dev:ci cy:run",
+    "test": "jest",
     "test:unit": "jest",
     "test:unit:ci": "jest --ci --coverage --reporters=default --reporters=jest-junit",
     "prepublishOnly": "npm run build"
