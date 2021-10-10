@@ -11,6 +11,7 @@
   import { writable } from 'svelte/store'
   import { EventManager } from '@snlab/rendervous'
   import Section from '../section/Section.svelte'
+  import { testId } from '../../../helpers/test.js'
 
   // Positioning
   export let width = 500
@@ -124,7 +125,7 @@
 
 {#if renderer === 'svg'}
 
-  <svg {id} {width} {height} bind:this={rootNode}>
+  <svg {id} {width} {height} bind:this={rootNode} data-testid={testId('root')}>
 
     <Section
       bind:this={node}
