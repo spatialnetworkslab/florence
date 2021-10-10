@@ -51,6 +51,9 @@
   export let renderer = 'svg'
   export let blockReindexing = undefined
 
+  // testing
+  export let _testDummies = undefined
+
   let mounted = false
   const isMounted = () => mounted
 
@@ -82,7 +85,13 @@
       context = rootNode.getContext('2d')
     }
 
-    eventManager.addRootNode(rootNode, renderer)
+    if (_testDummies) {
+      const { dummyRoot, dummyWindow } = _testDummies
+      eventManager.addRootNode(dummyRoot, renderer, dummyWindow)
+    } else {
+      eventManager.addRootNode(rootNode, renderer)
+    }
+
     eventManager.attachEventListeners()
     mounted = true
   })
