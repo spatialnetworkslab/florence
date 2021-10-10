@@ -8,6 +8,7 @@
   import { svgStyled, getClipPathURL } from '@snlab/rendervous'
   import any from '../utils/any.js'
   import merge from '../utils/merge.js'
+  import { testId } from '../../../helpers/test.js'
 
   export let positioning
   export let aesthetics
@@ -235,25 +236,25 @@
 
     {#if element === 'path' && aesthetics.keys === undefined}
       {#each svgData as mark}
-        <path {...mark} />
+        <path {...mark} data-testid={testId(className)} />
       {/each}
     {/if}
 
     {#if element === 'path' && aesthetics.keys !== undefined}
       {#each svgData as mark, i (aesthetics.keys[i])}
-        <path {...mark} />
+        <path {...mark} data-testid={testId(className)} />
       {/each}
     {/if}
 
     {#if element === 'text' && aesthetics.keys === undefined}
       {#each svgData as mark}
-        <text {...mark} text={undefined}>{mark.text}</text>
+        <text {...mark} text={undefined} data-testid={testId(className)}>{mark.text}</text>
       {/each}
     {/if}
 
     {#if element === 'text' && aesthetics.keys !== undefined}
       {#each svgData as mark, i (aesthetics.keys[i])}
-        <text {...mark} text={undefined}>{mark.text}</text>
+        <text {...mark} text={undefined} data-testid={testId(className)}>{mark.text}</text>
       {/each}
     {/if}
 
