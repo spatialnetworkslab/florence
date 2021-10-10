@@ -32,20 +32,14 @@ Object.defineProperty(global.SVGSVGElement.prototype, 'createSVGMatrix', {
 
 Object.defineProperty(global.SVGSVGElement.prototype, 'createSVGPoint', {
   writable: true,
-  value: jest.fn().mockImplementation(() => {
-    console.log('heeeeelllo')
-    return {
+  value: jest.fn().mockImplementation(() => ({
+    x: 0,
+    y: 0,
+    matrixTransform: jest.fn().mockImplementation(() => ({
       x: 0,
-      y: 0,
-      matrixTransform: jest.fn().mockImplementation(() => {
-        console.log('hello')
-        return {
-          x: 0,
-          y: 0
-        }
-      })
-    }
-  })
+      y: 0
+    }))
+  }))
 })
 
 Object.defineProperty(global.SVGSVGElement.prototype, 'createSVGTransform', {
