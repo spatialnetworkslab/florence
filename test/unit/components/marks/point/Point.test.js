@@ -3,11 +3,11 @@ import { Point } from '../../../../../src/index.js'
 
 describe('Point (svg)', () => {
   it('renders', () => {
-    const { getAllByTestId } = renderMark(
+    const { getByTestId } = renderMark(
       Point,
       { x: 0.5, y: 0.5 }
     )
 
-    expect(getAllByTestId('point').length).toEqual(1)
+    expect(getByTestId('point')).toBeInTheDocument()
   })
 })
