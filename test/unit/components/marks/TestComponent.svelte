@@ -9,6 +9,7 @@
 
   function parseGraphicProps (props) {
     const clone = Object.assign({}, graphicProps)
+    
     return Object.assign(clone, {
       width: 500,
       height: 500,
@@ -17,6 +18,6 @@
   }
 </script>
 
-<Graphic {...graphicProps}>
+<Graphic {...parseGraphicProps(graphicProps)}>
   <svelte:component this={component} {...componentProps} />
 </Graphic>

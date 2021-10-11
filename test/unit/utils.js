@@ -65,7 +65,19 @@ function createDummyNode () {
       eventHandlers[name].forEach(h => h(event))
     },
 
-    _getHandlers () { return eventHandlers }
+    _getHandlers () { return eventHandlers },
+
+    createSVGPoint () {
+      return {
+        x: 0,
+        y: 0,
+        matrixTransform () {
+          return { x: this.x, y: this.y }
+        }
+      }
+    },
+
+    getScreenCTM () { return { inverse () {} } }
   }
 }
 

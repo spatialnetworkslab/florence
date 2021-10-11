@@ -10,6 +10,18 @@ describe('Point (svg)', () => {
 
     expect(getByTestId('point')).toBeInTheDocument()
   })
+
+  it('calls onClick when clicked', () => {
+    const onClick = jest.fn()
+
+    const { dummyRoot } = renderMark(
+      Point,
+      { x: 0.5, y: 0.5, onClick }
+    )
+
+    dummyRoot.trigger('click', 250, 250)
+    expect(onClick).toHaveBeenCalled()
+  })
 })
 
 describe('Point (canvas)', () => {
@@ -22,7 +34,7 @@ describe('Point (canvas)', () => {
       { renderer: 'canvas' }
     )
 
-    dummyRoot.trigger('click', { x: 250, y: 250 })
+    dummyRoot.trigger('click', 250, 250)
     expect(onClick).toHaveBeenCalled()
   })
 })

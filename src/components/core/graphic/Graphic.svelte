@@ -11,7 +11,7 @@
   import { writable } from 'svelte/store'
   import { EventManager } from '@snlab/rendervous'
   import Section from '../section/Section.svelte'
-  import { testId } from '../../../helpers/test.js'
+  import { testId, TEST_ENV } from '../../../helpers/test.js'
 
   // Positioning
   export let width = 500
@@ -84,8 +84,8 @@
     if (renderer === 'canvas') {
       context = rootNode.getContext('2d')
     }
-
-    if (_testDummies) {
+    
+    if (TEST_ENV && _testDummies) {
       const { dummyRoot, dummyWindow } = _testDummies
       eventManager.addRootNode(dummyRoot, renderer, dummyWindow)
     } else {
