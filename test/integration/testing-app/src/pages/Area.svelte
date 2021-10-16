@@ -44,7 +44,7 @@
     <Area
       x1={({ scaleX }) => dataContainer.column('u').map(d => scaleX(d))}
       y1={dataContainer.column('v')}
-      fill={isHovered ? '#d5896f' : 'steelblue'}
+      fill={isHovered ? 'rgba(39,127,245,0.8)' : 'rgba(8,24,46,0.8)'}
       onMouseover={() => isHovered = !isHovered}
       onMouseout={() => isHovered = !isHovered}
     />

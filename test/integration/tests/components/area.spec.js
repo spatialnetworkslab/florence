@@ -10,15 +10,11 @@ context('Assertions', () => {
       cy.get('.area').should('have.length', 1)
     })
 
-    it('[render] area snapshot correctly', () => {
-      cy.get('svg').toMatchSnapshot()
-    })
-
     it('[interaction] hovering over area changes color', () => {
       const area = cy.get('.area').first()
-      area.should('have.attr', 'fill', 'steelblue')
+      area.should('have.attr', 'fill', 'rgba(8,24,46,0.8)')
       area.trigger('mousemove')
-      area.should('have.attr', 'fill', '#d5896f')
+      area.should('have.attr', 'fill', 'rgba(39,127,245,0.8)')
     })
   })
 })
