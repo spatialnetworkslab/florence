@@ -28,7 +28,6 @@ run-unit-test:
         - junit.xml
 
 run-integration-test:
-  # image: cypress/browsers:node12.19.0-chrome86-ff82
   image: cypress/browsers
   stage: test
   only:
@@ -42,6 +41,7 @@ run-integration-test:
       - .npm
       - cache/Cypress
   script:
+    - npm install npm@latest -g
     - npm ci
     - npm run test:integration:ci
   artifacts:
