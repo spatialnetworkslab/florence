@@ -10,7 +10,7 @@
   padding={{ left: 50, right: 50, top: 50, bottom: 20 }}
 >
 
-  <XGridLines />
-  <YGridLines />
+  <g class="x-grid-lines"><XGridLines /></g>
+  <g class="y-grid-lines"><YGridLines /></g>
 
 </Graphic>
