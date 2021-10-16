@@ -12,9 +12,9 @@ context('Assertions', () => {
 
     it('[interaction] hovering over area changes color', () => {
       const area = cy.get('.area').first()
-      area.should('have.attr', 'fill', 'rgba(8,24,46,0.8)')
+      area.should('have.attr', 'fill', 'rgba(8,24,46,1)')
       area.trigger('mousemove')
-      area.should('have.attr', 'fill', 'rgba(39,127,245,0.8)')
+      area.should('have.attr', 'fill', 'rgba(39,127,245,1)')
     })
   })
 })
