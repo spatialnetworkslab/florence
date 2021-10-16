@@ -28,7 +28,8 @@ run-unit-test:
         - junit.xml
 
 run-integration-test:
-  image: cypress/browsers:node12.19.0-chrome86-ff82
+  # image: cypress/browsers:node12.19.0-chrome86-ff82
+  image: cypress/browsers
   stage: test
   only:
     - merge_requests
