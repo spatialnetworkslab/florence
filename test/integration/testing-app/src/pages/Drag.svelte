@@ -39,45 +39,33 @@
 
 <div>
   <label for="duration">Transition time</label>
-  <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
+  <input
+    name="duration"
+    type="range"
+    min="100"
+    max="5000"
+    bind:value={duration}
+  />
 </div>
 
 <div>
-
-	<Graphic 
-    width={500} {height}
+  <Graphic
+    width={500}
+    {height}
     scaleX={scaleLinear().domain([0, 500])}
     scaleY={scaleLinear().domain([0, 500])}
   >
-		
-		<Section
-			x1={50} x2={450}
-			y1={50} y2={450}
-      backgroundColor={background}
-      flipY
-      {transformation}
-		>
+    <Point
+      x={bigPoint.x}
+      y={bigPoint.y}
+      fill={"red"}
+      opacity={dragPoint ? 0 : 1}
+      radius={10}
+      {onMousedrag}
+    />
 
-      <Point
-        x={bigPoint.x}
-        y={bigPoint.y}
-        fill={'red'}
-        opacity={dragPoint ? 0 : 1}
-        radius={10}
-        {onMousedrag}
-      />
-
-      {#if dragPoint}
-        <Point
-          x={dragPoint.x}
-          y={dragPoint.y}
-          radius={10}
-          fill={'red'}
-        />
-      {/if}
-
-		</Section>
-
-	</Graphic>
-
+    {#if dragPoint}
+      <Point x={dragPoint.x} y={dragPoint.y} radius={10} fill={"red"} />
+    {/if}
+  </Graphic>
 </div>
