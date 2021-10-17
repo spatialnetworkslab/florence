@@ -15,7 +15,8 @@
   // Positioning
   export let x
   export let y
-  export let radius
+  export let width
+  export let height
 
   // Aesthetics
   export let backgroundColor = undefined
@@ -50,7 +51,7 @@
   export let clip = 'padding'
 
   $: props = {
-    x, y, radius,
+    x, y, width, height,
     coordinates, scaleX, scaleY, flipX, flipY, padding, zoomIdentity,
     clip
   }

@@ -2,28 +2,23 @@
 
 context('Assertions', () => {
   beforeEach(() => {
-    cy.visit('/label-mark')
+    cy.visit('/label')
   })
 
-  describe('Label Mark Tests', () => {
+  describe('Label Tests', () => {
     it('[render] labels rendered', () => {
-      cy.get('.label').should('have.length', 4)
+      cy.get('.test-labels text').should('have.length', 4)
     })
 
     it('[render] labels has correct text', () => {
-      cy.get('.label').last().should('contain', 'Testing3')
+      cy.get('.test-labels text').last().should('contain', 'Testing3')
     })
 
-    it('[render] labels snapshot correctly', () => {
-      cy.get('svg')
-        .toMatchSnapshot()
-    })
-
-    it('[interaction] clicking on label changes color', () => {
-      var label = cy.get('.label').first()
-      label.should('have.attr', 'fill', 'yellow')
-      label.click()
-      label.should('have.attr', 'fill', 'blue')
-    })
+    // it('[interaction] clicking on label changes color', () => {
+    //   const label = cy.get('.test-labels text').first()
+    //   label.should('have.attr', 'fill', 'rgba(255,255,0,1)')
+    //   label.click()
+    //   label.should('have.attr', 'fill', 'rgba(0,0,255,1)')
+    // })
   })
 })

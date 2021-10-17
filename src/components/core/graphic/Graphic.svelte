@@ -11,6 +11,7 @@
   import { writable } from 'svelte/store'
   import { EventManager } from '@snlab/rendervous'
   import Section from '../section/Section.svelte'
+  import { testId, TEST_ENV } from '../../../helpers/test.js'
 
   // Positioning
   export let width = 500
@@ -50,6 +51,9 @@
   export let renderer = 'svg'
   export let blockReindexing = undefined
 
+  // testing
+  export let _testDummies = undefined
+
   let mounted = false
   const isMounted = () => mounted
 
@@ -80,8 +84,14 @@
     if (renderer === 'canvas') {
       context = rootNode.getContext('2d')
     }
+    
+    if (TEST_ENV && _testDummies) {
+      const { dummyRoot, dummyWindow } = _testDummies
+      eventManager.addRootNode(dummyRoot, renderer, dummyWindow)
+    } else {
+      eventManager.addRootNode(rootNode, renderer)
+    }
 
-    eventManager.addRootNode(rootNode, renderer)
     eventManager.attachEventListeners()
     mounted = true
   })
@@ -124,7 +134,7 @@
 
 {#if renderer === 'svg'}
 
-  <svg {id} {width} {height} bind:this={rootNode}>
+  <svg {id} {width} {height} bind:this={rootNode} data-testid={testId('root')}>
 
     <Section
       bind:this={node}
@@ -166,7 +176,7 @@
 
 {#if renderer === 'canvas'}
 
-  <canvas {id} {width} {height} bind:this={rootNode} />
+  <canvas {id} {width} {height} bind:this={rootNode} data-testid={testId('root')} />
   
   <Section
     bind:this={node}

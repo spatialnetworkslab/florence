@@ -8,6 +8,7 @@
   import { svgStyled, getClipPathURL } from '@snlab/rendervous'
   import any from '../utils/any.js'
   import merge from '../utils/merge.js'
+  import { testId } from '../../../helpers/test.js'
 
   export let positioning
   export let aesthetics
@@ -235,6 +236,7 @@
       {...svgData}
       class={className}
       clip-path={getClipPathURL(aesthetics, $section)}
+      data-testid={testId(className)}
     />
   {/if}
 
@@ -244,6 +246,7 @@
       text={undefined}
       class={className}
       clip-path={getClipPathURL(aesthetics, $section)}
+      data-testid={testId(className)}
     >
       {svgData.text}
     </text>
