@@ -6,7 +6,7 @@
   export let point = {}
 
   $: _graphic = Object.assign({ width: 500, height: 500 }, graphic)
-  $: _glyph = Object.assign({ x: 0.5, y: 0.5, width: 400, height: 400 }, glyph)
+  $: _glyph = Object.assign({ x: 0.5, y: 0.5, width: 500, height: 500 }, glyph)
 </script>
 
 <Graphic {..._graphic}>
