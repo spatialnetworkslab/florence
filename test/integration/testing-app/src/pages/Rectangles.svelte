@@ -41,7 +41,7 @@
       <RectangleLayer 
         x1={data.column('fruit')}
         x2={({ scaleX }) => data.map('fruit', v => scaleX(v) + scaleX.bandwidth() )}
-        y1={0}
+        y1={Array(data.nrow()).fill(0)}
         y2={data.column('meanQuantity')}
         onClick={() => isActive = true}
         fill={isActive ? 'blue' : 'yellow'}

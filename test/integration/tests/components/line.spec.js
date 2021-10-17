@@ -7,14 +7,14 @@ context('Assertions', () => {
 
   describe('Line tests', () => {
     it('[render] lines rendered', () => {
-      cy.get('.line').should('have.length', 2)
+      cy.get('.line-test path').should('have.length', 2)
     })
 
     it('[interaction] clicking on line changes color', () => {
-      const line = cy.get('.line').first()
-      line.should('have.attr', 'stroke', 'red')
+      const line = cy.get('.line-test path').first()
+      line.should('have.attr', 'stroke', 'rgba(255,0,0,1)')
       line.click(1, 1, { force: true })
-      line.should('have.attr', 'stroke', 'green')
+      line.should('have.attr', 'stroke', 'rgba(0,128,0,1)')
     })
   })
 })

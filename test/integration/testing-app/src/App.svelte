@@ -28,8 +28,8 @@
       component: Geo
     },
     {
-      name: 'Label Mark',
-      url: '/label-mark',
+      name: 'Label',
+      url: '/label',
       component: LabelMark
     },
     {

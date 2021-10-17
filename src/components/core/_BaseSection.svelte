@@ -29,7 +29,7 @@
   export let onTouchout = undefined
 
   // Get parent contexts
-  const { renderer, globalBlockReindexing } = getContext('graphic')
+  const { renderer } = getContext('graphic')
   const parentSection = getContext('section')
   const eventManager = getContext('eventManager')
 
