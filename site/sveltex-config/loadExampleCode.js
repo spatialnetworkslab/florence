@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import visit from 'unist-util-visit'
+import { visit } from 'unist-util-visit'
 import glob from 'glob'
 
 export default function loadExampleCode (options) {
