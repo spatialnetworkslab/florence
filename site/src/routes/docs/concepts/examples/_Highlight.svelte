@@ -15,7 +15,7 @@
     scaleX={scaleLinear().domain([1, 5])}
     scaleY={scaleLinear().domain([1, 5])}
     padding={20}
-    clip={false}
+    clip={'outer'}
   >
 
     <PointLayer 

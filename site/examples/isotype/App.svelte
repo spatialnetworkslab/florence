@@ -51,14 +51,14 @@
         y={row.$grouped.column('animal')}
         shape={row.$grouped.map('animal', shapeScale)}
         fill={row.$grouped.map('animal', colorScale)}
-        size={80}
+        radius={40}
       />
 
       <Label 
         x={() => 10}
         y={'pigs'}
         text={row.country}
-        rotation={-90}
+        rotate={-Math.PI / 2}
         fontFamily={'sans-serif'}
         fontSize={10}
       />

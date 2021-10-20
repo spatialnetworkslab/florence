@@ -43,16 +43,21 @@ To render a `Symbol_`, you will need to provide either the `x` and `y` props, or
 
 ### Aesthetics
 
-|     Prop      | Required |  Types   |   Default   |           Unit(s)            |
-| ------------- | -------- | -------- | ----------- | ---------------------------- |
-| shape         | `false`  | `String` | `'circle'`  | See explanation              |
-| size          | `false`  | `Number` | `10`        | Pixel                        |
-| fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color |
-| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1       |
-| stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color |
-| strokeWidth   | `false`  | `Number` | `0`         | Pixel                        |
-| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1       |
-| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1       |
+|     Prop      | Required |  Types   |   Default   |                                                             Unit(s)                                                              |
+| ------------- | -------- | -------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| shape         | `false`  | `String` | `'circle'`  | See explanation                                                                                                                  |
+| radius        | `false`  | `Number` | `3`         | Pixel                                                                                                                            |
+| fill          | `false`  | `String` | `'#000000'` | Named, hex, rgb or hsl color                                                                                                     |
+| fillOpacity   | `false`  | `Number` | `undefined` | Number between 0 and 1                                                                                                           |
+| stroke        | `false`  | `String` | `'none'`    | Named, hex, rgb or hsl color                                                                                                     |
+| strokeWidth   | `false`  | `Number` | `0`         | Pixel                                                                                                                            |
+| strokeOpacity | `false`  | `Number` | `undefined` | Number between 0 and 1                                                                                                           |
+| opacity       | `false`  | `Number` | `1`         | Number between 0 and 1                                                                                                           |
+| lineCap       | `false`  | `String` | `'butt'`    | `'butt'`, `'round'` or `'square'`                                                                                                |
+| lineJoin      | `false`  | `String` | `'bevel'`   | `'bevel'`, `'round'` or `'miter'`                                                                                                |
+| miterLimit    | `false`  | `Number` | `10`        | Pixel                                                                                                                            |
+| dashArray     | `false`  | `String` | `undefined` | A string of numbers seperated by spaces. See [here](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray) |
+| dashOffset    | `false`  | `Number` | `undefined` | Pixel                                                                                                                            |
 
 - `shape` sets the shape of the `Symbol_` mark. The value defaults to `'circle'`. Some other pre-defined shapes include `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-left`, `triangle-right` and `star`. For a full list of options, refer to the [list of geometries](https://github.com/spatialnetworkslab/florence/blob/master/src/components/Marks/Symbol/geometryAlias.js). In addition, it is possible to provide a custom shape, specified as a GeoJSON [Polygon](https://tools.ietf.org/html/rfc7946#section-3.1.6) feature, with a bounding box of `[-1, 1]` both horizontally and vertically. For example:
 
@@ -71,7 +76,7 @@ To render a `Symbol_`, you will need to provide either the `x` and `y` props, or
 
 <Graphic width={200} height={200} scaleX={[0, 10]} scaleY={[0, 10]} padding={20}>
 
-  <Symbol_ x={5} y={5} shape={septagon} size={100} />
+  <Symbol_ x={5} y={5} shape={septagon} radius={25} />
   
   <XAxis />
   <YAxis />
@@ -84,21 +89,18 @@ import CustomShape from './utils/_CustomShape.svelte'
 ```
 <CustomShape />
 
-- `size` defaults to 10 pixels. This same value refers to both the height and width of the shape, or 2 times the `radius` if it would be a circle. In order to improve the accuracy when reading off the (x, y) values of the center point of each symbol instance, the height and width of the symbol mark are not allowed to take on different values.
+- `radius` defaults to 3 pixels, equivalent to half of the width and height of the symbol in pixels.
 - `fill` refers to the color of the symbol
 - `fillOpacity` refers to the transparency of the symbol, `0` being fully transparent
 - `stroke` refers to the color of the symbol's outline
 - `strokeWidth` refers to the width of the symbol's outline
 - `strokeOpacity` refers to the transparency of the symbol's outline, `0` being fully transparent
 - `opacity` sets both the `strokeOpacity` and the `fillOpacity`
-
-### Transitions
-
-|    Prop    | Required |      Type(s)       |   Default   |             Unit(s)              |
-| ---------- | -------- | ------------------ | ----------- | -------------------------------- |
-| transition | `false`  | `Number`, `Object` | `undefined` | Duration in ms or options object |
-
-See the [transition](/docs/concepts/transitions) documentation for more information.
+- `lineCap` controls the endings of strokes (in this case only relevant when `dashArray` is used) (`stroke-linecap`)
+- `lineJoin` controls the shape to be used at the corners of the stroke (`stroke-linejoin`)
+- `miterLimit`, if `lineJoin` is `'miter'`, sets a limit on how long the miter can be (`stroke-miterlimit`)
+- `dashArray` can be used to make dashed strokes (`stroke-dasharray`)
+- `dashOffset` shifts the pattern defined in `dashArray` by a number of pixels (`stroke-dashoffset`)
 
 ### Interactions
 
@@ -134,23 +136,24 @@ See the [interactivity](/docs/concepts/interactivity) documentation for more inf
 
 ### Other
 
-|      Prop       | Required |  Type(s)  |   Default   | Unit(s) |
-| --------------- | -------- | --------- | ----------- | ------- |
-| renderSettings  | `false`  | `Object`  | `undefined` | -      |
-| blockReindexing | `false`  | `Boolean` | `false`     | -      |
-| clip            | `false`  | `Boolean` | `true`      | -      |
+|      Prop       | Required |        Type(s)        |   Default   |                   Unit(s)                    |
+| --------------- | -------- | --------------------- | ----------- | -------------------------------------------- |
+| outputSettings  | `false`  | `Object`              | `undefined` | -                                            |
+| blockReindexing | `false`  | `Boolean`             | `false`     | -                                            |
+| clip            | `false`  | `String`, `undefined` | `undefined` | Either `'padding'`, `'outer'` or `undefined` |
 
-- `renderSettings`: see the [advanced rendering](/docs/concepts/advanced-rendering) documentation for more information
+- `outputSettings`: see the [advanced rendering](/docs/concepts/advanced-rendering) documentation for more information.
 - `blockReindexing`: see the [interactivity](/docs/concepts/interactivity) documentation for more information.
-- `clip`: indicates whether the Mark or Layer should be clipped off if it extends beyond its parent `Section` or `Graphic` viewport (i.e. the area within the padding). 
+- `clip`: if defined, overrides the clip mode of the parent `Graphic`, `Section` or `Glyph`. 
 
-In addition, the `SymbolLayer` has the `key` prop:
+In addition, the `SymbolLayer` has the following props:
 
-| Prop | Required |  Type(s)   |   Default   |       Unit(s)        |
-| ---- | -------- | ---------- | ----------- | -------------------- |
-| key  | `false`  | `String[]` | `undefined` | Array of unique keys |
+|   Prop    | Required |  Type(s)   |   Default   |       Unit(s)        |
+| --------- | -------- | ---------- | ----------- | -------------------- |
+| keys      | `false`  | `String[]` | `undefined` | Array of unique keys |
+| asOnePath | `false`  | `Boolean`  | `false`     | -                    |
 
-See the [marks versus layers](/docs/concepts/marks-vs-layers) documentation for more information on how keys work.
+See the [marks versus layers](/docs/concepts/marks-vs-layers) documentation for more information on how `keys` and `asOnePath` work.
 
 ## Examples
 

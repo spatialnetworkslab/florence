@@ -4,72 +4,18 @@ With the exception of the [FuncLine](/docs/marks/funcline), all `Mark`s have a c
 
 ## Keys
 
-The first difference between `Mark`s and `Layer`s is that the latter have a `key` prop, which the former lack:
+The first difference between `Mark`s and `Layer`s is that the latter have a `keys` prop, which the former lack:
 
 | Prop | Required |  Type(s)   |   Default   |       Unit(s)        |
 | ---- | -------- | ---------- | ----------- | -------------------- |
-| key  | `false`  | `String[]` | `undefined` | Array of unique keys |
+| keys  | `false`  | `String[]` | `undefined` | Array of unique keys |
 
-If the `key` is not specified, an `Array` containing the numbers `0 ... N - 1` converted to `String`s will be used, where `N` is the number of marks of which the layer consists. There are three reasons for using keys:
+There are two reasons for using keys:
 
-### Transitions
-
-During [transitions](/docs/concepts/transitions), keys are used to keep track of each mark before and after the transition. Internally, `florence` uses Svelte's [keyed each blocks](https://svelte.dev/tutorial/keyed-each-blocks) to accomplish this. How keys work together with transitions is best illustrated through an example. Pressing the button will filter out the first row of the data, and then shift all x-values a bit to the right. The `PointLayer` in the green `Section` does not use keying, while the one in the blue `Section` does. As you can see, the `PointLayer` in the green `Section` animates the points as if the last point had disappeared, whereas the animation in the `PointLayer` in the blue `Section` gives the (in this case, correct) impression that the first point has disappeared. Pressing the button undoes the filtering and the shift to the right.
-
-```markup
-<script>
-  import { Graphic, Section, PointLayer } from '@snlab/florence'
-  import DataContainer from '@snlab/florence-datacontainer'
-
-  const dataContainer = new DataContainer({
-    x: [1, 2, 3],
-    y: [1, 2, 3]
-  })
-
-  let transformed = false
-
-  $: data = transformed 
-    ? dataContainer.filter(r => r.x > 1).mutate({ x: r => r.x + 0.5 })
-    : dataContainer
-</script>
-
-<button on:click={() => { transformed = !transformed }}>Click me!</button><br /><br />
-
-<Graphic width={500} height={300}>
-  
-  <Section x1={0} x2={250} scaleX={[0, 4]} scaleY={[0, 4]} backgroundColor={'#a9f49c'}>
-    
-    <PointLayer 
-      x={data.column('x')}
-      y={data.column('y')}
-      transition={3000}
-    />
-
-  </Section>
-  
-  <Section x1={250} x2={500} scaleX={[0, 4]} scaleY={[0, 4]} backgroundColor={'#9cc1f4'}>
-    
-    <PointLayer 
-      x={data.column('x')}
-      y={data.column('y')}
-      key={data.keys()}
-      transition={3000}  
-    />
-
-  </Section>
-
-</Graphic>
-```
-
-```js exec
-import KeyTransition from './examples/_KeyTransition.svelte'
-```
-
-<KeyTransition />
 
 ### Interactions
 
-The main difference between `Mark`s and `Layer`s in the area of interactivity is that the `Layer`'s `event` object includes an `index` and `key`. For more information, consult the [interactivity](/docs/concepts/interactivity) documentation.
+The main difference between `Mark`s and `Layer`s in the area of interactivity is that the `Layer`'s event object includes an `index` and `key`. If the `keys` prop is not provided, the `key` in the event object will be `undefined`. For more information, consult the [interactivity](/docs/concepts/interactivity) documentation.
 
 ### Aesthetic function syntax
 
@@ -79,7 +25,7 @@ This will be discussed under `Aesthetics: marks vs. layers`.
 
 ### Single values versus arrays
 
-The main difference between the positioning of marks and layers is that whatever type of value you would pass to the prop of a single mark, you would need to pass an `Array` of that type of values to the layer. So if you pass a single local coordinate (often a `Number`) to the `x1` prop of the [Rectangle](/docs/marks/rectangle), then you would pass an `Array` (of, in this example, `Number`s) to the `RectangleLayer`'s `x1` prop. Likewise, if you pass an `Array` of local coordinates to the [Line](/docs/marks/line), you pass an `Array` of `Array`s of local coordinates to the `LineLayer`. The only exceptions to this rule are the [FuncLine](/docs/marks/funcline)'s (which has no corresponding `Layer` component) positioning props, and the `independentAxis` prop of the [Area](/docs/marks/area) mark/layer.
+The main difference between the positioning of marks and layers is that whatever type of value you would pass to the prop of a single mark, you would need to pass an `Array` of that type of values to the layer. So if you pass a single local coordinate (often a `Number`) to the `x1` prop of the [Rectangle](/docs/marks/rectangle), then you would pass an `Array` (of, in this example, `Number`s) to the `RectangleLayer`'s `x1` prop. Likewise, if you pass an `Array` of local coordinates to the [Line](/docs/marks/line), you pass an `Array` of `Array`s of local coordinates to the `LineLayer`. The only exceptions to this rule is the [FuncLine](/docs/marks/funcline)'s (which has no corresponding `Layer` component) positioning props.
 
 To illustrate, the result of drawing three `Point`s in the left panel is identical to drawing a `PointLayer` consisting of three marks in the right panel:
 
@@ -90,7 +36,7 @@ To illustrate, the result of drawing three `Point`s in the left panel is identic
 
 <Graphic width={500} height={300}>
 
-  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0} x2={0.5} scaleX={[0, 10]} scaleY={[0, 10]}>
 
     <Point x={2} y={2} />
     <Point x={5} y={5} />
@@ -98,7 +44,7 @@ To illustrate, the result of drawing three `Point`s in the left panel is identic
 
   </Section>
 
-  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0.5} x2={1} scaleX={[0, 10]} scaleY={[0, 10]}>
   
     <PointLayer x={[2, 5, 8]} y={[2, 5, 8]} />
 
@@ -115,7 +61,7 @@ import MarkVsLayerPositioning from './examples/_MarkVsLayerPositioning.svelte'
 
 ### Function syntax
 
-Again with the exception of the [Area](/docs/marks/area)'s `independentAxis` prop and the [FuncLine](/docs/marks/funcline)'s positioning props, the positioning props of all marks and layers support the so-called 'function syntax'. Function syntax can be used to bypass the scaling step (see the [local coordinates](/docs/concepts/local-coordinates) documentation).
+Again with the exception of the [FuncLine](/docs/marks/funcline)'s positioning props, the positioning props of all marks and layers support the so-called 'function syntax'. Function syntax can be used to bypass the scaling step (see the [local coordinates](/docs/concepts/local-coordinates) documentation).
 
 See the example below for another side-by-side comparison of this behavior for marks and layers:
 
@@ -126,7 +72,7 @@ See the example below for another side-by-side comparison of this behavior for m
 
 <Graphic width={500} height={300}>
 
-  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0} x2={0.5} scaleX={[0, 10]} scaleY={[0, 10]}>
 
     <Point x={() => 50} y={() => 50} />
     <Point x={() => 125} y={() => 125} />
@@ -134,7 +80,7 @@ See the example below for another side-by-side comparison of this behavior for m
 
   </Section>
 
-  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0.5} x2={1} scaleX={[0, 10]} scaleY={[0, 10]}>
   
     <PointLayer x={() => [300, 375, 450]} y={() => [50, 125, 200]} />
 
@@ -162,7 +108,7 @@ Like with the positioning props, aesthetic props of layers need to receive `Arra
 
 <Graphic width={500} height={300}>
 
-  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0} x2={0.5} scaleX={[0, 10]} scaleY={[0, 10]}>
 
     <Point x={2} y={2} fill={'red'} />
     <Point x={5} y={5} fill={'blue'} />
@@ -170,7 +116,7 @@ Like with the positioning props, aesthetic props of layers need to receive `Arra
 
   </Section>
 
-  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0.5} x2={1} scaleX={[0, 10]} scaleY={[0, 10]}>
   
     <PointLayer x={[2, 5, 8]} y={[2, 5, 8]} fill={['red', 'blue', 'green']} />
 
@@ -196,7 +142,7 @@ In many cases, however, it is desirable to give every mark in a layer the same v
 
 <Graphic width={500} height={300}>
 
-  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0} x2={0.5} scaleX={[0, 10]} scaleY={[0, 10]}>
 
     <Point x={2} y={2} fill={'red'} />
     <Point x={5} y={5} fill={'red'} />
@@ -204,7 +150,7 @@ In many cases, however, it is desirable to give every mark in a layer the same v
 
   </Section>
 
-  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0.5} x2={1} scaleX={[0, 10]} scaleY={[0, 10]}>
   
     <PointLayer x={[2, 5, 8]} y={[2, 5, 8]} fill={'red'} />
 
@@ -239,7 +185,7 @@ These can be used to give marks with a certain index or key a different aestheti
 
 <Graphic width={500} height={300}>
 
-  <Section x1={0} x2={250} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0} x2={0.5} scaleX={[0, 10]} scaleY={[0, 10]}>
 
     <Point x={2} y={2} fill={'red'} />
     <Point x={5} y={5} fill={'blue'} />
@@ -247,13 +193,13 @@ These can be used to give marks with a certain index or key a different aestheti
 
   </Section>
 
-  <Section x1={250} x2={500} scaleX={[0, 10]} scaleY={[0, 10]}>
+  <Section x1={0.5} x2={1} scaleX={[0, 10]} scaleY={[0, 10]}>
   
     <PointLayer 
       x={[2, 5, 8]}
       y={[2, 5, 8]}
       fill={({ key }) => key === 'b' ? 'blue' : 'red'}
-      key={['a', 'b', 'c']}
+      keys={['a', 'b', 'c']}
     />
 
   </Section>
@@ -266,3 +212,9 @@ import MarkVsLayerAesFunc from './examples/_MarkVsLayerAesFunc.svelte'
 ```
 
 <MarkVsLayerAesFunc />
+
+If the `Layer`'s `keys` prop is not defined, the `key` property in aesthetic function syntax will be `undefined`.
+
+### The asOnePath prop
+
+For every `Mark`, the corresponding `Layer` has a `asOnePath` prop (with the exception of the `LabelLayer` and `FuncLine`, which does not have a corresponding layer element). As the name implies, this draws the entire `Layer` as one SVG or Canvas path, but _only_ if all the aesthethics of that layer are being recycled. If this is not the case, `asOnePath` will not do anything. When you have a layer where all shapes have the same aesthetics, which is common in maps and some graphics, `asOnePath` can improve performance significantly. However, if you are drawing, for example, overlapping polygons or points that have a fill and a stroke, the results can look funny when `asOnePath` is used.

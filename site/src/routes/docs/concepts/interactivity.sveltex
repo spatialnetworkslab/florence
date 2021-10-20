@@ -132,6 +132,8 @@ While the `Layer`'s `event` object also has:
 }
 ```
 
+The `key` will be `undefined` if nothing is passed to the `Layer`'s `keys` prop.
+
 ## Highlighting
 
 Highlighting is a technique that allows the end user to request additional information about observations of interest. For example, in this scatterplot, the `a` and `b` variables are mapped to the `x` and `y` dimensions of the points and are therefore visible to the user, but the name of each observation is not visible. By hovering the mouse over a point, its `name` attribute is requested, and displayed below the graphic:
@@ -154,7 +156,7 @@ Highlighting is a technique that allows the end user to request additional infor
     scaleX={scaleLinear().domain([1, 5])}
     scaleY={scaleLinear().domain([1, 5])}
     padding={20}
-    clip={false}
+    clip={'outer'}
   >
 
     <PointLayer 
@@ -221,13 +223,12 @@ Here is an example of how to use `onMousedrag`. `onTouchdrag` works similarly.
   }
 </script>
 
-<Graphic width={300} height={300}>
+<Graphic width={300} height={300} {blockReindexing}>
 
   <Section 
     scaleX={scaleLinear().domain([0, 10])}
     scaleY={scaleLinear().domain([0, 10])}
     padding={20}
-    {blockReindexing}
   >
 
     {#each points as point, i}
@@ -252,11 +253,12 @@ import Drag from './examples/_Drag.svelte'
 <Drag />
 
 ### blockReindexing
-The `blockReindexing` prop is a necessary evil due to how `florence` works internally. By default, when any mark or layer becomes interactive (i.e., has a `onMousedrag` or event listener prop), a spatial index will be created. The mark or layer will then be added to the spatial index for rapid collision detection. When the coordinates of the mark or layer change, the spatial index will need to be updated.
 
-In this case, `blockReindexing` is used when the user is dragging the mark using `onMousedrag`. Every time the `drag` event fires, the `Point`'s coordinates are updated, and thus `florence`'s internal spatial index needs to be updated as well. This is an expensive operation, and can cause significant lags – hence the need for `blockReindexing`, which blocks this behavior until the user is done dragging.
+The `blockReindexing` prop is a necessary evil due to how `florence` works internally. By default, when any mark or layer becomes interactive (i.e., has a `onMousedrag` or event listener prop), the mark or layer will be added to a spatial index for rapid collision detection. When the coordinates of the mark or layer change, the spatial index has to be updated.
 
-`blockReindexing` can be supplied to the `Mark` or `Layer` of which you want to block re-indexing, or the `Mark` or `Layer`'s parent `Graphic` / `Section`, as demonstrated above. To block re-indexing of a `Section` itself, supply the `blockReindexing` to its parent `Graphic` or `Section`.
+In this case, `blockReindexing` is used when the user is dragging the mark using `onMousedrag`. Every time the `drag` event fires, the `Point`'s coordinates are updated, and thus `florence`'s internal spatial index needs to be updated as well. This is an expensive operation, and can cause significant lags – hence the need for `blockReindexing`, which blocks this behavior until the user is done dragging when set to `false`.
+
+`blockReindexing` can be supplied to the individual `Mark`, or `Layer` for which you want to block re-indexing, but in nearly all cases it will be most convenient to apply it to the root `Graphic`, as demonstrated above. Once `blockReindexing` is set back to `true`, the element(s) in question will be re-indexed, and will continue to be re-indexed automatically whenever some part of their positioning changes, until it is set back to `false`. 
 
 ## Zooming and panning
 
@@ -302,7 +304,7 @@ See the [zooming and panning](/docs/concepts/zoom-pan) documentation for an exam
   let pointInSelection = false
 </script>
 
-<Graphic width={300} height={300} backgroundColor="#b2ffb2">
+<Graphic width={300} height={300} scaleX={[0, 300]} scaleY={[0, 300]} backgroundColor="#b2ffb2">
 
   <Section
     bind:this={section}
@@ -376,7 +378,7 @@ import RectSelect from './examples/_RectSelect.svelte'
   let pointInSelection = false
 </script>
 
-<Graphic width={300} height={300} backgroundColor="#b2ffb2">
+<Graphic width={300} height={300} scaleX={[0, 300]} scaleY={[0, 300]} backgroundColor="#b2ffb2">
 
   <Section
     bind:this={section}

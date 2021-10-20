@@ -39,10 +39,6 @@ export const posts = [
         path: '/docs/concepts/zoom-pan'
       },
       {
-        title: 'Transitions',
-        path: '/docs/concepts/transitions'
-      },
-      {
         title: 'Advanced rendering',
         path: '/docs/concepts/advanced-rendering'
       }
@@ -118,11 +114,11 @@ export const posts = [
   },
   {
     title: 'Helpers',
-    path: '/docs/helpers/create-geo-scales',
+    path: '/docs/helpers/fit-scales',
     children: [
       {
-        title: 'createGeoScales',
-        path: '/docs/helpers/create-geo-scales'
+        title: 'fitScales',
+        path: '/docs/helpers/fit-scales'
       },
       {
         title: 'createPanHandler',

@@ -33,7 +33,7 @@
   let pointInSelection = false
 </script>
 
-<Graphic width={300} height={300} backgroundColor="#b2ffb2">
+<Graphic width={300} height={300} backgroundColor="#b2ffb2" scaleX={[0, 300]} scaleY={[0, 300]}>
 
   <Section
     bind:this={section}

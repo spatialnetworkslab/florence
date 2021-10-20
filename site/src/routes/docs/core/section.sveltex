@@ -15,10 +15,10 @@ The `Section` is one of the cornerstones of `florence`. It is used to:
 <Graphic width={200} height={200} backgroundColor={'blue'}>
 
   <Section 
-    x1={50}
-    x2={150}
-    y1={50}
-    y2={150}
+    x1={0.25}
+    x2={0.75}
+    y1={0.25}
+    y2={0.75}
     backgroundColor={'green'}
   >
   
@@ -53,7 +53,7 @@ It is possible to use the `Section` without providing any of the positioning pro
 ```markup
 <Graphic width={500} height={500}>
   
-  <Section padding={20}>
+  <Section padding={50}>
     
     <Section>
 
@@ -73,17 +73,16 @@ is equivalent to
   
   <Section
     x1={0}
-    x2={500}
+    x2={1}
     y1={0}
-    y2={500}
-    padding={20}
+    y2={1}
   >
     
     <Section
-      x1={20}
-      x2={480}
-      y1={20}
-      y2={480}
+      x1={0.1}
+      x2={0.9}
+      y1={0.1}
+      y2={0.9}
     >
 
       ...
@@ -93,14 +92,6 @@ is equivalent to
   </Section>
 
 </Graphic>
-```
-
-It is also allowed to provide just the `x1` and `x2`, or just the `y1` and `y2` props.
-But providing only a single position property is not allowed:
-
-```markup
-<Section x1={50} x2={450}></Section> <!-- Fine -->
-<Section x1={50}></Section> <!-- Not allowed -->
 ```
 
 In the examples above, no local coordinate systems are being used, so everything is measured in screen pixels. However, if the parent `Graphic` or `Section` has specified a local coordinate system,
@@ -151,9 +142,6 @@ would be equivalent to:
 |      Prop       | Required | Type(s)  |   Default   |            Units             |
 | --------------- | -------- | -------- | ----------- | ---------------------------- |
 | backgroundColor | `false`  | `String` | `undefined` | Named, hex, rgb or hsl color |
-| paddingColor    | `false`  | `String` | `undefined` | Named, hex, rgb or hsl color |
-
-Where `backgroundColor` is the area within the padded area, and `paddingColor` is the background of the padded area (see `padding` below).
 
 ### Local coordinate system
 
@@ -203,12 +191,11 @@ See the [interactivity](/docs/concepts/interactivity) documentation for more inf
 
 ### Other
 
-|      Prop       | Required |  Type(s)  | Default | Unit(s) |
-| --------------- | -------- | --------- | ------- | ------- |
-| blockReindexing | `false`  | `Boolean` | `false` | -       |
-| clip            | `false`  | `Boolean` | `true`  | -       |
+|      Prop       | Required |  Type(s)  |   Default   |            Unit(s)            |
+| --------------- | -------- | --------- | ----------- | ----------------------------- |
+| clip            | `false`  | `String`  | `'padding'` | Either `'padding' or 'outer'` |
 
-The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` indicates whether the marks or layers inside of this `Graphic` should be clipped off if they extend beyond this `Graphic`'s viewport (i.e. the area within the padding).
+`clip` controls how the marks, layers and other visual elements inside of this `Section` should be clipped off. To clip off everything within the padding, `'padding'` should be used. To only clip off everything outside of the `Sections`'s outer border (determined by the positioning props), `'outer'` should be used.
 
 ## Methods
 

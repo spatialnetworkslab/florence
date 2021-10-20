@@ -60,7 +60,7 @@
 
     {/each}
 
-    <XAxis labelFontSize={13} />
+    <g class="x-axis"><XAxis labelFontSize={13} /></g>
   
   </Section>
 

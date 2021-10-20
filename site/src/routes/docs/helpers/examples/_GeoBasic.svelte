@@ -1,5 +1,5 @@
 <script>
-  import { Graphic, Section, Rectangle, createGeoScales } from '@snlab/florence'
+  import { Graphic, Section, Rectangle, fitScales } from '@snlab/florence'
   import { scaleLinear } from 'd3-scale'
 
   const domains = {
@@ -12,14 +12,14 @@
     scaleY: scaleLinear().domain(domains.y)
   }
   
-  const geoScales = createGeoScales(domains)
+  const geoScales = fitScales(domains)
 </script> 
 
 <Graphic width={400} height={200}>
 
   <Section 
     x1={0} 
-    x2={200}
+    x2={0.5}
     {...regularScales}
     padding={20}
     backgroundColor={'#d3d3d3'}
@@ -28,8 +28,8 @@
   </Section>
 
   <Section 
-    x1={200}
-    x2={400}
+    x1={0.5}
+    x2={1}
     {...geoScales}
     padding={20}
     backgroundColor={'#d3d3d3'}

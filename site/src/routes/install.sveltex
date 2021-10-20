@@ -8,7 +8,7 @@ Florence is available on NPM and can be added to any existing Svelte project by 
 </script>
 
 <Graphic width={500} height={500}>
-  <Point x={250} y={250} radius={50} />
+  <Point x={0.5} y={0.5} radius={50} />
 </Graphic>
 ```
 

@@ -58,7 +58,6 @@
       func={lineFunc}
       strokeWidth={2}
       stroke="steelblue"
-      transition={5000}
     />
 
     <XAxis title="Difficulty" />

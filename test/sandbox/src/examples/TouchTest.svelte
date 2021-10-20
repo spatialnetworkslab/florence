@@ -24,7 +24,7 @@
   }
 </script>
 
-<Graphic width={500} height={1000}>
+<Graphic width={500} height={1000} scaleX={[0, 500]} scaleY={[0, 1000]}>
   
   <Label x={250} y={25} text="Section:" />
 

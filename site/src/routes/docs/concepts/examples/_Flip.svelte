@@ -11,5 +11,5 @@
   flipY={flip}
   backgroundColor="#b2ffb2"
 >
-  <Point x={10} y={10} radius={10} />
+  <Point x={0.05} y={0.05} radius={10} />
 </Graphic>

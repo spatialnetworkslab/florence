@@ -1,7 +1,7 @@
 <script>
   import { json } from 'd3-fetch'
   import { 
-    Graphic, Section, PolygonLayer, createGeoScales,
+    Graphic, Section, PolygonLayer, fitScales,
     Label, DiscreteLegend, getClassLabels
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
@@ -16,7 +16,7 @@
     dataContainer = new DataContainer(geojson).mutate({ 
       resale_price_sqm: r => convertNullToUndefined(r.resale_price_sqm)
     })
-    geoScales = createGeoScales(dataContainer.bbox())
+    geoScales = fitScales(dataContainer.bbox())
 
     priceColorScale = dataContainer
       .dropNA('resale_price_sqm')
@@ -52,16 +52,16 @@
     </Section>
 
     <Label
-      x={200}
-      y={70}
+      x={0.5}
+      y={0.175}
       text={'Mean resale price per m2 (S$)'}
       fontFamily={'Montserrat'}
       fontSize={18}
     />
 
     <DiscreteLegend
-      x1={200} x2={400}
-      y1={300} y2={400}
+      x1={0.5} x2={1}
+      y1={0.75} y2={1}
       labels={getClassLabels(priceColorScale, Math.floor)}
       fill={priceColorScale.range()}
     >

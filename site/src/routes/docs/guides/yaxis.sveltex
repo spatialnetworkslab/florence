@@ -50,7 +50,6 @@ import SimpleExample from './utils/_YAxisSimple.svelte'
 
 |    Prop     | Required |  Type(s)   |   Default   |                       Unit(s)                        |
 | ----------- | -------- | ---------- | ----------- | ---------------------------------------------------- |
-| scale       | `false`  | `Function` | `undefined` | [d3 scale](https://github.com/d3/d3-scale)           |
 | ticks       | `false`  | `Boolean`  | `true`      | -                                                    |
 | tickCount   | `false`  | `Number`   | `10`        | -                                                    |
 | tickExtra   | `false`  | `Boolean`  | `false`     | -                                                    |
@@ -60,7 +59,6 @@ import SimpleExample from './utils/_YAxisSimple.svelte'
 | tickColor   | `false`  | `String`   | `'black'`   | Named, hex, rgb or hsl color                         |
 | tickOpacity | `false`  | `Number`   | `1`         | Number between 0 and 1                               |
 
-- the `scale` prop can be used to override the parent's `scaleY`. 
 - setting `ticks` to `false` will hide the ticks.
 - `tickCount` will determine the number of ticks.
 - `tickExtra` will add an extra tick to mark the lower end of the domain.
@@ -75,7 +73,7 @@ import SimpleExample from './utils/_YAxisSimple.svelte'
 | --------------- | -------- | ---------- | ------------- | ----------------------------------- |
 | labelFormat     | `false`  | `Function` | `undefined`   | -                                   |
 | labelOffset     | `false`  | `Number`   | `2`           | Pixel                               |
-| labelRotate     | `false`  | `Number`   | `0`           | Degree                              |
+| labelRotate     | `false`  | `Number`   | `0`           | Radian                              |
 | labelFont       | `false`  | `String`   | `'Helvetica'` | Font                                |
 | labelFontSize   | `false`  | `Number`   | `10`          | Pixel                               |
 | labelFontWeight | `false`  | `String`   | `'normal'`    | See [Label](/docs/marks/label) Mark |
@@ -101,23 +99,15 @@ import SimpleExample from './utils/_YAxisSimple.svelte'
 | titleFontSize    | `false`  | `Number`           | `12`          | Pixel                        |
 | titleFontWeight  | `false`  | `String`           | `'normal'`    | See explanation              |
 | titleOpacity     | `false`  | `Number`           | `1`           | Number between 0 and 1       |
-| titleRotation    | `false`  | `Number`           | `0`           | Degree                       |
+| titleRotate      | `false`  | `Number`           | `0`           | Radian                       |
 | titleAnchorPoint | `false`  | `String`           | `'t'`         | See explanation              |
 
 `titleVjust`, `titleYOffset`, `titleHjust` and `titleXOffset` can be used to position the axis title similar to the `YAxis`'s `hjust` and `xOffset` props. The `titleHjust` and `titleXOffset` props, however, also allow a `String` with the value `'axis'`, which automatically places the title in a reasonable default position. For an explanation of `titleAnchorPoint`, see the `anchorPoint` explanation in the [Label](/docs/marks/label) Mark documentation.
 
-### Transitions
-
-|    Prop    | Required |      Type(s)       |   Default   |             Unit(s)              |
-| ---------- | -------- | ------------------ | ----------- | -------------------------------- |
-| transition | `false`  | `Number`, `Object` | `undefined` | Duration in ms or options object |
-
-Transitions will be applied to the marks (`Line`s and `Label`s) of which the axis consists. See the [transition](/docs/concepts/transitions) documentation for more information.
-
 ### Other
 
-| Prop | Required |  Type(s)  | Default | Unit(s) |
-| ---- | -------- | --------- | ------- | ------- |
-| clip | `false`  | `Boolean` | `false` | -       |
+| Prop | Required |        Type(s)        |  Default  |                   Unit(s)                    |
+| ---- | -------- | --------------------- | --------- | -------------------------------------------- |
+| clip | `false`  | `String`, `undefined` | `'outer'` | Either `'padding'`, `'outer'` or `undefined` |
 
-Setting this to `true` will let the parent `Graphic` or `Section` clip off the axis if it leaves the viewport. Usually not desirable for axes.
+Can be used to override the clip mode of the parent `Graphic`, `Section` or `Glyph`. When `undefined`, inherits from the parent `Section` or `Graphic`.

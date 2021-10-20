@@ -25,7 +25,6 @@ import SimpleExample from './utils/_YGridLinesSimple.svelte'
 
 |  Prop   | Required |  Type(s)   |   Default   |                       Unit(s)                        |
 | ------- | -------- | ---------- | ----------- | ---------------------------------------------------- |
-| scale   | `false`  | `Function` | `undefined` | [d3 scale](https://github.com/d3/d3-scale)           |
 | count   | `false`  | `Number`   | `10`        | -                                                    |
 | extra   | `false`  | `Boolean`  | `false`     | -                                                    |
 | values  | `false`  | `Array`    | `undefined` | [Local coordinate](/docs/concepts/local-coordinates) |

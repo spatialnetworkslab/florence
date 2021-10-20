@@ -1,6 +1,6 @@
 <script>
   import { scaleLinear, scaleBand } from 'd3-scale'
-  import { Graphic, Section, Rectangle, RectangleLayer } from '../../../../src/'
+  import { Graphic, Section, Rectangle, x2, /*RectangleLayer*/ } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   let data = new DataContainer({
@@ -16,16 +16,10 @@
     .arrange({ meanQuantity: 'descending' })
 
   const scaleFruit = scaleBand().domain(data.domain('fruit')).padding(0.2)
-const meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
+  const meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
   const scaleMeanQuantity = scaleLinear().domain(meanQuantityDomain)
 
   let height = 500
-  let transformation = 'identity'
-  let duration = 2000
-
-  $: handler = transformation === 'identity'
-    ? e => { console.log(e) }
-    : () => { console.log('polar') }
 </script>
 
 <div>
@@ -33,24 +27,19 @@ const meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
   <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
 </div>
 
-<div>
+<!-- <div>
   <label for="coordinate-select">Coordinates:</label>
   <select name="coordinate-select" bind:value={transformation}>
     <option value="identity">Identity</option>
     <option value="polar">Polar</option>
   </select>
-</div>
-
-<div>
-  <label for="duration">Transition time</label>
-  <input name="duration" type="range" min="100" max="5000" bind:value={duration} />
-</div>
+</div> -->
 
 <Graphic 
-  width={'50%'} {height}
-  viewBox="0 0 50 200"
+  width={500} {height}
   scaleX={scaleLinear().domain([0, 500])}
   scaleY={scaleLinear().domain([0, 500])}
+  renderer="canvas"
 >
 
   <Section
@@ -59,19 +48,16 @@ const meanQuantityDomain = [0, data.domain('meanQuantity')[1]]
     scaleX={scaleFruit} 
 		scaleY={scaleMeanQuantity}
     flipY
-    {transformation}
   >
 
     {#each data.rows() as row (row.$key)}
 
       <Rectangle 
         x1={row.fruit}
-        x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
+        x2={x2(row.fruit)}
         y1={0}
         y2={row.meanQuantity}
-        fill={transformation === 'identity' ? 'green' : 'blue'}
-        transition={duration}
-        onClick={handler}
+        fill="green"
       />
 
     {/each}

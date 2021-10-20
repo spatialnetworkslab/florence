@@ -5,10 +5,8 @@
   import BarChart from './examples/BarChart.svelte'
   import Polygons from './examples/Polygons.svelte'
   import GridLayout from './examples/GridLayout.svelte'
-  // import ResizeLayout from './examples/ResizeLayout.svelte'
   import Scatterplot from './examples/Scatterplot.svelte'
   import ZoomPan from './examples/ZoomPan.svelte'
-  import BaseMark from './examples/BaseMark.svelte'
   import Line from './examples/Line.svelte'
 
   import FuncLines from './examples/FuncLines.svelte'
@@ -29,18 +27,18 @@
   import JoHsiBug from './examples/JoHsiBug.svelte'
   import Clipping from './examples/Clipping.svelte'
 
-  // geo examples
+  // // geo examples
   import GeoEx from './examples/GeoEx.svelte'
   import GeoFacet from './examples/GeoFacet.svelte'
   import GeoBase from './examples/GeoBase.svelte'
   import GeoPolygons from './examples/GeoPolygons.svelte'
   import Heatmap from './examples/Heatmap.svelte'
 
-  // Bugs
+  // // Bugs
   import GraphicAreaBug from './examples/GraphicAreaBug.svelte'
   import FuncLineBug from './examples/FuncLineBug.svelte'
-
   import NewLegends from './examples/NewLegends.svelte'
+  import Glyph from './examples/Glyph.svelte'
   
   // and add them to this component array
   const components = [
@@ -59,11 +57,6 @@
       url: '/gridlayout',
       component: GridLayout
     },
-    // {
-    //   name: 'Resize Layout',
-    //   url: '/resizelayout',
-    //   component: ResizeLayout
-    // },
     {
       name: 'Scatterplot',
       url: '/scatterplot',
@@ -73,11 +66,6 @@
       name: 'ZoomPan',
       url: '/zoompan',
       component: ZoomPan
-    },
-    {
-      name: 'Base mark',
-      url: '/basemark',
-      component: BaseMark
     },
     {
       name: 'Line',
@@ -175,11 +163,6 @@
       component: GeoBase
     },
     {
-      name: 'GeoPolygons',
-      url: 'geopolygons',
-      component: GeoPolygons
-    },
-    {
       name: 'Heatmap',
       url: 'heatmap',
       component: Heatmap
@@ -213,6 +196,11 @@
       name: 'New legends',
       url: 'new-legends',
       component: NewLegends
+    },
+    {
+      name: 'Glyph',
+      url: 'glyph',
+      component: Glyph
     }
   ]
 </script>

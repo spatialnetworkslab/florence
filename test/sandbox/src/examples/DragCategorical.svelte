@@ -1,6 +1,6 @@
 <script>
 	import { scaleLinear, scalePoint, scaleBand } from 'd3-scale'
-	import { Graphic, Section, PointLayer, Point } from '../../../../src/'
+	import { Graphic, Section, PointLayer, Point, polar } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
 	const N = 100
@@ -24,7 +24,7 @@
 	const scaleA = scaleLinear().domain(data.domain('a'))
   const scaleB = scalePoint().domain(domainB)
   
-  let hitKey
+  let hitIndex
   let dragPoint
   let blockReindexing = false
 
@@ -42,7 +42,7 @@
       data.updateRow({ index: hitIndex }, { a: dragPoint.x, b: dragPoint.y })
       data = data
 
-      hitKey = undefined
+      hitIndex = undefined
       dragPoint = undefined
       blockReindexing = false
     }
@@ -55,14 +55,12 @@
 	<Graphic width={500} height={500}>
 		
 		<Section
-			x1={50} x2={450}
-			y1={50} y2={450}
+			x1={0.1} x2={0.9}
+			y1={0.1} y2={0.9}
 			scaleX={scaleA}
 			scaleY={scaleB}
-      backgroundColor="white"
-      transformation="polar"
       zoomIdentity={{x: 0, y: 0, kx: 1.2, ky: 1.2}}
-      {blockReindexing}
+      coordinates={polar()}
 		>
 
 			<PointLayer

@@ -58,7 +58,7 @@
         x={row.a}
         y={row.b}
         shape={getRandomSymbol()}
-        size={14}
+        radius={7}
         fill={hoverKey === row.$key ? 'orange' : fills[row.$key]}
         onMouseover={() => { onMouseover({ key: row.$key }) }}
         onMouseout={() => { onMouseout({ key: row.$key }) }}
