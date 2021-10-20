@@ -1,6 +1,6 @@
 {
   "name": "@snlab/florence",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "svelte": "src/index.js",
   "main": "src/index.js",
   "module": "dist/index.mjs",
