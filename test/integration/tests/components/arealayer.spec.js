@@ -7,18 +7,14 @@ context('Assertions', () => {
 
   describe('AreaLayer Tests', () => {
     it('[render] area layer rendered', () => {
-      cy.get('.area').should('have.length', 2)
-    })
-
-    it('[render] area layer snapshot correctly', () => {
-      cy.get('svg').toMatchSnapshot()
+      cy.get('.area-layer > path').should('have.length', 2)
     })
 
     it('[interaction] hovering over area layer changes color', () => {
-      const area = cy.get('.area').first()
-      area.should('have.attr', 'fill', '#af8dc3')
+      const area = cy.get('.area-layer > path').first()
+      area.should('have.attr', 'fill', 'rgba(175,141,195,1)')
       area.trigger('mousemove')
-      area.should('have.attr', 'fill', '#eee0cb')
+      area.should('have.attr', 'fill', 'rgba(238,224,203,1)')
     })
   })
 })

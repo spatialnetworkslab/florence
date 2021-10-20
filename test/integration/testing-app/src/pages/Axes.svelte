@@ -38,7 +38,6 @@
   let options = {
     flip: 'false',
     vjust: 'bottom',
-    y: undefined,
     yOffset: 0,
     ticks: 'true',
     tickCount: '8',
@@ -70,25 +69,34 @@
     titleFontSize: '12',
     titleFontWeight: 'normal',
     titleOpacity: 1,
-    titleRotation: 0,
-    titleAnchorPoint: 't',
-    transition: 2000
+    titleRotate: 0,
+    titleAnchorPoint: 't'
   }
 
 </script>
 
 <div class="options">
-  <button on:click={updateData}>
-    Update Data
-  </button>
+  <button on:click={updateData}> Update Data </button>
   <div>
     <label for="height-slider">Height:</label>
-    <input type="range" min="0" max="500" bind:value={height} name="height-slider" />
+    <input
+      type="range"
+      min="0"
+      max="500"
+      bind:value={height}
+      name="height-slider"
+    />
   </div>
 
   <div>
     <label for="width-slider">Width:</label>
-    <input type="range" min="0" max="500" bind:value={width} name="width-slider" />
+    <input
+      type="range"
+      min="0"
+      max="500"
+      bind:value={width}
+      name="width-slider"
+    />
   </div>
 
   {#each Object.keys(options) as option}
@@ -99,61 +107,53 @@
   {/each}
 </div>
 
-
-
 <div class="graphic">
-
-	<Graphic 
-    width={width} {height}
+  <Graphic
+    {width}
+    {height}
     scaleX={scaleLinear().domain([0, 500])}
     scaleY={scaleLinear().domain([0, 500])}
   >
-		
-		<Section
-			scaleX={scaleA}
-			scaleY={scaleB}
+    <Section
+      scaleX={scaleA}
+      scaleY={scaleB}
       backgroundColor={background}
-      paddingColor={padding}
-      padding={{left: 40, right: 25, top: 25, bottom: 40}}
+      padding={{ left: 40, right: 25, top: 25, bottom: 40 }}
       flipY
-		>
-        <PointLayer
-          x={data.column('a')}
-          y={data.column('b')}
-          transition={2000}
-        />
+    >
+      <PointLayer x={data.column("a")} y={data.column("b")} />
 
-        <!-- <PointLayer
+      <!-- <PointLayer
           x={data.column('a')}
           y={data.column('b')}
           key={data.column('$key')}
-          transition={2000}
         /> -->
-		
+      <g class="x-axis">
         <XAxis
           yOffset={Number(options.yOffset)}
-          flip={options.flip === 'true'}
+          flip={options.flip === "true"}
           vjust={isNaN(options.vjust) ? options.vjust : Number(options.vjust)}
-          y={Number(options.y)}
-          baseLine={options.baseLine === 'true'}
+          baseLine={options.baseLine === "true"}
           baseLineColor={options.baseLineColor}
           baseLineOpacity={Number(options.baseLineOpacity)}
           baseLineWidth={Number(options.baseLineWidth)}
-          ticks={options.ticks === 'true'}
+          ticks={options.ticks === "true"}
           tickCount={Number(options.tickCount)}
-          tickValues={(options.tickValues.length > 0) ? options.tickValues.split(',') : []}
+          tickValues={options.tickValues.length > 0
+            ? options.tickValues.split(",")
+            : []}
           tickSize={Number(options.tickSize)}
           tickWidth={Number(options.tickWidth)}
           tickColor={options.tickColor}
           tickOpacity={Number(options.tickOpacity)}
-          tickExtra={options.tickExtra === 'true'}
-          labelFormat = {options.labelFormat}
-          labelOffset = {Number(options.labelOffset)}
-          labelRotate = {Number(options.labelRotate)}
-          labelFont = {options.labelFont}
-          labelFontSize = {Number(options.labelFontSize)}
-          labelFontWeight = {options.labelFontWeight}
-          labelOpacity = {Number(options.labelOpacity)}
+          tickExtra={options.tickExtra === "true"}
+          labelFormat={options.labelFormat}
+          labelOffset={Number(options.labelOffset)}
+          labelRotate={Number(options.labelRotate)}
+          labelFont={options.labelFont}
+          labelFontSize={Number(options.labelFontSize)}
+          labelFontWeight={options.labelFontWeight}
+          labelOpacity={Number(options.labelOpacity)}
           labelColor={options.labelColor}
           titleHjust={options.titleHjust}
           titleXOffset={Number(options.titleXOffset)}
@@ -165,26 +165,26 @@
           titleFontSize={Number(options.titleFontSize)}
           titleFontWeight={options.titleFontWeight}
           titleOpacity={Number(options.titleOpacity)}
-          titleRotation={Number(options.titleRotation)}
+          titleRotate={Number(options.titleRotate)}
           titleAnchorPoint={options.titleAnchorPoint}
-          transition={Number(options.transition)}
         />
+      </g>
 
-        <YAxis hjust={'left'} baseLineWidth={1} title="Test Y Axis"/>
-		</Section>
-
-	</Graphic>
-
+      <g class="y-axis">
+        <YAxis hjust={"left"} baseLineWidth={1} title="Test Y Axis" />
+      </g>
+    </Section>
+  </Graphic>
 </div>
 
 <style>
-.options {
-  float: left;
-  height: 300px;
-  overflow: auto;
-  padding: 10px;
-}
-.graphic {
-  float: right;
-}
+  .options {
+    float: left;
+    height: 300px;
+    overflow: auto;
+    padding: 10px;
+  }
+  .graphic {
+    float: right;
+  }
 </style>

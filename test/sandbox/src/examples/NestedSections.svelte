@@ -1,6 +1,6 @@
 <script>
   import { scaleBand } from 'd3-scale'
-  import { Graphic, Section, XAxis, Rectangle } from '../../../../src'
+  import { Graphic, Section, XAxis, Rectangle, x2 } from '../../../../src'
 
   const segments = ['iris', 'versicolor', 'virginica']
 </script>
@@ -11,14 +11,17 @@
     scaleX={scaleBand().domain(segments)}
     padding={30}
     flipY
-    backgroundColor='#c9f0ff'
   >
+    <Rectangle fill={'#c9f0ff'} />
+
     {#each segments as s}
       <Section
         x1={s}
-        x2={({ scaleX }) => scaleX(s) + scaleX.bandwidth()}
-        backgroundColor='#dbbbf5'
+        x2={x2(s)}
       >
+
+        <Rectangle fill={'#dbbbf5'} stroke="black" />
+
       </Section>
 
     {/each}

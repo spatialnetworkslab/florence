@@ -2,7 +2,7 @@
   import { 
     Graphic, Section, 
     PointLayer, PolygonLayer, Line, Label,
-    XAxis, YAxis, createGeoScales
+    XAxis, YAxis, fitScales
   } from '../../../../src/'
 
   import { scaleLinear, scaleTime } from 'd3-scale'
@@ -44,7 +44,7 @@
   }
 
   // Step 3: creating the geo-scales for the map
-  const geoScales = createGeoScales(states.domain('$geometry'))
+  const geoScales = fitScales(states.domain('$geometry'))
 
   // Step 4: allowing switching between the map and the scatterplot 
   let currentVisualization = 'scatterplot'
@@ -74,7 +74,7 @@
 
 <br />
 
-<Graphic width={1200} height={600}>
+<Graphic width={1200} height={600} scaleX={[0, 1200]} scaleY={[0, 600]}>
 
   <Section
     x1={0} x2={600}
@@ -101,7 +101,6 @@
       onMouseover={event => { setCity(event) }}
       onMouseout={() => { setCity(undefined) }}
       fill={key => key === currentKey ? 'red' : 'steelblue'}
-      transition={{ geometry: 3000 }}
     />
 
     {#if currentVisualization === 'scatterplot'}

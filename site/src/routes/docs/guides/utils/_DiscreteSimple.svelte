@@ -2,7 +2,7 @@
   import { Graphic, DiscreteLegend, Label } from '@snlab/florence'
 </script>
 
-<Graphic width={300} height={200}>
+<Graphic width={300} height={200} scaleX={[0, 300]} scaleY={[0, 200]}>
 
   <DiscreteLegend
     x1={50} x2={250}

@@ -36,19 +36,15 @@
   const log = console.log
 </script>
 
-<Graphic width={500} height={500} backgroundColor="red" paddingColor="blue" padding={50}>
+<Graphic width={500} height={500} padding={50} renderer="canvas">
 
-  <Section 
-    {scaleX} {scaleY} padding={20}
-    onTouchover={log}
-    onTouchout={log}
-  >
+  <Section {scaleX} {scaleY} padding={20}>
   
     <PointLayer
       x={data.column('a')}
       y={data.column('b')}
       fill={({ index }) => index === hoverIndex ? 'red' : 'black'}
-      radius={17}
+      radius={5}
       {onMouseover}
       {onMouseout}
       onTouchdown={onMouseover}

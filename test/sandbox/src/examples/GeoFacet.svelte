@@ -4,7 +4,7 @@
   import { scaleLinear, scaleThreshold, scalePoint } from 'd3-scale'
 
   // florence
-  import { Graphic, Section, createGeoScales, XAxis, YAxis, SymbolLayer, PolygonLayer, Polygon } from '../../../../src/'
+  import { Graphic, Section, fitScales, XAxis, YAxis, SymbolLayer, PolygonLayer, Polygon } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
   // geodata
@@ -46,7 +46,7 @@
   // process relevant data to get backgroundagons with mean price data
   background = new DataContainer(metadata)
   const bbox = background.domain('$geometry')
-  geoScale = createGeoScales(bbox)
+  geoScale = fitScales(bbox)
   geometry = background.column('$geometry')
   postBg = background.dropNA(['resale_price_sqm', 'remaining_lease', 'floor_area_sqm']) // remove na values
   processedGeom = postBg.column('$geometry')
@@ -121,12 +121,9 @@
       heatmapPriceColors = heatmapData.map('resale_price_sqm', heatmapPrice)
     }
   }
-
-  let transition = 250
 </script>
 
-<Graphic width={500} height={1000}
->     
+<Graphic width={500} height={1000} scaleX={[0, 500]} scaleY={[0, 1000]}>     
    <Section 
     x1={20} x2={480}
     y1={50} y2={300}
@@ -138,11 +135,9 @@
     <PolygonLayer geometry={geometry} fill={'white'} stroke={'white'} strokeWidth={1} />
     {#each background.rows() as row, i (row.$key)}
       <Polygon geometry={row.$geometry} 
-        fillOpacity={hoverKey === row.$key ? 1 : 0.8} 
-        transition={transition}
+        fillOpacity={hoverKey === row.$key ? 1 : 0.8}
         stroke={'white'} 
         strokeWidth={2} 
-        key={row.$key}
         fill={priceColors[row.$key]}
         onMouseover={() => { onMouseover({ key: row.$key, town: row.PLN_AREA_N }) }}
         onMouseout={() => { onMouseout({ key: row.$key, town: row.PLN_AREA_N }) }}
@@ -167,11 +162,10 @@
           y={heatmapData.column('adjYear')}
           shape={'square'}
           fill={heatmapPriceColors}
-          size={16}
-          transition={transition}
+          radius={8}
         />
-        <YAxis baseLineOpacity={0} xOffset={6} transition={transition}/>
-        <XAxis flip vjust={'top'} baseLineOpacity={0} yOffset={6} transition={transition}/>
+        <YAxis baseLineOpacity={0} xOffset={6} />
+        <XAxis flip vjust={'top'} baseLineOpacity={0} yOffset={6} />
 
     </Section>
   {/if}

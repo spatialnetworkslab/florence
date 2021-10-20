@@ -17,14 +17,13 @@
   })
 </script>
 
-<Graphic width={200} height={200} padding={20}>
+<Graphic width={200} height={200} padding={20} {blockReindexing}>
 
   <Section
     scaleX={[0, 10]}
     scaleY={[0, 10]}
     {zoomIdentity}
     {...pan.handlers}
-    {blockReindexing}
   >
   
     <Rectangle x1={2.5} x2={7.5} y1={2.5} y2={7.5} />

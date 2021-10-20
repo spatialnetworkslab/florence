@@ -2,7 +2,7 @@ const appSource =
 `
 <script>
   import { 
-    Graphic, Section, PolygonLayer, createGeoScales,
+    Graphic, Section, PolygonLayer, fitScales,
     Label, DiscreteLegend, getClassLabels
   } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
@@ -13,7 +13,7 @@ const appSource =
   const dataContainer = new DataContainer(geojson)
     .mutate({ resale_price_sqm: r => convertNullToUndefined(r.resale_price_sqm) })
 
-  const geoScales = createGeoScales(dataContainer.bbox())
+  const geoScales = fitScales(dataContainer.bbox())
 
   const COLORS = ['#fff0d2', '#FDD1A5', '#FD9243', '#982f05', '#4e1802']
   const priceColorScale = dataContainer
@@ -42,16 +42,16 @@ const appSource =
   </Section>
 
   <Label
-    x={250}
-    y={70}
+    x={0.5}
+    y={0.14}
     text={'Mean resale price per m2 (S$)'}
     fontFamily={'Montserrat'}
     fontSize={18}
   />
 
   <DiscreteLegend
-    x1={300} x2={400}
-    y1={300} y2={400}
+    x1={0.75} x2={1}
+    y1={0.75} y2={1}
     labels={getClassLabels(priceColorScale, Math.floor)}
     fill={COLORS}
   />

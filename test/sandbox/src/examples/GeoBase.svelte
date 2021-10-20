@@ -1,6 +1,6 @@
 <script>
   import { 
-    Graphic, Section, PolygonLayer, createGeoScales, DiscreteLegend, getClassLabels
+    Graphic, Section, PolygonLayer, fitScales, DiscreteLegend, getClassLabels
   } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
   import { scaleThreshold } from 'd3-scale'
@@ -9,7 +9,7 @@
   // step1
   import geo from '../data/planning_areas_data.json'
   const data = new DataContainer(geo)
-  const geoScales = createGeoScales(data.bbox())
+  const geoScales = fitScales(data.bbox())
 
   // step 2
   // compute color scaling
@@ -43,9 +43,9 @@
   </Section>
 
   <DiscreteLegend
-    x1={300} x2={450}
-    y1={0} y2={100}
-    {colors}
+    x1={0.6} x2={0.9}
+    y1={0} y2={0.2}
+    fill={colors}
     labels={getClassLabels(priceColorScale, Math.floor)}
   />
 

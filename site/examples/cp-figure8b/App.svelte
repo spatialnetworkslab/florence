@@ -1,12 +1,12 @@
 <script>
-  import { Graphic, Section, PolygonLayer, createGeoScales } from '@snlab/florence'
+  import { Graphic, Section, PolygonLayer, fitScales } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
   import { scaleOrdinal } from 'd3-scale'
   import { schemeCategory10 } from 'd3-scale-chromatic'
   import { provincesGeoJSON } from './provinces.js'
 
   const provinces = new DataContainer(provincesGeoJSON)
-  const geoScales = createGeoScales(provinces.bbox())
+  const geoScales = fitScales(provinces.bbox())
 
   const colorScale = scaleOrdinal()
     .domain(provinces.domain('statcode'))

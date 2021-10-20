@@ -59,8 +59,8 @@ const appSource =
   </Section>
 
   <Label
-    x={250}
-    y={70}
+    x={0.5}
+    y={0.14}
     text={'Fruit Sizes'}
     fontFamily={'Baskerville'}
     fontSize={18}

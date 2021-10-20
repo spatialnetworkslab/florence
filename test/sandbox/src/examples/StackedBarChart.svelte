@@ -45,7 +45,7 @@
         <Rectangle 
           x1={row.fruit}
           x2={({ scaleX }) => scaleX(row.fruit) + scaleX.bandwidth()}
-          y1={i === 0 ? 0 : container.prevRow(row.$key).cumsum_value}
+          y1={i === 0 ? 0 : container.row({ index: i - 1 }).cumsum_value}
           y2={row.cumsum_value}
           fill={nutrientColorScale(row.nutrient)}
         />

@@ -1,10 +1,10 @@
 <script>
-  import { Graphic, Section, PolygonLayer, createGeoScales } from '@snlab/florence'
+  import { Graphic, Section, PolygonLayer, fitScales } from '@snlab/florence'
   import DataContainer from '@snlab/florence-datacontainer'
   import { provincesGeoJSON } from './provinces.js'
 
   const provinces = new DataContainer(provincesGeoJSON)
-  const geoScales = createGeoScales(provinces.bbox())
+  const geoScales = fitScales(provinces.bbox())
 </script>
 
 <Graphic width={400} height={400} {...geoScales} flipY>

@@ -12,7 +12,7 @@
 
 <Graphic width={200} height={200} scaleX={[0, 10]} scaleY={[0, 10]} padding={20}>
 
-  <Symbol_ x={5} y={5} shape={septagon} size={50} />
+  <Symbol_ x={5} y={5} shape={septagon} radius={25} />
   
   <XAxis />
   <YAxis />

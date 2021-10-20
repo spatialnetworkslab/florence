@@ -15,5 +15,5 @@
   {zoomIdentity}
   backgroundColor="#b2ffb2"
 >
-  <Point x={25} y={100} radius={10} />
+  <Point x={0.125} y={0.5} radius={10} />
 </Graphic>

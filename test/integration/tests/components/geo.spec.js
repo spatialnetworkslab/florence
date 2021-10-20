@@ -7,11 +7,7 @@ context('Assertions', () => {
 
   describe('Geo Tests', () => {
     it('[render] polygons rendered', () => {
-      cy.get('.polygon').should('have.length', 3)
-    })
-    it('[render] geo polygons correctly', () => {
-      cy.get('svg')
-        .toMatchSnapshot()
+      cy.get('.polygon-layer > path').should('have.length', 3)
     })
   })
 })

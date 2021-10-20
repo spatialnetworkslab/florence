@@ -40,7 +40,10 @@
 {#if ready}
 
   <Graphic
-    {width} {height}
+    {width}
+    {height}
+    scaleX={[0, width]}
+    scaleY={[0, height]}
     padding={{ top: 20, right: 30, bottom: 30, left: 40 }}
   >
 

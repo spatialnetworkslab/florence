@@ -25,7 +25,7 @@
   })
 </script>
 
-<Graphic width={500} height={500} backgroundColor="#b2ffb2">
+<Graphic width={500} height={500} backgroundColor="#b2ffb2" {blockReindexing}>
 
   <Section 
     padding={25}
@@ -34,7 +34,6 @@
     {zoomIdentity}
     {...pan.handlers}
     {...zoom.handlers}
-    {blockReindexing}
   >
 
     <Rectangle x1={0} x2={2} fill="blue" opacity={0.3} />

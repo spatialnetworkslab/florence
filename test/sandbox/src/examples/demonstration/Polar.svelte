@@ -62,17 +62,12 @@
         y1={[row.a[0], row.b[0], row.c[0]]}
         y2={[row.a[1], row.b[1], row.c[1]]}
         fill={['a', 'b', 'c'].map(colorScale)}
-        transition={2000}
       />
 
     {/each}
 
-    <XAxis 
-      {vjust} 
-      transition={2000}
-    />
-
-    <YAxis transition={2000} />
+    <XAxis {vjust} />
+    <YAxis />
   
   </Section>
 

@@ -92,10 +92,9 @@ function kernelEpanechnikov (k) {
         x2={({ scaleX }) => scaleX(groupedCols[i]) + scaleX.bandwidth()}
       >
         <Area
+          y={d.map(v => v[0])}
           x1={d.map(v => (v[1]))}
-          y1={d.map(v => v[0])}
           x2={d.map(v => -v[1])}
-          independentAxis={'y'}
           fill={'#c080ff'}
         />
       </Section>

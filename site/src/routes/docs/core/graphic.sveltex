@@ -29,55 +29,16 @@ import SimpleExample from './examples/_GraphicSimple.svelte'
 
 ### Positioning
 
-|  Prop   |            Required            |      Type(s)       |           Default            |      Unit(s)      |
-| ------- | ------------------------------ | ------------------ | ---------------------------- | ----------------- | 
-| width   | `true`                        | `Number`, `String` | `500`                        | Pixel, percentage |
-| height  | `true`                        | `Number`, `String` | `500`                        | Pixel, percentage |
-| viewBox | `if (typeof width === 'string' && typeof height === 'string')` | `String`          | `undefined` | [viewBox coordinates](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox) |
-
-In most cases, the `Graphic` will be positioned by providing the `width` and `height` in pixels, like so:
-
-```markup
-<Graphic width={800} height={600}>
-```
-
-However, in responsive layouts, it can be desirable to define the `Graphic`'s `width` and `height` in percentages relative to its parent element. In this case, the `viewBox` prop must be specified in [viewBox coordinates](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox) to determine the `Graphic`'s local coordinate system. Note, however, that this means that the local coordinate system used within the `Graphic` does not necessarily correspond to the pixels on your screen! The radius below, for example, is much larger than 20px (depending on your screen size):
-
-```markup
-<script>
-  import { Graphic, Point } from '@snlab/florence'
-</script>
-
-<Graphic
-  width={'50%'}
-  height={'100%'}
-  viewBox={'0 0 100 100'}
-  backgroundColor={'#d3d3d3'}
->
-
-  <Point x={50} y={50} radius={20} />
-
-</Graphic>
-```
-
-```js exec
-import ViewBoxExample from './examples/_ViewBoxSimple.svelte'
-```
-
-<ViewBoxExample />
-
-::: div callout
-`width` and `height` must always be of the same type, so either both `Number` (for dimensions in pixels) or both `String` (for dimensions relative to the parent container).
-:::
+|  Prop  | Required | Type(s)  | Default | Unit(s) |
+| ------ | -------- | -------- | ------- | ------- |
+| width  | `false`   | `Number` | `500`   | Pixel   |
+| height | `false`   | `Number` | `500`   | Pixel   |
 
 ### Aesthetics
 
-|      Prop       | Required | Type(s)  |   Default   |           Unit(s)            |
+|      Prop       | Required | Type(s)  |   Default   |            Units             |
 | --------------- | -------- | -------- | ----------- | ---------------------------- |
 | backgroundColor | `false`  | `String` | `undefined` | Named, hex, rgb or hsl color |
-| paddingColor    | `false`  | `String` | `undefined` | Named, hex, rgb or hsl color |
-
-`backgroundColor` is the area within the padded area, and `paddingColor` is the background of the padded area (see `padding` below).
 
 ### Local coordinate system
 
@@ -127,12 +88,17 @@ See the [interactivity](/docs/concepts/interactivity) documentation for more inf
 
 ### Other
 
-|      Prop       | Required |  Type(s)  | Default | Unit(s) |
-| --------------- | -------- | --------- | ------- | ------- |
-| blockReindexing | `false`  | `Boolean` | `false` | -       |
-| clip            | `false`  | `Boolean` | `true`  | -       |
+|      Prop       | Required |  Type(s)  |   Default   |            Unit(s)            |
+| --------------- | -------- | --------- | ----------- | ----------------------------- |
+| blockReindexing | `false`  | `Boolean` | `false`     | -                             |
+| clip            | `false`  | `String`  | `'padding'` | Either `'padding' or 'outer'` |
+| renderer        | `false`  | `String`  | `'svg'`     | Either `'svg'` or `'canvas'`  |
 
-The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` indicates whether the marks or layers inside of this `Graphic` should be clipped off if they extend beyond the `Graphic`'s viewport (i.e. the area within the padding).
+The purpose of `blockReindexing` is explained in the [interactivity](/docs/concepts/interactivity) documentation. `clip` controls how the marks, layers and other visual elements inside of this `Graphic` should be clipped off. To clip off everything within the padding, `'padding'` should be used. To only clip off everything outside of the `Graphic`'s outer border, `'outer'` should be used. `renderer` determines whether `florence` will render to SVG or Canvas.
+
+::: div callout
+The renderer should not be changed in runtime!
+:::
 
 ## Methods
 

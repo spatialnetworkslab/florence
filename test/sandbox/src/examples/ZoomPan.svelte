@@ -3,6 +3,7 @@
   import { 
     Graphic, Section, PolygonLayer, Rectangle, Point,
     XAxis, YAxis,
+    XGridLines, YGridLines,
     createPanHandler, createZoomHandler
   } from '../../../../src'
 
@@ -32,8 +33,8 @@
   <!-- <Rectangle fill="blue" opacity={0.3} /> -->
 
   <Section 
-    x1={50} x2={450}
-    y1={50} y2={450}
+    x1={0.1} x2={0.9}
+    y1={0.1} y2={0.9}
     padding={25}
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
@@ -47,7 +48,7 @@
 
     <PolygonLayer
       x={[
-        [0, 1, 1, 0, 0],
+        [1, 1, 1, 0, 0],
         [1, 2, 2, 1, 1],
         [2, 3, 3, 2, 2]
       ]}
@@ -70,12 +71,14 @@
 
       <Point x={2} y={2} radius={10} />
       <Point x={5} y={5} radius={10} />
-      <Point x={8} y={8} radius={10} />
-    
+      <Point x={8} y={8} radius={10} /> 
     </Section>
 
     <XAxis />
     <YAxis />
+
+    <XGridLines />
+    <YGridLines />
   
   </Section>
 

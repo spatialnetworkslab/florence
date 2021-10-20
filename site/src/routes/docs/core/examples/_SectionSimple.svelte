@@ -5,10 +5,10 @@
 <Graphic width={200} height={200} backgroundColor={'blue'}>
   
   <Section 
-    x1={50}
-    x2={150}
-    y1={50}
-    y2={150}
+    x1={0.25}
+    x2={0.75}
+    y1={0.25}
+    y2={0.75}
     backgroundColor={'green'}
   >
   

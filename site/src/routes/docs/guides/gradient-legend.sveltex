@@ -7,7 +7,7 @@ The `GradientLegend` component help the viewer of a graphic interpret mappings b
   import { Graphic, GradientLegend, Label } from '@snlab/florence'
 </script>
 
-<Graphic width={300} height={200}>
+<Graphic width={300} height={200} scaleX={[0, 300]} scaleY={[0, 200]}>
 
   <GradientLegend
     x1={50} x2={250}
@@ -88,21 +88,13 @@ Positioning the `GradientLegend` works similar to positioning the [Section](/doc
 
 `stroke` and `strokeWidth` refer to the gradient rectangle.
 
-### Transitions
-
-|    Prop    | Required |      Type(s)       |   Default   |             Unit(s)              |
-| ---------- | -------- | ------------------ | ----------- | -------------------------------- |
-| transition | `false`  | `Number`, `Object` | `undefined` | Duration in ms or options object |
-
-Transitions will be applied to the marks (`Rectangle`s and `Label`s) of which the legend consists. See the [transition](/docs/concepts/transitions) documentation for more information.
-
 ### Other
 
-| Prop | Required |  Type(s)  | Default | Unit(s) |
-| ---- | -------- | --------- | ------- | ------- |
-| clip | `false`  | `Boolean` | `false` | -       |
+| Prop | Required |        Type(s)        |  Default  |                   Unit(s)                    |
+| ---- | -------- | --------------------- | --------- | -------------------------------------------- |
+| clip | `false`  | `String`, `undefined` | `'outer'` | Either `'padding'`, `'outer'` or `undefined` |
 
-Setting this to `true` will let the parent `Graphic` or `Section` clip off the axis if it leaves the viewport. Usually not desirable for legends.
+Can be used to override the clip mode of the parent `Graphic`, `Section` or `Glyph`. When `undefined`, inherits from the parent `Section` or `Graphic`.
 
 ## Slot
 

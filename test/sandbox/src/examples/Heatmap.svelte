@@ -45,8 +45,7 @@
   const priceColors = data.map('resale_price_sqm', priceColorScale)
 </script>
 
-<Graphic width={500} height={350}
->     
+<Graphic width={500} height={350} scaleX={[0, 500]} scaleY={[0, 350]}>     
    <Section 
     x1={100} x2={400}
     y1={100} y2={280}

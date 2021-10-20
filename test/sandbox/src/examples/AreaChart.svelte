@@ -56,7 +56,7 @@
     flipY
   >
     <Area
-      x1={stockData.column('date')}
+      x={stockData.column('date')}
       y1={stockData.column('close')}
       y2={Array(1280).fill(0)}
       fill={'steelblue'}
@@ -71,7 +71,7 @@
       title={'$ close'}
       titleVjust={'top'}
       titleHjust={0.035}
-      titleRotation={0}
+      titleRotate={0}
       titleFontWeight={'bold'}
     />
 

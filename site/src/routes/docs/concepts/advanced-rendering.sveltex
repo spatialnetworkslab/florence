@@ -1,13 +1,11 @@
 # Advanced rendering
 
-`florence` allows the user to fine-tune how `Mark`s and `Layer`s are rendered using the `renderSettings` object.
+`florence` allows the user to fine-tune how `Mark`s and `Layer`s are rendered using the `outputSettings` object.
 
-|                  Prop                  | Required |  Type(s)  | Default | Unit(s) |
-| -------------------------------------- | -------- | --------- | ------- | ------- |
-| renderSettings.simplify                | `false`  | `Boolean` | `false` | -       |
-| renderSettings.simplificationThreshold | `false`  | `Number`  | `1`     | Pixel   |
-| renderSettings.decimals                | `false`  | `Number`  | `2`     | -       |
+|          Prop           | Required |  Type(s)  | Default | Unit(s) |
+| ----------------------- | -------- | --------- | ------- | ------- |
+| outputSettings.round    | `false`  | `Boolean` | `true`  | -       |
+| outputSettings.decimals | `false`  | `Number`  | `0`     | -       |
 
-- `simplify`: if set to `true`, geometries will be simplified.
-- `simplificationThreshold`: if `simplify` is `true`, determines when geometries should be simplified. A value of `1` indicates that if we have three consecutive points A B C, and the distances AB and AC are both lower than the simplification threshold, point B will be skipped.
-- `decimals`: the number of decimals that coordinates will be rounded off to.
+- `round`: determines if the coordinates in SVG paths will be rounded off.
+- `decimals`: the number of decimals that coordinates in SVG paths will be rounded off to.

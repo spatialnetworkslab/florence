@@ -1,9 +1,16 @@
 <script>
-	import { Graphic, PointLayer, XAxis, YAxis } from '@snlab/florence'
+  import { Graphic, PointLayer, XAxis, YAxis } from '@snlab/florence'
+  import { tweened } from 'svelte/motion'
+  import { cubicOut } from 'svelte/easing'
 
   let N = 100
   let error = 0.25
-  let data = generateData(N, error)
+
+  const data = tweened(generateData(N, error), {
+    duration: 2000,
+    easing: cubicOut
+  })
+  
 
 	function generateData (N, error) {
 		const getError = () => -error + (Math.random() * (2 * error)) * N
@@ -16,7 +23,7 @@
   }
 
   setInterval(() => {
-    data = generateData(N, error)
+    $data = generateData(N, error)
   }, 5000)
 </script>
 
@@ -35,7 +42,6 @@
     stroke={'steelblue'}
     strokeWidth={1}
     fill={'white'}
-    transition={2000}
   />
 
   <XAxis />

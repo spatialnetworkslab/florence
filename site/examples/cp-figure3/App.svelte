@@ -6,18 +6,18 @@
 
     <Section
       x1={0}
-      x2={250}
+      x2={0.5}
       y1={0}
-      y2={500}
+      y2={1}
       backgroundColor={'purple'}
     >
     </Section>
 
     <Section
-      x1={250}
-      x2={500}
+      x1={0.5}
+      x2={1}
       y1={0}
-      y2={500}
+      y2={1}
       backgroundColor={'orange'}
     >
     </Section>

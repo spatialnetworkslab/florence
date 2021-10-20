@@ -29,13 +29,12 @@
   }
 </script>
 
-<Graphic width={300} height={300} backgroundColor="#b2ffb2">
+<Graphic width={300} height={300} backgroundColor="#b2ffb2" {blockReindexing}>
 
   <Section 
     scaleX={scaleLinear().domain([0, 10])}
     scaleY={scaleLinear().domain([0, 10])}
     padding={20}
-    {blockReindexing}
   >
 
     {#each points as point, i}

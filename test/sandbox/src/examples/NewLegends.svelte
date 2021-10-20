@@ -2,7 +2,7 @@
   import { Graphic, Section, DiscreteLegend, GradientLegend } from '../../../../src/'
 </script>
 
-<Graphic width={800} height={800}>
+<Graphic width={800} height={800} scaleX={[0, 800]} scaleY={[0, 800]}>
 
   <DiscreteLegend
     x1={100} x2={200}
@@ -14,7 +14,7 @@
 
   </DiscreteLegend>
 
-  <GradientLegend 
+  <!-- <GradientLegend 
     x1={300} x2={400}
     y1={100} y2={450}
     labels={['apple', 'banana', 'coconut']}
@@ -22,6 +22,6 @@
     opacity={[0.8, 1, 0.2]}
   >
 
-  </GradientLegend>
+  </GradientLegend> -->
 
 </Graphic>
