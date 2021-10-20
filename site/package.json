@@ -60,7 +60,6 @@
     "svelte-preprocess": "^4.6.1",
     "tailwindcss": "^2.0.1",
     "topojson": "^3.0.2",
-    "unified": "^9.2.0",
-    "unist-util-visit": "^4.1.0"
+    "unified": "^9.2.0"
   }
 }
