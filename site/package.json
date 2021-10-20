@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@polka/send": "^1.0.0-next.3",
-    "@snlab/florence-repl": "0.0.9",
+    "@snlab/florence-repl": "^0.1.0",
     "compression": "^1.7.4",
     "polka": "^1.0.0-next.4",
     "sirv": "^1.0.10"
@@ -60,7 +60,6 @@
     "svelte-preprocess": "^4.6.1",
     "tailwindcss": "^2.0.1",
     "topojson": "^3.0.2",
-    "unified": "^9.2.0",
-    "unist-util-visit": "^3.0.0"
+    "unified": "^9.2.0"
   }
 }
