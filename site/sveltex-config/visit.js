@@ -1,3 +1,6 @@
+// https://www.npmjs.com/package/unist-util-visit is broken
+// with ES modules, so I am just copying the code in here for
+// now.
 function anyFactory (tests) {
   /** @type {Array.<AssertAnything>} */
   const checks = []
