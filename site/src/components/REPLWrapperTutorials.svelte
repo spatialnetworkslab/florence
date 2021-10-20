@@ -3,8 +3,6 @@ import REPL from '@snlab/florence-repl'
 
 export let replFiles
 
-let containerWidth
-let windowHeight
 </script>
 
 <style>
@@ -20,17 +18,8 @@ let windowHeight
 }
 </style>
 
-<svelte:window bind:innerHeight={windowHeight}/>
-
 <div>
-  <div class="repl" bind:clientWidth={containerWidth}>
-    {#if containerWidth}
-      <REPL
-        {replFiles}
-        width={containerWidth}
-        height={windowHeight * 0.8}
-        debounce={400}
-      />
-    {/if}
+  <div class="repl">
+    <REPL {replFiles} />
   </div>
 </div>
