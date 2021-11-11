@@ -19,6 +19,7 @@ run-unit-test:
   script:
     - npm install npm@latest -g
     - npm install
+    - npm rebuild canvas --update-binary
     - npm run test:unit:ci
   artifacts:
     when: always
