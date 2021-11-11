@@ -17,6 +17,7 @@ run-unit-test:
       - node_modules/
       - .npm
   script:
+    - npm install npm@latest -g
     - npm install
     - npm run test:unit:ci
   artifacts:
