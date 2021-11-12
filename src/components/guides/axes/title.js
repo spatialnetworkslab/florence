@@ -54,7 +54,7 @@ export function getTitleCoordinatesYAxis (
   const xAbs = hjust === 'axis'
     ? xAbsoluteAxis + widthOffset
     : parseHJust(hjust, xOffset, section.paddedBbox)
-  const yAbs = parseHJust(vjust, yOffset, section.paddedBbox)
+  const yAbs = parseVJust(vjust, yOffset, section.paddedBbox)
 
   return {
     x: ({ pxAt }) => pxAt(xAbs),
