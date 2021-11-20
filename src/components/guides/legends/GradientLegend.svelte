@@ -39,6 +39,7 @@
 
   // Other
   export let clip = 'outer'
+  export let backgroundColor = undefined
 
   const { renderer } = getContext('graphic')
   
@@ -66,7 +67,7 @@
 
 <Gradient {gradientId} {fills} {opacities} />
 
-<Section {x1} {x2} {y1} {y2}>
+<Section {x1} {x2} {y1} {y2} {backgroundColor}>
   <!-- Slot for title and other stuff -->
   <slot />
 

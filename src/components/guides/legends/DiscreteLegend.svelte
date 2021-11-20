@@ -1,7 +1,6 @@
 <script>
   import { Section, Grid, Rectangle, Label } from '../../../index.js'
   import { parseAesthetic } from './legend.js'
-  import { getRectangleCoordinates } from './discreteLegend.js'
 
   // Positioning
   export let x1
@@ -31,6 +30,7 @@
 
   // Other
   export let clip = 'outer'
+  export let backgroundColor = undefined
 
   $: fills = parseAesthetic(fill, labels.length)
   $: opacities = parseAesthetic(opacity, labels.length)
@@ -42,7 +42,7 @@
   }
 </script>
 
-<Section {x1} {x2} {y1} {y2}>
+<Section {x1} {x2} {y1} {y2} {backgroundColor}>
 
   <!-- Slot for title and other stuff -->
   <slot />
@@ -60,7 +60,7 @@
     {#each fills as fill, i}
 
       <Section
-        {...getRectangleCoordinates(cells[i])}
+        {...cells[i]}
         padding={cellPadding}
       >
 
