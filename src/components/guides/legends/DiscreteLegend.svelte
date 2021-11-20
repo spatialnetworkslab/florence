@@ -81,7 +81,7 @@
   <!-- Labels -->
   <Grid 
     x1={xDivider}
-    y1={yDivider}getLabelCoordinates
+    y1={yDivider}
     numberOfCells={labels.length}
     columns={1}
     {padding}

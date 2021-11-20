@@ -20,7 +20,7 @@
     numberOfCells,
     rows,
     columns
-  }, parentSection)
+  }, $parentSection)
 </script>
 
 <Section {x1} {x2} {y1} {y2} {padding}>
