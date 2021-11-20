@@ -9,7 +9,7 @@
   import { getContext } from 'svelte'
   import { Section, Grid, Rectangle, Label } from '../../../index.js'
   import Gradient from './Gradient.svelte'
-  import { getLabelCoordinates, parseAesthetic } from './legend.js'
+  import { parseAesthetic } from './legend.js'
   import { getRectangleCoordinates } from './gradientLegend.js'
 
   // Positioning
@@ -39,6 +39,7 @@
 
   // Other
   export let clip = 'outer'
+  export let backgroundColor = undefined
 
   const { renderer } = getContext('graphic')
   
@@ -64,57 +65,47 @@
   }
 </script>
 
-<Gradient
-  {gradientId}
-  {fills}
-  {opacities}
-/>
+<Gradient {gradientId} {fills} {opacities} />
 
-<Section {x1} {x2} {y1} {y2} scaleX={[0, 1]} scaleY={[0, 1]}>
-
+<Section {x1} {x2} {y1} {y2} {backgroundColor}>
   <!-- Slot for title and other stuff -->
   <slot />
 
   <!-- Color gradient -->
-  <Section
-    {...rectangleCoordinates}
-    {padding}
-  >
-
-    <Rectangle
-      fill={`url(#${gradientId})`}
-      {stroke}
-      {strokeWidth}
-      {clip}
-    />
-
+  <Section {...rectangleCoordinates} {padding}>
+    <Rectangle fill={`url(#${gradientId})`} {stroke} {strokeWidth} {clip} />
   </Section>
 
   <!-- Labels -->
-  <Grid 
-    x1={xDivider} x2={1} y1={yDivider} y2={1}
-    names={labels}
+  <Grid
+    x1={xDivider}
+    y1={yDivider}
     {padding}
+    numberOfCells={labels.length}
     columns={1}
     let:cells
   >
 
-  {#each labels as label}
+    {#each labels as label, i}
 
-    <Label
-      {...getLabelCoordinates(cells[label])}
-      text={label}
-      anchorPoint={'l'}
-      fontFamily={labelFont}
-      fontSize={labelFontSize}
-      fontWeight={labelFontWeight} 
-      opacity={labelOpacity} 
-      fill={labelColor}
-      {clip}
-    />
+      <Section {...cells[i]}>
 
-  {/each}
-  
+        <Label
+          x={0}
+          y={0.5}
+          text={label}
+          anchorPoint={"l"}
+          fontFamily={labelFont}
+          fontSize={labelFontSize}
+          fontWeight={labelFontWeight}
+          opacity={labelOpacity}
+          fill={labelColor}
+          {clip}
+        />
+
+      </Section>
+
+    {/each}
+
   </Grid>
-
 </Section>
