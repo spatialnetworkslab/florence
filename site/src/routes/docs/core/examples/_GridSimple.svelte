@@ -14,11 +14,11 @@
 
 <Graphic width={200} height={200}>
 
-  <Grid {columns} {rows} names={colors} let:cells>
+  <Grid numberOfCells={colors.length} {columns} {rows} let:cells>
 
-    {#each colors as color}
+    {#each cells as cell, i}
       
-      <Section {...cells[color]} backgroundColor={color}></Section>
+      <Section {...cell} backgroundColor={colors[i]}></Section>
 
     {/each}
 

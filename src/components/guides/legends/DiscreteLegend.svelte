@@ -1,7 +1,6 @@
 <script>
   import { Section, Grid, Rectangle, Label } from '../../../index.js'
-  import { getLabelCoordinates, parseAesthetic } from './legend.js'
-  import { getRectangleCoordinates } from './discreteLegend.js'
+  import { parseAesthetic } from './legend.js'
 
   // Positioning
   export let x1
@@ -31,6 +30,7 @@
 
   // Other
   export let clip = 'outer'
+  export let backgroundColor = undefined
 
   $: fills = parseAesthetic(fill, labels.length)
   $: opacities = parseAesthetic(opacity, labels.length)
@@ -42,31 +42,37 @@
   }
 </script>
 
-<Section {x1} {x2} {y1} {y2} scaleX={[0, 1]} scaleY={[0, 1]}>
+<Section {x1} {x2} {y1} {y2} {backgroundColor}>
 
   <!-- Slot for title and other stuff -->
   <slot />
 
   <!-- Color swatches -->
   <Grid 
-    x1={0} x2={xDivider} y1={yDivider} y2={1}
-    names={fills}
+    x2={xDivider} 
+    y1={yDivider}
+    numberOfCells={fills.length}
     columns={1}
     {padding}
-    {cellPadding}
     let:cells
   >
 
     {#each fills as fill, i}
 
-      <Rectangle
-        {...getRectangleCoordinates(cells[fill])}
-        {fill}
-        fillOpacity={opacities[i]}
-        {stroke}
-        {strokeWidth}
-        {clip}
-      />
+      <Section
+        {...cells[i]}
+        padding={cellPadding}
+      >
+
+        <Rectangle
+          {fill}
+          fillOpacity={opacities[i]}
+          {stroke}
+          {strokeWidth}
+          {clip}
+        />
+
+      </Section>
 
     {/each}
   
@@ -74,27 +80,32 @@
 
   <!-- Labels -->
   <Grid 
-    x1={xDivider} x2={1} y1={yDivider} y2={1}
-    names={labels}
+    x1={xDivider}
+    y1={yDivider}
+    numberOfCells={labels.length}
     columns={1}
     {padding}
-    {cellPadding}
     let:cells
   >
 
-    {#each labels as label}
+    {#each labels as label, i}
 
-      <Label
-        {...getLabelCoordinates(cells[label])}
-        text={label}
-        anchorPoint={'l'}
-        fontFamily={labelFont}
-        fontSize={labelFontSize}
-        fontWeight={labelFontWeight} 
-        opacity={labelOpacity} 
-        fill={labelColor}
-        {clip}
-      />
+      <Section {...cells[i]} padding={cellPadding}>
+
+        <Label
+          x={0}
+          y={0.5}
+          text={label}
+          anchorPoint={'l'}
+          fontFamily={labelFont}
+          fontSize={labelFontSize}
+          fontWeight={labelFontWeight} 
+          opacity={labelOpacity} 
+          fill={labelColor}
+          {clip}
+        />
+        
+      </Section>
 
     {/each}
   
