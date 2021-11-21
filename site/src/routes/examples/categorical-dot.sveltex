@@ -1,6 +1,0 @@
-# A categorical dot plot
-
-A simple graphic based on made-up data about fruits and their diameters, intended to illustrate the use of categorical domains. 
-
-::: example examples/categorical-dot
-:::
