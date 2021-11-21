@@ -2,7 +2,7 @@
   import { tick } from 'svelte'
   import { scaleLinear } from 'd3-scale'
 	import { 
-    Graphic, Section, Point, Rectangle, Line, Polygon, XAxis, YAxis
+    Graphic, Section, Point, PointLayer, Rectangle, Line, Polygon, XAxis, YAxis
   } from '../../../../src/'
   import DataContainer from '@snlab/florence-datacontainer'
 
@@ -124,6 +124,13 @@
       stroke={highlightLine ? 'blue' : 'red'}
       onSelect={() => { highlightLine = true }}
       onDeselect={() => { highlightLine = false }}
+    />
+
+    <PointLayer 
+      x={[1, 3, 4]}
+      y={[1, 3, 4]}
+      keys={['a', 'b', 'c']}
+      onSelect={console.log}
     />
 
     <XAxis />
