@@ -26,7 +26,7 @@
     "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.12.7",
     "@babel/runtime": "^7.12.5",
-    "@fullhuman/postcss-purgecss": "^3.0.0",
+    "@fullhuman/postcss-purgecss": "^4.0.0",
     "@snlab/florence-datacontainer": "^0.2.0",
     "@snlab/sveltex-unified": "^0.0.16",
     "d3-array": "^2.9.0",
