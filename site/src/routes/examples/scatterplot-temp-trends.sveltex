@@ -1,8 +1,0 @@
-# Global Temperature Trends
-
-Original based on [How 2016 Became Earth’s Hottest Year on Record](https://www.nytimes.com/interactive/2017/01/18/science/earth/2016-hottest-year-on-record.html). Adapted from https://observablehq.com/@mbostock/global-temperature-trends.
-
-The `(async () => { ... })()` bit is a so-called [Immediately Invoked Function Expression](https://developer.mozilla.org/en-US/docs/Glossary/IIFE), which is just a way to define a function and run it immediately without having to give it a name. It is used here to contain all logic that depends on asynchronous operations like fetching datasets.
-
-::: example examples/scatterplot-temp-trends
-:::
