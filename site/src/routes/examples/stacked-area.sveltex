@@ -1,8 +1,0 @@
-# Stacked Area Chart
-
-Stacked area chart showing unemployment by industry from 2000 to 2010. Original data from [U.S. Bureau of Labor Statistics](https://www.bls.gov/). Adapted from https://observablehq.com/@d3/stacked-area-chart.
-
-The `(async () => { ... })()` bit is a so-called [Immediately Invoked Function Expression](https://developer.mozilla.org/en-US/docs/Glossary/IIFE), which is just a way to define a function and run it immediately without having to give it a name. It is used here to contain all logic that depends on asynchronous operations like fetching datasets.
-
-::: example examples/stacked-area
-:::

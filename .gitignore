@@ -6,7 +6,6 @@ test/sandbox/public/bundle.*
 test/integration/testing-app/public/bundle.*
 yarn.lock
 /cypress/screenshots
-site/static/index.css
 .vscode
 build/bundle.*
 dist/
