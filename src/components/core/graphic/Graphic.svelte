@@ -63,11 +63,19 @@
   let context
   let dirty = writable(false)
   let globalBlockReindexing = writable(blockReindexing)
+  let canvasContext = writable()
+
   $: { if (isMounted()) globalBlockReindexing.set(blockReindexing) }
 
   const marksAndLayers = {}
 
-  setContext('graphic', { renderer, dirty, marksAndLayers, globalBlockReindexing })
+  setContext('graphic', { 
+    renderer,
+    dirty,
+    marksAndLayers,
+    globalBlockReindexing,
+    canvasContext
+  })
 
   // Set up EventManager for this Graphic
   const eventManager = new EventManager()
@@ -83,6 +91,7 @@
 
     if (renderer === 'canvas') {
       context = rootNode.getContext('2d')
+      $canvasContext = context
     }
     
     if (TEST_ENV && _testDummies) {
