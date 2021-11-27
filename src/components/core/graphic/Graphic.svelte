@@ -12,6 +12,7 @@
   import { EventManager } from '@snlab/rendervous'
   import Section from '../section/Section.svelte'
   import { testId, TEST_ENV } from '../../../helpers/test.js'
+  import { getSectionPositioning, sectionPositioningEqual } from './sectionPositioning.js'
 
   // Positioning
   export let width = 500
@@ -54,10 +55,36 @@
   // testing
   export let _testDummies = undefined
 
+  const id = getId()
+
   let mounted = false
   const isMounted = () => mounted
 
-  const id = getId()
+  let containerWidth
+  let containerHeight
+  let sectionPositioning = getSectionPositioning(
+    width,
+    height
+  )
+
+  function updateSectionPositioning (...args) {
+    const newSectionPositioning = getSectionPositioning(...args)
+
+    if (!sectionPositioningEqual(sectionPositioning, newSectionPositioning)) {
+      sectionPositioning = newSectionPositioning
+    }
+  }
+
+  $: {
+    if (isMounted()) {
+      updateSectionPositioning(
+        width,
+        height,
+        containerWidth,
+        containerHeight
+      )
+    }
+  }
 
   let rootNode
   let context
@@ -77,23 +104,32 @@
     // Only on mount can we bind the svg root node and attach actual event listeners.
     // Sometimes rootNode is undefined for some weird reason. In this case,
     // we will use document.getElementById instead
-    if (!rootNode) {
-      rootNode = document.getElementById(id)
-    }
+    updateSectionPositioning(
+      width,
+      height,
+      containerWidth,
+      containerHeight
+    )
 
-    if (renderer === 'canvas') {
-      context = rootNode.getContext('2d')
-    }
+    tick().then(() => {
+      if (!rootNode) {
+        rootNode = document.getElementById(id)
+      }
+
+      if (renderer === 'canvas') {
+        context = rootNode.getContext('2d')
+      }
     
-    if (TEST_ENV && _testDummies) {
-      const { dummyRoot, dummyWindow } = _testDummies
-      eventManager.addRootNode(dummyRoot, renderer, dummyWindow)
-    } else {
-      eventManager.addRootNode(rootNode, renderer)
-    }
+      if (TEST_ENV && _testDummies) {
+        const { dummyRoot, dummyWindow } = _testDummies
+        eventManager.addRootNode(dummyRoot, renderer, dummyWindow)
+      } else {
+        eventManager.addRootNode(rootNode, renderer)
+      }
 
-    eventManager.attachEventListeners()
-    mounted = true
+      eventManager.attachEventListeners()
+      mounted = true
+    })
   })
 
   const isEmpty = id => [' ', ''].includes(id)
@@ -132,16 +168,61 @@
   export const resetSelectPolygon = () => node.getSM().resetSelectPolygon()
 </script>
 
-{#if renderer === 'svg'}
+<div 
+  bind:clientWidth={containerWidth}
+  bind:clientHeight={containerHeight}
+  style={`
+    ${width.constructor === String ? `width: ${width};` : ''}
+    ${height.constructor === String ? `height: ${height};` : ''}`
+  }
+>
 
-  <svg {id} {width} {height} bind:this={rootNode} data-testid={testId('root')}>
+  {#if renderer === 'svg' && sectionPositioning}
 
+    <svg {id} {width} {height} bind:this={rootNode} data-testid={testId('root')}>
+
+      <Section
+        bind:this={node}
+        {...sectionPositioning}
+        {backgroundColor}
+        {coordinates}
+        {scaleX}
+        {scaleY}
+        {flipX}
+        {flipY}
+        {padding}
+        {zoomIdentity}
+        {onClick}
+        {onWheel}
+        {onMousedown}
+        {onMouseup}
+        {onMouseover}
+        {onMouseout}
+        {onMousemove}
+        {onPinch}
+        {onTouchdown}
+        {onTouchmove}
+        {onTouchup}
+        {onTouchover}
+        {onTouchout}
+        {clip}
+      >
+    
+        <slot />
+
+      </Section>
+
+    </svg>
+
+  {/if}
+
+  {#if renderer === 'canvas' && sectionPositioning}
+
+    <canvas {id} {width} {height} bind:this={rootNode} data-testid={testId('root')} />
+  
     <Section
       bind:this={node}
-      x1={0}
-      x2={width}
-      y1={0}
-      y2={height}
+      {...sectionPositioning}
       {backgroundColor}
       {coordinates}
       {scaleX}
@@ -166,52 +247,12 @@
       {clip}
     >
     
-      <slot />
+      <div style="display: none;" id={`div-${id}`}>
+        <slot />
+      </div>
 
     </Section>
 
-  </svg>
+  {/if}
 
-{/if}
-
-{#if renderer === 'canvas'}
-
-  <canvas {id} {width} {height} bind:this={rootNode} data-testid={testId('root')} />
-  
-  <Section
-    bind:this={node}
-    x1={0}
-    x2={width}
-    y1={0}
-    y2={height}
-    {backgroundColor}
-    {coordinates}
-    {scaleX}
-    {scaleY}
-    {flipX}
-    {flipY}
-    {padding}
-    {zoomIdentity}
-    {onClick}
-    {onWheel}
-    {onMousedown}
-    {onMouseup}
-    {onMouseover}
-    {onMouseout}
-    {onMousemove}
-    {onPinch}
-    {onTouchdown}
-    {onTouchmove}
-    {onTouchup}
-    {onTouchover}
-    {onTouchout}
-    {clip}
-  >
-    
-    <div style="display: none;" id={`div-${id}`}>
-      <slot />
-    </div>
-
-  </Section>
-
-{/if}
+</div>
