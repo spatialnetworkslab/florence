@@ -26,6 +26,7 @@
   import NestedSections from './examples/NestedSections.svelte'
   import JoHsiBug from './examples/JoHsiBug.svelte'
   import Clipping from './examples/Clipping.svelte'
+  import Responsive from './examples/Responsive.svelte'
 
   // // geo examples
   import GeoEx from './examples/GeoEx.svelte'
@@ -201,6 +202,11 @@
       name: 'Glyph',
       url: 'glyph',
       component: Glyph
+    },
+    {
+      name: 'Responsive',
+      url: 'responsive',
+      component: Responsive
     }
   ]
 </script>
