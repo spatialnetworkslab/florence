@@ -3,6 +3,7 @@ import {
   render,
   fireEvent
 } from '@testing-library/svelte'
+import { tick } from 'svelte'
 
 export function renderMark (
   component,

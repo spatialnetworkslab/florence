@@ -1,5 +1,6 @@
 import { renderMark } from '../../../utils.js'
 import { Polygon } from '../../../../../src/index.js'
+import { tick } from 'svelte'
 
 describe('Polygon (svg)', () => {
   it('renders with x/y coordinates', () => {
@@ -33,10 +34,12 @@ describe('Polygon (svg)', () => {
       onClick
     })
 
-    dummyRoot.trigger('click', 10, 10)
-    expect(onClick).not.toHaveBeenCalled()
+    tick().then(() => {
+      dummyRoot.trigger('click', 10, 10)
+      expect(onClick).not.toHaveBeenCalled()
 
-    dummyRoot.trigger('click', 250, 250)
-    expect(onClick).toHaveBeenCalled()
+      dummyRoot.trigger('click', 250, 250)
+      expect(onClick).toHaveBeenCalled()
+    })
   })
 })
