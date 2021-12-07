@@ -4,6 +4,7 @@ module.exports = {
     '**/*.test.js',
     '**/*.test.svelte'
   ],
+  testEnvironment: 'jsdom',
   transform: {
     '^.+\\.svelte$': 'svelte-jester',
     '^.+\\.js$': '<rootDir>/node_modules/babel-jest'
