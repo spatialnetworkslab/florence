@@ -3,29 +3,22 @@
   import { 
     Graphic, Section, PolygonLayer, Rectangle, Point,
     XAxis, YAxis,
-    XGridLines, YGridLines,
-    createPanHandler, createZoomHandler
+    XGridLines, YGridLines
   } from '../../../../src'
 
-  let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
-  let blockReindexing = false
+  // const pan = createPanHandler(zoomIdentity, {
+  //   setZoomIdentity,
+  //   setBlockReindexing,
+  //   extentX: [-500, 500],
+  //   extentY: [-500, 500]
+  //     // dimension: 'x'
+  // })
 
-  const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
-  const setBlockReindexing = bool => { blockReindexing = bool }
-
-  const pan = createPanHandler(zoomIdentity, {
-    setZoomIdentity,
-    setBlockReindexing,
-    extentX: [-500, 500],
-    extentY: [-500, 500]
-      // dimension: 'x'
-  })
-
-  const zoom = createZoomHandler(zoomIdentity, {
-    setZoomIdentity,
-    minZoom: 0.2,
-    maxZoom: 3
-  })
+  // const zoom = createZoomHandler(zoomIdentity, {
+  //   setZoomIdentity,
+  //   minZoom: 0.2,
+  //   maxZoom: 3
+  // })
 </script>
 
 <Graphic width={500} height={500}>
@@ -38,10 +31,7 @@
     padding={25}
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
-    {zoomIdentity}
-    {...pan.handlers}
-    {...zoom.handlers}
-    {blockReindexing}
+    zoomable
   >
 
     <Rectangle fill="blue" opacity={0.3} />
