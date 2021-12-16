@@ -28,7 +28,10 @@
   export let flipX = false
   export let flipY = false
   export let padding = 0
-  export let zoomIdentity = undefined
+
+  // Zooming and panning
+  export let pannable = false
+  export let panExtents = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -52,7 +55,7 @@
 
   $: props = {
     x, y, width, height,
-    coordinates, scaleX, scaleY, flipX, flipY, padding, zoomIdentity,
+    coordinates, scaleX, scaleY, flipX, flipY, padding,
     clip
   }
 
@@ -74,6 +77,8 @@
   {backgroundColor}
   {id}
   createFunction={createPointSection}
+  {pannable}
+  {panExtents}
   {onClick}
   {onWheel}
   {onMousedown}

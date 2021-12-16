@@ -20,7 +20,6 @@
 
   // Other
   export let outputSettings = undefined
-  export let blockReindexing = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -42,9 +41,10 @@
   export let onDeselect = undefined
 
   // Get parent contexts
-  const { renderer, marksAndLayers, dirty, globalBlockReindexing } = getContext('graphic')
+  const { renderer, marksAndLayers, dirty } = getContext('graphic')
   const section = getContext('section')
   const interactionManager = getContext('interactionManager')
+  const zoomingOrPanning = getContext('zoomingOrPanning')
 
   const id = getId()
 
@@ -150,11 +150,7 @@
   $: isSelectable = any(onSelect, onDeselect)
 
   function updateInteractionManagerIfNecessary () {
-    if (blockReindexing === undefined) {
-      if ($globalBlockReindexing) return
-    } else {
-      if (blockReindexing === true) return
-    }
+    if ($zoomingOrPanning) return
 
     if (isInteractiveMouse || isInteractiveTouch) {
       removeMarkFromSpatialIndexIfNecessary()

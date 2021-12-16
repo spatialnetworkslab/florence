@@ -4,12 +4,17 @@
   import { InteractionManager } from '@snlab/rendervous'
   import Clipper from './_Clipper.svelte'
   import Rectangle from '../marks/rectangle/Rectangle.svelte'
+  import { panStart, panMove, panEnd, createHandler } from './utils.js'
 
   export let props
   export let id
   export let createFunction
 
   export let backgroundColor = undefined
+
+  // Zooming and panning
+  export let pannable = false
+  export let panExtents = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -39,9 +44,40 @@
   setContext('section', sectionContext)
   setContext('interactionManager', interactionManagerContext)
 
+  let zoomingOrPanning = writable()
+  setContext('zoomingOrPanning', zoomingOrPanning)
+
+  // Zooming/panning logic
+  let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
+  let previousCoordinates
+
+  let pan = (dx, dy) => {
+    zoomIdentity.x -= dx
+    zoomIdentity.y -= dy
+    zoomIdentity = zoomIdentity
+  }
+
+  let setPreviousCoordinates = coordinates => { previousCoordinates = coordinates }
+  
+  // Desktop
+  $: onMousedownPan = pannable ? panStart(zoomingOrPanning, setPreviousCoordinates) : null
+  $: onMouseupPan = pannable ? panEnd(zoomingOrPanning, setPreviousCoordinates) : null
+  $: onMousemovePan = pannable ? panMove(
+    $zoomingOrPanning,
+    zoomIdentity,
+    previousCoordinates,
+    panExtents,
+    setPreviousCoordinates,
+    pan
+  ) : null
+
+  $: mousedownHandler = createHandler(onMousedownPan, onMousedown)
+  $: mouseupHandler = createHandler(onMouseupPan, onMouseup)
+  $: mousemoveHandler = createHandler(onMousemovePan, onMousemove)
+
   // Section data
   let section
-  $: { section = createFunction(props, $parentSection) }
+  $: { section = createFunction({ ...props, zoomIdentity }, $parentSection) }
 
   // Interactivity
   const interactionManager = new InteractionManager()
@@ -72,14 +108,15 @@
     if (interactionManager.getPrimaryInput() === 'mouse') {
       const sectionInterface = interactionManager.mouse().section()
       sectionInterface.removeAllInteractions()
-
+      
+      if (mousedownHandler) sectionInterface.addInteraction('mousedown', mousedownHandler)
+      if (mouseupHandler) sectionInterface.addInteraction('mouseup', mouseupHandler)
+      if (mousemoveHandler) sectionInterface.addInteraction('mousemove', mousemoveHandler)
+      
       if (onWheel) sectionInterface.addInteraction('wheel', onWheel)
       if (onClick) sectionInterface.addInteraction('click', onClick)
-      if (onMousedown) sectionInterface.addInteraction('mousedown', onMousedown)
-      if (onMouseup) sectionInterface.addInteraction('mouseup', onMouseup)
       if (onMouseover) sectionInterface.addInteraction('mouseover', onMouseover)
       if (onMouseout) sectionInterface.addInteraction('mouseout', onMouseout)
-      if (onMousemove) sectionInterface.addInteraction('mousemove', onMousemove)
     }
 
     if (interactionManager.getPrimaryInput() === 'touch') {

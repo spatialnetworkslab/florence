@@ -28,7 +28,10 @@
   export let flipX = false
   export let flipY = false
   export let padding = 0
-  export let zoomIdentity = undefined
+
+  // Zooming and panning
+  export let pannable = false
+  export let panExtents = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -50,7 +53,6 @@
   // Other options
   export let clip = 'padding'
   export let renderer = 'svg'
-  export let blockReindexing = undefined
 
   // testing
   export let _testDummies = undefined
@@ -89,21 +91,16 @@
   let rootNode
   let context
   let dirty = writable(false)
-  let globalBlockReindexing = writable(blockReindexing)
-  $: { if (isMounted()) globalBlockReindexing.set(blockReindexing) }
 
   const marksAndLayers = {}
 
-  setContext('graphic', { renderer, dirty, marksAndLayers, globalBlockReindexing })
+  setContext('graphic', { renderer, dirty, marksAndLayers })
 
   // Set up EventManager for this Graphic
   const eventManager = new EventManager()
   setContext('eventManager', eventManager)
 
   onMount(() => {
-    // Only on mount can we bind the svg root node and attach actual event listeners.
-    // Sometimes rootNode is undefined for some weird reason. In this case,
-    // we will use document.getElementById instead
     updateSectionPositioning(
       width,
       height,
@@ -112,6 +109,9 @@
     )
 
     tick().then(() => {
+      // Only on mount can we bind the svg root node and attach actual event listeners.
+      // Sometimes rootNode is undefined for some weird reason. In this case,
+      // we will use document.getElementById instead
       if (!rootNode) {
         rootNode = document.getElementById(id)
       }
@@ -191,7 +191,8 @@
         {flipX}
         {flipY}
         {padding}
-        {zoomIdentity}
+        {pannable}
+        {panExtents}
         {onClick}
         {onWheel}
         {onMousedown}
@@ -230,7 +231,8 @@
       {flipX}
       {flipY}
       {padding}
-      {zoomIdentity}
+      {pannable}
+      {panExtents}
       {onClick}
       {onWheel}
       {onMousedown}
