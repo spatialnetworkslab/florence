@@ -1,17 +1,17 @@
-export const panStart = (zoomingOrPanning, setPreviousCoordinates) => e => {
-  zoomingOrPanning.set(true)
+export const panStart = (setZoomingOrPanning, setPreviousCoordinates) => e => {
+  setZoomingOrPanning(true)
   setPreviousCoordinates(e.screenCoordinates)
 }
 
 export const panMove = (
-  zoomingOrPanningValue,
+  zoomingOrPanning,
   zoomIdentity,
   previousCoordinates,
   panExtents,
   setPreviousCoordinates,
   pan
 ) => e => {
-  if (zoomingOrPanningValue) return;
+  if (!zoomingOrPanning) return
   const currentCoordinates = e.screenCoordinates
   const dx = previousCoordinates.x - currentCoordinates.x
   const dy = previousCoordinates.y - currentCoordinates.y
@@ -32,8 +32,8 @@ export const panMove = (
   }
 }
 
-export const panEnd = (zoomingOrPanning, setPreviousCoordinates) => e => {
-  zoomingOrPanning.set(false)
+export const panEnd = (setZoomingOrPanning, setPreviousCoordinates) => e => {
+  setZoomingOrPanning(false)
   setPreviousCoordinates(undefined)
 }
 

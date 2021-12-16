@@ -31,7 +31,7 @@
     padding={25}
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
-    zoomable
+    pannable
   >
 
     <Rectangle fill="blue" opacity={0.3} />

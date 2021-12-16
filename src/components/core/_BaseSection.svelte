@@ -44,8 +44,10 @@
   setContext('section', sectionContext)
   setContext('interactionManager', interactionManagerContext)
 
-  let zoomingOrPanning = writable()
-  setContext('zoomingOrPanning', zoomingOrPanning)
+  let zoomingOrPanning = false
+  let zoomingOrPanningStore = writable(false);
+  $: { zoomingOrPanningStore.set(zoomingOrPanning) }
+  setContext('zoomingOrPanning', zoomingOrPanningStore)
 
   // Zooming/panning logic
   let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
@@ -57,13 +59,14 @@
     zoomIdentity = zoomIdentity
   }
 
+  let setZoomingOrPanning = value => { zoomingOrPanning = value }
   let setPreviousCoordinates = coordinates => { previousCoordinates = coordinates }
   
   // Desktop
-  $: onMousedownPan = pannable ? panStart(zoomingOrPanning, setPreviousCoordinates) : null
-  $: onMouseupPan = pannable ? panEnd(zoomingOrPanning, setPreviousCoordinates) : null
+  $: onMousedownPan = pannable ? panStart(setZoomingOrPanning, setPreviousCoordinates) : null
+  $: onMouseupPan = pannable ? panEnd(setZoomingOrPanning, setPreviousCoordinates) : null
   $: onMousemovePan = pannable ? panMove(
-    $zoomingOrPanning,
+    zoomingOrPanning,
     zoomIdentity,
     previousCoordinates,
     panExtents,
