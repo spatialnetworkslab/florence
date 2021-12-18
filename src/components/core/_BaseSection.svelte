@@ -51,6 +51,7 @@
   let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
   let previousCoordinates
 
+  // Panning: desktop
   let onMousedownPan = (e) => {
     zoomingOrPanning.set(true)
     previousCoordinates = e.screenCoordinates
@@ -75,6 +76,9 @@
   $: mousedownHandler = createHandler(pannable, onMousedownPan, onMousedown)
   $: mouseupHandler = createHandler(pannable, onMouseupPan, onMouseup)
   $: mousemoveHandler = createHandler(pannable, onMousemovePan, onMousemove)
+
+  // Panning: mobile
+  
 
   // Section data
   let section
