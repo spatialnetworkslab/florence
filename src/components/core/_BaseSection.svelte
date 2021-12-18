@@ -4,7 +4,7 @@
   import { InteractionManager } from '@snlab/rendervous'
   import Clipper from './_Clipper.svelte'
   import Rectangle from '../marks/rectangle/Rectangle.svelte'
-  import { panStart, panMove, panEnd, createHandler } from './utils.js'
+  import { createHandler, getDeltas } from './utils.js'
 
   export let props
   export let id
@@ -44,39 +44,37 @@
   setContext('section', sectionContext)
   setContext('interactionManager', interactionManagerContext)
 
-  let zoomingOrPanning = false
-  let zoomingOrPanningStore = writable(false);
-  $: { zoomingOrPanningStore.set(zoomingOrPanning) }
-  setContext('zoomingOrPanning', zoomingOrPanningStore)
+  let zoomingOrPanning = writable(false)
+  setContext('zoomingOrPanning', zoomingOrPanning)
 
   // Zooming/panning logic
   let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
   let previousCoordinates
 
-  let pan = (dx, dy) => {
+  let onMousedownPan = (e) => {
+    zoomingOrPanning.set(true)
+    previousCoordinates = e.screenCoordinates
+  }
+
+  let onMouseupPan = (e) => {
+    zoomingOrPanning.set(false)
+    previousCoordinates = undefined
+  }
+
+  let onMousemovePan = (e) => {
+    if (!$zoomingOrPanning) return;
+    const currentCoordinates = e.screenCoordinates
+    const { dx, dy } = getDeltas(previousCoordinates, currentCoordinates, panExtents)
+    previousCoordinates = currentCoordinates
+
     zoomIdentity.x -= dx
     zoomIdentity.y -= dy
     zoomIdentity = zoomIdentity
   }
 
-  let setZoomingOrPanning = value => { zoomingOrPanning = value }
-  let setPreviousCoordinates = coordinates => { previousCoordinates = coordinates }
-  
-  // Desktop
-  $: onMousedownPan = pannable ? panStart(setZoomingOrPanning, setPreviousCoordinates) : null
-  $: onMouseupPan = pannable ? panEnd(setZoomingOrPanning, setPreviousCoordinates) : null
-  $: onMousemovePan = pannable ? panMove(
-    zoomingOrPanning,
-    zoomIdentity,
-    previousCoordinates,
-    panExtents,
-    setPreviousCoordinates,
-    pan
-  ) : null
-
-  $: mousedownHandler = createHandler(onMousedownPan, onMousedown)
-  $: mouseupHandler = createHandler(onMouseupPan, onMouseup)
-  $: mousemoveHandler = createHandler(onMousemovePan, onMousemove)
+  $: mousedownHandler = createHandler(pannable, onMousedownPan, onMousedown)
+  $: mouseupHandler = createHandler(pannable, onMouseupPan, onMouseup)
+  $: mousemoveHandler = createHandler(pannable, onMousemovePan, onMousemove)
 
   // Section data
   let section
@@ -92,10 +90,12 @@
 
   $: {
     removeSectionInteractionsIfNecessary(
+      mousedownHandler,
+      mouseupHandler,
+      mousemoveHandler,
+
       onWheel,
       onClick,
-      onMousedown,
-      onMouseup,
       onMouseover,
       onMouseout,
       onTouchdown,

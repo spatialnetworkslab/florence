@@ -21,7 +21,7 @@
   // })
 </script>
 
-<Graphic width={500} height={500}>
+<Graphic width={500} height={500} renderer="canvas">
 
   <!-- <Rectangle fill="blue" opacity={0.3} /> -->
 
