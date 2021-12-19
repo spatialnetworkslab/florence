@@ -51,18 +51,12 @@
   let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
   let previousCoordinates
 
-  // Panning: desktop
-  let onMousedownPan = (e) => {
+  let onDownPan = (e) => {
     zoomingOrPanning.set(true)
     previousCoordinates = e.screenCoordinates
   }
 
-  let onMouseupPan = (e) => {
-    zoomingOrPanning.set(false)
-    previousCoordinates = undefined
-  }
-
-  let onMousemovePan = (e) => {
+  let onMovePan = (e) => {
     if (!$zoomingOrPanning) return;
     const currentCoordinates = e.screenCoordinates
     const { dx, dy } = getDeltas(previousCoordinates, currentCoordinates, panExtents)
@@ -73,11 +67,18 @@
     zoomIdentity = zoomIdentity
   }
 
-  $: mousedownHandler = createHandler(pannable, onMousedownPan, onMousedown)
-  $: mouseupHandler = createHandler(pannable, onMouseupPan, onMouseup)
-  $: mousemoveHandler = createHandler(pannable, onMousemovePan, onMousemove)
+  let onUpPan = (e) => {
+    zoomingOrPanning.set(false)
+    previousCoordinates = undefined
+  }
 
-  // Panning: mobile
+  $: mousedownHandler = createHandler(pannable, onDownPan, onMousedown)
+  $: mousemoveHandler = createHandler(pannable, onMovePan, onMousemove)
+  $: mouseupHandler = createHandler(pannable, onUpPan, onMouseup)
+
+  $: touchdownHandler = createHandler(pannable, onDownPan, onTouchdown)
+  $: touchmoveHandler = createHandler(pannable, onMovePan, onTouchmove)
+  $: touchupHandler = createHandler(pannable, onUpPan, onTouchup)
   
 
   // Section data
@@ -97,14 +98,14 @@
       mousedownHandler,
       mouseupHandler,
       mousemoveHandler,
+      touchdownHandler,
+      touchupHandler,
+      touchmoveHandler,
 
       onWheel,
       onClick,
       onMouseover,
       onMouseout,
-      onTouchdown,
-      onTouchmove,
-      onTouchup,
       onTouchover,
       onTouchout,
       onPinch
@@ -130,9 +131,10 @@
       const sectionInterface = interactionManager.touch().section()
       sectionInterface.removeAllInteractions()
 
-      if (onTouchdown) sectionInterface.addInteraction('touchdown', onTouchdown)
-      if (onTouchmove) sectionInterface.addInteraction('touchmove', onTouchmove)
-      if (onTouchup) sectionInterface.addInteraction('touchup', onTouchup)
+      if (touchdownHandler) sectionInterface.addInteraction('touchdown', touchdownHandler)
+      if (touchmoveHandler) sectionInterface.addInteraction('touchmove', touchmoveHandler)
+      if (touchupHandler) sectionInterface.addInteraction('touchup', touchupHandler)
+
       if (onTouchover) sectionInterface.addInteraction('touchover', onTouchover)
       if (onTouchout) sectionInterface.addInteraction('touchout', onTouchout)
       if (onPinch) sectionInterface.addInteraction('pinch', onPinch)
