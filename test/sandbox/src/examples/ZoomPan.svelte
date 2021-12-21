@@ -10,8 +10,6 @@
 
 <Graphic width={500} height={500} renderer="svg">
 
-  <!-- <Rectangle fill="blue" opacity={0.3} /> -->
-
   <Section 
     x1={0.1} x2={0.9}
     y1={0.1} y2={0.9}

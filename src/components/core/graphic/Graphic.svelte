@@ -31,7 +31,8 @@
 
   // Zooming and panning
   export let pannable = false
-  export let zoomable = undefined
+  export let zoomable = false
+  export let zoomSettings = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -167,6 +168,8 @@
   export const getSelectPolygon = () => node.getSM().getSelectPolygon()
   export const resetSelectPolygon = () => node.getSM().resetSelectPolygon()
 
+  // Adding dummy zoomingOrPanning context, so that child components don't
+  // try to destructure undefined
   setContext('zoomingOrPanning', { zoomingOrPanning: writable(false) })
 </script>
 
@@ -195,6 +198,7 @@
         {padding}
         {pannable}
         {zoomable}
+        {zoomSettings}
         {onClick}
         {onWheel}
         {onMousedown}
@@ -235,6 +239,7 @@
       {padding}
       {pannable}
       {zoomable}
+      {zoomSettings}
       {onClick}
       {onWheel}
       {onMousedown}
