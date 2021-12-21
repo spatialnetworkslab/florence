@@ -31,7 +31,7 @@
 
   // Zooming and panning
   export let pannable = false
-  export let panExtents = undefined
+  export let zoomable = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -79,7 +79,7 @@
   {id}
   createFunction={createSection}
   {pannable}
-  {panExtents}
+  {zoomable}
   {onClick}
   {onWheel}
   {onMousedown}

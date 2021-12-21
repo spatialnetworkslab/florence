@@ -4,7 +4,13 @@
   import { InteractionManager } from '@snlab/rendervous'
   import Clipper from './_Clipper.svelte'
   import Rectangle from '../marks/rectangle/Rectangle.svelte'
-  import { createHandler, getDeltas } from './utils.js'
+  import { 
+    createHandler,
+    getDeltas,
+    parseZoomSettings,
+    debounce,
+    getNewZoomIdentity
+  } from './utils.js'
 
   export let props
   export let id
@@ -14,7 +20,8 @@
 
   // Zooming and panning
   export let pannable = false
-  export let panExtents = undefined
+  export let zoomable = false
+  export let zoomSettings = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -37,6 +44,9 @@
   const { renderer } = getContext('graphic')
   const parentSection = getContext('section')
   const eventManager = getContext('eventManager')
+  const { 
+    zoomingOrPanning: parentZoomingOrPanning
+  } = getContext('zoomingOrPanning')
 
   // Initiate child contexts
   const sectionContext = writable()
@@ -45,21 +55,24 @@
   setContext('interactionManager', interactionManagerContext)
 
   let zoomingOrPanning = writable(false)
-  setContext('zoomingOrPanning', zoomingOrPanning)
+  setContext('zoomingOrPanning', { zoomingOrPanning })
 
   // Zooming/panning logic
   let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
+
+  // Panning
+  let panning = false
   let previousCoordinates
 
   let onDownPan = (e) => {
-    zoomingOrPanning.set(true)
+    panning = true
     previousCoordinates = e.screenCoordinates
   }
 
   let onMovePan = (e) => {
-    if (!$zoomingOrPanning) return;
+    if (!panning || zooming) return
     const currentCoordinates = e.screenCoordinates
-    const { dx, dy } = getDeltas(previousCoordinates, currentCoordinates, panExtents)
+    const { dx, dy } = getDeltas(previousCoordinates, currentCoordinates)
     previousCoordinates = currentCoordinates
 
     zoomIdentity.x -= dx
@@ -68,7 +81,7 @@
   }
 
   let onUpPan = (e) => {
-    zoomingOrPanning.set(false)
+    panning = false
     previousCoordinates = undefined
   }
 
@@ -79,7 +92,44 @@
   $: touchdownHandler = createHandler(pannable, onDownPan, onTouchdown)
   $: touchmoveHandler = createHandler(pannable, onMovePan, onTouchmove)
   $: touchupHandler = createHandler(pannable, onUpPan, onTouchup)
-  
+
+  // Zooming
+  $: parsedZoomSettings = parseZoomSettings(zoomSettings)
+  let zooming = false
+  const disableZooming = () => { zooming = false }
+
+  $: disableZoomingDebounced = debounce(
+    disableZooming,
+    zoomSettings?.debounceReindexing || 200
+  )
+
+  let onZoom = (e) => {
+    if (panning) return
+    zooming = true
+    
+    const newZoomIdentity = getNewZoomIdentity(
+      e,
+      zoomIdentity,
+      parsedZoomSettings
+    )
+
+    if (newZoomIdentity) {
+      zoomIdentity = newZoomIdentity
+    }
+
+    disableZoomingDebounced()
+  }
+
+  $: wheelHandler = createHandler(zoomable, onZoom, onWheel)
+  $: pinchHandler = createHandler(zoomable, onZoom, onPinch)
+
+  $: {
+    if (zooming || panning || $parentZoomingOrPanning) {
+      zoomingOrPanning.set(true)
+    } else {
+      zoomingOrPanning.set(false)
+    }
+  }
 
   // Section data
   let section
@@ -95,6 +145,7 @@
 
   $: {
     removeSectionInteractionsIfNecessary(
+      // pan handlers
       mousedownHandler,
       mouseupHandler,
       mousemoveHandler,
@@ -102,13 +153,16 @@
       touchupHandler,
       touchmoveHandler,
 
-      onWheel,
+      // zoom handlers
+      wheelHandler,
+      pinchHandler,
+
+      // ohter event handlers
       onClick,
       onMouseover,
       onMouseout,
       onTouchover,
-      onTouchout,
-      onPinch
+      onTouchout
     )
   }
 
@@ -121,7 +175,8 @@
       if (mouseupHandler) sectionInterface.addInteraction('mouseup', mouseupHandler)
       if (mousemoveHandler) sectionInterface.addInteraction('mousemove', mousemoveHandler)
       
-      if (onWheel) sectionInterface.addInteraction('wheel', onWheel)
+      if (wheelHandler) sectionInterface.addInteraction('wheel', wheelHandler)
+
       if (onClick) sectionInterface.addInteraction('click', onClick)
       if (onMouseover) sectionInterface.addInteraction('mouseover', onMouseover)
       if (onMouseout) sectionInterface.addInteraction('mouseout', onMouseout)
@@ -134,10 +189,11 @@
       if (touchdownHandler) sectionInterface.addInteraction('touchdown', touchdownHandler)
       if (touchmoveHandler) sectionInterface.addInteraction('touchmove', touchmoveHandler)
       if (touchupHandler) sectionInterface.addInteraction('touchup', touchupHandler)
+      
+      if (pinchHandler) sectionInterface.addInteraction('pinch', pinchHandler)
 
       if (onTouchover) sectionInterface.addInteraction('touchover', onTouchover)
       if (onTouchout) sectionInterface.addInteraction('touchout', onTouchout)
-      if (onPinch) sectionInterface.addInteraction('pinch', onPinch)
     }
   }
 

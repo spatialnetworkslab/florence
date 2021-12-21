@@ -31,7 +31,7 @@
 
   // Zooming and panning
   export let pannable = false
-  export let panExtents = undefined
+  export let zoomable = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -166,6 +166,8 @@
   export const moveSelectPolygon = delta => node.getSM().moveSelectPolygon(delta)
   export const getSelectPolygon = () => node.getSM().getSelectPolygon()
   export const resetSelectPolygon = () => node.getSM().resetSelectPolygon()
+
+  setContext('zoomingOrPanning', { zoomingOrPanning: writable(false) })
 </script>
 
 <div 
@@ -192,7 +194,7 @@
         {flipY}
         {padding}
         {pannable}
-        {panExtents}
+        {zoomable}
         {onClick}
         {onWheel}
         {onMousedown}
@@ -232,7 +234,7 @@
       {flipY}
       {padding}
       {pannable}
-      {panExtents}
+      {zoomable}
       {onClick}
       {onWheel}
       {onMousedown}

@@ -44,7 +44,7 @@
   const { renderer, marksAndLayers, dirty } = getContext('graphic')
   const section = getContext('section')
   const interactionManager = getContext('interactionManager')
-  const zoomingOrPanning = getContext('zoomingOrPanning')
+  const { zoomingOrPanning } = getContext('zoomingOrPanning')
 
   const id = getId()
 
@@ -141,6 +141,12 @@
 
     updatePositioning = false
     updateAesthetics = false
+  }
+
+  $: {
+    if (isMounted() && !$zoomingOrPanning) {
+      updateInteractionManagerIfNecessary()
+    }
   }
 
   // Interactivity

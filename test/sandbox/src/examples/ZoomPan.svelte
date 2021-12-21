@@ -6,19 +6,6 @@
     XGridLines, YGridLines
   } from '../../../../src'
 
-  // const pan = createPanHandler(zoomIdentity, {
-  //   setZoomIdentity,
-  //   setBlockReindexing,
-  //   extentX: [-500, 500],
-  //   extentY: [-500, 500]
-  //     // dimension: 'x'
-  // })
-
-  // const zoom = createZoomHandler(zoomIdentity, {
-  //   setZoomIdentity,
-  //   minZoom: 0.2,
-  //   maxZoom: 3
-  // })
 </script>
 
 <Graphic width={500} height={500} renderer="svg">
@@ -32,6 +19,7 @@
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
     pannable
+    zoomable
   >
 
     <Rectangle fill="blue" opacity={0.3} />
@@ -59,9 +47,9 @@
       scaleY={scaleLinear().domain([0, 10])}
     >
 
-      <Point x={2} y={2} radius={10} />
-      <Point x={5} y={5} radius={10} />
-      <Point x={8} y={8} radius={10} /> 
+      <Point x={2} y={2} radius={10} onMouseover={console.log} />
+      <Point x={5} y={5} radius={10} onMouseover={console.log} />
+      <Point x={8} y={8} radius={10} onMouseover={console.log} /> 
     </Section>
 
     <XAxis />
