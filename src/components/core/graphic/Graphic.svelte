@@ -32,7 +32,7 @@
   // Zooming and panning
   export let pannable = false
   export let zoomable = false
-  export let zoomSettings = undefined
+  export let zoomPanSettings = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -198,7 +198,7 @@
         {padding}
         {pannable}
         {zoomable}
-        {zoomSettings}
+        {zoomPanSettings}
         {onClick}
         {onWheel}
         {onMousedown}
@@ -239,7 +239,7 @@
       {padding}
       {pannable}
       {zoomable}
-      {zoomSettings}
+      {zoomPanSettings}
       {onClick}
       {onWheel}
       {onMousedown}

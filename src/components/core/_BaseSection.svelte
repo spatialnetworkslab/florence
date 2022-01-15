@@ -1,16 +1,16 @@
 <script>
   import { getContext, setContext } from 'svelte'
   import { writable } from 'svelte/store'
-  import { InteractionManager } from '@snlab/rendervous'
+  import {
+    parseZoomPanSettings,
+    getZoomIdentityOnPan,
+    getZoomIdentityOnZoom,
+    creatHandler,
+    debounce,
+    InteractionManager
+  } from '@snlab/rendervous'
   import Clipper from './_Clipper.svelte'
   import Rectangle from '../marks/rectangle/Rectangle.svelte'
-  import { 
-    createHandler,
-    getDeltas,
-    parseZoomSettings,
-    debounce,
-    getNewZoomIdentity
-  } from './utils.js'
 
   export let props
   export let id
@@ -21,7 +21,7 @@
   // Zooming and panning
   export let pannable = false
   export let zoomable = false
-  export let zoomSettings = undefined
+  export let zoomPanSettings = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -60,6 +60,8 @@
   // Zooming/panning logic
   let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
 
+  $: parsedZoomPanSettings = parseZoomPanSettings(zoomPanSettings)
+
   // Panning
   let panning = false
   let previousCoordinates
@@ -71,13 +73,18 @@
 
   let onMovePan = (e) => {
     if (!panning || zooming) return
-    const currentCoordinates = e.screenCoordinates
-    const { dx, dy } = getDeltas(previousCoordinates, currentCoordinates)
-    previousCoordinates = currentCoordinates
 
-    zoomIdentity.x -= dx
-    zoomIdentity.y -= dy
-    zoomIdentity = zoomIdentity
+    const newZoomIdentity = getZoomIdentityOnPan(
+      previousCoordinates,
+      e.screenCoordinates,
+      zoomIdentity,
+      section,
+      parsedZoomPanSettings
+    )
+
+    if (newZoomIdentity) {
+      zoomIdentity = newZoomIdentity
+    }
   }
 
   let onUpPan = (e) => {
@@ -94,22 +101,22 @@
   $: touchupHandler = createHandler(pannable, onUpPan, onTouchup)
 
   // Zooming
-  $: parsedZoomSettings = parseZoomSettings(zoomSettings)
   let zooming = false
   const disableZooming = () => { zooming = false }
 
   $: disableZoomingDebounced = debounce(
     disableZooming,
-    zoomSettings?.debounceReindexing || 200
+    parsedZoomPanSettings.debounceReindexing
   )
 
   let onZoom = (e) => {
     if (panning) return
     zooming = true
     
-    const newZoomIdentity = getNewZoomIdentity(
+    const newZoomIdentity = getZoomIdentityOnZoom(
       e,
       zoomIdentity,
+      section,
       parsedZoomSettings
     )
 
