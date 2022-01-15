@@ -6,6 +6,12 @@
     XGridLines, YGridLines
   } from '../../../../src'
 
+  const viewportFence = {
+    left: { x: -1, y: 0 },
+    right: { x: 5, y: 0 },
+    top: { x: 0, y: -1 },
+    bottom: { x: 0, y: 5 }
+  }
 </script>
 
 <Graphic width={500} height={500} renderer="svg">
@@ -18,6 +24,7 @@
     scaleY={scaleLinear().domain([0, 4])}
     pannable
     zoomable
+    zoomPanSettings={{ viewportFence }}
   >
 
     <Rectangle fill="blue" opacity={0.3} />

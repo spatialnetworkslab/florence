@@ -61,7 +61,7 @@
   // Zooming/panning logic
   let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
 
-  $: parsedZoomPanSettings = parseZoomPanSettings(zoomPanSettings)
+  $: parsedZoomPanSettings = parseZoomPanSettings(zoomPanSettings, section)
 
   // Panning
   let panning = false
@@ -119,7 +119,7 @@
       e,
       zoomIdentity,
       section,
-      parsedZoomSettings
+      parsedZoomPanSettings
     )
 
     if (newZoomIdentity) {
