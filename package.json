@@ -76,6 +76,6 @@
     "svelte-routing": "^1.4.2"
   },
   "dependencies": {
-    "@snlab/rendervous": "^0.2.9"
+    "@snlab/rendervous": "^0.3.0"
   }
 }

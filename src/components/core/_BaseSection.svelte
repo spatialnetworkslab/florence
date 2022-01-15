@@ -157,7 +157,7 @@
       wheelHandler,
       pinchHandler,
 
-      // ohter event handlers
+      // other event handlers
       onClick,
       onMouseover,
       onMouseout,
