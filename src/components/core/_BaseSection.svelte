@@ -22,6 +22,7 @@
   export let pannable = false
   export let zoomable = false
   export let zoomPanSettings = undefined
+  export let blockZoomPan = false
 
   // Mouse interactions
   export let onClick = undefined
@@ -67,12 +68,13 @@
   let previousCoordinates
 
   let onDownPan = (e) => {
+    if (blockZoomPan) return
     panning = true
     previousCoordinates = e.screenCoordinates
   }
 
   let onMovePan = (e) => {
-    if (!panning || zooming) return
+    if (blockZoomPan || !panning || zooming) return
 
     const newZoomIdentity = getZoomIdentityOnPan(
       previousCoordinates,
@@ -110,7 +112,7 @@
   )
 
   let onZoom = (e) => {
-    if (panning) return
+    if (blockZoomPan || panning) return
     zooming = true
     
     const newZoomIdentity = getZoomIdentityOnZoom(
@@ -206,9 +208,9 @@
 
   // Expose instance methods
   export const getSM = () => interactionManager.select()
-  export const startZoomPan = () => zoomingOrPanning.set(true)
-  export const setZoomIdentity = newZoomIdentity => { zoomIdentity = newZoomIdentity }
-  export const endZoomPan = () => zoomingOrPanning.set(false)
+  export const startZoomPan = () => { !blockZoomPan && zoomingOrPanning.set(true) }
+  export const setZoomIdentity = newZoomIdentity => { !blockZoomPan && (zoomIdentity = newZoomIdentity) }
+  export const endZoomPan = () => { !blockZoomPan && zoomingOrPanning.set(false) }
   export const getZoomIdentity = () => zoomIdentity
 
   // Set contexts

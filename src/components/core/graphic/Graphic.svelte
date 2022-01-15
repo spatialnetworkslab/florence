@@ -33,6 +33,7 @@
   export let pannable = false
   export let zoomable = false
   export let zoomPanSettings = undefined
+  export let blockZoomPan = false
 
   // Mouse interactions
   export let onClick = undefined
@@ -205,6 +206,7 @@
         {pannable}
         {zoomable}
         {zoomPanSettings}
+        {blockZoomPan}
         {onClick}
         {onWheel}
         {onMousedown}
@@ -246,6 +248,7 @@
       {pannable}
       {zoomable}
       {zoomPanSettings}
+      {blockZoomPan}
       {onClick}
       {onWheel}
       {onMousedown}
