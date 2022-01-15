@@ -1,56 +1,15 @@
 <script>
   import { scaleLinear } from 'd3-scale'
-  import { Graphic, Section, PolygonLayer, Rectangle, createPanHandler, createZoomHandler } from '../../../../../src/'
-
-  let x = 0
-  let y = 0
-  let k = 1
-  let zoomIdentity = { x, y, kx: k, ky: k }
-
-  $: {
-    zoomIdentity = { x, y, kx: k, ky: k }
-  }
-
-  const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
-
-  let step = 1
-
-  const pan = createPanHandler(zoomIdentity, {
-    setZoomIdentity,
-    extentX: [-500, 500],
-    extentY: [-500, 500]
-  })
-
-  const zoom = createZoomHandler(zoomIdentity, {
-    setZoomIdentity,
-    minZoom: 0.2,
-    maxZoom: 3,
-    step
-  })
-
-  const handle = zoomId => { zoomIdentity = zoomId }
+  import { Graphic, Section, PolygonLayer, Rectangle } from '../../../../../src/'
 </script>
-
-x:
-<input id="x" type="range" min={-300} max={300} bind:value={zoomIdentity.x} /> {zoomIdentity.x} <br />
-y:
-<input id="y" type="range" min={-300} max={300} bind:value={zoomIdentity.y} />  {zoomIdentity.y} <br />
-k:
-<input id="k" type="range" min={0} max={3} step={0.1} bind:value={zoomIdentity.k} /> {zoomIdentity.k} <br />
-
-<div>
-  <button on:click={e => zoomIdentity = pan.reset() }> Reset pan </button>
-  <button on:click={e => zoomIdentity = zoom.reset() }> Reset zoom </button>
-</div>
 
 <Graphic width={500} height={500}>
 
   <Section 
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
-    {zoomIdentity}
-    {...zoom.handlers}
-    {...pan.handlers}
+    zoomable
+    pannable
   >
 
     <Rectangle fill="blue" opacity={0.3} />

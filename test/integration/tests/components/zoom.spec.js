@@ -18,7 +18,7 @@ context('Assertions', () => {
       })
     })
 
-    it('[interaction] pan works', () => {
+    it('[interaction] zoom works', () => {
       cy.get('svg')
         .trigger('mouseover')
         .trigger('wheel', { clientX: 200, clientY: 300, deltaMode: 0, deltaY: 100 })
