@@ -157,16 +157,22 @@
     }
   }
 
+  // Expose instance methods
   let node
 
-  export const selectRectangle = rect => node.getSM().selectRectangle(rect)
-  export const updateSelectRectangle = rect => node.getSM().updateSelectRectangle(rect)
-  export const resetSelectRectangle = () => node.getSM().resetSelectRectangle()
-  export const startSelectPolygon = c => node.getSM().startSelectPolygon(c)
-  export const addPointToSelectPolygon = c => node.getSM().addPointToSelectPolygon(c)
-  export const moveSelectPolygon = delta => node.getSM().moveSelectPolygon(delta)
-  export const getSelectPolygon = () => node.getSM().getSelectPolygon()
-  export const resetSelectPolygon = () => node.getSM().resetSelectPolygon()
+  export const selectRectangle = rect => node.selectRectangle(rect)
+  export const updateSelectRectangle = rect => node.updateSelectRectangle(rect)
+  export const resetSelectRectangle = () => node.resetSelectRectangle()
+  export const startSelectPolygon = c => node.startSelectPolygon(c)
+  export const addPointToSelectPolygon = c => node.addPointToSelectPolygon(c)
+  export const moveSelectPolygon = delta => node.moveSelectPolygon(delta)
+  export const getSelectPolygon = () => node.getSelectPolygon()
+  export const resetSelectPolygon = () => node.resetSelectPolygon()
+
+  export const startZoomPan = () => node.startZoomPan()
+  export const setZoomIdentity = newZoomIdentity => node.setZoomIdentity(newZoomIdentity)
+  export const endZoomPan = () => node.endZoomPan()
+  export const getZoomIdentity = () => node.getZoomIdentity()
 
   // Adding dummy zoomingOrPanning context, so that child components don't
   // try to destructure undefined

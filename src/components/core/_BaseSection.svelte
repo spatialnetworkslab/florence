@@ -5,7 +5,7 @@
     parseZoomPanSettings,
     getZoomIdentityOnPan,
     getZoomIdentityOnZoom,
-    creatHandler,
+    createHandler,
     debounce,
     InteractionManager
   } from '@snlab/rendervous'
@@ -204,9 +204,14 @@
     }
   }
 
+  // Expose instance methods
   export const getSM = () => interactionManager.select()
+  export const startZoomPan = () => zoomingOrPanning.set(true)
+  export const setZoomIdentity = newZoomIdentity => { zoomIdentity = newZoomIdentity }
+  export const endZoomPan = () => zoomingOrPanning.set(false)
+  export const getZoomIdentity = () => zoomIdentity
 
-  // Expose contexts
+  // Set contexts
   $: { sectionContext.set(section) }
   $: { interactionManagerContext.set(interactionManager) }
 </script>

@@ -60,6 +60,7 @@
     clip
   }
 
+  // Expose instance methods
   let node
 
   export const selectRectangle = rect => node.getSM().selectRectangle(rect)
@@ -70,6 +71,11 @@
   export const moveSelectPolygon = delta => node.getSM().moveSelectPolygon(delta)
   export const getSelectPolygon = () => node.getSM().getSelectPolygon()
   export const resetSelectPolygon = () => node.getSM().resetSelectPolygon()
+
+  export const startZoomPan = () => node.startZoomPan()
+  export const setZoomIdentity = newZoomIdentity => node.setZoomIdentity(newZoomIdentity)
+  export const endZoomPan = () => node.endZoomPan()
+  export const getZoomIdentity = () => node.getZoomIdentity()
 </script>
 
 <BaseSection
