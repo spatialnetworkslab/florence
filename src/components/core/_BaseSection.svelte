@@ -76,13 +76,17 @@
   let onMovePan = (e) => {
     if (blockZoomPan || !panning || zooming) return
 
+    const currentCoordinates = e.screenCoordinates
+
     const newZoomIdentity = getZoomIdentityOnPan(
       previousCoordinates,
-      e.screenCoordinates,
+      currentCoordinates,
       zoomIdentity,
       section,
       parsedZoomPanSettings
     )
+
+    previousCoordinates = currentCoordinates
 
     if (newZoomIdentity) {
       zoomIdentity = newZoomIdentity
