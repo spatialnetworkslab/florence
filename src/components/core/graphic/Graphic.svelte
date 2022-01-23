@@ -178,6 +178,15 @@
   // Adding dummy zoomingOrPanning context, so that child components don't
   // try to destructure undefined
   setContext('zoomingOrPanning', { zoomingOrPanning: writable(false) })
+
+  $: props = {
+    ...sectionPositioning, backgroundColor, coordinates,
+    scaleX, scaleY, flipX, flipY, padding,
+    pannable, zoomable, zoomPanSettings, blockZoomPan,
+    onClick, onWheel, onMousedown, onMouseup, onMouseover, onMouseout, onMousemove,
+    onPinch, onTouchdown, onTouchmove, onTouchup, onTouchover, onTouchout, 
+    clip
+  }
 </script>
 
 <div 
@@ -195,32 +204,7 @@
 
       <Section
         bind:this={node}
-        {...sectionPositioning}
-        {backgroundColor}
-        {coordinates}
-        {scaleX}
-        {scaleY}
-        {flipX}
-        {flipY}
-        {padding}
-        {pannable}
-        {zoomable}
-        {zoomPanSettings}
-        {blockZoomPan}
-        {onClick}
-        {onWheel}
-        {onMousedown}
-        {onMouseup}
-        {onMouseover}
-        {onMouseout}
-        {onMousemove}
-        {onPinch}
-        {onTouchdown}
-        {onTouchmove}
-        {onTouchup}
-        {onTouchover}
-        {onTouchout}
-        {clip}
+        {...props}
       >
     
         <slot />
@@ -237,32 +221,7 @@
   
     <Section
       bind:this={node}
-      {...sectionPositioning}
-      {backgroundColor}
-      {coordinates}
-      {scaleX}
-      {scaleY}
-      {flipX}
-      {flipY}
-      {padding}
-      {pannable}
-      {zoomable}
-      {zoomPanSettings}
-      {blockZoomPan}
-      {onClick}
-      {onWheel}
-      {onMousedown}
-      {onMouseup}
-      {onMouseover}
-      {onMouseout}
-      {onMousemove}
-      {onPinch}
-      {onTouchdown}
-      {onTouchmove}
-      {onTouchup}
-      {onTouchover}
-      {onTouchout}
-      {clip}
+      {...props}
     >
     
       <div style="display: none;" id={`div-${id}`}>
