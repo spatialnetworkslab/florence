@@ -61,7 +61,9 @@
   // Zooming/panning logic
   let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
 
-  $: parsedZoomPanSettings = parseZoomPanSettings(zoomPanSettings, section)
+  $: parsedZoomPanSettings = zoomable || pannable
+    ? parseZoomPanSettings(zoomPanSettings, sectionWithoutZoomIdentity)
+    : undefined
 
   // Panning
   let panning = false
@@ -82,7 +84,7 @@
       previousCoordinates,
       currentCoordinates,
       zoomIdentity,
-      section,
+      sectionWithoutZoomIdentity.paddedBbox,
       parsedZoomPanSettings
     )
 
@@ -110,10 +112,12 @@
   let zooming = false
   const disableZooming = () => { zooming = false }
 
-  $: disableZoomingDebounced = debounce(
-    disableZooming,
-    parsedZoomPanSettings.debounceReindexing
-  )
+  $: disableZoomingDebounced = parsedZoomPanSettings
+    ? debounce(
+        disableZooming,
+        parsedZoomPanSettings.debounceReindexing
+      )
+    : undefined
 
   let onZoom = (e) => {
     if (blockZoomPan || panning) return
@@ -122,7 +126,7 @@
     const newZoomIdentity = getZoomIdentityOnZoom(
       e,
       zoomIdentity,
-      section,
+      sectionWithoutZoomIdentity.paddedBbox,
       parsedZoomPanSettings
     )
 
@@ -147,6 +151,7 @@
   // Section data
   let section
   $: { section = createFunction({ ...props, zoomIdentity }, $parentSection) }
+  $: sectionWithoutZoomIdentity = createFunction(props, $parentSection)
 
   // Interactivity
   const interactionManager = new InteractionManager()
