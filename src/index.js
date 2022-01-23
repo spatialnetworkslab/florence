@@ -29,8 +29,6 @@ export { default as YGridLines } from './components/guides/gridLines/YGridLines.
 export { default as DiscreteLegend } from './components/guides/legends/DiscreteLegend.svelte'
 export { default as GradientLegend } from './components/guides/legends/GradientLegend.svelte'
 
-export { default as createPanHandler } from './helpers/createPanHandler.js'
-export { default as createZoomHandler } from './helpers/createZoomHandler.js'
 export * from './helpers/labels.js'
 
 export {
