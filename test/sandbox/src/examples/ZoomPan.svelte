@@ -45,7 +45,7 @@
       ]}
     />
 
-    <Section
+    <!-- <Section
       x1={1} x2={3}
       y1={1} y2={3}
       scaleX={scaleLinear().domain([0, 10])}
@@ -55,7 +55,7 @@
       <Point x={2} y={2} radius={10} onMouseover={console.log} />
       <Point x={5} y={5} radius={10} onMouseover={console.log} />
       <Point x={8} y={8} radius={10} onMouseover={console.log} /> 
-    </Section>
+    </Section> -->
 
     <XAxis />
     <YAxis />

@@ -185,6 +185,7 @@
   }
 
   function removeSectionInteractionsIfNecessary () {
+    console.log('reindexing...')
     if (interactionManager.getPrimaryInput() === 'mouse') {
       const sectionInterface = interactionManager.mouse().section()
       sectionInterface.removeAllInteractions()
