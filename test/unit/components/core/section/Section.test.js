@@ -48,4 +48,31 @@ describe('Section', () => {
     const expectedPath = 'M360,350A10,10,0,1,1,340,350A10,10,0,1,1,360,350'
     await waitFor(() => expect(getByTestId('point')).toHaveAttribute('d', expectedPath))
   })
+
+  it('pans until viewportFence is reached', async () => {
+    const dummyRoot = createDummyNode()
+    const dummyWindow = createDummyNode()
+
+    const _testDummies = { dummyRoot, dummyWindow }
+
+    const viewportFence = {
+      left: { x: -0.2, y: 0 },
+      right: { x: 0, y: 0 },
+      top: { x: 0, y: -0.2 },
+      bottom: { x: 0, y: 0 }
+    }
+
+    const { getByTestId } = render(TestComponent, {
+      graphic: { _testDummies },
+      section: { pannable: true, zoomPanSettings: { viewportFence } },
+      point: { x: 0.5, y: 0.5, radius: 10 }
+    })
+
+    dummyRoot.trigger('mousedown', 100, 100)
+    dummyWindow.trigger('mousemove', 300, 300)
+    dummyWindow.trigger('mouseup', 300, 300)
+
+    const expectedPath = 'M360,350A10,10,0,1,1,340,350A10,10,0,1,1,360,350'
+    await waitFor(() => expect(getByTestId('point')).toHaveAttribute('d', expectedPath))
+  })
 })
