@@ -41,7 +41,7 @@ const EVENT_NAMES = [
   'touchstart', 'touchend', 'touchmove', 'touchcancel'
 ]
 
-function createDummyNode () {
+export function createDummyNode () {
   const eventHandlers = {}
   EVENT_NAMES.forEach(e => { eventHandlers[e] = new Set() })
 
@@ -85,6 +85,7 @@ function createDummyNode () {
 function createEvent (x, y) {
   return {
     clientX: x,
-    clientY: y
+    clientY: y,
+    preventDefault: () => null
   }
 }

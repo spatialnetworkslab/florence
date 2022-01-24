@@ -1,5 +1,6 @@
 import TestComponent from './TestComponent.svelte'
-import { render } from '../../../utils.js'
+import { render, createDummyNode } from '../../../utils.js'
+import { waitFor } from '@testing-library/svelte'
 
 describe('Section', () => {
   it('works without scales', () => {
@@ -20,11 +21,31 @@ describe('Section', () => {
   })
 
   it('works with padding', () => {
-    const { getByTestId } = render(TestComponent, {
+    const { getByTestId, ...rest } = render(TestComponent, {
       section: { padding: { left: 100, top: 100 } },
       point: { x: 0.375, y: 0.375, radius: 10 }
     })
 
     expect(getByTestId('point')).toHaveAttribute('d', 'M260,250A10,10,0,1,1,240,250A10,10,0,1,1,260,250')
+  })
+
+  it('pans', async () => {
+    const dummyRoot = createDummyNode()
+    const dummyWindow = createDummyNode()
+
+    const _testDummies = { dummyRoot, dummyWindow }
+
+    const { getByTestId } = render(TestComponent, {
+      graphic: { _testDummies },
+      section: { pannable: true },
+      point: { x: 0.5, y: 0.5, radius: 10 }
+    })
+
+    dummyRoot.trigger('mousedown', 100, 100)
+    dummyWindow.trigger('mousemove', 200, 200)
+    dummyWindow.trigger('mouseup', 200, 200)
+
+    const expectedPath = 'M360,350A10,10,0,1,1,340,350A10,10,0,1,1,360,350'
+    await waitFor(() => expect(getByTestId('point')).toHaveAttribute('d', expectedPath))
   })
 })

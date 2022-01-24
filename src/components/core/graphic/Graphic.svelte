@@ -102,6 +102,12 @@
   const eventManager = new EventManager()
   setContext('eventManager', eventManager)
 
+  if (TEST_ENV && _testDummies) {
+    const { dummyRoot, dummyWindow } = _testDummies
+    eventManager.addRootNode(dummyRoot, renderer, dummyWindow)
+    eventManager.attachEventListeners()
+  }
+
   onMount(() => {
     updateSectionPositioning(
       width,
@@ -122,14 +128,10 @@
         context = rootNode.getContext('2d')
       }
     
-      if (TEST_ENV && _testDummies) {
-        const { dummyRoot, dummyWindow } = _testDummies
-        eventManager.addRootNode(dummyRoot, renderer, dummyWindow)
-      } else {
+      if (!(TEST_ENV && _testDummies)) {
         eventManager.addRootNode(rootNode, renderer)
+        eventManager.attachEventListeners()
       }
-
-      eventManager.attachEventListeners()
       mounted = true
     })
   })
