@@ -1,6 +1,5 @@
 import { renderLayer } from '../../../utils.js'
 import { RectangleLayer } from '../../../../../src/index.js'
-import { tick } from 'svelte'
 
 describe('RectangleLayer (svg)', () => {
   it('renders', () => {
@@ -32,13 +31,11 @@ describe('RectangleLayer (svg)', () => {
       }
     )
 
-    tick().then(() => {
-      dummyRoot.trigger('click', 125, 125)
-      dummyRoot.trigger('click', 125, 375)
-      dummyRoot.trigger('click', 375, 375)
-      dummyRoot.trigger('click', 375, 125)
+    dummyRoot.trigger('click', 125, 125)
+    dummyRoot.trigger('click', 125, 375)
+    dummyRoot.trigger('click', 375, 375)
+    dummyRoot.trigger('click', 375, 125)
 
-      expect(onClick).toHaveBeenCalledTimes(2)
-    })
+    expect(onClick).toHaveBeenCalledTimes(2)
   })
 })

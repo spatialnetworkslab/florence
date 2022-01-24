@@ -1,6 +1,5 @@
 import { renderLayer } from '../../../utils.js'
 import { PolygonLayer } from '../../../../../src/index.js'
-import { tick } from 'svelte'
 
 describe('PolygonLayer (svg)', () => {
   it('renders with x/y coordinates', () => {
@@ -52,12 +51,10 @@ describe('PolygonLayer (svg)', () => {
       }
     )
 
-    tick().then(() => {
-      dummyRoot.trigger('click', 0, 250)
-      dummyRoot.trigger('click', 250, 200)
-      dummyRoot.trigger('click', 250, 300)
+    dummyRoot.trigger('click', 0, 250)
+    dummyRoot.trigger('click', 250, 200)
+    dummyRoot.trigger('click', 250, 300)
 
-      expect(onClick).toHaveBeenCalledTimes(2)
-    })
+    expect(onClick).toHaveBeenCalledTimes(2)
   })
 })

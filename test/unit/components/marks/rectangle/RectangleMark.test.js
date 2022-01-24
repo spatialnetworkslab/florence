@@ -1,6 +1,5 @@
 import { renderMark } from '../../../utils.js'
 import { Rectangle } from '../../../../../src/index.js'
-import { tick } from 'svelte'
 
 describe('Rectangle (svg)', () => {
   it('renders', () => {
@@ -25,12 +24,10 @@ describe('Rectangle (svg)', () => {
       onClick
     })
 
-    tick().then(() => {
-      dummyRoot.trigger('click', 400, 400)
-      expect(onClick).not.toHaveBeenCalled()
+    dummyRoot.trigger('click', 400, 400)
+    expect(onClick).not.toHaveBeenCalled()
 
-      dummyRoot.trigger('click', 200, 200)
-      expect(onClick).toHaveBeenCalled()
-    })
+    dummyRoot.trigger('click', 200, 200)
+    expect(onClick).toHaveBeenCalled()
   })
 })
