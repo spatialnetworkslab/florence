@@ -51,9 +51,9 @@ describe('PolygonLayer (svg)', () => {
       }
     )
 
-    dummyRoot.trigger('click', 0, 250)
-    dummyRoot.trigger('click', 250, 200)
-    dummyRoot.trigger('click', 250, 300)
+    dummyRoot.trigger('click', { clientX: 0, clientY: 250 })
+    dummyRoot.trigger('click', { clientX: 250, clientY: 200 })
+    dummyRoot.trigger('click', { clientX: 250, clientY: 300 })
 
     expect(onClick).toHaveBeenCalledTimes(2)
   })

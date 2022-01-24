@@ -27,11 +27,11 @@ describe('PointLayer (svg)', () => {
       }
     )
 
-    dummyRoot.trigger('click', 125, 125)
-    dummyRoot.trigger('click', 250, 250)
-    dummyRoot.trigger('click', 375, 375)
+    dummyRoot.trigger('click', { clientX: 125, clientY: 125 })
+    dummyRoot.trigger('click', { clientX: 250, clientY: 250 })
+    dummyRoot.trigger('click', { clientX: 375, clientY: 375 })
 
-    dummyRoot.trigger('click', 400, 100)
+    dummyRoot.trigger('click', { clientX: 400, clientY: 100 })
 
     expect(onClick).toHaveBeenCalledTimes(3)
   })
@@ -51,11 +51,11 @@ describe('PointLayer (canvas)', () => {
       { renderer: 'canvas' }
     )
 
-    dummyRoot.trigger('click', 125, 125)
-    dummyRoot.trigger('click', 250, 250)
-    dummyRoot.trigger('click', 375, 375)
+    dummyRoot.trigger('click', { clientX: 125, clientY: 125 })
+    dummyRoot.trigger('click', { clientX: 250, clientY: 250 })
+    dummyRoot.trigger('click', { clientX: 375, clientY: 375 })
 
-    dummyRoot.trigger('click', 400, 100)
+    dummyRoot.trigger('click', { clientX: 400, clientY: 100 })
 
     expect(onClick).toHaveBeenCalledTimes(3)
   })

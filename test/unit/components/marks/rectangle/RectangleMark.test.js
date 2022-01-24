@@ -24,10 +24,10 @@ describe('Rectangle (svg)', () => {
       onClick
     })
 
-    dummyRoot.trigger('click', 400, 400)
+    dummyRoot.trigger('click', { clientX: 400, clientY: 400 })
     expect(onClick).not.toHaveBeenCalled()
 
-    dummyRoot.trigger('click', 200, 200)
+    dummyRoot.trigger('click', { clientX: 200, clientY: 200 })
     expect(onClick).toHaveBeenCalled()
   })
 })

@@ -41,9 +41,9 @@ describe('Section', () => {
       point: { x: 0.5, y: 0.5, radius: 10 }
     })
 
-    dummyRoot.trigger('mousedown', 100, 100)
-    dummyWindow.trigger('mousemove', 200, 200)
-    dummyWindow.trigger('mouseup', 200, 200)
+    dummyRoot.trigger('mousedown', { clientX: 100, clientY: 100 })
+    dummyWindow.trigger('mousemove', { clientX: 200, clientY: 200 })
+    dummyWindow.trigger('mouseup', { clientX: 200, clientY: 200 })
 
     const expectedPath = 'M360,350A10,10,0,1,1,340,350A10,10,0,1,1,360,350'
     await waitFor(() => expect(getByTestId('point')).toHaveAttribute('d', expectedPath))
@@ -68,9 +68,9 @@ describe('Section', () => {
       point: { x: 0.5, y: 0.5, radius: 10 }
     })
 
-    dummyRoot.trigger('mousedown', 100, 100)
-    dummyWindow.trigger('mousemove', 300, 300)
-    dummyWindow.trigger('mouseup', 300, 300)
+    dummyRoot.trigger('mousedown', { clientX: 100, clientY: 100 })
+    dummyWindow.trigger('mousemove', { clientX: 300, clientY: 300 })
+    dummyWindow.trigger('mouseup', { clientX: 300, clientY: 300 })
 
     const expectedPath = 'M360,350A10,10,0,1,1,340,350A10,10,0,1,1,360,350'
     await waitFor(() => expect(getByTestId('point')).toHaveAttribute('d', expectedPath))

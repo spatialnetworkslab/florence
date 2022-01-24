@@ -34,10 +34,10 @@ describe('Polygon (svg)', () => {
       onClick
     })
 
-    dummyRoot.trigger('click', 10, 10)
+    dummyRoot.trigger('click', { clientX: 10, clientY: 10 })
     expect(onClick).not.toHaveBeenCalled()
 
-    dummyRoot.trigger('click', 250, 250)
+    dummyRoot.trigger('click', { clientX: 250, clientY: 250 })
     expect(onClick).toHaveBeenCalled()
   })
 })

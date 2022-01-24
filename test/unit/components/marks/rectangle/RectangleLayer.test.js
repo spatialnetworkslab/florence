@@ -31,10 +31,10 @@ describe('RectangleLayer (svg)', () => {
       }
     )
 
-    dummyRoot.trigger('click', 125, 125)
-    dummyRoot.trigger('click', 125, 375)
-    dummyRoot.trigger('click', 375, 375)
-    dummyRoot.trigger('click', 375, 125)
+    dummyRoot.trigger('click', { clientX: 125, clientY: 125 })
+    dummyRoot.trigger('click', { clientX: 125, clientY: 375 })
+    dummyRoot.trigger('click', { clientX: 375, clientY: 375 })
+    dummyRoot.trigger('click', { clientX: 375, clientY: 125 })
 
     expect(onClick).toHaveBeenCalledTimes(2)
   })

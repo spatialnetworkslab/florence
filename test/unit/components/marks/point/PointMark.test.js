@@ -19,10 +19,10 @@ describe('Point (svg)', () => {
       { x: 0.5, y: 0.5, onClick }
     )
 
-    dummyRoot.trigger('click', 20, 400)
+    dummyRoot.trigger('click', { clientX: 20, clientY: 400 })
     expect(onClick).not.toHaveBeenCalled()
 
-    dummyRoot.trigger('click', 250, 250)
+    dummyRoot.trigger('click', { clientX: 250, clientY: 250 })
     expect(onClick).toHaveBeenCalled()
   })
 })
@@ -37,10 +37,10 @@ describe('Point (canvas)', () => {
       { renderer: 'canvas' }
     )
 
-    dummyRoot.trigger('click', 20, 400)
+    dummyRoot.trigger('click', { clientX: 20, clientY: 400 })
     expect(onClick).not.toHaveBeenCalled()
 
-    dummyRoot.trigger('click', 250, 250)
+    dummyRoot.trigger('click', { clientX: 250, clientY: 250 })
     expect(onClick).toHaveBeenCalled()
   })
 })
