@@ -5,10 +5,8 @@
   import Rectangles from './pages/Rectangles.svelte'
   import Geo from './pages/Geo.svelte'
   import LabelMark from './pages/LabelMark.svelte'
-  import Zoom from './pages/Zoom.svelte'
   import Line from './pages/Line.svelte'
   import Axes from './pages/Axes.svelte'
-  import Drag from './pages/Drag.svelte'
   import ScaleBandAxes from './pages/ScaleBandAxes.svelte'
   import Area from './pages/Area.svelte'
   import AreaLayer from './pages/AreaLayer.svelte'
@@ -33,11 +31,6 @@
       component: LabelMark
     },
     {
-      name: 'Zoom',
-      url: '/zoom',
-      component: Zoom
-    },
-    {
       name: 'Line',
       url: '/line',
       component: Line
@@ -46,11 +39,6 @@
       name: 'Axes',
       url: '/axes',
       component: Axes
-    },
-    {
-      name: 'Drag',
-      url: '/drag',
-      component: Drag
     },
     {
       name: 'ScaleBand Axes',
