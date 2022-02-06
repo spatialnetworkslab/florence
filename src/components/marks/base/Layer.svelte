@@ -7,7 +7,6 @@
   import { getContext, onMount, onDestroy } from 'svelte'
   import { svgStyled, getClipPathURL } from '@snlab/rendervous'
   import any from '../utils/any.js'
-  import merge from '../utils/merge.js'
   import { testId } from '../../../helpers/test.js'
 
   export let positioning
@@ -68,7 +67,7 @@
 
   function create () {
     let _layer = createLayer(
-      merge(positioning, aesthetics),
+      { ...positioning, ...aesthetics },
       $section,
       outputSettings
     )
