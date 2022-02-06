@@ -43,7 +43,7 @@
   const { renderer, marksAndLayers, dirty } = getContext('graphic')
   const section = getContext('section')
   const interactionManager = getContext('interactionManager')
-  const { blockReindexing } = getContext('blockReindexing')
+  const { blockReindexing: parentBlockReindexing } = getContext('blockReindexing')
 
   const id = getId()
 
@@ -143,19 +143,52 @@
   }
 
   $: {
-    if (isMounted() && !$blockReindexing) {
+    if (isMounted() && !$parentBlockReindexing && !blockReindexing) {
       updateInteractionManagerIfNecessary()
     }
   }
 
   // Interactivity
+  let blockReindexing = false
+  const setBlockReindexing = (bool) => { blockReindexing = bool }
+
+  $: mouseDragHandler = onMousedrag && primaryInput === 'mouse'
+    ? (e) => {
+      switch(e.dragType) {
+        case 'start':
+          setBlockReindexing(true)
+          break
+        case 'end':
+          setBlockReindexing(false)
+          break;
+      }
+
+      onMousedrag(e)
+    }
+    : undefined
+  
+  $: touchDragHandler = onTouchdrag && primaryInput === 'touch'
+    ? (e) => {
+      switch(e.dragType) {
+        case 'start':
+          setBlockReindexing(true)
+          break
+        case 'end':
+          setBlockReindexing(false)
+          break;
+      }
+
+      onTouchdrag(e)
+    }
+    : undefined
+
   $: primaryInput = $interactionManager.getPrimaryInput()
   $: isInteractiveMouse = primaryInput === 'mouse' && any(onClick, onMousedown, onMouseup, onMouseover, onMouseout, onMousedrag)
   $: isInteractiveTouch = primaryInput === 'touch' && any(onTouchdown, onTouchup, onTouchover, onTouchout, onTouchdrag)
   $: isSelectable = any(onSelect, onDeselect)
 
   function updateInteractionManagerIfNecessary () {
-    if ($blockReindexing) return
+    if ($parentBlockReindexing || blockReindexing) return
 
     if (isInteractiveMouse || isInteractiveTouch) {
       removeLayerFromSpatialIndexIfNecessary()
@@ -164,13 +197,14 @@
         const markInterface = $interactionManager.mouse().marks()
 
         markInterface.loadLayer(layer)
+        
+        if (mouseDragHandler) markInterface.addLayerInteraction('mousedrag', layer, mouseDragHandler)
 
         if (onClick) markInterface.addLayerInteraction('click', layer, onClick)
         if (onMousedown) markInterface.addLayerInteraction('mousedown', layer, onMousedown)
         if (onMouseup) markInterface.addLayerInteraction('mouseup', layer, onMouseup)
         if (onMouseout) markInterface.addLayerInteraction('mouseout', layer, onMouseout)
         if (onMouseover) markInterface.addLayerInteraction('mouseover', layer, onMouseover)
-        if (onMousedrag) markInterface.addLayerInteraction('mousedrag', layer, onMousedrag)
       }
 
       if (isInteractiveTouch) {
@@ -178,11 +212,12 @@
 
         markInterface.loadLayer(layer)
 
+        if (touchDragHandler) markInterface.addLayerInteraction('touchdrag', layer, touchDragHandler)
+
         if (onTouchdown) markInterface.addLayerInteraction('touchdown', layer, onTouchdown)
         if (onTouchup) markInterface.addLayerInteraction('touchup', layer, onTouchup)
         if (onTouchover) markInterface.addLayerInteraction('touchover', layer, onTouchover)
         if (onTouchout) markInterface.addLayerInteraction('touchout', layer, onTouchout)
-        if (onTouchdrag) markInterface.addLayerInteraction('touchdrag', layer, onTouchdrag)
       }
     }
 
