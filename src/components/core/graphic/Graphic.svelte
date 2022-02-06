@@ -177,9 +177,9 @@
   export const endZoomPan = () => node.endZoomPan()
   export const getZoomIdentity = () => node.getZoomIdentity()
 
-  // Adding dummy zoomingOrPanning context, so that child components don't
+  // Set initial blockReindexing context, so that child components don't
   // try to destructure undefined
-  setContext('zoomingOrPanning', { zoomingOrPanning: writable(false) })
+  setContext('blockReindexing', { blockReindexing: writable(false) })
 
   $: props = {
     ...sectionPositioning, backgroundColor, coordinates,

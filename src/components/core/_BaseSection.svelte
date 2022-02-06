@@ -46,8 +46,8 @@
   const parentSection = getContext('section')
   const eventManager = getContext('eventManager')
   const { 
-    zoomingOrPanning: parentZoomingOrPanning
-  } = getContext('zoomingOrPanning')
+    blockReindexing: parentBlockReindexing
+  } = getContext('blockReindexing')
 
   // Initiate child contexts
   const sectionContext = writable()
@@ -55,8 +55,8 @@
   setContext('section', sectionContext)
   setContext('interactionManager', interactionManagerContext)
 
-  let zoomingOrPanning = writable(false)
-  setContext('zoomingOrPanning', { zoomingOrPanning })
+  let blockReindexing = writable(false)
+  setContext('blockReindexing', { blockReindexing })
 
   // Zooming/panning logic
   let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
@@ -141,10 +141,10 @@
   $: pinchHandler = createHandler(zoomable, onZoom, onPinch)
 
   $: {
-    if (zooming || panning || $parentZoomingOrPanning) {
-      zoomingOrPanning.set(true)
+    if (zooming || panning || $parentBlockReindexing) {
+      blockReindexing.set(true)
     } else {
-      zoomingOrPanning.set(false)
+      blockReindexing.set(false)
     }
   }
 
@@ -217,9 +217,8 @@
 
   // Expose instance methods
   export const getSM = () => interactionManager.select()
-  export const startZoomPan = () => { !blockZoomPan && zoomingOrPanning.set(true) }
+  export const setBlockReindexing = bool => { blockReindexing.set(bool) }
   export const setZoomIdentity = newZoomIdentity => { !blockZoomPan && (zoomIdentity = newZoomIdentity) }
-  export const endZoomPan = () => { !blockZoomPan && zoomingOrPanning.set(false) }
   export const getZoomIdentity = () => zoomIdentity
 
   // Set contexts

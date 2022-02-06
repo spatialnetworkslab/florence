@@ -44,7 +44,7 @@
   const { renderer, marksAndLayers, dirty } = getContext('graphic')
   const section = getContext('section')
   const interactionManager = getContext('interactionManager')
-  const { zoomingOrPanning } = getContext('zoomingOrPanning')
+  const { blockReindexing } = getContext('blockReindexing')
 
   const id = getId()
 
@@ -144,7 +144,7 @@
   }
 
   $: {
-    if (isMounted() && !$zoomingOrPanning) {
+    if (isMounted() && !$blockReindexing) {
       updateInteractionManagerIfNecessary()
     }
   }
@@ -156,7 +156,7 @@
   $: isSelectable = any(onSelect, onDeselect)
 
   function updateInteractionManagerIfNecessary () {
-    if ($zoomingOrPanning) return
+    if ($blockReindexing) return
 
     if (isInteractiveMouse || isInteractiveTouch) {
       removeMarkFromSpatialIndexIfNecessary()
