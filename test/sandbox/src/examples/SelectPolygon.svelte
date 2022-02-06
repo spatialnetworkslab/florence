@@ -5,8 +5,6 @@
     Graphic, Section, Point, Rectangle, Line, Polygon, XAxis, YAxis
   } from '../../../../src/'
 
-  import DataContainer from '@snlab/florence-datacontainer'
-
   let section
   let selecting = false
   let selectionPolygon
@@ -14,7 +12,6 @@
   let previousMousePosition
   let currentMousePosition
   let brushing = false
-  let blockReindexing = false
 
   const onMousedown = ({ screenCoordinates }) => {
     tick().then(() => {
@@ -46,7 +43,6 @@
 
     if (event.dragType === 'start') {
       brushing = true
-      blockReindexing = true
       currentMousePosition = screenCoordinates
     }
 
@@ -65,7 +61,6 @@
 
     if (event.dragType === 'end') {
       brushing = false
-      blockReindexing = false
     }
   }
 
@@ -131,7 +126,6 @@
       geometry={selectionPolygon} 
       fill="green" opacity={0.2}
       onMousedrag={onDragSelectionPolygon}
-      {blockReindexing}
     />
 
   {/if}
