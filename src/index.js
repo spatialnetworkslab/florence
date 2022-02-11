@@ -12,13 +12,13 @@ export { default as Polygon } from './components/marks/polygon/Polygon.svelte'
 export { default as Rectangle } from './components/marks/rectangle/Rectangle.svelte'
 export { default as Symbol_ } from './components/marks/symbol/Symbol.svelte'
 
-export { default as PointLayer } from './components/marks/point/PointLayer.svelte'
-export { default as RectangleLayer } from './components/marks/rectangle/RectangleLayer.svelte'
-export { default as PolygonLayer } from './components/marks/polygon/PolygonLayer.svelte'
-export { default as LineLayer } from './components/marks/line/LineLayer.svelte'
-export { default as LabelLayer } from './components/marks/label/LabelLayer.svelte'
-export { default as SymbolLayer } from './components/marks/symbol/SymbolLayer.svelte'
 export { default as AreaLayer } from './components/marks/area/AreaLayer.svelte'
+export { default as LabelLayer } from './components/marks/label/LabelLayer.svelte'
+export { default as LineLayer } from './components/marks/line/LineLayer.svelte'
+export { default as PointLayer } from './components/marks/point/PointLayer.svelte'
+export { default as PolygonLayer } from './components/marks/polygon/PolygonLayer.svelte'
+export { default as RectangleLayer } from './components/marks/rectangle/RectangleLayer.svelte'
+export { default as SymbolLayer } from './components/marks/symbol/SymbolLayer.svelte'
 
 export { default as XAxis } from './components/guides/axes/XAxis.svelte'
 export { default as YAxis } from './components/guides/axes/YAxis.svelte'
@@ -29,14 +29,17 @@ export { default as YGridLines } from './components/guides/gridLines/YGridLines.
 export { default as DiscreteLegend } from './components/guides/legends/DiscreteLegend.svelte'
 export { default as GradientLegend } from './components/guides/legends/GradientLegend.svelte'
 
-export * from './helpers/labels.js'
-
 export {
+  // helpers
   fitScales,
   x2,
   y2,
   x2s,
   y2s,
+  identity,
+  getClassLabels,
+
+  // coordinate systems
   cartesian,
   polar
 } from '@snlab/rendervous'
