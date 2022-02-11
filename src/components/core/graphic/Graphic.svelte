@@ -11,7 +11,7 @@
   import { writable } from 'svelte/store'
   import { EventManager } from '@snlab/rendervous'
   import Section from '../section/Section.svelte'
-  import { testId, TEST_ENV } from '../../../helpers/test.js'
+  import { testId, TEST_ENV } from '../../../utils/test.js'
   import { getSectionPositioning, sectionPositioningEqual } from './sectionPositioning.js'
 
   // Positioning

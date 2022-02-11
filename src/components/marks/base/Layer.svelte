@@ -7,7 +7,7 @@
   import { getContext, onMount, onDestroy } from 'svelte'
   import { svgStyled, getClipPathURL } from '@snlab/rendervous'
   import any from '../utils/any.js'
-  import { testId } from '../../../helpers/test.js'
+  import { testId } from '../../../utils/test.js'
 
   export let positioning
   export let aesthetics
