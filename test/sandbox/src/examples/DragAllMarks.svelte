@@ -2,8 +2,6 @@
   import { Graphic, Section, Rectangle, Line, FuncLine } from '../../../../src'
   import { scaleLinear } from 'd3-scale'
 
-  let blockReindexing = false
-
   // Rectangle
   let rectanglePosition = { x: 1, y: 1 }
   let rectangleWH = { w: 2, h: 2 }
@@ -21,7 +19,6 @@
     const localCoordinates = event.localCoordinates
     
     if (event.dragType === 'start') {
-      blockReindexing = true
       rectStartDelta = {
         x: localCoordinates.x - rectanglePosition.x,
         y: localCoordinates.y - rectanglePosition.y
@@ -33,10 +30,6 @@
         x: localCoordinates.x - rectStartDelta.x,
         y: localCoordinates.y - rectStartDelta.y
       }      
-    }
-
-    if (event.dragType === 'end') {
-      blockReindexing = false
     }
   }
 
@@ -52,7 +45,6 @@
     const localCoordinates = event.localCoordinates
     
     if (event.dragType === 'start') {
-      blockReindexing = true
       currentLinePosition = localCoordinates
     }
 
@@ -64,10 +56,6 @@
         x: lineOffset.x + (currentLinePosition.x - previousLinePosition.x),
         y: lineOffset.y + (currentLinePosition.y - previousLinePosition.y)
       }  
-    }
-
-    if (event.dragType === 'end') {
-      blockReindexing = false
     }
   }
 
@@ -87,7 +75,6 @@
     const localCoordinates = event.localCoordinates
 
     if (event.dragType === 'start') {
-      blockReindexing = true
       currentY = localCoordinates.y
     }
 
@@ -95,10 +82,6 @@
       previousY = currentY
       currentY = localCoordinates.y
       baseA = baseA + (currentY - previousY) 
-    }
-
-    if (event.dragType === 'end') {
-      blockReindexing = false
     }
   }
 </script>
@@ -108,7 +91,6 @@
   <Section 
     scaleX={scaleLinear().domain([0, 10])}
     scaleY={scaleLinear().domain([0, 10])}
-    {blockReindexing}
   >
   
     <Rectangle 

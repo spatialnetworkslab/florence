@@ -11,7 +11,7 @@
   import { writable } from 'svelte/store'
   import { EventManager } from '@snlab/rendervous'
   import Section from '../section/Section.svelte'
-  import { testId, TEST_ENV } from '../../../helpers/test.js'
+  import { testId, TEST_ENV } from '../../../utils/test.js'
   import { getSectionPositioning, sectionPositioningEqual } from './sectionPositioning.js'
 
   // Positioning
@@ -28,7 +28,12 @@
   export let flipX = false
   export let flipY = false
   export let padding = 0
-  export let zoomIdentity = undefined
+
+  // Zooming and panning
+  export let pannable = false
+  export let zoomable = false
+  export let zoomPanSettings = undefined
+  export let blockZoomPan = false
 
   // Mouse interactions
   export let onClick = undefined
@@ -50,7 +55,6 @@
   // Other options
   export let clip = 'padding'
   export let renderer = 'svg'
-  export let blockReindexing = undefined
 
   // testing
   export let _testDummies = undefined
@@ -89,21 +93,22 @@
   let rootNode
   let context
   let dirty = writable(false)
-  let globalBlockReindexing = writable(blockReindexing)
-  $: { if (isMounted()) globalBlockReindexing.set(blockReindexing) }
 
   const marksAndLayers = {}
 
-  setContext('graphic', { renderer, dirty, marksAndLayers, globalBlockReindexing })
+  setContext('graphic', { renderer, dirty, marksAndLayers })
 
   // Set up EventManager for this Graphic
   const eventManager = new EventManager()
   setContext('eventManager', eventManager)
 
+  if (TEST_ENV && _testDummies) {
+    const { dummyRoot, dummyWindow } = _testDummies
+    eventManager.addRootNode(dummyRoot, renderer, dummyWindow)
+    eventManager.attachEventListeners()
+  }
+
   onMount(() => {
-    // Only on mount can we bind the svg root node and attach actual event listeners.
-    // Sometimes rootNode is undefined for some weird reason. In this case,
-    // we will use document.getElementById instead
     updateSectionPositioning(
       width,
       height,
@@ -112,6 +117,9 @@
     )
 
     tick().then(() => {
+      // Only on mount can we bind the svg root node and attach actual event listeners.
+      // Sometimes rootNode is undefined for some weird reason. In this case,
+      // we will use document.getElementById instead
       if (!rootNode) {
         rootNode = document.getElementById(id)
       }
@@ -120,14 +128,10 @@
         context = rootNode.getContext('2d')
       }
     
-      if (TEST_ENV && _testDummies) {
-        const { dummyRoot, dummyWindow } = _testDummies
-        eventManager.addRootNode(dummyRoot, renderer, dummyWindow)
-      } else {
+      if (!(TEST_ENV && _testDummies)) {
         eventManager.addRootNode(rootNode, renderer)
+        eventManager.attachEventListeners()
       }
-
-      eventManager.attachEventListeners()
       mounted = true
     })
   })
@@ -156,16 +160,35 @@
     }
   }
 
+  // Expose instance methods
   let node
 
-  export const selectRectangle = rect => node.getSM().selectRectangle(rect)
-  export const updateSelectRectangle = rect => node.getSM().updateSelectRectangle(rect)
-  export const resetSelectRectangle = () => node.getSM().resetSelectRectangle()
-  export const startSelectPolygon = c => node.getSM().startSelectPolygon(c)
-  export const addPointToSelectPolygon = c => node.getSM().addPointToSelectPolygon(c)
-  export const moveSelectPolygon = delta => node.getSM().moveSelectPolygon(delta)
-  export const getSelectPolygon = () => node.getSM().getSelectPolygon()
-  export const resetSelectPolygon = () => node.getSM().resetSelectPolygon()
+  export const selectRectangle = rect => node.selectRectangle(rect)
+  export const updateSelectRectangle = rect => node.updateSelectRectangle(rect)
+  export const resetSelectRectangle = () => node.resetSelectRectangle()
+  export const startSelectPolygon = c => node.startSelectPolygon(c)
+  export const addPointToSelectPolygon = c => node.addPointToSelectPolygon(c)
+  export const moveSelectPolygon = delta => node.moveSelectPolygon(delta)
+  export const getSelectPolygon = () => node.getSelectPolygon()
+  export const resetSelectPolygon = () => node.resetSelectPolygon()
+
+  export const startZoomPan = () => node.startZoomPan()
+  export const setZoomIdentity = newZoomIdentity => node.setZoomIdentity(newZoomIdentity)
+  export const endZoomPan = () => node.endZoomPan()
+  export const getZoomIdentity = () => node.getZoomIdentity()
+
+  // Set initial blockReindexing context, so that child components don't
+  // try to destructure undefined
+  setContext('blockReindexing', { blockReindexing: writable(false) })
+
+  $: props = {
+    ...sectionPositioning, backgroundColor, coordinates,
+    scaleX, scaleY, flipX, flipY, padding,
+    pannable, zoomable, zoomPanSettings, blockZoomPan,
+    onClick, onWheel, onMousedown, onMouseup, onMouseover, onMouseout, onMousemove,
+    onPinch, onTouchdown, onTouchmove, onTouchup, onTouchover, onTouchout, 
+    clip
+  }
 </script>
 
 <div 
@@ -183,29 +206,7 @@
 
       <Section
         bind:this={node}
-        {...sectionPositioning}
-        {backgroundColor}
-        {coordinates}
-        {scaleX}
-        {scaleY}
-        {flipX}
-        {flipY}
-        {padding}
-        {zoomIdentity}
-        {onClick}
-        {onWheel}
-        {onMousedown}
-        {onMouseup}
-        {onMouseover}
-        {onMouseout}
-        {onMousemove}
-        {onPinch}
-        {onTouchdown}
-        {onTouchmove}
-        {onTouchup}
-        {onTouchover}
-        {onTouchout}
-        {clip}
+        {...props}
       >
     
         <slot />
@@ -222,29 +223,7 @@
   
     <Section
       bind:this={node}
-      {...sectionPositioning}
-      {backgroundColor}
-      {coordinates}
-      {scaleX}
-      {scaleY}
-      {flipX}
-      {flipY}
-      {padding}
-      {zoomIdentity}
-      {onClick}
-      {onWheel}
-      {onMousedown}
-      {onMouseup}
-      {onMouseover}
-      {onMouseout}
-      {onMousemove}
-      {onPinch}
-      {onTouchdown}
-      {onTouchmove}
-      {onTouchup}
-      {onTouchover}
-      {onTouchout}
-      {clip}
+      {...props}
     >
     
       <div style="display: none;" id={`div-${id}`}>

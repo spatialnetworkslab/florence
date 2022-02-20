@@ -1,6 +1,5 @@
 import { renderLayer } from '../../../utils.js'
 import { PointLayer } from '../../../../../src/index.js'
-import { tick } from 'svelte'
 
 describe('PointLayer (svg)', () => {
   it('renders', () => {
@@ -28,15 +27,13 @@ describe('PointLayer (svg)', () => {
       }
     )
 
-    tick().then(() => {
-      dummyRoot.trigger('click', 125, 125)
-      dummyRoot.trigger('click', 250, 250)
-      dummyRoot.trigger('click', 375, 375)
+    dummyRoot.trigger('click', { clientX: 125, clientY: 125 })
+    dummyRoot.trigger('click', { clientX: 250, clientY: 250 })
+    dummyRoot.trigger('click', { clientX: 375, clientY: 375 })
 
-      dummyRoot.trigger('click', 400, 100)
+    dummyRoot.trigger('click', { clientX: 400, clientY: 100 })
 
-      expect(onClick).toHaveBeenCalledTimes(3)
-    })
+    expect(onClick).toHaveBeenCalledTimes(3)
   })
 })
 
@@ -54,14 +51,12 @@ describe('PointLayer (canvas)', () => {
       { renderer: 'canvas' }
     )
 
-    tick().then(() => {
-      dummyRoot.trigger('click', 125, 125)
-      dummyRoot.trigger('click', 250, 250)
-      dummyRoot.trigger('click', 375, 375)
+    dummyRoot.trigger('click', { clientX: 125, clientY: 125 })
+    dummyRoot.trigger('click', { clientX: 250, clientY: 250 })
+    dummyRoot.trigger('click', { clientX: 375, clientY: 375 })
 
-      dummyRoot.trigger('click', 400, 100)
+    dummyRoot.trigger('click', { clientX: 400, clientY: 100 })
 
-      expect(onClick).toHaveBeenCalledTimes(3)
-    })
+    expect(onClick).toHaveBeenCalledTimes(3)
   })
 })

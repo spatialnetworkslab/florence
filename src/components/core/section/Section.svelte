@@ -28,7 +28,12 @@
   export let flipX = false
   export let flipY = false
   export let padding = 0
-  export let zoomIdentity = undefined
+
+  // Zooming and panning
+  export let pannable = false
+  export let zoomable = false
+  export let zoomPanSettings = undefined
+  export let blockZoomPan = false
 
   // Mouse interactions
   export let onClick = undefined
@@ -52,12 +57,12 @@
 
   $: props = {
     x1, x2, y1, y2,
-    coordinates, scaleX, scaleY, flipX, flipY, padding, zoomIdentity,
+    coordinates, scaleX, scaleY, flipX, flipY, padding,
     clip
   }
 
+  // Expose instance methods 
   let node
-  export const getSM = () => node.getSM()
 
   export const selectRectangle = rect => node.getSM().selectRectangle(rect)
   export const updateSelectRectangle = rect => node.getSM().updateSelectRectangle(rect)
@@ -67,6 +72,11 @@
   export const moveSelectPolygon = delta => node.getSM().moveSelectPolygon(delta)
   export const getSelectPolygon = () => node.getSM().getSelectPolygon()
   export const resetSelectPolygon = () => node.getSM().resetSelectPolygon()
+
+  export const startZoomPan = () => node.startZoomPan()
+  export const setZoomIdentity = newZoomIdentity => node.setZoomIdentity(newZoomIdentity)
+  export const endZoomPan = () => node.endZoomPan()
+  export const getZoomIdentity = () => node.getZoomIdentity()
 </script>
 
 <BaseSection
@@ -75,6 +85,10 @@
   {backgroundColor}
   {id}
   createFunction={createSection}
+  {pannable}
+  {zoomable}
+  {zoomPanSettings}
+  {blockZoomPan}
   {onClick}
   {onWheel}
   {onMousedown}

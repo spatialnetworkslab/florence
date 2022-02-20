@@ -12,7 +12,6 @@
 
   let rectStartDelta
   let brushing = false
-  let blockReindexing = false
 
   const onMousedown = (e) => {
     console.log(e)
@@ -50,7 +49,6 @@
 
     if (event.dragType === 'start') {
       brushing = true
-      blockReindexing = true
       rectStartDelta = {
         x1: localCoordinates.x - selectionRectangle.x1,
         x2: localCoordinates.x - selectionRectangle.x2,
@@ -72,7 +70,6 @@
 
     if (event.dragType === 'end') {
       brushing = false
-      blockReindexing = false
     }
   }
 
@@ -145,7 +142,6 @@
       {...selectionRectangle} 
       fill="green" opacity={0.2}
       onMousedrag={onDragSelectionRectangle}
-      {blockReindexing}
     />
 
   {/if}

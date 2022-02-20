@@ -41,7 +41,7 @@ const EVENT_NAMES = [
   'touchstart', 'touchend', 'touchmove', 'touchcancel'
 ]
 
-function createDummyNode () {
+export function createDummyNode () {
   const eventHandlers = {}
   EVENT_NAMES.forEach(e => { eventHandlers[e] = new Set() })
 
@@ -61,8 +61,8 @@ function createDummyNode () {
       }
     },
 
-    trigger (name, x, y) {
-      const event = createEvent(x, y)
+    trigger (name, eventOptions) {
+      const event = createEvent(eventOptions)
       eventHandlers[name].forEach(h => h(event))
     },
 
@@ -82,9 +82,9 @@ function createDummyNode () {
   }
 }
 
-function createEvent (x, y) {
+function createEvent (eventOptions) {
   return {
-    clientX: x,
-    clientY: y
+    ...eventOptions,
+    preventDefault: () => null
   }
 }
