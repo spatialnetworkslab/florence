@@ -3,45 +3,28 @@
   import { 
     Graphic, Section, PolygonLayer, Rectangle, Point,
     XAxis, YAxis,
-    XGridLines, YGridLines,
-    createPanHandler, createZoomHandler
+    XGridLines, YGridLines
   } from '../../../../src'
 
-  let zoomIdentity = { x: 0, y: 0, kx: 1, ky: 1 }
-  let blockReindexing = false
-
-  const setZoomIdentity = zoomId => { zoomIdentity = zoomId }
-  const setBlockReindexing = bool => { blockReindexing = bool }
-
-  const pan = createPanHandler(zoomIdentity, {
-    setZoomIdentity,
-    setBlockReindexing,
-    extentX: [-500, 500],
-    extentY: [-500, 500]
-      // dimension: 'x'
-  })
-
-  const zoom = createZoomHandler(zoomIdentity, {
-    setZoomIdentity,
-    minZoom: 0.2,
-    maxZoom: 3
-  })
+  const viewportFence = {
+    left: { x: -2, y: 0 },
+    right: { x: 6, y: 0 },
+    top: { x: 0, y: -2 },
+    bottom: { x: 0, y: 6 }
+  }
 </script>
 
-<Graphic width={500} height={500}>
+<Graphic width={500} height={500} renderer="svg">
 
-  <!-- <Rectangle fill="blue" opacity={0.3} /> -->
-
-  <Section 
+  <Section
     x1={0.1} x2={0.9}
     y1={0.1} y2={0.9}
     padding={25}
     scaleX={scaleLinear().domain([0, 4])}
     scaleY={scaleLinear().domain([0, 4])}
-    {zoomIdentity}
-    {...pan.handlers}
-    {...zoom.handlers}
-    {blockReindexing}
+    pannable
+    zoomable
+    zoomPanSettings={{ viewportFence }}
   >
 
     <Rectangle fill="blue" opacity={0.3} />
@@ -69,9 +52,9 @@
       scaleY={scaleLinear().domain([0, 10])}
     >
 
-      <Point x={2} y={2} radius={10} />
-      <Point x={5} y={5} radius={10} />
-      <Point x={8} y={8} radius={10} /> 
+      <Point x={2} y={2} radius={10} onMouseover={console.log} />
+      <Point x={5} y={5} radius={10} onMouseover={console.log} />
+      <Point x={8} y={8} radius={10} onMouseover={console.log} /> 
     </Section>
 
     <XAxis />

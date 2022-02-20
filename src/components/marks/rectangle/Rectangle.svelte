@@ -24,7 +24,6 @@
   // Other
   export let outputSettings = undefined
   export let clip = undefined
-  export let blockReindexing = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -61,7 +60,6 @@
   parseAesthetics={parseAestheticsRectangle}
   className="rectangle"
   {outputSettings}
-  {blockReindexing}
   {onClick}
   {onMousedown}
   {onMouseup}

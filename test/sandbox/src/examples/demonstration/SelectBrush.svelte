@@ -17,7 +17,6 @@
   let rectangle
 
   let brushing = false
-  let blockReindexing = false
   let startDelta
 
   const onMousedown = ({ screenCoordinates }) => {
@@ -87,7 +86,6 @@
 
     if (event.dragType === 'start') {
       brushing = true
-      blockReindexing = true
 
       startDelta = {
         x1: screenCoordinates.x - rectangle.x1,
@@ -110,7 +108,6 @@
 
     if (event.dragType === 'end') {
       brushing = false
-      blockReindexing = false
     }
   }
 </script>
@@ -148,7 +145,6 @@
       fill="yellow"
       opacity={0.2}
       {onMousedrag}
-      {blockReindexing}
     />
 
   {/if}

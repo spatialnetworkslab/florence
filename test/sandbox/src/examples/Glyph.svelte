@@ -1,11 +1,15 @@
 <script>
   import { Graphic, Glyph, RectangleLayer, polar, XAxis, YAxis } from '../../../../src'
 
-  const glyphs = Array(100).fill(0).map((_, i) => ({
-    x: (i / 10) + Math.random() * 3,
-    y: (i / 10) + Math.random() * 5,
-    radius: 3 + Math.random() * 7
-  }))
+  const glyphs = Array(100).fill(0).map((_, i) => {
+    const size = 3 + Math.random() * 14 
+    return {
+      x: (i / 10) + Math.random() * 3,
+      y: (i / 10) + Math.random() * 5,
+      width: size,
+      height: size
+    }
+  })
 </script>
 
 <Graphic width={500} height={500} scaleX={[0, 10]} scaleY={[0, 10]} flipY padding={30} renderer="canvas">

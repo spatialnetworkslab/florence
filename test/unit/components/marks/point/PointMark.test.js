@@ -1,6 +1,5 @@
 import { renderMark } from '../../../utils.js'
 import { Point } from '../../../../../src/index.js'
-import { tick } from 'svelte'
 
 describe('Point (svg)', () => {
   it('renders', () => {
@@ -20,13 +19,11 @@ describe('Point (svg)', () => {
       { x: 0.5, y: 0.5, onClick }
     )
 
-    tick().then(() => {
-      dummyRoot.trigger('click', 20, 400)
-      expect(onClick).not.toHaveBeenCalled()
+    dummyRoot.trigger('click', { clientX: 20, clientY: 400 })
+    expect(onClick).not.toHaveBeenCalled()
 
-      dummyRoot.trigger('click', 250, 250)
-      expect(onClick).toHaveBeenCalled()
-    })
+    dummyRoot.trigger('click', { clientX: 250, clientY: 250 })
+    expect(onClick).toHaveBeenCalled()
   })
 })
 
@@ -40,12 +37,10 @@ describe('Point (canvas)', () => {
       { renderer: 'canvas' }
     )
 
-    tick().then(() => {
-      dummyRoot.trigger('click', 20, 400)
-      expect(onClick).not.toHaveBeenCalled()
+    dummyRoot.trigger('click', { clientX: 20, clientY: 400 })
+    expect(onClick).not.toHaveBeenCalled()
 
-      dummyRoot.trigger('click', 250, 250)
-      expect(onClick).toHaveBeenCalled()
-    })
+    dummyRoot.trigger('click', { clientX: 250, clientY: 250 })
+    expect(onClick).toHaveBeenCalled()
   })
 })

@@ -7,8 +7,7 @@
   import { getContext, onMount, onDestroy } from 'svelte'
   import { svgStyled, getClipPathURL } from '@snlab/rendervous'
   import any from '../utils/any.js'
-  import merge from '../utils/merge.js'
-  import { testId } from '../../../helpers/test.js'
+  import { testId } from '../../../utils/test.js'
 
   export let positioning
   export let aesthetics
@@ -20,7 +19,6 @@
 
   // Other
   export let outputSettings = undefined
-  export let blockReindexing = undefined
 
   // Mouse interactions
   export let onClick = undefined
@@ -42,9 +40,10 @@
   export let onDeselect = undefined
 
   // Get parent contexts
-  const { renderer, marksAndLayers, dirty, globalBlockReindexing } = getContext('graphic')
+  const { renderer, marksAndLayers, dirty } = getContext('graphic')
   const section = getContext('section')
   const interactionManager = getContext('interactionManager')
+  const { blockReindexing: parentBlockReindexing } = getContext('blockReindexing')
 
   const id = getId()
 
@@ -68,7 +67,7 @@
 
   function create () {
     let _mark = createMark(
-      merge(positioning, aesthetics),
+      { ...positioning, ...aesthetics },
       $section,
       outputSettings
     )
@@ -143,18 +142,53 @@
     updateAesthetics = false
   }
 
+  $: {
+    if (isMounted() && !$parentBlockReindexing && !blockReindexing) {
+      updateInteractionManagerIfNecessary()
+    }
+  }
+
   // Interactivity
+  let blockReindexing = false
+  const setBlockReindexing = (bool) => { blockReindexing = bool }
+
+  $: mouseDragHandler = onMousedrag && primaryInput === 'mouse'
+    ? (e) => {
+      switch(e.dragType) {
+        case 'start':
+          setBlockReindexing(true)
+          break
+        case 'end':
+          setBlockReindexing(false)
+          break;
+      }
+
+      onMousedrag(e)
+    }
+    : undefined
+  
+  $: touchDragHandler = onTouchdrag && primaryInput === 'touch'
+    ? (e) => {
+      switch(e.dragType) {
+        case 'start':
+          setBlockReindexing(true)
+          break
+        case 'end':
+          setBlockReindexing(false)
+          break;
+      }
+
+      onTouchdrag(e)
+    }
+    : undefined
+
   $: primaryInput = $interactionManager.getPrimaryInput()
   $: isInteractiveMouse = primaryInput === 'mouse' && any(onClick, onMousedown, onMouseup, onMouseover, onMouseout, onMousedrag)
   $: isInteractiveTouch = primaryInput === 'touch' && any(onTouchdown, onTouchup, onTouchover, onTouchout, onTouchdrag)
   $: isSelectable = any(onSelect, onDeselect)
 
   function updateInteractionManagerIfNecessary () {
-    if (blockReindexing === undefined) {
-      if ($globalBlockReindexing) return
-    } else {
-      if (blockReindexing === true) return
-    }
+    if ($parentBlockReindexing || blockReindexing) return
 
     if (isInteractiveMouse || isInteractiveTouch) {
       removeMarkFromSpatialIndexIfNecessary()
@@ -164,24 +198,26 @@
 
         markInterface.loadMark(mark)
 
+        if (mouseDragHandler) markInterface.addMarkInteraction('mousedrag', mark, mouseDragHandler)
+
         if (onClick) markInterface.addMarkInteraction('click', mark, onClick)
         if (onMousedown) markInterface.addMarkInteraction('mousedown', mark, onMousedown)
         if (onMouseup) markInterface.addMarkInteraction('mouseup', mark, onMouseup)
         if (onMouseout) markInterface.addMarkInteraction('mouseout', mark, onMouseout)
         if (onMouseover) markInterface.addMarkInteraction('mouseover', mark, onMouseover)
-        if (onMousedrag) markInterface.addMarkInteraction('mousedrag', mark, onMousedrag)
       }
 
       if (isInteractiveTouch) {
         const markInterface = $interactionManager.touch().marks()
 
         markInterface.loadMark(mark)
+        
+        if (touchDragHandler) markInterface.addMarkInteraction('touchdrag', mark, touchDragHandler)
 
         if (onTouchdown) markInterface.addMarkInteraction('touchdown', mark, onTouchdown)
         if (onTouchup) markInterface.addMarkInteraction('touchup', mark, onTouchup)
         if (onTouchover) markInterface.addMarkInteraction('touchover', mark, onTouchover)
         if (onTouchout) markInterface.addMarkInteraction('touchout', mark, onTouchout)
-        if (onTouchdrag) markInterface.addMarkInteraction('touchdrag', mark, onTouchdrag)
       }
     }
 
@@ -230,8 +266,8 @@
   })
 </script>
 
-{#if renderer === 'svg'}
-  {#if element === 'path'}
+{#if renderer === "svg"}
+  {#if element === "path"}
     <path
       {...svgData}
       class={className}
@@ -240,7 +276,7 @@
     />
   {/if}
 
-  {#if element === 'text'}
+  {#if element === "text"}
     <text
       {...svgData}
       text={undefined}
@@ -253,6 +289,6 @@
   {/if}
 {/if}
 
-{#if renderer === 'canvas'}
+{#if renderer === "canvas"}
   {id}
 {/if}

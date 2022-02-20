@@ -26,12 +26,10 @@
   
   let hitIndex
   let dragPoint
-  let blockReindexing = false
 
   function onMousedrag (event) {
     if (event.dragType === 'start') {
       hitIndex = event.index
-      blockReindexing = true
     }
 
     if (event.dragType === 'drag') {
@@ -44,7 +42,6 @@
 
       hitIndex = undefined
       dragPoint = undefined
-      blockReindexing = false
     }
   }
 
@@ -59,7 +56,6 @@
 			y1={0.1} y2={0.9}
 			scaleX={scaleA}
 			scaleY={scaleB}
-      zoomIdentity={{x: 0, y: 0, kx: 1.2, ky: 1.2}}
       coordinates={polar()}
 		>
 
