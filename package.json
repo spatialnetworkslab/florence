@@ -70,7 +70,7 @@
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.2",
     "serialize-javascript": "^6.0.0",
-    "sirv-cli": "^1.0.10",
+    "sirv-cli": "^2.0.0",
     "svelte": "^3.31.0",
     "svelte-jester": "^2.1.5",
     "svelte-routing": "^1.4.2"
