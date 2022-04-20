@@ -40,6 +40,7 @@
   import FuncLineBug from './examples/FuncLineBug.svelte'
   import NewLegends from './examples/NewLegends.svelte'
   import Glyph from './examples/Glyph.svelte'
+  import MouseoverBug from './examples/MouseoverBug.svelte';
   
   // and add them to this component array
   const components = [
@@ -207,6 +208,11 @@
       name: 'Responsive',
       url: 'responsive',
       component: Responsive
+    },
+    {
+      name: 'Mouseover bug',
+      url: 'mouseover-bug',
+      component: MouseoverBug
     }
   ]
 </script>
